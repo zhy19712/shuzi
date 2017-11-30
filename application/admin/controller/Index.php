@@ -16,7 +16,6 @@ class Index extends Base
     /**
      * [indexPage 后台首页]
      * @return [type] [description]
-     * @author [田建龙] [864491238@qq.com]
      */
     public function indexPage()
     {
@@ -42,7 +41,6 @@ class Index extends Base
     /**
      * [userEdit 修改密码]
      * @return [type] [description]
-     * @author [田建龙] [864491238@qq.com]
      */
     public function editpwd(){
 

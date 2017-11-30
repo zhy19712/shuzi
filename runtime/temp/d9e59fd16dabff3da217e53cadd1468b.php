@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:84:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\config\index.html";i:1511857302;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\header.html";i:1505280616;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\footer.html";i:1505280616;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:84:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\config\index.html";i:1511947061;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\header.html";i:1511947061;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\footer.html";i:1511947061;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>

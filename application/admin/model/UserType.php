@@ -13,7 +13,6 @@ class UserType extends Model
 
     /**
      * [getRoleByWhere 根据条件获取角色列表信息]
-     * @author [田建龙] [864491238@qq.com]
      */
     public function getRoleByWhere($map, $Nowpage, $limits)
     {
@@ -24,7 +23,6 @@ class UserType extends Model
 
     /**
      * [getRoleByWhere 根据条件获取所有的角色数量]
-     * @author [田建龙] [864491238@qq.com]
      */
     public function getAllRole($where)
     {
@@ -35,7 +33,6 @@ class UserType extends Model
 
     /**
      * [insertRole 插入角色信息]
-     * @author [田建龙] [864491238@qq.com]
      */    
     public function insertRole($param)
     {
@@ -55,7 +52,6 @@ class UserType extends Model
 
     /**
      * [editRole 编辑角色信息]
-     * @author [田建龙] [864491238@qq.com]
      */  
     public function editRole($param)
     {
@@ -75,7 +71,6 @@ class UserType extends Model
 
     /**
      * [getOneRole 根据角色id获取角色信息]
-     * @author [田建龙] [864491238@qq.com]
      */ 
     public function getOneRole($id)
     {
@@ -86,7 +81,6 @@ class UserType extends Model
 
     /**
      * [delRole 删除角色]
-     * @author [田建龙] [864491238@qq.com]
      */ 
     public function delRole($id)
     {
@@ -102,7 +96,6 @@ class UserType extends Model
 
     /**
      * [getRole 获取所有的角色信息]
-     * @author [田建龙] [864491238@qq.com]
      */ 
     public function getRole()
     {
@@ -112,7 +105,6 @@ class UserType extends Model
 
     /**
      * [getRole 获取角色的权限节点]
-     * @author [田建龙] [864491238@qq.com]
      */ 
     public function getRuleById($id)
     {
@@ -123,7 +115,6 @@ class UserType extends Model
 
     /**
      * [editAccess 分配权限]
-     * @author [田建龙] [864491238@qq.com]
      */ 
     public function editAccess($param)
     {
@@ -140,7 +131,6 @@ class UserType extends Model
 
     /**
      * [getRoleInfo 获取角色信息]
-     * @author [田建龙] [864491238@qq.com]
      */ 
     public function getRoleInfo($id){
 

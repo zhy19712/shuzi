@@ -10,7 +10,6 @@ class Data extends Base
 {
     /**
      * 数据备份首页
-     * @author 田建龙 <864491238@qq.com>
      */
     public function index() {
         $Db = Db::connect();
@@ -26,7 +25,6 @@ class Data extends Base
      * @param  String  $ids 表名
      * @param  Integer $id     表ID
      * @param  Integer $start  起始行数
-     * @author 田建龙 <864491238@qq.com>
      */
     public function export($ids = null, $id = null, $start = null) {
         $Request = Request::instance();
@@ -131,7 +129,6 @@ class Data extends Base
     /**
      * 修复表
      * @param  String $ids 表名
-     * @author 麦当苗儿 <zuojiazi@vip.qq.com>
      */
     public function repair($ids = null) {
         if (empty($ids)) {
@@ -163,7 +160,6 @@ class Data extends Base
     /**
      * 还原数据库
      * @param 类型 参数 参数说明
-     * @author staitc7 <static7@qq.com>
      */
 
     public function import() {
@@ -203,7 +199,6 @@ class Data extends Base
     /**
      * 删除备份文件
      * @param  Integer $time 备份时间
-     * @author 麦当苗儿 <zuojiazi@vip.qq.com>
      */
     public function del($time = 0) {
         empty($time) && $this->error('参数错误！');
@@ -219,7 +214,6 @@ class Data extends Base
 
     /**
      * 还原数据库
-     * @author 麦当苗儿 <zuojiazi@vip.qq.com>
      */
     public function revert($time = 0, $part = null, $start = null) {
         if (is_numeric($time) && is_null($part) && is_null($start)) { //初始化

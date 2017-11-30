@@ -10,7 +10,6 @@ class Config extends Base
 
     /**
      * 获取配置参数
-     * @author [田建龙] [864491238@qq.com]
      */
     public function index() {
         $configModel = new ConfigModel();
@@ -27,7 +26,6 @@ class Config extends Base
 
     /**
      * 批量保存配置
-     * @author [田建龙] [864491238@qq.com]
      */
     public function save($config){
         $configModel = new ConfigModel();

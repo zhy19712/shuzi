@@ -14,7 +14,6 @@ class ArticleModel extends Model
 
     /**
      * 根据搜索条件获取用户列表信息
-     * @author [田建龙] [864491238@qq.com]
      */
     public function getArticleByWhere($map, $Nowpage, $limits)
     {
@@ -24,7 +23,6 @@ class ArticleModel extends Model
     
     /**
      * [insertArticle 添加文章]
-     * @author [田建龙] [864491238@qq.com]
      */
     public function insertArticle($param)
     {
@@ -44,7 +42,6 @@ class ArticleModel extends Model
 
     /**
      * [updateArticle 编辑文章]
-     * @author [田建龙] [864491238@qq.com]
      */
     public function updateArticle($param)
     {
@@ -64,7 +61,6 @@ class ArticleModel extends Model
 
     /**
      * [getOneArticle 根据文章id获取一条信息]
-     * @author [田建龙] [864491238@qq.com]
      */
     public function getOneArticle($id)
     {
@@ -75,7 +71,6 @@ class ArticleModel extends Model
 
     /**
      * [delArticle 删除文章]
-     * @author [田建龙] [864491238@qq.com]
      */
     public function delArticle($id)
     {

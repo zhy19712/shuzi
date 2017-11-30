@@ -24,7 +24,6 @@ class ArticleCateModel extends Model
 
     /**
      * [insertCate 添加分类]
-     * @author [田建龙] [864491238@qq.com]
      */
     public function insertCate($param)
     {

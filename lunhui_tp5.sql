@@ -289,12 +289,12 @@ CREATE TABLE `think_config` (
 -- ----------------------------
 -- Records of think_config
 -- ----------------------------
-INSERT INTO `think_config` VALUES ('1', 'web_site_title', '轮回后台管理系统');
-INSERT INTO `think_config` VALUES ('2', 'web_site_description', '轮回后台管理系统');
-INSERT INTO `think_config` VALUES ('3', 'web_site_keyword', '轮回后台管理系统');
-INSERT INTO `think_config` VALUES ('4', 'web_site_icp', '陇ICP备15002349号-1');
+INSERT INTO `think_config` VALUES ('1', 'web_site_title', '后台管理系统');
+INSERT INTO `think_config` VALUES ('2', 'web_site_description', '后台管理系统');
+INSERT INTO `think_config` VALUES ('3', 'web_site_keyword', '后台管理系统');
+INSERT INTO `think_config` VALUES ('4', 'web_site_icp', '京ICP备15002349号');
 INSERT INTO `think_config` VALUES ('5', 'web_site_cnzz', '');
-INSERT INTO `think_config` VALUES ('6', 'web_site_copy', 'Copyright © 2017 轮回后台管理系统 All rights reserved.');
+INSERT INTO `think_config` VALUES ('6', 'web_site_copy', 'Copyright © 2017 后台管理系统 All rights reserved.');
 INSERT INTO `think_config` VALUES ('7', 'web_site_close', '1');
 INSERT INTO `think_config` VALUES ('8', 'list_rows', '10');
 INSERT INTO `think_config` VALUES ('9', 'admin_allow_ip', null);
