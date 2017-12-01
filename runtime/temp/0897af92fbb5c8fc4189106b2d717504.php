@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:83:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\index\index.html";i:1512057685;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\header.html";i:1511947061;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\footer.html";i:1511947061;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:83:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\index\index.html";i:1512095413;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\header.html";i:1511947061;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\footer.html";i:1511947061;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,11 +23,29 @@
     </style>
 </head>
 
-<body class="gray-bg">
+<body class="gray-bg" style = "overflow-x: hidden; overflow-y: hidden">
+
+
+        <!--<script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">-->
+            <!--RealBimOcx.SwitchBIMSceneSimple("http://192.168.147.130:8008/default.aspx?dir=url_res02&path=","res_test");-->
+            <!--//      RealBimOcx.SwitchBIMSceneSimple("F:\\AppTest\\URL_Res01\\","res_fengning_kw");-->
+            <!--RealBimOcx.SetSceVersionInfo(100, -1);-->
+        <!--</script>-->
+        <!--<script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">-->
+            <!--if(CompleteEvent == "LoadMainScene" && retError==0 ){-->
+                <!--RealBimOcx.SetAllHugeObjSubValidState(1);-->
+                <!--RealBimOcx.SetSceHugeObjVisible(true);-->
+            <!--}-->
+        <!--</script>-->
+        <!--&lt;!&ndash;<OBJECT id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%">&ndash;&gt;-->
+        <!--&lt;!&ndash;</OBJECT>&ndash;&gt;-->
 
 
 
 
+
+
+<!--
 <div class="wrapper wrapper-content">
     <div class="alert alert-danger alert-dismissable">
         <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
@@ -100,27 +118,9 @@
         </div>
     </div>
     -->
-    <div class="row">
-        <div class="col-sm-12">
 
-            <object style="height:600px ; width:800px" id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%">
-            </object>
-
-            <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
-                RealBimOcx.SwitchBIMSceneSimple("http://192.168.147.129:8008/default.aspx?dir=url_res02&path=","res_jinzhai");
-          //      RealBimOcx.SwitchBIMSceneSimple("F:\\AppTest\\URL_Res01\\","res_fengning_kw");
-                RealBimOcx.SetSceVersionInfo(100, -1);
-            </script>
-            <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
-                if(CompleteEvent == "LoadMainScene" && retError==0 ){
-                    RealBimOcx.SetAllHugeObjSubValidState(1);
-                    RealBimOcx.SetSceHugeObjVisible(true);
-                }
-            </script>
-
-        </div>
-    </div>
     <!-- 中间折线 -->
+<!--
     <div class="row">
         <div class="col-sm-12">
             <div class="col-sm-6">
@@ -155,7 +155,7 @@
     </div>
 
 </div>
-
+ -->
 <script src="__JS__/jquery.min.js?v=2.1.4"></script>
 <script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
 <script src="__JS__/content.min.js?v=1.0.0"></script>
@@ -171,11 +171,5 @@
 <script>
     $(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});
 </script>
-<script src="/static/admin/js/jquery.leoweather.min.js"></script>
-
-<script type="text/javascript">
-    $('#weather').leoweather({format:'，{时段}好！<span id="colock">现在时间是：<strong>{年}年{月}月{日}日 星期{周} {时}:{分}:{秒}</strong>，</span> <b>{城市}天气</b> {天气} {夜间气温}℃ ~ {白天气温}℃'});
-</script>
-
 </body>
 </html>

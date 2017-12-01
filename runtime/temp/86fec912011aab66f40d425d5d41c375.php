@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:77:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\index.html";i:1511947060;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\header.html";i:1511947061;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\footer.html";i:1511947061;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:77:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\index.html";i:1512095629;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\header.html";i:1511947061;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\footer.html";i:1511947061;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -73,12 +73,17 @@
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
-                    <a style="display: none;" class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
                         <i class="fa fa-bars"></i> 
                     </a>
+                    <div class="alert alert-danger alert-dismissable" style="padding: 3px; padding-right: 30px; margin-left: 80px; margin-top: 15px;">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        <div>尊敬的管理员<span id="weather"></span></div>
+                    </div>
                 </div>
+
                 <ul class="nav navbar-top-links navbar-right">
-                    <li class="dropdown hidden-xs">
+                    <li class="dropdown hidden-xs" style="position: relative;z-index: 999;">
                         <a class="right-sidebar-toggle" aria-expanded="false">
                             <i class="fa fa-tasks"></i> 主题
                         </a>
@@ -252,14 +257,25 @@ $(function(){
         })
     });
 
-
+//鼠标进入，离开伸缩
+    <!--
     $("body").addClass("mini-navbar");
     $("#page-wrapper").hover(function () {
         $("body").addClass("mini-navbar");
     },function () {
         $("body").removeClass("mini-navbar");
     })
+    -->
 });
 </script>
+
+
+<script src="/static/admin/js/jquery.leoweather.min.js"></script>
+
+<script type="text/javascript">
+    $('#weather').leoweather({format:'，{时段}好！<span id="colock">现在时间是：<strong>{年}年{月}月{日}日 星期{周} {时}:{分}:{秒}</strong></span> '});
+ //   $('#weather').leoweather({format:'，{时段}好！<span id="colock">现在时间是：<strong>{年}年{月}月{日}日 星期{周} {时}:{分}:{秒}</strong>，</span> <b>{城市}天气</b> {天气} {夜间气温}℃ ~ {白天气温}℃'});
+</script>
+
 </body>
 </html>

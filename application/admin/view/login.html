@@ -25,13 +25,13 @@
                 <div class="logopanel m-b">
                 </div>
                 <div class="m-b"></div>
-                <h2>欢迎登陆XXX数字平台</h2>
+                <h2>欢迎登陆</h2>
                 <ul class="m-b"></ul>
             </div>
         </div>
         <div class="col-sm-5" style="color:#fff">
             <form id="doLogin" name="doLogin" method="post" action="{:url('doLogin')}">
-                <p class="m-t-md" id="err_msg">登录到后台</p>
+                <p class="m-t-md" id="err_msg"></p>
                 <input type="text" class="form-control uname" placeholder="用户名" id="username" name="username" />
                 <input type="password" class="form-control pword m-b" placeholder="密码" id="password" name="password" />
                 {if condition="$verify_type eq 1"}
