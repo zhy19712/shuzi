@@ -1,4 +1,27 @@
-{include file="public/header" /}
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:77:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\index.html";i:1512095629;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\header.html";i:1511947061;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\footer.html";i:1511947061;}*/ ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo config('WEB_SITE_TITLE'); ?></title>
+    <link href="/static/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/static/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/static/admin/css/animate.min.css" rel="stylesheet">
+    <link href="/static/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/static/admin/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="/static/admin/css/plugins/switchery/switchery.css" rel="stylesheet">
+    <link href="/static/admin/css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="/static/admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <style type="text/css">
+    .long-tr th{
+        text-align: center
+    }
+    .long-td td{
+        text-align: center
+    }
+    </style>
+</head>
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
 <div id="wrapper">
     <!--左侧导航开始-->
@@ -9,42 +32,38 @@
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element">
-                        <span><img alt="image" class="img-circle" width="70px" height="70px" src="/uploads/face/{$portrait}" onerror="this.src='/static/admin/images/head_default.gif'"/></span>
+                        <span><img alt="image" class="img-circle" width="70px" height="70px" src="/uploads/face/<?php echo $portrait; ?>" onerror="this.src='/static/admin/images/head_default.gif'"/></span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear">
-                                <span class="block m-t-xs"><strong class="font-bold">{$username}</strong></span>
-                                <span class="text-muted text-xs block">{$rolename}<b class="caret"></b></span>
+                                <span class="block m-t-xs"><strong class="font-bold"><?php echo $username; ?></strong></span>
+                                <span class="text-muted text-xs block"><?php echo $rolename; ?><b class="caret"></b></span>
                             </span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a class="J_menuItem" href="{:url('admin/index/editpwd')}">修改密码</a></li>
+                            <li><a class="J_menuItem" href="<?php echo url('admin/index/editpwd'); ?>">修改密码</a></li>
                             <li><a href="javascript:;" id="cache">清除缓存</a></li>
-                            <li><a href="{:url('admin/login/loginOut')}">安全退出</a></li>
+                            <li><a href="<?php echo url('admin/login/loginOut'); ?>">安全退出</a></li>
                         </ul>
                     </div>
                     <div class="logo-element">数字
                     </div>
                 </li>
-                {if !empty($menu)}
-                    {foreach name="menu" item="vo"}
+                <?php if(!empty($menu)): if(is_array($menu) || $menu instanceof \think\Collection || $menu instanceof \think\Paginator): if( count($menu)==0 ) : echo "" ;else: foreach($menu as $key=>$vo): ?>
                     <li class="menu">
-                        <a href="{$vo.href}">
-                            <i class="{$vo.css}"></i>
-                            <span class="nav-label">{$vo.title} </span>
+                        <a href="<?php echo $vo['href']; ?>">
+                            <i class="<?php echo $vo['css']; ?>"></i>
+                            <span class="nav-label"><?php echo $vo['title']; ?> </span>
                             <span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
-                            {if !empty($vo['child'])}
-                                {foreach name="$vo['child']" item="v"}
+                            <?php if(!empty($vo['child'])): if(is_array($vo['child']) || $vo['child'] instanceof \think\Collection || $vo['child'] instanceof \think\Paginator): if( count($vo['child'])==0 ) : echo "" ;else: foreach($vo['child'] as $key=>$v): ?>
                                 <li>
-                                    <a class="J_menuItem" href="{$v.href}">{$v.title}</a>
+                                    <a class="J_menuItem" href="<?php echo $v['href']; ?>"><?php echo $v['title']; ?></a>
                                 </li>
-                                {/foreach}
-                            {/if}
+                                <?php endforeach; endif; else: echo "" ;endif; endif; ?>
                         </ul>
                     </li>
-                    {/foreach}
-                {/if}
+                    <?php endforeach; endif; else: echo "" ;endif; endif; ?>
             </ul>
         </div>
     </nav>
@@ -100,10 +119,10 @@
             </a>
         </div>
         <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{:url('Index/indexPage')}" frameborder="0" data-id="index.html" seamless></iframe>
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="<?php echo url('Index/indexPage'); ?>" frameborder="0" data-id="index.html" seamless></iframe>
         </div>
         <div class="footer">
-            <div class="pull-right">{:config('web_site_copy')}</div>
+            <div class="pull-right"><?php echo config('web_site_copy'); ?></div>
         </div>
     </div>
     <!--右侧部分结束-->
@@ -191,7 +210,21 @@
     <!--右侧边栏结束-->
   
 </div>
-{include file="public/footer" /}
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+<script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__JS__/content.min.js?v=1.0.0"></script>
+<script src="__JS__/plugins/chosen/chosen.jquery.js"></script>
+<script src="__JS__/plugins/iCheck/icheck.min.js"></script>
+<script src="__JS__/plugins/layer/laydate/laydate.js"></script>
+<script src="__JS__/plugins/switchery/switchery.js"></script><!--IOS开关样式-->
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/layer/layer.js"></script>
+<script src="__JS__/laypage/laypage.js"></script>
+<script src="__JS__/laytpl/laytpl.js"></script>
+<script src="__JS__/lunhui.js"></script>
+<script>
+    $(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});
+</script>
 <script src="__JS__/plugins/metisMenu/jquery.metisMenu.js"></script>
 <script src="__JS__/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="__JS__/hplus.min.js?v=4.1.0"></script>
@@ -204,7 +237,7 @@ $(document).ready(function(){
     $("#logout").click(function(){
         layer.confirm('你确定要退出吗？', {icon: 3}, function(index){
             layer.close(index);
-            window.location.href="{:url('admin/login/loginOut')}";
+            window.location.href="<?php echo url('admin/login/loginOut'); ?>";
         });
     });
 });
@@ -213,7 +246,7 @@ $(document).ready(function(){
 $(function(){
     $("#cache").click(function(){
         layer.confirm('你确定要清除缓存吗？', {icon: 3, title:'提示'}, function(index){                   
-            $.getJSON("{:url('admin/index/clear')}",function(res){
+            $.getJSON("<?php echo url('admin/index/clear'); ?>",function(res){
                 if(res.code == 1){
                     layer.msg(res.msg,{icon:1,time:2000,shade: 0.1});
                 }else{

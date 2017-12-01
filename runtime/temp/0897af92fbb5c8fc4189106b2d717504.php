@@ -1,21 +1,44 @@
-{include file="public/header"/}
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:83:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\index\index.html";i:1512095413;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\header.html";i:1511947061;s:85:"D:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\footer.html";i:1511947061;}*/ ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo config('WEB_SITE_TITLE'); ?></title>
+    <link href="/static/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/static/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/static/admin/css/animate.min.css" rel="stylesheet">
+    <link href="/static/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/static/admin/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="/static/admin/css/plugins/switchery/switchery.css" rel="stylesheet">
+    <link href="/static/admin/css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="/static/admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <style type="text/css">
+    .long-tr th{
+        text-align: center
+    }
+    .long-td td{
+        text-align: center
+    }
+    </style>
+</head>
 
 <body class="gray-bg" style = "overflow-x: hidden; overflow-y: hidden">
 
 
-        <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
-            RealBimOcx.SwitchBIMSceneSimple("http://192.168.147.130:8008/default.aspx?dir=url_res02&path=","res_test");
-            //      RealBimOcx.SwitchBIMSceneSimple("F:\\AppTest\\URL_Res01\\","res_fengning_kw");
-            RealBimOcx.SetSceVersionInfo(100, -1);
-        </script>
-        <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
-            if(CompleteEvent == "LoadMainScene" && retError==0 ){
-                RealBimOcx.SetAllHugeObjSubValidState(1);
-                RealBimOcx.SetSceHugeObjVisible(true);
-            }
-        </script>
-        <OBJECT id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%">
-        </OBJECT>
+        <!--<script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">-->
+            <!--RealBimOcx.SwitchBIMSceneSimple("http://192.168.147.130:8008/default.aspx?dir=url_res02&path=","res_test");-->
+            <!--//      RealBimOcx.SwitchBIMSceneSimple("F:\\AppTest\\URL_Res01\\","res_fengning_kw");-->
+            <!--RealBimOcx.SetSceVersionInfo(100, -1);-->
+        <!--</script>-->
+        <!--<script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">-->
+            <!--if(CompleteEvent == "LoadMainScene" && retError==0 ){-->
+                <!--RealBimOcx.SetAllHugeObjSubValidState(1);-->
+                <!--RealBimOcx.SetSceHugeObjVisible(true);-->
+            <!--}-->
+        <!--</script>-->
+        <!--&lt;!&ndash;<OBJECT id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%">&ndash;&gt;-->
+        <!--&lt;!&ndash;</OBJECT>&ndash;&gt;-->
 
 
 
@@ -42,7 +65,7 @@
                     <h5>会员</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">{$member}</h1>
+                    <h1 class="no-margins"><?php echo $member; ?></h1>
                     <small>今日新增</small>
                 </div>
             </div>
@@ -106,13 +129,13 @@
                         <i class="fa fa-cogs"></i> 系统信息
                     </div>
                     <div class="panel-body">
-                        <p><i class="fa fa-sitemap"></i> 框架版本：ThinkPHP{$info.think_v}
+                        <p><i class="fa fa-sitemap"></i> 框架版本：ThinkPHP<?php echo $info['think_v']; ?>
                         </p>
-                        <p><i class="fa fa-windows"></i> 服务环境：{$info.web_server}
+                        <p><i class="fa fa-windows"></i> 服务环境：<?php echo $info['web_server']; ?>
                         </p>
-                        <p><i class="fa fa-warning"></i> 上传附件限制：{$info.onload}
+                        <p><i class="fa fa-warning"></i> 上传附件限制：<?php echo $info['onload']; ?>
                         </p>
-                        <p><i class="fa fa-credit-card"></i> PHP 版本：{$info.phpversion}
+                        <p><i class="fa fa-credit-card"></i> PHP 版本：<?php echo $info['phpversion']; ?>
                         </p>
                     </div>
                 </div>
@@ -133,6 +156,20 @@
 
 </div>
  -->
-{include file="public/footer" /}
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+<script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__JS__/content.min.js?v=1.0.0"></script>
+<script src="__JS__/plugins/chosen/chosen.jquery.js"></script>
+<script src="__JS__/plugins/iCheck/icheck.min.js"></script>
+<script src="__JS__/plugins/layer/laydate/laydate.js"></script>
+<script src="__JS__/plugins/switchery/switchery.js"></script><!--IOS开关样式-->
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/layer/layer.js"></script>
+<script src="__JS__/laypage/laypage.js"></script>
+<script src="__JS__/laytpl/laytpl.js"></script>
+<script src="__JS__/lunhui.js"></script>
+<script>
+    $(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});
+</script>
 </body>
 </html>
