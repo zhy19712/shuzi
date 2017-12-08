@@ -1,6 +1,19 @@
 {include file="public/header" /}
 <body class="gray-bg">
-<div class="wrapper wrapper-content animated fadeInRight">
+<div id="mycontent" style="width: 10%;height: 100%;display: inline-block;">
+    <div id="container">
+        <ul>
+            <li>Root node
+                <ul>
+                    <li>Child node 1</li>
+                    <li>Child node 2</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <p></p>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 88%;vertical-align: top;padding: 0;">
     <!-- Panel Other -->
     <div class="ibox float-e-margins">
         <div class="ibox-title">
@@ -109,8 +122,19 @@
 
 {include file="public/footer" /}
 
+<script src="__JS__/jstree.js"></script>
+
 <script type="text/javascript">
-   
+    $('#container').jstree();
+
+    $('#container').on("changed.jstree", function (e, data) {
+        console.log(data);
+        console.log("The selected nodes are:");
+        console.log(data.node.id);               //选择的node id
+        console.log(data.node.text);            //选择的node text
+
+        $("#mycontent>p").text(data.node.text)
+    });
     //laypage分页
     Ajaxpage();
     function Ajaxpage(curr){
