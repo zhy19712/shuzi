@@ -1,16 +1,7 @@
 {include file="public/header" /}
 <body class="gray-bg">
 <div id="mycontent" style="width: 10%;height: 100%;display: inline-block;">
-    <div id="container">
-        <ul>
-            <li>Root node
-                <ul>
-                    <li>Child node 1</li>
-                    <li>Child node 2</li>
-                </ul>
-            </li>
-        </ul>
-    </div>
+    <div id="tree_container" class="ztree"></div>
     <p></p>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 88%;vertical-align: top;padding: 0;">
@@ -20,24 +11,24 @@
             <h5>用户列表</h5>
         </div>
         <div class="ibox-content">
-            <!--搜索框开始-->           
+            <!--搜索框开始-->
             <div class="row">
-                <div class="col-sm-12">   
+                <div class="col-sm-12">
                 <div  class="col-sm-2" style="width: 100px">
-                    <div class="input-group" >  
-                        <a href="{:url('userAdd')}"><button class="btn btn-outline btn-primary" type="button">添加用户</button></a> 
+                    <div class="input-group" >
+                        <a href="{:url('userAdd')}"><button class="btn btn-outline btn-primary" type="button">添加用户</button></a>
                     </div>
-                </div>                                            
+                </div>
                     <form name="admin_list_sea" class="form-search" method="post" action="{:url('index')}">
                         <div class="col-sm-3">
                             <div class="input-group">
-                                <input type="text" id="key" class="form-control" name="key" value="{$val}" placeholder="输入需查询的用户名" />   
-                                <span class="input-group-btn"> 
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 搜索</button> 
+                                <input type="text" id="key" class="form-control" name="key" value="{$val}" placeholder="输入需查询的用户名" />
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 搜索</button>
                                 </span>
                             </div>
                         </div>
-                    </form>                         
+                    </form>
                 </div>
             </div>
             <!--搜索框结束-->
@@ -67,13 +58,13 @@
                                 <td>{{d[i].id}}</td>
                                 <td>{{d[i].username}}</td>
                                 <td>
-                                    <img src="/uploads/face/{{d[i].portrait}}" class="img-circle" style="width:35px;height:35px" onerror="this.src='/static/admin/images/head_default.gif'"/>                                  
+                                    <img src="/uploads/face/{{d[i].portrait}}" class="img-circle" style="width:35px;height:35px" onerror="this.src='/static/admin/images/head_default.gif'"/>
                                 </td>
-                                <td>{{d[i].title}}</td>                                  
+                                <td>{{d[i].title}}</td>
                                 <td>{{d[i].loginnum}}</td>
                                 <td>{{d[i].last_login_ip}}</td>
                                 <td>{{d[i].last_login_time}}</td>
-                                <td>{{d[i].real_name}}</td>                                 
+                                <td>{{d[i].real_name}}</td>
                                 <td>
                                     {{# if(d[i].id!==1){ }}
                                         {{# if(d[i].status==1){ }}
@@ -93,7 +84,7 @@
                                             <i class="fa fa-paste"></i> 编辑</a>&nbsp;&nbsp;
                                         <a href="javascript:;" onclick="userDel({{d[i].id}})" class="btn btn-danger btn-outline btn-xs">
                                             <i class="fa fa-trash-o"></i> 删除</a>
-                                    {{# } }}    
+                                    {{# } }}
                                 </td>
                             </tr>
                             {{# } }}
@@ -122,25 +113,13 @@
 
 {include file="public/footer" /}
 
-<script src="__JS__/jstree.js"></script>
-
 <script type="text/javascript">
-    $('#container').jstree();
-
-    $('#container').on("changed.jstree", function (e, data) {
-        console.log(data);
-        console.log("The selected nodes are:");
-        console.log(data.node.id);               //选择的node id
-        console.log(data.node.text);            //选择的node text
-
-        $("#mycontent>p").text(data.node.text)
-    });
     //laypage分页
     Ajaxpage();
     function Ajaxpage(curr){
         var key=$('#key').val();
         $.getJSON('{:url("User/index")}', {page: curr || 1,key:key}, function(data){
-            $(".spiner-example").css('display','none'); //数据加载完关闭动画 
+            $(".spiner-example").css('display','none'); //数据加载完关闭动画
             if(data==''){
                 $("#list-content").html('<td colspan="20" style="padding-top:10px;padding-bottom:10px;font-size:16px;text-align:center">暂无数据</td>');
             }else{
@@ -180,6 +159,36 @@ function userDel(id){
 function user_state(id){
     lunhui.status(id,'{:url("user_state")}');
 }
+//组织结构
+    var treeNodes;
+    $.ajax({
+        url: "./getTreeData",
+        async: false,
+        type:"post",
+        dataType:"json",
+        success: function (data) {
+            console.log(data);
+            treeNodes = JSON.parse(data.data);
+        }
+    })
+    var setting = {
+        data:{
+            simpleData : {
+                enable:true,
+                idkey: "id",
+                pIdKey: "pId"
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick
+        }
+    };
+    //点击获取节点名称
+    function zTreeOnClick(event, treeId, treeNode) {
+        console.log(treeNode.tId + ", " + treeNode.name);
+        $("#mycontent>p").text(treeNode.name);
+    };
+    var zTreeObj = $.fn.zTree.init($("#tree_container"), setting,treeNodes);
 
 </script>
 </body>
