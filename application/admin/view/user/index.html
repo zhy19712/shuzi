@@ -2,6 +2,7 @@
 <body class="gray-bg">
 <div id="mycontent" style="width: 10%;height: 100%;display: inline-block;">
     <div id="tree_container" class="ztree"></div>
+    <p></p>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 88%;vertical-align: top;padding: 0;">
     <!-- Panel Other -->
@@ -159,6 +160,17 @@ function user_state(id){
     lunhui.status(id,'{:url("user_state")}');
 }
 //组织结构
+    var treeNodes;
+    $.ajax({
+        url: "./getTreeData",
+        async: false,
+        type:"post",
+        dataType:"json",
+        success: function (data) {
+            console.log(data);
+            treeNodes = JSON.parse(data.data);
+        }
+    })
     var setting = {
         data:{
             simpleData : {
@@ -166,16 +178,17 @@ function user_state(id){
                 idkey: "id",
                 pIdKey: "pId"
             }
+        },
+        callback: {
+            onClick: zTreeOnClick
         }
     };
-
-    var treeNodes = [
-        {"id":1, "pId":0, "name":"test1"},
-        {"id":11, "pId":1, "name":"test11"},
-        {"id":12, "pId":1, "name":"test12"},
-        {"id":111, "pId":11, "name":"test111"},
-    ];
-    var zTreeObj = $.fn.zTree.init($("#tree_container"), setting, treeNodes);
+    //点击获取节点名称
+    function zTreeOnClick(event, treeId, treeNode) {
+        console.log(treeNode.tId + ", " + treeNode.name);
+        $("#mycontent>p").text(treeNode.name);
+    };
+    var zTreeObj = $.fn.zTree.init($("#tree_container"), setting,treeNodes);
 
 </script>
 </body>
