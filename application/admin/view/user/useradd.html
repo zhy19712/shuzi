@@ -5,6 +5,10 @@
 .file-item{float: left; position: relative; width: 110px;height: 110px; margin: 0 20px 20px 0; padding: 4px;}
 .file-item .info{overflow: hidden;}
 .uploader-list{width: 100%; overflow: hidden;}
+    .myblock{
+        display: inline-block;
+        vertical-align: middle;
+    }
 </style>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -12,7 +16,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>添加管理员</h5>
+                    <h5>添加用户</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -26,25 +30,103 @@
                     </div>
                 </div>
                 <div class="ibox-content">
+                    <!--新增用户信息开始-->
                     <form class="form-horizontal" name="userAdd" id="userAdd" method="post" action="{:url('userAdd')}">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">管理员名称：</label>
-                            <div class="input-group col-sm-4">
-                                <input id="username" type="text" class="form-control" name="username" >
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-2 col-lg-2 control-label">姓名：</label>
+                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                    <input id="name" type="text" class="form-control" name="username" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-2 col-lg-2 control-label">性别：</label>
+                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                    <input id="sex" type="text" class="form-control" name="sex" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <!--<div class="form-group">-->
+                            <!--<label class="col-sm-3 control-label">管理员角色：</label>-->
+                            <!--<div class="input-group col-sm-4">-->
+                                <!--<select class="form-control m-b chosen-select" name="groupid" id="groupid">-->
+                                    <!--<option value="">==请选择角色==</option>-->
+                                    <!--{if !empty($role)}-->
+                                        <!--{foreach name="role" item="vo"}-->
+                                            <!--<option value="{$vo.id}">{$vo.title}</option>-->
+                                        <!--{/foreach}-->
+                                    <!--{/if}-->
+                                <!--</select>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-2 col-lg-2 control-label">登录账号：</label>
+                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                    <input id="login_username" type="text" class="form-control" name="login_username" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-2 col-lg-2 control-label">登录密码：</label>
+                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                    <input id="login_password" type="text" class="form-control" name="login_password" >
+                                </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">管理员角色：</label>
-                            <div class="input-group col-sm-4">
-                                <select class="form-control m-b chosen-select" name="groupid" id="groupid">
-                                    <option value="">==请选择角色==</option>
-                                    {if !empty($role)}
-                                        {foreach name="role" item="vo"}
-                                            <option value="{$vo.id}">{$vo.title}</option>
-                                        {/foreach}
-                                    {/if}
-                                </select>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-2 col-lg-2 control-label">手机号码：</label>
+                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                    <input id="mobile_number" type="text" class="form-control" name="mobile_number" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-2 col-lg-2 control-label">办公电话：</label>
+                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                    <input id="tel_number" type="text" class="form-control" name="tel_number" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-2 col-lg-2 control-label">所在部门：</label>
+                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                    <input id="department" type="text" class="form-control" name="department" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-2 col-lg-2 control-label">职位：</label>
+                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                    <input id="job" type="text" class="form-control" name="job" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-2 col-lg-2 control-label">电子邮箱：</label>
+                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                    <input id="email" type="text" class="form-control" name="email" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-2 col-lg-2 control-label">微信账号：</label>
+                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                    <input id="wechart" type="text" class="form-control" name="wechart" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-1 control-label">备注：</label>
+                                <div class="myblock col-xs-11 input-group">
+                                    <!--<textarea id="email" type="text" class="form-control" name="email" >-->
+                                    <textarea name="remark" id="remark" class="form-control" style="min-height: 300px;"></textarea>
+                                </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -58,21 +140,21 @@
                             </div>
                         </div> 
                         <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">登录密码：</label>
-                            <div class="input-group col-sm-4">
-                                <input id="password" type="text" class="form-control" name="password" >
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">真实姓名：</label>
-                            <div class="input-group col-sm-4">
-                                <input id="real_name" type="text" class="form-control" name="real_name" >
+                        <!--<div class="form-group">-->
+                            <!--<label class="col-sm-3 control-label">登录密码：</label>-->
+                            <!--<div class="input-group col-sm-4">-->
+                                <!--<input id="password" type="text" class="form-control" name="password" >-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="hr-line-dashed"></div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label class="col-sm-3 control-label">真实姓名：</label>-->
+                            <!--<div class="input-group col-sm-4">-->
+                                <!--<input id="real_name" type="text" class="form-control" name="real_name" >-->
 
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="hr-line-dashed"></div>-->
                         <div class="form-group">
                             <label class="col-sm-3 control-label">状&nbsp;态：</label>
                             <div class="col-sm-6">
@@ -90,6 +172,7 @@
                             </div>
                         </div>
                     </form>
+                    <!--新增用户信息结束-->
                 </div>
             </div>
 
