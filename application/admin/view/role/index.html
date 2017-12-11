@@ -4,7 +4,7 @@
     <!-- Panel Other -->
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>角色列表</h5>
+            <h5>组织机构列表</h5>
         </div>
         <div class="ibox-content">
             <!--搜索框开始-->           
@@ -12,7 +12,7 @@
                 <div class="col-sm-12">   
                 <div  class="col-sm-2" style="width: 100px">
                     <div class="input-group" >  
-                        <a href="{:url('roleAdd')}"><button class="btn btn-outline btn-primary" type="button">添加角色</button></a> 
+                        <a href="{:url('roleAdd')}"><button class="btn btn-outline btn-primary" type="button">添加机构</button></a>
                     </div>
                 </div>                                            
                     <form name="admin_list_sea" class="form-search" method="post" action="{:url('index')}">
@@ -36,47 +36,79 @@
                         <thead>
                             <tr class="long-tr">
                                 <th>ID</th>
-                                <th>角色名称</th>
+                                <th>机构名称</th>
                                 <th>状态</th>
                                 <th width="15%">添加时间</th>
                                 <th width="15%">更新时间</th>
                                 <th width="25%">操作</th>
                             </tr>
                         </thead>
-                        <script id="list-template" type="text/html">
-                            {{# for(var i=0;i<d.length;i++){  }}
-                                <tr class="long-td">
-                                    <td>{{d[i].id}}</td>
-                                    <td>{{d[i].title}}</td>  
-                                    <td>
-                                        {{# if(d[i].id!==1){ }}
-                                            {{# if(d[i].status==1){ }}
-                                                <a href="javascript:;" onclick="role_state({{d[i].id}});">
-                                                    <div id="zt{{d[i].id}}"><span class="label label-info">开启</span></div>
-                                                </a>
-                                            {{# }else{ }}
-                                                <a href="javascript:;" onclick="role_state({{d[i].id}});">
-                                                    <div id="zt{{d[i].id}}"><span class="label label-danger">禁用</span></div>
-                                                </a>
-                                            {{# } }}
-                                        {{# } }}
-                                    </td>                                
-                                    <td>{{d[i].create_time}}</td>
-                                    <td>{{d[i].update_time}}</td>                                                            
-                                    <td>
-                                        {{# if(d[i].id!==1){ }}
-                                            <a href="javascript:;" onclick="giveQx({{d[i].id}})" class="btn btn-info btn-outline btn-xs">
-                                                <i class="fa fa-paste"></i> 权限分配</a>&nbsp;&nbsp;
-                                            <a href="javascript:;" onclick="roleEdit({{d[i].id}})" class="btn btn-primary btn-outline btn-xs">
-                                                <i class="fa fa-paste"></i> 编辑</a>&nbsp;&nbsp;
-                                            <a href="javascript:;" onclick="roleDel({{d[i].id}})" class="btn btn-danger btn-outline btn-xs">
-                                                <i class="fa fa-trash-o"></i> 删除</a>
-                                        {{# } }}    
-                                    </td>
-                                </tr>
-                            {{# } }}
-                        </script>
-                        <tbody id="list-content"></tbody>
+                        <!--<script id="list-template" type="text/html">-->
+                            <!--{{# for(var i=0;i<d.length;i++){  }}-->
+                                <!--<tr class="long-td">-->
+                                    <!--<td>{{d[i].id}}</td>-->
+                                    <!--<td>{{d[i].title}}</td>  -->
+                                    <!--<td>-->
+                                        <!--{{# if(d[i].id!==1){ }}-->
+                                            <!--{{# if(d[i].status==1){ }}-->
+                                                <!--<a href="javascript:;" onclick="role_state({{d[i].id}});">-->
+                                                    <!--<div id="zt{{d[i].id}}"><span class="label label-info">开启</span></div>-->
+                                                <!--</a>-->
+                                            <!--{{# }else{ }}-->
+                                                <!--<a href="javascript:;" onclick="role_state({{d[i].id}});">-->
+                                                    <!--<div id="zt{{d[i].id}}"><span class="label label-danger">禁用</span></div>-->
+                                                <!--</a>-->
+                                            <!--{{# } }}-->
+                                        <!--{{# } }}-->
+                                    <!--</td>                                -->
+                                    <!--<td>{{d[i].create_time}}</td>-->
+                                    <!--<td>{{d[i].update_time}}</td>                                                            -->
+                                    <!--<td>-->
+                                        <!--{{# if(d[i].id!==1){ }}-->
+                                            <!--<a href="javascript:;" onclick="giveQx({{d[i].id}})" class="btn btn-info btn-outline btn-xs">-->
+                                                <!--<i class="fa fa-paste"></i> 权限分配</a>&nbsp;&nbsp;-->
+                                            <!--<a href="javascript:;" onclick="roleEdit({{d[i].id}})" class="btn btn-primary btn-outline btn-xs">-->
+                                                <!--<i class="fa fa-paste"></i> 编辑</a>&nbsp;&nbsp;-->
+                                            <!--<a href="javascript:;" onclick="roleDel({{d[i].id}})" class="btn btn-danger btn-outline btn-xs">-->
+                                                <!--<i class="fa fa-trash-o"></i> 删除</a>-->
+                                        <!--{{# } }}    -->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                            <!--{{# } }}-->
+                        <!--</script>-->
+                        <tbody id="list-content">
+
+                        {foreach name="auth_group" item="v"}
+                        <tr class="long-td">
+                            <td>{$v.id}</td>
+                            <td style='text-align:left;padding-left:{if condition="$v.leftpin neq 0"}{$v.leftpin}px{/if}'>{$v.lefthtml}{$v.title}</td>
+                            <td>
+                                {if condition="$v.status eq 1"}
+                                <a class="red" href="javascript:;" onclick="role_state({$v.id});">
+                                    <div id="zt{$v.id}"><span class="label label-info">开启</span></div>
+                                </a>
+                                {else/}
+                                <a class="red" href="javascript:;" onclick="role_state({$v.id});">
+                                    <div id="zt{$v.id}"><span class="label label-danger">禁用</span></div>
+                                </a>
+                                {/if}
+                            </td>
+                            <td>{$v.create_time}</td>
+                            <td>{$v.update_time}</td>
+                            <td>
+                                {if condition="$v.id neq 1"}
+                                <a href="javascript:;" onclick="giveQx({$v.id})" class="btn btn-info btn-outline btn-xs">
+                                    <i class="fa fa-paste"></i> 权限分配</a>&nbsp;&nbsp;
+                                <a href="{:url('roleedit',['id'=>$v.id])}" class="btn btn-primary btn-outline btn-xs">
+                                    <i class="fa fa-paste"></i> 编辑</a>&nbsp;&nbsp;
+                                <a href="javascript:;" onclick="roleDel({$v.id})" class="btn btn-danger btn-outline btn-xs">
+                                    <i class="fa fa-trash-o"></i> 删除</a>
+                                {/if}
+                            </td>
+                        </tr>
+                        {/foreach}
+
+                        </tbody>
                     </table>
                     <div id="AjaxPage" style=" text-align: right;"></div>
                     <div id="allpage" style=" text-align: right;"></div>

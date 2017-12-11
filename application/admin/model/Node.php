@@ -11,7 +11,8 @@ class Node extends Model
 
 
     /**
-     * [getNodeInfo 获取节点数据]
+     * [getNodeInfo 获取功能节点数据]
+     *
      */
     public function getNodeInfo($id)
     {
