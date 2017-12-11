@@ -20,15 +20,22 @@ class Role extends Base
         {
             $map['title'] = ['like',"%" . $key . "%"];          
         }   
-        $user = new UserType();    
+        $user = new UserType();
         $Nowpage = input('get.page') ? input('get.page'):1;
         $limits = config('list_rows');// 获取总条数
         $count = $user->getAllRole($map);  //总数据
         $allpage = intval(ceil($count / $limits));       
-        $lists = $user->getRoleByWhere($map, $Nowpage, $limits);  
+        $lists = $user->getRoleByWhere($map, $Nowpage, $limits);
         $this->assign('Nowpage', $Nowpage); //当前页
-        $this->assign('allpage', $allpage); //总页数 
+        $this->assign('allpage', $allpage); //总页数
         $this->assign('val', $key);
+
+        $nav = new \org\Leftnav;
+        $auth_group = $user->getAll();
+        $arr = $nav::rule($auth_group);
+        $this->assign('auth_group',$arr);
+
+
         if(input('get.page'))
         {
             return json($lists);
@@ -51,6 +58,12 @@ class Role extends Base
             $flag = $role->insertRole($param);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
+
+        $nav = new \org\Leftnav;
+        $user = new UserType();
+        $auth_group = $user->getAll();
+        $arr = $nav::rule($auth_group);
+        $this->assign('auth_group',$arr);
 
         return $this->fetch();
     }
