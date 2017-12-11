@@ -1,7 +1,16 @@
 {include file="public/header" /}
 <body class="gray-bg">
 <div id="mycontent" style="width: 10%;height: 100%;display: inline-block;">
-    <div id="tree_container" class="ztree"></div>
+    <div id="container">
+        <ul>
+            <li>Root node
+                <ul>
+                    <li>Child node 1</li>
+                    <li>Child node 2</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
     <p></p>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 88%;vertical-align: top;padding: 0;">
@@ -113,7 +122,19 @@
 
 {include file="public/footer" /}
 
+<script src="__JS__/jstree.js"></script>
+
 <script type="text/javascript">
+    $('#container').jstree();
+
+    $('#container').on("changed.jstree", function (e, data) {
+        console.log(data);
+        console.log("The selected nodes are:");
+        console.log(data.node.id);               //选择的node id
+        console.log(data.node.text);            //选择的node text
+
+        $("#mycontent>p").text(data.node.text)
+    });
     //laypage分页
     Ajaxpage();
     function Ajaxpage(curr){
@@ -159,36 +180,6 @@ function userDel(id){
 function user_state(id){
     lunhui.status(id,'{:url("user_state")}');
 }
-//组织结构
-    var treeNodes;
-    $.ajax({
-        url: "./getTreeData",
-        async: false,
-        type:"post",
-        dataType:"json",
-        success: function (data) {
-            console.log(data);
-            treeNodes = JSON.parse(data.data);
-        }
-    })
-    var setting = {
-        data:{
-            simpleData : {
-                enable:true,
-                idkey: "id",
-                pIdKey: "pId"
-            }
-        },
-        callback: {
-            onClick: zTreeOnClick
-        }
-    };
-    //点击获取节点名称
-    function zTreeOnClick(event, treeId, treeNode) {
-        console.log(treeNode.tId + ", " + treeNode.name);
-        $("#mycontent>p").text(treeNode.name);
-    };
-    var zTreeObj = $.fn.zTree.init($("#tree_container"), setting,treeNodes);
 
 </script>
 </body>

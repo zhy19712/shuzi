@@ -1,4 +1,28 @@
-{include file="public/header" /}
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:84:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\user\useradd.html";i:1512980093;s:85:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\header.html";i:1512952060;s:85:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\footer.html";i:1512649436;}*/ ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo config('WEB_SITE_TITLE'); ?></title>
+    <link href="/static/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/static/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/static/admin/css/animate.min.css" rel="stylesheet">
+    <link href="/static/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/static/admin/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="/static/admin/css/plugins/switchery/switchery.css" rel="stylesheet">
+    <link href="/static/admin/css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="/static/admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link rel="stylesheet" href="__JS__/themes/default/style.min.css">
+    <style type="text/css">
+    .long-tr th{
+        text-align: center
+    }
+    .long-td td{
+        text-align: center
+    }
+    </style>
+</head>
 <link rel="stylesheet" type="text/css" href="/static/admin/webupload/webuploader.css">
 <link rel="stylesheet" type="text/css" href="/static/admin/webupload/style.css">
 <style>
@@ -31,7 +55,7 @@
                 </div>
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
-                    <form class="form-horizontal" name="userAdd" id="userAdd" method="post" action="{:url('userAdd')}">
+                    <form class="form-horizontal" name="userAdd" id="userAdd" method="post" action="<?php echo url('userAdd'); ?>">
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-2 col-lg-2 control-label">姓名：</label>
@@ -52,11 +76,11 @@
                             <!--<div class="input-group col-sm-4">-->
                                 <!--<select class="form-control m-b chosen-select" name="groupid" id="groupid">-->
                                     <!--<option value="">==请选择角色==</option>-->
-                                    <!--{if !empty($role)}-->
-                                        <!--{foreach name="role" item="vo"}-->
-                                            <!--<option value="{$vo.id}">{$vo.title}</option>-->
-                                        <!--{/foreach}-->
-                                    <!--{/if}-->
+                                    <!--<?php if(!empty($role)): ?>-->
+                                        <!--<?php if(is_array($role) || $role instanceof \think\Collection || $role instanceof \think\Paginator): if( count($role)==0 ) : echo "" ;else: foreach($role as $key=>$vo): ?>-->
+                                            <!--<option value="<?php echo $vo['id']; ?>"><?php echo $vo['title']; ?></option>-->
+                                        <!--<?php endforeach; endif; else: echo "" ;endif; ?>-->
+                                    <!--<?php endif; ?>-->
                                 <!--</select>-->
                             <!--</div>-->
                         <!--</div>-->
@@ -179,7 +203,21 @@
         </div>
     </div>
 </div>
-{include file="public/footer" /}
+<script src="__JS__/jquery.min.js?v=2.1.4"></script>
+<script src="__JS__/bootstrap.min.js?v=3.3.6"></script>
+<script src="__JS__/content.min.js?v=1.0.0"></script>
+<script src="__JS__/plugins/chosen/chosen.jquery.js"></script>
+<script src="__JS__/plugins/iCheck/icheck.min.js"></script>
+<script src="__JS__/plugins/layer/laydate/laydate.js"></script>
+<script src="__JS__/plugins/switchery/switchery.js"></script><!--IOS开关样式-->
+<script src="__JS__/jquery.form.js"></script>
+<script src="__JS__/layer/layer.js"></script>
+<script src="__JS__/laypage/laypage.js"></script>
+<script src="__JS__/laytpl/laytpl.js"></script>
+<script src="__JS__/lunhui.js"></script>
+<script>
+    $(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});
+</script>
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 
 <script type="text/javascript">
@@ -189,7 +227,7 @@
      
         auto: true,// 选完文件后，是否自动上传。   
         swf: '/static/admin/webupload/Uploader.swf',// swf文件路径 
-        server: "{:url('Upload/uploadface')}",// 文件接收服务端。
+        server: "<?php echo url('Upload/uploadface'); ?>",// 文件接收服务端。
         duplicate :true,// 重复上传图片，true为可重复false为不可重复
         pick: '#imgPicker',// 选择文件的按钮。可选。
 
@@ -264,7 +302,7 @@
         function complete(data){
             if(data.code==1){
                 layer.msg(data.msg, {icon: 6,time:1500,shade: 0.1}, function(index){
-                    window.location.href="{:url('user/index')}";
+                    window.location.href="<?php echo url('user/index'); ?>";
                 });
             }else{
                 layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
