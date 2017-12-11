@@ -36,7 +36,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-2 col-lg-2 control-label">姓名：</label>
                                 <div class="myblock col-xs-10 col-lg-10 input-group">
-                                    <input id="name" type="text" class="form-control" name="username" >
+                                    <input id="real_name" type="text" class="form-control" name="real_name" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
@@ -64,13 +64,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-2 col-lg-2 control-label">登录账号：</label>
                                 <div class="myblock col-xs-10 col-lg-10 input-group">
-                                    <input id="login_username" type="text" class="form-control" name="login_username" >
+                                    <input id="username" type="text" class="form-control" name="username" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-2 col-lg-2 control-label">登录密码：</label>
                                 <div class="myblock col-xs-10 col-lg-10 input-group">
-                                    <input id="login_password" type="text" class="form-control" name="login_password" >
+                                    <input id="password" type="text" class="form-control" name="password" >
                                 </div>
                             </div>
                         </div>
@@ -79,13 +79,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-2 col-lg-2 control-label">手机号码：</label>
                                 <div class="myblock col-xs-10 col-lg-10 input-group">
-                                    <input id="mobile_number" type="text" class="form-control" name="mobile_number" >
+                                    <input id="mobile" type="text" class="form-control" name="mobile" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-2 col-lg-2 control-label">办公电话：</label>
                                 <div class="myblock col-xs-10 col-lg-10 input-group">
-                                    <input id="tel_number" type="text" class="form-control" name="tel_number" >
+                                    <input id="tele" type="text" class="form-control" name="tele" >
                                 </div>
                             </div>
                         </div>
@@ -94,13 +94,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-2 col-lg-2 control-label">所在部门：</label>
                                 <div class="myblock col-xs-10 col-lg-10 input-group">
-                                    <input id="department" type="text" class="form-control" name="department" >
+                                    <input id="dept" type="text" class="form-control" name="dept" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-2 col-lg-2 control-label">职位：</label>
                                 <div class="myblock col-xs-10 col-lg-10 input-group">
-                                    <input id="job" type="text" class="form-control" name="job" >
+                                    <input id="position" type="text" class="form-control" name="position" >
                                 </div>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-2 col-lg-2 control-label">微信账号：</label>
                                 <div class="myblock col-xs-10 col-lg-10 input-group">
-                                    <input id="wechart" type="text" class="form-control" name="wechart" >
+                                    <input id="wechat" type="text" class="form-control" name="wechat" >
                                 </div>
                             </div>
                         </div>
@@ -238,12 +238,12 @@
                 return false;
             }
             
-            if( '' == $.trim($('#groupid').val())){
-                layer.msg('请选择用户角色',{icon:2,time:1500,shade: 0.1}, function(index){
-                layer.close(index);
-                });
-                return false;
-            }
+            // if( '' == $.trim($('#groupid').val())){
+            //     layer.msg('请选择用户角色',{icon:2,time:1500,shade: 0.1}, function(index){
+            //     layer.close(index);
+            //     });
+            //     return false;
+            // }
 
             if( '' == $.trim($('#password').val())){
                 layer.msg('请输入登录密码',{icon:2,time:1500,shade: 0.1}, function(index){
