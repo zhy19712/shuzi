@@ -131,8 +131,8 @@
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">头像：</label>
-                            <div class="input-group col-sm-4">
+                            <label class="col-xs-1 control-label">头像：</label>
+                            <div class="input-group col-xs-11">
                                 <input type="hidden" id="data_photo" name="portrait" >
                                 <div id="fileList" class="uploader-list" style="float:right"></div>
                                 <div id="imgPicker" style="float:left">选择头像</div>
@@ -156,8 +156,8 @@
                         <!--</div>-->
                         <!--<div class="hr-line-dashed"></div>-->
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">状&nbsp;态：</label>
-                            <div class="col-sm-6">
+                            <label class="col-xs-1 control-label">状&nbsp;态：</label>
+                            <div class="col-xs-11">
                                 <div class="radio i-checks">
                                     <input type="radio" name='status' value="1" checked="checked"/>开启&nbsp;&nbsp;
                                     <input type="radio" name='status' value="0" />关闭
@@ -166,7 +166,7 @@
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <div class="col-sm-4 col-sm-offset-3">
+                            <div class="col-xs-12 col-sm-offset-6">
                                 <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
                                 <a class="btn btn-danger" href="javascript:history.go(-1);"><i class="fa fa-close"></i> 返回</a>
                             </div>
@@ -262,6 +262,7 @@
 
 
         function complete(data){
+            console.log(data);
             if(data.code==1){
                 layer.msg(data.msg, {icon: 6,time:1500,shade: 0.1}, function(index){
                     window.location.href="{:url('user/index')}";
