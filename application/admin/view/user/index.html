@@ -137,35 +137,35 @@
 
 <script type="text/javascript">
     //laypage分页
-    Ajaxpage();
-    function Ajaxpage(curr){
-        var key=$('#key').val();
-        $.getJSON('{:url("User/index")}', {page: curr || 1,key:key}, function(data){
-            $(".spiner-example").css('display','none'); //数据加载完关闭动画
-            if(data==''){
-                $("#list-content").html('<td colspan="20" style="padding-top:10px;padding-bottom:10px;font-size:16px;text-align:center">暂无数据</td>');
-            }else{
-                var tpl = document.getElementById('list-template').innerHTML;
-                laytpl(tpl).render(data, function(html){
-                    document.getElementById('list-content').innerHTML = html;
-                });
-                laypage({
-                    cont: $('#AjaxPage'),//容器。值支持id名、原生dom对象，jquery对象,
-                    pages:'{$allpage}',//总页数
-                    skip: true,//是否开启跳页
-                    skin: '#1AB5B7',//分页组件颜色
-                    curr: curr || 1,
-                    groups: 3,//连续显示分页数
-                    jump: function(obj, first){
-                        if(!first){
-                            Ajaxpage(obj.curr)
-                        }
-                        $('#allpage').html('第'+ obj.curr +'页，共'+ obj.pages +'页');
-                    }
-                });
-            }
-        });
-    }
+//    Ajaxpage();
+//    function Ajaxpage(curr){
+//        var key=$('#key').val();
+//        $.getJSON('{:url("User/index")}', {page: curr || 1,key:key}, function(data){
+//            $(".spiner-example").css('display','none'); //数据加载完关闭动画
+//            if(data==''){
+//                $("#list-content").html('<td colspan="20" style="padding-top:10px;padding-bottom:10px;font-size:16px;text-align:center">暂无数据</td>');
+//            }else{
+//                var tpl = document.getElementById('list-template').innerHTML;
+//                laytpl(tpl).render(data, function(html){
+//                    document.getElementById('list-content').innerHTML = html;
+//                });
+//                laypage({
+//                    cont: $('#AjaxPage'),//容器。值支持id名、原生dom对象，jquery对象,
+//                    pages:'{$allpage}',//总页数
+//                    skip: true,//是否开启跳页
+//                    skin: '#1AB5B7',//分页组件颜色
+//                    curr: curr || 1,
+//                    groups: 3,//连续显示分页数
+//                    jump: function(obj, first){
+//                        if(!first){
+//                            Ajaxpage(obj.curr)
+//                        }
+//                        $('#allpage').html('第'+ obj.curr +'页，共'+ obj.pages +'页');
+//                    }
+//                });
+//            }
+//        });
+//    }
 
 //编辑用户
 function userEdit(id){
@@ -182,19 +182,72 @@ function user_state(id){
     lunhui.status(id,'{:url("user_state")}');
 }
 //组织结构
-    var treeNodes;
-    $.ajax({
-        url: "./getTreeData",
-        async: false,
-        type:"post",
-        dataType:"json",
-        success: function (data) {
-            console.log(data);
-            treeNodes = JSON.parse(data.data);
+//    var treeNodes;
+//    $.ajax({
+//        url: "./getTreeData",
+//        async: false,
+//        type:"post",
+//        dataType:"json",
+//        success: function (data) {
+//            console.log(data);
+//            treeNodes = JSON.parse(data.data);
+//        }
+//    })
+    function ajaxDataFilter(treeId, parentNode, responseData) {
+        console.log(responseData)
+        var tree_data = responseData.data;
+        if (tree_data) {
+            for(var i =0; i < tree_data.length; i++) {
+                tree_data[i].name += "_filter";
+            }
         }
-    })
+        return tree_data;
+    };
+    function zTreeBeforeRemove(treeId, treeNode) {
+        console.log(treeId,treeNode);
+        if(confirm("你确定删除"+ treeNode.name +"节点吗？")){
+            return true;
+        }
+        return false;
+    }
+    function addHoverDom(treeId, treeNode) {
+        var aObj = $("#" + treeNode.tId + "_a");
+        if ($("#diyBtn_"+treeNode.id).length>0) return;
+        var editStr = "<span id='diyBtn_space_" +treeNode.id+ "' class='button' style='background-position: -144px 0;'> </span>"
+            + "<button type='button' class='diyBtn1' id='diyBtn_" + treeNode.id
+            + "' title='"+treeNode.name+"' onfocus='this.blur();'></button>";
+        aObj.append(editStr);
+        var btn = $("#diyBtn_space_"+treeNode.id);
+        if (btn) btn.bind("click", function(){
+//            alert("diy Button for " + treeNode.name);
+            var child_name = prompt("请输入子节点名称");
+            if(child_name){
+                console.log(child_name)
+            }
+        });
+    };
+    function removeHoverDom(treeId, treeNode) {
+        $("#diyBtn_"+treeNode.id).unbind().remove();
+        $("#diyBtn_space_" +treeNode.id).unbind().remove();
+    };
+    //点击获取节点名称
+    function zTreeOnClick(event, treeId, treeNode) {
+        console.log(treeNode.tId + ", " + treeNode.name);
+        $("#mycontent>p").text(treeNode.name);
+    };
     var setting = {
+        async: {
+            enable : true,
+            autoParam: ["pId"],
+            type : "post",
+            url : "./getTreeData",
+            dataType :"json"
+        },
         data:{
+            keep: {
+                leaf : true,
+                parent : true
+            },
             simpleData : {
                 enable:true,
                 idkey: "id",
@@ -202,17 +255,34 @@ function user_state(id){
             }
         },
         callback: {
-            onClick: zTreeOnClick
+            onClick: zTreeOnClick,
+            beforeRemove: zTreeBeforeRemove,
+        },
+        edit: {
+            drag : {
+                isMove : true,
+                prev : true,
+                next : true,
+                inner : true
+            },
+            enable : true,
+            editNameSelectAll: true,
+            showRemoveBtn: true,
+            removeTitle: "删除节点",
+            showRenameBtn: true,
+            renameTitle: "编辑节点名称",
+            showAddBtn: true,
+            addTitle: "添加节点"
+        },
+        view: {
+            addHoverDom: addHoverDom,
+            removeHoverDom: removeHoverDom
         }
     };
-    //点击获取节点名称
-    function zTreeOnClick(event, treeId, treeNode) {
-        console.log(treeNode.tId + ", " + treeNode.name);
-        $("#mycontent>p").text(treeNode.name);
-    };
-    var zTreeObj = $.fn.zTree.init($("#tree_container"), setting,treeNodes);
+    var zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
 
- //datatable
+
+    //datatable
 //    var mytable1 = $('#mytable1').DataTable({
 //        ajax: {
 //            url: "/FamilyInfoAdd.do",

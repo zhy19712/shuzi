@@ -142,7 +142,7 @@ class User extends Base
     {
         $role = new UserType();
         $nodeStr = $role->getNodeInfo();
-        return json(['code' => 1, 'data' => $nodeStr, 'msg' => 'success']);
+        return json($nodeStr);
     }
 
 }
