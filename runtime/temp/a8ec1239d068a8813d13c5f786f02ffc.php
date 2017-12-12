@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:77:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\index.html";i:1512952060;s:85:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\header.html";i:1512952060;s:85:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\footer.html";i:1512649436;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:77:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\index.html";i:1512952060;s:85:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\header.html";i:1513043869;s:85:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\footer.html";i:1512649436;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +13,6 @@
     <link href="/static/admin/css/plugins/switchery/switchery.css" rel="stylesheet">
     <link href="/static/admin/css/style.min.css?v=4.1.0" rel="stylesheet">
     <link href="/static/admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-    <link rel="stylesheet" href="__JS__/themes/default/style.min.css">
     <style type="text/css">
     .long-tr th{
         text-align: center
