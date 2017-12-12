@@ -183,6 +183,20 @@
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 
 <script type="text/javascript">
+    var url = window.location.search;
+    url = decodeURIComponent(url);
+    var reg = /[?&][^?&]+=[^?&]+/g;
+    var arr = url.match(reg);
+    var uid = arr[0].substring(1).split("=")[1];
+    console.log(uid);
+    $.ajax({
+        url: "",
+        type: "post",
+        data: {uid:uid},
+        success: function (data) {
+            console.log(data);
+        }
+    })
     var $list = $('#fileList');
     //上传图片,初始化WebUploader
     var uploader = WebUploader.create({
