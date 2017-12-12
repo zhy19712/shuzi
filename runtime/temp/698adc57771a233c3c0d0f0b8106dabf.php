@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:83:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\index\index.html";i:1512649436;s:85:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\header.html";i:1512952060;s:85:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\footer.html";i:1512649436;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:83:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\index\index.html";i:1513065390;s:85:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\header.html";i:1513043869;s:85:"C:\phpStudy\PHPTutorial\WWW\shuzi\public/../application/admin\view\public\footer.html";i:1512649436;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +13,6 @@
     <link href="/static/admin/css/plugins/switchery/switchery.css" rel="stylesheet">
     <link href="/static/admin/css/style.min.css?v=4.1.0" rel="stylesheet">
     <link href="/static/admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-    <link rel="stylesheet" href="__JS__/themes/default/style.min.css">
     <style type="text/css">
     .long-tr th{
         text-align: center
@@ -27,19 +26,19 @@
 <body class="gray-bg" style = "overflow-x: hidden; overflow-y: hidden;">
 
 
-<script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
-    RealBimOcx.SwitchBIMSceneSimple("http://192.168.162.128:8008/default.aspx?dir=url_res02&path=","res_jinzhai");
-    //      RealBimOcx.SwitchBIMSceneSimple("F:\\AppTest\\URL_Res01\\","res_fengning_kw");
-    RealBimOcx.SetSceVersionInfo(100, -1);
-</script>
-<script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
-    if(CompleteEvent == "LoadMainScene" && retError==0 ){
-        RealBimOcx.SetAllHugeObjSubValidState(1);
-        RealBimOcx.SetSceHugeObjVisible(true);
-    }
-</script>
-<OBJECT id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%">
-</OBJECT>
+<!--<script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">-->
+    <!--RealBimOcx.SwitchBIMSceneSimple("http://192.168.162.128:8008/default.aspx?dir=url_res02&path=","res_jinzhai");-->
+    <!--//      RealBimOcx.SwitchBIMSceneSimple("F:\\AppTest\\URL_Res01\\","res_fengning_kw");-->
+    <!--RealBimOcx.SetSceVersionInfo(100, -1);-->
+<!--</script>-->
+<!--<script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">-->
+    <!--if(CompleteEvent == "LoadMainScene" && retError==0 ){-->
+        <!--RealBimOcx.SetAllHugeObjSubValidState(1);-->
+        <!--RealBimOcx.SetSceHugeObjVisible(true);-->
+    <!--}-->
+<!--</script>-->
+<!--<OBJECT id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%">-->
+<!--</OBJECT>-->
 
 <!--<div id="DominoActionBar" style='position:absolute; left:0px; top:0px; width:100%; height:100%; z-Index:9;opacity: 0;background: transparent;display: none;'>-->
         <!--<iframe id='iframebar' src="about:blank" frameBorder=0 marginHeight=0 marginWidth=0-->

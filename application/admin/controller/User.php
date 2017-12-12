@@ -14,29 +14,7 @@ class User extends Base
      */
     public function index(){
 
-        $key = input('key');
-        $map = [];
-        if($key&&$key!=="")
-        {
-            $map['username'] = ['like',"%" . $key . "%"];          
-        }       
-        $Nowpage = input('get.page') ? input('get.page'):1;
-        $limits = config('list_rows');// 获取总条数
-        $count = Db::name('admin')->where($map)->count();//计算总页面
-        $allpage = intval(ceil($count / $limits));
-        $user = new UserModel();
-        $lists = $user->getUsersByWhere($map, $Nowpage, $limits);
-        foreach($lists as $k=>$v)
-        {
-            $lists[$k]['last_login_time']=date('Y-m-d H:i:s',$v['last_login_time']);
-        }    
-        $this->assign('Nowpage', $Nowpage); //当前页
-        $this->assign('allpage', $allpage); //总页数 
-        $this->assign('val', $key);
-        if(input('get.page'))
-        {
-            return json($lists);
-        }
+
         return $this->fetch();
     }
 
