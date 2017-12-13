@@ -298,7 +298,7 @@ function userDel(id){
 function del(that) {
     var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
     $.ajax({
-        url: "",
+        url: "/userDel",
         type: "post",
         dataType: "json",
         data: {uid:uid},
