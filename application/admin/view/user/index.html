@@ -289,13 +289,10 @@ function userEdit(id){
 }
 
 //删除用户
-function userDel(id){
-
-    lunhui.confirm(id,'{:url("userDel")}');
-}
 function del(that) {
     var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
       userDel(uid);
+      lunhui.confirm(uid,'{:url("userDel")}');
       mytable1.ajax.url("__SCRIPT__/test.php").load();
 }
 
