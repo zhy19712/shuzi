@@ -82,6 +82,16 @@ class User extends Base
      */
     public function userDel()
     {
+
+        if(request()->isAjax()){
+
+            $param = input('post.');
+            $user = new UserModel();
+            $flag = $user->delUser($param['uid']);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+
+
         $id = input('param.id');
         $role = new UserModel();
         $flag = $role->delUser($id);
