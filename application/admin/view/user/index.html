@@ -12,6 +12,9 @@
         width: 100% !important;
         height: 100% !important;
     }
+    #mytable1_wrapper th,#mytable1_wrapper td{
+        text-align: center;
+    }
 </style>
 <body class="gray-bg">
 <div id="mycontent" style="width: 10%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;">
@@ -29,9 +32,9 @@
                                 <th>用户名称</th>
                                 <th>头像</th>
                                 <!--<th>用户角色</th>-->
-                                <th>登陆次数</th>
-                                <th>上次登录ip</th>
-                                <th>上次登录时间</th>
+                                <th>部门</th>
+                                <th>手机号</th>
+                                <th>岗位</th>
                                 <th>真实姓名</th>
                                 <th>状态</th>
                                 <th>操作</th>
@@ -233,13 +236,6 @@
                 return false;
             }
 
-            // if( '' == $.trim($('#groupid').val())){
-            //     layer.msg('请选择用户角色',{icon:2,time:1500,shade: 0.1}, function(index){
-            //     layer.close(index);
-            //     });
-            //     return false;
-            // }
-
             if( '' == $.trim($('#password').val())){
                 layer.msg('请输入登录密码',{icon:2,time:1500,shade: 0.1}, function(index){
                     layer.close(index);
@@ -302,7 +298,6 @@
             "orderable": false,
             "targets": [2],
             "render" :  function(data,type,row) {
-                console.log(data)
                 if(data){
                     var html = "<img style='width: 30px;height: 30px;border-radius: 50%;' src=__PHOTO__/"+ data +">";
                 }else {
@@ -391,11 +386,30 @@ function del(that) {
     var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
         myconfirm(uid,'{:url("userDel")}');
 }
-
-//用户状态
-function user_state(id){
-    lunhui.status(id,'{:url("user_state")}');
-}
+    //状态开启禁用
+    function mystatus(id,url,that){
+        $.post(url,{id:id},function(data){
+            if(data.code==1){
+                $(that).removeClass("btn-primary btn-outline").addClass("btn-danger btn-outline").val("禁用");
+                layer.msg(data.msg,{icon:2,time:1500,shade: 0.1,});
+                return false;
+            }else{
+                $(that).removeClass("btn-danger btn-outline").addClass("btn-primary btn-outline").val("开启");
+                layer.msg(data.msg,{icon:1,time:1500,shade: 0.1,});
+                return false;
+            }
+        });
+        return false;
+    }
+    function myuser_state(that) {
+        var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
+        mystatus(uid,'{:url("user_state")}',that);
+//        if(val == "开启"){
+//            $(that).removeClass("btn-primary btn-outline").addClass("btn-danger btn-outline").val("禁用");
+//        }else {
+//            $(that).removeClass("btn-danger btn-outline").addClass("btn-primary btn-outline").val("开启");
+//        }
+    }
 //组织结构
     var zTreeObj;
     function ajaxDataFilter(treeId, parentNode, responseData) {
@@ -491,17 +505,7 @@ function user_state(id){
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
 
 
- //datatable
-function myuser_state(that) {
-    var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
-    var val = $(that).val();
-    user_state(uid);
-    if(val == "开启"){
-        $(that).removeClass("btn-primary").addClass("btn-danger").val("禁用");
-    }else {
-        $(that).removeClass("btn-danger").addClass("btn-primary").val("开启");
-    }
-}
+
 function edit(that) {
     var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
 //    window.open("/admin/user/useradd.html?uid=" + uid,"_self");

@@ -33,9 +33,9 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
     array( 'db' => 'id',  'dt' => 0 ),
     array( 'db' => 'username',  'dt' => 1 ),
     array( 'db' => 'portrait',  'dt' => 2 ),
-    array( 'db' => 'loginnum',  'dt' => 3 ),
-    array( 'db' => 'last_login_ip',  'dt' => 4 ),
-    array( 'db' => 'last_login_time',  'dt' => 5 ),
+    array( 'db' => 'dept',  'dt' => 3 ),
+    array( 'db' => 'mobile',  'dt' => 4 ),
+    array( 'db' => 'position',  'dt' => 5 ),
     array( 'db' => 'real_name',  'dt' => 6 ),
     array( 'db' => 'status',  'dt' => 7 )
 );
