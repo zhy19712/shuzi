@@ -80,18 +80,8 @@ class User extends Base
      * [UserDel 删除用户]
      * @return [type] [description]
      */
-    public function userDel()
+    public function UserDel()
     {
-
-        if(request()->isAjax()){
-
-            $param = input('post.');
-            $user = new UserModel();
-            $flag = $user->delUser($param['uid']);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        }
-
-
         $id = input('param.id');
         $role = new UserModel();
         $flag = $role->delUser($id);
@@ -118,7 +108,7 @@ class User extends Base
             $flag = Db::name('admin')->where('id',$id)->setField(['status'=>1]);
             return json(['code' => 0, 'data' => $flag['data'], 'msg' => '已开启']);
         }
-    
+
     }
 
 
