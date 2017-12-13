@@ -428,31 +428,11 @@ function userEdit(id){
 }
 
 //删除用户
-function userDel(id){
-    console.log(id);
-    id = Number(id);
-    console.log(typeof(id) )
-    lunhui.confirm(id,'{:url("userDel")}');
-}
 function del(that) {
     var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
-    $.ajax({
-        url: "./userDel",
-        type: "post",
-        dataType: "json",
-        data: {uid:uid},
-        success:function (data) {
-            if(data.result == "success"){
-                alert("删除成功");
-                mytable1.ajax.url("__SCRIPT__/test.php").reload();
-            }else {
-                alert(data.result);
-            }
-        }
-    })
-//    console.log(uid);
-//    userDel(uid);
-//    mytable1
+      userDel(uid);
+      lunhui.confirm(uid,'{:url("userDel")}');
+      mytable1.ajax.url("__SCRIPT__/test.php").load();
 }
 
 //用户状态
