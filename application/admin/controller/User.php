@@ -80,7 +80,7 @@ class User extends Base
      * [UserDel 删除用户]
      * @return [type] [description]
      */
-    public function UserDel()
+    public function userDel()
     {
         $id = input('param.id');
         $role = new UserModel();
