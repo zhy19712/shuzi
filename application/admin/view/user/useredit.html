@@ -27,27 +27,6 @@
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" name="userEdit" id="userEdit" method="post" action="{:url('userEdit')}">
-                        <!--<input type="hidden" name="id" value="{$user.id}">-->
-                        <!--<div class="form-group">-->
-                            <!--<label class="col-sm-3 control-label">管理员名称：</label>-->
-                            <!--<div class="input-group col-sm-4">-->
-                                <!--<input id="username" type="text" class="form-control" name="username" required="" aria-required="true" value="{$user.username}">-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="hr-line-dashed"></div>-->
-                        <!--<div class="form-group">-->
-                            <!--<label class="col-sm-3 control-label">管理员角色：</label>-->
-                            <!--<div class="input-group col-sm-4">-->
-                                <!--<select class="form-control m-b chosen-select" name="groupid" id="groupid">-->
-                                    <!--<option value="">==请选择角色==</option>-->
-                                    <!--{if !empty($role)}-->
-                                        <!--{foreach name="role" item="vo"}-->
-                                            <!--<option value="{$vo.id}" {if condition="$user['groupid'] eq $vo['id']"}selected{/if}>{$vo.title}</option>-->
-                                        <!--{/foreach}-->
-                                    <!--{/if}-->
-                                <!--</select>-->
-                            <!--</div>-->
-                        <!--</div>-->
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-2 col-lg-2 control-label">姓名：</label>
@@ -143,21 +122,6 @@
                                 <img id="img_data" class="img-circle" height="80px" width="80px" style="float:left;margin-left: 50px;margin-top: -10px;" src="/uploads/face/{$user.portrait}" onerror="this.src='/static/admin/images/head_default.gif'"/>
                             </div>
                         </div>
-                        <!--<div class="hr-line-dashed"></div>-->
-                        <!--<div class="form-group">-->
-                            <!--<label class="col-sm-3 control-label">登录密码：</label>-->
-                            <!--<div class="input-group col-sm-4">-->
-                                <!--<input id="password" type="text" class="form-control" name="password"  placeholder="再次输入修改密码">-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="hr-line-dashed"></div>-->
-                        <!--<div class="form-group">-->
-                            <!--<label class="col-sm-3 control-label">真实姓名：</label>-->
-                            <!--<div class="input-group col-sm-4">-->
-                                <!--<input id="real_name" type="text" class="form-control" name="real_name" required="" aria-required="true" value="{$user.real_name}">-->
-
-                            <!--</div>-->
-                        <!--</div>-->
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <label class="col-xs-1 control-label">状&nbsp;态：</label>
