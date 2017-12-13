@@ -305,6 +305,7 @@ function del(that) {
         success:function (data) {
             if(data.result == "success"){
                 alert("删除成功");
+                mytable1.ajax.url("__SCRIPT__/test.php").reload();
             }else {
                 alert(data.result);
             }
