@@ -13,8 +13,11 @@ class User extends Base
      * @return [type] [description]
      */
     public function index(){
-
-
+        if(request()->isAjax()){
+        $role = new UserType();
+        $nodeStr = $role->getNodeInfo();
+        return json($nodeStr);}
+        else
         return $this->fetch();
     }
 
@@ -118,9 +121,7 @@ class User extends Base
      */
     public function getTreeData()
     {
-        $role = new UserType();
-        $nodeStr = $role->getNodeInfo();
-        return json($nodeStr);
+
     }
 
 }

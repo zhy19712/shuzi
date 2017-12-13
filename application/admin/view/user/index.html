@@ -5,7 +5,8 @@
 <link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
 <style>
     .mybtn{
-        margin-left: 30px;
+        margin-right: 30px;
+        float: left;
     }
     #imgPicker>div:nth-child(2){
         width: 100% !important;
@@ -15,7 +16,6 @@
 <body class="gray-bg">
 <div id="mycontent" style="width: 10%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;">
     <div id="tree_container" class="ztree"></div>
-    <p></p>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 88%;vertical-align: top;padding: 0;">
     <div class="ibox float-e-margins">
@@ -44,7 +44,7 @@
     </div>
 </div>
 
-<div id="myModal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 80%;margin: 0 auto;">
+<div id="myModal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
     <div class="row">
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
@@ -55,16 +55,17 @@
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="userAdd" id="userAdd" method="post" action="{:url('userAdd')}">
                         <input type="text" id="groupid" name="groupid" value="" style="display: none;">
+                        <input type="text" id="groupname" name="groupname" value="" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-2 col-lg-2 control-label">姓名：</label>
-                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                <label class="col-xs-4 control-label">姓名：</label>
+                                <div class="myblock col-xs-6 input-group">
                                     <input id="real_name" type="text" class="form-control" name="real_name" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-2 col-lg-2 control-label">性别：</label>
-                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                <label class="col-xs-4 control-label">性别：</label>
+                                <div class="myblock col-xs-6 input-group">
                                     <input id="sex" type="text" class="form-control" name="sex" >
                                 </div>
                             </div>
@@ -72,14 +73,14 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-2 col-lg-2 control-label">登录账号：</label>
-                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                <label class="col-xs-4 control-label">登录账号：</label>
+                                <div class="myblock col-xs-6 input-group">
                                     <input id="username" type="text" class="form-control" name="username" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-2 col-lg-2 control-label">登录密码：</label>
-                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                <label class="col-xs-4 control-label">登录密码：</label>
+                                <div class="myblock col-xs-6 input-group">
                                     <input id="password" type="text" class="form-control" name="password" >
                                 </div>
                             </div>
@@ -87,14 +88,14 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-2 col-lg-2 control-label">手机号码：</label>
-                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                <label class="col-xs-4 control-label">手机号码：</label>
+                                <div class="myblock col-xs-6 input-group">
                                     <input id="mobile" type="text" class="form-control" name="mobile" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-2 col-lg-2 control-label">办公电话：</label>
-                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                <label class="col-xs-4 control-label">办公电话：</label>
+                                <div class="myblock col-xs-6 input-group">
                                     <input id="tele" type="text" class="form-control" name="tele" >
                                 </div>
                             </div>
@@ -102,14 +103,14 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-2 col-lg-2 control-label">所在部门：</label>
-                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                <label class="col-xs-4 control-label">所在部门：</label>
+                                <div class="myblock col-xs-6 input-group">
                                     <input id="dept" type="text" class="form-control" name="dept" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-2 col-lg-2 control-label">职位：</label>
-                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                <label class="col-xs-4 control-label">职位：</label>
+                                <div class="myblock col-xs-6 input-group">
                                     <input id="position" type="text" class="form-control" name="position" >
                                 </div>
                             </div>
@@ -117,14 +118,14 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-2 col-lg-2 control-label">电子邮箱：</label>
-                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                <label class="col-xs-4 control-label">电子邮箱：</label>
+                                <div class="myblock col-xs-6 input-group">
                                     <input id="email" type="text" class="form-control" name="email" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-2 col-lg-2 control-label">微信账号：</label>
-                                <div class="myblock col-xs-10 col-lg-10 input-group">
+                                <label class="col-xs-4 control-label">微信账号：</label>
+                                <div class="myblock col-xs-6 input-group">
                                     <input id="wechat" type="text" class="form-control" name="wechat" >
                                 </div>
                             </div>
@@ -132,16 +133,16 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-1 control-label">备注：</label>
-                                <div class="myblock col-xs-11 input-group">
+                                <label class="col-xs-2 control-label">备注：</label>
+                                <div class="myblock col-xs-8 input-group">
                                     <textarea name="remark" id="remark" class="form-control" style="min-height: 150px;"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-xs-1 control-label">头像：</label>
-                            <div class="input-group col-xs-11">
+                            <label class="col-xs-2 control-label">头像：</label>
+                            <div class="input-group col-xs-8">
                                 <input type="hidden" id="data_photo" name="portrait" >
                                 <div id="fileList" class="uploader-list" style="float:right"></div>
                                 <div id="imgPicker" style="float:left">选择头像</div>
@@ -150,8 +151,8 @@
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <label class="col-xs-1 control-label">状&nbsp;态：</label>
-                            <div class="col-xs-11">
+                            <label class="col-xs-2 control-label">状&nbsp;态：</label>
+                            <div class="col-xs-8">
                                 <div class="radio i-checks">
                                     <input type="radio" name='status' value="1" checked="checked"/>开启&nbsp;&nbsp;
                                     <input type="radio" name='status' value="0" />关闭
@@ -176,6 +177,7 @@
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 <script type="text/javascript">
+    var groupid;
     var $list = $('#fileList');
     //上传图片,初始化WebUploader
     var uploader = WebUploader.create({
@@ -258,6 +260,7 @@
             console.log(data);
             if(data.code==1){
                 $("#myModal").modal('hide');
+                admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
             }else{
                 layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                 return false;
@@ -284,14 +287,30 @@
 <script src="__JS__/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript">
-var admin_table = $('#admin_table').DataTable( {
+    var mytree_node;
+
+    var admin_table = $('#admin_table').DataTable( {
     "processing": true,
     "serverSide": true,
     "ajax": {
         "url": "__SCRIPT__/test.php"
     },
-    "dom": 'l<"mybtn btn btn-outline btn-primary">frtip',
+    "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
     "columnDefs": [
+        {
+            "searchable": false,
+            "orderable": false,
+            "targets": [2],
+            "render" :  function(data,type,row) {
+                console.log(data)
+                if(data){
+                    var html = "<img style='width: 30px;height: 30px;border-radius: 50%;' src=__PHOTO__/"+ data +">";
+                }else {
+                    var html = "<img style='width: 30px;height: 30px;border-radius: 50%;' src=/static/admin/images/head_default.gif>";
+                }
+                return html;
+            }
+        },
         {
             "searchable": false,
             "orderable": false,
@@ -332,7 +351,14 @@ var admin_table = $('#admin_table').DataTable( {
 } );
 $("div.mybtn").html('<div>添加用户</div>');
 $("div.mybtn").click(function () {
-    $("#myModal").modal('show');
+    if(!$("#groupid").val() || mytree_node.children){
+        console.log(mytree_node)
+        layer.msg("请选择组织机构");
+    }else {
+        var dept_name = $("#groupname").val();
+        $("#myModal h5").text(dept_name + "-添加用户")
+        $("#myModal").modal('show');
+    }
 //    window.open("/admin/user/useradd.html","_self");
 })
 //编辑用户
@@ -352,7 +378,7 @@ function myconfirm(id,url) {
             success: function (res) {
                 if(res.code == 1){
                     layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                    admin_table.ajax.url("__SCRIPT__/test.php").load();
+                    admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
                 }else{
                     layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                 }
@@ -371,6 +397,7 @@ function user_state(id){
     lunhui.status(id,'{:url("user_state")}');
 }
 //组织结构
+    var zTreeObj;
     function ajaxDataFilter(treeId, parentNode, responseData) {
         console.log(responseData)
         var tree_data = responseData.data;
@@ -410,17 +437,19 @@ function user_state(id){
     };
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
-        console.log(treeNode.tId + ", " + treeNode.name);
-        console.log(treeNode.id);
-        $("#mycontent>p").text(treeNode.name);
+        console.log(treeNode);
+        mytree_node = treeNode;
+        $("#groupname").val(treeNode.name);
         $("#groupid").val(treeNode.id);
+        groupid = treeNode.id;
+        admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
     };
     var setting = {
         async: {
             enable : true,
             autoParam: ["pId"],
             type : "post",
-            url : "./getTreeData",
+            url : "./index",
             dataType :"json"
         },
         data:{
@@ -459,7 +488,7 @@ function user_state(id){
             removeHoverDom: removeHoverDom
         }
     };
-    var zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
+    zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
 
 
  //datatable
