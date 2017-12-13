@@ -18,14 +18,28 @@ var lunhui = {
 	// 确认弹出层
     confirm : function(id,url) {
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
-	        $.getJSON(url, {'id' : id}, function(res){
-	            if(res.code == 1){
-	                layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-	                Ajaxpage()
-	            }else{
-	                layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
-	            }
-	        });
+        	$.ajax({
+				url: url,
+				async: false,
+				data: {'id' : id},
+				type: "get",
+				dataType: "json",
+				success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        admin_table.ajax.url("__SCRIPT__/test.php").load();
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+			})
+	        // $.getJSON(url, {'id' : id}, function(res){
+	        //     if(res.code == 1){
+	        //         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+	        //     }else{
+	        //         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+	        //     }
+	        // });
 	        layer.close(index);
 	    })
     },

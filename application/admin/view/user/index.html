@@ -54,6 +54,7 @@
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="userAdd" id="userAdd" method="post" action="{:url('userAdd')}">
+                        <input type="text" id="groupid" name="groupid" value="" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-2 col-lg-2 control-label">姓名：</label>
@@ -171,145 +172,7 @@
         </div>
     </div>
 </div>
-<div id="myModal_edit" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 80%;margin: 0 auto;">
-    <!--<div class="row">-->
-        <!--<div class="col-sm-12">-->
-            <!--<div class="ibox float-e-margins">-->
-                <!--<div class="ibox-title">-->
-                    <!--<h5>编辑用户</h5>-->
-                    <!--<div class="ibox-tools">-->
-                        <!--<a class="collapse-link">-->
-                            <!--<i class="fa fa-chevron-up"></i>-->
-                        <!--</a>-->
-                        <!--<a class="dropdown-toggle" data-toggle="dropdown" href="form_basic.html#">-->
-                            <!--<i class="fa fa-wrench"></i>-->
-                        <!--</a>-->
-                        <!--<a class="close-link">-->
-                            <!--<i class="fa fa-times"></i>-->
-                        <!--</a>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="ibox-content">-->
-                    <!--<form class="form-horizontal" name="userEdit" id="userEdit" method="post" action="{:url('userEdit')}">-->
-                        <!--<div class="form-group">-->
-                            <!--<div class="col-lg-6 col-xs-12">-->
-                                <!--<label class="col-xs-2 col-lg-2 control-label">姓名：</label>-->
-                                <!--<div class="myblock col-xs-10 col-lg-10 input-group">-->
-                                    <!--<input id="real_name" type="text" class="form-control" name="real_name" >-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="col-lg-6 col-xs-12">-->
-                                <!--<label class="col-xs-2 col-lg-2 control-label">性别：</label>-->
-                                <!--<div class="myblock col-xs-10 col-lg-10 input-group">-->
-                                    <!--<input id="sex" type="text" class="form-control" name="sex" >-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="hr-line-dashed"></div>-->
-                        <!--<div class="form-group">-->
-                            <!--<div class="col-lg-6 col-xs-12">-->
-                                <!--<label class="col-xs-2 col-lg-2 control-label">登录账号：</label>-->
-                                <!--<div class="myblock col-xs-10 col-lg-10 input-group">-->
-                                    <!--<input id="username" type="text" class="form-control" name="username" >-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="col-lg-6 col-xs-12">-->
-                                <!--<label class="col-xs-2 col-lg-2 control-label">登录密码：</label>-->
-                                <!--<div class="myblock col-xs-10 col-lg-10 input-group">-->
-                                    <!--<input id="password" type="text" class="form-control" name="password" >-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="hr-line-dashed"></div>-->
-                        <!--<div class="form-group">-->
-                            <!--<div class="col-lg-6 col-xs-12">-->
-                                <!--<label class="col-xs-2 col-lg-2 control-label">手机号码：</label>-->
-                                <!--<div class="myblock col-xs-10 col-lg-10 input-group">-->
-                                    <!--<input id="mobile" type="text" class="form-control" name="mobile" >-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="col-lg-6 col-xs-12">-->
-                                <!--<label class="col-xs-2 col-lg-2 control-label">办公电话：</label>-->
-                                <!--<div class="myblock col-xs-10 col-lg-10 input-group">-->
-                                    <!--<input id="tele" type="text" class="form-control" name="tele" >-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="hr-line-dashed"></div>-->
-                        <!--<div class="form-group">-->
-                            <!--<div class="col-lg-6 col-xs-12">-->
-                                <!--<label class="col-xs-2 col-lg-2 control-label">所在部门：</label>-->
-                                <!--<div class="myblock col-xs-10 col-lg-10 input-group">-->
-                                    <!--<input id="dept" type="text" class="form-control" name="dept" >-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="col-lg-6 col-xs-12">-->
-                                <!--<label class="col-xs-2 col-lg-2 control-label">职位：</label>-->
-                                <!--<div class="myblock col-xs-10 col-lg-10 input-group">-->
-                                    <!--<input id="position" type="text" class="form-control" name="position" >-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="hr-line-dashed"></div>-->
-                        <!--<div class="form-group">-->
-                            <!--<div class="col-lg-6 col-xs-12">-->
-                                <!--<label class="col-xs-2 col-lg-2 control-label">电子邮箱：</label>-->
-                                <!--<div class="myblock col-xs-10 col-lg-10 input-group">-->
-                                    <!--<input id="email" type="text" class="form-control" name="email" >-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div class="col-lg-6 col-xs-12">-->
-                                <!--<label class="col-xs-2 col-lg-2 control-label">微信账号：</label>-->
-                                <!--<div class="myblock col-xs-10 col-lg-10 input-group">-->
-                                    <!--<input id="wechat" type="text" class="form-control" name="wechat" >-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="hr-line-dashed"></div>-->
-                        <!--<div class="form-group">-->
-                            <!--<div class="col-lg-12 col-xs-12">-->
-                                <!--<label class="col-xs-1 control-label">备注：</label>-->
-                                <!--<div class="myblock col-xs-11 input-group">-->
-                                    <!--&lt;!&ndash;<textarea id="email" type="text" class="form-control" name="email" >&ndash;&gt;-->
-                                    <!--<textarea name="remark" id="remark" class="form-control" style="min-height: 300px;"></textarea>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="hr-line-dashed"></div>-->
-                        <!--<div class="hr-line-dashed"></div>-->
-                        <!--<div class="form-group">-->
-                            <!--<label class="col-xs-1 control-label">头像：</label>-->
-                            <!--<div class="input-group col-xs-11">-->
-                                <!--<input type="hidden" id="data_photo" name="portrait" value="{$user.portrait}" />-->
-                                <!--<div id="fileList" class="uploader-list" style="float:right"></div>-->
-                                <!--<div id="imgPicker" style="float:left">选择头像</div>-->
-                                <!--<img id="img_data" class="img-circle" height="80px" width="80px" style="float:left;margin-left: 50px;margin-top: -10px;" src="/uploads/face/{$user.portrait}" onerror="this.src='/static/admin/images/head_default.gif'"/>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="hr-line-dashed"></div>-->
-                        <!--<div class="form-group">-->
-                            <!--<label class="col-xs-1 control-label">状&nbsp;态：</label>-->
-                            <!--<div class="col-xs-11">-->
-                                <!--<div class="radio i-checks">-->
-                                    <!--<input type="radio" name='status' value="1" {if condition="$user['status'] eq 1 "}checked{/if}/>开启&nbsp;&nbsp;-->
-                                    <!--<input type="radio" name='status' value="0" {if condition="$user['status'] eq 0 "}checked{/if}/>关闭-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="hr-line-dashed"></div>-->
-                        <!--<div class="form-group">-->
-                            <!--<div class="col-xs-12 col-sm-offset-6">-->
-                                <!--<button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;-->
-                                <!--<a class="btn btn-danger" href="javascript:history.go(-1);"><i class="fa fa-close"></i> 返回</a>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</form>-->
-                <!--</div>-->
-            <!--</div>-->
 
-        <!--</div>-->
-    <!--</div>-->
-</div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 <script type="text/javascript">
@@ -421,18 +284,86 @@
 <script src="__JS__/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript">
-var mytable1;
+var admin_table = $('#admin_table').DataTable( {
+    "processing": true,
+    "serverSide": true,
+    "ajax": {
+        "url": "__SCRIPT__/test.php"
+    },
+    "dom": 'l<"mybtn btn btn-outline btn-primary">frtip',
+    "columnDefs": [
+        {
+            "searchable": false,
+            "orderable": false,
+            "targets": [7],
+            "render" :  function(data,type,row) {
+                if(data == 1){
+                    var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='myuser_state(this);' value='开启'/>";
+                }else {
+                    var html = "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='myuser_state(this);' value='禁用'/>";
+                }
+
+                return html;
+            }
+        },
+        {
+            "searchable": false,
+            "orderable": false,
+            "targets": [8],
+            "render" :  function(data,type,row) {
+                var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
+                html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                return html;
+            }
+        }
+    ],
+    "language": {
+        "lengthMenu": "每页_MENU_ 条记录",
+        "zeroRecords": "没有找到记录",
+        "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+        "infoEmpty": "无记录",
+        "search": "搜索：",
+        "infoFiltered": "(从 _MAX_ 条记录过滤)",
+        "paginate": {
+            "previous": "上一页",
+            "next": "下一页"
+        }
+    }
+} );
+$("div.mybtn").html('<div>添加用户</div>');
+$("div.mybtn").click(function () {
+    $("#myModal").modal('show');
+//    window.open("/admin/user/useradd.html","_self");
+})
 //编辑用户
 function userEdit(id){
     location.href = './userEdit/id/'+id+'.html';
 }
 
 //删除用户
+function myconfirm(id,url) {
+    layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+        $.ajax({
+            url: url,
+            async: false,
+            data: {'id' : id},
+            type: "get",
+            dataType: "json",
+            success: function (res) {
+                if(res.code == 1){
+                    layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                    admin_table.ajax.url("__SCRIPT__/test.php").load();
+                }else{
+                    layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                }
+            }
+        })
+        layer.close(index);
+    })
+}
 function del(that) {
     var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
-      userDel(uid);
-      lunhui.confirm(uid,'{:url("userDel")}');
-      mytable1.ajax.url("__SCRIPT__/test.php").load();
+        myconfirm(uid,'{:url("userDel")}');
 }
 
 //用户状态
@@ -480,7 +411,9 @@ function user_state(id){
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode.tId + ", " + treeNode.name);
+        console.log(treeNode.id);
         $("#mycontent>p").text(treeNode.name);
+        $("#groupid").val(treeNode.id);
     };
     var setting = {
         async: {
@@ -546,55 +479,7 @@ function edit(that) {
     $("#myModal_edit").modal('show');
 }
 
-mytable1 = $('#admin_table').DataTable( {
-    "processing": true,
-    "serverSide": true,
-    "ajax": "__SCRIPT__/test.php",
-    "dom": 'l<"mybtn btn btn-outline btn-primary">frtip',
-    "columnDefs": [
-        {
-            "searchable": false,
-            "orderable": false,
-            "targets": [7],
-            "render" :  function(data,type,row) {
-                if(data == 1){
-                    var html = "<input type='button' class='btn btn-primary btn-xs' style='margin-left: 5px;' onclick='myuser_state(this);' value='开启'/>";
-                }else {
-                    var html = "<input type='button' class='btn btn-danger btn-xs' style='margin-left: 5px;' onclick='myuser_state(this);' value='禁用'/>";
-                }
 
-                return html;
-            }
-        },
-        {
-            "searchable": false,
-            "orderable": false,
-            "targets": [8],
-            "render" :  function(data,type,row) {
-                var html = "<input type='button' class='btn btn-primary btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
-                html += "<input type='button' class='btn btn-danger btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
-                return html;
-            }
-        }
-    ],
-    "language": {
-        "lengthMenu": "每页_MENU_ 条记录",
-        "zeroRecords": "没有找到记录",
-        "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-        "infoEmpty": "无记录",
-        "search": "搜索：",
-        "infoFiltered": "(从 _MAX_ 条记录过滤)",
-        "paginate": {
-            "previous": "上一页",
-            "next": "下一页"
-        }
-    }
-} );
-$("div.mybtn").html('<div>添加用户</div>');
-$("div.mybtn").click(function () {
-    $("#myModal").modal('show');
-//    window.open("/admin/user/useradd.html","_self");
-})
 </script>
 </body>
 </html>
