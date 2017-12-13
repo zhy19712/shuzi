@@ -1,9 +1,15 @@
 {include file="public/header" /}
+<link rel="stylesheet" type="text/css" href="/static/admin/webupload/webuploader.css">
+<link rel="stylesheet" type="text/css" href="/static/admin/webupload/style.css">
 <link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
 <link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
 <style>
     .mybtn{
         margin-left: 30px;
+    }
+    #imgPicker>div:nth-child(2){
+        width: 100% !important;
+        height: 100% !important;
     }
 </style>
 <body class="gray-bg">
@@ -162,11 +168,116 @@
                     <!--新增用户信息结束-->
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 {include file="public/footer" /}
+<script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
+<script type="text/javascript">
+    var $list = $('#fileList');
+    //上传图片,初始化WebUploader
+    var uploader = WebUploader.create({
+
+        auto: true,// 选完文件后，是否自动上传。
+        swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+        server: "{:url('Upload/uploadface')}",// 文件接收服务端。
+        duplicate :true,// 重复上传图片，true为可重复false为不可重复
+        pick: '#imgPicker',// 选择文件的按钮。可选。
+
+        accept: {
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/jpg,image/jpeg,image/png'
+        },
+
+        'onUploadSuccess': function(file, data, response) {
+            $("#data_photo").val(data._raw);
+            $("#img_data").attr('src', '/uploads/face/' + data._raw).show();
+        }
+    });
+
+    uploader.on( 'fileQueued', function( file ) {
+        $list.html( '<div id="' + file.id + '" class="item">' +
+            '<h4 class="info">' + file.name + '</h4>' +
+            '<p class="state">正在上传...</p>' +
+            '</div>' );
+    });
+
+    // 文件上传成功
+    uploader.on( 'uploadSuccess', function( file ) {
+        $( '#'+file.id ).find('p.state').text('上传成功！');
+    });
+
+    // 文件上传失败，显示上传出错。
+    uploader.on( 'uploadError', function( file ) {
+        $( '#'+file.id ).find('p.state').text('上传出错!');
+    });
+
+    //提交
+    $(function(){
+        $('#userAdd').ajaxForm({
+            beforeSubmit: checkForm,
+            success: complete,
+            dataType: 'json'
+        });
+
+        function checkForm(){
+            if( '' == $.trim($('#username').val())){
+                layer.msg('请输入用户名',{icon:2,time:1500,shade: 0.1}, function(index){
+                    layer.close(index);
+                });
+                return false;
+            }
+
+            // if( '' == $.trim($('#groupid').val())){
+            //     layer.msg('请选择用户角色',{icon:2,time:1500,shade: 0.1}, function(index){
+            //     layer.close(index);
+            //     });
+            //     return false;
+            // }
+
+            if( '' == $.trim($('#password').val())){
+                layer.msg('请输入登录密码',{icon:2,time:1500,shade: 0.1}, function(index){
+                    layer.close(index);
+                });
+                return false;
+            }
+
+            if( '' == $.trim($('#real_name').val())){
+                layer.msg('请输入真实姓名',{icon:2,time:1500,shade: 0.1}, function(index){
+                    layer.close(index);
+                });
+                return false;
+            }
+        }
+
+
+        function complete(data){
+            console.log(data);
+            if(data.code==1){
+                $("#myModal").modal('hide');
+            }else{
+                layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                return false;
+            }
+        }
+
+    });
+
+
+
+    //IOS开关样式配置
+    var elem = document.querySelector('.js-switch');
+    var switchery = new Switchery(elem, {
+        color: '#1AB394'
+    });
+    var config = {
+        '.chosen-select': {},
+    }
+    for (var selector in config) {
+        $(selector).chosen(config[selector]);
+    }
+</script>
 <script src="__JS__/jquery.ztree.all.js"></script>
 <script src="__JS__/jquery.dataTables.min.js"></script>
 
@@ -186,8 +297,22 @@ function userDel(id){
 }
 function del(that) {
     var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
+    $.ajax({
+        url: "",
+        type: "post",
+        dataType: "json",
+        data: {uid:uid},
+        success:function (data) {
+            if(data.result == "success"){
+                alert("删除成功");
+                mytable1.ajax.url("__SCRIPT__/test.php").reload();
+            }else {
+                alert(data.result);
+            }
+        }
+    })
 //    console.log(uid);
-    userDel(uid);
+//    userDel(uid);
 //    mytable1
 }
 
@@ -347,8 +472,8 @@ mytable1 = $('#admin_table').DataTable( {
 } );
 $("div.mybtn").html('<div>添加用户</div>');
 $("div.mybtn").click(function () {
-//    $("#myModal").modal('show');
-    window.open("/admin/user/useradd.html","_self");
+    $("#myModal").modal('show');
+//    window.open("/admin/user/useradd.html","_self");
 })
 </script>
 </body>
