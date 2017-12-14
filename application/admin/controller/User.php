@@ -59,23 +59,9 @@ class User extends Base
         if(request()->isAjax()){
 
             $param = input('post.');
-            if(empty($param['password'])){
-                unset($param['password']);
-            }else{
-                $param['password'] = md5(md5($param['password']) . config('auth_key'));
-            }
-            $flag = $user->editUser($param);
-            $group_access = Db::name('auth_group_access')->where('uid', $user['id'])->update(['group_id' => $param['groupid']]);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            $data = $user->getOneUser($param['uid']);
+            return json(['data' => $data, 'msg' => "success"]);
         }
-
-        $id = input('param.id');
-        $role = new UserType();
-        $this->assign([
-            'user' => $user->getOneUser($id),
-            'role' => $role->getRole()
-        ]);
-        return $this->fetch();
     }
 
 
