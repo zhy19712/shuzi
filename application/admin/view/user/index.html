@@ -473,6 +473,15 @@ function myuser_state(that) {
         $("#diyBtn_"+treeNode.id).unbind().remove();
         $("#diyBtn_space_" +treeNode.id).unbind().remove();
     };
+    //更换图标
+    function ajaxDataFilter(treeId, parentNode, responseData) {
+        if (responseData) {
+            for(var i =0; i < responseData.length; i++) {
+                console.log(responseData[i]);
+            }
+        }
+        return responseData;
+    };
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
@@ -501,7 +510,8 @@ function myuser_state(that) {
             autoParam: ["pId"],
             type : "post",
             url : "./index",
-            dataType :"json"
+            dataType :"json",
+            dataFilter: ajaxDataFilter
         },
         data:{
             keep: {
@@ -516,7 +526,7 @@ function myuser_state(that) {
         },
         callback: {
             onClick: zTreeOnClick,
-            beforeRemove: zTreeBeforeRemove,
+            beforeRemove: zTreeBeforeRemove
         },
         edit: {
             drag : {
