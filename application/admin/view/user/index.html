@@ -510,7 +510,20 @@ function myuser_state(that) {
         $("#mycontent>p").text(treeNode.name);
         $("#groupid").val(treeNode.id);
         groupid = treeNode.id;
-        admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
+        //admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
+
+
+
+        $.ajax({
+            type: "GET",
+            url: "__SCRIPT__/test.php",
+            dataType: "json",
+            success: function(data){
+                console.log(data);
+            }
+        });
+
+
     };
     var setting = {
         async: {
