@@ -23,23 +23,38 @@ class User extends Base
 
 
     /**
-     * [userAdd 添加用户]
+     * [userAdd 添加/更新用户]
      * @return [type] [description]
      */
     public function userAdd()
     {
         if(request()->isAjax()){
-
-            $param = input('post.');
-            $param['password'] = md5(md5($param['password']) . config('auth_key'));
             $user = new UserModel();
-            $flag = $user->insertUser($param);
-            $accdata = array(
-                'uid'=> $user['id'],
-                'group_id'=> $param['groupid'],
-            );
-            $group_access = Db::name('auth_group_access')->insert($accdata);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            $param = input('post.');
+
+            if($param['action']=="add")
+            {
+                $param['password'] = md5(md5($param['password']) . config('auth_key'));
+                $flag = $user->insertUser($param);
+                $accdata = array(
+                    'uid'=> $user['id'],
+                    'group_id'=> $param['groupid'],
+                );
+                $group_access = Db::name('auth_group_access')->insert($accdata);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
+            else if($param['action']=="edit")
+            {
+                if(empty($param['password'])){
+                    unset($param['password']);
+                }else{
+                    $param['password'] = md5(md5($param['password']) . config('auth_key'));
+                }
+                $flag = $user->editUser($param);
+                $group_access = Db::name('auth_group_access')->where('uid', $user['id'])->update(['group_id' => $param['groupid']]);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
+
         }
 
         $role = new UserType();
@@ -49,20 +64,23 @@ class User extends Base
 
 
     /**
-     * [userEdit 编辑用户]
+     * [userEdit 编辑用户获取用户信息]
      * @return [type] [description]
      */
     public function userEdit()
     {
         $user = new UserModel();
+        $role = new UserType();
 
         if(request()->isAjax()){
 
             $param = input('post.');
             $data = $user->getOneUser($param['uid']);
-            return json(['data' => $data, 'msg' => "success"]);
+            $nodeStr = $role->getNodeInfo();
+            return json(['data' => $data, 'group' => $nodeStr, 'msg' => "success"]);
         }
     }
+
 
 
     /**
