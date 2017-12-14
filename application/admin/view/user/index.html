@@ -16,7 +16,7 @@
         text-align: center;
     }
 </style>
-<body class="gray-bg">
+<body class="gray-bg" style="background-color:#fff;">
 <div id="mycontent" style="width: 10%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;">
     <div id="tree_container" class="ztree"></div>
 </div>
@@ -351,12 +351,41 @@ $("div.mybtn").click(function () {
         layer.msg("请选择组织机构");
     }else {
         var dept_name = $("#groupname").val();
-        $("#myModal h5").text(dept_name + "-添加用户")
+        $("#myModal h5").text(dept_name + "-添加用户");
+        $("#myModal input").val("");
+        $("#img_data").attr("src","/static/admin/images/head_default.gif");
         $("#myModal").modal('show');
     }
-//    window.open("/admin/user/useradd.html","_self");
 })
 //编辑用户
+function edit(that) {
+    var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
+    $.ajax({
+        url: "",
+        type: "post",
+        data: {uid:uid},
+        dataType: "json",
+        success: function (res) {
+            if(res.msg == "success"){
+                var data = res.data;
+                $("#real_name").val(data.real_name);
+                $("#sex").val(data.sex);
+                $("#username").val(data.username);
+                $("#password").val(data.password);
+                $("#mobile").val(data.mobile);
+                $("#tele").val(data.tele);
+                $("#dept").val(data.dept);
+                $("#position").val(data.position);
+                $("#email").val(data.email);
+                $("#wechat").val(data.wechat);
+                $("#remark").val(data.remark);
+                $("#img_data").attr("src","__PHOTO__/" + data.portrait);
+            }else {
+                layer.msg(res.msg);
+            }
+        }
+    })
+}
 function userEdit(id){
     location.href = './userEdit/id/'+id+'.html';
 }
@@ -386,30 +415,25 @@ function del(that) {
     var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
         myconfirm(uid,'{:url("userDel")}');
 }
-    //状态开启禁用
-    function mystatus(id,url,that){
-        $.post(url,{id:id},function(data){
-            if(data.code==1){
-                $(that).removeClass("btn-primary btn-outline").addClass("btn-danger btn-outline").val("禁用");
-                layer.msg(data.msg,{icon:2,time:1500,shade: 0.1,});
-                return false;
-            }else{
-                $(that).removeClass("btn-danger btn-outline").addClass("btn-primary btn-outline").val("开启");
-                layer.msg(data.msg,{icon:1,time:1500,shade: 0.1,});
-                return false;
-            }
-        });
-        return false;
-    }
-    function myuser_state(that) {
-        var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
-        mystatus(uid,'{:url("user_state")}',that);
-//        if(val == "开启"){
-//            $(that).removeClass("btn-primary btn-outline").addClass("btn-danger btn-outline").val("禁用");
-//        }else {
-//            $(that).removeClass("btn-danger btn-outline").addClass("btn-primary btn-outline").val("开启");
-//        }
-    }
+//状态开启禁用
+function mystatus(id,url,that){
+    $.post(url,{id:id},function(data){
+        if(data.code==1){
+            $(that).removeClass("btn-primary btn-outline").addClass("btn-danger btn-outline").val("禁用");
+            layer.msg(data.msg,{icon:2,time:1500,shade: 0.1,});
+            return false;
+        }else{
+            $(that).removeClass("btn-danger btn-outline").addClass("btn-primary btn-outline").val("开启");
+            layer.msg(data.msg,{icon:1,time:1500,shade: 0.1,});
+            return false;
+        }
+    });
+    return false;
+}
+function myuser_state(that) {
+    var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
+    mystatus(uid,'{:url("user_state")}',that);
+}
 //组织结构
     var zTreeObj;
     function ajaxDataFilter(treeId, parentNode, responseData) {
@@ -438,7 +462,6 @@ function del(that) {
         aObj.append(editStr);
         var btn = $("#diyBtn_space_"+treeNode.id);
         if (btn) btn.bind("click", function(){
-//            alert("diy Button for " + treeNode.name);
             var child_name = prompt("请输入子节点名称");
             if(child_name){
                 console.log(child_name)
@@ -504,13 +527,6 @@ function del(that) {
     };
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
 
-
-
-function edit(that) {
-    var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
-//    window.open("/admin/user/useradd.html?uid=" + uid,"_self");
-    $("#myModal_edit").modal('show');
-}
 
 
 </script>
