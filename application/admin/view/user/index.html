@@ -21,6 +21,7 @@
 </style>
 <body class="gray-bg" style="background-color:#fff;">
 <div id="mycontent" style="width: 10%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;">
+    <div style="text-align: center;background-color:#1ab394;line-height: 30px;color: #fff;">组织机构</div>
     <div id="tree_container" class="ztree"></div>
     <p style="display: none;"></p>
 </div>
@@ -163,9 +164,9 @@
                         <div class="form-group">
                             <label class="col-xs-2 control-label">状&nbsp;态：</label>
                             <div class="col-xs-8">
-                                <div class="radio i-checks myclass">
-                                    <input type="radio" name='status' value="1"/>开启&nbsp;&nbsp;
-                                    <input type="radio" name='status' value="0" />关闭
+                                <div class="radio myclass">
+                                    <input id="open" type="radio" name='status' value="1"/>开启&nbsp;&nbsp;
+                                    <input id="close" type="radio" name='status' value="0" />关闭
                                 </div>
                             </div>
                         </div>
@@ -294,6 +295,7 @@
 <script src="__JS__/jquery.dataTables.min.js"></script>
 
 <script type="text/javascript">
+    $(".myclass input").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
     var mytree_node;
 
     var admin_table = $('#admin_table').DataTable( {
@@ -366,10 +368,11 @@ $("div.mybtn").click(function () {
         $("#myModal input").val("");
         $("#myModal textarea").val("");
         $('#fileList').empty();
-        $(".i-checks>div:nth-child(1)").addClass("checked");
-        $(".i-checks>div:nth-child(2)").removeClass("checked");
+        $('#open').val("1").iCheck('check');
+        $('#close').val("0").iCheck('uncheck');
         var str = "<option value="+ dept_name +">"+ dept_name +"</option>"
-        $("#dept").append(str).val(dept_name);
+        $("#dept").empty().append(str).val(dept_name);
+        $("#groupname").val(dept_name);
         $("#img_data").attr("src","/static/admin/images/head_default.gif");
         $("#myModal").modal('show');
     }
@@ -393,28 +396,42 @@ function edit(that) {
                 $("#real_name").val(data.real_name);
                 $("#sex").val(data.sex);
                 $("#username").val(data.username);
-//                $("#password").val(data.password);
                 $("#mobile").val(data.mobile);
                 $("#tele").val(data.tele);
-                $("#dept").val(data.dept);
                 $("#position").val(data.position);
                 $("#email").val(data.email);
                 $("#wechat").val(data.wechat);
                 $("#remark").val(data.remark);
                 $("#myModal h5").text(data.dept + "-编辑用户");
-                console.log($(".i-checks").html())
                 if(data.status == 1){
-                    $(".i-checks>div:nth-child(1)").addClass("checked");
-                    $(".i-checks>div:nth-child(2)").removeClass("checked");
+                    $('#open').iCheck('check');
+                    $('#close').iCheck('uncheck');
                 }else {
-                    $(".i-checks>div:nth-child(1)").removeClass("checked");
-                    $(".i-checks>div:nth-child(2)").addClass("checked");
+                    $('#open').iCheck('uncheck');
+                    $('#close').iCheck('check');
                 }
                 if(data.portrait){
                     $("#img_data").attr("src","__PHOTO__/" + data.portrait);
                 }else {
                     $("#img_data").attr("src","/static/admin/images/head_default.gif");
                 }
+                $("#dept").empty();
+                var group = JSON.parse(res.group);
+                console.log(group)
+                $.each(group,function (i,n) {
+                    var str = "<option value="+ n.name +">"+ n.name +"</option>";
+                    $("#dept").append(str);
+                });
+                $("#dept").val(data.dept);
+                $("#dept").on("change",function () {
+                    var val1 = $(this).val();
+                    $.each(group,function (i,n) {
+                        if(n.name == val1){
+                            $("#groupid").val(n.id);
+                        }
+                    })
+                })
+
                 $("#myModal").modal('show');
             }else {
                 layer.msg(res.msg);
