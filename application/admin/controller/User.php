@@ -31,7 +31,6 @@ class User extends Base
         if(request()->isAjax()){
             $user = new UserModel();
             $param = input('post.');
-
             if($param['action']=="add")
             {
                 $param['password'] = md5(md5($param['password']) . config('auth_key'));

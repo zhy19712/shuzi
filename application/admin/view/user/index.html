@@ -61,7 +61,7 @@
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="userAdd" id="userAdd" method="post" action="{:url('userAdd')}">
-                        <input type="text" name="action" value="" id="action" style="display: none;">
+                        <input type="text" name="action" value="edit" id="action" style="display: none;">
                         <input type="text" id="groupid" name="groupid" value="" style="display: none;">
                         <input type="text" id="groupname" name="groupname" value="" style="display: none;">
                         <div class="form-group">
@@ -242,7 +242,7 @@
             }
             var txt1 = $("#myModal h5").text();
             if(txt1.search(/编辑用户/) < 0){
-                $("#action").val("add")
+                $("#action").val("add");
                 if( '' == $.trim($('#password').val())){
                     layer.msg('请输入登录密码',{icon:2,time:1500,shade: 0.1}, function(index){
                         layer.close(index);
@@ -263,6 +263,7 @@
 
 
         function complete(data){
+            console.log($("#action").val())
             console.log(data);
             if(data.code==1){
                 $("#myModal").modal('hide');
