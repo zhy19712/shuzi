@@ -15,7 +15,7 @@
     #mytable1_wrapper th,#mytable1_wrapper td{
         text-align: center;
     }
-    #myModal input{
+    #myModal input,#myModal select,#myModal textarea{
         background-color: transparent;
     }
 </style>
@@ -113,7 +113,9 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-4 control-label">所在部门：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="dept" type="text" class="form-control" name="dept" >
+                                    <!--<input id="dept" type="text" class="form-control" name="dept" >-->
+                                    <select name="dept" id="dept" class="form-control" >
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
@@ -161,8 +163,8 @@
                         <div class="form-group">
                             <label class="col-xs-2 control-label">状&nbsp;态：</label>
                             <div class="col-xs-8">
-                                <div class="radio i-checks">
-                                    <input type="radio" name='status' value="1" checked="checked"/>开启&nbsp;&nbsp;
+                                <div class="radio i-checks myclass">
+                                    <input type="radio" name='status' value="1"/>开启&nbsp;&nbsp;
                                     <input type="radio" name='status' value="0" />关闭
                                 </div>
                             </div>
@@ -264,6 +266,7 @@
             console.log(data);
             if(data.code==1){
                 $("#myModal").modal('hide');
+                layer.msg("保存成功");
                 admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
             }else{
                 layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
@@ -362,8 +365,11 @@ $("div.mybtn").click(function () {
         $("#myModal h5").text(dept_name + "-添加用户");
         $("#myModal input").val("");
         $("#myModal textarea").val("");
-        $("#id").val("");
-        $("#dept").val(dept_name).attr("readonly",true);
+        $('#fileList').empty();
+        $(".i-checks>div:nth-child(1)").addClass("checked");
+        $(".i-checks>div:nth-child(2)").removeClass("checked");
+        var str = "<option value="+ dept_name +">"+ dept_name +"</option>"
+        $("#dept").append(str).val(dept_name);
         $("#img_data").attr("src","/static/admin/images/head_default.gif");
         $("#myModal").modal('show');
     }
@@ -380,6 +386,7 @@ function edit(that) {
             console.log(res);
             if(res.msg == "success"){
                 var data = res.data;
+                $('#fileList').empty();
                 $("#id").val(uid);
                 $("#groupname").val(data.groupname);
                 $("#groupid").val(data.groupid);
@@ -395,7 +402,14 @@ function edit(that) {
                 $("#wechat").val(data.wechat);
                 $("#remark").val(data.remark);
                 $("#myModal h5").text(data.dept + "-编辑用户");
-                if(data.status == 1){}
+                console.log($(".i-checks").html())
+                if(data.status == 1){
+                    $(".i-checks>div:nth-child(1)").addClass("checked");
+                    $(".i-checks>div:nth-child(2)").removeClass("checked");
+                }else {
+                    $(".i-checks>div:nth-child(1)").removeClass("checked");
+                    $(".i-checks>div:nth-child(2)").addClass("checked");
+                }
                 if(data.portrait){
                     $("#img_data").attr("src","__PHOTO__/" + data.portrait);
                 }else {
