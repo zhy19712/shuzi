@@ -31,7 +31,7 @@ class User extends Base
         if(request()->isAjax()){
             $user = new UserModel();
             $param = input('post.');
-            if($param['action']=="add")
+            if(empty($param['id']))
             {
                 $param['password'] = md5(md5($param['password']) . config('auth_key'));
                 $flag = $user->insertUser($param);
@@ -42,7 +42,7 @@ class User extends Base
                 $group_access = Db::name('auth_group_access')->insert($accdata);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if($param['action']=="edit")
+            else if(!empty($param['id']))
             {
                 if(empty($param['password'])){
                     unset($param['password']);
