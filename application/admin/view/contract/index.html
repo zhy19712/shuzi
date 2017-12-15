@@ -1,32 +1,42 @@
 {include file="public/header" /}
+<link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="/static/admin/css/jedate.css">
+<style>
+    #mytable1_wrapper th,#mytable1_wrapper td{
+        text-align: center;
+    }
+    #myModal input,#myModal select,#myModal textarea{
+        background-color: transparent;
+    }
+</style>
 <body class="gray-bg">
 
-<div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 88%;vertical-align: top;padding: 0;">
+<div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
             <h5>合同信息</h5>
         </div>
         <div class="ibox-content">
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-12 mybtn">
                     <div  class="col-sm-2" style="width: 100px">
                         <div class="input-group" >
-                            <a href="{:url('userAdd')}"><button class="btn btn-outline btn-primary" type="button">添加用户</button></a>
+                            <a href="#"><button class="btn btn-outline btn-primary" type="button">新增</button></a>
                         </div>
                     </div>
                 </div>
                 <div id="mytable1_wrapper">
                     <table id="admin_table" width="100%" class="table table-striped table-bordered">
                         <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>合同名称</th>
-                            <th>合同序号</th>
-                            <th>标段名称</th>
-                            <th>项目名称</th>
-                            <th>签订日期</th>
-                            <th>操作</th>
-                        </tr>
+                            <tr>
+                                <th>ID</th>
+                                <th>合同名称</th>
+                                <th>合同序号</th>
+                                <th>标段名称</th>
+                                <th>项目名称</th>
+                                <th>签订日期</th>
+                                <th>操作</th>
+                            </tr>
                         </thead>
                     </table>
                 </div>
@@ -35,9 +45,251 @@
     </div>
 </div>
 
-
+<div id="myModal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5></h5>
+                </div>
+                <div class="ibox-content">
+                    <!--新增用户信息开始-->
+                    <form class="form-horizontal" name="userAdd" id="userAdd" method="post" action="{:url('userAdd')}">
+                        <input type="text" name="id" id="id"  value=""  style="display: none;">
+                        <input type="text" id="groupid" name="groupid" value="" style="display: none;">
+                        <input type="text" id="groupname" name="groupname" value="" style="display: none;">
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label class="col-xs-3 control-label">合同名称：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <input id="hetong_name" type="text" class="form-control" name="hetong_name" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label class="col-xs-3 control-label">合同编号：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <input id="sn" type="text" class="form-control" name="sn" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label class="col-xs-3 control-label">标段名称：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <input id="biaoduan_name" type="text" class="form-control" name="biaoduan_name" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label class="col-xs-3 control-label">标段编号：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <input id="biaoduan_sn" type="text" class="form-control" name="biaoduan_sn" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label class="col-xs-3 control-label">项目名称：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <input id="xiangmu_name" type="text" class="form-control" name="biaoduan_sn" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label class="col-xs-3 control-label">甲方：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <select name="first_party" id="first_party" class="form-control" >
+                                        <option value="安徽金寨抽水蓄能有限公司">安徽金寨抽水蓄能有限公司</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label class="col-xs-3 control-label">乙方：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <select name="second_party" id="second_party" class="form-control" >
+                                        <option value="中国水利水电建设工程咨询北京有限公司">中国水利水电建设工程咨询北京有限公司</option>
+                                        <option value="中国葛洲坝集团股份有限公司">中国葛洲坝集团股份有限公司</option>
+                                        <option value="中国水利水电第六工程局有限公司">中国水利水电第六工程局有限公司</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">签订日期：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input type="text" id="qianding_date" class="form-control datepicker" name="qianding_date" placeholder="请选择日期" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">开工日期：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input type="text" id="kaigong_date" class="form-control datepicker" name="kaigong_date" placeholder="请选择日期" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">合同工期(月)：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input name="contract_time" id="contract_time" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">质保期(月)：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input name="warranty_time" id="warranty_time" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <label class="col-xs-3 control-label">合同金额(万元)：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <input name="money" id="money" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-offset-6">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                    <!--新增用户信息结束-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {include file="public/footer" /}
 
 
 </body>
+<script src="__JS__/jquery.dataTables.min.js"></script>
+<script src="__JS__/jquery.jedate.js"></script>
+<script>
+//    $(".datepicker").datepicker({
+//        language: "zh-CN",
+//        autoclose: true,//选中之后自动隐藏日期选择框
+////        clearBtn: true,//清除按钮
+////        todayBtn: true,//今日按钮
+//        format: "yyyy-mm-dd"//日期格式，详见 http://bootstrap-datepicker.readthedocs.org/en/release/options.html#format
+//    });
+$("#qianding_date").jeDate({
+    format: "YYYY-MM-DD"
+});
+$("#kaigong_date").jeDate({
+    format: "YYYY-MM-DD"
+});
+function edit(that) {
+    var hid = $(that).parent("td").parent("tr").children("td:first-child").text();
+    $("#myModal h5").text("编辑合同信息");
+    $("#myModal").modal('show');
+}
+var admin_table = $('#admin_table').DataTable( {
+    "processing": true,
+    "serverSide": true,
+    "ajax": {
+        "url": "__SCRIPT__/hetong_table.php"
+    },
+    "columnDefs": [
+        {
+            "searchable": false,
+            "orderable": false,
+            "targets": [6],
+            "render" :  function(data,type,row) {
+                var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
+                html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                return html;
+            }
+        }
+    ],
+    "language": {
+        "lengthMenu": "每页_MENU_ 条记录",
+        "zeroRecords": "没有找到记录",
+        "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+        "infoEmpty": "无记录",
+        "search": "搜索：",
+        "infoFiltered": "(从 _MAX_ 条记录过滤)",
+        "paginate": {
+            "previous": "上一页",
+            "next": "下一页"
+        }
+    }
+} );
+$(".mybtn").click(function () {
+        $("#myModal h5").text("添加合同信息");
+        $("#myModal").modal('show');
+})
+//提交
+$(function(){
+    $('#userAdd').ajaxForm({
+//        beforeSubmit: checkForm,
+        success: complete,
+        dataType: 'json'
+    });
+
+//    function checkForm(){
+//        if( '' == $.trim($('#username').val())){
+//            layer.msg('请输入用户名',{icon:2,time:1500,shade: 0.1}, function(index){
+//                layer.close(index);
+//            });
+//            return false;
+//        }
+//        var txt1 = $("#myModal h5").text();
+//        if(txt1.search(/编辑用户/) < 0){
+//            if( '' == $.trim($('#password').val())){
+//                layer.msg('请输入登录密码',{icon:2,time:1500,shade: 0.1}, function(index){
+//                    layer.close(index);
+//                });
+//                return false;
+//            }
+//        }
+//
+//        if( '' == $.trim($('#real_name').val())){
+//            layer.msg('请输入真实姓名',{icon:2,time:1500,shade: 0.1}, function(index){
+//                layer.close(index);
+//            });
+//            return false;
+//        }
+//    }
+
+
+    function complete(data){
+        console.log($("#action").val())
+        console.log(data);
+        if(data.code==1){
+            $("#myModal").modal('hide');
+            layer.msg("保存成功");
+            admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
+        }else{
+            layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+            return false;
+        }
+    }
+
+});
+</script>
 </html>
