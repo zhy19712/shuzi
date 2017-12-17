@@ -54,10 +54,7 @@
                 </div>
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
-                    <form class="form-horizontal" name="userAdd" id="userAdd" method="post" action="{:url('userAdd')}">
-                        <input type="text" name="id" id="id"  value=""  style="display: none;">
-                        <input type="text" id="groupid" name="groupid" value="" style="display: none;">
-                        <input type="text" id="groupname" name="groupname" value="" style="display: none;">
+                    <form class="form-horizontal" name="contractAdd" id="contractAdd" method="post" action="{:url('contractAdd')}">
                         <div class="form-group">
                             <div class="col-xs-12">
                                 <label class="col-xs-3 control-label">合同名称：</label>
@@ -245,7 +242,7 @@ $(".mybtn").click(function () {
 })
 //提交
 $(function(){
-    $('#userAdd').ajaxForm({
+    $('#contractAdd').ajaxForm({
 //        beforeSubmit: checkForm,
         success: complete,
         dataType: 'json'
