@@ -7,9 +7,10 @@
  */
 
 namespace app\admin\model;
+use think\Model;
+use think\Db;
 
-
-class ProjectModel
+class ProjectModel extends Model
 {
     protected $name = 'project';
 
