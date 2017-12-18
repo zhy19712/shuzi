@@ -187,13 +187,6 @@
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/jquery.jedate.js"></script>
 <script>
-//    $(".datepicker").datepicker({
-//        language: "zh-CN",
-//        autoclose: true,//选中之后自动隐藏日期选择框
-////        clearBtn: true,//清除按钮
-////        todayBtn: true,//今日按钮
-//        format: "yyyy-mm-dd"//日期格式，详见 http://bootstrap-datepicker.readthedocs.org/en/release/options.html#format
-//    });
 $("#qianding_date").jeDate({
     format: "YYYY-MM-DD"
 });
@@ -204,6 +197,15 @@ function edit(that) {
     var hid = $(that).parent("td").parent("tr").children("td:first-child").text();
     $("#myModal h5").text("编辑合同信息");
     $("#myModal").modal('show');
+    $.ajax({
+        url: "",
+        type: "post",
+        data: {id:hid},
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+        }
+    })
 }
 var admin_table = $('#admin_table').DataTable( {
     "processing": true,
@@ -239,6 +241,14 @@ var admin_table = $('#admin_table').DataTable( {
 $(".mybtn").click(function () {
         $("#myModal h5").text("添加合同信息");
         $("#myModal").modal('show');
+        $.ajax({
+            url: "./userEdit",
+            type: "post",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+            }
+        })
 })
 //提交
 $(function(){
@@ -280,7 +290,7 @@ $(function(){
         if(data.code==1){
             $("#myModal").modal('hide');
             layer.msg("保存成功");
-            admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
+            admin_table.ajax.url("__SCRIPT__/hetong_table.php").load();
         }else{
             layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
             return false;
