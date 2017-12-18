@@ -55,6 +55,7 @@
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="contractAdd" id="contractAdd" method="post" action="{:url('contractAdd')}">
+                        <input type="text" id="id" name="id" style="display: none;">
                         <div class="form-group">
                             <div class="col-xs-12">
                                 <label class="col-xs-3 control-label">合同名称：</label>
@@ -218,6 +219,7 @@ function del(that) {
 function edit(that) {
     var hid = $(that).parent("td").parent("tr").children("td:first-child").text();
     $("#myModal h5").text("编辑合同信息");
+    $("#id").val(hid);
     $("#myModal").modal('show');
     $.ajax({
         url: "./contractEdit",
@@ -293,8 +295,18 @@ $(".mybtn").click(function () {
             url: "./contractAddUI",
             type: "post",
             dataType: "json",
-            success: function (data) {
-                console.log(data);
+            success: function (res) {
+                console.log(res);
+                if(res.msg == "success"){
+                    $.each(res.first,function (i,n) {
+                        var str = "<option value="+ n.name +">"+ n.name +"</option>"
+                        $("#first_party").append(str);
+                    });
+                    $.each(res.second,function (i,n) {
+                        var str = "<option value="+ n.name +">"+ n.name +"</option>"
+                        $("#second_party").append(str);
+                    });
+                }
             }
         })
 })
