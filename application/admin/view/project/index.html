@@ -85,7 +85,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">主要单元工程：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="magin_project" id="magin_project" class="form-control" >
+                                    <select name="main_project" id="main_project" class="form-control" >
                                         <option value="是">是</option>
                                         <option value="否">否</option>
                                     </select>
@@ -176,78 +176,14 @@
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 <script type="text/javascript">
-    var groupid;
-    var $list = $('#fileList');
-    //上传图片,初始化WebUploader
-    var uploader = WebUploader.create({
-
-        auto: true,// 选完文件后，是否自动上传。
-        swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-        server: "{:url('Upload/uploadface')}",// 文件接收服务端。
-        duplicate :true,// 重复上传图片，true为可重复false为不可重复
-        pick: '#imgPicker',// 选择文件的按钮。可选。
-
-        accept: {
-            title: 'Images',
-            extensions: 'gif,jpg,jpeg,bmp,png',
-            mimeTypes: 'image/jpg,image/jpeg,image/png'
-        },
-
-        'onUploadSuccess': function(file, data, response) {
-            $("#data_photo").val(data._raw);
-            $("#img_data").attr('src', '/uploads/face/' + data._raw).show();
-        }
-    });
-
-    uploader.on( 'fileQueued', function( file ) {
-        $list.html( '<div id="' + file.id + '" class="item">' +
-            '<h4 class="info">' + file.name + '</h4>' +
-            '<p class="state">正在上传...</p>' +
-            '</div>' );
-    });
-
-    // 文件上传成功
-    uploader.on( 'uploadSuccess', function( file ) {
-        $( '#'+file.id ).find('p.state').text('上传成功！');
-    });
-
-    // 文件上传失败，显示上传出错。
-    uploader.on( 'uploadError', function( file ) {
-        $( '#'+file.id ).find('p.state').text('上传出错!');
-    });
 
     //提交
     $(function(){
-        $('#userAdd').ajaxForm({
-//            beforeSubmit: checkForm,
+        $('#projectAdd').ajaxForm({
             success: complete,
             dataType: 'json'
         });
 
-//        function checkForm(){
-//            if( '' == $.trim($('#username').val())){
-//                layer.msg('请输入用户名',{icon:2,time:1500,shade: 0.1}, function(index){
-//                    layer.close(index);
-//                });
-//                return false;
-//            }
-//            var txt1 = $("#myModal h5").text();
-//            if(txt1.search(/编辑用户/) < 0){
-//                if( '' == $.trim($('#password').val())){
-//                    layer.msg('请输入登录密码',{icon:2,time:1500,shade: 0.1}, function(index){
-//                        layer.close(index);
-//                    });
-//                    return false;
-//                }
-//            }
-//
-//            if( '' == $.trim($('#real_name').val())){
-//                layer.msg('请输入真实姓名',{icon:2,time:1500,shade: 0.1}, function(index){
-//                    layer.close(index);
-//                });
-//                return false;
-//            }
-//        }
 
 
         function complete(data){
@@ -256,7 +192,7 @@
             if(data.code==1){
                 $("#myModal").modal('hide');
                 layer.msg("保存成功");
-                admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
+                admin_table.ajax.url("__SCRIPT__/project_table.php").load();
             }else{
                 layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                 return false;
@@ -330,66 +266,37 @@
 } );
 $("div.mybtn").html('<div>新增</div>');
 $("div.mybtn").click(function () {
-//    if(!$("#mycontent>p").text() || mytree_node.children){
-//        console.log(mytree_node)
-//        layer.msg("请选择组织机构");
-//    }else {
-//        var dept_name = $("#mycontent>p").text();
         $("#myModal h5").text("新增单元工程");
         $("#myModal input").val("");
-//        $("#myModal textarea").val("");
-//        $('#fileList').empty();
-//        $('#open').val("1").iCheck('check');
-//        $('#close').val("0").iCheck('uncheck');
-//        var str = "<option value="+ dept_name +">"+ dept_name +"</option>"
-//        $("#dept").empty().append(str).val(dept_name);
-//        $("#groupname").val(dept_name);
-//        $("#img_data").attr("src","/static/admin/images/head_default.gif");
         $("#myModal").modal('show');
 //    }
 })
 //编辑用户
 function edit(that) {
     var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
+    $("#myModal h5").text("编辑单元工程");
     $("#id").val(uid);
     $.ajax({
-        url: "./userEdit",
+        url: "./projectEdit",
         type: "post",
-        data: {uid:uid},
+        data: {id:uid},
         dataType: "json",
         success: function (res) {
             console.log(res);
             if(res.msg == "success"){
                 var data = res.data;
-                if(data.status == 1){
-                    $('#open').iCheck('check');
-                    $('#close').iCheck('uncheck');
-                }else {
-                    $('#open').iCheck('uncheck');
-                    $('#close').iCheck('check');
-                }
-                if(data.portrait){
-                    $("#img_data").attr("src","__PHOTO__/" + data.portrait);
-                }else {
-                    $("#img_data").attr("src","/static/admin/images/head_default.gif");
-                }
-                $("#dept").empty();
-                var group = JSON.parse(res.group);
-                console.log(group)
-                $.each(group,function (i,n) {
-                    var str = "<option value="+ n.name +">"+ n.name +"</option>";
-                    $("#dept").append(str);
-                });
-                $("#dept").val(data.dept);
-                $("#dept").on("change",function () {
-                    var val1 = $(this).val();
-                    $.each(group,function (i,n) {
-                        if(n.name == val1){
-                            $("#groupid").val(n.id);
-                        }
-                    })
-                })
-
+                $("#project_name").val(data.project_name);
+                $("#project_sn").val(data.project_sn);
+                $("#main_project").val(data.main_project);
+                $("#kind").val(data.kind);
+                $("#kaigong_date").val(data.kaigong_date);
+                $("#wangong_date").val(data.wangong_date);
+                $("#quantities").val(data.quantities);
+                $("#pingding_date").val(data.pingding_date);
+                $("#zhuanghaoqi").val(data.zhuanghaoqi);
+                $("#zhuanghaozhi").val(data.zhuanghaozhi);
+                $("#gaochengqi").val(data.gaochengqi);
+                $("#gaochengzhi").val(data.gaochengzhi);
                 $("#myModal").modal('show');
             }else {
                 layer.msg(res.msg);
@@ -399,30 +306,30 @@ function edit(that) {
 }
 
 //删除用户
-function myconfirm(id,url) {
-    layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
-        $.ajax({
-            url: url,
-            async: false,
-            data: {'id' : id},
-            type: "get",
-            dataType: "json",
-            success: function (res) {
-                if(res.code == 1){
-                    layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                    admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
-                }else{
-                    layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
-                }
-            }
-        })
-        layer.close(index);
-    })
-}
-function del(that) {
-    var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
-        myconfirm(uid,'{:url("userDel")}');
-}
+//    function myconfirm(id,url) {
+//        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+//            $.ajax({
+//                url: url,
+//                async: false,
+//                data: {'id' : id},
+//                type: "get",
+//                dataType: "json",
+//                success: function (res) {
+//                    if(res.code == 1){
+//                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+//                        admin_table.ajax.url("__SCRIPT__/project_table.php").load();
+//                    }else{
+//                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+//                    }
+//                }
+//            })
+//            layer.close(index);
+//        })
+//    }
+//    function del(that) {
+//        var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
+//        myconfirm(uid,'{:url("projectDel")}');
+//    }
 //组织结构
     var zTreeObj;
     function ajaxDataFilter(treeId, parentNode, responseData) {

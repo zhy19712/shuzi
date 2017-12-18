@@ -37,7 +37,7 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
     array( 'db' => 'zhuanghaozhi',  'dt' => 4 ),
     array( 'db' => 'gaochengqi',  'dt' => 5 ),
     array( 'db' => 'gaochengzhi',  'dt' => 6 ),
-    array( 'db' => 'magin_project',  'dt' => 7 )
+    array( 'db' => 'main_project',  'dt' => 7 )
 );
 
 // SQL server connection information数据库连接信息
