@@ -8,6 +8,7 @@
 
 namespace app\admin\controller;
 use app\admin\model\ContractModel;
+use app\admin\model\PartyModel;
 use think\Db;
 
 class contract extends Base
@@ -48,14 +49,17 @@ class contract extends Base
     public function contractEdit()
     {
         $contract = new ContractModel();
+        $party = new PartyModel();
 
         if(request()->isAjax()){
 
             $param = input('post.');
             $data = $contract->getOneContract($param['id']);
+            $first = $party->getFirstParties();
+            $second = $party->getSecondParties();
             //   $nodeStr = $role->getNodeInfo();
             //    return json(['data' => $data, 'group' => $nodeStr, 'msg' => "success"]);
-            return json(['data' => $data,  'msg' => "success"]);
+            return json(['data' => $data, 'first' => $first, 'second' => $second, 'msg' => "success"]);
         }
     }
 
