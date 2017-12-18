@@ -14,7 +14,7 @@ use think\Validate;
 class ContractValidate extends Validate
 {
     protected $rule = [
-        ['id', 'unique:contract', '管理员已经存在']
+        ['id', 'unique:contract', '合同信息已经存在']
     ];
 
 }
