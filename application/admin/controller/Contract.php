@@ -21,12 +21,27 @@ class contract extends Base
     }
 
     /**
-     * [add_group 添加合同信息]
+     * [add_group 添加合同信息(添加界面)]
+     */
+    public function contractAddUI()
+    {
+        if(request()->isAjax()){
+            $party = new PartyModel();
+            $first = $party->getFirstParties();
+            $second = $party->getSecondParties();
+            return json(['first' => $first, 'second' => $second, 'msg' => "success"]);
+        }
+        return $this->fetch();
+    }
+
+
+
+    /**
+     * [add_group 添加合同信息(保存按钮)]
      */
     public function contractAdd()
     {
         $contract = new ContractModel();
-
         if(request()->isAjax()){
             if(empty($param['id']))
             {
@@ -39,7 +54,6 @@ class contract extends Base
                 $flag = $contract->editContract($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-
 
         }
         return $this->fetch();
