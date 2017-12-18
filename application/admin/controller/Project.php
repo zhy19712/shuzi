@@ -26,10 +26,11 @@ class project extends Base
     public function projectAdd()
     {
         $project = new ProjectModel();
+        $param = input('post.');
         if(request()->isAjax()){
             if(empty($param['id']))
             {
-                $param = input('post.');
+
                 $flag = $project->insertProject($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
