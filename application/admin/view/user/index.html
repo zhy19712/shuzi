@@ -489,42 +489,6 @@ function myuser_state(that) {
 }
 //组织结构
     var zTreeObj;
-    function ajaxDataFilter(treeId, parentNode, responseData) {
-        console.log(responseData)
-        var tree_data = responseData.data;
-        if (tree_data) {
-            for(var i =0; i < tree_data.length; i++) {
-                tree_data[i].name += "_filter";
-            }
-        }
-        return tree_data;
-    };
-    function zTreeBeforeRemove(treeId, treeNode) {
-        console.log(treeId,treeNode);
-        if(confirm("你确定删除"+ treeNode.name +"节点吗？")){
-            return true;
-        }
-        return false;
-    }
-    function addHoverDom(treeId, treeNode) {
-        var aObj = $("#" + treeNode.tId + "_a");
-        if ($("#diyBtn_"+treeNode.id).length>0) return;
-        var editStr = "<span id='diyBtn_space_" +treeNode.id+ "' class='button' style='background-position: -144px 0;'> </span>"
-            + "<button type='button' class='diyBtn1' id='diyBtn_" + treeNode.id
-            + "' title='"+treeNode.name+"' onfocus='this.blur();'></button>";
-        aObj.append(editStr);
-        var btn = $("#diyBtn_space_"+treeNode.id);
-        if (btn) btn.bind("click", function(){
-            var child_name = prompt("请输入子节点名称");
-            if(child_name){
-                console.log(child_name)
-            }
-        });
-    };
-    function removeHoverDom(treeId, treeNode) {
-        $("#diyBtn_"+treeNode.id).unbind().remove();
-        $("#diyBtn_space_" +treeNode.id).unbind().remove();
-    };
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
@@ -568,17 +532,16 @@ function myuser_state(that) {
             }
         },
         callback: {
-            onClick: zTreeOnClick,
-            beforeRemove: zTreeBeforeRemove
+            onClick: zTreeOnClick
         },
         edit: {
             drag : {
-                isMove : true,
-                prev : true,
-                next : true,
-                inner : true
+                isMove : false,
+                prev : false,
+                next : false,
+                inner : false
             },
-            enable : true,
+            enable : false,
             editNameSelectAll: true,
             showRemoveBtn: true,
             removeTitle: "删除节点",
@@ -586,10 +549,6 @@ function myuser_state(that) {
             renameTitle: "编辑节点名称",
             showAddBtn: true,
             addTitle: "添加节点"
-        },
-        view: {
-            addHoverDom: addHoverDom,
-            removeHoverDom: removeHoverDom
         }
     };
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);

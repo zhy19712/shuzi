@@ -305,50 +305,57 @@ function edit(that) {
     })
 }
 
-//删除用户
-//    function myconfirm(id,url) {
-//        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+//删除
+    function myconfirm(id,url) {
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: url,
+                async: false,
+                data: {'id' : id},
+                type: "get",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        admin_table.ajax.url("__SCRIPT__/project_table.php").load();
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
+        })
+    }
+    function del(that) {
+        var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
+        myconfirm(uid,'{:url("projectDel")}');
+    }
+//组织结构
+    var zTreeObj;
+//树结构删除节点
+    function zTreeBeforeRemove(treeId, treeNode) {
+        console.log(treeId,treeNode);
+        if(layer.confirm("你确定删除"+ treeNode.name +"节点吗？")){
+            var tid = treeNode.id;
+            var name = treeNode.name;
 //            $.ajax({
-//                url: url,
-//                async: false,
-//                data: {'id' : id},
-//                type: "get",
+//                url: "",
+//                type: "post",
+//                data: {id:tid},
 //                dataType: "json",
 //                success: function (res) {
 //                    if(res.code == 1){
 //                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-//                        admin_table.ajax.url("__SCRIPT__/project_table.php").load();
+//                         zTreeObj.refresh();
 //                    }else{
 //                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
 //                    }
 //                }
 //            })
-//            layer.close(index);
-//        })
-//    }
-//    function del(that) {
-//        var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
-//        myconfirm(uid,'{:url("projectDel")}');
-//    }
-//组织结构
-    var zTreeObj;
-    function ajaxDataFilter(treeId, parentNode, responseData) {
-        console.log(responseData)
-        var tree_data = responseData.data;
-        if (tree_data) {
-            for(var i =0; i < tree_data.length; i++) {
-                tree_data[i].name += "_filter";
-            }
-        }
-        return tree_data;
-    };
-    function zTreeBeforeRemove(treeId, treeNode) {
-        console.log(treeId,treeNode);
-        if(confirm("你确定删除"+ treeNode.name +"节点吗？")){
-            return true;
         }
         return false;
     }
+//树结构添加节点
     function addHoverDom(treeId, treeNode) {
         var aObj = $("#" + treeNode.tId + "_a");
         if ($("#diyBtn_"+treeNode.id).length>0) return;
@@ -357,18 +364,59 @@ function edit(that) {
             + "' title='"+treeNode.name+"' onfocus='this.blur();'></button>";
         aObj.append(editStr);
         var btn = $("#diyBtn_space_"+treeNode.id);
-        if (btn) btn.bind("click", function(){
-            var child_name = prompt("请输入子节点名称");
-            if(child_name){
-                console.log(child_name)
-            }
-        });
-    };
+        if (btn){
+            btn.bind("click", function(){
+                    layer.prompt({
+                        value: '',
+                        title: '请输入子节点名称'
+                    }, function(value, index, elem){
+//                        $.ajax({
+//                            url: "",
+//                            type: "post",
+//                            data: {name:value,pid:treeNode.id},
+//                            dataType: "post",
+//                            success: function (res) {
+//                                if(res.code == 1){
+//                                    layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+//                                    zTreeObj.refresh();
+//                                }else{
+//                                    layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+//                                }
+//                            }
+//                        })
+                        layer.close(index);
+                    });
+                });
+                return false;
+            };
+        }
     function removeHoverDom(treeId, treeNode) {
         $("#diyBtn_"+treeNode.id).unbind().remove();
         $("#diyBtn_space_" +treeNode.id).unbind().remove();
     };
-    //点击获取节点名称
+//树结构编辑节点
+    var edit_name;
+    function zTreeBeforeRename(treeId, treeNode, newName, isCancel) {
+        console.log(treeNode);
+        edit_name = treeNode.name;
+    }
+    function zTreeOnRename(event, treeId, treeNode, isCancel) {
+        console.log(treeNode);
+        if(treeNode.name != edit_name){
+//            $.ajax({
+//                url: "",
+//                type: "post",
+//                data: {name:treeNode.name,id:treeNode.id},
+//                dataType: "json",
+//                success: function (res) {
+//                    if(res.msg != "success"){
+//                        layer.msg(res.msg);
+//                    }
+//                }
+//            })
+        }
+    }
+//点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
         mytree_node = treeNode;
@@ -412,7 +460,9 @@ function edit(that) {
         },
         callback: {
             onClick: zTreeOnClick,
-            beforeRemove: zTreeBeforeRemove
+            beforeRemove: zTreeBeforeRemove,
+            onRename: zTreeOnRename,
+            beforeRename: zTreeBeforeRename
         },
         edit: {
             drag : {

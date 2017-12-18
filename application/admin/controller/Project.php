@@ -7,6 +7,7 @@
  */
 
 namespace app\admin\controller;
+use app\admin\model\DivideModel;
 use app\admin\model\ProjectModel;
 use think\Db;
 
@@ -14,9 +15,12 @@ class project extends Base
 {
     public function index()
     {
-
-
-        return $this->fetch();
+        if(request()->isAjax()){
+            $role = new DivideModel();
+            $nodeStr = $role->getNodeInfo();
+            return json($nodeStr);}
+        else
+            return $this->fetch();
     }
 
 
