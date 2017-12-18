@@ -31,6 +31,7 @@ class project extends Base
 
             if(empty($param['id']))
             {
+
                 $flag = $project->insertProject($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
