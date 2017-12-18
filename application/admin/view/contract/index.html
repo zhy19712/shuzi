@@ -105,7 +105,6 @@
                                 <label class="col-xs-3 control-label">甲方：</label>
                                 <div class="myblock col-xs-8 input-group">
                                     <select name="first_party" id="first_party" class="form-control" >
-                                        <option value="安徽金寨抽水蓄能有限公司">安徽金寨抽水蓄能有限公司</option>
                                     </select>
                                 </div>
                             </div>
@@ -116,9 +115,6 @@
                                 <label class="col-xs-3 control-label">乙方：</label>
                                 <div class="myblock col-xs-8 input-group">
                                     <select name="second_party" id="second_party" class="form-control" >
-                                        <option value="中国水利水电建设工程咨询北京有限公司">中国水利水电建设工程咨询北京有限公司</option>
-                                        <option value="中国葛洲坝集团股份有限公司">中国葛洲坝集团股份有限公司</option>
-                                        <option value="中国水利水电第六工程局有限公司">中国水利水电第六工程局有限公司</option>
                                     </select>
                                 </div>
                             </div>
@@ -231,6 +227,7 @@ function edit(that) {
         success: function (res) {
             console.log(res);
             if(res.msg == "success"){
+                $("#myModal select").empty();
                 var data = res.data;
                 $("#biaoduan_name").val(data.biaoduan_name);
                 $("#biaoduan_sn").val(data.biaoduan_sn);
@@ -242,6 +239,16 @@ function edit(that) {
                 $("#sn").val(data.sn);
                 $("#warranty_time").val(data.warranty_time);
                 $("#xiangmu_name").val(data.xiangmu_name);
+                $.each(res.first,function (i,n) {
+                    var str = "<option value="+ n.name +">"+ n.name +"</option>"
+                    $("#first_party").append(str);
+                });
+                $.each(res.second,function (i,n) {
+                    var str = "<option value="+ n.name +">"+ n.name +"</option>"
+                    $("#second_party").append(str);
+                });
+                $("#first_party").val(data.first_party);
+                $("#second_party").val(data.second_party);
             }
         }
     })
@@ -279,9 +286,11 @@ var admin_table = $('#admin_table').DataTable( {
 } );
 $(".mybtn").click(function () {
         $("#myModal h5").text("添加合同信息");
+        $("#myModal input").val("");
+        $("#myModal select").empty();
         $("#myModal").modal('show');
         $.ajax({
-            url: "./contractEdit",
+            url: "./contractAddUI",
             type: "post",
             dataType: "json",
             success: function (data) {
