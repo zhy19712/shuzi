@@ -42,15 +42,17 @@ class contract extends Base
     public function contractAdd()
     {
         $contract = new ContractModel();
+        $param = input('post.');
         if(request()->isAjax()){
             if(empty($param['id']))
             {
-                $param = input('post.');
+
                 $flag = $contract->insertContract($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
             else if(!empty($param['id']))
             {
+
                 $flag = $contract->editContract($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }

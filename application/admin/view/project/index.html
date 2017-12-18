@@ -37,9 +37,10 @@
                                 <th>ID</th>
                                 <th>单元工程名称</th>
                                 <th>单元工程编号</th>
-                                <!--<th>用户角色</th>-->
-                                <th>起止桩号</th>
-                                <th>起止高程</th>
+                                <th>桩号(起)</th>
+                                <th>桩号(止)</th>
+                                <th>高程(起)</th>
+                                <th>高程(止)</th>
                                 <th>主要单元工程</th>
                                 <th>操作</th>
                             </tr>
@@ -62,8 +63,6 @@
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="userAdd" id="userAdd" method="post" action="{:url('userAdd')}">
                         <input type="text" name="id" id="id"  value=""  style="display: none;">
-                        <input type="text" id="groupid" name="groupid" value="" style="display: none;">
-                        <input type="text" id="groupname" name="groupname" value="" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">单元工程名称：</label>
@@ -217,35 +216,35 @@
     //提交
     $(function(){
         $('#userAdd').ajaxForm({
-            beforeSubmit: checkForm,
+//            beforeSubmit: checkForm,
             success: complete,
             dataType: 'json'
         });
 
-        function checkForm(){
-            if( '' == $.trim($('#username').val())){
-                layer.msg('请输入用户名',{icon:2,time:1500,shade: 0.1}, function(index){
-                    layer.close(index);
-                });
-                return false;
-            }
-            var txt1 = $("#myModal h5").text();
-            if(txt1.search(/编辑用户/) < 0){
-                if( '' == $.trim($('#password').val())){
-                    layer.msg('请输入登录密码',{icon:2,time:1500,shade: 0.1}, function(index){
-                        layer.close(index);
-                    });
-                    return false;
-                }
-            }
-
-            if( '' == $.trim($('#real_name').val())){
-                layer.msg('请输入真实姓名',{icon:2,time:1500,shade: 0.1}, function(index){
-                    layer.close(index);
-                });
-                return false;
-            }
-        }
+//        function checkForm(){
+//            if( '' == $.trim($('#username').val())){
+//                layer.msg('请输入用户名',{icon:2,time:1500,shade: 0.1}, function(index){
+//                    layer.close(index);
+//                });
+//                return false;
+//            }
+//            var txt1 = $("#myModal h5").text();
+//            if(txt1.search(/编辑用户/) < 0){
+//                if( '' == $.trim($('#password').val())){
+//                    layer.msg('请输入登录密码',{icon:2,time:1500,shade: 0.1}, function(index){
+//                        layer.close(index);
+//                    });
+//                    return false;
+//                }
+//            }
+//
+//            if( '' == $.trim($('#real_name').val())){
+//                layer.msg('请输入真实姓名',{icon:2,time:1500,shade: 0.1}, function(index){
+//                    layer.close(index);
+//                });
+//                return false;
+//            }
+//        }
 
 
         function complete(data){
@@ -294,66 +293,39 @@
     });
     var mytree_node;
 
-//    var admin_table = $('#admin_table').DataTable( {
-//    "processing": true,
-//    "serverSide": true,
-//    "ajax": {
-//        "url": "__SCRIPT__/test.php"
-//    },
-//    "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
-//    "columnDefs": [
-//        {
-//            "searchable": false,
-//            "orderable": false,
-//            "targets": [2],
-//            "render" :  function(data,type,row) {
-//                if(data){
-//                    var html = "<img style='width: 30px;height: 30px;border-radius: 50%;' src=__PHOTO__/"+ data +">";
-//                }else {
-//                    var html = "<img style='width: 30px;height: 30px;border-radius: 50%;' src=/static/admin/images/head_default.gif>";
-//                }
-//                return html;
-//            }
-//        },
-//        {
-//            "searchable": false,
-//            "orderable": false,
-//            "targets": [7],
-//            "render" :  function(data,type,row) {
-//                if(data == 1){
-//                    var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='myuser_state(this);' value='开启'/>";
-//                }else {
-//                    var html = "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='myuser_state(this);' value='禁用'/>";
-//                }
-//
-//                return html;
-//            }
-//        },
-//        {
-//            "searchable": false,
-//            "orderable": false,
-//            "targets": [8],
-//            "render" :  function(data,type,row) {
-//                var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
-//                html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
-//                return html;
-//            }
-//        }
-//    ],
-//    "language": {
-//        "lengthMenu": "每页_MENU_ 条记录",
-//        "zeroRecords": "没有找到记录",
-//        "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-//        "infoEmpty": "无记录",
-//        "search": "搜索：",
-//        "infoFiltered": "(从 _MAX_ 条记录过滤)",
-//        "paginate": {
-//            "previous": "上一页",
-//            "next": "下一页"
-//        }
-//    }
-//} );
-$("div.mybtn").html('<div>添加用户</div>');
+    var admin_table = $('#admin_table').DataTable( {
+    "processing": true,
+    "serverSide": true,
+    "ajax": {
+        "url": "__SCRIPT__/test.php"
+    },
+    "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+    "columnDefs": [
+        {
+            "searchable": false,
+            "orderable": false,
+            "targets": [8],
+            "render" :  function(data,type,row) {
+                var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
+                html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                return html;
+            }
+        }
+    ],
+    "language": {
+        "lengthMenu": "每页_MENU_ 条记录",
+        "zeroRecords": "没有找到记录",
+        "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+        "infoEmpty": "无记录",
+        "search": "搜索：",
+        "infoFiltered": "(从 _MAX_ 条记录过滤)",
+        "paginate": {
+            "previous": "上一页",
+            "next": "下一页"
+        }
+    }
+} );
+$("div.mybtn").html('<div>新增</div>');
 $("div.mybtn").click(function () {
 //    if(!$("#mycontent>p").text() || mytree_node.children){
 //        console.log(mytree_node)
@@ -376,6 +348,7 @@ $("div.mybtn").click(function () {
 //编辑用户
 function edit(that) {
     var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
+    $("#id").val(uid);
     $.ajax({
         url: "./userEdit",
         type: "post",
@@ -385,20 +358,6 @@ function edit(that) {
             console.log(res);
             if(res.msg == "success"){
                 var data = res.data;
-                $('#fileList').empty();
-                $("#id").val(uid);
-                $("#groupname").val(data.groupname);
-                $("#groupid").val(data.groupid);
-                $("#real_name").val(data.real_name);
-                $("#sex").val(data.sex);
-                $("#username").val(data.username);
-                $("#mobile").val(data.mobile);
-                $("#tele").val(data.tele);
-                $("#position").val(data.position);
-                $("#email").val(data.email);
-                $("#wechat").val(data.wechat);
-                $("#remark").val(data.remark);
-                $("#myModal h5").text(data.dept + "-编辑用户");
                 if(data.status == 1){
                     $('#open').iCheck('check');
                     $('#close').iCheck('uncheck');
@@ -435,9 +394,6 @@ function edit(that) {
         }
     })
 }
-function userEdit(id){
-    location.href = './userEdit/id/'+id+'.html';
-}
 
 //删除用户
 function myconfirm(id,url) {
@@ -463,25 +419,6 @@ function myconfirm(id,url) {
 function del(that) {
     var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
         myconfirm(uid,'{:url("userDel")}');
-}
-//状态开启禁用
-function mystatus(id,url,that){
-    $.post(url,{id:id},function(data){
-        if(data.code==1){
-            $(that).removeClass("btn-primary btn-outline").addClass("btn-danger btn-outline").val("禁用");
-            layer.msg(data.msg,{icon:2,time:1500,shade: 0.1,});
-            return false;
-        }else{
-            $(that).removeClass("btn-danger btn-outline").addClass("btn-primary btn-outline").val("开启");
-            layer.msg(data.msg,{icon:1,time:1500,shade: 0.1,});
-            return false;
-        }
-    });
-    return false;
-}
-function myuser_state(that) {
-    var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
-    mystatus(uid,'{:url("user_state")}',that);
 }
 //组织结构
     var zTreeObj;
