@@ -95,7 +95,7 @@
                             <div class="col-xs-12">
                                 <label class="col-xs-3 control-label">项目名称：</label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <input id="xiangmu_name" type="text" class="form-control" name="biaoduan_sn" >
+                                    <input id="xiangmu_name" type="text" class="form-control" name="xiangmu_name" >
                                 </div>
                             </div>
                         </div>
@@ -193,17 +193,56 @@ $("#qianding_date").jeDate({
 $("#kaigong_date").jeDate({
     format: "YYYY-MM-DD"
 });
+//删除
+function myconfirm(id,url) {
+    layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+        $.ajax({
+            url: url,
+            async: false,
+            data: {'id' : id},
+            type: "get",
+            dataType: "json",
+            success: function (res) {
+                if(res.code == 1){
+                    layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                    admin_table.ajax.url("__SCRIPT__/hetong_table.php").load();
+                }else{
+                    layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                }
+            }
+        })
+        layer.close(index);
+    })
+}
+function del(that) {
+    var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
+    myconfirm(uid,'{:url("contractDel")}');
+}
+//编辑
 function edit(that) {
     var hid = $(that).parent("td").parent("tr").children("td:first-child").text();
     $("#myModal h5").text("编辑合同信息");
     $("#myModal").modal('show');
     $.ajax({
-        url: "",
+        url: "./contractEdit",
         type: "post",
         data: {id:hid},
         dataType: "json",
-        success: function (data) {
-            console.log(data);
+        success: function (res) {
+            console.log(res);
+            if(res.msg == "success"){
+                var data = res.data;
+                $("#biaoduan_name").val(data.biaoduan_name);
+                $("#biaoduan_sn").val(data.biaoduan_sn);
+                $("#contract_time").val(data.contract_time);
+                $("#hetong_name").val(data.hetong_name);
+                $("#kaigong_date\n").val(data.kaigong_date);
+                $("#money").val(data.money);
+                $("#qianding_date").val(data.qianding_date);
+                $("#sn").val(data.sn);
+                $("#warranty_time").val(data.warranty_time);
+                $("#xiangmu_name").val(data.xiangmu_name);
+            }
         }
     })
 }
@@ -242,7 +281,7 @@ $(".mybtn").click(function () {
         $("#myModal h5").text("添加合同信息");
         $("#myModal").modal('show');
         $.ajax({
-            url: "./userEdit",
+            url: "./contractEdit",
             type: "post",
             dataType: "json",
             success: function (data) {
