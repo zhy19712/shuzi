@@ -61,7 +61,7 @@
                 </div>
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
-                    <form class="form-horizontal" name="userAdd" id="userAdd" method="post" action="{:url('userAdd')}">
+                    <form class="form-horizontal" name="projectAdd" id="projectAdd" method="post" action="{:url('projectAdd')}">
                         <input type="text" name="id" id="id"  value=""  style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
@@ -85,7 +85,10 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">主要单元工程：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="magin_project" type="text" class="form-control" name="magin_project" >
+                                    <select name="magin_project" id="magin_project" class="form-control" >
+                                        <option value="是">是</option>
+                                        <option value="否">否</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
@@ -297,7 +300,7 @@
     "processing": true,
     "serverSide": true,
     "ajax": {
-        "url": "__SCRIPT__/test.php"
+        "url": "__SCRIPT__/project_table.php"
     },
     "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
     "columnDefs": [
@@ -332,8 +335,8 @@ $("div.mybtn").click(function () {
 //        layer.msg("请选择组织机构");
 //    }else {
 //        var dept_name = $("#mycontent>p").text();
-//        $("#myModal h5").text(dept_name + "-添加用户");
-//        $("#myModal input").val("");
+        $("#myModal h5").text("新增单元工程");
+        $("#myModal input").val("");
 //        $("#myModal textarea").val("");
 //        $('#fileList').empty();
 //        $('#open').val("1").iCheck('check');

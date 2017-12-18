@@ -20,7 +20,7 @@
  */
 
 // DB table to use
-$table = 'think_contract';
+$table = 'think_project';
 
 // Table's primary key
 $primaryKey = 'id';
