@@ -44,6 +44,21 @@ class contract extends Base
         return $this->fetch();
     }
 
+
+    public function contractEdit()
+    {
+        $contract = new ContractModel();
+
+        if(request()->isAjax()){
+
+            $param = input('post.');
+            $data = $contract->getOneContract($param['id']);
+            //   $nodeStr = $role->getNodeInfo();
+            //    return json(['data' => $data, 'group' => $nodeStr, 'msg' => "success"]);
+            return json(['data' => $data,  'msg' => "success"]);
+        }
+    }
+
     /**
      * [UserDel 删除合同信息]
      * @return [type] [description]
@@ -55,6 +70,9 @@ class contract extends Base
         $flag = $contract->delContract($id);
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
+
+
+
 
 
 

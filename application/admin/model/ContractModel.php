@@ -58,5 +58,25 @@ class ContractModel extends Model
     }
 
 
+    /**
+     * [getAllMenu 获取全部合同信息]
+     */
+    public function getAll()
+    {
+        return $this->order('id asc')->select();
+    }
+
+    /**
+     * 根据管理员id获取角色信息
+     * @param $id
+     */
+    public function getOneContract($id)
+    {
+        return $this->where('id', $id)->find();
+    }
+
+
+
+
 
 }
