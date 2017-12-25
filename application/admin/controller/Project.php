@@ -25,7 +25,7 @@ class project extends Base
 
 
     /**
-     * [projectAdd 添加合同信息(保存按钮)]
+     * [projectAdd 单元工程验收批次添加信息(保存按钮)]
      */
     public function projectAdd()
     {
@@ -50,7 +50,7 @@ class project extends Base
     }
 
     /**
-     * [projectEdit 编辑]
+     * [projectEdit 单元工程验收批次编辑]
      * @return [type] [description]
      */
     public function projectEdit()
@@ -66,7 +66,7 @@ class project extends Base
     }
 
     /**
-     * [projectDel 删除信息]
+     * [projectDel 单元工程验收批次删除]
      * @return [type] [description]
      */
     public function projectDel()
@@ -76,5 +76,63 @@ class project extends Base
         $flag = $project->delProject($id);
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
+
+
+    /**
+     * [projectAdd 节点添加(保存按钮)]
+     */
+    public function nodeAdd()
+    {
+        $node = new DivideModel();
+        $param = input('post.');
+        if(request()->isAjax()){
+
+            if(empty($param['id']))
+            {
+
+                $flag = $node->insertNode($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
+            else if(!empty($param['id']))
+            {
+                $flag = $node->editNode($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
+
+        }
+        return $this->fetch();
+    }
+
+    /**
+     * [projectEdit 节点编辑]
+     * @return [type] [description]
+     */
+    public function nodeEdit()
+    {
+        $node = new DivideModel();
+
+        if(request()->isAjax()){
+
+            $param = input('post.');
+            $data = $node->getOneNode($param['id']);
+            return json(['data' => $data, 'msg' => "success"]);
+        }
+    }
+
+    /**
+     * [projectDel 节点删除]
+     * @return [type] [description]
+     */
+    public function nodeDel()
+    {
+        $id = input('param.id');
+        $node = new DivideModel();
+        $flag = $node->delNode($id);
+        return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+    }
+
+
+
+
 
 }
