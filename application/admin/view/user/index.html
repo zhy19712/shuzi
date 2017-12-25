@@ -491,24 +491,26 @@ function myuser_state(that) {
     var zTreeObj;
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
-        console.log(treeNode);
+//        console.log(treeNode);
         mytree_node = treeNode;
         $("#groupname").val(treeNode.name);
         $("#mycontent>p").text(treeNode.name);
         $("#groupid").val(treeNode.id);
         groupid = treeNode.id;
-        //admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
+        console.log(groupid);
+        mytable1.ajax.url("/TableAddByName.do?name="+ encodeURI(encodeURI(county_name))).load();
+        admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
 
 
 
-        $.ajax({
-            type: "GET",
-            url: "__SCRIPT__/test.php",
-            dataType: "json",
-            success: function(data){
-                console.log(data);
-            }
-        });
+//        $.ajax({
+//            type: "GET",
+//            url: "__SCRIPT__/test.php",
+//            dataType: "json",
+//            success: function(data){
+//                console.log(data);
+//            }
+//        });
 
 
     };

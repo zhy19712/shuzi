@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
 <link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="/static/admin/css/jedate.css">
+<link rel="stylesheet" href="/static/admin/css/iconfont.css">
 <style>
     .mybtn{
         margin-right: 30px;
@@ -19,14 +20,33 @@
     #myModal input,#myModal select,#myModal textarea{
         background-color: transparent;
     }
+    #operate{
+        font-size: 0;
+        border: 1px solid #ccc;
+    }
+    #operate i {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+        line-height: 30px;
+        text-align: center;
+        color: #000;
+        cursor: pointer;
+    }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
-<div id="mycontent" style="width: 10%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;">
+<div id="mycontent" style="min-width: 15%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;">
     <div style="text-align: center;background-color:#1ab394;line-height: 30px;color: #fff;">工程划分</div>
+    <div id="operate">
+        <i class="iconfont icon-tianjiajiahaowubiankuang"></i>
+        <i class="iconfont icon-bianji"></i>
+        <i class="iconfont icon-shanchu"></i>
+        <i class="iconfont icon-daoru"></i>
+    </div>
     <div id="tree_container" class="ztree"></div>
     <p style="display: none;"></p>
 </div>
-<div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 88%;vertical-align: top;padding: 0;">
+<div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 83%;vertical-align: top;padding: 0;">
     <div class="ibox float-e-margins">
         <div class="ibox-content">
             <div class="row">
@@ -94,7 +114,12 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">质量账台类型：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input type="text" id="kind" class="form-control datepicker" name="kind" />
+                                    <select name="kind" id="kind" class="form-control" >
+                                        <option value="开挖">开挖</option>
+                                        <option value="支护">支护</option>
+                                        <option value="锚索">锚索</option>
+                                        <option value="排水孔">排水孔</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -183,6 +208,7 @@
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="level2Add" id="level2Add" method="post" action="{:url('nodeAdd')}">
+                        <input type="text" name="pid" value="" id="pid2" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">单位工程名称：</label>
@@ -236,6 +262,7 @@
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="level3Add" id="level3Add" method="post" action="{:url('nodeAdd')}">
+                        <input type="text" name="pid" value="" id="pid3" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">分部工程名称：</label>
@@ -289,6 +316,7 @@
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="level4Add" id="level4Add" method="post" action="{:url('nodeAdd')}">
+                        <input type="text" name="pid" value="" id="pid4" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">单元工程名称：</label>
@@ -346,62 +374,7 @@
 
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
-<script type="text/javascript">
 
-    //提交
-    $(function(){
-        $('#projectAdd').ajaxForm({
-            success: complete,
-            dataType: 'json'
-        });
-
-        $('#level2').ajaxForm({
-            success: complete,
-            dataType: 'json'
-        });
-
-        $('#level3').ajaxForm({
-            success: complete,
-            dataType: 'json'
-        });
-
-        $('#level4').ajaxForm({
-            success: complete,
-            dataType: 'json'
-        });
-
-        function complete(data){
-            console.log($("#action").val())
-            console.log(data);
-            if(data.code==1){
-                $("#myModal").modal('hide');
-                $("#level2").modal('hide');
-                $("#level3").modal('hide');
-                $("#level4").modal('hide');
-                layer.msg("保存成功");
-                admin_table.ajax.url("__SCRIPT__/project_table.php").load();
-            }else{
-                layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
-                return false;
-            }
-        }
-
-    });
-
-
-
-    //IOS开关样式配置
-    var elem = document.querySelector('.js-switch');
-    var switchery = new Switchery(elem, {
-        color: '#1AB394'
-    });
-    var config = {
-        '.chosen-select': {},
-    }
-    for (var selector in config) {
-        $(selector).chosen(config[selector]);
-    }
-</script>
 <script src="__JS__/jquery.ztree.all.js"></script>
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/jquery.jedate.js"></script>
@@ -420,37 +393,38 @@
     var mytree_node;
 
     var admin_table = $('#admin_table').DataTable( {
-    "processing": true,
-    "serverSide": true,
-    "ajax": {
-        "url": "__SCRIPT__/project_table.php"
-    },
-    "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
-    "columnDefs": [
-        {
-            "searchable": false,
-            "orderable": false,
-            "targets": [8],
-            "render" :  function(data,type,row) {
-                var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
-                html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
-                return html;
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/project_table.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [8],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
             }
         }
-    ],
-    "language": {
-        "lengthMenu": "每页_MENU_ 条记录",
-        "zeroRecords": "没有找到记录",
-        "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-        "infoEmpty": "无记录",
-        "search": "搜索：",
-        "infoFiltered": "(从 _MAX_ 条记录过滤)",
-        "paginate": {
-            "previous": "上一页",
-            "next": "下一页"
-        }
-    }
-} );
+    } );
 $("div.mybtn").html('<div>新增</div>');
 $("div.mybtn").click(function () {
         $("#myModal h5").text("新增单元工程");
@@ -461,6 +435,12 @@ $("div.mybtn").click(function () {
 //编辑用户
 function edit(that) {
     var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
+    var kind = $(that).val();
+    if(kind == "查看"){
+        $("#myModal .btn-primary").css("display","none");
+    }else if(kind == "编辑"){
+        $("#myModal .btn-primary").css("display","inline-block");
+    }
     $("#myModal h5").text("编辑单元工程");
     $("#id").val(uid);
     $.ajax({
@@ -519,80 +499,93 @@ function edit(that) {
     }
 //组织结构
     var zTreeObj;
-//树结构删除节点
-    function zTreeBeforeRemove(treeId, treeNode) {
-        console.log(treeId,treeNode);
-        if(layer.confirm("你确定删除"+ treeNode.name +"节点吗？")){
-            var tid = treeNode.id;
-            var name = treeNode.name;
-//            $.ajax({
-//                url: "",
-//                type: "post",
-//                data: {id:tid},
-//                dataType: "json",
-//                success: function (res) {
-//                    if(res.code == 1){
-//                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-//                         zTreeObj.refresh();
-//                    }else{
-//                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
-//                    }
-//                }
-//            })
-        }
-        return false;
-    }
+
 //树结构添加节点
-    function addHoverDom(treeId, treeNode) {
-        if(treeNode.level == 3){
-            return false;
-        }
-        var aObj = $("#" + treeNode.tId + "_a");
-        if ($("#diyBtn_"+treeNode.id).length>0) return;
-        var editStr = "<span id='diyBtn_space_" +treeNode.id+ "' class='button' style='background-position: -144px 0;'> </span>"
-            + "<button type='button' class='diyBtn1' id='diyBtn_" + treeNode.id
-            + "' title='"+treeNode.name+"' onfocus='this.blur();'></button>";
-        aObj.append(editStr);
-        var btn = $("#diyBtn_space_"+treeNode.id);
-        if (btn){
-            btn.bind("click", function(){
-                    console.log(treeNode.level);
-                    if(treeNode.level == 0){
-                        $("#level2").modal('show');
-                    }else if(treeNode.level == 1){
-                        $("#level3").modal('show');
-                    }else if(treeNode.level == 2){
-                        $("#level4").modal('show');
-                    }
-                });
-            };
-        }
-    function removeHoverDom(treeId, treeNode) {
-        $("#diyBtn_"+treeNode.id).unbind().remove();
-        $("#diyBtn_space_" +treeNode.id).unbind().remove();
-    };
+   $("#operate>i:first-child").click(function () {
+       if(mytree_node){
+           if(mytree_node.level == 0){
+               $("#level2 input").val("");
+               $("#pid2").val(mytree_node.id);
+               $("#level2").modal('show');
+           }else if(mytree_node.level == 1){
+               $("#level2 input").val("");
+               $("#pid3").val(mytree_node.id);
+               $("#level3").modal('show');
+           }else if(mytree_node.level == 2){
+               $("#level2 input").val("");
+               $("#pid4").val(mytree_node.id);
+               $("#level4").modal('show');
+           }
+       }else {
+           layer.msg("请选择节点",{time:1500,shade: 0.1});
+       }
+   })
 //树结构编辑节点
-    var edit_name;
-    function zTreeBeforeRename(treeId, treeNode, newName, isCancel) {
-        console.log(treeNode);
-        edit_name = treeNode.name;
-    }
-    function zTreeOnRename(event, treeId, treeNode, isCancel) {
-        console.log(treeNode);
-        if(treeNode.name != edit_name){
-//            $.ajax({
-//                url: "",
-//                type: "post",
-//                data: {name:treeNode.name,id:treeNode.id},
-//                dataType: "json",
-//                success: function (res) {
-//                    if(res.msg != "success"){
-//                        layer.msg(res.msg);
-//                    }
-//                }
-//            })
+    $("#operate i:nth-child(2)").click(function () {
+        if(mytree_node){
+            var id = mytree_node.id;
+            $.ajax({
+                url: "nodeEdit",
+                type: "post",
+                data: {id:id},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                    if(res.msg == "success"){
+                        var data = res.data;
+                        if(mytree_node.level == 1){
+                            $("#level2 input").val("");
+                            $("#pid2").val(mytree_node.id);
+                            $("#project_name2").val(data.name);
+                            $("#project_sn2").val(data.sn);
+                            $("#main_project2").val(data.primary);
+                            $("#level2").modal('show');
+                        }else if(mytree_node.level == 2){
+                            $("#level3 input").val("");
+                            $("#pid3").val(mytree_node.id);
+                            $("#project_name3").val(data.name);
+                            $("#project_sn3").val(data.sn);
+                            $("#main_project3").val(data.primary);
+                            $("#level3").modal('show');
+                        }else if(mytree_node.level == 3){
+                            $("#level2 input").val("");
+                            $("#pid4").val(mytree_node.id);
+                            $("#project_name4").val(data.name);
+                            $("#project_sn4").val(data.sn);
+                            $("#main_project4").val(data.primary);
+                            $("#level4").modal('show');
+                        }
+                    }
+                }
+            })
+        }else {
+            layer.msg("请选择节点",{time:1500,shade: 0.1});
         }
-    }
+    })
+//树结构删除节点
+    $("#operate>i:nth-child(3)").click(function () {
+        if(mytree_node){
+            layer.confirm("你确定删除"+ mytree_node.name +"节点吗？", {icon: 3, title:'提示'}, function(index){
+                var id = mytree_node.id;
+                $.ajax({
+                    url: "nodeDel",
+                    type: "post",
+                    data: {id:id},
+                    dataType: "json",
+                    success: function (res) {
+                        console.log(res);
+                        if(res.code == 1){
+                            layer.msg("删除成功",{time:1500,shade: 0.1});
+                            zTreeObj.reAsyncChildNodes(null, "refresh");
+                        }
+                    }
+                })
+                layer.close(index);
+            })
+        }else {
+            layer.msg("请选择节点",{time:1500,shade: 0.1});
+        }
+    })
 //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
@@ -601,18 +594,9 @@ function edit(that) {
         $("#mycontent>p").text(treeNode.name);
         $("#groupid").val(treeNode.id);
         groupid = treeNode.id;
-        //admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
-
-
-
-        $.ajax({
-            type: "GET",
-            url: "__SCRIPT__/test.php",
-            dataType: "json",
-            success: function(data){
-                console.log(data);
-            }
-        });
+        if(treeNode.level == 3){
+            admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
+        }
 
 
     };
@@ -636,36 +620,85 @@ function edit(that) {
             }
         },
         callback: {
-            onClick: zTreeOnClick,
-            beforeRemove: zTreeBeforeRemove,
-            onRename: zTreeOnRename,
-            beforeRename: zTreeBeforeRename
-        },
-        edit: {
-            drag : {
-                isMove : true,
-                prev : true,
-                next : true,
-                inner : true
-            },
-            enable : true,
-            editNameSelectAll: true,
-            showRemoveBtn: true,
-            removeTitle: "删除节点",
-            showRenameBtn: true,
-            renameTitle: "编辑节点名称",
-            showAddBtn: true,
-            addTitle: "添加节点"
-        },
-        view: {
-            addHoverDom: addHoverDom,
-            removeHoverDom: removeHoverDom
+            onClick: zTreeOnClick
         }
     };
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
 
 
 
+</script>
+<script type="text/javascript">
+
+
+    //提交
+    $("#projectAdd .btn-primary").click(function () {
+        $('#projectAdd').ajaxForm({
+            success: complete,
+            dataType: 'json'
+        });
+    })
+
+    $("#level2 .btn-primary").click(function () {
+        $('#level2').ajaxForm({
+            success: complete1,
+            dataType: 'json'
+        });
+    });
+    $("#level3 .btn-primary").click(function () {
+        $('#level3').ajaxForm({
+            success: complete1,
+            dataType: 'json'
+        });
+    })
+
+    $("#level4 .btn-primary").click(function () {
+        $('#level4').ajaxForm({
+            success: complete1,
+            dataType: 'json'
+        });
+    })
+
+
+    function complete1(data){
+        console.log(data);
+        if(data.code==1){
+            $("#level2").modal('hide');
+            $("#level3").modal('hide');
+            $("#level4").modal('hide');
+            zTreeObj.reAsyncChildNodes(null, "refresh");
+            layer.msg("保存成功");
+        }else{
+            layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+            return false;
+        }
+    }
+    function complete(data){
+        console.log(data);
+        if(data.code==1){
+            $("#myModal").modal('hide');
+            layer.msg("保存成功");
+            admin_table.ajax.url("__SCRIPT__/project_table.php").load();
+        }else{
+            layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+            return false;
+        }
+    }
+
+
+
+
+    //IOS开关样式配置
+    var elem = document.querySelector('.js-switch');
+    var switchery = new Switchery(elem, {
+        color: '#1AB394'
+    });
+    var config = {
+        '.chosen-select': {},
+    }
+    for (var selector in config) {
+        $(selector).chosen(config[selector]);
+    }
 </script>
 </body>
 </html>
