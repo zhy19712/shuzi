@@ -15,13 +15,13 @@ class ProjectModel extends Model
     protected $name = 'project';
 
     /**
-     * 插入信息
+     * 单元工程验收批次插入信息
      * @param $param
      */
     public function insertProject($param)
     {
         try{
-            $result = $this->validate('ContractValidate')->allowField(true)->save($param);
+            $result = $this->validate('ProjectValidate')->allowField(true)->save($param);
             if(false === $result){
                 return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
             }else{
@@ -34,7 +34,7 @@ class ProjectModel extends Model
 
 
     /**
-     * 编辑信息
+     * 单元工程验收批次编辑信息
      * @param $param
      */
     public function editProject($param)
@@ -53,7 +53,7 @@ class ProjectModel extends Model
 
 
     /**
-     * [del_article 删除]
+     * [del_article 单元工程验收批次删除]
      * @return [type] [description]
      */
     public function delProject($id)
