@@ -1,9 +1,488 @@
 {include file="public/header" /}
+<link rel="stylesheet" type="text/css" href="/static/admin/webupload/webuploader.css">
+<link rel="stylesheet" type="text/css" href="/static/admin/webupload/style.css">
+<link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
+<link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="/static/admin/css/jedate.css">
+<link rel="stylesheet" href="/static/admin/css/iconfont.css">
+<style>
+    .mybtn{
+        margin-right: 30px;
+        float: left;
+    }
+    #imgPicker>div:nth-child(2){
+        width: 100% !important;
+        height: 100% !important;
+    }
+    #mytable1_wrapper th,#mytable1_wrapper td{
+        text-align: center;
+    }
+    #myModal input,#myModal select,#myModal textarea{
+        background-color: transparent;
+    }
+    #operate{
+        font-size: 0;
+        border: 1px solid #ccc;
+    }
+    #operate i {
+        display: inline-block;
+        width: 25%;
+        font-size: 16px;
+        line-height: 30px;
+        text-align: center;
+        color: #000;
+        cursor: pointer;
+    }
+</style>
+<body class="gray-bg" style="background-color:#fff;">
+<div id="mycontent" style="min-width: 15%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;">
+    <div style="text-align: center;background-color:#1ab394;line-height: 30px;color: #fff;">工程划分</div>
+    <div id="tree_container" class="ztree"></div>
+    <p style="display: none;"></p>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 83%;vertical-align: top;padding: 0;">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <div class="row">
+                div#
+                <div id="mytable1_wrapper">
+                    <table id="admin_table" width="100%" class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>单元工程名称</th>
+                            <th>单元工程编号</th>
+                            <th></th>
+                            <th>桩号(起)</th>
+                            <th>桩号(止)</th>
+                            <th>高程(起)</th>
+                            <th>高程(止)</th>
+                            <th>主要单元工程</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<body class="gray-bg">
+<div id="myModal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>新增</h5>
+                </div>
+                <div class="ibox-content">
+                    <!--新增用户信息开始-->
+                    <form class="form-horizontal" name="projectAdd" id="projectAdd" method="post" action="{:url('projectAdd')}">
+                        <input type="text" name="id" id="id"  value=""  style="display: none;">
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-3 control-label">单元工程名称：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <input id="project_name" type="text" class="form-control" name="project_name" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-3 control-label">单元工程编号：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <input id="new1" type="text" class="form-control" name="sn" style="width: 50%;">
+                                    <input id="new2" type="text" class="form-control" name="post_sn" style="width: 48%;margin-left: 2%;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">主要单元工程：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <select name="main_project" id="main_project" class="form-control" >
+                                        <option value="是">是</option>
+                                        <option value="否">否</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">质量账台类型：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <select name="kind" id="kind" class="form-control" >
+                                        <option value="开挖">开挖</option>
+                                        <option value="支护">支护</option>
+                                        <option value="锚索">锚索</option>
+                                        <option value="排水孔">排水孔</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">开工日期：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="kaigong_date" type="text" class="form-control" name="kaigong_date" placeholder="请选择日期"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">完工日期：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input type="text" id="wangong_date" class="form-control datepicker" name="wangong_date" placeholder="请选择日期" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">工程量：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="quantities" type="text" class="form-control" name="quantities" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">评定日期：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input type="text" id="pingding_date" class="form-control datepicker" name="pingding_date" placeholder="请选择日期" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">桩号(起)：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="zhuanghaoqi" type="text" class="form-control" name="zhuanghaoqi" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">桩号(止)：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input type="text" id="zhuanghaozhi" class="form-control datepicker" name="zhuanghaozhi" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">高程(起)：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="gaochengqi" type="text" class="form-control" name="gaochengqi" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">高程(止)：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input type="text" id="gaochengzhi" class="form-control datepicker" name="gaochengzhi" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-offset-6">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                    <!--新增用户信息结束-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 {include file="public/footer" /}
+<script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 
+<script src="__JS__/jquery.ztree.all.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script>
+<script src="__JS__/jquery.jedate.js"></script>
+
+<script type="text/javascript">
+    $(".myclass input").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
+    $("#kaigong_date").jeDate({
+        format: "YYYY-MM-DD"
+    });
+    $("#wangong_date").jeDate({
+        format: "YYYY-MM-DD"
+    });
+    $("#pingding_date").jeDate({
+        format: "YYYY-MM-DD"
+    });
+    var mytree_node;
+
+    var admin_table = $('#admin_table').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/project_table.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [9],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    return html;
+                }
+            },
+            {
+                "searchable": true,
+                "orderable": true,
+                "targets": [2],
+                "render" :  function ( data, type, row ) {
+                    return  data + row[3];
+                }
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "visible": false,
+                "targets": [3]
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
+    $("div.mybtn").html('<div>新增</div>');
+    $("div.mybtn").click(function () {
+        if(mytree_node.level == 3){
+            var id = mytree_node.id;
+            $.ajax({
+                url: "nodeEdit",
+                type: "post",
+                data: {id:id},
+                dataType: "json",
+                success: function (res) {
+                    if(res.msg == "success"){
+                        $("#new1").val(res.data.sn + res.data.post_sn + "-");
+                    }
+                }
+            })
+            $("#myModal h5").text("新增单元工程");
+            $("#myModal input").val("");
+            $("#myModal").modal('show');
+        }
+    })
+    //编辑用户
+    function edit(that) {
+        var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var kind = $(that).val();
+        if(kind == "查看"){
+            $("#myModal .btn-primary").css("display","none");
+        }else if(kind == "编辑"){
+            $("#myModal .btn-primary").css("display","inline-block");
+        }
+        $("#myModal h5").text("编辑单元工程");
+        $("#id").val(uid);
+        $.ajax({
+            url: "./projectEdit",
+            type: "post",
+            data: {id:uid},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.msg == "success"){
+                    var data = res.data;
+                    $("#project_name").val(data.project_name);
+                    $("#new1").val(data.project_sn);
+                    $("#new2").val(data.post_sn);
+                    $("#main_project").val(data.main_project);
+                    $("#kind").val(data.kind);
+                    $("#kaigong_date").val(data.kaigong_date);
+                    $("#wangong_date").val(data.wangong_date);
+                    $("#quantities").val(data.quantities);
+                    $("#pingding_date").val(data.pingding_date);
+                    $("#zhuanghaoqi").val(data.zhuanghaoqi);
+                    $("#zhuanghaozhi").val(data.zhuanghaozhi);
+                    $("#gaochengqi").val(data.gaochengqi);
+                    $("#gaochengzhi").val(data.gaochengzhi);
+                    $("#myModal").modal('show');
+                }else {
+                    layer.msg(res.msg);
+                }
+            }
+        })
+    }
+
+    //删除
+    function myconfirm(id,url) {
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: url,
+                async: false,
+                data: {'id' : id},
+                type: "get",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        admin_table.ajax.url("__SCRIPT__/project_table.php").load();
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
+        })
+    }
+    function del(that) {
+        var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
+        myconfirm(uid,'{:url("projectDel")}');
+    }
+    //组织结构
+    var zTreeObj;
+
+    //点击获取节点名称
+    function zTreeOnClick(event, treeId, treeNode) {
+        console.log(treeNode);
+        mytree_node = treeNode;
+        $("#groupname").val(treeNode.name);
+        $("#mycontent>p").text(treeNode.name);
+        $("#groupid").val(treeNode.id);
+        groupid = treeNode.id;
+//        if(treeNode.level == 3){
+//            admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
+//        }
+
+
+    };
+    var setting = {
+        async: {
+            enable : true,
+            autoParam: ["pId"],
+            type : "post",
+            url : "./index",
+            dataType :"json"
+        },
+        data:{
+            keep: {
+                leaf : true,
+                parent : true
+            },
+            simpleData : {
+                enable:true,
+                idkey: "id",
+                pIdKey: "pId"
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick
+        }
+    };
+    zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
+
+
+
+</script>
+<script type="text/javascript">
+
+
+    //提交
+    $("#projectAdd .btn-primary").click(function () {
+        $('#projectAdd').ajaxForm({
+            success: complete,
+            dataType: 'json'
+        });
+    })
+
+    $("#level2 .btn-primary").click(function () {
+        if(!$("#project_sn2").val()){
+            layer.msg('请输入单位工程编号',{icon:2,time:1500,shade: 0.1}, function(index){
+                layer.close(index);
+            });
+            return false;
+        }
+        $('#level2').ajaxForm({
+            success: complete1,
+            dataType: 'json'
+        });
+    });
+    $("#level3 .btn-primary").click(function () {
+        if(!$("#new4").val()){
+            layer.msg('请输入分部工程编号',{icon:2,time:1500,shade: 0.1}, function(index){
+                layer.close(index);
+            });
+            return false;
+        }
+        $('#level3').ajaxForm({
+            success: complete1,
+            dataType: 'json'
+        });
+    })
+
+    $("#level4 .btn-primary").click(function () {
+        if(!$("#new6").val()){
+            layer.msg('请输入单元工程编号',{icon:2,time:1500,shade: 0.1}, function(index){
+                layer.close(index);
+            });
+            return false;
+        }
+        $('#level4').ajaxForm({
+            success: complete1,
+            dataType: 'json'
+        });
+    })
+
+
+    function complete1(data){
+        console.log(data);
+        if(data.code==1){
+            $("#level2").modal('hide');
+            $("#level3").modal('hide');
+            $("#level4").modal('hide');
+            zTreeObj.reAsyncChildNodes(null, "refresh");
+            layer.msg("保存成功");
+        }else{
+            layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+            return false;
+        }
+    }
+    function complete(data){
+        console.log(data);
+        if(data.code==1){
+            $("#myModal").modal('hide');
+            layer.msg("保存成功");
+            admin_table.ajax.url("__SCRIPT__/project_table.php").load();
+        }else{
+            layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+            return false;
+        }
+    }
+
+
+
+
+    //IOS开关样式配置
+    var elem = document.querySelector('.js-switch');
+    var switchery = new Switchery(elem, {
+        color: '#1AB394'
+    });
+    var config = {
+        '.chosen-select': {},
+    }
+    for (var selector in config) {
+        $(selector).chosen(config[selector]);
+    }
+</script>
 </body>
 </html>
