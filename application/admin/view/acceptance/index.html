@@ -187,25 +187,25 @@
                                 <span class="border-right">验评结果</span>
                                 <div class="db">
                                     <span>一检合格</span>
-                                    <select name="pass" id="pass" class="form-control">
+                                    <select name="pass" id="pass">
                                         <option value="是">是</option>
                                         <option value="否">否</option>
                                     </select>
                                 </div>
                                 <div class="db">
                                     <span>质量等级</span>
-                                    <select name="quality_level" id="quality_level" class="form-control">
+                                    <select name="quality_level" id="quality_level">
                                         <option value="优良">优良</option>
                                         <option value="合格">合格</option>
                                     </select>
                                 </div>
                                 <div class="db">
                                     <span>评定月</span>
-                                    <input type="text" id="evaluated_date" name="evaluated_date"  class="form-control">
+                                    <input type="text" id="evaluated_date" name="evaluated_date">
                                 </div>
                                 <div class="db">
                                     <span>评定人</span>
-                                    <input type="text" id="evaluated_by" name="evaluated_by"  class="form-control">
+                                    <input type="text" id="evaluated_by" name="evaluated_by">
                                 </div>
                             </div>
                             <div class="info" style="height: 80px;">
@@ -219,11 +219,11 @@
                                         <span>检查时间</span>
                                     </div>
                                     <div class="bottom">
-                                        <input type="text" id="holes" name="holes" class="form-control">
-                                        <input type="text" id="ave_size" name="ave_size" class="form-control">
-                                        <input type="text" id="ave_length" name="ave_length" class="form-control">
-                                        <input type="text" id="half_percentage" name="half_percentage" class="form-control">
-                                        <input type="text" id="holes_test_date" name="holes_test_date" class="form-control">
+                                        <input type="text" id="holes" name="holes">
+                                        <input type="text" id="ave_size" name="ave_size">
+                                        <input type="text" id="ave_length" name="ave_length">
+                                        <input type="text" id="half_percentage" name="half_percentage">
+                                        <input type="text" id="holes_test_date" name="holes_test_date">
                                     </div>
                                 </div>
                             </div>
@@ -239,12 +239,12 @@
                                         <span>检查时间</span>
                                     </div>
                                     <div class="bottom">
-                                        <input type="text" name="sections" id="sections" class="form-control">
-                                        <input type="text" name="points" id="points" class="form-control">
-                                        <input type="text" name="max" id="max" class="form-control">
-                                        <input type="text" name="min" id="min" class="form-control">
-                                        <input type="text" name="ave" id="ave" class="form-control">
-                                        <input type="text" name="sections_test_date" id="sections_test_date" class="form-control">
+                                        <input type="text" name="sections" id="sections">
+                                        <input type="text" name="points" id="points">
+                                        <input type="text" name="max" id="max">
+                                        <input type="text" name="min" id="min">
+                                        <input type="text" name="ave" id="ave">
+                                        <input type="text" name="sections_test_date" id="sections_test_date">
                                     </div>
                                 </div>
                             </div>
@@ -260,11 +260,11 @@
                                         <span>合格率(%)</span>
                                     </div>
                                     <div class="bottom">
-                                        <input type="text" name="sections_overbreak" id="sections_overbreak" class="form-control">
-                                        <input type="text" name="points_overbreak" id="points_overbreak" class="form-control">
-                                        <input type="text" name="max_overbreak" id="max_overbreak" class="form-control">
+                                        <input type="text" name="sections_overbreak" id="sections_overbreak">
+                                        <input type="text" name="points_overbreak" id="points_overbreak">
+                                        <input type="text" name="max_overbreak" id="max_overbreak">
                                         <input type="text" name="min_overbreak" id="min_overbreak"class="form-control">
-                                        <input type="text" name="ave_overbreak" id="ave_overbreak" class="form-control">
+                                        <input type="text" name="ave_overbreak" id="ave_overbreak">
                                         <input type="text" name="pass_overbreak" id="pass_overbreak"class="form-control">
                                     </div>
                                 </div>
@@ -281,12 +281,12 @@
                                         <span>合格率(%)</span>
                                     </div>
                                     <div class="bottom">
-                                        <input type="text" name="sections_underbreak" id="sections_underbreak" class="form-control">
-                                        <input type="text" name="points_underbreak" id="points_underbreak" class="form-control">
-                                        <input type="text" name="max_underbreak" id="max_underbreak" class="form-control">
-                                        <input type="text" name="min_underbreak" id="min_underbreak" class="form-control">
-                                        <input type="text" name="ave_underbreak" id="ave_underbreak" class="form-control">
-                                        <input type="text" name="pass_underbreak" id="pass_underbreak" class="form-control">
+                                        <input type="text" name="sections_underbreak" id="sections_underbreak">
+                                        <input type="text" name="points_underbreak" id="points_underbreak">
+                                        <input type="text" name="max_underbreak" id="max_underbreak">
+                                        <input type="text" name="min_underbreak" id="min_underbreak">
+                                        <input type="text" name="ave_underbreak" id="ave_underbreak">
+                                        <input type="text" name="pass_underbreak" id="pass_underbreak">
                                     </div>
                                 </div>
                             </div>
@@ -316,132 +316,6 @@
     </div>
 </div>
 
-<div id="myModal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>新增</h5>
-                </div>
-                <div class="ibox-content">
-                    <!--新增用户信息开始-->
-                    <form class="form-horizontal" name="projectAdd" id="projectAdd" method="post" action="{:url('projectAdd')}">
-                        <input type="text" name="id" id="id"  value=""  style="display: none;">
-                        <div class="form-group">
-                            <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-3 control-label">单元工程名称：</label>
-                                <div class="myblock col-xs-8 input-group">
-                                    <input id="project_name" type="text" class="form-control" name="project_name" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-3 control-label">单元工程编号：</label>
-                                <div class="myblock col-xs-8 input-group">
-                                    <input id="new1" type="text" class="form-control" name="sn" style="width: 50%;">
-                                    <input id="new2" type="text" class="form-control" name="post_sn" style="width: 48%;margin-left: 2%;">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">主要单元工程：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <select name="main_project" id="main_project" class="form-control" >
-                                        <option value="是">是</option>
-                                        <option value="否">否</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">质量账台类型：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <select name="kind" id="kind" class="form-control" >
-                                        <option value="开挖">开挖</option>
-                                        <option value="支护">支护</option>
-                                        <option value="锚索">锚索</option>
-                                        <option value="排水孔">排水孔</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">开工日期：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input id="kaigong_date" type="text" class="form-control" name="kaigong_date" placeholder="请选择日期"/>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">完工日期：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input type="text" id="wangong_date" class="form-control datepicker" name="wangong_date" placeholder="请选择日期" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">工程量：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input id="quantities" type="text" class="form-control" name="quantities" >
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">评定日期：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input type="text" id="pingding_date" class="form-control datepicker" name="pingding_date" placeholder="请选择日期" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">桩号(起)：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input id="zhuanghaoqi" type="text" class="form-control" name="zhuanghaoqi" >
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">桩号(止)：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input type="text" id="zhuanghaozhi" class="form-control datepicker" name="zhuanghaozhi" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">高程(起)：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input id="gaochengqi" type="text" class="form-control" name="gaochengqi" >
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">高程(止)：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input type="text" id="gaochengzhi" class="form-control datepicker" name="gaochengzhi" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-xs-12 col-sm-offset-6">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
-                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
-                            </div>
-                        </div>
-                    </form>
-                    <!--新增用户信息结束-->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 {include file="public/footer" /}
@@ -608,9 +482,15 @@
         $("#mycontent>p").text(treeNode.name);
         $("#groupid").val(treeNode.id);
         groupid = treeNode.id;
-//        if(treeNode.level == 3){
-//            admin_table.ajax.url("__SCRIPT__/test.php?groupid=" + groupid).load();
-//        }
+        $.ajax({
+            url: "",
+            type: "post",
+            data: {id:groupid},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+            }
+        })
 
 
     };
