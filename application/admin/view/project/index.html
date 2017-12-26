@@ -676,6 +676,9 @@ function edit(that) {
 
 
     };
+//    function zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
+//        console.log(zTreeObj.getNodes());
+//    };
     var setting = {
         async: {
             enable : true,
@@ -696,7 +699,8 @@ function edit(that) {
             }
         },
         callback: {
-            onClick: zTreeOnClick
+            onClick: zTreeOnClick,
+//            onAsyncSuccess: zTreeOnAsyncSuccess
         }
     };
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
