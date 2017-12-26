@@ -20,22 +20,65 @@
     #myModal input,#myModal select,#myModal textarea{
         background-color: transparent;
     }
-    #operate{
-        font-size: 0;
-        border: 1px solid #ccc;
-    }
-    #operate i {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-        line-height: 30px;
-        text-align: center;
-        color: #000;
-        cursor: pointer;
-    }
     #path{
         line-height: 30px;
         font-weight: 700;
+        border-bottom: 1px solid #000;
+    }
+    #operate{
+        height: 50px;
+    }
+    #operate>div{
+        float: right;
+        margin: 10px 10px;
+        cursor: pointer;
+    }
+    #operate>div>span{
+        display: inline-block;
+        width: 60px;
+        height: 30px;
+        background-color: #ffad5c;
+        color: #fff;
+        font-size: 14px;
+        text-align: center;
+        line-height: 30px;
+    }
+    #operate>div>i:first-child{
+        display: inline-block;
+        width: 15px;
+        height: 30px;
+        background-color: #ffad5c;
+        border-radius: 30px 0 0 30px;
+        vertical-align: top;
+    }
+    #operate>div>i:nth-child(3){
+        display: inline-block;
+        width: 15px;
+        height: 30px;
+        background-color: #ffad5c;
+        border-radius: 0 30px 30px 0;
+        vertical-align: top;
+    }
+    #readonly table{
+        width: 100%;
+        border: 1px solid #000;
+        line-height: 30px;
+        text-align: center;
+    }
+    #readonly table input{
+        border: none;
+        outline: none;
+        width: 100%;
+    }
+    .border-right{
+        border-right: 1px solid #000;
+        font-weight: 700;
+    }
+    .border-bottom{
+        border-bottom: 1px solid #000 !important;
+    }
+    .border-left{
+        border-left: 1px solid #000;
     }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
@@ -50,6 +93,38 @@
             <div class="row">
                 <div id="table_info">
                     <div id="path">当前路径:C1</div>
+                    <div id="operate">
+                        <div id="revise">
+                            <i></i><span>修改</span><i></i>
+                        </div>
+                        <div id="save">
+                            <i></i><span>保存</span><i></i>
+                        </div>
+                    </div>
+                    <div id="readonly">
+                        <table>
+                            <tbody>
+                                <tr class="border-bottom">
+                                    <td class="border-right">单元工程名称</td>
+                                    <td colspan="4"><input type="text" readonly="readonly"></td>
+                                    <td class="border-right border-left">单元工程编号</td>
+                                    <td colspan="4"><input type="text" readonly="readonly"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border-right">桩号</td>
+                                    <td>起:</td>
+                                    <td><input type="text" readonly="readonly"></td>
+                                    <td>止:</td>
+                                    <td><input type="text" readonly="readonly"></td>
+                                    <td class="border-right border-left">高程</td>
+                                    <td>起:</td>
+                                    <td><input type="text" readonly="readonly"></td>
+                                    <td>止:</td>
+                                    <td><input type="text" readonly="readonly"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div id="mytable1_wrapper">
                     <table id="admin_table" width="100%" class="table table-striped table-bordered">
