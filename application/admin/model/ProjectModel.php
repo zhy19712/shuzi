@@ -95,7 +95,7 @@ class ProjectModel extends Model
             $str .= '},';
         }
 
-        return substr($str, 0, -1);
+        return $str;
     }
 
 }

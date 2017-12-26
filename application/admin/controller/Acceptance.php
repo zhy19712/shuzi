@@ -20,9 +20,9 @@ class Acceptance extends Base
         if(request()->isAjax()){
             $node1 = new DivideModel();
             $node2 = new ProjectModel();
-            $nodeStr1 = $node1->getNodeInfo();
-            $nodeStr2 = $node1->getNodeInfo();
-            $nodeStr = "[" . $nodeStr1 . $nodeStr2 . "]";
+            $nodeStr1 = $node1->getNodeInfo_4();
+            $nodeStr2 = $node2->getNodeInfo_5();
+            $nodeStr = "[" . substr($nodeStr1 . $nodeStr2, 0, -1) . "]";
             return json($nodeStr);}
         else
             return $this->fetch();
