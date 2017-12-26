@@ -80,6 +80,20 @@
     .border-left{
         border-left: 1px solid #000;
     }
+    #readonly .info{
+        margin-top: 20px;
+        border: 1px solid #000;
+        line-height: 30px;
+    }
+    #readonly .info>span{
+        display: inline-block;
+        padding: 0 30px;
+        text-align: center;
+        background-color: #bae2f3;
+    }
+    #readonly .info select{
+        width: 100px;
+    }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
 <div id="mycontent" style="min-width: 15%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;">
@@ -124,6 +138,13 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="info">
+                            <span class="border-right">主要单元工程、重要隐蔽工程及关键部位的单元工程</span>
+                            <select name="" id="">
+                                <option value="是">是</option>
+                                <option value="否">否</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div id="mytable1_wrapper">
