@@ -9,13 +9,19 @@
 namespace app\admin\controller;
 use think\Db;
 use app\admin\model\AcceptanceModel;
+use app\admin\model\DivideModel;
 
 
 class Acceptance extends Base
 {
     public function index()
     {
-        return $this->fetch();
+        if(request()->isAjax()){
+            $node = new DivideModel();
+            $nodeStr = $node->getNodeInfo();
+            return json($nodeStr);}
+        else
+            return $this->fetch();
     }
 
 }
