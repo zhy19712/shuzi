@@ -56,7 +56,6 @@ class DivideModel extends Model
 
     /**
      * 插入新的节点
-     * @param $param
      */
     public function insertNode($param)
     {
@@ -74,7 +73,6 @@ class DivideModel extends Model
 
     /**
      * 编辑节点信息
-     * @param $param
      */
     public function editNode($param)
     {
@@ -92,8 +90,7 @@ class DivideModel extends Model
 
 
     /**
-     * [del_article 节点删除]
-     * @return [type] [description]
+     * [节点删除]
      */
     public function delNode($id)
     {
@@ -103,11 +100,27 @@ class DivideModel extends Model
 
     /**
      * 根据id获取节点
-     * @param $id
      */
     public function getOneNode($id)
     {
         return $this->where('id', $id)->find();
+    }
+
+    /**
+     * 递归遍历
+     */
+    function recursion($data, $id=0) {
+        $list = array();
+        foreach($data as $v) {
+            if($v['pid'] == $id) {
+                $v['son'] = recursion($data, $v['id']);
+                if(empty($v['son'])) {
+                    unset($v['son']);
+                }
+                array_push($list, $v);
+            }
+        }
+        return $list;
     }
 
 

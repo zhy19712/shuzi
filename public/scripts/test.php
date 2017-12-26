@@ -61,11 +61,11 @@ $sql_details = array(
 
 require( 'ssp.class.php' );
 
-if(!empty($GET_["groupid"]))
+if(!empty($_GET["groupid"]))
 {
-    $groupid = $GET_["groupid"];
+    $groupid = $_GET["groupid"];
     echo json_encode(
-   //     SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "groupid = '$groupid'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "groupid = '$groupid'" )
     );
 }
 else{
