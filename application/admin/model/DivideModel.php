@@ -16,7 +16,7 @@ class DivideModel extends Model
     protected  $name = 'project_divide';
 
     /**
-     * [getNodeInfo 获取工程划分节点树结构数据]
+     * [getNodeInfo 获取工程划分4级节点树结构数据]
      *
      */
     public function getNodeInfo()
@@ -32,6 +32,27 @@ class DivideModel extends Model
 
         return "[" . substr($str, 0, -1) . "]";
     }
+
+    /**
+     * [getNodeInfo 获取工程划分5级节点树结构数据的前4级]
+     *
+     */
+    public function getNodeInfo_4()
+    {
+        $result = $this->field('id,name,pid')->select();
+        $str = "";
+
+        foreach($result as $key=>$vo){
+            $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "name":"' . $vo['name'].'"';
+
+            $str .= '},';
+        }
+
+        return substr($str, 0, -1);
+    }
+
+
+
 
     /**
      * 插入新的节点
