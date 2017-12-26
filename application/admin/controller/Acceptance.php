@@ -28,11 +28,19 @@ class Acceptance extends Base
             return $this->fetch();
     }
 
+    /**
+     * [获取单元工程基础信息]
+     * @return [type] [description]
+     */
     public function fetchData()
     {
-
+        $project = new ProjectModel();
+        if(request()->isAjax()){
+            $param = input('post.');
+            $data = $project->getOneProject($param['uid']);
+            return json(['data' => $data, 'msg' => "success"]);
+        }
     }
-
 
 
 }
