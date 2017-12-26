@@ -159,31 +159,31 @@
                             <tbody>
                                 <tr class="border-bottom">
                                     <td class="border-right">单元工程名称</td>
-                                    <td colspan="4"><input type="text" readonly="readonly"></td>
+                                    <td colspan="4"><input type="text" readonly="readonly" id="input1"></td>
                                     <td class="border-right border-left">单元工程编号</td>
-                                    <td colspan="4"><input type="text" readonly="readonly"></td>
+                                    <td colspan="4"><input type="text" readonly="readonly" id="input2"></td>
                                 </tr>
                                 <tr>
                                     <td class="border-right">桩号</td>
                                     <td>起:</td>
-                                    <td><input type="text" readonly="readonly"></td>
+                                    <td><input type="text" readonly="readonly" id="input3"></td>
                                     <td>止:</td>
-                                    <td><input type="text" readonly="readonly"></td>
+                                    <td><input type="text" readonly="readonly" id="input4"></td>
                                     <td class="border-right border-left">高程</td>
                                     <td>起:</td>
-                                    <td><input type="text" readonly="readonly"></td>
+                                    <td><input type="text" readonly="readonly" id="input5"></td>
                                     <td>止:</td>
-                                    <td><input type="text" readonly="readonly"></td>
+                                    <td><input type="text" readonly="readonly" id="input6"></td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="info">
                             <span class="border-right">主要单元工程、重要隐蔽工程及关键部位的单元工程</span>
-                            <select name="primary" id="primary" style="margin-left: 20px;">
-                            </select>
+                            <input type="text" readonly="readonly" id="input7">
                         </div>
                         <div id="container">
                             <form class="form-horizontal" name="model1" id="model1" method="post" action="{:url('projectAdd')}">
+                                <input type="text" id="uid1" name="uid" style="display: none;">
                                 <div class="info">
                                     <span class="border-right">验评结果</span>
                                     <div class="db">
@@ -494,6 +494,20 @@
                 dataType: "json",
                 success: function (res) {
                     console.log(res);
+                    if(res.msg == "success"){
+                        var data = res.data;
+                        if(data.cate == "开挖"){
+//                            $("#model1").css("display","block");
+                            $("#input1").val(data.name);
+                            $("#input2").val(data.sn + data.post_sn);
+                            $("#input3").val(data.zhuanghaoqi);
+                            $("#input4").val(data.zhuanghaozhi);
+                            $("#input5").val(data.gaochengqi);
+                            $("#input6").val(data.gaochengzhi);
+                            $("#input7").val(data.primary);
+                            $("#uid1").val(groupid);
+                        }
+                    }
                 }
             })
         }
