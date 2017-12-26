@@ -182,115 +182,120 @@
                             <select name="primary" id="primary" style="margin-left: 20px;">
                             </select>
                         </div>
-                        <form class="form-horizontal" name="model1" id="model1" method="post" action="{:url('projectAdd')}">
-                            <div class="info">
-                                <span class="border-right">验评结果</span>
-                                <div class="db">
-                                    <span>一检合格</span>
-                                    <select name="pass" id="pass">
-                                        <option value="是">是</option>
-                                        <option value="否">否</option>
-                                    </select>
-                                </div>
-                                <div class="db">
-                                    <span>质量等级</span>
-                                    <select name="quality_level" id="quality_level">
-                                        <option value="优良">优良</option>
-                                        <option value="合格">合格</option>
-                                    </select>
-                                </div>
-                                <div class="db">
-                                    <span>评定月</span>
-                                    <input type="text" id="evaluated_date" name="evaluated_date">
-                                </div>
-                                <div class="db">
-                                    <span>评定人</span>
-                                    <input type="text" id="evaluated_by" name="evaluated_by">
-                                </div>
-                            </div>
-                            <div class="info" style="height: 80px;">
-                                <span class="border-right" style="line-height: 78px;">半孔率</span>
-                                <div class="exp">
-                                    <div class="top border-bottom">
-                                        <span>检查孔数(个)</span>
-                                        <span>平均进尺(m)</span>
-                                        <span>平均残孔长度(m)</span>
-                                        <span>半孔率(%)</span>
-                                        <span>检查时间</span>
+                        <div id="container">
+                            <form class="form-horizontal" name="model1" id="model1" method="post" action="{:url('projectAdd')}">
+                                <div class="info">
+                                    <span class="border-right">验评结果</span>
+                                    <div class="db">
+                                        <span>一检合格</span>
+                                        <select name="pass" id="pass">
+                                            <option value="是">是</option>
+                                            <option value="否">否</option>
+                                        </select>
                                     </div>
-                                    <div class="bottom">
-                                        <input type="text" id="holes" name="holes">
-                                        <input type="text" id="ave_size" name="ave_size">
-                                        <input type="text" id="ave_length" name="ave_length">
-                                        <input type="text" id="half_percentage" name="half_percentage">
-                                        <input type="text" id="holes_test_date" name="holes_test_date">
+                                    <div class="db">
+                                        <span>质量等级</span>
+                                        <select name="quality_level" id="quality_level">
+                                            <option value="优良">优良</option>
+                                            <option value="合格">合格</option>
+                                        </select>
+                                    </div>
+                                    <div class="db">
+                                        <span>评定月</span>
+                                        <input type="text" id="evaluated_date" name="evaluated_date">
+                                    </div>
+                                    <div class="db">
+                                        <span>评定人</span>
+                                        <input type="text" id="evaluated_by" name="evaluated_by">
                                     </div>
                                 </div>
-                            </div>
-                            <div class="info" style="height: 80px;">
-                                <span class="border-right" style="line-height: 78px;">不平整度</span>
-                                <div class="exp w2">
-                                    <div class="top border-bottom">
-                                        <span>检查断面(个)</span>
-                                        <span>检查点数(个)</span>
-                                        <span>最大值(cm)</span>
-                                        <span>最小值(cm)</span>
-                                        <span>平均值(cm)</span>
-                                        <span>检查时间</span>
-                                    </div>
-                                    <div class="bottom">
-                                        <input type="text" name="sections" id="sections">
-                                        <input type="text" name="points" id="points">
-                                        <input type="text" name="max" id="max">
-                                        <input type="text" name="min" id="min">
-                                        <input type="text" name="ave" id="ave">
-                                        <input type="text" name="sections_test_date" id="sections_test_date">
+                                <div class="info" style="height: 80px;">
+                                    <span class="border-right" style="line-height: 78px;">半孔率</span>
+                                    <div class="exp">
+                                        <div class="top border-bottom">
+                                            <span>检查孔数(个)</span>
+                                            <span>平均进尺(m)</span>
+                                            <span>平均残孔长度(m)</span>
+                                            <span>半孔率(%)</span>
+                                            <span>检查时间</span>
+                                        </div>
+                                        <div class="bottom">
+                                            <input type="text" id="holes" name="holes">
+                                            <input type="text" id="ave_size" name="ave_size">
+                                            <input type="text" id="ave_length" name="ave_length">
+                                            <input type="text" id="half_percentage" name="half_percentage">
+                                            <input type="text" id="holes_test_date" name="holes_test_date">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="info" style="height: 80px;">
-                                <span class="border-right" style="line-height: 78px;">轮廓体型(超挖)</span>
-                                <div class="exp w2">
-                                    <div class="top border-bottom">
-                                        <span>检查断面(个)</span>
-                                        <span>检查点数(个)</span>
-                                        <span>最大超挖(cm)</span>
-                                        <span>最小超挖(cm)</span>
-                                        <span>平均超挖(cm)</span>
-                                        <span>合格率(%)</span>
-                                    </div>
-                                    <div class="bottom">
-                                        <input type="text" name="sections_overbreak" id="sections_overbreak">
-                                        <input type="text" name="points_overbreak" id="points_overbreak">
-                                        <input type="text" name="max_overbreak" id="max_overbreak">
-                                        <input type="text" name="min_overbreak" id="min_overbreak"class="form-control">
-                                        <input type="text" name="ave_overbreak" id="ave_overbreak">
-                                        <input type="text" name="pass_overbreak" id="pass_overbreak"class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="info" style="height: 80px;margin-top: 0;border-top: none;">
-                                <span class="border-right" style="line-height: 78px;">轮廓体型(欠挖)</span>
-                                <div class="exp w2">
-                                    <div class="top border-bottom">
-                                        <span>检查断面(个)</span>
-                                        <span>检查点数(个)</span>
-                                        <span>最大欠挖(cm)</span>
-                                        <span>最小欠挖(cm)</span>
-                                        <span>平均欠挖(cm)</span>
-                                        <span>合格率(%)</span>
-                                    </div>
-                                    <div class="bottom">
-                                        <input type="text" name="sections_underbreak" id="sections_underbreak">
-                                        <input type="text" name="points_underbreak" id="points_underbreak">
-                                        <input type="text" name="max_underbreak" id="max_underbreak">
-                                        <input type="text" name="min_underbreak" id="min_underbreak">
-                                        <input type="text" name="ave_underbreak" id="ave_underbreak">
-                                        <input type="text" name="pass_underbreak" id="pass_underbreak">
+                                <div class="info" style="height: 80px;">
+                                    <span class="border-right" style="line-height: 78px;">不平整度</span>
+                                    <div class="exp w2">
+                                        <div class="top border-bottom">
+                                            <span>检查断面(个)</span>
+                                            <span>检查点数(个)</span>
+                                            <span>最大值(cm)</span>
+                                            <span>最小值(cm)</span>
+                                            <span>平均值(cm)</span>
+                                            <span>检查时间</span>
+                                        </div>
+                                        <div class="bottom">
+                                            <input type="text" name="sections" id="sections">
+                                            <input type="text" name="points" id="points">
+                                            <input type="text" name="max" id="max">
+                                            <input type="text" name="min" id="min">
+                                            <input type="text" name="ave" id="ave">
+                                            <input type="text" name="sections_test_date" id="sections_test_date">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
+                                <div class="info" style="height: 80px;">
+                                    <span class="border-right" style="line-height: 78px;">轮廓体型(超挖)</span>
+                                    <div class="exp w2">
+                                        <div class="top border-bottom">
+                                            <span>检查断面(个)</span>
+                                            <span>检查点数(个)</span>
+                                            <span>最大超挖(cm)</span>
+                                            <span>最小超挖(cm)</span>
+                                            <span>平均超挖(cm)</span>
+                                            <span>合格率(%)</span>
+                                        </div>
+                                        <div class="bottom">
+                                            <input type="text" name="sections_overbreak" id="sections_overbreak">
+                                            <input type="text" name="points_overbreak" id="points_overbreak">
+                                            <input type="text" name="max_overbreak" id="max_overbreak">
+                                            <input type="text" name="min_overbreak" id="min_overbreak"class="form-control">
+                                            <input type="text" name="ave_overbreak" id="ave_overbreak">
+                                            <input type="text" name="pass_overbreak" id="pass_overbreak"class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="info" style="height: 80px;margin-top: 0;border-top: none;">
+                                    <span class="border-right" style="line-height: 78px;">轮廓体型(欠挖)</span>
+                                    <div class="exp w2">
+                                        <div class="top border-bottom">
+                                            <span>检查断面(个)</span>
+                                            <span>检查点数(个)</span>
+                                            <span>最大欠挖(cm)</span>
+                                            <span>最小欠挖(cm)</span>
+                                            <span>平均欠挖(cm)</span>
+                                            <span>合格率(%)</span>
+                                        </div>
+                                        <div class="bottom">
+                                            <input type="text" name="sections_underbreak" id="sections_underbreak">
+                                            <input type="text" name="points_underbreak" id="points_underbreak">
+                                            <input type="text" name="max_underbreak" id="max_underbreak">
+                                            <input type="text" name="min_underbreak" id="min_underbreak">
+                                            <input type="text" name="ave_underbreak" id="ave_underbreak">
+                                            <input type="text" name="pass_underbreak" id="pass_underbreak">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <form style="display: none;" class="form-horizontal" name="model1" id="model2" method="post" action="{:url('projectAdd')}">
+
+                            </form>
+                        </div>
                     </div>
                 </div>
                 <div id="mytable1_wrapper" style="margin-top: 20px;">
@@ -326,7 +331,6 @@
 <script src="__JS__/jquery.jedate.js"></script>
 
 <script type="text/javascript">
-    $(".myclass input").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
     $("#evaluated_date").jeDate({
         format: "YYYY-MM"
     });
@@ -481,18 +485,18 @@
         $("#groupname").val(treeNode.name);
         $("#mycontent>p").text(treeNode.name);
         $("#groupid").val(treeNode.id);
-        groupid = treeNode.id;
-        $.ajax({
-            url: "fetchData",
-            type: "post",
-            data: {id:groupid},
-            dataType: "json",
-            success: function (res) {
-                console.log(res);
-            }
-        })
-
-
+        var groupid = treeNode.uid;
+        if(treeNode.level == 4){
+            $.ajax({
+                url: "./fetchData",
+                type: "post",
+                data: {uid:groupid},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                }
+            })
+        }
     };
     var setting = {
         async: {
