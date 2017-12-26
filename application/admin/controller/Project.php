@@ -87,13 +87,13 @@ class project extends Base
         $param = input('post.');
         if(request()->isAjax()){
 
-            if(empty($param['id'])&&!empty($param['pid']))
+            if(empty($param['id']))
             {
 
                 $flag = $node->insertNode($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if(!empty($param['id'])&&empty($param['pid']))
+            else if(!empty($param['id']))
             {
                 $flag = $node->editNode($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
