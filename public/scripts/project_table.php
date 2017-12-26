@@ -31,14 +31,14 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'project_name',  'dt' => 1 ),
-    array( 'db' => 'project_sn',  'dt' => 2 ),
+    array( 'db' => 'name',  'dt' => 1 ),
+    array( 'db' => 'sn',  'dt' => 2 ),
     array( 'db' => 'post_sn',  'dt' => 3 ),
     array( 'db' => 'zhuanghaoqi',  'dt' => 4 ),
     array( 'db' => 'zhuanghaozhi',  'dt' => 5 ),
     array( 'db' => 'gaochengqi',  'dt' => 6 ),
     array( 'db' => 'gaochengzhi',  'dt' => 7 ),
-    array( 'db' => 'main_project',  'dt' => 8 )
+    array( 'db' => 'primary',  'dt' => 8 )
 );
 
 // SQL server connection information数据库连接信息
