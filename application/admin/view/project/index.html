@@ -209,6 +209,7 @@
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="level2Add" id="level2Add" method="post" action="{:url('nodeAdd')}">
                         <input type="text" name="pid" value="" id="pid2" style="display: none;">
+                        <input type="text" name="id" value="" id="id2" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">单位工程名称：</label>
@@ -263,6 +264,7 @@
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="level3Add" id="level3Add" method="post" action="{:url('nodeAdd')}">
                         <input type="text" name="pid" value="" id="pid3" style="display: none;">
+                        <input type="text" name="id" value="" id="id3" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">分部工程名称：</label>
@@ -317,6 +319,7 @@
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="level4Add" id="level4Add" method="post" action="{:url('nodeAdd')}">
                         <input type="text" name="pid" value="" id="pid4" style="display: none;">
+                        <input type="text" name="id" value="" id="id4" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">单元工程名称：</label>
@@ -533,23 +536,24 @@ function edit(that) {
                     console.log(res);
                     if(res.msg == "success"){
                         var data = res.data;
+                        console.log(mytree_node.id);
                         if(mytree_node.level == 1){
                             $("#level2 input").val("");
-                            $("#pid2").val(mytree_node.id);
+                            $("#id2").val(mytree_node.id);
                             $("#project_name2").val(data.name);
                             $("#project_sn2").val(data.sn);
                             $("#main_project2").val(data.primary);
                             $("#level2").modal('show');
                         }else if(mytree_node.level == 2){
                             $("#level3 input").val("");
-                            $("#pid3").val(mytree_node.id);
+                            $("#id3").val(mytree_node.id);
                             $("#project_name3").val(data.name);
                             $("#project_sn3").val(data.sn);
                             $("#main_project3").val(data.primary);
                             $("#level3").modal('show');
                         }else if(mytree_node.level == 3){
                             $("#level2 input").val("");
-                            $("#pid4").val(mytree_node.id);
+                            $("#id4").val(mytree_node.id);
                             $("#project_name4").val(data.name);
                             $("#project_sn4").val(data.sn);
                             $("#main_project4").val(data.primary);
