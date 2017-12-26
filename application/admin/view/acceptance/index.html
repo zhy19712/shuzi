@@ -327,13 +327,13 @@
 
 <script type="text/javascript">
     $(".myclass input").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
-    $("#kaigong_date").jeDate({
+    $("#evaluated_date").jeDate({
+        format: "YYYY-MM"
+    });
+    $("#holes_test_date").jeDate({
         format: "YYYY-MM-DD"
     });
-    $("#wangong_date").jeDate({
-        format: "YYYY-MM-DD"
-    });
-    $("#pingding_date").jeDate({
+    $("#sections_test_date").jeDate({
         format: "YYYY-MM-DD"
     });
     var mytree_node;
@@ -483,7 +483,7 @@
         $("#groupid").val(treeNode.id);
         groupid = treeNode.id;
         $.ajax({
-            url: "",
+            url: "fetchData",
             type: "post",
             data: {id:groupid},
             dataType: "json",
