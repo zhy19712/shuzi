@@ -28,4 +28,11 @@ class Acceptance extends Base
             return $this->fetch();
     }
 
+    public function fetchData()
+    {
+
+    }
+
+
+
 }
