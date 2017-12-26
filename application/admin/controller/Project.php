@@ -16,8 +16,8 @@ class project extends Base
     public function index()
     {
         if(request()->isAjax()){
-            $role = new DivideModel();
-            $nodeStr = $role->getNodeInfo();
+            $node = new DivideModel();
+            $nodeStr = $node->getNodeInfo();
             return json($nodeStr);}
         else
             return $this->fetch();
