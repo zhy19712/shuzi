@@ -10,6 +10,7 @@ namespace app\admin\controller;
 use think\Db;
 use app\admin\model\AcceptanceModel;
 use app\admin\model\DivideModel;
+use app\admin\model\ProjectModel;
 
 
 class Acceptance extends Base
@@ -17,8 +18,11 @@ class Acceptance extends Base
     public function index()
     {
         if(request()->isAjax()){
-            $node = new DivideModel();
-            $nodeStr = $node->getNodeInfo();
+            $node1 = new DivideModel();
+            $node2 = new ProjectModel();
+            $nodeStr1 = $node1->getNodeInfo_4();
+            $nodeStr2 = $node2->getNodeInfo_5();
+            $nodeStr = "[" . substr($nodeStr1 . $nodeStr2, 0, -1) . "]";
             return json($nodeStr);}
         else
             return $this->fetch();

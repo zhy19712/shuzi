@@ -80,4 +80,22 @@ class ProjectModel extends Model
         return $this->where('id', $id)->find();
     }
 
+    /**
+     * [getNodeInfo 获取工程划分5级节点树结构数据的第5级]
+     *
+     */
+    public function getNodeInfo_5()
+    {
+        $result = $this->field('id,name,pid')->select();
+        $str = "";
+
+        foreach($result as $key=>$vo){
+            $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "name":"' . $vo['name'].'"';
+
+            $str .= '},';
+        }
+
+        return $str;
+    }
+
 }
