@@ -46,4 +46,14 @@ class KaiwaModel extends Model
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
+
+
+    /**
+     * 根据uid获取信息
+     * @param $uid
+     */
+    public function getOneProject($uid)
+    {
+        return $this->where('uid', $uid)->find();
+    }
 }

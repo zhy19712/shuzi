@@ -30,18 +30,21 @@ class Acceptance extends Base
     }
 
     /**
-     * [获取单元工程基础信息]
+     * [获取单元工程及验收批次基础信息]
      * @return [type] [description]
      */
     public function fetchData()
     {
         $project = new ProjectModel();
+        $kaiwa = new KaiwaModel();
         if(request()->isAjax()){
             $param = input('post.');
-            $data = $project->getOneProject($param['uid']);
-            return json(['data' => $data, 'msg' => "success"]);
+            $projectData = $project->getOneProject($param['uid']);
+            $kaiwaData = $kaiwa->getOneProject($param['uid']);
+            return json(['projectData' => $projectData, 'kaiwaData' => $kaiwaData, 'msg' => "success"]);
         }
     }
+
 
     /**
      * [保存开挖验收批次信息]
