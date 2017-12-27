@@ -107,9 +107,19 @@ class DivideModel extends Model
     }
 
     /**
+     * [getAllMenu 获取全部信息]
+     */
+    public function getAll()
+    {
+        return $this->order('id asc')->select();
+    }
+
+
+
+    /**
      * 递归遍历
      */
-    function recursion($data, $id=0) {
+    function recursion($data, $id) {
         $list = array();
         foreach($data as $v) {
             if($v['pid'] == $id) {
