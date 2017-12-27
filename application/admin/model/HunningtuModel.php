@@ -11,7 +11,7 @@ namespace app\admin\model;
 
 use think\Model;
 
-class Hunningtu extends Model
+class HunningtuModel extends Model
 {
     protected $name = 'project_hunningtu';
     /**

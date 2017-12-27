@@ -116,24 +116,6 @@ class DivideModel extends Model
 
 
 
-    /**
-     * 递归遍历
-     */
-    function recursion($data, $id) {
-        $list = array();
-        foreach($data as $v) {
-            if($v['pid'] == $id) {
-                $v['son'] = recursion($data, $v['id']);
-                if(empty($v['son'])) {
-                    unset($v['son']);
-                }
-                array_push($list, $v);
-            }
-        }
-        return $list;
-    }
-
-
 
 
 }
