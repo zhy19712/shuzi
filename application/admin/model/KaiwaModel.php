@@ -13,6 +13,8 @@ use think\Model;
 
 class KaiwaModel extends Model
 {
+
+    protected $name = 'project_kaiwa';
     /**
      * 插入
      */

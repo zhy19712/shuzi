@@ -47,10 +47,10 @@ class Acceptance extends Base
 
 
     /**
-     * [保存开挖验收批次信息]
+     * [保存验收批次信息]
      * @return [type] [description]
      */
-    public function kaiwaAdd()
+    public function dataAdd()
     {
         $kaiwa = new KaiwaModel();
         $param = input('post.');
