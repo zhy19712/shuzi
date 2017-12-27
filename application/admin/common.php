@@ -12,10 +12,8 @@ function recursion($data, $id) {
             $v['son'] = recursion($data, $v['id']);
             if(empty($v['son'])) {
                 unset($v['son']);
-            }else{
-                array_push($list, $v['son']);
             }
-
+            array_push($list, $v);
         }
     }
     return $list;

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 
 /*
@@ -20,7 +20,7 @@
  */
 
 // DB table to use
-$table = 'think_project';
+$table = 'think_project_zhihu_maogan';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -30,15 +30,8 @@ $primaryKey = 'id';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
-    array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'name',  'dt' => 1 ),
-    array( 'db' => 'sn',  'dt' => 2 ),
-    array( 'db' => 'post_sn',  'dt' => 3 ),
-    array( 'db' => 'zhuanghaoqi',  'dt' => 4 ),
-    array( 'db' => 'zhuanghaozhi',  'dt' => 5 ),
-    array( 'db' => 'gaochengqi',  'dt' => 6 ),
-    array( 'db' => 'gaochengzhi',  'dt' => 7 ),
-    array( 'db' => 'primary',  'dt' => 8 )
+    array( 'db' => 'uid',  'dt' => 0 ),
+    array( 'db' => 'standard',  'dt' => 1 ),
 );
 
 // SQL server connection information数据库连接信息
@@ -62,18 +55,11 @@ $sql_details = array(
 
 require( 'ssp.class.php' );
 
-if(!empty($_GET["pid"]))
-{
-    $pid = $_GET["pid"];
-    echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "pid = '$pid'" )
-    );
-}
-else{
-    echo json_encode(
-        SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns)
-    );
-}
+echo json_encode(
+    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
+);
+
+
 
 
 
