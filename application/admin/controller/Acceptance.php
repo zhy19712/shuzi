@@ -7,11 +7,13 @@
  */
 
 namespace app\admin\controller;
+use app\admin\model\ZhihuModel;
 use think\Db;
 use app\admin\model\AcceptanceModel;
 use app\admin\model\DivideModel;
 use app\admin\model\ProjectModel;
 use app\admin\model\KaiwaModel;
+use app\admin\model\Hunningtu;
 
 
 class Acceptance extends Base
@@ -37,11 +39,15 @@ class Acceptance extends Base
     {
         $project = new ProjectModel();
         $kaiwa = new KaiwaModel();
+        $hunningtu = new Hunningtu();
+        $zhihu = new ZhihuModel();
         if(request()->isAjax()){
             $param = input('post.');
             $projectData = $project->getOneProject($param['uid']);
-            $kaiwaData = $kaiwa->getOneProject($param['uid']);
-            return json(['projectData' => $projectData, 'kaiwaData' => $kaiwaData, 'msg' => "success"]);
+            $kaiwaData = $kaiwa->getOne($param['uid']);
+            $hunningtuData = $hunningtu->getOne($param['uid']);
+            $zhihuData = $zhihu->getOne($param['uid']);
+            return json(['projectData' => $projectData, 'kaiwaData' => $kaiwaData, 'hunningtuData' => $hunningtuData, 'zhihuData' => $zhihuData,'msg' => "success"]);
         }
     }
 
@@ -58,13 +64,12 @@ class Acceptance extends Base
 
             if(empty($param['id']))
             {
-
-                $flag = $kaiwa->insertKaiwa($param);
+                $flag = $kaiwa->insert($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
             else if(!empty($param['id']))
             {
-                $flag = $kaiwa->editKaiwa($param);
+                $flag = $kaiwa->edit($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
 

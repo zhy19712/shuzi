@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: admin
  * Date: 2017/12/27
- * Time: 8:50
+ * Time: 9:50
  */
 
 namespace app\admin\model;
@@ -11,10 +11,9 @@ namespace app\admin\model;
 
 use think\Model;
 
-class KaiwaModel extends Model
+class Hunningtu extends Model
 {
-
-    protected $name = 'project_kaiwa';
+    protected $name = 'project_hunningtu';
     /**
      * 插入
      */
