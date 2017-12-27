@@ -86,7 +86,7 @@ class ProjectModel extends Model
      */
     public function getNodeInfo_5()
     {
-        $result = $this->field('id,name,pid')->select();
+        $result = $this->field('id,name,pid,cate')->select();
         $str = "";
 
         foreach($result as $key=>$vo){
