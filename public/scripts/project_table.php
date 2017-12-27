@@ -62,11 +62,18 @@ $sql_details = array(
 
 require( 'ssp.class.php' );
 
-echo json_encode(
-    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
-);
-
-
+if(!empty($_GET["pid"]))
+{
+    $pid = $_GET["pid"];
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "pid = '$pid'" )
+    );
+}
+else{
+    echo json_encode(
+        SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns)
+    );
+}
 
 
 
