@@ -7,11 +7,13 @@
  */
 
 namespace app\admin\controller;
+use app\admin\model\ZhihuModel;
 use think\Db;
 use app\admin\model\AcceptanceModel;
 use app\admin\model\DivideModel;
 use app\admin\model\ProjectModel;
 use app\admin\model\KaiwaModel;
+use app\admin\model\HunningtuModel;
 
 
 class Acceptance extends Base
@@ -37,11 +39,25 @@ class Acceptance extends Base
     {
         $project = new ProjectModel();
         $kaiwa = new KaiwaModel();
+        $hunningtu = new HunningtuModel();
+        $zhihu = new ZhihuModel();
         if(request()->isAjax()){
             $param = input('post.');
             $projectData = $project->getOneProject($param['uid']);
-            $kaiwaData = $kaiwa->getOneProject($param['uid']);
-            return json(['projectData' => $projectData, 'kaiwaData' => $kaiwaData, 'msg' => "success"]);
+            if($param['cate']==='开挖')
+            {
+                $kaiwaData = $kaiwa->getOne($param['uid']);
+                return json(['projectData' => $projectData, 'kaiwaData' => $kaiwaData,'msg' => "success"]);
+            }else if($param['cate']==='支护')
+            {
+                $zhihuData = $zhihu->getOne($param['uid']);
+                return json(['projectData' => $projectData, 'zhihuData' => $zhihuData,'msg' => "success"]);
+            }else if($param['cate']==='混凝土')
+            {
+                $hunningtuData = $hunningtu->getOne($param['uid']);
+                return json(['projectData' => $projectData, 'hunningtuData' => $hunningtuData,'msg' => "success"]);
+            }
+
         }
     }
 
@@ -53,18 +69,39 @@ class Acceptance extends Base
     public function dataAdd()
     {
         $kaiwa = new KaiwaModel();
+        $zhihu = new ZhihuModel();
+        $hunningtu = new HunningtuModel();
         $param = input('post.');
         if(request()->isAjax()){
 
-            if(empty($param['id']))
+            if(empty($param['id'])&&$param['cate']==='开挖')
             {
-
-                $flag = $kaiwa->insertKaiwa($param);
+                $flag = $kaiwa->insert($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if(!empty($param['id']))
+            else if(empty($param['id'])&&$param['cate']==='支护')
             {
-                $flag = $kaiwa->editKaiwa($param);
+                $flag = $zhihu->insert($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
+            else if(empty($param['id'])&&$param['cate']==='混凝土')
+            {
+                $flag = $hunningtu->insert($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
+            else if(!empty($param['id'])&&$param['cate']==='开挖')
+            {
+                $flag = $kaiwa->edit($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
+            else if(!empty($param['id'])&&$param['cate']==='支护')
+            {
+                $flag = $zhihu->edit($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
+            else if(!empty($param['id'])&&$param['cate']==='混凝土')
+            {
+                $flag = $hunningtu->edit($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
 
