@@ -90,7 +90,7 @@ class ProjectModel extends Model
         $str = "";
 
         foreach($result as $key=>$vo){
-            $str .= '{ "uid": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "name":"' . $vo['name'].'"';
+            $str .= '{ "uid": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "cate":"' . $vo['cate'] . '", "name":"' . $vo['name'].'"';
 
             $str .= '},';
         }

@@ -4,15 +4,18 @@ use think\Db;
 /**
  * 递归遍历
  */
-function recursion($data, $id=0) {
+function recursion($data, $id) {
     $list = array();
+
     foreach($data as $v) {
         if($v['pid'] == $id) {
             $v['son'] = recursion($data, $v['id']);
             if(empty($v['son'])) {
                 unset($v['son']);
+            }else{
+                array_push($list, $v['son']);
             }
-            array_push($list, $v);
+
         }
     }
     return $list;
