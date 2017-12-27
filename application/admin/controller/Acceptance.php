@@ -11,6 +11,7 @@ use think\Db;
 use app\admin\model\AcceptanceModel;
 use app\admin\model\DivideModel;
 use app\admin\model\ProjectModel;
+use app\admin\model\KaiwaModel;
 
 
 class Acceptance extends Base
@@ -29,17 +30,46 @@ class Acceptance extends Base
     }
 
     /**
-     * [获取单元工程基础信息]
+     * [获取单元工程及验收批次基础信息]
      * @return [type] [description]
      */
     public function fetchData()
     {
         $project = new ProjectModel();
+        $kaiwa = new KaiwaModel();
         if(request()->isAjax()){
             $param = input('post.');
-            $data = $project->getOneProject($param['uid']);
-            return json(['data' => $data, 'msg' => "success"]);
+            $projectData = $project->getOneProject($param['uid']);
+            $kaiwaData = $kaiwa->getOneProject($param['uid']);
+            return json(['projectData' => $projectData, 'kaiwaData' => $kaiwaData, 'msg' => "success"]);
         }
+    }
+
+
+    /**
+     * [保存开挖验收批次信息]
+     * @return [type] [description]
+     */
+    public function kaiwaAdd()
+    {
+        $kaiwa = new KaiwaModel();
+        $param = input('post.');
+        if(request()->isAjax()){
+
+            if(empty($param['id']))
+            {
+
+                $flag = $kaiwa->insertKaiwa($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
+            else if(!empty($param['id']))
+            {
+                $flag = $kaiwa->editKaiwa($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
+
+        }
+        return $this->fetch();
     }
 
 

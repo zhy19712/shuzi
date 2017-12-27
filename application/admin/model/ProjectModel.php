@@ -64,7 +64,7 @@ class ProjectModel extends Model
 
 
     /**
-     * [getAllMenu 获取全部信息]
+     * [获取全部信息]
      */
     public function getAll()
     {
