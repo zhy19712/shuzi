@@ -204,7 +204,7 @@
                         <div class="info">
                             <span style="vertical-align: top;width: 40%">主要单元工程、重要隐蔽工程及关键部位的单元工程</span>
                             <div id="ipt7_wrapper" style="background-color:#fff;display: inline-block;vertical-align:top;width: 60%;height: 38px;border-left: 1px solid #000;">
-                                <input type="text" readonly="readonly" id="input7" style="font-size: 14px;border: none;">
+                                <input type="text" readonly="readonly" id="input7" style="font-size: 14px;border: none;margin-top: 8px;">
                             </div>
                         </div>
                         <div id="container">
@@ -321,9 +321,36 @@
                                     </div>
                                 </div>
                             </form>
-                            <form class="form-horizontal" name="model3" id="model3" style="display: block;">
+                            <form class="form-horizontal" name="model3" id="model3">
                                 <input type="text" id="uid3" name="uid" style="display: none;">
                                 <input type="text" id="ccate3" name="cate" style="display: none;">
+                                <div class="info">
+                                    <span style="vertical-align: top;">验评结果</span>
+                                    <div style="background-color:#fff;display: inline-block;vertical-align:top;width: 86%;height: 38px;border-left: 1px solid #000;">
+                                        <div class="db">
+                                            <span>一检合格</span>
+                                            <select name="pass" id="pass3">
+                                                <option value="是">是</option>
+                                                <option value="否">否</option>
+                                            </select>
+                                        </div>
+                                        <div class="db">
+                                            <span>质量等级</span>
+                                            <select name="quality_level" id="quality_level3">
+                                                <option value="优良">优良</option>
+                                                <option value="合格">合格</option>
+                                            </select>
+                                        </div>
+                                        <div class="db">
+                                            <span>评定月</span>
+                                            <input type="text" id="evaluated_date3" name="evaluated_date">
+                                        </div>
+                                        <div class="db">
+                                            <span>评定人</span>
+                                            <input type="text" id="evaluated_by3" name="evaluated_by">
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="info">
                                     <span>抗压强度检测<br>(施工单位自检)</span>
                                     <div class="exp w2">
@@ -337,13 +364,13 @@
                                             <span>合格率(%)</span>
                                         </div>
                                         <div class="bottom">
-                                            <input type="text" name="sections_overbreak" id="sections_overbreak">
-                                            <input type="text" name="points_overbreak" id="points_overbreak">
-                                            <input type="text" name="max_overbreak" id="max_overbreak">
-                                            <input type="text" name="min_overbreak" id="min_overbreak">
-                                            <input type="text" name="ave_overbreak" id="ave_overbreak">
-                                            <input type="text" name="pass_overbreak" id="pass_overbreak">
-                                            <input type="text" name="pass_overbreak" id="pass_overbreak">
+                                            <input type="text" name="requirement_self" id="requirement_self">
+                                            <input type="text" name="volume_self" id="volume_self">
+                                            <input type="text" name="num_self" id="num_self">
+                                            <input type="text" name="max_self" id="max_self">
+                                            <input type="text" name="min_self" id="min_self">
+                                            <input type="text" name="ave_self" id="ave_self">
+                                            <input type="text" name="pass_self" id="pass_self">
                                         </div>
                                     </div>
                                 </div>
@@ -360,13 +387,13 @@
                                             <span>合格率(%)</span>
                                         </div>
                                         <div class="bottom">
-                                            <input type="text" name="sections_overbreak" id="sections_overbreak">
-                                            <input type="text" name="points_overbreak" id="points_overbreak">
-                                            <input type="text" name="max_overbreak" id="max_overbreak">
-                                            <input type="text" name="min_overbreak" id="min_overbreak">
-                                            <input type="text" name="ave_overbreak" id="ave_overbreak">
-                                            <input type="text" name="pass_overbreak" id="pass_overbreak">
-                                            <input type="text" name="pass_overbreak" id="pass_overbreak">
+                                            <input type="text" name="requirement_inspection" id="requirement_inspection">
+                                            <input type="text" name="volume_inspection" id="volume_inspection">
+                                            <input type="text" name="num_inspection" id="num_inspection">
+                                            <input type="text" name="max_inspection" id="max_inspection">
+                                            <input type="text" name="min_inspection" id="min_inspection">
+                                            <input type="text" name="ave_inspection" id="ave_inspection">
+                                            <input type="text" name="pass_inspection" id="pass_inspection">
                                         </div>
                                     </div>
                                 </div>
@@ -381,15 +408,15 @@
                                         </div>
                                         <div class="top border-bottom">
                                             <div class="sp1">平面</div>
-                                            <div class="sp1"><input type="text"></div>
-                                            <div class="sp1"><input type="text" style="width: 40%;"><span>-</span><input type="text" style="width: 40%;"></div>
-                                            <div class="sp1"><input type="text"></div>
+                                            <div class="sp1"><input type="text" name="points_flat" id="points_flat"></div>
+                                            <div class="sp1"><input type="text" name="deviation_min_flat" id="deviation_min_flat" style="width: 40%;"><span>-</span><input type="text" name="deviation_max_flat" id="deviation_max_flat" style="width: 40%;"></div>
+                                            <div class="sp1"><input type="text" name="pass_flat" id="pass_flat"></div>
                                         </div>
                                         <div class="top">
                                             <div class="sp1">竖向</div>
-                                            <div class="sp1"><input type="text"></div>
-                                            <div class="sp1"><input type="text" style="width: 40%;"><span>-</span><input type="text" style="width: 40%;"></div>
-                                            <div class="sp1"><input type="text"></div>
+                                            <div class="sp1"><input type="text" name="points_vertical" id="points_vertical"></div>
+                                            <div class="sp1"><input type="text" name="deviation_min_vertical" id="deviation_min_vertical" style="width: 40%;"><span>-</span><input type="text" name="deviation_max_vertical" id="deviation_max_vertical" style="width: 40%;"></div>
+                                            <div class="sp1"><input type="text" name="pass_vertical" id="pass_vertical"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -405,12 +432,12 @@
                                             <span>合格率(%)</span>
                                         </div>
                                         <div class="bottom">
-                                            <input type="text" name="sections_overbreak" id="sections_overbreak">
-                                            <input type="text" name="points_overbreak" id="points_overbreak">
-                                            <input type="text" name="max_overbreak" id="max_overbreak">
-                                            <input type="text" name="min_overbreak" id="min_overbreak">
-                                            <input type="text" name="ave_overbreak" id="ave_overbreak">
-                                            <input type="text" name="pass_overbreak" id="pass_overbreak">
+                                            <input type="text" name="allowable_deviation" id="allowable_deviation">
+                                            <input type="text" name="points_union" id="points_union">
+                                            <input type="text" name="max_union" id="max_union">
+                                            <input type="text" name="min_union" id="min_union">
+                                            <input type="text" name="ave_union" id="ave_union">
+                                            <input type="text" name="pass_union" id="pass_union">
                                         </div>
                                     </div>
                                 </div>
@@ -459,6 +486,9 @@
     });
     $("#sections_test_date").jeDate({
         format: "YYYY-MM-DD"
+    });
+    $("#evaluated_date3").jeDate({
+        format: "YYYY-MM"
     });
     var mytree_node;
 
@@ -512,7 +542,6 @@
     $("div.mybtn").html('<div>新增</div>');
     $("div.mybtn").click(function () {
         if(mytree_node.level == 3){
-            var id = mytree_node.id;
             $.ajax({
                 url: "nodeEdit",
                 type: "post",
