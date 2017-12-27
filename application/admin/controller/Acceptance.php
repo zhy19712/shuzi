@@ -44,15 +44,16 @@ class Acceptance extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $projectData = $project->getOneProject($param['uid']);
-            if($param['cate'].equalTo("开挖"))
+            $p = urldecode(urldecode($param['cate']));
+            if($p==="开挖")
             {
                 $kaiwaData = $kaiwa->getOne($param['uid']);
                 return json(['projectData' => $projectData, 'kaiwaData' => $kaiwaData,'msg' => "success"]);
-            }else if($param['cate']=='支护')
+            }else if($p=='支护')
             {
                 $zhihuData = $zhihu->getOne($param['uid']);
                 return json(['projectData' => $projectData, 'zhihuData' => $zhihuData,'msg' => "success"]);
-            }else if($param['cate']=='混凝土')
+            }else if($p=='混凝土')
             {
                 $hunningtuData = $hunningtu->getOne($param['uid']);
                 return json(['projectData' => $projectData, 'hunningtuData' => $hunningtuData,'msg' => "success"]);
