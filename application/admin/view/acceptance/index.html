@@ -6,6 +6,9 @@
 <link rel="stylesheet" href="/static/admin/css/jedate.css">
 <link rel="stylesheet" href="/static/admin/css/iconfont.css">
 <style>
+    form{
+        display: none;
+    }
     .mybtn{
         margin-right: 30px;
         float: left;
@@ -84,15 +87,15 @@
         margin-top: 20px;
         border: 1px solid #000;
         font-size: 0;
+        background-color: #bae2f3;
     }
     #readonly .info>span{
         display: inline-block;
-        padding: 0 30px;
+        vertical-align: middle;
         text-align: center;
-        background-color: #bae2f3;
         min-width: 14%;
         font-size: 14px;
-        line-height: 30px;
+        line-height: 38px;
     }
     #readonly .info select{
         width: 100px;
@@ -100,8 +103,10 @@
     }
     .db{
         display: inline-block;
-        margin-left: 30px;
+        vertical-align: middle;
+        margin-left: 20px;
         font-size: 14px;
+        padding-top: 6px;
     }
     .db input,.bottom input{
         line-height: 20px;
@@ -111,6 +116,8 @@
         vertical-align: middle;
         line-height: 34px;
         width: 86%;
+        background-color: #fff;
+        border-left: 1px solid #000;
     }
     .exp .top{
         width: 100%;
@@ -122,6 +129,7 @@
         margin: 0 1%;
         font-size: 14px;
         text-align: center;
+        height: 40px;
     }
     .exp .bottom input{
         display: inline-block;
@@ -130,8 +138,24 @@
         font-size: 14px;
         margin-top: 10px;
     }
-    .w2 input,.w2 span{
-        width: 14% !important;
+    #model1 .w2 input,#model1 .w2 span,#model3 .w3 input,#model3 .w3 span{
+        width: 14%;
+    }
+    #model3 .w2 input,#model3 .w2 span{
+        width: 12%;
+    }
+    #model3 .sp1,#model3 .w4 .top>span{
+        width: 22%;
+    }
+    .sp1{
+        display: inline-block;
+        font-size: 14px;
+        text-align: center;
+        margin: 0 1%;
+    }
+    .sp1 input{
+        line-height: 20px;
+        width: 100%;
     }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
@@ -178,39 +202,44 @@
                             </tbody>
                         </table>
                         <div class="info">
-                            <span class="border-right">主要单元工程、重要隐蔽工程及关键部位的单元工程</span>
-                            <input type="text" readonly="readonly" id="input7" style="font-size: 14px;border: none;">
+                            <span style="vertical-align: top;width: 40%">主要单元工程、重要隐蔽工程及关键部位的单元工程</span>
+                            <div id="ipt7_wrapper" style="background-color:#fff;display: inline-block;vertical-align:top;width: 60%;height: 38px;border-left: 1px solid #000;">
+                                <input type="text" readonly="readonly" id="input7" style="font-size: 14px;border: none;">
+                            </div>
                         </div>
                         <div id="container">
-                            <form class="form-horizontal" name="model1" id="model1" method="post" action="{:url('dataAdd')}">
+                            <form class="form-horizontal" name="model1" id="model1">
                                 <input type="text" id="uid1" name="uid" style="display: none;">
+                                <input type="text" id="ccate1" name="cate" style="display: none;">
                                 <div class="info">
-                                    <span class="border-right">验评结果</span>
-                                    <div class="db">
-                                        <span>一检合格</span>
-                                        <select name="pass" id="pass">
-                                            <option value="是">是</option>
-                                            <option value="否">否</option>
-                                        </select>
-                                    </div>
-                                    <div class="db">
-                                        <span>质量等级</span>
-                                        <select name="quality_level" id="quality_level">
-                                            <option value="优良">优良</option>
-                                            <option value="合格">合格</option>
-                                        </select>
-                                    </div>
-                                    <div class="db">
-                                        <span>评定月</span>
-                                        <input type="text" id="evaluated_date" name="evaluated_date">
-                                    </div>
-                                    <div class="db">
-                                        <span>评定人</span>
-                                        <input type="text" id="evaluated_by" name="evaluated_by">
+                                    <span style="vertical-align: top;">验评结果</span>
+                                    <div id="db_wrapper" style="background-color:#fff;display: inline-block;vertical-align:top;width: 86%;height: 38px;border-left: 1px solid #000;">
+                                        <div class="db">
+                                            <span>一检合格</span>
+                                            <select name="pass" id="pass">
+                                                <option value="是">是</option>
+                                                <option value="否">否</option>
+                                            </select>
+                                        </div>
+                                        <div class="db">
+                                            <span>质量等级</span>
+                                            <select name="quality_level" id="quality_level">
+                                                <option value="优良">优良</option>
+                                                <option value="合格">合格</option>
+                                            </select>
+                                        </div>
+                                        <div class="db">
+                                            <span>评定月</span>
+                                            <input type="text" id="evaluated_date" name="evaluated_date">
+                                        </div>
+                                        <div class="db">
+                                            <span>评定人</span>
+                                            <input type="text" id="evaluated_by" name="evaluated_by">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="info" style="height: 80px;">
-                                    <span class="border-right" style="line-height: 78px;">半孔率</span>
+                                <div class="info">
+                                    <span>半孔率</span>
                                     <div class="exp">
                                         <div class="top border-bottom">
                                             <span>检查孔数(个)</span>
@@ -228,8 +257,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="info" style="height: 80px;">
-                                    <span class="border-right" style="line-height: 78px;">不平整度</span>
+                                <div class="info">
+                                    <span>不平整度</span>
                                     <div class="exp w2">
                                         <div class="top border-bottom">
                                             <span>检查断面(个)</span>
@@ -249,8 +278,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="info" style="height: 80px;">
-                                    <span class="border-right" style="line-height: 78px;">轮廓体型(超挖)</span>
+                                <div class="info">
+                                    <span>轮廓体型(超挖)</span>
                                     <div class="exp w2">
                                         <div class="top border-bottom">
                                             <span>检查断面(个)</span>
@@ -270,8 +299,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="info" style="height: 80px;margin-top: 0;border-top: none;">
-                                    <span class="border-right" style="line-height: 78px;">轮廓体型(欠挖)</span>
+                                <div class="info" style="margin-top: 0;border-top: none;">
+                                    <span>轮廓体型(欠挖)</span>
                                     <div class="exp w2">
                                         <div class="top border-bottom">
                                             <span>检查断面(个)</span>
@@ -292,8 +321,99 @@
                                     </div>
                                 </div>
                             </form>
-                            <form style="display: none;" class="form-horizontal" name="model3" id="model3" method="post" action="{:url('projectAdd')}">
-
+                            <form class="form-horizontal" name="model3" id="model3" style="display: block;">
+                                <input type="text" id="uid3" name="uid" style="display: none;">
+                                <input type="text" id="ccate3" name="cate" style="display: none;">
+                                <div class="info">
+                                    <span>抗压强度检测<br>(施工单位自检)</span>
+                                    <div class="exp w2">
+                                        <div class="top border-bottom">
+                                            <span>设计指标</span>
+                                            <span>方量(m³)</span>
+                                            <span>施工单位自检组数(个)</span>
+                                            <span>最大值(Mpa)</span>
+                                            <span>最小值(Mpa)</span>
+                                            <span>平均值(Mpa)</span>
+                                            <span>合格率(%)</span>
+                                        </div>
+                                        <div class="bottom">
+                                            <input type="text" name="sections_overbreak" id="sections_overbreak">
+                                            <input type="text" name="points_overbreak" id="points_overbreak">
+                                            <input type="text" name="max_overbreak" id="max_overbreak">
+                                            <input type="text" name="min_overbreak" id="min_overbreak">
+                                            <input type="text" name="ave_overbreak" id="ave_overbreak">
+                                            <input type="text" name="pass_overbreak" id="pass_overbreak">
+                                            <input type="text" name="pass_overbreak" id="pass_overbreak">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="info" style="margin-top: 0;border-top: none;">
+                                    <span>抗压强度检测<br>(监理单位自检)</span>
+                                    <div class="exp w2">
+                                        <div class="top border-bottom">
+                                            <span>设计指标</span>
+                                            <span>方量(m³)</span>
+                                            <span>监理单位自检组数(个)</span>
+                                            <span>最大值(Mpa)</span>
+                                            <span>最小值(Mpa)</span>
+                                            <span>平均值(Mpa)</span>
+                                            <span>合格率(%)</span>
+                                        </div>
+                                        <div class="bottom">
+                                            <input type="text" name="sections_overbreak" id="sections_overbreak">
+                                            <input type="text" name="points_overbreak" id="points_overbreak">
+                                            <input type="text" name="max_overbreak" id="max_overbreak">
+                                            <input type="text" name="min_overbreak" id="min_overbreak">
+                                            <input type="text" name="ave_overbreak" id="ave_overbreak">
+                                            <input type="text" name="pass_overbreak" id="pass_overbreak">
+                                            <input type="text" name="pass_overbreak" id="pass_overbreak">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="info">
+                                    <span>混凝土形体偏差检测<br>(联合检测)</span>
+                                    <div class="exp w4">
+                                        <div class="top border-bottom">
+                                            <span>偏差方向</span>
+                                            <span>测点数(个)</span>
+                                            <span>偏差范围(mm)</span>
+                                            <span>合格率(%)</span>
+                                        </div>
+                                        <div class="top border-bottom">
+                                            <div class="sp1">平面</div>
+                                            <div class="sp1"><input type="text"></div>
+                                            <div class="sp1"><input type="text" style="width: 40%;"><span>-</span><input type="text" style="width: 40%;"></div>
+                                            <div class="sp1"><input type="text"></div>
+                                        </div>
+                                        <div class="top">
+                                            <div class="sp1">竖向</div>
+                                            <div class="sp1"><input type="text"></div>
+                                            <div class="sp1"><input type="text" style="width: 40%;"><span>-</span><input type="text" style="width: 40%;"></div>
+                                            <div class="sp1"><input type="text"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="info" style="">
+                                    <span>混凝土平整度检测<br>(联合检测)</span>
+                                    <div class="exp w3">
+                                        <div class="top border-bottom">
+                                            <span>设计/规范允许偏差值(mm)</span>
+                                            <span>检查点数(个)</span>
+                                            <span>最大值(mm)</span>
+                                            <span>最小值(mm)</span>
+                                            <span>平均值(mm)</span>
+                                            <span>合格率(%)</span>
+                                        </div>
+                                        <div class="bottom">
+                                            <input type="text" name="sections_overbreak" id="sections_overbreak">
+                                            <input type="text" name="points_overbreak" id="points_overbreak">
+                                            <input type="text" name="max_overbreak" id="max_overbreak">
+                                            <input type="text" name="min_overbreak" id="min_overbreak">
+                                            <input type="text" name="ave_overbreak" id="ave_overbreak">
+                                            <input type="text" name="pass_overbreak" id="pass_overbreak">
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -495,31 +615,122 @@
                 success: function (res) {
                     console.log(res);
                     if(res.msg == "success"){
-                        var data = res.data;
+                        var data = res.projectData;
+                        $("#input1").val(data.name);
+                        $("#input2").val(data.sn + data.post_sn);
+                        $("#input3").val(data.zhuanghaoqi);
+                        $("#input4").val(data.zhuanghaozhi);
+                        $("#input5").val(data.gaochengqi);
+                        $("#input6").val(data.gaochengzhi);
+                        $("#input7").val(data.primary);
+                        $("form").css("display","none");
                         if(data.cate == "开挖"){
-//                            $("#model1").css("display","block");
-                            $("#input1").val(data.name);
-                            $("#input2").val(data.sn + data.post_sn);
-                            $("#input3").val(data.zhuanghaoqi);
-                            $("#input4").val(data.zhuanghaozhi);
-                            $("#input5").val(data.gaochengqi);
-                            $("#input6").val(data.gaochengzhi);
-                            $("#input7").val(data.primary);
                             $("#uid1").val(groupid);
+                            $("#cate1").val(data.cate);
+                            $("#model1").css("display","block");
+                            if(res.kaiwaData){
+                                var kdata = res.kaiwaData
+                                $("#pass").val(kdata.pass);
+                                $("#quality_level").val(kdata.quality_level);
+                                $("#evaluated_date").val(kdata.evaluated_date);
+                                $("#evaluated_by").val(kdata.evaluated_by);
+                                $("#holes").val(kdata.holes);
+                                $("#ave_size").val(kdata.ave_size);
+                                $("#ave_length").val(kdata.ave_length);
+                                $("#half_percentage").val(kdata.half_percentage);
+                                $("#holes_test_date").val(kdata.holes_test_date);
+                                $("#sections").val(kdata.sections);
+                                $("#points").val(kdata.points);
+                                $("#max").val(kdata.max);
+                                $("#min").val(kdata.min);
+                                $("#ave").val(kdata.ave);
+                                $("#sections_test_date").val(kdata.sections_test_date);
+                                $("#sections_overbreak").val(kdata.sections_overbreak);
+                                $("#points_overbreak").val(kdata.points_overbreak);
+                                $("#max_overbreak").val(kdata.max_overbreak);
+                                $("#min_overbreak").val(kdata.min_overbreak);
+                                $("#ave_overbreak").val(kdata.ave_overbreak);
+                                $("#pass_overbreak").val(kdata.pass_overbreak);
+                                $("#sections_underbreak").val(kdata.sections_underbreak);
+                                $("#points_underbreak").val(kdata.points_underbreak);
+                                $("#max_underbreak").val(kdata.max_underbreak);
+                                $("#min_underbreak").val(kdata.min_underbreak);
+                                $("#ave_underbreak").val(kdata.ave_underbreak);
+                                $("#pass_underbreak").val(kdata.pass_underbreak);
+                            }
+                        }else if(data.cate == "支护"){
+                            $("#uid2").val(groupid);
+                            $("#cate2").val(data.cate);
+                            $("#model2").css("display","block");
+                            if(res.zhihuData){
+                                var kdata = res.kaiwaData
+                                $("#pass").val(kdata.pass);
+                                $("#quality_level").val(kdata.quality_level);
+                                $("#evaluated_date").val(kdata.evaluated_date);
+                                $("#evaluated_by").val(kdata.evaluated_by);
+                                $("#holes").val(kdata.holes);
+                                $("#ave_size").val(kdata.ave_size);
+                                $("#ave_length").val(kdata.ave_length);
+                                $("#half_percentage").val(kdata.half_percentage);
+                                $("#holes_test_date").val(kdata.holes_test_date);
+                                $("#sections").val(kdata.sections);
+                                $("#points").val(kdata.points);
+                                $("#max").val(kdata.max);
+                                $("#min").val(kdata.min);
+                                $("#ave").val(kdata.ave);
+                                $("#sections_test_date").val(kdata.sections_test_date);
+                                $("#sections_overbreak").val(kdata.sections_overbreak);
+                                $("#points_overbreak").val(kdata.points_overbreak);
+                                $("#max_overbreak").val(kdata.max_overbreak);
+                                $("#min_overbreak").val(kdata.min_overbreak);
+                                $("#ave_overbreak").val(kdata.ave_overbreak);
+                                $("#pass_overbreak").val(kdata.pass_overbreak);
+                                $("#sections_underbreak").val(kdata.sections_underbreak);
+                                $("#points_underbreak").val(kdata.points_underbreak);
+                                $("#max_underbreak").val(kdata.max_underbreak);
+                                $("#min_underbreak").val(kdata.min_underbreak);
+                                $("#ave_underbreak").val(kdata.ave_underbreak);
+                                $("#pass_underbreak").val(kdata.pass_underbreak);
+                            }
+                        }else if(data.cate == "混凝土"){
+                            $("#uid3").val(groupid);
+                            $("#cate3").val(data.cate);
+                            $("#model3").css("display","block");
+                            if(res.hunningtuData){
+                                var kdata = res.kaiwaData
+                                $("#pass").val(kdata.pass);
+                                $("#quality_level").val(kdata.quality_level);
+                                $("#evaluated_date").val(kdata.evaluated_date);
+                                $("#evaluated_by").val(kdata.evaluated_by);
+                                $("#holes").val(kdata.holes);
+                                $("#ave_size").val(kdata.ave_size);
+                                $("#ave_length").val(kdata.ave_length);
+                                $("#half_percentage").val(kdata.half_percentage);
+                                $("#holes_test_date").val(kdata.holes_test_date);
+                                $("#sections").val(kdata.sections);
+                                $("#points").val(kdata.points);
+                                $("#max").val(kdata.max);
+                                $("#min").val(kdata.min);
+                                $("#ave").val(kdata.ave);
+                                $("#sections_test_date").val(kdata.sections_test_date);
+                                $("#sections_overbreak").val(kdata.sections_overbreak);
+                                $("#points_overbreak").val(kdata.points_overbreak);
+                                $("#max_overbreak").val(kdata.max_overbreak);
+                                $("#min_overbreak").val(kdata.min_overbreak);
+                                $("#ave_overbreak").val(kdata.ave_overbreak);
+                                $("#pass_overbreak").val(kdata.pass_overbreak);
+                                $("#sections_underbreak").val(kdata.sections_underbreak);
+                                $("#points_underbreak").val(kdata.points_underbreak);
+                                $("#max_underbreak").val(kdata.max_underbreak);
+                                $("#min_underbreak").val(kdata.min_underbreak);
+                                $("#ave_underbreak").val(kdata.ave_underbreak);
+                                $("#pass_underbreak").val(kdata.pass_underbreak);
+                            }
                         }
+
                     }
                 }
             });
-//            $.ajax({
-//                url: "./fetchData",
-//                type: "post",
-//                data: {uid:groupid},
-//                dataType: "json",
-//                success: function () {
-//
-//                }
-//
-//            })
         }
     };
     var setting = {
@@ -552,10 +763,25 @@
 </script>
 <script type="text/javascript">
     $("#save").click(function () {
-        $('#model1').ajaxForm({
-            success: complete,
-            dataType: 'json'
-        });
+        $.each($("form"),function (i,n) {
+            if($(n).css("display") === "block"){
+                if($(n).attr("id") === "model1"){
+                    $('#model1').ajaxSubmit({
+                        url: "./dataAdd",
+                        type: "post",
+                        success: complete,
+                        dataType: 'json'
+                    });
+                }else if($(n).attr("id") === "model3"){
+                    $('#model3').ajaxSubmit({
+                        url: "./dataAdd",
+                        type: "post",
+                        success: complete,
+                        dataType: 'json'
+                    });
+                }
+            }
+        })
     })
     function complete(data){
         if(data.code==1){
@@ -565,69 +791,6 @@
             return false;
         }
     }
-    //提交
-    $("#projectAdd .btn-primary").click(function () {
-        $('#projectAdd').ajaxForm({
-            success: complete,
-            dataType: 'json'
-        });
-    })
-
-    $("#level2 .btn-primary").click(function () {
-        if(!$("#project_sn2").val()){
-            layer.msg('请输入单位工程编号',{icon:2,time:1500,shade: 0.1}, function(index){
-                layer.close(index);
-            });
-            return false;
-        }
-        $('#level2').ajaxForm({
-            success: complete1,
-            dataType: 'json'
-        });
-    });
-    $("#level3 .btn-primary").click(function () {
-        if(!$("#new4").val()){
-            layer.msg('请输入分部工程编号',{icon:2,time:1500,shade: 0.1}, function(index){
-                layer.close(index);
-            });
-            return false;
-        }
-        $('#level3').ajaxForm({
-            success: complete1,
-            dataType: 'json'
-        });
-    })
-
-    $("#level4 .btn-primary").click(function () {
-        if(!$("#new6").val()){
-            layer.msg('请输入单元工程编号',{icon:2,time:1500,shade: 0.1}, function(index){
-                layer.close(index);
-            });
-            return false;
-        }
-        $('#level4').ajaxForm({
-            success: complete1,
-            dataType: 'json'
-        });
-    })
-
-
-    function complete1(data){
-        console.log(data);
-        if(data.code==1){
-            $("#level2").modal('hide');
-            $("#level3").modal('hide');
-            $("#level4").modal('hide');
-            zTreeObj.reAsyncChildNodes(null, "refresh");
-            layer.msg("保存成功");
-        }else{
-            layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
-            return false;
-        }
-    }
-
-
-
 
 
     //IOS开关样式配置
