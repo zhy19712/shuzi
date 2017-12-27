@@ -9,7 +9,7 @@
     form{
         display: none;
     }
-    .mybtn{
+    .mybtn,.mybtn1{
         margin-right: 30px;
         float: left;
     }
@@ -175,6 +175,10 @@
     #table_wrapper>table input,#myModal table input{
         line-height: 20px;
         width: 90%;
+    }
+    #myModal table{
+        width: 100%;
+        line-height: 30px;
     }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
@@ -371,17 +375,6 @@
                                     </div>
                                 </div>
                                 <div id="table_wrapper">
-                                    <div id="zhihutable_wrapper">
-                                        <table id="zhihu_table" width="100%" class="table table-striped table-bordered">
-                                            <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>规格</th>
-                                                <th>操作</th>
-                                            </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
                                     <table style="margin-top: 20px;border-top: 1px solid #000;border-right: 1px solid #000;">
                                         <tbody>
                                         <tr>
@@ -456,6 +449,18 @@
                                         </tr>
                                     </table>
                                 </div>
+                                <div id="zhihutable_wrapper" style="margin-top: 20px;">
+                                    <table id="zhihu_table" width="100%" class="table table-striped table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>规格</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+
 
                             </form>
                             <form class="form-horizontal" name="model3" id="model3">
@@ -605,7 +610,7 @@
     </div>
 </div>
 
-<div id="myModal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
+<div id="myModal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 80%;margin: 0 auto;">
     <div class="row">
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
@@ -614,17 +619,15 @@
                 </div>
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
-                    <form class="form-horizontal" name="projectAdd" id="projectAdd" method="post" action="{:url('projectAdd')}">
-                        <div class="form-group">
+                    <form style="display: block;" class="form-horizontal" name="projectAdd" id="projectAdd" method="post" action="{:url('projectAdd')}">
+                        <div class="form-group" style="text-align: center;">
                             <table>
                                 <tbody>
                                 <tr>
                                     <td style="background-color:#bae2f3;border-right: 1px solid #000;">锚杆检测</td>
                                     <td>规格</td>
                                     <td colspan="2"><input type="text"></td>
-                                    <td colspan="6"><div id="add" style="padding-top: 10px;">
-                                        <i style="background-color:#33d685;"></i><span style="background-color:#33d685;">添加</span><i style="background-color:#33d685;"></i>
-                                    </div></td>
+                                    <td colspan="6"></td>
                                 </tr>
                                 <tr>
                                     <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">无损检测<br><span style="font-weight: 400;">(施工单位自检)</span></td>
@@ -794,7 +797,7 @@
         "ajax": {
             "url": "__SCRIPT__/maogan_table.php"
         },
-        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "dom": '<"mybtn1 btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
             {
                 "searchable": false,
@@ -821,7 +824,11 @@
             }
         }
     } );
-
+    $("div.mybtn1").html('<div>新增</div>');
+    $("div.mybtn1").click(function () {
+        $("#myModal input").val("");
+        $("#myModal").modal('show');
+    })
     var admin_table = $('#admin_table').DataTable( {
         "processing": true,
         "serverSide": true,
