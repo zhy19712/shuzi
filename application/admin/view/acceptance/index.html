@@ -264,9 +264,9 @@
                                             <input type="text" name="sections_overbreak" id="sections_overbreak">
                                             <input type="text" name="points_overbreak" id="points_overbreak">
                                             <input type="text" name="max_overbreak" id="max_overbreak">
-                                            <input type="text" name="min_overbreak" id="min_overbreak"class="form-control">
+                                            <input type="text" name="min_overbreak" id="min_overbreak">
                                             <input type="text" name="ave_overbreak" id="ave_overbreak">
-                                            <input type="text" name="pass_overbreak" id="pass_overbreak"class="form-control">
+                                            <input type="text" name="pass_overbreak" id="pass_overbreak">
                                         </div>
                                     </div>
                                 </div>
@@ -292,7 +292,7 @@
                                     </div>
                                 </div>
                             </form>
-                            <form style="display: none;" class="form-horizontal" name="model1" id="model2" method="post" action="{:url('projectAdd')}">
+                            <form style="display: none;" class="form-horizontal" name="model3" id="model3" method="post" action="{:url('projectAdd')}">
 
                             </form>
                         </div>
@@ -509,7 +509,17 @@
                         }
                     }
                 }
-            })
+            });
+//            $.ajax({
+//                url: "./fetchData",
+//                type: "post",
+//                data: {uid:groupid},
+//                dataType: "json",
+//                success: function () {
+//
+//                }
+//
+//            })
         }
     };
     var setting = {
