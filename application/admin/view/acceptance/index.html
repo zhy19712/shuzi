@@ -639,7 +639,7 @@
             $.ajax({
                 url: "./fetchData",
                 type: "post",
-                data: {uid:groupid},
+                data: {uid:groupid,cate:treeNode.cate},
                 dataType: "json",
                 success: function (res) {
                     console.log(res);
@@ -726,7 +726,7 @@
                             $("#cate3").val(data.cate);
                             $("#model3").css("display","block");
                             if(res.hunningtuData){
-                                var kdata = res.kaiwaData
+                                var kdata = res.kaiwaData;
                                 $("#pass").val(kdata.pass);
                                 $("#quality_level").val(kdata.quality_level);
                                 $("#evaluated_date").val(kdata.evaluated_date);

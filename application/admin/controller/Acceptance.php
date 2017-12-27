@@ -44,15 +44,15 @@ class Acceptance extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $projectData = $project->getOneProject($param['uid']);
-            if($param['cate']==='开挖')
+            if($param['cate'].equalTo("开挖"))
             {
                 $kaiwaData = $kaiwa->getOne($param['uid']);
                 return json(['projectData' => $projectData, 'kaiwaData' => $kaiwaData,'msg' => "success"]);
-            }else if($param['cate']==='支护')
+            }else if($param['cate']=='支护')
             {
                 $zhihuData = $zhihu->getOne($param['uid']);
                 return json(['projectData' => $projectData, 'zhihuData' => $zhihuData,'msg' => "success"]);
-            }else if($param['cate']==='混凝土')
+            }else if($param['cate']=='混凝土')
             {
                 $hunningtuData = $hunningtu->getOne($param['uid']);
                 return json(['projectData' => $projectData, 'hunningtuData' => $hunningtuData,'msg' => "success"]);
@@ -74,32 +74,32 @@ class Acceptance extends Base
         $param = input('post.');
         if(request()->isAjax()){
 
-            if(empty($param['id'])&&$param['cate']==='开挖')
+            if(empty($param['id'])&&$param['cate']=='开挖')
             {
                 $flag = $kaiwa->insert($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if(empty($param['id'])&&$param['cate']==='支护')
+            else if(empty($param['id'])&&$param['cate']=='支护')
             {
                 $flag = $zhihu->insert($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if(empty($param['id'])&&$param['cate']==='混凝土')
+            else if(empty($param['id'])&&$param['cate']=='混凝土')
             {
                 $flag = $hunningtu->insert($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if(!empty($param['id'])&&$param['cate']==='开挖')
+            else if(!empty($param['id'])&&$param['cate']=='开挖')
             {
                 $flag = $kaiwa->edit($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if(!empty($param['id'])&&$param['cate']==='支护')
+            else if(!empty($param['id'])&&$param['cate']=='支护')
             {
                 $flag = $zhihu->edit($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if(!empty($param['id'])&&$param['cate']==='混凝土')
+            else if(!empty($param['id'])&&$param['cate']=='混凝土')
             {
                 $flag = $hunningtu->edit($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
