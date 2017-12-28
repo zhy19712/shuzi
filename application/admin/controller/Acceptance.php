@@ -83,41 +83,41 @@ class Acceptance extends Base
         $param = input('post.');
         if(request()->isAjax()){
 
-            if(empty($param['id'])&&$param['cate']=='开挖')
+            if(empty($param['edit'])&&$param['cate']=='开挖')
             {
                 $flag = $kaiwa->insert($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if(empty($param['id'])&&$param['cate']=='支护')
+            else if(empty($param['edit'])&&$param['cate']=='支护')
             {
                 $flag = $zhihu->insert($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if(empty($param['id'])&&$param['cate']=='混凝土')
+            else if(empty($param['edit'])&&$param['cate']=='混凝土')
             {
                 $flag = $hunningtu->insert($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if(empty($param['id'])&&$param['cate']=='锚杆')
+            else if(empty($param['edit'])&&$param['cate']=='锚杆')
             {
                 $flag = $maogan->insert($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if(!empty($param['id'])&&$param['cate']=='开挖')
+            else if(!empty($param['edit'])&&$param['cate']=='开挖')
             {
                 $flag = $kaiwa->edit($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if(!empty($param['id'])&&$param['cate']=='支护')
+            else if(!empty($param['edit'])&&$param['cate']=='支护')
             {
                 $flag = $zhihu->edit($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if(!empty($param['id'])&&$param['cate']=='混凝土')
+            else if(!empty($param['edit'])&&$param['cate']=='混凝土')
             {
                 $flag = $hunningtu->edit($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-            }else if(!empty($param['id'])&&$param['cate']=='锚杆')
+            }else if(!empty($param['edit'])&&$param['cate']=='锚杆')
             {
                 $flag = $maogan->edit($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
