@@ -692,7 +692,9 @@ function edit(that) {
             data: {id:groupid},
             dataType: "json",
             success: function (res) {
-                console.log(res);
+                if(res.msg === "success"){
+                    $("#path").text("当前路径:" + res.path)
+                }
             }
         })
 

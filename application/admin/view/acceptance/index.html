@@ -198,7 +198,7 @@
         <div class="ibox-content">
             <div class="row">
                 <div id="table_info">
-                    <div id="path">当前路径:C1</div>
+                    <div id="path">当前路径:</div>
                     <div id="level5">
                         <div id="operate">
                             <div id="revise">
@@ -1065,9 +1065,9 @@
         $("#groupname").val(treeNode.name);
         $("#mycontent>p").text(treeNode.name);
         $("#groupid").val(treeNode.id);
-        var groupid = treeNode.uid;
         var cate = encodeURI(encodeURI(treeNode.cate));
         if(treeNode.level == 4){
+            var groupid = treeNode.uid;
             $("#level5").css("display","block");
             $.ajax({
                 url: "./fetchData",
@@ -1213,6 +1213,31 @@
                     }
                 }
             });
+            //获取路径
+            $.ajax({
+                url: "./getParents",
+                type: "post",
+                data: {id:groupid},
+                dataType: "json",
+                success: function (res) {
+                    if(res.msg === "success"){
+                        $("#path").text("当前路径:" + res.path)
+                    }
+                }
+            })
+        }else {
+            //获取路径
+            $.ajax({
+                url: "./getParents",
+                type: "post",
+                data: {id:treeNode.id},
+                dataType: "json",
+                success: function (res) {
+                    if(res.msg === "success"){
+                        $("#path").text("当前路径:" + res.path)
+                    }
+                }
+            })
         }
     };
     var setting = {

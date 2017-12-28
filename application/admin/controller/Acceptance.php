@@ -141,7 +141,7 @@ class Acceptance extends Base
         $id="";
         if(request()->isAjax()){
             $param = input('post.');
-            if(!empty($uid)){
+            if(!empty($param['uid'])){
                 $uid = $param['uid'];
                 $temp = $project->getOneProject($uid);
                 $id = $temp['pid'];
