@@ -809,7 +809,6 @@
     });
     var mytree_node;
     function zedit(that) {
-        console.log(mytree_node);
         var uid = mytree_node.uid;
         var kind = $(that).val();
         if(kind == "查看"){
@@ -881,6 +880,27 @@
             }
         })
     }
+    function zdel(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./maoganDel",
+                data: {'id' : id},
+                type: "get",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        zhihu_table.ajax.url("__SCRIPT__/maogan_table.php").load();
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
+        })
+    }
+
 
     var zhihu_table = $('#zhihu_table').DataTable( {
         "processing": true,
@@ -1276,27 +1296,38 @@
                     $('#model1').ajaxSubmit({
                         url: "./dataAdd",
                         type: "post",
-                        success: complete,
+                        success: complete1,
                         dataType: 'json'
                     });
                 }else if($(n).attr("id") === "model2"){
                     $('#model2').ajaxSubmit({
                         url: "./dataAdd",
                         type: "post",
-                        success: complete,
+                        success: complete1,
                         dataType: 'json'
                     });
                 }else if($(n).attr("id") === "model3"){
                     $('#model3').ajaxSubmit({
                         url: "./dataAdd",
                         type: "post",
-                        success: complete,
+                        success: complete1,
                         dataType: 'json'
                     });
                 }
             }
         })
     })
+    function complete1(data){
+        if(data.code==1){
+            layer.msg("保存成功");
+            $("#edit1").val("edit");
+            $("#edit1").val("edit");
+            $("#edit1").val("edit");
+        }else{
+            layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+            return false;
+        }
+    }
     $("#myModal .btn-primary").click(function () {
         $('#projectAdd').ajaxSubmit({
             url: "./dataAdd",
