@@ -129,6 +129,20 @@ class Acceptance extends Base
 
 
     /**
+     * [锚杆数据删除]
+     */
+    public function maoganDel()
+    {
+        $id = input('param.id');
+        $maogan = new MaoganModel();
+        $flag = $maogan->delMaogan($id);
+        return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+    }
+
+
+
+
+    /**
      * [获取当前节点的所有父级]
      * @return [type] [description]
      */
@@ -162,6 +176,9 @@ class Acceptance extends Base
             return json(['path' => substr($path, 0, -2), 'idList' => $parent, 'msg' => "success"]);
         }
     }
+
+
+
 
 
 }

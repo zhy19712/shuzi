@@ -50,6 +50,16 @@ class MaoganModel extends Model
 
 
     /**
+     * [锚杆信息删除]
+     */
+    public function delMaogan($id)
+    {
+        $this->where('id', $id)->delete();
+        return ['code' => 1, 'data' => '', 'msg' => '锚杆信息删除成功'];
+    }
+
+
+    /**
      * 根据uid获取信息
      * @param $uid
      */
