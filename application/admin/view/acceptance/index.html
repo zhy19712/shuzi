@@ -967,6 +967,37 @@
         $("#myModal h5").text("新增");
         $("#myModal").modal('show');
     })
+
+
+    function del(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./maoganDel",
+                data: {'id' : id},
+                type: "get",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        admin_table.ajax.url("__SCRIPT__/project_attachment_table.php").load();
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
+        })
+    }
+//    function download(that) {
+//        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+//        $.ajax({
+//            url: "",
+//            type: "post",
+//            data: {id:id},
+//            dataType: "json"
+//        })
+//    }
     var admin_table = $('#admin_table').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -982,7 +1013,7 @@
                 "targets": [5],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='下载'/>" ;
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
