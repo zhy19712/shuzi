@@ -208,15 +208,17 @@ class Acceptance extends Base
     /**
      * [删除附件]
      */
-    public function projectDel()
+    public function attachmentDel()
     {
+        $param = input('post.');
         if(request()->isAjax()) {
-            $id = input('param.id');
+            $id = $param['id'];
             $attachment = new ProjectAttachmentModel();
-            $path = ($attachment->getOne($id))['path'];
+            $data = $attachment->getOne($id);
+            $path = $data['path'];
             unlink($path); //删除文件
-            $flag = $attachment->delAttachment($id);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+//            $flag = $attachment->delAttachment($id);
+//            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
 
