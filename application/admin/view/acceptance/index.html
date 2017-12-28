@@ -1217,7 +1217,7 @@
             $.ajax({
                 url: "./getParents",
                 type: "post",
-                data: {id:groupid},
+                data: {uid:groupid},
                 dataType: "json",
                 success: function (res) {
                     if(res.msg === "success"){
