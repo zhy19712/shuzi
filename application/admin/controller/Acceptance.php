@@ -7,6 +7,7 @@
  */
 
 namespace app\admin\controller;
+use app\admin\model\MaoganModel;
 use app\admin\model\ZhihuModel;
 use think\Db;
 use app\admin\model\AcceptanceModel;
@@ -72,6 +73,8 @@ class Acceptance extends Base
         $kaiwa = new KaiwaModel();
         $zhihu = new ZhihuModel();
         $hunningtu = new HunningtuModel();
+        $maogan = new MaoganModel();
+
         $param = input('post.');
         if(request()->isAjax()){
 
@@ -90,6 +93,11 @@ class Acceptance extends Base
                 $flag = $hunningtu->insert($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
+            else if(empty($param['id'])&&$param['cate']=='锚杆')
+            {
+                $flag = $maogan->insert($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
             else if(!empty($param['id'])&&$param['cate']=='开挖')
             {
                 $flag = $kaiwa->edit($param);
@@ -103,6 +111,10 @@ class Acceptance extends Base
             else if(!empty($param['id'])&&$param['cate']=='混凝土')
             {
                 $flag = $hunningtu->edit($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }else if(!empty($param['id'])&&$param['cate']=='锚杆')
+            {
+                $flag = $maogan->edit($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
 

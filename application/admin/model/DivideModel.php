@@ -107,11 +107,32 @@ class DivideModel extends Model
     }
 
     /**
-     * [getAllMenu 获取全部信息]
+     * [getAll 获取全部信息]
      */
     public function getAll()
     {
         return $this->order('id asc')->select();
+    }
+
+
+    //递归获取当前节点的所有子节点
+    public function cateTree($pid){
+        $res=$this->select();
+        if($res){
+            $result=$this->sort($res, $pid);
+            return $result;
+        }
+    }
+    public function sort($data,$pid,$level=0){
+       static $arr=array();
+        foreach ($data as $key=>$value){
+            if($value['pid'] == $pid){
+                $value["level"]=$level;
+                $arr[]=$value;
+                $this->sort($data,$value['id'],$level+1);
+            }
+        }
+        return $arr;
     }
 
 
