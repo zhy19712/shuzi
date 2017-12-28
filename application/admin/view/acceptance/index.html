@@ -208,8 +208,11 @@
     #zhihutable_wrapper th{
         text-align: center;
     }
-    #level5,#table_info{
+    #level5{
         display: none;
+    }
+    #table_info{
+        visibility: hidden;
     }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
@@ -968,7 +971,8 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/project_attachment_table.php"
+            "url": "__SCRIPT__/project_attachment_table.php",
+            "async": false
         },
         "dom": '<"mybtn">lf<"ipt"><"#upload">rtip',
         "columnDefs": [
@@ -1007,9 +1011,10 @@
 
         auto: true,// 选完文件后，是否自动上传。
         swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-        server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
+        server: "{:url('Upload/uploadface')}",// 文件接收服务端。
         duplicate :true,// 重复上传图片，true为可重复false为不可重复
         pick: '#upload',// 选择文件的按钮。可选。
+
     });
     // 文件上传成功
     uploader.on( 'uploadSuccess', function( file,data, response ) {
@@ -1123,7 +1128,7 @@
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
-        $("#table_info").css("display","block");
+        $("#table_info").css("visibility","visible");
         mytree_node = treeNode;
         $("#groupname").val(treeNode.name);
         $("#mycontent>p").text(treeNode.name);

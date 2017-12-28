@@ -193,7 +193,7 @@ class Acceptance extends Base
                 'date' => date("Y-m-d H:i:s"),
                 'department' => session('dept'),
                 'path' => $param['path'],
-                'filename' => basename($param['path'])
+            //    'filename' => basename($param['path'])
             ];
 
             $flag = $attachment->insert($data);
