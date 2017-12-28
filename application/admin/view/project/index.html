@@ -782,6 +782,7 @@ function edit(that) {
             $("#level3").modal('hide');
             $("#level4").modal('hide');
             zTreeObj.reAsyncChildNodes(null, "refresh");
+            $("#mytable1_wrapper").css("display","none");
             layer.msg("保存成功");
         }else{
             layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
@@ -793,7 +794,7 @@ function edit(that) {
         if(data.code==1){
             $("#myModal").modal('hide');
             layer.msg("保存成功");
-            admin_table.ajax.url("__SCRIPT__/project_table.php").load();
+            admin_table.ajax.url("__SCRIPT__/project_table.php?pid=" + mytree_node.id).load();
         }else{
             layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
             return false;

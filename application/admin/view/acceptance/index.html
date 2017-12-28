@@ -9,7 +9,7 @@
     form{
         display: none;
     }
-    .mybtn{
+    .mybtn,.mybtn1{
         margin-right: 30px;
         float: left;
     }
@@ -28,7 +28,7 @@
         font-weight: 700;
         border-bottom: 1px solid #000;
     }
-    #operate{
+    #operate,#add{
         height: 50px;
     }
     #operate>div{
@@ -36,7 +36,7 @@
         margin: 10px 10px;
         cursor: pointer;
     }
-    #operate>div>span{
+    #operate>div>span,#add span{
         display: inline-block;
         width: 60px;
         height: 30px;
@@ -46,7 +46,7 @@
         text-align: center;
         line-height: 30px;
     }
-    #operate>div>i:first-child{
+    #operate>div>i:first-child,#add i:first-child{
         display: inline-block;
         width: 15px;
         height: 30px;
@@ -54,7 +54,7 @@
         border-radius: 30px 0 0 30px;
         vertical-align: top;
     }
-    #operate>div>i:nth-child(3){
+    #operate>div>i:nth-child(3),#add i:nth-child(3){
         display: inline-block;
         width: 15px;
         height: 30px;
@@ -68,7 +68,7 @@
         line-height: 30px;
         text-align: center;
     }
-    #readonly table input{
+    #readonly>table input{
         border: none;
         outline: none;
         width: 100%;
@@ -156,6 +156,29 @@
     .sp1 input{
         line-height: 20px;
         width: 100%;
+    }
+    #table_wrapper>table,#myModal table{
+        border: none;
+        border-left: 1px solid #000;
+        border-right: 1px solid #000;
+    }
+    #myModal table:first-child{
+        margin-top: 20px;
+        border-top: 1px solid #000;
+    }
+    #table_wrapper>table td,#myModal table td{
+        border-bottom: 1px solid #000;
+    }
+    #table_wrapper>table td:first-child,#myModal table td:first-child{
+        width: 120px;
+    }
+    #table_wrapper>table input,#myModal table input{
+        line-height: 20px;
+        width: 90%;
+    }
+    #myModal table{
+        width: 100%;
+        line-height: 30px;
     }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
@@ -321,6 +344,125 @@
                                     </div>
                                 </div>
                             </form>
+                            <form class="form-horizontal" name="model2" id="model2" style="display: block;">
+                                <input type="text" id="uid2" name="uid" style="display: none;">
+                                <input type="text" id="cate2" name="cate" style="display: none;">
+                                <div class="info">
+                                    <span style="vertical-align: top;">验评结果</span>
+                                    <div style="background-color:#fff;display: inline-block;vertical-align:top;width: 86%;height: 38px;border-left: 1px solid #000;">
+                                        <div class="db">
+                                            <span>一检合格</span>
+                                            <select name="pass" id="pass3">
+                                                <option value="是">是</option>
+                                                <option value="否">否</option>
+                                            </select>
+                                        </div>
+                                        <div class="db">
+                                            <span>质量等级</span>
+                                            <select name="quality_level" id="quality_level2">
+                                                <option value="优良">优良</option>
+                                                <option value="合格">合格</option>
+                                            </select>
+                                        </div>
+                                        <div class="db">
+                                            <span>评定月</span>
+                                            <input type="text" id="evaluated_date2" name="evaluated_date">
+                                        </div>
+                                        <div class="db">
+                                            <span>评定人</span>
+                                            <input type="text" id="evaluated_by2" name="evaluated_by">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="table_wrapper">
+                                    <table style="margin-top: 20px;border-top: 1px solid #000;border-right: 1px solid #000;">
+                                        <tbody>
+                                        <tr>
+                                            <td style="background-color:#bae2f3;border-right: 1px solid #000;">喷砼检测</td>
+                                            <td colspan="7"></td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">厚度检测<br><span style="font-weight: 400;">(联合检测)</span></td>
+                                            <td>支护面积(m²)</td>
+                                            <td>设计厚度(cm)</td>
+                                            <td>检测点数(个)</td>
+                                            <td>最大值(cm)</td>
+                                            <td>最小值(cm)</td>
+                                            <td style="border-right: 1px solid #000;">平均值(cm)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td style="border-right: 1px solid #000;"><input type="text" name="" id=""></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table>
+                                        <tr>
+                                            <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">强度检测<br><span style="font-weight: 400;">(施工单位自检)</span></td>
+                                            <td>施工数量(个)</td>
+                                            <td>施工单位自检根数(个)</td>
+                                            <td>检测比例(%)</td>
+                                            <td>合格根数(个)</td>
+                                            <td>锚杆长度最大值(m)</td>
+                                            <td>锚杆长度最小值(m)</td>
+                                            <td>注浆密实度最大值(m)</td>
+                                            <td>注浆密实度最小值(m)</td>
+                                            <td>合格率(%)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                        </tr>
+                                        <tr>
+                                            <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">强度检测<br><span style="font-weight: 400;">(监理单位自检)</span></td>
+                                            <td>施工数量(个)</td>
+                                            <td>施工单位自检根数(个)</td>
+                                            <td>检测比例(%)</td>
+                                            <td>合格根数(个)</td>
+                                            <td>锚杆长度最大值(m)</td>
+                                            <td>锚杆长度最小值(m)</td>
+                                            <td>注浆密实度最大值(m)</td>
+                                            <td>注浆密实度最小值(m)</td>
+                                            <td>合格率(%)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="" id=""></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div id="zhihutable_wrapper" style="margin-top: 20px;">
+                                    <table id="zhihu_table" width="100%" class="table table-striped table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>规格</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+
+
+                            </form>
                             <form class="form-horizontal" name="model3" id="model3">
                                 <input type="text" id="uid3" name="uid" style="display: none;">
                                 <input type="text" id="cate3" name="cate" style="display: none;">
@@ -468,7 +610,164 @@
     </div>
 </div>
 
-
+<div id="myModal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 80%;margin: 0 auto;">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>新增</h5>
+                </div>
+                <div class="ibox-content">
+                    <!--新增用户信息开始-->
+                    <form style="display: block;" class="form-horizontal" name="projectAdd" id="projectAdd" method="post" action="{:url('projectAdd')}">
+                        <div class="form-group" style="text-align: center;">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td style="background-color:#bae2f3;border-right: 1px solid #000;">锚杆检测</td>
+                                    <td>规格</td>
+                                    <td colspan="2"><input type="text"></td>
+                                    <td colspan="6"></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">无损检测<br><span style="font-weight: 400;">(施工单位自检)</span></td>
+                                    <td>施工数量(个)</td>
+                                    <td>施工单位自检根数(个)</td>
+                                    <td>检测比例(%)</td>
+                                    <td>合格根数(个)</td>
+                                    <td>锚杆长度最大值(m)</td>
+                                    <td>锚杆长度最小值(m)</td>
+                                    <td>注浆密实度最大值(%)</td>
+                                    <td>注浆密实度最小值(%)</td>
+                                    <td>合格率(%)</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">无损检测<br><span style="font-weight: 400;">(监理单位抽检)</span></td>
+                                    <td>施工数量(个)</td>
+                                    <td>施工单位自检根数(个)</td>
+                                    <td>检测比例(%)</td>
+                                    <td>合格根数(个)</td>
+                                    <td>锚杆长度最大值(m)</td>
+                                    <td>锚杆长度最小值(m)</td>
+                                    <td>注浆密实度最大值(%)</td>
+                                    <td>注浆密实度最小值(%)</td>
+                                    <td>合格率(%)</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table>
+                                <tr>
+                                    <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">拉拔力检测<br><span style="font-weight: 400;">(施工单位自检)</span></td>
+                                    <td>设计拉拔力值(KN)</td>
+                                    <td>施工单位自检根数(个)</td>
+                                    <td>合格根数(个)</td>
+                                    <td>最大值(KN)</td>
+                                    <td>最小值(KN)</td>
+                                    <td>平均值(KN)</td>
+                                    <td>合格率(%)</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">拉拔力检测<br><span style="font-weight: 400;">(监理单位抽检)</span></td>
+                                    <td>设计拉拔力值(KN)</td>
+                                    <td>监理单位自检根数(个)</td>
+                                    <td>合格根数(个)</td>
+                                    <td>最大值(KN)</td>
+                                    <td>最小值(KN)</td>
+                                    <td>平均值(KN)</td>
+                                    <td>合格率(%)</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr>
+                                    <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">砂浆强度<br><span style="font-weight: 400;">(施工单位抽检)</span></td>
+                                    <td>设计等级</td>
+                                    <td>施工单位自检根数(个)</td>
+                                    <td>最大值(Mpa)</td>
+                                    <td>最小值(Mpa)</td>
+                                    <td>平均值(Mpa)</td>
+                                    <td>合格率(%)</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">砂浆强度<br><span style="font-weight: 400;">(监理单位抽检)</span></td>
+                                    <td>设计等级</td>
+                                    <td>监理单位自检根数(个)</td>
+                                    <td>最大值(Mpa)</td>
+                                    <td>最小值(Mpa)</td>
+                                    <td>平均值(Mpa)</td>
+                                    <td>合格率(%)</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="" id=""></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-offset-6">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                    <!--新增用户信息结束-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
@@ -492,6 +791,44 @@
     });
     var mytree_node;
 
+    var zhihu_table = $('#zhihu_table').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/maogan_table.php"
+        },
+        "dom": '<"mybtn1 btn btn-outline btn-primary"><"myl"l>frtip',
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [2],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
+    $("div.mybtn1").html('<div>新增</div>');
+    $("div.mybtn1").click(function () {
+        $("#myModal input").val("");
+        $("#myModal").modal('show');
+    })
     var admin_table = $('#admin_table').DataTable( {
         "processing": true,
         "serverSide": true,
