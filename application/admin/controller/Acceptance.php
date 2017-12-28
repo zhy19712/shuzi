@@ -160,7 +160,7 @@ class Acceptance extends Base
                 $temp = $project->getOneProject($uid);
                 $id = $temp['pid'];
                 $path = $temp['name'] . ">>";
-                array_push($parent, $temp['uid']);
+                array_push($parent, $temp['id']);
                 unset($temp);
             }else{
                 $id = $param['id'];
