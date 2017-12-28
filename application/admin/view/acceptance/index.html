@@ -1011,7 +1011,7 @@
 
         auto: true,// 选完文件后，是否自动上传。
         swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-        server: "{:url('Upload/uploadface')}",// 文件接收服务端。
+        server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
         duplicate :true,// 重复上传图片，true为可重复false为不可重复
         pick: '#upload',// 选择文件的按钮。可选。
 
@@ -1036,18 +1036,19 @@
                 id_level_5 = n;
             }
         });
-        var path = '/uploads/face/' + data._raw;
+        var path = '/uploads/attachment/' + data._raw;
         $.ajax({
             url: "./saveAttachmentInfo",
             type: "post",
             data: {id_level_1:id_level_1,id_level_2:id_level_2,id_level_3:id_level_3,id_level_4:id_level_4,id_level_5:id_level_5,path:path},
             dataType: "json",
             success: function (res) {
-                if(res.msg === "success"){
-                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                }else {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                }
+                console.log(res);
+                // if(res.msg === "success"){
+                //     layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                // }else {
+                //     layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                // }
             }
         })
     });
