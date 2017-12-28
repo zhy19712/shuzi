@@ -202,8 +202,26 @@ class Acceptance extends Base
 
             return $data;
         }
-
     }
+
+
+    /**
+     * [删除附件]
+     */
+    public function projectDel()
+    {
+        if(request()->isAjax()) {
+            $id = input('param.id');
+            $attachment = new ProjectAttachmentModel();
+            $path = ($attachment->getOne($id))['path'];
+            unlink($path); //删除文件
+            $flag = $attachment->delAttachment($id);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+
+
 
     //附件下载
     public function attachmentDownload()
