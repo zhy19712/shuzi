@@ -4,7 +4,6 @@ namespace app\admin\controller;
 use think\Controller;
 use think\File;
 use think\Request;
-use app\admin\model\ProjectAttachmentModel;
 
 class Upload extends Base
 {
@@ -32,7 +31,6 @@ class Upload extends Base
 
     //文件上传
     public function uploadfile(){
-        $attachment = new ProjectAttachmentModel();
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/attachment');
         if($info){
@@ -41,5 +39,4 @@ class Upload extends Base
             echo $file->getError();
         }
     }
-
 }

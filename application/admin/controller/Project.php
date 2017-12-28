@@ -152,7 +152,7 @@ class project extends Base
             while($id>0)
             {
                 $data = $node->getOneNode($id);
-                array_push($parent, $data['id']);
+                array_unshift($parent, $data['id']);
                 $path = $data['name'] . ">>" . $path;
                 $id = $data['pid'];
                 $data = array();
