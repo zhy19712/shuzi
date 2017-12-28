@@ -1036,18 +1036,19 @@
                 id_level_5 = n;
             }
         });
-        var path = '/uploads/face/' + data._raw;
+        var path = '/uploads/attachment/' + data._raw;
         $.ajax({
             url: "./saveAttachmentInfo",
             type: "post",
             data: {id_level_1:id_level_1,id_level_2:id_level_2,id_level_3:id_level_3,id_level_4:id_level_4,id_level_5:id_level_5,path:path},
             dataType: "json",
             success: function (res) {
-                if(res.msg === "success"){
-                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                }else {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                }
+                console.log(res);
+                // if(res.msg === "success"){
+                //     layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                // }else {
+                //     layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                // }
             }
         })
     });
