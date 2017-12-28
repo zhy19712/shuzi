@@ -180,6 +180,12 @@
         width: 100%;
         line-height: 30px;
     }
+    #zhihutable_wrapper th{
+        text-align: center;
+    }
+    #level5{
+        display: none;
+    }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
 <div id="mycontent" style="min-width: 15%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;">
@@ -193,17 +199,18 @@
             <div class="row">
                 <div id="table_info">
                     <div id="path">当前路径:C1</div>
-                    <div id="operate">
-                        <div id="revise">
-                            <i></i><span>修改</span><i></i>
+                    <div id="level5">
+                        <div id="operate">
+                            <div id="revise">
+                                <i></i><span>修改</span><i></i>
+                            </div>
+                            <div id="save">
+                                <i></i><span>保存</span><i></i>
+                            </div>
                         </div>
-                        <div id="save">
-                            <i></i><span>保存</span><i></i>
-                        </div>
-                    </div>
-                    <div id="readonly">
-                        <table>
-                            <tbody>
+                        <div id="readonly">
+                            <table>
+                                <tbody>
                                 <tr class="border-bottom">
                                     <td class="border-right">单元工程名称</td>
                                     <td colspan="4"><input type="text" readonly="readonly" id="input1"></td>
@@ -222,391 +229,392 @@
                                     <td>止:</td>
                                     <td><input type="text" readonly="readonly" id="input6"></td>
                                 </tr>
-                            </tbody>
-                        </table>
-                        <div class="info">
-                            <span style="vertical-align: top;width: 40%">主要单元工程、重要隐蔽工程及关键部位的单元工程</span>
-                            <div id="ipt7_wrapper" style="background-color:#fff;display: inline-block;vertical-align:top;width: 60%;height: 38px;border-left: 1px solid #000;">
-                                <input type="text" readonly="readonly" id="input7" style="font-size: 14px;border: none;margin-top: 8px;">
+                                </tbody>
+                            </table>
+                            <div class="info">
+                                <span style="vertical-align: top;width: 40%">主要单元工程、重要隐蔽工程及关键部位的单元工程</span>
+                                <div id="ipt7_wrapper" style="background-color:#fff;display: inline-block;vertical-align:top;width: 60%;height: 38px;border-left: 1px solid #000;">
+                                    <input type="text" readonly="readonly" id="input7" style="font-size: 14px;border: none;margin-top: 8px;">
+                                </div>
+                            </div>
+                            <div id="container">
+                                <form class="form-horizontal" name="model1" id="model1">
+                                    <input type="text" id="edit1" name="edit" style="display: none;">
+                                    <input type="text" id="uid1" name="uid" style="display: none;">
+                                    <input type="text" id="cate1" name="cate" style="display: none;">
+                                    <div class="info">
+                                        <span style="vertical-align: top;">验评结果</span>
+                                        <div id="db_wrapper" style="background-color:#fff;display: inline-block;vertical-align:top;width: 86%;height: 38px;border-left: 1px solid #000;">
+                                            <div class="db">
+                                                <span>一检合格</span>
+                                                <select name="pass" id="pass">
+                                                    <option value="是">是</option>
+                                                    <option value="否">否</option>
+                                                </select>
+                                            </div>
+                                            <div class="db">
+                                                <span>质量等级</span>
+                                                <select name="quality_level" id="quality_level">
+                                                    <option value="优良">优良</option>
+                                                    <option value="合格">合格</option>
+                                                </select>
+                                            </div>
+                                            <div class="db">
+                                                <span>评定月</span>
+                                                <input type="text" id="evaluated_date" name="evaluated_date">
+                                            </div>
+                                            <div class="db">
+                                                <span>评定人</span>
+                                                <input type="text" id="evaluated_by" name="evaluated_by">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info">
+                                        <span>半孔率</span>
+                                        <div class="exp">
+                                            <div class="top border-bottom">
+                                                <span>检查孔数(个)</span>
+                                                <span>平均进尺(m)</span>
+                                                <span>平均残孔长度(m)</span>
+                                                <span>半孔率(%)</span>
+                                                <span>检查时间</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" id="holes" name="holes">
+                                                <input type="text" id="ave_size" name="ave_size">
+                                                <input type="text" id="ave_length" name="ave_length">
+                                                <input type="text" id="half_percentage" name="half_percentage">
+                                                <input type="text" id="holes_test_date" name="holes_test_date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info">
+                                        <span>不平整度</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
+                                                <span>检查断面(个)</span>
+                                                <span>检查点数(个)</span>
+                                                <span>最大值(cm)</span>
+                                                <span>最小值(cm)</span>
+                                                <span>平均值(cm)</span>
+                                                <span>检查时间</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="sections" id="sections">
+                                                <input type="text" name="points" id="points">
+                                                <input type="text" name="max" id="max">
+                                                <input type="text" name="min" id="min">
+                                                <input type="text" name="ave" id="ave">
+                                                <input type="text" name="sections_test_date" id="sections_test_date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info">
+                                        <span>轮廓体型(超挖)</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
+                                                <span>检查断面(个)</span>
+                                                <span>检查点数(个)</span>
+                                                <span>最大超挖(cm)</span>
+                                                <span>最小超挖(cm)</span>
+                                                <span>平均超挖(cm)</span>
+                                                <span>合格率(%)</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="sections_overbreak" id="sections_overbreak">
+                                                <input type="text" name="points_overbreak" id="points_overbreak">
+                                                <input type="text" name="max_overbreak" id="max_overbreak">
+                                                <input type="text" name="min_overbreak" id="min_overbreak">
+                                                <input type="text" name="ave_overbreak" id="ave_overbreak">
+                                                <input type="text" name="pass_overbreak" id="pass_overbreak">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info" style="margin-top: 0;border-top: none;">
+                                        <span>轮廓体型(欠挖)</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
+                                                <span>检查断面(个)</span>
+                                                <span>检查点数(个)</span>
+                                                <span>最大欠挖(cm)</span>
+                                                <span>最小欠挖(cm)</span>
+                                                <span>平均欠挖(cm)</span>
+                                                <span>合格率(%)</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="sections_underbreak" id="sections_underbreak">
+                                                <input type="text" name="points_underbreak" id="points_underbreak">
+                                                <input type="text" name="max_underbreak" id="max_underbreak">
+                                                <input type="text" name="min_underbreak" id="min_underbreak">
+                                                <input type="text" name="ave_underbreak" id="ave_underbreak">
+                                                <input type="text" name="pass_underbreak" id="pass_underbreak">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <form class="form-horizontal" name="model2" id="model2">
+                                    <input type="text" id="edit2" name="edit" style="display: none;">
+                                    <input type="text" id="uid2" name="uid" style="display: none;">
+                                    <input type="text" id="cate2" name="cate" style="display: none;">
+                                    <div class="info">
+                                        <span style="vertical-align: top;">验评结果</span>
+                                        <div style="background-color:#fff;display: inline-block;vertical-align:top;width: 86%;height: 38px;border-left: 1px solid #000;">
+                                            <div class="db">
+                                                <span>一检合格</span>
+                                                <select name="pass" id="pass2">
+                                                    <option value="是">是</option>
+                                                    <option value="否">否</option>
+                                                </select>
+                                            </div>
+                                            <div class="db">
+                                                <span>质量等级</span>
+                                                <select name="quality_level" id="quality_level2">
+                                                    <option value="优良">优良</option>
+                                                    <option value="合格">合格</option>
+                                                </select>
+                                            </div>
+                                            <div class="db">
+                                                <span>评定月</span>
+                                                <input type="text" id="evaluated_date2" name="evaluated_date">
+                                            </div>
+                                            <div class="db">
+                                                <span>评定人</span>
+                                                <input type="text" id="evaluated_by2" name="evaluated_by">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="table_wrapper">
+                                        <table style="margin-top: 20px;border-top: 1px solid #000;border-right: 1px solid #000;">
+                                            <tbody>
+                                            <tr>
+                                                <td style="background-color:#bae2f3;border-right: 1px solid #000;">喷砼检测</td>
+                                                <td colspan="7"></td>
+                                            </tr>
+                                            <tr>
+                                                <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">厚度检测<br><span style="font-weight: 400;">(联合检测)</span></td>
+                                                <td>支护面积(m²)</td>
+                                                <td>设计厚度(cm)</td>
+                                                <td>检测点数(个)</td>
+                                                <td>最大值(cm)</td>
+                                                <td>最小值(cm)</td>
+                                                <td style="border-right: 1px solid #000;">平均值(cm)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="text" name="area" id="area2"></td>
+                                                <td><input type="text" name="thickness" id="thickness2"></td>
+                                                <td><input type="text" name="points" id="points2"></td>
+                                                <td><input type="text" name="max" id="max2"></td>
+                                                <td><input type="text" name="min" id="min2"></td>
+                                                <td style="border-right: 1px solid #000;"><input type="text" name="ave" id="ave2"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <table>
+                                            <tr>
+                                                <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">强度检测<br><span style="font-weight: 400;">(施工单位自检)</span></td>
+                                                <td>施工数量(个)</td>
+                                                <td>施工单位自检根数(个)</td>
+                                                <td>检测比例(%)</td>
+                                                <td>合格根数(个)</td>
+                                                <td>锚杆长度最大值(m)</td>
+                                                <td>锚杆长度最小值(m)</td>
+                                                <td>注浆密实度最大值(m)</td>
+                                                <td>注浆密实度最小值(m)</td>
+                                                <td>合格率(%)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="text" name="quantity_self" id="quantity_self2"></td>
+                                                <td><input type="text" name="num_self" id="num_self2"></td>
+                                                <td><input type="text" name="ratio_self" id="ratio_self2"></td>
+                                                <td><input type="text" name="pass_self" id="pass_self2"></td>
+                                                <td><input type="text" name="anchor_max_self" id="anchor_max_self2"></td>
+                                                <td><input type="text" name="anchor_min_self" id="anchor_min_self2"></td>
+                                                <td><input type="text" name="casting_max_self" id="casting_max_self2"></td>
+                                                <td><input type="text" name="casting_min_self" id="casting_min_self2"></td>
+                                                <td><input type="text" name="pass_rate_self" id="pass_rate_self2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">强度检测<br><span style="font-weight: 400;">(监理单位自检)</span></td>
+                                                <td>施工数量(个)</td>
+                                                <td>施工单位自检根数(个)</td>
+                                                <td>检测比例(%)</td>
+                                                <td>合格根数(个)</td>
+                                                <td>锚杆长度最大值(m)</td>
+                                                <td>锚杆长度最小值(m)</td>
+                                                <td>注浆密实度最大值(m)</td>
+                                                <td>注浆密实度最小值(m)</td>
+                                                <td>合格率(%)</td>
+                                            </tr>
+                                            <tr>
+                                                <td><input type="text" name="quantity_inspection" id="quantity_inspection2"></td>
+                                                <td><input type="text" name="num_inspection" id="num_inspection2"></td>
+                                                <td><input type="text" name="ratio_inspection" id="ratio_inspection2"></td>
+                                                <td><input type="text" name="pass_inspection" id="pass_inspection2"></td>
+                                                <td><input type="text" name="anchor_max_inspection" id="anchor_max_inspection2"></td>
+                                                <td><input type="text" name="anchor_min_inspection" id="anchor_min_inspection2"></td>
+                                                <td><input type="text" name="casting_max_inspection" id="casting_max_inspection2"></td>
+                                                <td><input type="text" name="casting_min_inspection" id="casting_min_inspection2"></td>
+                                                <td><input type="text" name="pass_rate_inspection" id="pass_rate_inspection2"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div id="zhihutable_wrapper" style="margin-top: 20px;">
+                                        <table id="zhihu_table" width="100%" class="table table-striped table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>规格</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+
+
+                                </form>
+                                <form class="form-horizontal" name="model3" id="model3">
+                                    <input type="text" id="edit3" name="edit" style="display: none;">
+                                    <input type="text" id="uid3" name="uid" style="display: none;">
+                                    <input type="text" id="cate3" name="cate" style="display: none;">
+                                    <div class="info">
+                                        <span style="vertical-align: top;">验评结果</span>
+                                        <div style="background-color:#fff;display: inline-block;vertical-align:top;width: 86%;height: 38px;border-left: 1px solid #000;">
+                                            <div class="db">
+                                                <span>一检合格</span>
+                                                <select name="pass" id="pass3">
+                                                    <option value="是">是</option>
+                                                    <option value="否">否</option>
+                                                </select>
+                                            </div>
+                                            <div class="db">
+                                                <span>质量等级</span>
+                                                <select name="quality_level" id="quality_level3">
+                                                    <option value="优良">优良</option>
+                                                    <option value="合格">合格</option>
+                                                </select>
+                                            </div>
+                                            <div class="db">
+                                                <span>评定月</span>
+                                                <input type="text" id="evaluated_date3" name="evaluated_date">
+                                            </div>
+                                            <div class="db">
+                                                <span>评定人</span>
+                                                <input type="text" id="evaluated_by3" name="evaluated_by">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info">
+                                        <span>抗压强度检测<br>(施工单位自检)</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
+                                                <span>设计指标</span>
+                                                <span>方量(m³)</span>
+                                                <span>施工单位自检组数(个)</span>
+                                                <span>最大值(Mpa)</span>
+                                                <span>最小值(Mpa)</span>
+                                                <span>平均值(Mpa)</span>
+                                                <span>合格率(%)</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="requirement_self" id="requirement_self">
+                                                <input type="text" name="volume_self" id="volume_self">
+                                                <input type="text" name="num_self" id="num_self">
+                                                <input type="text" name="max_self" id="max_self">
+                                                <input type="text" name="min_self" id="min_self">
+                                                <input type="text" name="ave_self" id="ave_self">
+                                                <input type="text" name="pass_self" id="pass_self">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info" style="margin-top: 0;border-top: none;">
+                                        <span>抗压强度检测<br>(监理单位自检)</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
+                                                <span>设计指标</span>
+                                                <span>方量(m³)</span>
+                                                <span>监理单位自检组数(个)</span>
+                                                <span>最大值(Mpa)</span>
+                                                <span>最小值(Mpa)</span>
+                                                <span>平均值(Mpa)</span>
+                                                <span>合格率(%)</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="requirement_inspection" id="requirement_inspection">
+                                                <input type="text" name="volume_inspection" id="volume_inspection">
+                                                <input type="text" name="num_inspection" id="num_inspection">
+                                                <input type="text" name="max_inspection" id="max_inspection">
+                                                <input type="text" name="min_inspection" id="min_inspection">
+                                                <input type="text" name="ave_inspection" id="ave_inspection">
+                                                <input type="text" name="pass_inspection" id="pass_inspection">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info">
+                                        <span>混凝土形体偏差检测<br>(联合检测)</span>
+                                        <div class="exp w4">
+                                            <div class="top border-bottom">
+                                                <span>偏差方向</span>
+                                                <span>测点数(个)</span>
+                                                <span>偏差范围(mm)</span>
+                                                <span>合格率(%)</span>
+                                            </div>
+                                            <div class="top border-bottom">
+                                                <div class="sp1">平面</div>
+                                                <div class="sp1"><input type="text" name="points_flat" id="points_flat"></div>
+                                                <div class="sp1"><input type="text" name="deviation_min_flat" id="deviation_min_flat" style="width: 40%;"><span>-</span><input type="text" name="deviation_max_flat" id="deviation_max_flat" style="width: 40%;"></div>
+                                                <div class="sp1"><input type="text" name="pass_flat" id="pass_flat"></div>
+                                            </div>
+                                            <div class="top">
+                                                <div class="sp1">竖向</div>
+                                                <div class="sp1"><input type="text" name="points_vertical" id="points_vertical"></div>
+                                                <div class="sp1"><input type="text" name="deviation_min_vertical" id="deviation_min_vertical" style="width: 40%;"><span>-</span><input type="text" name="deviation_max_vertical" id="deviation_max_vertical" style="width: 40%;"></div>
+                                                <div class="sp1"><input type="text" name="pass_vertical" id="pass_vertical"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info" style="">
+                                        <span>混凝土平整度检测<br>(联合检测)</span>
+                                        <div class="exp w3">
+                                            <div class="top border-bottom">
+                                                <span>设计/规范允许偏差值(mm)</span>
+                                                <span>检查点数(个)</span>
+                                                <span>最大值(mm)</span>
+                                                <span>最小值(mm)</span>
+                                                <span>平均值(mm)</span>
+                                                <span>合格率(%)</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="allowable_deviation" id="allowable_deviation">
+                                                <input type="text" name="points_union" id="points_union">
+                                                <input type="text" name="max_union" id="max_union">
+                                                <input type="text" name="min_union" id="min_union">
+                                                <input type="text" name="ave_union" id="ave_union">
+                                                <input type="text" name="pass_union" id="pass_union">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <div id="container">
-                            <form class="form-horizontal" name="model1" id="model1">
-                                <input type="text" id="edit1" name="edit" style="display: none;">
-                                <input type="text" id="uid1" name="uid" style="display: none;">
-                                <input type="text" id="cate1" name="cate" style="display: none;">
-                                <div class="info">
-                                    <span style="vertical-align: top;">验评结果</span>
-                                    <div id="db_wrapper" style="background-color:#fff;display: inline-block;vertical-align:top;width: 86%;height: 38px;border-left: 1px solid #000;">
-                                        <div class="db">
-                                            <span>一检合格</span>
-                                            <select name="pass" id="pass">
-                                                <option value="是">是</option>
-                                                <option value="否">否</option>
-                                            </select>
-                                        </div>
-                                        <div class="db">
-                                            <span>质量等级</span>
-                                            <select name="quality_level" id="quality_level">
-                                                <option value="优良">优良</option>
-                                                <option value="合格">合格</option>
-                                            </select>
-                                        </div>
-                                        <div class="db">
-                                            <span>评定月</span>
-                                            <input type="text" id="evaluated_date" name="evaluated_date">
-                                        </div>
-                                        <div class="db">
-                                            <span>评定人</span>
-                                            <input type="text" id="evaluated_by" name="evaluated_by">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="info">
-                                    <span>半孔率</span>
-                                    <div class="exp">
-                                        <div class="top border-bottom">
-                                            <span>检查孔数(个)</span>
-                                            <span>平均进尺(m)</span>
-                                            <span>平均残孔长度(m)</span>
-                                            <span>半孔率(%)</span>
-                                            <span>检查时间</span>
-                                        </div>
-                                        <div class="bottom">
-                                            <input type="text" id="holes" name="holes">
-                                            <input type="text" id="ave_size" name="ave_size">
-                                            <input type="text" id="ave_length" name="ave_length">
-                                            <input type="text" id="half_percentage" name="half_percentage">
-                                            <input type="text" id="holes_test_date" name="holes_test_date">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="info">
-                                    <span>不平整度</span>
-                                    <div class="exp w2">
-                                        <div class="top border-bottom">
-                                            <span>检查断面(个)</span>
-                                            <span>检查点数(个)</span>
-                                            <span>最大值(cm)</span>
-                                            <span>最小值(cm)</span>
-                                            <span>平均值(cm)</span>
-                                            <span>检查时间</span>
-                                        </div>
-                                        <div class="bottom">
-                                            <input type="text" name="sections" id="sections">
-                                            <input type="text" name="points" id="points">
-                                            <input type="text" name="max" id="max">
-                                            <input type="text" name="min" id="min">
-                                            <input type="text" name="ave" id="ave">
-                                            <input type="text" name="sections_test_date" id="sections_test_date">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="info">
-                                    <span>轮廓体型(超挖)</span>
-                                    <div class="exp w2">
-                                        <div class="top border-bottom">
-                                            <span>检查断面(个)</span>
-                                            <span>检查点数(个)</span>
-                                            <span>最大超挖(cm)</span>
-                                            <span>最小超挖(cm)</span>
-                                            <span>平均超挖(cm)</span>
-                                            <span>合格率(%)</span>
-                                        </div>
-                                        <div class="bottom">
-                                            <input type="text" name="sections_overbreak" id="sections_overbreak">
-                                            <input type="text" name="points_overbreak" id="points_overbreak">
-                                            <input type="text" name="max_overbreak" id="max_overbreak">
-                                            <input type="text" name="min_overbreak" id="min_overbreak">
-                                            <input type="text" name="ave_overbreak" id="ave_overbreak">
-                                            <input type="text" name="pass_overbreak" id="pass_overbreak">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="info" style="margin-top: 0;border-top: none;">
-                                    <span>轮廓体型(欠挖)</span>
-                                    <div class="exp w2">
-                                        <div class="top border-bottom">
-                                            <span>检查断面(个)</span>
-                                            <span>检查点数(个)</span>
-                                            <span>最大欠挖(cm)</span>
-                                            <span>最小欠挖(cm)</span>
-                                            <span>平均欠挖(cm)</span>
-                                            <span>合格率(%)</span>
-                                        </div>
-                                        <div class="bottom">
-                                            <input type="text" name="sections_underbreak" id="sections_underbreak">
-                                            <input type="text" name="points_underbreak" id="points_underbreak">
-                                            <input type="text" name="max_underbreak" id="max_underbreak">
-                                            <input type="text" name="min_underbreak" id="min_underbreak">
-                                            <input type="text" name="ave_underbreak" id="ave_underbreak">
-                                            <input type="text" name="pass_underbreak" id="pass_underbreak">
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                            <form class="form-horizontal" name="model2" id="model2">
-                                <input type="text" id="edit2" name="edit" style="display: none;">
-                                <input type="text" id="uid2" name="uid" style="display: none;">
-                                <input type="text" id="cate2" name="cate" style="display: none;">
-                                <div class="info">
-                                    <span style="vertical-align: top;">验评结果</span>
-                                    <div style="background-color:#fff;display: inline-block;vertical-align:top;width: 86%;height: 38px;border-left: 1px solid #000;">
-                                        <div class="db">
-                                            <span>一检合格</span>
-                                            <select name="pass" id="pass2">
-                                                <option value="是">是</option>
-                                                <option value="否">否</option>
-                                            </select>
-                                        </div>
-                                        <div class="db">
-                                            <span>质量等级</span>
-                                            <select name="quality_level" id="quality_level2">
-                                                <option value="优良">优良</option>
-                                                <option value="合格">合格</option>
-                                            </select>
-                                        </div>
-                                        <div class="db">
-                                            <span>评定月</span>
-                                            <input type="text" id="evaluated_date2" name="evaluated_date">
-                                        </div>
-                                        <div class="db">
-                                            <span>评定人</span>
-                                            <input type="text" id="evaluated_by2" name="evaluated_by">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="table_wrapper">
-                                    <table style="margin-top: 20px;border-top: 1px solid #000;border-right: 1px solid #000;">
-                                        <tbody>
-                                        <tr>
-                                            <td style="background-color:#bae2f3;border-right: 1px solid #000;">喷砼检测</td>
-                                            <td colspan="7"></td>
-                                        </tr>
-                                        <tr>
-                                            <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">厚度检测<br><span style="font-weight: 400;">(联合检测)</span></td>
-                                            <td>支护面积(m²)</td>
-                                            <td>设计厚度(cm)</td>
-                                            <td>检测点数(个)</td>
-                                            <td>最大值(cm)</td>
-                                            <td>最小值(cm)</td>
-                                            <td style="border-right: 1px solid #000;">平均值(cm)</td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="text" name="area" id="area2"></td>
-                                            <td><input type="text" name="thickness" id="thickness2"></td>
-                                            <td><input type="text" name="points" id="points2"></td>
-                                            <td><input type="text" name="max" id="max2"></td>
-                                            <td><input type="text" name="min" id="min2"></td>
-                                            <td style="border-right: 1px solid #000;"><input type="text" name="ave" id="ave2"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <table>
-                                        <tr>
-                                            <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">强度检测<br><span style="font-weight: 400;">(施工单位自检)</span></td>
-                                            <td>施工数量(个)</td>
-                                            <td>施工单位自检根数(个)</td>
-                                            <td>检测比例(%)</td>
-                                            <td>合格根数(个)</td>
-                                            <td>锚杆长度最大值(m)</td>
-                                            <td>锚杆长度最小值(m)</td>
-                                            <td>注浆密实度最大值(m)</td>
-                                            <td>注浆密实度最小值(m)</td>
-                                            <td>合格率(%)</td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="text" name="quantity_self" id="quantity_self2"></td>
-                                            <td><input type="text" name="num_self" id="num_self2"></td>
-                                            <td><input type="text" name="ratio_self" id="ratio_self2"></td>
-                                            <td><input type="text" name="pass_self" id="pass_self2"></td>
-                                            <td><input type="text" name="anchor_max_self" id="anchor_max_self2"></td>
-                                            <td><input type="text" name="anchor_min_self" id="anchor_min_self2"></td>
-                                            <td><input type="text" name="casting_max_self" id="casting_max_self2"></td>
-                                            <td><input type="text" name="casting_min_self" id="casting_min_self2"></td>
-                                            <td><input type="text" name="pass_rate_self" id="pass_rate_self2"></td>
-                                        </tr>
-                                        <tr>
-                                            <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">强度检测<br><span style="font-weight: 400;">(监理单位自检)</span></td>
-                                            <td>施工数量(个)</td>
-                                            <td>施工单位自检根数(个)</td>
-                                            <td>检测比例(%)</td>
-                                            <td>合格根数(个)</td>
-                                            <td>锚杆长度最大值(m)</td>
-                                            <td>锚杆长度最小值(m)</td>
-                                            <td>注浆密实度最大值(m)</td>
-                                            <td>注浆密实度最小值(m)</td>
-                                            <td>合格率(%)</td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="text" name="quantity_inspection" id="quantity_inspection2"></td>
-                                            <td><input type="text" name="num_inspection" id="num_inspection2"></td>
-                                            <td><input type="text" name="ratio_inspection" id="ratio_inspection2"></td>
-                                            <td><input type="text" name="pass_inspection" id="pass_inspection2"></td>
-                                            <td><input type="text" name="anchor_max_inspection" id="anchor_max_inspection2"></td>
-                                            <td><input type="text" name="anchor_min_inspection" id="anchor_min_inspection2"></td>
-                                            <td><input type="text" name="casting_max_inspection" id="casting_max_inspection2"></td>
-                                            <td><input type="text" name="casting_min_inspection" id="casting_min_inspection2"></td>
-                                            <td><input type="text" name="pass_rate_inspection" id="pass_rate_inspection2"></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div id="zhihutable_wrapper" style="margin-top: 20px;">
-                                    <table id="zhihu_table" width="100%" class="table table-striped table-bordered">
-                                        <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>规格</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-
-
-                            </form>
-                            <form class="form-horizontal" name="model3" id="model3">
-                                <input type="text" id="edit3" name="edit" style="display: none;">
-                                <input type="text" id="uid3" name="uid" style="display: none;">
-                                <input type="text" id="cate3" name="cate" style="display: none;">
-                                <div class="info">
-                                    <span style="vertical-align: top;">验评结果</span>
-                                    <div style="background-color:#fff;display: inline-block;vertical-align:top;width: 86%;height: 38px;border-left: 1px solid #000;">
-                                        <div class="db">
-                                            <span>一检合格</span>
-                                            <select name="pass" id="pass3">
-                                                <option value="是">是</option>
-                                                <option value="否">否</option>
-                                            </select>
-                                        </div>
-                                        <div class="db">
-                                            <span>质量等级</span>
-                                            <select name="quality_level" id="quality_level3">
-                                                <option value="优良">优良</option>
-                                                <option value="合格">合格</option>
-                                            </select>
-                                        </div>
-                                        <div class="db">
-                                            <span>评定月</span>
-                                            <input type="text" id="evaluated_date3" name="evaluated_date">
-                                        </div>
-                                        <div class="db">
-                                            <span>评定人</span>
-                                            <input type="text" id="evaluated_by3" name="evaluated_by">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="info">
-                                    <span>抗压强度检测<br>(施工单位自检)</span>
-                                    <div class="exp w2">
-                                        <div class="top border-bottom">
-                                            <span>设计指标</span>
-                                            <span>方量(m³)</span>
-                                            <span>施工单位自检组数(个)</span>
-                                            <span>最大值(Mpa)</span>
-                                            <span>最小值(Mpa)</span>
-                                            <span>平均值(Mpa)</span>
-                                            <span>合格率(%)</span>
-                                        </div>
-                                        <div class="bottom">
-                                            <input type="text" name="requirement_self" id="requirement_self">
-                                            <input type="text" name="volume_self" id="volume_self">
-                                            <input type="text" name="num_self" id="num_self">
-                                            <input type="text" name="max_self" id="max_self">
-                                            <input type="text" name="min_self" id="min_self">
-                                            <input type="text" name="ave_self" id="ave_self">
-                                            <input type="text" name="pass_self" id="pass_self">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="info" style="margin-top: 0;border-top: none;">
-                                    <span>抗压强度检测<br>(监理单位自检)</span>
-                                    <div class="exp w2">
-                                        <div class="top border-bottom">
-                                            <span>设计指标</span>
-                                            <span>方量(m³)</span>
-                                            <span>监理单位自检组数(个)</span>
-                                            <span>最大值(Mpa)</span>
-                                            <span>最小值(Mpa)</span>
-                                            <span>平均值(Mpa)</span>
-                                            <span>合格率(%)</span>
-                                        </div>
-                                        <div class="bottom">
-                                            <input type="text" name="requirement_inspection" id="requirement_inspection">
-                                            <input type="text" name="volume_inspection" id="volume_inspection">
-                                            <input type="text" name="num_inspection" id="num_inspection">
-                                            <input type="text" name="max_inspection" id="max_inspection">
-                                            <input type="text" name="min_inspection" id="min_inspection">
-                                            <input type="text" name="ave_inspection" id="ave_inspection">
-                                            <input type="text" name="pass_inspection" id="pass_inspection">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="info">
-                                    <span>混凝土形体偏差检测<br>(联合检测)</span>
-                                    <div class="exp w4">
-                                        <div class="top border-bottom">
-                                            <span>偏差方向</span>
-                                            <span>测点数(个)</span>
-                                            <span>偏差范围(mm)</span>
-                                            <span>合格率(%)</span>
-                                        </div>
-                                        <div class="top border-bottom">
-                                            <div class="sp1">平面</div>
-                                            <div class="sp1"><input type="text" name="points_flat" id="points_flat"></div>
-                                            <div class="sp1"><input type="text" name="deviation_min_flat" id="deviation_min_flat" style="width: 40%;"><span>-</span><input type="text" name="deviation_max_flat" id="deviation_max_flat" style="width: 40%;"></div>
-                                            <div class="sp1"><input type="text" name="pass_flat" id="pass_flat"></div>
-                                        </div>
-                                        <div class="top">
-                                            <div class="sp1">竖向</div>
-                                            <div class="sp1"><input type="text" name="points_vertical" id="points_vertical"></div>
-                                            <div class="sp1"><input type="text" name="deviation_min_vertical" id="deviation_min_vertical" style="width: 40%;"><span>-</span><input type="text" name="deviation_max_vertical" id="deviation_max_vertical" style="width: 40%;"></div>
-                                            <div class="sp1"><input type="text" name="pass_vertical" id="pass_vertical"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="info" style="">
-                                    <span>混凝土平整度检测<br>(联合检测)</span>
-                                    <div class="exp w3">
-                                        <div class="top border-bottom">
-                                            <span>设计/规范允许偏差值(mm)</span>
-                                            <span>检查点数(个)</span>
-                                            <span>最大值(mm)</span>
-                                            <span>最小值(mm)</span>
-                                            <span>平均值(mm)</span>
-                                            <span>合格率(%)</span>
-                                        </div>
-                                        <div class="bottom">
-                                            <input type="text" name="allowable_deviation" id="allowable_deviation">
-                                            <input type="text" name="points_union" id="points_union">
-                                            <input type="text" name="max_union" id="max_union">
-                                            <input type="text" name="min_union" id="min_union">
-                                            <input type="text" name="ave_union" id="ave_union">
-                                            <input type="text" name="pass_union" id="pass_union">
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                        <div id="mytable1_wrapper" style="margin-top: 20px;">
+                            <table id="admin_table" width="100%" class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>单元工程名称</th>
+                                    <th>单元工程编号</th>
+                                    <th></th>
+                                    <th>桩号(起)</th>
+                                    <th>桩号(止)</th>
+                                    <th>高程(起)</th>
+                                    <th>高程(止)</th>
+                                    <th>主要单元工程</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
-                </div>
-                <div id="mytable1_wrapper" style="margin-top: 20px;">
-                    <table id="admin_table" width="100%" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>单元工程名称</th>
-                                <th>单元工程编号</th>
-                                <th></th>
-                                <th>桩号(起)</th>
-                                <th>桩号(止)</th>
-                                <th>高程(起)</th>
-                                <th>高程(止)</th>
-                                <th>主要单元工程</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
-                    </table>
                 </div>
             </div>
         </div>
@@ -622,7 +630,8 @@
                 </div>
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
-                    <form class="form-horizontal" name="projectAdd" id="projectAdd">
+                    <iframe name="myFrame" style="display:none;"></iframe>
+                    <form class="form-horizontal" name="projectAdd" id="projectAdd" target="myFrame">
                         <input type="text" id="edit4" name="edit" style="display: none;">
                         <input type="text" id="uid4" name="uid" style="display: none;">
                         <input type="text" id="cate4" name="cate" style="display: none;">
@@ -632,7 +641,7 @@
                                 <tr>
                                     <td style="background-color:#bae2f3;border-right: 1px solid #000;">锚杆检测</td>
                                     <td>规格</td>
-                                    <td colspan="2"><input type="text" name="standard" id="standard"></td>
+                                    <td colspan="2"><input type="text" name="standard" id="standard_m"></td>
                                     <td colspan="6"></td>
                                 </tr>
                                 <tr>
@@ -810,7 +819,7 @@
         }
         $("#myModal h5").text("编辑");
         $("#uid4").val(uid);
-        $("#cate").val("锚杆");
+        $("#cate4").val("锚杆");
         var cate = encodeURI(encodeURI("锚杆"));
         console.log(uid);
         $.ajax({
@@ -820,6 +829,54 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
+                if(res.msg == "success"){
+                    var data = res.maoganData;
+                    $("#standard_m").val(data.standard);
+                    $("#quantity_self_m").val(data.quantity_self);
+                    $("#num_self_m").val(data.num_self);
+                    $("#ratio_self_m").val(data.ratio_self);
+                    $("#pass_self_m").val(data.pass_self);
+                    $("#anchor_max_self_m").val(data.anchor_max_self);
+                    $("#anchor_min_self_m").val(data.anchor_min_self);
+                    $("#casting_max_self_m").val(data.casting_max_self);
+                    $("#casting_min_self_m").val(data.casting_min_self);
+                    $("#pass_rate_self_m").val(data.pass_rate_self);
+                    $("#quantity_inspection_m").val(data.quantity_inspection);
+                    $("#num_inspection_m").val(data.num_inspection);
+                    $("#ratio_inspection_m").val(data.ratio_inspection);
+                    $("#pass_inspection_m").val(data.pass_inspection);
+                    $("#anchor_max_inspection_m").val(data.anchor_max_inspection);
+                    $("#anchor_min_inspection_m").val(data.anchor_min_inspection);
+                    $("#casting_max_inspection_m").val(data.casting_max_inspection);
+                    $("#casting_min_inspection_m").val(data.casting_min_inspection);
+                    $("#pass_rate_inspection_m").val(data.pass_rate_inspection);
+                    $("#pull_self_m").val(data.pull_self);
+                    $("#test_num_self_m").val(data.test_num_self);
+                    $("#pass_num_self_m").val(data.pass_num_self);
+                    $("#pull_max_self_m").val(data.pull_max_self);
+                    $("#pull_min_self_m").val(data.pull_min_self);
+                    $("#pull_ave_self_m").val(data.pull_ave_self);
+                    $("#pull_pass_self_m").val(data.pull_pass_self);
+                    $("#pull_inspection_m").val(data.pull_inspection);
+                    $("#test_num_inspection_m").val(data.test_num_inspection);
+                    $("#pass_num_inspection_m").val(data.pass_num_inspection);
+                    $("#pull_max_inspection_m").val(data.pull_max_inspection);
+                    $("#pull_min_inspection_m").val(data.pull_min_inspection);
+                    $("#pull_ave_inspection_m").val(data.pull_ave_inspection);
+                    $("#pull_pass_inspection_m").val(data.pull_pass_inspection);
+                    $("#level_self_m").val(data.level_self);
+                    $("#mortar_num_self_m").val(data.mortar_num_self);
+                    $("#mortar_max_self_m").val(data.mortar_max_self);
+                    $("#mortar_min_self_m").val(data.mortar_min_self);
+                    $("#mortar_ave_self_m").val(data.mortar_ave_self);
+                    $("#mortar_pass_self_m").val(data.mortar_pass_self);
+                    $("#level_inspection_m").val(data.level_inspection);
+                    $("#mortar_num_inspection_m").val(data.mortar_num_inspection);
+                    $("#mortar_max_inspection_m").val(data.mortar_max_inspection);
+                    $("#mortar_min_inspection_m").val(data.mortar_min_inspection);
+                    $("#mortar_ave_inspection_m").val(data.mortar_ave_inspection);
+                    $("#mortar_pass_inspection_m").val(data.mortar_pass_inspection);
+                }
                 $("#myModal").modal('show');
             }
         })
@@ -862,6 +919,7 @@
     $("div.mybtn1").click(function () {
         $("#myModal input").val("");
         $("#cate4").val("锚杆");
+        $("#uid4").val(mytree_node.uid);
         $("#myModal h5").text("新增");
         $("#myModal").modal('show');
     })
@@ -1010,6 +1068,7 @@
         var groupid = treeNode.uid;
         var cate = encodeURI(encodeURI(treeNode.cate));
         if(treeNode.level == 4){
+            $("#level5").css("display","block");
             $.ajax({
                 url: "./fetchData",
                 type: "post",
@@ -1225,6 +1284,7 @@
         if(data.code==1){
             layer.msg("保存成功");
             $("#myModal").modal('hide');
+            zhihu_table.ajax.url("__SCRIPT__/maogan_table.php").load();
             return false;
         }else{
             layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
