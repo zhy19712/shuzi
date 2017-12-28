@@ -1044,11 +1044,11 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                // if(res.msg === "success"){
-                //     layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                // }else {
-                //     layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                // }
+                if(res.msg === "success"){
+                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                }else {
+                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                }
             }
         })
     });

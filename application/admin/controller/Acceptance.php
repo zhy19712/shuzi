@@ -177,6 +177,7 @@ class Acceptance extends Base
         }
     }
 
+    //保存上传附件信息
     public function saveAttachmentInfo()
     {
         $attachment = new ProjectAttachmentModel();
@@ -193,18 +194,34 @@ class Acceptance extends Base
                 'date' => date("Y-m-d H:i:s"),
                 'department' => session('dept'),
                 'path' => $param['path'],
-                'filename' => basename($param['path'])
+                'filename' => $param['filename']
             ];
 //
             $flag = $attachment->insertAttachment($data);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => "success"]);
 
             return $data;
-
-
-
         }
 
+    }
+
+    //附件下载
+    public function attachmentDownload()
+    {
+        $filePath = "template/";//此处给出你下载的文件在服务器的什么地方
+        $fileName = "template.xls";
+        //此处给出你下载的文件名
+        $file = fopen($filePath . $fileName, "r"); //   打开文件
+        //输入文件标签
+        Header("Content-type:application/octet-stream ");
+        Header("Accept-Ranges:bytes ");
+        Header("Accept-Length:   " . filesize($filePath . $fileName));
+        Header("Content-Disposition:   attachment;   filename= " . $fileName);
+
+        //   输出文件内容
+        echo fread($file, filesize($filePath . $fileName));
+        fclose($file);
+        exit;
     }
 
 
