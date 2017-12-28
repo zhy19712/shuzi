@@ -17,7 +17,7 @@ class HunningtuModel extends Model
     /**
      * 插入
      */
-    public function insert($param)
+    public function insertHunningtu($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -34,7 +34,7 @@ class HunningtuModel extends Model
     /**
      * 编辑信息
      */
-    public function edit($param)
+    public function editHunningtu($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['uid' => $param['uid']]);

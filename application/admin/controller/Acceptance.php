@@ -85,41 +85,41 @@ class Acceptance extends Base
 
             if(empty($param['edit'])&&$param['cate']=='开挖')
             {
-                $flag = $kaiwa->insert($param);
+                $flag = $kaiwa->insertKaiwa($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
             else if(empty($param['edit'])&&$param['cate']=='支护')
             {
-                $flag = $zhihu->insert($param);
+                $flag = $zhihu->insertZhihu($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
             else if(empty($param['edit'])&&$param['cate']=='混凝土')
             {
-                $flag = $hunningtu->insert($param);
+                $flag = $hunningtu->insertHunningtu($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
             else if(empty($param['edit'])&&$param['cate']=='锚杆')
             {
-                $flag = $maogan->insert($param);
+                $flag = $maogan->insertMaogan($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
             else if(!empty($param['edit'])&&$param['cate']=='开挖')
             {
-                $flag = $kaiwa->edit($param);
+                $flag = $kaiwa->editKaiwa($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
             else if(!empty($param['edit'])&&$param['cate']=='支护')
             {
-                $flag = $zhihu->edit($param);
+                $flag = $zhihu->editZhihu($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
             else if(!empty($param['edit'])&&$param['cate']=='混凝土')
             {
-                $flag = $hunningtu->edit($param);
+                $flag = $hunningtu->editHunningtu($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }else if(!empty($param['edit'])&&$param['cate']=='锚杆')
             {
-                $flag = $maogan->edit($param);
+                $flag = $maogan->editMaogan($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
 
@@ -196,7 +196,7 @@ class Acceptance extends Base
             //    'filename' => basename($param['path'])
             ];
 
-            $flag = $attachment->insert($data);
+            $flag = $attachment->insertAttachment($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
 
 

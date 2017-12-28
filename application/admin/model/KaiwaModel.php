@@ -18,7 +18,7 @@ class KaiwaModel extends Model
     /**
      * 插入
      */
-    public function insert($param)
+    public function insertKaiwa($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -35,7 +35,7 @@ class KaiwaModel extends Model
     /**
      * 编辑信息
      */
-    public function edit($param)
+    public function editKaiwa($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['uid' => $param['uid']]);
