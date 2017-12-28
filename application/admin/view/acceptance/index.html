@@ -208,7 +208,7 @@
     #zhihutable_wrapper th{
         text-align: center;
     }
-    #level5{
+    #level5,#table_info{
         display: none;
     }
 </style>
@@ -222,8 +222,8 @@
     <div class="ibox float-e-margins">
         <div class="ibox-content">
             <div class="row">
+                <div id="path">当前路径:</div>
                 <div id="table_info">
-                    <div id="path">当前路径:</div>
                     <div id="level5">
                         <div id="operate">
                             <div id="revise">
@@ -627,14 +627,10 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>单元工程名称</th>
-                                <th>单元工程编号</th>
-                                <th></th>
-                                <th>桩号(起)</th>
-                                <th>桩号(止)</th>
-                                <th>高程(起)</th>
-                                <th>高程(止)</th>
-                                <th>主要单元工程</th>
+                                <th>文件名称</th>
+                                <th>上传人</th>
+                                <th>单位/部门</th>
+                                <th>上传时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -972,34 +968,20 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/project_table.php"
+            "url": "__SCRIPT__/project_attachment_table.php"
         },
         "dom": '<"mybtn">lf<"ipt"><"#upload">rtip',
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [9],
+                "targets": [5],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
-            },
-            {
-                "searchable": true,
-                "orderable": true,
-                "targets": [2],
-                "render" :  function ( data, type, row ) {
-                    return  data + row[3];
-                }
-            },
-            {
-                "searchable": false,
-                "orderable": false,
-                "visible": false,
-                "targets": [3]
             }
         ],
         "language": {
@@ -1019,6 +1001,7 @@
     $("div.ipt").html('<input type="hidden" id="data_photo" name="portrait" >');
     $("div#upload").html('<div>上传文件</div>');
 
+    var idlist;
     //上传图片,初始化WebUploader
     var uploader = WebUploader.create({
 
@@ -1027,20 +1010,46 @@
         server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
         duplicate :true,// 重复上传图片，true为可重复false为不可重复
         pick: '#upload',// 选择文件的按钮。可选。
-
-        'onUploadSuccess': function(file, data, response) {
-            $("#data_photo").val(data._raw);
-            $("#img_data").attr('src', '/uploads/face/' + data._raw).show();
-        }
     });
     // 文件上传成功
-    uploader.on( 'uploadSuccess', function( file ) {
-        $( '#'+file.id ).find('p.state').text('上传成功！');
+    uploader.on( 'uploadSuccess', function( file,data, response ) {
+        var id_level_1 = "";
+        var id_level_2 = "";
+        var id_level_3 = "";
+        var id_level_4 = "";
+        var id_level_5 = "";
+        $.each(idlist,function (i,n) {
+            if(i == 0){
+                id_level_1 = n;
+            }else if(i == 1){
+                id_level_2 = n;
+            }else if(i == 2){
+                id_level_3 = n;
+            }else if(i == 3){
+                id_level_4 = n;
+            }else if(i == 4){
+                id_level_5 = n;
+            }
+        });
+        var path = '/uploads/face/' + data._raw;
+        $.ajax({
+            url: "./saveAttachmentInfo",
+            type: "post",
+            data: {id_level_1:id_level_1,id_level_2:id_level_2,id_level_3:id_level_3,id_level_4:id_level_4,id_level_5:id_level_5,path:path},
+            dataType: "json",
+            success: function (res) {
+                if(res.msg === "success"){
+                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                }else {
+                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                }
+            }
+        })
     });
 
     // 文件上传失败，显示上传出错。
     uploader.on( 'uploadError', function( file ) {
-        $( '#'+file.id ).find('p.state').text('上传出错!');
+        layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
     });
     //编辑用户
     function edit(that) {
@@ -1114,6 +1123,7 @@
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
+        $("#table_info").css("display","block");
         mytree_node = treeNode;
         $("#groupname").val(treeNode.name);
         $("#mycontent>p").text(treeNode.name);
@@ -1273,6 +1283,7 @@
                 data: {uid:groupid},
                 dataType: "json",
                 success: function (res) {
+                    idlist = res.idList;
                     if(res.msg === "success"){
                         $("#path").text("当前路径:" + res.path)
                     }
@@ -1286,6 +1297,7 @@
                 data: {id:treeNode.id},
                 dataType: "json",
                 success: function (res) {
+                    idlist = res.idList;
                     if(res.msg === "success"){
                         $("#path").text("当前路径:" + res.path)
                     }

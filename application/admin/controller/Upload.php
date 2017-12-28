@@ -26,6 +26,7 @@ class Upload extends Base
             echo $info->getSaveName();
         }else{
             echo $file->getError();
+
         }
     }
 
