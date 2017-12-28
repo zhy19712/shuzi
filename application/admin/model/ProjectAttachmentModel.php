@@ -50,11 +50,24 @@ class ProjectAttachmentModel extends Model
 
 
     /**
-     * 根据uid获取信息
+     * [删除附件]
+     * @return [type] [description]
+     */
+    public function delAttachment($id)
+    {
+        $this->where('id', $id)->delete();
+        return ['code' => 1, 'data' => '', 'msg' => '删除附件成功'];
+    }
+
+
+
+
+    /**
+     * 根据id获取信息
      * @param $uid
      */
-    public function getOne($uid)
+    public function getOne($id)
     {
-        return $this->where('uid', $uid)->find();
+        return $this->where('id', $id)->find();
     }
 }
