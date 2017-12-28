@@ -1011,7 +1011,7 @@
 
         auto: true,// 选完文件后，是否自动上传。
         swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-        server: "{:url('Upload/uploadface')}",// 文件接收服务端。
+        server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
         duplicate :true,// 重复上传图片，true为可重复false为不可重复
         pick: '#upload',// 选择文件的按钮。可选。
 
@@ -1336,7 +1336,6 @@
     };
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
 
-    //文件上传
 
 
 </script>
