@@ -226,8 +226,11 @@ class Acceptance extends Base
     //附件下载
     public function attachmentDownload()
     {
-        $filePath = "template/";//此处给出你下载的文件在服务器的什么地方
-        $fileName = "template.xls";
+        $id = $_GET['id'];
+        $attachment = new ProjectAttachmentModel();
+        $param = $attachment->getOne($id);
+        $filePath = $param['path'];
+        $fileName = $param['filename'];
         //此处给出你下载的文件名
         $file = fopen($filePath . $fileName, "r"); //   打开文件
         //输入文件标签
