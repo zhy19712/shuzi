@@ -24,7 +24,7 @@ class ProjectAttachmentModel extends Model
             if(false === $result){
                 return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
             }else{
-                return ['code' => 1, 'data' => '', 'msg' => '文件添加成功'];
+                return ['code' => 1, 'data' => '', 'msg' => 'success'];
             }
         }catch( PDOException $e){
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
