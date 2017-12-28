@@ -40,5 +40,4 @@ class Upload extends Base
             echo $file->getError();
         }
     }
-
 }

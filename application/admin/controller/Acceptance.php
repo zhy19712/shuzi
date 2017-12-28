@@ -8,9 +8,9 @@
 
 namespace app\admin\controller;
 use app\admin\model\MaoganModel;
+use app\admin\model\ProjectAttachmentModel;
 use app\admin\model\ZhihuModel;
 use think\Db;
-use app\admin\model\AcceptanceModel;
 use app\admin\model\DivideModel;
 use app\admin\model\ProjectModel;
 use app\admin\model\KaiwaModel;
@@ -160,7 +160,7 @@ class Acceptance extends Base
                 $temp = $project->getOneProject($uid);
                 $id = $temp['pid'];
                 $path = $temp['name'] . ">>";
-                array_push($parent, $temp['id']);
+                array_unshift($parent, $temp['id']);
                 unset($temp);
             }else{
                 $id = $param['id'];
@@ -168,13 +168,36 @@ class Acceptance extends Base
             while($id>0)
             {
                 $data = $node->getOneNode($id);
-                array_push($parent, $data['id']);
+                array_unshift($parent, $data['id']);
                 $path = $data['name'] . ">>" . $path;
                 $id = $data['pid'];
                 $data = array();
             }
             return json(['path' => substr($path, 0, -2), 'idList' => $parent, 'msg' => "success"]);
         }
+    }
+
+    public function saveAttachmentInfo()
+    {
+        $attachment = new ProjectAttachmentModel();
+
+        $param = input('post.');
+        if(request()->isAjax()){
+            $data = [
+                '$id_level_1' => $param['id_level_1'],
+                '$id_level_1' => $param['id_level_1'],
+                '$id_level_1' => $param['id_level_1'],
+                '$id_level_1' => $param['id_level_1'],
+                '$id_level_1' => $param['id_level_1'],
+
+            $owner = session('username')
+
+            ];
+
+
+
+        }
+
     }
 
 

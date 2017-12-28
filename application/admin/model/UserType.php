@@ -183,4 +183,26 @@ class UserType extends Model
 
 
 
+    //递归获取当前节点的所有子节点
+    public function cateTree($id){
+        $res=$this->select();
+        if($res){
+            $result=$this->sort($res, $id);
+            return $result;
+        }
+    }
+    public function sort($data,$id,$level=0){
+        static $arr=array();
+        foreach ($data as $key=>$value){
+            if($value['pid'] == $id){
+                $value["level"]=$level;
+                $arr[]=$value;
+                $this->sort($data,$value['id'],$level+1);
+            }
+        }
+        return $arr;
+    }
+
+
+
 }
