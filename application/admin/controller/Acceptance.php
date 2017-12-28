@@ -42,6 +42,7 @@ class Acceptance extends Base
         $kaiwa = new KaiwaModel();
         $hunningtu = new HunningtuModel();
         $zhihu = new ZhihuModel();
+        $maogan = new MaoganModel();
         if(request()->isAjax()){
             $param = input('post.');
             $projectData = $project->getOneProject($param['uid']);
@@ -58,6 +59,10 @@ class Acceptance extends Base
             {
                 $hunningtuData = $hunningtu->getOne($param['uid']);
                 return json(['projectData' => $projectData, 'hunningtuData' => $hunningtuData,'msg' => "success"]);
+            }else if($p=='锚杆')
+            {
+                $maoganData = $maogan->getOne($param['uid']);
+                return json([ 'maoganData' => $maoganData,'msg' => "success"]);
             }
 
         }
@@ -120,6 +125,37 @@ class Acceptance extends Base
 
         }
         return $this->fetch();
+    }
+
+
+    /**
+     * [获取当前节点的所有父级]
+     * @return [type] [description]
+     */
+    public function getParents()
+    {
+        $project = new ProjectModel();
+        $node = new DivideModel();
+        $parent = array();
+        $path = "";
+        if(request()->isAjax()){
+            $param = input('post.');
+            $uid = $param['uid'];
+            $temp = $project->getOneProject($uid);
+            $id = $temp['pid'];
+            $path = $temp['name'];
+            array_push($parent, $temp['uid']);
+            unset($temp);
+            while($id>0)
+            {
+                $data = $node->getOneNode($id);
+                array_push($parent, $data['id']);
+                $path = $data['name'] . ">>" . $path;
+                $id = $data['pid'];
+                $data = array();
+            }
+            return json(['path' => $path, 'idList' => $parent, 'msg' => "success"]);
+        }
     }
 
 

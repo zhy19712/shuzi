@@ -680,7 +680,7 @@ function edit(that) {
             $.ajax({
                 url: "./getParents",
                 type: "post",
-                data: {groupid:groupid},
+                data: {id:groupid},
                 dataType: "json",
                 success: function (res) {
                     console.log(res);
