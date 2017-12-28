@@ -196,7 +196,7 @@ class Acceptance extends Base
                 'filename' => basename($param['path'])
             ];
 
-            $flag = $attachment->insert($data);
+            $flag = $attachment->insertAttachment($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
 
 
