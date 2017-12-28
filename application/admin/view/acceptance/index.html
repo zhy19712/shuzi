@@ -233,7 +233,7 @@
                         <div id="container">
                             <form class="form-horizontal" name="model1" id="model1">
                                 <input type="text" id="uid1" name="uid" style="display: none;">
-                                <input type="text" id="ccate1" name="cate" style="display: none;">
+                                <input type="text" id="cate1" name="cate" style="display: none;">
                                 <div class="info">
                                     <span style="vertical-align: top;">验评结果</span>
                                     <div id="db_wrapper" style="background-color:#fff;display: inline-block;vertical-align:top;width: 86%;height: 38px;border-left: 1px solid #000;">
@@ -352,7 +352,7 @@
                                     <div style="background-color:#fff;display: inline-block;vertical-align:top;width: 86%;height: 38px;border-left: 1px solid #000;">
                                         <div class="db">
                                             <span>一检合格</span>
-                                            <select name="pass" id="pass3">
+                                            <select name="pass" id="pass2">
                                                 <option value="是">是</option>
                                                 <option value="否">否</option>
                                             </select>
@@ -391,12 +391,12 @@
                                             <td style="border-right: 1px solid #000;">平均值(cm)</td>
                                         </tr>
                                         <tr>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td style="border-right: 1px solid #000;"><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="area" id="area2"></td>
+                                            <td><input type="text" name="thickness" id="thickness2"></td>
+                                            <td><input type="text" name="points" id="points2"></td>
+                                            <td><input type="text" name="max" id="max2"></td>
+                                            <td><input type="text" name="min" id="min2"></td>
+                                            <td style="border-right: 1px solid #000;"><input type="text" name="ave" id="ave2"></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -414,15 +414,15 @@
                                             <td>合格率(%)</td>
                                         </tr>
                                         <tr>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="quantity_self" id="quantity_self2"></td>
+                                            <td><input type="text" name="num_self" id="num_self2"></td>
+                                            <td><input type="text" name="ratio_self" id="ratio_self2"></td>
+                                            <td><input type="text" name="pass_self" id="pass_self2"></td>
+                                            <td><input type="text" name="anchor_max_self" id="anchor_max_self2"></td>
+                                            <td><input type="text" name="anchor_min_self" id="anchor_min_self2"></td>
+                                            <td><input type="text" name="casting_max_self" id="casting_max_self2"></td>
+                                            <td><input type="text" name="casting_min_self" id="casting_min_self2"></td>
+                                            <td><input type="text" name="pass_rate_self" id="pass_rate_self2"></td>
                                         </tr>
                                         <tr>
                                             <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">强度检测<br><span style="font-weight: 400;">(监理单位自检)</span></td>
@@ -437,15 +437,15 @@
                                             <td>合格率(%)</td>
                                         </tr>
                                         <tr>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
-                                            <td><input type="text" name="" id=""></td>
+                                            <td><input type="text" name="quantity_inspection" id="quantity_inspection2"></td>
+                                            <td><input type="text" name="num_inspection" id="num_inspection2"></td>
+                                            <td><input type="text" name="ratio_inspection" id="ratio_inspection2"></td>
+                                            <td><input type="text" name="pass_inspection" id="pass_inspection2"></td>
+                                            <td><input type="text" name="anchor_max_inspection" id="anchor_max_inspection2"></td>
+                                            <td><input type="text" name="anchor_min_inspection" id="anchor_min_inspection2"></td>
+                                            <td><input type="text" name="casting_max_inspection" id="casting_max_inspection2"></td>
+                                            <td><input type="text" name="casting_min_inspection" id="casting_min_inspection2"></td>
+                                            <td><input type="text" name="pass_rate_inspection" id="pass_rate_inspection2"></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -619,14 +619,16 @@
                 </div>
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
-                    <form style="display: block;" class="form-horizontal" name="projectAdd" id="projectAdd" method="post" action="{:url('projectAdd')}">
+                    <form style="display: block;" class="form-horizontal" name="projectAdd" id="projectAdd">
+                        <input type="text" id="uid4" name="uid" style="display: none;">
+                        <input type="text" id="cate4" name="cate" style="display: none;">
                         <div class="form-group" style="text-align: center;">
                             <table>
                                 <tbody>
                                 <tr>
                                     <td style="background-color:#bae2f3;border-right: 1px solid #000;">锚杆检测</td>
                                     <td>规格</td>
-                                    <td colspan="2"><input type="text"></td>
+                                    <td colspan="2"><input type="text" name="standard" id="standard"></td>
                                     <td colspan="6"></td>
                                 </tr>
                                 <tr>
@@ -642,15 +644,15 @@
                                     <td>合格率(%)</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="quantity_self" id="quantity_self_m"></td>
+                                    <td><input type="text" name="num_self" id="num_self_m"></td>
+                                    <td><input type="text" name="ratio_self" id="ratio_self_m"></td>
+                                    <td><input type="text" name="pass_self" id="pass_self_m"></td>
+                                    <td><input type="text" name="anchor_max_self" id="anchor_max_self_m"></td>
+                                    <td><input type="text" name="anchor_min_self" id="anchor_min_self_m"></td>
+                                    <td><input type="text" name="casting_max_self" id="casting_max_self_m"></td>
+                                    <td><input type="text" name="casting_min_self" id="casting_min_self_m"></td>
+                                    <td><input type="text" name="pass_rate_self" id="pass_rate_self_m"></td>
                                 </tr>
                                 <tr>
                                     <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">无损检测<br><span style="font-weight: 400;">(监理单位抽检)</span></td>
@@ -665,15 +667,15 @@
                                     <td>合格率(%)</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="quantity_inspection" id="quantity_inspection_m"></td>
+                                    <td><input type="text" name="num_inspection" id="num_inspection_m"></td>
+                                    <td><input type="text" name="ratio_inspection" id="ratio_inspection_m"></td>
+                                    <td><input type="text" name="pass_inspection" id="pass_inspection_m"></td>
+                                    <td><input type="text" name="anchor_max_inspection" id="anchor_max_inspection_m"></td>
+                                    <td><input type="text" name="anchor_min_inspection" id="anchor_min_inspection_m"></td>
+                                    <td><input type="text" name="casting_max_inspection" id="casting_max_inspection_m"></td>
+                                    <td><input type="text" name="casting_min_inspection" id="casting_min_inspection_m"></td>
+                                    <td><input type="text" name="pass_rate_inspection" id="pass_rate_inspection_m"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -689,13 +691,13 @@
                                     <td>合格率(%)</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="pull_self" id="pull_self_m"></td>
+                                    <td><input type="text" name="test_num_self" id="test_num_self_m"></td>
+                                    <td><input type="text" name="pass_num_self" id="pass_num_self_m"></td>
+                                    <td><input type="text" name="pull_max_self" id="pull_max_self_m"></td>
+                                    <td><input type="text" name="pull_min_self" id="pull_min_self_m"></td>
+                                    <td><input type="text" name="pull_ave_self" id="pull_ave_self_m"></td>
+                                    <td><input type="text" name="pull_pass_self" id="pull_pass_self_m"></td>
                                 </tr>
                                 <tr>
                                     <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">拉拔力检测<br><span style="font-weight: 400;">(监理单位抽检)</span></td>
@@ -708,13 +710,13 @@
                                     <td>合格率(%)</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="pull_inspection" id="pull_inspection_m"></td>
+                                    <td><input type="text" name="test_num_inspection" id="test_num_inspection_m"></td>
+                                    <td><input type="text" name="pass_num_inspection" id="pass_num_inspection_m"></td>
+                                    <td><input type="text" name="pull_max_inspection" id="pull_max_inspection_m"></td>
+                                    <td><input type="text" name="pull_min_inspection" id="pull_min_inspection_m"></td>
+                                    <td><input type="text" name="pull_ave_inspection" id="pull_ave_inspection_m"></td>
+                                    <td><input type="text" name="pull_pass_inspection" id="pull_pass_inspection_m"></td>
                                 </tr>
                             </table>
                             <table>
@@ -728,12 +730,12 @@
                                     <td>合格率(%)</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="level_self" id="level_self_m"></td>
+                                    <td><input type="text" name="mortar_num_self" id="mortar_num_self_m"></td>
+                                    <td><input type="text" name="mortar_max_self" id="mortar_max_self_m"></td>
+                                    <td><input type="text" name="mortar_min_self" id="mortar_min_self_m"></td>
+                                    <td><input type="text" name="mortar_ave_self" id="mortar_ave_self_m"></td>
+                                    <td><input type="text" name="mortar_pass_self" id="mortar_pass_self_m"></td>
                                 </tr>
                                 <tr>
                                     <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">砂浆强度<br><span style="font-weight: 400;">(监理单位抽检)</span></td>
@@ -745,12 +747,12 @@
                                     <td>合格率(%)</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
-                                    <td><input type="text" name="" id=""></td>
+                                    <td><input type="text" name="level_inspection" id="level_inspection_m"></td>
+                                    <td><input type="text" name="mortar_num_inspection" id="mortar_num_inspection_m"></td>
+                                    <td><input type="text" name="mortar_max_inspection" id="mortar_max_inspection_m"></td>
+                                    <td><input type="text" name="mortar_min_inspection" id="mortar_min_inspection_m"></td>
+                                    <td><input type="text" name="mortar_ave_inspection" id="mortar_ave_inspection_m"></td>
+                                    <td><input type="text" name="mortar_pass_inspection" id="mortar_pass_inspection_m"></td>
                                 </tr>
                             </table>
                         </div>
@@ -827,6 +829,7 @@
     $("div.mybtn1").html('<div>新增</div>');
     $("div.mybtn1").click(function () {
         $("#myModal input").val("");
+        $("#cate4").val("锚杆");
         $("#myModal").modal('show');
     })
     var admin_table = $('#admin_table').DataTable( {
@@ -1027,37 +1030,43 @@
                             }
                         }else if(data.cate == "支护"){
                             $("#uid2").val(groupid);
+                            $("#uid4").val(groupid);
                             $("#cate2").val(data.cate);
                             $("#model2").css("display","block");
                             if(res.zhihuData){
-                                var kdata = res.kaiwaData
-                                $("#pass").val(kdata.pass);
-                                $("#quality_level").val(kdata.quality_level);
-                                $("#evaluated_date").val(kdata.evaluated_date);
-                                $("#evaluated_by").val(kdata.evaluated_by);
-                                $("#holes").val(kdata.holes);
-                                $("#ave_size").val(kdata.ave_size);
-                                $("#ave_length").val(kdata.ave_length);
-                                $("#half_percentage").val(kdata.half_percentage);
-                                $("#holes_test_date").val(kdata.holes_test_date);
-                                $("#sections").val(kdata.sections);
-                                $("#points").val(kdata.points);
-                                $("#max").val(kdata.max);
-                                $("#min").val(kdata.min);
-                                $("#ave").val(kdata.ave);
-                                $("#sections_test_date").val(kdata.sections_test_date);
-                                $("#sections_overbreak").val(kdata.sections_overbreak);
-                                $("#points_overbreak").val(kdata.points_overbreak);
-                                $("#max_overbreak").val(kdata.max_overbreak);
-                                $("#min_overbreak").val(kdata.min_overbreak);
-                                $("#ave_overbreak").val(kdata.ave_overbreak);
-                                $("#pass_overbreak").val(kdata.pass_overbreak);
-                                $("#sections_underbreak").val(kdata.sections_underbreak);
-                                $("#points_underbreak").val(kdata.points_underbreak);
-                                $("#max_underbreak").val(kdata.max_underbreak);
-                                $("#min_underbreak").val(kdata.min_underbreak);
-                                $("#ave_underbreak").val(kdata.ave_underbreak);
-                                $("#pass_underbreak").val(kdata.pass_underbreak);
+                                var kdata = res.zhihuData
+                                $("#pass2").val(kdata.pass);
+                                $("#quality_level2").val(kdata.quality_level);
+                                $("#evaluated_date2").val(kdata.evaluated_date);
+                                $("#evaluated_by2").val(kdata.evaluated_by);
+                                $("#area2").val(kdata.area);
+                                $("#thickness2").val(kdata.thickness);
+                                $("#points2").val(kdata.points);
+                                $("#max2").val(kdata.max);
+                                $("#min2").val(kdata.min);
+                                $("#ave2").val(kdata.ave);
+                                $("#points2").val(kdata.points);
+                                $("#max2").val(kdata.max);
+                                $("#min2").val(kdata.min);
+                                $("#ave2").val(kdata.ave);
+                                $("#quantity_self2").val(kdata.quantity_self);
+                                $("#num_self2").val(kdata.num_self);
+                                $("#ratio_self2").val(kdata.ratio_self);
+                                $("#pass_self2").val(kdata.pass_self);
+                                $("#anchor_max_self2").val(kdata.anchor_max_self);
+                                $("#anchor_min_self2").val(kdata.anchor_min_self);
+                                $("#casting_max_self2").val(kdata.casting_max_self);
+                                $("#casting_min_self2").val(kdata.casting_min_self);
+                                $("#pass_rate_self2").val(kdata.pass_rate_self);
+                                $("#quantity_inspection2").val(kdata.quantity_inspection);
+                                $("#num_inspection2").val(kdata.num_inspection);
+                                $("#ratio_inspection2").val(kdata.ratio_inspection);
+                                $("#pass_inspection2").val(kdata.pass_inspection);
+                                $("#anchor_max_inspection2").val(kdata.anchor_max_inspection);
+                                $("#anchor_min_inspection2").val(kdata.anchor_min_inspection);
+                                $("#casting_max_inspection2").val(kdata.casting_max_inspection);
+                                $("#casting_min_inspection2").val(kdata.casting_min_inspection);
+                                $("#pass_rate_inspection2").val(kdata.pass_rate_inspection);
                             }
                         }else if(data.cate == "混凝土"){
                             $("#uid3").val(groupid);
@@ -1144,6 +1153,13 @@
                         success: complete,
                         dataType: 'json'
                     });
+                }else if($(n).attr("id") === "model2"){
+                    $('#model2').ajaxSubmit({
+                        url: "./dataAdd",
+                        type: "post",
+                        success: complete,
+                        dataType: 'json'
+                    });
                 }else if($(n).attr("id") === "model3"){
                     $('#model3').ajaxSubmit({
                         url: "./dataAdd",
@@ -1154,6 +1170,14 @@
                 }
             }
         })
+    })
+    $("#myModal .btn-primary").click(function () {
+        $('#projectAdd').ajaxSubmit({
+            url: "./dataAdd",
+            type: "post",
+            success: complete,
+            dataType: 'json'
+        });
     })
     function complete(data){
         if(data.code==1){
