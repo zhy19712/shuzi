@@ -982,7 +982,7 @@
                 "targets": [5],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='下载'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1018,6 +1018,8 @@
     });
     // 文件上传成功
     uploader.on( 'uploadSuccess', function( file,data, response ) {
+        console.log(file);
+        var filename = file.name;
         var id_level_1 = "";
         var id_level_2 = "";
         var id_level_3 = "";
@@ -1040,15 +1042,16 @@
         $.ajax({
             url: "./saveAttachmentInfo",
             type: "post",
-            data: {id_level_1:id_level_1,id_level_2:id_level_2,id_level_3:id_level_3,id_level_4:id_level_4,id_level_5:id_level_5,path:path},
+            data: {id_level_1:id_level_1,id_level_2:id_level_2,id_level_3:id_level_3,id_level_4:id_level_4,id_level_5:id_level_5,path:path,filename:filename},
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                if(res.msg === "success"){
-                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                }else {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                }
+                 if(res.msg === "success"){
+                     layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                     admin_table.ajax.url("__SCRIPT__/project_attachment_table.php").load();
+                 }else {
+                     layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                 }
             }
         })
     });
