@@ -116,17 +116,17 @@ class DivideModel extends Model
 
 
     //递归获取当前节点的所有子节点
-    public function cateTree($pid){
+    public function cateTree($id){
         $res=$this->select();
         if($res){
-            $result=$this->sort($res, $pid);
+            $result=$this->sort($res, $id);
             return $result;
         }
     }
-    public function sort($data,$pid,$level=0){
+    public function sort($data,$id,$level=0){
        static $arr=array();
         foreach ($data as $key=>$value){
-            if($value['pid'] == $pid){
+            if($value['pid'] == $id){
                 $value["level"]=$level;
                 $arr[]=$value;
                 $this->sort($data,$value['id'],$level+1);

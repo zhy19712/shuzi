@@ -127,16 +127,13 @@ class project extends Base
     {
         $id = input('param.id');
         $node = new DivideModel();
-//        $flag = $node->delNode($id);
-//        return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
 
-
-//        $data = $node->getAll();
-//        $list = recursion($data, $id);
-
-        $list = $node->cateTree();
-        return $list;
-
+        $childList = $node->cateTree($id);
+        foreach ($childList as $child){
+           $node->delNode($child['id']);
+        }
+        $flag = $node->delNode($id);
+        return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
 
     /**
