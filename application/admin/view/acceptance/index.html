@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/static/admin/css/jedate.css">
 <link rel="stylesheet" href="/static/admin/css/iconfont.css">
 <style>
-    form{
+    #container form{
         display: none;
     }
     .mybtn,.mybtn1{
@@ -232,6 +232,7 @@
                         </div>
                         <div id="container">
                             <form class="form-horizontal" name="model1" id="model1">
+                                <input type="text" id="edit1" name="edit" style="display: none;">
                                 <input type="text" id="uid1" name="uid" style="display: none;">
                                 <input type="text" id="cate1" name="cate" style="display: none;">
                                 <div class="info">
@@ -344,7 +345,8 @@
                                     </div>
                                 </div>
                             </form>
-                            <form class="form-horizontal" name="model2" id="model2" style="display: block;">
+                            <form class="form-horizontal" name="model2" id="model2">
+                                <input type="text" id="edit2" name="edit" style="display: none;">
                                 <input type="text" id="uid2" name="uid" style="display: none;">
                                 <input type="text" id="cate2" name="cate" style="display: none;">
                                 <div class="info">
@@ -464,6 +466,7 @@
 
                             </form>
                             <form class="form-horizontal" name="model3" id="model3">
+                                <input type="text" id="edit3" name="edit" style="display: none;">
                                 <input type="text" id="uid3" name="uid" style="display: none;">
                                 <input type="text" id="cate3" name="cate" style="display: none;">
                                 <div class="info">
@@ -619,7 +622,8 @@
                 </div>
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
-                    <form style="display: block;" class="form-horizontal" name="projectAdd" id="projectAdd">
+                    <form class="form-horizontal" name="projectAdd" id="projectAdd">
+                        <input type="text" id="edit4" name="edit" style="display: none;">
                         <input type="text" id="uid4" name="uid" style="display: none;">
                         <input type="text" id="cate4" name="cate" style="display: none;">
                         <div class="form-group" style="text-align: center;">
@@ -788,10 +792,38 @@
     $("#sections_test_date").jeDate({
         format: "YYYY-MM-DD"
     });
+    $("#evaluated_date2").jeDate({
+        format: "YYYY-MM"
+    });
     $("#evaluated_date3").jeDate({
         format: "YYYY-MM"
     });
     var mytree_node;
+    function zedit(that) {
+        console.log(mytree_node);
+        var uid = mytree_node.uid;
+        var kind = $(that).val();
+        if(kind == "查看"){
+            $("#myModal .btn-primary").css("display","none");
+        }else if(kind == "编辑"){
+            $("#myModal .btn-primary").css("display","inline-block");
+        }
+        $("#myModal h5").text("编辑");
+        $("#uid4").val(uid);
+        $("#cate").val("锚杆");
+        var cate = encodeURI(encodeURI("锚杆"));
+        console.log(uid);
+        $.ajax({
+            url: "./fetchData",
+            type: "post",
+            data: {uid:uid,cate:cate},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                $("#myModal").modal('show');
+            }
+        })
+    }
 
     var zhihu_table = $('#zhihu_table').DataTable( {
         "processing": true,
@@ -806,9 +838,9 @@
                 "orderable": false,
                 "targets": [2],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='查看'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='zdel(this)' value='删除'/>" ;
                     return html;
                 }
             }
@@ -830,6 +862,7 @@
     $("div.mybtn1").click(function () {
         $("#myModal input").val("");
         $("#cate4").val("锚杆");
+        $("#myModal h5").text("新增");
         $("#myModal").modal('show');
     })
     var admin_table = $('#admin_table').DataTable( {
@@ -993,13 +1026,14 @@
                         $("#input5").val(data.gaochengqi);
                         $("#input6").val(data.gaochengzhi);
                         $("#input7").val(data.primary);
-                        $("form").css("display","none");
+                        $("#container form").css("display","none");
                         if(data.cate == "开挖"){
                             $("#uid1").val(groupid);
                             $("#cate1").val(data.cate);
                             $("#model1").css("display","block");
                             if(res.kaiwaData){
-                                var kdata = res.kaiwaData
+                                var kdata = res.kaiwaData;
+                                $("#edit1").val("edit");
                                 $("#pass").val(kdata.pass);
                                 $("#quality_level").val(kdata.quality_level);
                                 $("#evaluated_date").val(kdata.evaluated_date);
@@ -1027,6 +1061,8 @@
                                 $("#min_underbreak").val(kdata.min_underbreak);
                                 $("#ave_underbreak").val(kdata.ave_underbreak);
                                 $("#pass_underbreak").val(kdata.pass_underbreak);
+                            }else {
+                                $("#edit1").val("");
                             }
                         }else if(data.cate == "支护"){
                             $("#uid2").val(groupid);
@@ -1034,7 +1070,8 @@
                             $("#cate2").val(data.cate);
                             $("#model2").css("display","block");
                             if(res.zhihuData){
-                                var kdata = res.zhihuData
+                                var kdata = res.zhihuData;
+                                $("#edit2").val("edit");
                                 $("#pass2").val(kdata.pass);
                                 $("#quality_level2").val(kdata.quality_level);
                                 $("#evaluated_date2").val(kdata.evaluated_date);
@@ -1067,6 +1104,8 @@
                                 $("#casting_max_inspection2").val(kdata.casting_max_inspection);
                                 $("#casting_min_inspection2").val(kdata.casting_min_inspection);
                                 $("#pass_rate_inspection2").val(kdata.pass_rate_inspection);
+                            }else {
+                                $("#edit2").val("");
                             }
                         }else if(data.cate == "混凝土"){
                             $("#uid3").val(groupid);
@@ -1074,6 +1113,7 @@
                             $("#model3").css("display","block");
                             if(res.hunningtuData){
                                 var kdata = res.hunningtuData;
+                                $("#edit3").val("edit");
                                 $("#pass3").val(kdata.pass);
                                 $("#quality_level3").val(kdata.quality_level);
                                 $("#evaluated_date3").val(kdata.evaluated_date);
@@ -1106,6 +1146,8 @@
                                 $("#min_union").val(kdata.min_union);
                                 $("#ave_union").val(kdata.ave_union);
                                 $("#pass_union").val(kdata.pass_union);
+                            }else {
+                                $("#edit3").val("");
                             }
                         }
 
@@ -1182,6 +1224,8 @@
     function complete(data){
         if(data.code==1){
             layer.msg("保存成功");
+            $("#myModal").modal('hide');
+            return false;
         }else{
             layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
             return false;
