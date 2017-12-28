@@ -5,7 +5,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>编辑菜单</h5>
+                    <h5>编辑权限</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -22,7 +22,7 @@
                     <form class="form-horizontal m-t" name="edit_rule" id="edit_rule" method="post" action="{:url('edit_rule')}">
                         <input type="hidden" name="id" value="{$menu.id}">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">菜单名称：</label>
+                            <label class="col-sm-3 control-label">权限名称：</label>
                             <div class="input-group col-sm-4">
                                 <input id="title" type="text" class="form-control" name="title" required="" aria-required="true" value="{$menu.title}">
                             </div>
@@ -87,7 +87,7 @@
         
         function checkForm(){
             if( '' == $.trim($('#title').val())){
-                layer.msg('请输入菜单名称',{icon:2,time:1500,shade: 0.1}, function(index){
+                layer.msg('请输入权限名称',{icon:2,time:1500,shade: 0.1}, function(index){
                 layer.close(index);
                 });
                 return false;

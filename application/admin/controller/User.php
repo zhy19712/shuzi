@@ -120,9 +120,9 @@ class User extends Base
 
     function adminTable()
     {
-        $param = input('get.');
-        if(request()->isAjax()) {
 
+        if(request()->isAjax()) {
+            $param = input('get.');
             $table = 'think_admin';
             $primaryKey = 'id';
             $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
@@ -143,19 +143,19 @@ class User extends Base
                 'host' => '127.0.0.1'
             );
 
-          //  require("ssp.class.php");
+            require("ssp.class.php");
 
 
 
-            if (!empty($param["groupid"])) {
-                $groupid = $param["groupid"];
+            if (!empty($param['groupid'])) {
+                $groupid = $param['groupid'];
                 echo json_encode(
-           //         SSP::complex($_GET, $sql_details, $table, $primaryKey, $columns, null, "groupid = '$groupid'")
+                    SSP::complex($_GET, $sql_details, $table, $primaryKey, $columns, null, "groupid = '$groupid'")
                 );
             } else {
-                echo json_encode(
-            //        SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns)
-                );
+             //   echo json_encode(
+            //         SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns)
+            //    );
             }
         }
 

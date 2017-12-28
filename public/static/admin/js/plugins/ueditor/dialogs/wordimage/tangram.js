@@ -294,7 +294,7 @@ baidu.encodeHTML = baidu.string.encodeHTML;
  * @param {string} 	options.base 				设置用于解析swf文件中的所有相对路径语句的基本目录或URL
  * @param {string} 	options.bgcolor 			swf文件的背景色
  * @param {string} 	options.salign 				设置缩放的swf文件在由width和height设置定义的区域内的位置。允许值：l/r/t/b/tl/tr/bl/br
- * @param {boolean} options.menu 				是否显示右键菜单，允许值：true/false
+ * @param {boolean} options.menu 				是否显示右键功能，允许值：true/false
  * @param {boolean} options.loop 				播放到最后一帧时是否重新播放，允许值： true/false
  * @param {boolean} options.play 				flash是否在浏览器加载时就开始播放。允许值：true/false
  * @param {string} 	options.quality 			设置flash播放的画质，允许值：low/medium/high/autolow/autohigh/best
@@ -437,7 +437,7 @@ baidu.swf.createHTML = function (options) {
  * @param {string} 	options.base 				设置用于解析swf文件中的所有相对路径语句的基本目录或URL
  * @param {string} 	options.bgcolor 			swf文件的背景色
  * @param {string} 	options.salign 				设置缩放的swf文件在由width和height设置定义的区域内的位置。允许值：l/r/t/b/tl/tr/bl/br
- * @param {boolean} options.menu 				是否显示右键菜单，允许值：true/false
+ * @param {boolean} options.menu 				是否显示右键功能，允许值：true/false
  * @param {boolean} options.loop 				播放到最后一帧时是否重新播放，允许值： true/false
  * @param {boolean} options.play 				flash是否在浏览器加载时就开始播放。允许值：true/false
  * @param {string} 	options.quality 			设置flash播放的画质，允许值：low/medium/high/autolow/autohigh/best

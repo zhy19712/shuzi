@@ -17,7 +17,7 @@ function parseParams($str)
 
 
 /**
- * 子孙树 用于菜单整理
+ * 子孙树 用于功能整理
  * @param $param
  * @param int $pid
  */
@@ -59,7 +59,7 @@ function writelog($uid,$username,$description,$status)
 
 
 /**
- * 整理菜单树方法
+ * 整理功能树方法
  * @param $param
  * @return array
  */

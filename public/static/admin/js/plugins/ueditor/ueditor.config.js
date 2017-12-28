@@ -227,13 +227,13 @@
         //    {tag:'span',name:'hi', label:'', style:'font-style:italic;font-weight:bold;color:rgb(51, 153, 204)'}
         //]
 
-        //打开右键菜单功能
+        //打开右键功能功能
         //,enableContextMenu: true
-        //右键菜单的内容，可以参考plugins/contextmenu.js里边的默认菜单的例子，label留空支持国际化，否则以此配置为准
+        //右键功能的内容，可以参考plugins/contextmenu.js里边的默认功能的例子，label留空支持国际化，否则以此配置为准
         //,contextMenu:[
         //    {
         //        label:'',       //显示的名称
-        //        cmdName:'selectall',//执行的command命令，当点击这个右键菜单时
+        //        cmdName:'selectall',//执行的command命令，当点击这个右键功能时
         //        //exec可选，有了exec就会在点击时执行这个function，优先级高于cmdName
         //        exec:function () {
         //            //this是当前编辑器的实例
@@ -242,7 +242,7 @@
         //    }
         //]
 
-        //快捷菜单
+        //快捷功能
         //,shortcutMenu:["fontfamily", "fontsize", "bold", "italic", "underline", "forecolor", "backcolor", "insertorderedlist", "insertunorderedlist"]
 
         //elementPathEnabled

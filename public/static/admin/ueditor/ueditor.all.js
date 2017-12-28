@@ -15559,7 +15559,7 @@ UE.plugins['list'] = function () {
                         if (keyCode == 46 && li.childNodes.length) {
                             return;
                         }
-                        //有可能上边的兄弟节点是个2级菜单，要追加到2级菜单的最后的li
+                        //有可能上边的兄弟节点是个2级功能，要追加到2级功能的最后的li
                         if (dtd.$list[pre.tagName]) {
                             pre = pre.lastChild;
                         }
@@ -20893,7 +20893,7 @@ UE.plugins['table'] = function () {
             y: evt.clientY
         };
 
-        //右键菜单单独处理
+        //右键功能单独处理
         if (evt.button == 2) {
             var ut = getUETableBySelected(me),
                 flag = false;
@@ -21858,11 +21858,11 @@ UE.plugins['tablesort'] = function () {
 
 // plugins/contextmenu.js
 ///import core
-///commands 右键菜单
+///commands 右键功能
 ///commandsName  ContextMenu
-///commandsTitle  右键菜单
+///commandsTitle  右键功能
 /**
- * 右键菜单
+ * 右键功能
  * @function
  * @name baidu.editor.plugins.contextmenu
  * @author zhanyi
@@ -22357,11 +22357,11 @@ UE.plugins['contextmenu'] = function () {
 
 // plugins/shortcutmenu.js
 ///import core
-///commands       弹出菜单
+///commands       弹出功能
 // commandsName  popupmenu
-///commandsTitle  弹出菜单
+///commandsTitle  弹出功能
 /**
- * 弹出菜单
+ * 弹出功能
  * @function
  * @name baidu.editor.plugins.popupmenu
  * @author xuheng
@@ -27297,7 +27297,7 @@ UE.ui = baidu.editor.ui = {};
         utils = baidu.editor.utils,
         domUtils = baidu.editor.dom.domUtils;
 
-    var allMenus = [],//存储所有快捷菜单
+    var allMenus = [],//存储所有快捷功能
         timeID,
         isSubMenuShow = false;//是否有子pop显示
 
@@ -27324,7 +27324,7 @@ UE.ui = baidu.editor.ui = {};
 
             domUtils.on (doc , "mousemove" , function (e) {
                 if (me.isHidden === false) {
-                    //有pop显示就不隐藏快捷菜单
+                    //有pop显示就不隐藏快捷功能
                     if (me.getSubMenuMark () || me.eventType == "contextmenu")   return;
 
 
@@ -27893,7 +27893,7 @@ UE.ui = baidu.editor.ui = {};
                         });
                         editorui.buttons[cmd] = ui;
                         editor.addListener('selectionchange', function () {
-                            //只存在于右键菜单而无工具栏按钮的ui不需要检测状态
+                            //只存在于右键功能而无工具栏按钮的ui不需要检测状态
                             var unNeedCheckState = {'edittable':1};
                             if (cmd in unNeedCheckState)return;
 
