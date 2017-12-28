@@ -196,7 +196,6 @@ class Acceptance extends Base
                 'path' => $param['path'],
                 'filename' => $param['filename']
             ];
-//
             $flag = $attachment->insertAttachment($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
 
@@ -217,8 +216,8 @@ class Acceptance extends Base
             $data = $attachment->getOne($id);
             $path = $data['path'];
             unlink($path); //删除文件
-//            $flag = $attachment->delAttachment($id);
-//            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            $flag = $attachment->delAttachment($id);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
 
