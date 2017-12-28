@@ -1297,6 +1297,7 @@
                 data: {id:treeNode.id},
                 dataType: "json",
                 success: function (res) {
+                    console.log(res)
                     idlist = res.idList;
                     if(res.msg === "success"){
                         $("#path").text("当前路径:" + res.path)
