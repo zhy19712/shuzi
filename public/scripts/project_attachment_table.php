@@ -20,7 +20,7 @@
  */
 
 // DB table to use
-$table = 'think_attachment';
+$table = 'think_project_attachment';
 
 // Table's primary key
 $primaryKey = 'id';
