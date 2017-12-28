@@ -141,10 +141,11 @@ class Acceptance extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $uid = $param['uid'];
-            $data = $project->getOneProject($uid);
-            $id = $data['pid'];
-            $path = $data['name'];
-            array_push($parent, $data['uid']);
+            $temp = $project->getOneProject($uid);
+            $id = $temp['pid'];
+            $path = $temp['name'];
+            array_push($parent, $temp['uid']);
+            unset($temp);
             while($id>0)
             {
                 $data = $node->getOneNode($id);
@@ -153,7 +154,7 @@ class Acceptance extends Base
                 $id = $data['pid'];
                 $data = array();
             }
-            return json(['path' => substr($path, 0 , -2), 'idList' => $parent, 'msg' => "success"]);
+            return json(['path' => $path, 'idList' => $parent, 'msg' => "success"]);
         }
     }
 
