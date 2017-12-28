@@ -677,6 +677,17 @@ function edit(that) {
         groupid = treeNode.id;
         if(treeNode.level == 3){
             $("#mytable1_wrapper").css("display","block");
+            $.ajax({
+                url: "./getParents",
+                type: "post",
+                data: {groupid:groupid},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                }
+            })
+
+
             admin_table.ajax.url("__SCRIPT__/project_table.php?pid=" + groupid).load();
         }
 

@@ -129,10 +129,37 @@ class project extends Base
         $node = new DivideModel();
 //        $flag = $node->delNode($id);
 //        return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        $data = $node->getAll();
-        $list = recursion($data, $id);
+
+
+//        $data = $node->getAll();
+//        $list = recursion($data, $id);
+
+        $list = $node->cateTree();
         return $list;
 
+    }
+
+    /**
+     * [获取当前节点的所有父级]
+     * @return [type] [description]
+     */
+    public function getParents()
+    {
+        $node = new DivideModel();
+        $parent = array();
+        $path = "";
+        if(request()->isAjax()){
+            $param = input('post.');
+            $id = $param['groupid'];
+            while($id>0)
+            {
+                $data = $node->getOneNode($id);
+                array_push($parent, $data['id']);
+                $id = $data['pid'];
+                $data = array();
+            }
+            return json(['path' => $path, 'idList' => $parent, 'msg' => "success"]);
+        }
     }
 
 
