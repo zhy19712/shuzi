@@ -138,14 +138,19 @@ class Acceptance extends Base
         $node = new DivideModel();
         $parent = array();
         $path = "";
+        $id="";
         if(request()->isAjax()){
             $param = input('post.');
-            $uid = $param['uid'];
-            $temp = $project->getOneProject($uid);
-            $id = $temp['pid'];
-            $path = $temp['name'];
-            array_push($parent, $temp['uid']);
-            unset($temp);
+            if(!empty($uid)){
+                $uid = $param['uid'];
+                $temp = $project->getOneProject($uid);
+                $id = $temp['pid'];
+                $path = $temp['name'] . ">>";
+                array_push($parent, $temp['uid']);
+                unset($temp);
+            }else{
+                $id = $param['id'];
+            }
             while($id>0)
             {
                 $data = $node->getOneNode($id);
@@ -154,7 +159,7 @@ class Acceptance extends Base
                 $id = $data['pid'];
                 $data = array();
             }
-            return json(['path' => $path, 'idList' => $parent, 'msg' => "success"]);
+            return json(['path' => substr($path, 0, -2), 'idList' => $parent, 'msg' => "success"]);
         }
     }
 

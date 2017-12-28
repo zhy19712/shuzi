@@ -652,7 +652,7 @@ function edit(that) {
 //树结构删除节点
     $("#operate>i:nth-child(3)").click(function () {
         if(mytree_node){
-            layer.confirm("你确定删除"+ mytree_node.name +"节点吗？", {icon: 3, title:'提示'}, function(index){
+            layer.confirm("你确定删除"+ mytree_node.name +"节点以及它所包含的所有子节点吗？", {icon: 3, title:'提示'}, function(index){
                 var id = mytree_node.id;
                 $.ajax({
                     url: "nodeDel",
@@ -660,7 +660,6 @@ function edit(that) {
                     data: {id:id},
                     dataType: "json",
                     success: function (res) {
-                        console.log(res);
                         if(res.code == 1){
                             layer.msg("删除成功",{time:1500,shade: 0.1});
                             zTreeObj.reAsyncChildNodes(null, "refresh");
