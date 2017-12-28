@@ -36,14 +36,7 @@ class Upload extends Base
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/attachment');
         if($info){
-            $param = [       //接受传递的参数
-                'owner' => session('username')
-
-            ];
-            $filename =  $info->getSaveName();
-            $username = session('username');
-
-
+            echo $info->getSaveName();
         }else{
             echo $file->getError();
         }
