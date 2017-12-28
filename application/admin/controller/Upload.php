@@ -29,4 +29,15 @@ class Upload extends Base
         }
     }
 
+    //文件上传
+    public function uploadfile(){
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/attachment');
+        if($info){
+            echo $info->getSaveName();
+        }else{
+            echo $file->getError();
+        }
+    }
+
 }
