@@ -9,9 +9,34 @@
     #container form{
         display: none;
     }
-    .mybtn,.mybtn1{
+    .mybtn1{
         margin-right: 30px;
         float: left;
+    }
+    .mybtn{
+        float: left;
+        width: 100px;
+        line-height: 30px;
+        text-align: center;
+        background-color: #a8d0e1;
+        font-weight: 700;
+        border: 1px solid #000;
+        border-bottom: none;
+        margin-right: 20px;
+        border-radius: 5px 5px 0 0;
+    }
+    #upload{
+        float: right;
+        width: 88px;
+        height: 30px;
+        text-align: center;
+        color: #fff;
+        line-height: 30px;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+    .webuploader-pick{
+        padding: 0 15px;
     }
     #imgPicker>div:nth-child(2){
         width: 100% !important;
@@ -596,24 +621,24 @@
                                 </form>
                             </div>
                         </div>
-                        <div id="mytable1_wrapper" style="margin-top: 20px;">
-                            <table id="admin_table" width="100%" class="table table-striped table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>单元工程名称</th>
-                                    <th>单元工程编号</th>
-                                    <th></th>
-                                    <th>桩号(起)</th>
-                                    <th>桩号(止)</th>
-                                    <th>高程(起)</th>
-                                    <th>高程(止)</th>
-                                    <th>主要单元工程</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
+                    </div>
+                    <div id="mytable1_wrapper" style="margin-top: 20px;">
+                        <table id="admin_table" width="100%" class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>单元工程名称</th>
+                                <th>单元工程编号</th>
+                                <th></th>
+                                <th>桩号(起)</th>
+                                <th>桩号(止)</th>
+                                <th>高程(起)</th>
+                                <th>高程(止)</th>
+                                <th>主要单元工程</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -949,7 +974,7 @@
         "ajax": {
             "url": "__SCRIPT__/project_table.php"
         },
-        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "dom": '<"mybtn">lf<"ipt"><"#upload">rtip',
         "columnDefs": [
             {
                 "searchable": false,
@@ -990,25 +1015,33 @@
             }
         }
     } );
-    $("div.mybtn").html('<div>新增</div>');
-    $("div.mybtn").click(function () {
-        if(mytree_node.level == 3){
-            $.ajax({
-                url: "nodeEdit",
-                type: "post",
-                data: {id:id},
-                dataType: "json",
-                success: function (res) {
-                    if(res.msg == "success"){
-                        $("#new1").val(res.data.sn + res.data.post_sn + "-");
-                    }
-                }
-            })
-            $("#myModal h5").text("新增单元工程");
-            $("#myModal input").val("");
-            $("#myModal").modal('show');
+    $("div.mybtn").html('<div>验收资料</div>');
+    $("div.ipt").html('<input type="hidden" id="data_photo" name="portrait" >');
+    $("div#upload").html('<div>上传文件</div>');
+
+    //上传图片,初始化WebUploader
+    var uploader = WebUploader.create({
+
+        auto: true,// 选完文件后，是否自动上传。
+        swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+        server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
+        duplicate :true,// 重复上传图片，true为可重复false为不可重复
+        pick: '#upload',// 选择文件的按钮。可选。
+
+        'onUploadSuccess': function(file, data, response) {
+            $("#data_photo").val(data._raw);
+            $("#img_data").attr('src', '/uploads/face/' + data._raw).show();
         }
-    })
+    });
+    // 文件上传成功
+    uploader.on( 'uploadSuccess', function( file ) {
+        $( '#'+file.id ).find('p.state').text('上传成功！');
+    });
+
+    // 文件上传失败，显示上传出错。
+    uploader.on( 'uploadError', function( file ) {
+        $( '#'+file.id ).find('p.state').text('上传出错!');
+    });
     //编辑用户
     function edit(that) {
         var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
@@ -1285,6 +1318,7 @@
     };
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
 
+    //文件上传
 
 
 </script>
