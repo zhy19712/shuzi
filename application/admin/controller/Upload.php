@@ -40,4 +40,15 @@ class Upload extends Base
             echo $file->getError();
         }
     }
+
+    //视频上传
+    public function uploadvideo(){
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/video');
+        if($info){
+            echo $info->getSaveName();
+        }else{
+            echo $file->getError();
+        }
+    }
 }

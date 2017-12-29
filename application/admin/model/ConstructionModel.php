@@ -14,7 +14,7 @@ use think\Model;
 class ConstructionModel extends Model
 {
 
-    protected $name = 'contract';
+    protected $name = 'video';
 
     /**
      * 插入
@@ -71,23 +71,14 @@ class ConstructionModel extends Model
         return $this->where('id', $id)->find();
     }
 
-
-
-
     /**
-     * [删除视频]
+     * [删除]
+     * @return [type] [description]
      */
-    public function videoDel()
+    public function delVideo($id)
     {
-        $param = input('post.');
-        if(request()->isAjax()) {
-            $id = $param['id'];
-            $attachment = new ProjectAttachmentModel();
-            $data = $attachment->getOne($id);
-            $path = $data['path'];
-            unlink($path); //删除文件
-            $flag = $attachment->delAttachment($id);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        }
+        $this->where('id', $id)->delete();
+        return ['code' => 1, 'data' => '', 'msg' => '删除视频成功'];
     }
+
 }
