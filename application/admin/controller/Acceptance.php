@@ -198,8 +198,6 @@ class Acceptance extends Base
             ];
             $flag = $attachment->insertAttachment($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-
-            return $data;
         }
     }
 

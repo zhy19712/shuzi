@@ -17,6 +17,24 @@ class Construction extends Base
         return $this->fetch();
     }
 
+    //保存上传附件信息
+    public function saveVideoInfo()
+    {
+        $video = new ConstructionModel();
+
+        $param = input('post.');
+        if(request()->isAjax()){
+            $data = [
+                'name' => $param['name'],
+                'date' => date("Y-m-d H:i:s"),
+                'path' => $param['path']
+            ];
+            $flag = $video->insertVideo($data);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+
+        }
+    }
+
 
     /**
      * [删除视频]
