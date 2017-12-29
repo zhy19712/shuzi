@@ -50,6 +50,27 @@ class Construction extends Base
     }
 
 
+    public function videoEdit()
+    {
+        $video = new ConstructionModel();
+        if(request()->isAjax()){
+            $param = input('post.');
+            $data = $video->getOne($param['id']);
+            $name = $data['name'];
+            return json(['data' => $name,  'msg' => "success"]);
+        }
+    }
+    public function videoEditSave()
+    {
+        $video = new ConstructionModel();
+        if(request()->isAjax()){
+            $param = input('post.');
+            $flag = $video->editVideo($param);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+
     /**
      * [删除视频]
      */

@@ -42,7 +42,7 @@ class ConstructionModel extends Model
     public function editVideo($param)
     {
         try{
-            $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
+            $result =  $this->allowField('name')->save($param, ['id' => $param['id']]);
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
