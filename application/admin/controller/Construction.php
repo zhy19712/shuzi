@@ -35,6 +35,20 @@ class Construction extends Base
         }
     }
 
+    //返回视频url
+    public function getUrl()
+    {
+        $video = new ConstructionModel();
+
+        $param = input('post.');
+        if(request()->isAjax()){
+            $data = $video->getOne($param['id']);
+
+            return json(['url' => substr($data['path'],1,0)]);
+
+        }
+    }
+
 
     /**
      * [删除视频]
