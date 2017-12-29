@@ -223,6 +223,7 @@
 </style>
 <body class="gray-bg" style="background-color:#fff;">
 <div id="mycontent" style="width: 35%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;">
+    <div id="list"></div>
     <div id="mytable1_wrapper" style="margin-top: 20px;">
         <table id="admin_table" width="100%" class="table table-striped table-bordered">
             <thead>
@@ -240,10 +241,11 @@
     <div class="ibox float-e-margins">
         <div class="ibox-content">
             <div class="row">
+                <!--<iframe src="" frameborder="0"></iframe>-->
                 <div id="willesPlay">
                     <div class="playContent">
-                        <video width="100%" height="100%" id="playVideo">
-                            <source src="/uploads/video/123.mp4" type="video/mp4"></source>
+                        <video  id="myvideo" src="" width="100%" height="100%" id="playVideo">
+                            <source src="" type="video/mp4"></source>
                             当前浏览器不支持 video直接播放
                         </video>
                         <div class="playTip glyphicon glyphicon-play"></div>
@@ -448,62 +450,32 @@
 
 <script type="text/javascript">
 
-
-    var zhihu_table = $('#zhihu_table').DataTable( {
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "__SCRIPT__/maogan_table.php"
-        },
-        "dom": '<"mybtn1 btn btn-outline btn-primary"><"myl"l>frtip',
-        "columnDefs": [
-            {
-                "searchable": false,
-                "orderable": false,
-                "targets": [2],
-                "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='查看'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='zdel(this)' value='删除'/>" ;
-                    return html;
-                }
+    function play(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $.ajax({
+            url: "./getUrl",
+            data: {'id' : id},
+            type: "post",
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                $("#myvideo").attr("src",res.url);
             }
-        ],
-        "language": {
-            "lengthMenu": "每页_MENU_ 条记录",
-            "zeroRecords": "没有找到记录",
-            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-            "infoEmpty": "无记录",
-            "search": "搜索：",
-            "infoFiltered": "(从 _MAX_ 条记录过滤)",
-            "paginate": {
-                "previous": "上一页",
-                "next": "下一页"
-            }
-        }
-    } );
-    $("div.mybtn1").html('<div>新增</div>');
-    $("div.mybtn1").click(function () {
-        $("#myModal input").val("");
-        $("#cate4").val("锚杆");
-        $("#uid4").val(mytree_node.uid);
-        $("#myModal h5").text("新增");
-        $("#myModal").modal('show');
-    })
-
+        })
+    }
 
     function del(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
-                url: "./attachmentDel",
+                url: "./videoDel",
                 data: {'id' : id},
                 type: "post",
                 dataType: "json",
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        admin_table.ajax.url("__SCRIPT__/project_attachment_table.php").load();
+                        admin_table.ajax.url("__SCRIPT__/video_table.php").load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -526,8 +498,8 @@
                 "orderable": false,
                 "targets": [3],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='编辑'/>" ;
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='play(this)' value='播放'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
@@ -552,12 +524,14 @@
 
     var idlist;
     //上传图片,初始化WebUploader
+    var $list = $("#list");
+    var flie_count = 0;
     var uploader = WebUploader.create({
 
         auto: true,// 选完文件后，是否自动上传。
         swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-        server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-        chunked: true,
+        server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+        chunked: false,
         fileSizeLimit: 1000 *1024 *1024,
         duplicate :true,// 重复上传图片，true为可重复false为不可重复
         pick: '#upload',// 选择文件的按钮。可选。
@@ -569,53 +543,60 @@
             '<p class="state">正在上传...</p>' +
             '</div>' );
     });
+    // 当有文件被添加进队列的时候
+    uploader.on('fileQueued', function (file) {
+        $list.append('<div id="' + file.id + '" class="item">' +
+            '</div>');
+    });
+    // 文件上传过程中创建进度条实时显示。
+    uploader.on('uploadProgress', function (file, percentage) {
+        var $li = $('#' + file.id),
+            $percent = $li.find('.progress .progress-bar');
+        // 避免重复创建
+        if (!$percent.length) {
+            $percent = $('<div class="progress progress-striped active">' +
+                '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                '</div>' +
+                '</div>').appendTo($li).find('.progress-bar');
+        }
+        $li.find('p.state').text('上传中');
+        $percent.css('width', percentage * 100 + '%');
+    });
+
     // 文件上传成功
     uploader.on( 'uploadSuccess', function( file,data, response ) {
         console.log(file);
         var filename;
-        var id_level_1 = "";
-        var id_level_2 = "";
-        var id_level_3 = "";
-        var id_level_4 = "";
-        var id_level_5 = "";
-        $.each(idlist,function (i,n) {
-            if(i == 0){
-                id_level_1 = n;
-            }else if(i == 1){
-                id_level_2 = n;
-            }else if(i == 2){
-                id_level_3 = n;
-            }else if(i == 3){
-                id_level_4 = n;
-            }else if(i == 4){
-                id_level_5 = n;
-            }
-        });
-        var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
+        var path = './uploads/video/' + (data._raw).replace(/\\/g,"\/");
         layer.prompt({
             formType: 2,
-            title: '请输入文件名称',
-            area: ['800px', '350px'] //自定义文本域宽高
+            title: '请输入标题',
+            area: ['200px', '50px'],
+            btn:['确认','取消'],
         }, function(value, index, elem){
             filename = value;
+            console.log(filename,path);
+            $.ajax({
+                url: "./saveVideoInfo",
+                type: "post",
+                data: {path:path,name:filename},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                    if(res.msg === "添加成功"){
+                        layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                        $("#mylist").empty();
+                        $("#list").empty();
+                        admin_table.ajax.url("__SCRIPT__/video_table.php").load();
+                    }else {
+                        layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                    }
+                }
+            })
             layer.close(index);
         });
-        $.ajax({
-            url: "./saveAttachmentInfo",
-            type: "post",
-            data: {id_level_1:id_level_1,id_level_2:id_level_2,id_level_3:id_level_3,id_level_4:id_level_4,id_level_5:id_level_5,path:path,filename:filename},
-            dataType: "json",
-            success: function (res) {
-                console.log(res);
-                if(res.msg === "success"){
-                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                    $("#mylist").empty();
-                    admin_table.ajax.url("__SCRIPT__/project_attachment_table.php").load();
-                }else {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                }
-            }
-        })
+
+
     });
 
     // 文件上传失败，显示上传出错。
