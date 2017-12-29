@@ -227,7 +227,7 @@ class Acceptance extends Base
     //附件下载
     public function attachmentDownload()
     {
-        $id = $_GET['id'];
+        $id = input('param.id');
         $attachment = new ProjectAttachmentModel();
         $param = $attachment->getOne($id);
         $filePath = $param['path'];
