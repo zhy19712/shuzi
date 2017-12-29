@@ -222,17 +222,14 @@ class Acceptance extends Base
     }
 
 
-
-
     //附件下载
     public function attachmentDownload()
     {
-        $id = 10;
+        $id = input('param.id');
         $attachment = new ProjectAttachmentModel();
         $param = $attachment->getOne($id);
         $filePath = $param['path'];
         $fileName = $param['filename'];
-        //此处给出你下载的文件名
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         Header("Content-type:application/octet-stream ");
