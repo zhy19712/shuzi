@@ -459,6 +459,10 @@
 $("div.mybtn").html('<div>新增</div>');
 $("div.mybtn").click(function () {
         if(mytree_node.level == 3){
+            $("#myModal input").val("");
+            $("#myModal h5").text("新增单元工程");
+            var id = mytree_node.id;
+            $("#pid").val(id);
             $.ajax({
                 url: "nodeEdit",
                 type: "post",
@@ -469,15 +473,11 @@ $("div.mybtn").click(function () {
                         $("#new1").val(res.data.sn + res.data.post_sn + "-");
                     }
                 }
-            })
-            $("#myModal h5").text("新增单元工程");
-            $("#myModal input").val("");
-            var id = mytree_node.id;
-            $("#pid").val(id);
+            });
             $("#myModal").modal('show');
         }
 })
-//编辑用户
+//编辑
 function edit(that) {
     var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
     var kind = $(that).val();

@@ -373,6 +373,7 @@ $("div.mybtn").click(function () {
         var str = "<option value="+ dept_name +">"+ dept_name +"</option>"
         $("#dept").empty().append(str).val(dept_name);
         $("#groupname").val(dept_name);
+        $("#groupid").val(mytree_node.id);
         $("#img_data").attr("src","/static/admin/images/head_default.gif");
         $("#myModal").modal('show');
     }
