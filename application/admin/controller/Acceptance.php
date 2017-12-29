@@ -227,21 +227,21 @@ class Acceptance extends Base
     //附件下载
     public function attachmentDownload()
     {
-        $id = input('param.id');
+        $id = 10;
         $attachment = new ProjectAttachmentModel();
         $param = $attachment->getOne($id);
         $filePath = $param['path'];
         $fileName = $param['filename'];
         //此处给出你下载的文件名
-        $file = fopen($filePath . $fileName, "r"); //   打开文件
+        $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         Header("Content-type:application/octet-stream ");
         Header("Accept-Ranges:bytes ");
-        Header("Accept-Length:   " . filesize($filePath . $fileName));
+        Header("Accept-Length:   " . filesize($filePath));
         Header("Content-Disposition:   attachment;   filename= " . $fileName);
 
         //   输出文件内容
-        echo fread($file, filesize($filePath . $fileName));
+        echo fread($file, filesize($filePath));
         fclose($file);
         exit;
     }
