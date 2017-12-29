@@ -583,7 +583,7 @@ function edit(that) {
                    success: function (res) {
                        console.log(res);
                        if(res.msg == "success"){
-                           $("#new5").val(res.data.sn + "-" + res.data.post_sn + "-");
+                           $("#new5").val(res.data.sn + res.data.post_sn + "-");
                        }
                    }
                });
@@ -700,9 +700,6 @@ function edit(that) {
 
 
     };
-//    function zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
-//        console.log(zTreeObj.getNodes());
-//    };
     var setting = {
         async: {
             enable : true,
@@ -723,8 +720,7 @@ function edit(that) {
             }
         },
         callback: {
-            onClick: zTreeOnClick,
-//            onAsyncSuccess: zTreeOnAsyncSuccess
+            onClick: zTreeOnClick
         }
     };
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);

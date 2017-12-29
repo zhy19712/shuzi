@@ -807,6 +807,7 @@
         </div>
     </div>
 </div>
+<div id="form_container" style="display: none;"></div>
 
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
@@ -989,15 +990,20 @@
             layer.close(index);
         })
     }
-//    function download(that) {
-//        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-//        $.ajax({
-//            url: "",
-//            type: "post",
-//            data: {id:id},
-//            dataType: "json"
-//        })
-//    }
+    function download(that) {
+        $("#form_container").empty();
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var str = "";
+        str += ""
+            + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+            + "<form name=download"+ id +" action='./attachmentDownload' method='get' target=downloadFrame"+ id +">"
+            + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+            + "<input class='file_url' style='display: none;' name='fid' value="+ id +">"
+            + "<button type='submit' class=btn" + id +"></button>"
+            + "</form>"
+        $("#form_container").append(str);
+        $("#form_container").find(".btn" + id).click();
+    }
     var admin_table = $('#admin_table').DataTable( {
         "processing": true,
         "serverSide": true,
