@@ -38,6 +38,11 @@
     .webuploader-pick{
         padding: 0 15px;
     }
+    #mylist{
+        float: right;
+        font-size: 14px;
+        font-weight: 700;
+    }
     #imgPicker>div:nth-child(2){
         width: 100% !important;
         height: 100% !important;
@@ -1011,7 +1016,7 @@
             "url": "__SCRIPT__/project_attachment_table.php",
             "async": false
         },
-        "dom": '<"mybtn">lf<"ipt"><"#upload">rtip',
+        "dom": '<"mybtn">lf<"ipt"><"#upload"><"#mylist">rtip',
         "columnDefs": [
             {
                 "searchable": false,
@@ -1041,6 +1046,7 @@
     $("div.mybtn").html('<div>验收资料</div>');
     $("div.ipt").html('<input type="hidden" id="data_photo" name="portrait" >');
     $("div#upload").html('<div>上传文件</div>');
+    $("div#mylist").html('<div></div>');
 
     var idlist;
     //上传图片,初始化WebUploader
@@ -1049,9 +1055,17 @@
         auto: true,// 选完文件后，是否自动上传。
         swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
         server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
+        chunked: true,
+        fileSizeLimit: 1000 *1024 *1024,
         duplicate :true,// 重复上传图片，true为可重复false为不可重复
         pick: '#upload',// 选择文件的按钮。可选。
 
+    });
+    uploader.on( 'fileQueued', function( file ) {
+        $("#mylist").html( '<div id="' + file.id + '" class="item">' +
+            '<h4 class="info">' + file.name + '</h4>' +
+            '<p class="state">正在上传...</p>' +
+            '</div>' );
     });
     // 文件上传成功
     uploader.on( 'uploadSuccess', function( file,data, response ) {
@@ -1085,6 +1099,7 @@
                 console.log(res);
                  if(res.msg === "success"){
                      layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                     $("#mylist").empty();
                      admin_table.ajax.url("__SCRIPT__/project_attachment_table.php").load();
                  }else {
                      layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
