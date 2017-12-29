@@ -65,12 +65,12 @@ if(!empty($_GET["groupid"]))
 {
     $groupid = $_GET["groupid"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "groupid = '$groupid'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "groupid = '$groupid' and id > '1'" )
     );
 }
 else{
     echo json_encode(
-        SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns)
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null, "id > '1'" )
     );
 }
 

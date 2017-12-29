@@ -39,7 +39,7 @@ class Node extends Model
 
 
     /**
-     * [getMenu 根据节点数据获取对应的菜单]
+     * [getMenu 根据节点数据获取对应的功能]
      */
     public function getMenu($nodeStr = '')
     {

@@ -973,9 +973,9 @@
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
-                url: "./maoganDel",
+                url: "./attachmentDel",
                 data: {'id' : id},
-                type: "get",
+                type: "post",
                 dataType: "json",
                 success: function (res) {
                     if(res.code == 1){
@@ -1069,7 +1069,7 @@
                 id_level_5 = n;
             }
         });
-        var path = '/uploads/attachment/' + data._raw;
+        var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
         $.ajax({
             url: "./saveAttachmentInfo",
             type: "post",
@@ -1132,31 +1132,6 @@
         })
     }
 
-    //删除
-    function myconfirm(id,url) {
-        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
-            $.ajax({
-                url: url,
-                async: false,
-                data: {'id' : id},
-                type: "get",
-                dataType: "json",
-                success: function (res) {
-                    if(res.code == 1){
-                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        admin_table.ajax.url("__SCRIPT__/project_table.php").load();
-                    }else{
-                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
-                    }
-                }
-            })
-            layer.close(index);
-        })
-    }
-    function del(that) {
-        var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
-        myconfirm(uid,'{:url("projectDel")}');
-    }
     //组织结构
     var zTreeObj;
 

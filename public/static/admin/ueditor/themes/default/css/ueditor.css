@@ -299,7 +299,7 @@ div.edui-box {
     cursor: pointer;
     color: red;
 }
-/*可选中菜单按钮*/
+/*可选中功能按钮*/
 .edui-default .edui-list .edui-bordereraser {
     display: none;
 }
@@ -371,7 +371,7 @@ div.edui-box {
     width: 200px !important;
     padding: 2px 5px;
 }
-/* 可选中按钮弹出菜单*/
+/* 可选中按钮弹出功能*/
 .edui-default .edui-menu {
     z-index: 3000;
 }
@@ -418,7 +418,7 @@ div.edui-box {
 }
 
 
-/*不可选中菜单按钮 */
+/*不可选中功能按钮 */
 .edui-default .edui-toolbar .edui-combox-body .edui-button-body {
     width: 60px;
     font-size: 12px;
@@ -1027,7 +1027,7 @@ div.edui-box {
     background-image: none  ;
 }
 
-/* 弹出菜单 */
+/* 弹出功能 */
 .edui-default .edui-popup {
     z-index: 3000;
     background-color: #ffffff;
@@ -1461,7 +1461,7 @@ div.edui-box {
     height: 360px;
 }
 
-/*段落弹出菜单*/
+/*段落弹出功能*/
 .edui-default .edui-for-paragraph .edui-listitem-label {
     font-family: Tahoma, Verdana, Arial, Helvetica;
 }
@@ -1506,7 +1506,7 @@ div.edui-box {
     font-size: 12px;
     line-height: 14px;
 }
-/* 表格弹出菜单 */
+/* 表格弹出功能 */
 .edui-default .edui-for-inserttable .edui-splitborder {
     display: none
 }
@@ -1547,7 +1547,7 @@ div.edui-box {
     background: url("../images/highlighted.gif") repeat;
 }
 
-/* 颜色弹出菜单 */
+/* 颜色弹出功能 */
 .edui-default .edui-colorpicker-topbar {
     height: 27px;
     width: 200px;
@@ -1666,7 +1666,7 @@ div.edui-box {
     background: white;
     opacity: .8;
 }
-/*自动排版弹出菜单*/
+/*自动排版弹出功能*/
 .edui-default .edui-autotypesetpicker .edui-autotypesetpicker-body {
     font-size: 12px;
     margin-bottom: 3px;
@@ -1687,7 +1687,7 @@ div.edui-box {
     margin: 3px 3px 3px 4px;
     *margin: 1px 0 0 0;
 }
-/*自动排版弹出菜单*/
+/*自动排版弹出功能*/
 .edui-default .edui-cellalignpicker .edui-cellalignpicker-body {
     width: 70px;
     font-size: 12px;
@@ -1761,7 +1761,7 @@ div.edui-box {
     width: 18px;
     height: 4px;
 }
-/*表情按钮及弹出菜单*/
+/*表情按钮及弹出功能*/
 /*去除了表情的下拉箭头*/
 .edui-default .edui-for-emotion .edui-icon {
     background-position: -60px -20px;
@@ -1819,7 +1819,7 @@ div.edui-box {
     background-color: #fff5d4;
     border: 1px solid #dcac6c;
 }
-/*弹出菜单*/
+/*弹出功能*/
 .edui-default .edui-shortcutmenu {
     padding: 2px;
     width: 190px;
@@ -1829,7 +1829,7 @@ div.edui-box {
     border-radius: 5px;
 }
 
-/*粘贴弹出菜单*/
+/*粘贴弹出功能*/
 .edui-default .edui-wordpastepop .edui-popup-content{
     border: none;
     padding: 0;

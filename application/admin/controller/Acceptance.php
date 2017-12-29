@@ -196,7 +196,6 @@ class Acceptance extends Base
                 'path' => $param['path'],
                 'filename' => $param['filename']
             ];
-//
             $flag = $attachment->insertAttachment($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
 
@@ -208,12 +207,14 @@ class Acceptance extends Base
     /**
      * [删除附件]
      */
-    public function projectDel()
+    public function attachmentDel()
     {
+        $param = input('post.');
         if(request()->isAjax()) {
-            $id = input('param.id');
+            $id = $param['id'];
             $attachment = new ProjectAttachmentModel();
-            $path = ($attachment->getOne($id))['path'];
+            $data = $attachment->getOne($id);
+            $path = $data['path'];
             unlink($path); //删除文件
             $flag = $attachment->delAttachment($id);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
@@ -226,8 +227,11 @@ class Acceptance extends Base
     //附件下载
     public function attachmentDownload()
     {
-        $filePath = "template/";//此处给出你下载的文件在服务器的什么地方
-        $fileName = "template.xls";
+        $id = $_GET['id'];
+        $attachment = new ProjectAttachmentModel();
+        $param = $attachment->getOne($id);
+        $filePath = $param['path'];
+        $fileName = $param['filename'];
         //此处给出你下载的文件名
         $file = fopen($filePath . $fileName, "r"); //   打开文件
         //输入文件标签

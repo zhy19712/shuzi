@@ -7,7 +7,7 @@ use think\Db;
 class Menu extends Base
 {	
     /**
-     * [index 菜单列表]
+     * [index 权限列表]
      * @return [type] [description]
      */
     public function index()
@@ -22,7 +22,7 @@ class Menu extends Base
 
 	
     /**
-     * [add_rule 添加菜单]
+     * [add_rule 添加权限]
      * @return [type] [description]
      */
 	public function add_rule()
@@ -39,7 +39,7 @@ class Menu extends Base
 
 
     /**
-     * [edit_rule 编辑菜单]
+     * [edit_rule 编辑权限]
      * @return [type] [description]
      */
     public function edit_rule()
@@ -88,7 +88,7 @@ class Menu extends Base
 
 
     /**
-     * [rule_state 菜单状态]
+     * [rule_state 权限状态]
      * @return [type] [description]
      */
     public function rule_state()

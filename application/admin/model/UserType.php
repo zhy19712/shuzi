@@ -83,7 +83,7 @@ class UserType extends Model
      */
     public function getAll()
     {
-        return $this->order('id asc')->select();
+        return $this->order('id asc')->where('id','<>',1)->select();
     }
 
 
@@ -169,7 +169,7 @@ class UserType extends Model
      */
     public function getNodeInfo()
     {
-        $result = $this->field('id,title,pid')->select();
+        $result = $this->field('id,title,pid')->where('id','<>',1)->select();
         $str = "";
 
         foreach($result as $key=>$vo){
