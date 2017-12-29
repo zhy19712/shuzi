@@ -70,7 +70,7 @@ class Acceptance extends Base
 
 
     /**
-     * [保存验收批次信息]
+     * [保存单元工程验收批次信息]
      * @return [type] [description]
      */
     public function dataAdd()
@@ -139,7 +139,11 @@ class Acceptance extends Base
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
 
+    //获取分部工程验收信息
+    public function getLevelThree()
+    {
 
+    }
 
 
     /**
