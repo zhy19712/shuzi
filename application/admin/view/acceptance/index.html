@@ -1518,6 +1518,7 @@
                 success: function (res) {
                     console.log(res);
                     var len = res.column3.length;
+                    console.log(res.colunm5)
                     $.each(res.column3,function (i,n) {
                         if(i < len - 2){
                             if(i === 0){
@@ -1528,7 +1529,7 @@
                                     +  "<td>"+ res.column2[i] +"</td>"
                                     +  "<td>"+ res.column3[i] +"</td>"
                                     +  "<td>"+ res.column4[i] +"</td>"
-                                    +  "<td>"+ res.column5[i] +"</td>"
+                                    +  "<td>"+ res.colunm5[i] +"</td>"
                                     +  "<td rowspan="+ (len+1) +"></td>"
                                     +  "</tr>"
                             }else {
@@ -1539,10 +1540,10 @@
                                     +  "<td>"+ res.column2[i] +"</td>"
                                     +  "<td>"+ res.column3[i] +"</td>"
                                     +  "<td>"+ res.column4[i] +"</td>"
-                                    +  "<td>"+ res.column5[i] +"</td>"
+                                    +  "<td>"+ res.colunm5[i] +"</td>"
                                     +  "</tr>"
                             }
-                            $("#level3").append(str);
+                            $("#level3 tbody").append(str);
                         }else if(i === len - 2){
                             var str = "";
                             str += ""
@@ -1551,9 +1552,9 @@
                                 +  "<td>"+ res.column2[i] +"</td>"
                                 +  "<td>"+ res.column3[i] +"</td>"
                                 +  "<td>"+ res.column4[i] +"</td>"
-                                +  "<td>"+ res.column5[i] +"</td>"
+                                +  "<td>"+ res.colunm5[i] +"</td>"
                                 +  "</tr>"
-                            $("#level3").append(str);
+                            $("#level3 tbody").append(str);
                         }else if(i === len - 1){
                             var str = "";
                             str += ""
@@ -1562,9 +1563,9 @@
                                 +  "<td>"+ res.column2[i] +"</td>"
                                 +  "<td>"+ res.column3[i] +"</td>"
                                 +  "<td>"+ res.column4[i] +"</td>"
-                                +  "<td>"+ res.column5[i] +"</td>"
+                                +  "<td>"+ res.colunm5[i] +"</td>"
                                 +  "</tr>"
-                            $("#level3").append(str);
+                            $("#level3 tbody").append(str);
                         }
                     })
                     var str1 = "";
@@ -1577,7 +1578,7 @@
                              +  "</select>"
                              +  "</td>"
                              +  "</tr>"
-                    $("#level3").append(str1);
+                    $("#level3 tbody").append(str1);
                     var str2 = "";
                     str2 += "<tr>"
                         +  "<td colspan=\"2\" style=\"background-color: #bae2f3;font-weight: 700;\">主要分部工程</td>"
@@ -1588,7 +1589,7 @@
                         +  "</select>"
                         +  "</td>"
                         +  "</tr>"
-                    $("#level3").append(str2);
+                    $("#level3 tbody").append(str2);
                 }
             });
             //获取路径
