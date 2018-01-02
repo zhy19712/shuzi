@@ -246,6 +246,56 @@ class Acceptance extends Base
     }
 
 
+    //分部工程质量台账
+    public function level3Quality()
+    {
+        $level4 = new DivideModel();
+        $level5 = new ProjectModel();
+        $level5_kaiwa = new KaiwaModel();
+        $level5_zhihu = new ZhihuModel();
+        $level5_hunningtu = new HunningtuModel();
+        $num = array();
+        $qualified_num = array();
+        $good_num = array();
+
+        if(request()->isAjax()) {
+            $pid = input('param.id');
+            $level4_data = $level4->getAllbyPID($pid);
+            foreach($level4_data as $dd){
+                $level5_num = 0;
+                $level5_qualified_num = 0;
+                $level5_good_num = 0;
+                array_push($level4_name, $dd['name']);             //单元工程名
+                array_push($level5_primary_num, $level5->getPrimaryNum($dd['id']));         //主要工程个数
+                $level5_data = $level5->getAllbyPID($dd['id']);
+                foreach($level5_data as $data){
+                    if($data['cate'] == '开挖'){
+                        $level5_num += $level5_kaiwa->getNum($data['uid']);
+                        $level5_qualified_num += $level5_kaiwa->getQualifiedNum($data['uid']);
+                        $level5_good_num += $level5_kaiwa->getGoodNum($data['uid']);
+                        if($data['primary'] == '是'){
+
+                        }
+                    }else if($data['cate'] == '支护'){
+                        $level5_num += $level5_zhihu->getNum($data['uid']);
+                        $level5_qualified_num += $level5_zhihu->getQualifiedNum($data['uid']);
+                        $level5_good_num += $level5_zhihu->getGoodNum($data['uid']);
+                    }else if($data['cate'] == '混凝土'){
+                        $level5_num += $level5_hunningtu->getNum($data['uid']);
+                        $level5_qualified_num += $level5_hunningtu->getQualifiedNum($data['uid']);
+                        $level5_good_num += $level5_hunningtu->getGoodNum($data['uid']);
+                    }
+                }
+                array_push($num, $level5_num);
+                array_push($qualified_num, $level5_qualified_num);
+                array_push($good_num, $level5_good_num);
+            }
+            return json(['column1' => $num, 'column2' => $qualified_num, 'column3' => $good_num]);
+        }
+
+    }
+
+
 
 
 

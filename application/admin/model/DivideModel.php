@@ -114,6 +114,14 @@ class DivideModel extends Model
         return $this->order('id asc')->select();
     }
 
+    //getAll by pid
+    public function getAllbyPID($pid)
+    {
+        return $this->where('pid', $pid)->select();
+    }
+
+
+
 
     //递归获取当前节点的所有子节点
     public function cateTree($id){

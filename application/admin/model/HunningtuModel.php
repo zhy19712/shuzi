@@ -57,4 +57,23 @@ class HunningtuModel extends Model
     {
         return $this->where('uid', $uid)->find();
     }
+
+    //get counts by id
+    public function getNum($uid)
+    {
+        return $this->where('uid',$uid)->count();
+    }
+
+    public function getQualifiedNum($uid)
+    {
+        $where['uid'] = $uid;
+        $where['pass'] = '是';
+        return $this->where($where)->count();
+    }
+    public function getGoodNum($uid)
+    {
+        $where['uid'] = $uid;
+        $where['quality_level'] = '优良';
+        return $this->where($where)->count();
+    }
 }

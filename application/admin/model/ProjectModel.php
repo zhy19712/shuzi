@@ -70,6 +70,17 @@ class ProjectModel extends Model
     {
         return $this->order('id asc')->select();
     }
+    //getAll by pid
+    public function getAllbyPID($pid)
+    {
+        return $this->where('pid', $pid)->select();
+    }
+    //get primary count
+    public function getPrimaryNum($pid)
+    {
+        return $this->where('pid', $pid)->select();
+    }
+
 
     /**
      * 根据id获取信息
