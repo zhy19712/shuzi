@@ -262,7 +262,8 @@ class Acceptance extends Base
         $level4_name = array();
 
         if(request()->isAjax()) {
-            $pid = input('param.id');
+            $param = input('post.');
+            $pid = $param['id'];
             $level3_data = $level4->getAllbyID($pid);
             $level4_data = $level4->getAllbyPID($pid);
             $accident = $level3_data['accident'];
@@ -328,6 +329,10 @@ class Acceptance extends Base
             array_push($good_num, $level5_good_num_primary);
             array_push($good_rate,  floor($level5_good_num_primary/$level5_num_primary*100)/100);
 
+            if(!empty($param['accident'])){
+
+            }
+
             //计算优良等级
             if($num == $qualified_num){
                 $level = '合格';
@@ -339,7 +344,25 @@ class Acceptance extends Base
             }
             return json(['column1' => $level4_name, 'column2' => $num, 'column3' => $qualified_num, 'column4' => $good_num, 'colunm5' => $good_rate, 'primary' => $primary, 'accident' => $accident, 'level' => $level]);
         }
+    }
 
+    public function changePrimary(){
+        $level3 = new DivideModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $flag = $level3->editNode($param['id']);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    public function changeAccident(){
+        $level3 = new DivideModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $flag = $level3->editNode($param['id']);
+            if($param['accident'] == '')
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
     }
 
 
