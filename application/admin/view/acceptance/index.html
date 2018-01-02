@@ -1337,6 +1337,30 @@
     //组织结构
     var zTreeObj;
 
+    function change1(that) {
+        var val = $(that).val();
+        var id = mytree_node.id;
+        console.log(val,id);
+//        $.ajax({
+//            url: "",
+//            type: "post",
+//            data: {id:id,accident:val},
+//            dataType: "json",
+//            success: function (res) {
+//
+//            }
+//        })
+    }
+    function change2(that) {
+        var val = $(that).val();
+        var id = mytree_node.id;
+        $.ajax({
+            url: "./changePrimary",
+            type: "post",
+            data: {id:id,primary:val}
+        })
+    }
+
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
@@ -1530,7 +1554,7 @@
                                     +  "<td>"+ res.column3[i] +"</td>"
                                     +  "<td>"+ res.column4[i] +"</td>"
                                     +  "<td>"+ res.colunm5[i] +"</td>"
-                                    +  "<td rowspan="+ (len+1) +"></td>"
+                                    +  "<td id='accident' rowspan="+ (len+1) +">"+ res.level +"</td>"
                                     +  "</tr>"
                             }else {
                                 var str = "";
@@ -1572,7 +1596,7 @@
                         str1 += "<tr>"
                              +  "<td colspan=\"6\">"
                              +  "<span>是否发生质量事故</span>"
-                             +  "<select name=\"\" id=\"sel1\">"
+                             +  "<select onchange='change1(this)' id=\"sel1\" value=''>"
                              +  "<option value=\"是\">是</option>"
                              +  "<option value=\"否\">否</option>"
                              +  "</select>"
@@ -1583,13 +1607,17 @@
                     str2 += "<tr>"
                         +  "<td colspan=\"2\" style=\"background-color: #bae2f3;font-weight: 700;\">主要分部工程</td>"
                         +  "<td colspan=\"5\">"
-                        +  "<select name=\"\" id=\"sel2\">"
+                        +  "<select onchange='change2(this)' id=\"sel2\" value=''>"
                         +  "<option value=\"是\">是</option>"
                         +  "<option value=\"否\">否</option>"
                         +  "</select>"
                         +  "</td>"
                         +  "</tr>"
+
                     $("#level3 tbody").append(str2);
+
+                    $("#sel1").val(res.accident);
+                    $("#sel2").val(res.primary);
                 }
             });
             //获取路径
