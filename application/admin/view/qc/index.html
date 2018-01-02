@@ -12,9 +12,10 @@
     .mytable td{
         border-right: 1px solid #000;
         border-bottom: 1px solid #000;
+        padding: 0 10px;
     }
     .mytable td input{
-        width: 96%;
+        width: 100%;
         line-height: 20px;
         margin-bottom: 5px;
     }
@@ -60,6 +61,29 @@
         margin-right: 20px;
         cursor: pointer;
         background: url("__IMG__/bg_1.png") no-repeat center center;
+    }
+    .exp{
+        display: inline-block;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+    .exp:first-child{
+        color: #ff9933;
+    }
+    .exp>span{
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 18px;
+    }
+    #flow_content>div{
+        display: none;
+    }
+    #flow_content>div:first-child{
+        display: block;
+    }
+    .myp{
+        background-color: #bae2f3;
+        padding: 8px 0;
     }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
@@ -159,7 +183,63 @@
             </div>
             <div class="tab-pane" id="profile">
                 <div id="flow">
-
+                    <div class="exp">
+                        <span>选题</span>
+                        <img src="__IMG__/arr.png" alt="">
+                    </div>
+                    <div class="exp">
+                        <span>现状调查</span>
+                        <img src="__IMG__/arr.png" alt="">
+                    </div>
+                    <div class="exp">
+                        <span>目标确定</span>
+                        <img src="__IMG__/arr.png" alt="">
+                    </div>
+                    <div class="exp">
+                        <span>原因分析</span>
+                        <img src="__IMG__/arr.png" alt="">
+                    </div>
+                    <div class="exp">
+                        <span>要因确认</span>
+                        <img src="__IMG__/arr.png" alt="">
+                    </div>
+                    <div class="exp">
+                        <span>制定对策</span>
+                        <img src="__IMG__/arr.png" alt="">
+                    </div>
+                    <div class="exp">
+                        <span>对策实施</span>
+                        <img src="__IMG__/arr.png" alt="">
+                    </div>
+                    <div class="exp">
+                        <span>效果检查</span>
+                        <img src="__IMG__/arr.png" alt="">
+                    </div>
+                    <div class="exp">
+                        <span>巩固措施与标准化</span>
+                        <img src="__IMG__/arr.png" alt="">
+                    </div>
+                    <div class="exp">
+                        <span>总结</span>
+                        <img src="__IMG__/arr.png" alt="">
+                    </div>
+                </div>
+                <div id="flow_content">
+                    <div id="step1">
+                        <div id="sel_content" class="myheader">
+                            <p class="myp">选题内容<span>保存</span></p>
+                            <textarea name="" style="width: 100%;min-height: 100px;"></textarea>
+                        </div>
+                    </div>
+                    <div id="step2">2</div>
+                    <div id="step3">3</div>
+                    <div id="step4">4</div>
+                    <div id="step5">5</div>
+                    <div id="step6">6</div>
+                    <div id="step7">7</div>
+                    <div id="step8">8</div>
+                    <div id="step9">9</div>
+                    <div id="step10">10</div>
                 </div>
             </div>
             <div class="tab-pane" id="messages">3</div>
@@ -431,6 +511,15 @@
 //                }
 //            });
         $("#addPeople").modal('show');
+    })
+
+    //流程tab
+    $(".exp>span").click(function () {
+        var index = $(this).parent("div").index();
+        $(".exp>span").css("color","#000");
+        $("this").css("color","#ff9933");
+        console.log(index)
+        $("#flow_content>div").css("display","none").eq(index).css("display","block");
     })
 
     //提交

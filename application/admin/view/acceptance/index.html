@@ -1341,15 +1341,15 @@
         var val = $(that).val();
         var id = mytree_node.id;
         console.log(val,id);
-//        $.ajax({
-//            url: "",
-//            type: "post",
-//            data: {id:id,accident:val},
-//            dataType: "json",
-//            success: function (res) {
-//
-//            }
-//        })
+        $.ajax({
+            url: "./level3Quality",
+            type: "post",
+            data: {id:id,accident:val},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+            }
+        })
     }
     function change2(that) {
         var val = $(that).val();
@@ -1542,7 +1542,6 @@
                 success: function (res) {
                     console.log(res);
                     var len = res.column3.length;
-                    console.log(res.colunm5)
                     $.each(res.column3,function (i,n) {
                         if(i < len - 2){
                             if(i === 0){

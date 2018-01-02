@@ -350,7 +350,7 @@ class Acceptance extends Base
         $level3 = new DivideModel();
         if(request()->isAjax()) {
             $param = input('post.');
-            $flag = $level3->editNode($param['id']);
+            $flag = $level3->editNode($param);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
