@@ -265,8 +265,8 @@ class Acceptance extends Base
             $pid = input('param.id');
             $level3_data = $level4->getAllbyID($pid);
             $level4_data = $level4->getAllbyPID($pid);
-//            $accident = $level3_data['accident'];
-//            $primary = $level3_data['primary'];
+            $accident = $level3_data['accident'];
+            $primary = $level3_data['primary'];
             $level5_num_primary = 0;
             $level5_qualified_num_primary = 0;
             $level5_good_num_primary = 0;
@@ -328,20 +328,17 @@ class Acceptance extends Base
             array_push($good_num, $level5_good_num_primary);
             array_push($good_rate,  floor($level5_good_num_primary/$level5_num_primary*100)/100);
 
-//            //计算优良等级
-//            if($num == $qualified_num){
-//                $level = '合格';
-//                if(array_slice($good_rate, -1) >= 0.9 && $accident == '否' && array_slice($good_rate, -2) >= 0.7){
-//                    $level = '优良';
-//                }
-//            }else{
-//                $level = '不合格';
-//            }
-//
-//
-//
-            return json(['column1' => $level4_name, 'column2' => $num, 'column3' => $qualified_num, 'column4' => $good_num, 'colunm5' => $good_rate]);
-          }
+            //计算优良等级
+            if($num == $qualified_num){
+                $level = '合格';
+                if(array_slice($good_rate, -1) >= 0.9 && $accident == '否' && array_slice($good_rate, -2) >= 0.7){
+                    $level = '优良';
+                }
+            }else{
+                $level = '不合格';
+            }
+            return json(['column1' => $level4_name, 'column2' => $num, 'column3' => $qualified_num, 'column4' => $good_num, 'colunm5' => $good_rate, 'primary' => $primary, 'accident' => $accident, 'level' => $level]);
+        }
 
     }
 

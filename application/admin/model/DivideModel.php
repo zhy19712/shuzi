@@ -120,9 +120,10 @@ class DivideModel extends Model
         return $this->where('pid', $pid)->select();
     }
     //getAll by id
+    //getAll by id
     public function getAllbyID($id)
     {
-        return $this->where('id', $id)->select();
+        return $this->where('id', $id)->find();
     }
 
 
