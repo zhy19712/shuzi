@@ -249,6 +249,7 @@ class Acceptance extends Base
     //分部工程质量台账
     public function level3Quality()
     {
+        $level = '';
         $level4 = new DivideModel();
         $level5 = new ProjectModel();
         $level5_kaiwa = new KaiwaModel();
@@ -262,7 +263,10 @@ class Acceptance extends Base
 
         if(request()->isAjax()) {
             $pid = input('param.id');
+            $level3_data = $level4->getAllbyID($pid);
             $level4_data = $level4->getAllbyPID($pid);
+//            $accident = $level3_data['accident'];
+//            $primary = $level3_data['primary'];
             $level5_num_primary = 0;
             $level5_qualified_num_primary = 0;
             $level5_good_num_primary = 0;
@@ -308,25 +312,36 @@ class Acceptance extends Base
                 array_push($num, $level5_num);
                 array_push($qualified_num, $level5_qualified_num);
                 array_push($good_num, $level5_good_num);
-                array_push($good_rate, $level5_good_num/$level5_num);
+                array_push($good_rate, floor($level5_good_num/$level5_num*100)/100);
             }
 
             //合计数目
             array_push($num, array_sum($num));
             array_push($qualified_num, array_sum($qualified_num));
             array_push($good_num, array_sum($good_num));
-            array_push($good_rate,  end($good_num)/end($num));
+            array_push($good_rate,  floor(end($good_num)/end($num)*100)/100);
 
 
             //主要单位工程数目
             array_push($num, $level5_num_primary);
             array_push($qualified_num, $level5_qualified_num_primary);
             array_push($good_num, $level5_good_num_primary);
+            array_push($good_rate,  floor($level5_good_num_primary/$level5_num_primary*100)/100);
 
-
-
+//            //计算优良等级
+//            if($num == $qualified_num){
+//                $level = '合格';
+//                if(array_slice($good_rate, -1) >= 0.9 && $accident == '否' && array_slice($good_rate, -2) >= 0.7){
+//                    $level = '优良';
+//                }
+//            }else{
+//                $level = '不合格';
+//            }
+//
+//
+//
             return json(['column1' => $level4_name, 'column2' => $num, 'column3' => $qualified_num, 'column4' => $good_num, 'colunm5' => $good_rate]);
-        }
+          }
 
     }
 
