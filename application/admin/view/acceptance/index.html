@@ -1347,7 +1347,7 @@
             data: {id:id,accident:val},
             dataType: "json",
             success: function (res) {
-                console.log(res);
+                $("#accident").text(res.level);
             }
         })
     }
