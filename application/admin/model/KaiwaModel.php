@@ -76,4 +76,5 @@ class KaiwaModel extends Model
         $where['quality_level'] = '优良';
         return $this->where($where)->count();
     }
+
 }

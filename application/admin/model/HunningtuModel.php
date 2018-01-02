@@ -63,7 +63,6 @@ class HunningtuModel extends Model
     {
         return $this->where('uid',$uid)->count();
     }
-
     public function getQualifiedNum($uid)
     {
         $where['uid'] = $uid;

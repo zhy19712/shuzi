@@ -75,10 +75,12 @@ class ProjectModel extends Model
     {
         return $this->where('pid', $pid)->select();
     }
-    //get primary count
-    public function getPrimaryNum($pid)
+    //getAll by pid and primary
+    public function getAllbyPIDandPrimary($pid)
     {
-        return $this->where('pid', $pid)->select();
+        $where['pid'] = $pid;
+        $where['primary'] = '是';
+        return $this->where($where)->select();
     }
 
 
