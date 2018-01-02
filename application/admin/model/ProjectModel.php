@@ -70,6 +70,19 @@ class ProjectModel extends Model
     {
         return $this->order('id asc')->select();
     }
+    //getAll by pid
+    public function getAllbyPID($pid)
+    {
+        return $this->where('pid', $pid)->select();
+    }
+    //getAll by pid and primary
+    public function getAllbyPIDandPrimary($pid)
+    {
+        $where['pid'] = $pid;
+        $where['primary'] = '是';
+        return $this->where($where)->select();
+    }
+
 
     /**
      * 根据id获取信息
