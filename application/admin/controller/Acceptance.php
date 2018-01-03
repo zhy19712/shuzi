@@ -353,7 +353,8 @@ class Acceptance extends Base
                 $level4->editNode($param);
             }
 
-            return json(['column1' => $level4_name, 'column2' => $num, 'column3' => $qualified_num, 'column4' => $good_num, 'colunm5' => $good_rate, 'primary' => $primary, 'accident' => $accident, 'level' => $level]);
+//            return json(['column1' => $level4_name, 'column2' => $num, 'column3' => $qualified_num, 'column4' => $good_num, 'colunm5' => $good_rate, 'primary' => $primary, 'accident' => $accident, 'level' => $level]);
+//
         }
     }
 
