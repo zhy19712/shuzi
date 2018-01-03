@@ -247,6 +247,10 @@
         line-height: 16px;
         width: 80px;
     }
+    .style1{
+        background-color: #bae2f3;
+        font-weight: 700;
+    }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
 <div id="mycontent" style="min-width: 15%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;">
@@ -262,17 +266,6 @@
                 <div id="table_info">
                     <div id="level2">
                         <table>
-                            <thead>
-                            <tr>
-                                <th>项次</th>
-                                <th>单元工程类别</th>
-                                <th>单元个数</th>
-                                <th>合格个数</th>
-                                <th>优良个数</th>
-                                <th>优良率</th>
-                                <th>分部工程质量等级</th>
-                            </tr>
-                            </thead>
                             <tbody>
                             </tbody>
                         </table>
@@ -1242,6 +1235,19 @@
             data: {id:id,primary:val}
         })
     }
+    function change3(that) {
+        var val = $(that).val();
+        var id = mytree_node.id;
+        $.ajax({
+            url: "./level2Quality",
+            type: "post",
+            data: {id:id,primary:val},
+            dataType: "json",
+            success: function (res) {
+                $("#accdient2").text(res.level);
+            }
+        })
+    }
 
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
@@ -1530,10 +1536,10 @@
                     str += ""
                         +  "<tr>"
                         +  "<td></td>"
-                        +  "<td>分部个数</td>"
-                        +  "<td>合格个数</td>"
-                        +  "<td>优良个数</td>"
-                        +  "<td>优良率</td>"
+                        +  "<td class='style1'>分部个数</td>"
+                        +  "<td class='style1'>合格个数</td>"
+                        +  "<td class='style1'>优良个数</td>"
+                        +  "<td class='style1'>优良率</td>"
                         +  "</tr>"
                     $("#level2 tbody").append(str);
                     $.each(res.column1,function (i,n) {
@@ -1569,10 +1575,10 @@
                     var str3 = "";
                     str3 += ""
                         +  "<tr>"
-                        +  "<td>项次</td>"
-                        +  "<td>分部工程名称</td>"
-                        +  "<td>质量等级</td>"
-                        +  "<td colspan='2'>单位工程质量等级</td>"
+                        +  "<td class='style1'>项次</td>"
+                        +  "<td class='style1'>分部工程名称</td>"
+                        +  "<td class='style1'>质量等级</td>"
+                        +  "<td class='style1' colspan='2'>单位工程质量等级</td>"
                         +  "</tr>"
                     $("#level2 tbody").append(str3);
 
@@ -1583,7 +1589,7 @@
                                 +  "<td>"+ (i+1) +"</td>"
                                 +  "<td>"+ res.name[i] +"</td>"
                                 +  "<td>"+ res.quality[i] +"</td>"
-                                +  "<td colspan='2' rowspan="+ len +">"+ res.level +"</td>"
+                                +  "<td id='accdient2' colspan='2' rowspan="+ len +">"+ res.level +"</td>"
                                 +  "</tr>"
                         }else {
                             var str = "";
