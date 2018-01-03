@@ -329,7 +329,7 @@ class Acceptance extends Base
             if(!empty($param['accident'])){
                 $level4->editNode($param);
             }
-            $level3_data = $level4->getAllbyID($pid);
+            $level3_data = $level4->getOnebyID($pid);
             $accident = $level3_data['accident'];
             $primary = $level3_data['primary'];
             //计算优良等级
@@ -346,6 +346,82 @@ class Acceptance extends Base
             return json(['column1' => $level4_name, 'column2' => $num, 'column3' => $qualified_num, 'column4' => $good_num, 'colunm5' => $good_rate, 'primary' => $primary, 'accident' => $accident, 'level' => $level]);
         }
     }
+
+
+    //单位工程质量台账
+    public function level2Quality()
+    {
+        $level = '';
+        $level3 = new DivideModel();
+        $num = array();
+        $qualified_num = array();
+        $good_num = array();
+        $good_rate = array();
+        $level3_name = array();
+        $level3_quality = array();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $pid = $param['id'];
+            $leve3_num = $level3->getNum($pid);                       //获取单位工程包含的分部工程个数
+            $level3_num_primary = $level3->getNumPrimary($pid);       //获取主要分部工程个数
+            $level3_qualified_num = $level3->getQualifiedNum($pid);
+            $level3_qualified_num_primary = $level3->getQualifiedNumPrimary($pid);
+            $level3_good_num = $level3->getGoodNum($pid);
+            $level3_good_num_primary = $level3->getGoodNumPrimary($pid);
+            $level3_data = $level3->getAllbyPID($pid);                //获取单位工程下的所有分部工程
+
+            foreach($level3_data as $data){
+                $level3_num = 0;
+                $level3_qualified_num = 0;
+                $level3_good_num = 0;
+                array_push($level3_name, $data['name']);             //分部工程名
+                array_push($level3_quality, $data['level']);             //分部工程质量等级
+            }
+
+            //合计
+            array_push($num, $leve3_num);
+            array_push($qualified_num, $level3_qualified_num);
+            array_push($good_num, $level3_good_num);
+            array_push($good_rate,  floor($level3_good_num/$leve3_num*100)/100);
+
+
+            //主要分部工程
+            array_push($num, $level3_num_primary);
+            array_push($qualified_num, $level3_qualified_num_primary);
+            array_push($good_num, $level3_good_num_primary);
+            array_push($good_rate,  floor($level3_good_num_primary/$level3_num_primary*100)/100);
+
+
+            if(!empty($param['accident'])){
+                $level3->editNode($param);
+            }
+            $level2_data = $level3->getOnebyID($pid);
+            $accident = $level2_data['accident'];
+
+            //计算外观质量得分
+            if(!empty($param['appearance1'])&&!empty($param['appearance2'])){
+                $score_design = $param['appearance1'];
+                $score_actual = $param['appearance2'];
+                $score = floor($score_actual/$score_design*1000)/1000*100;
+            }
+
+            //计算优良等级
+            if($num == $qualified_num){
+                $level = '合格';
+                if(array_slice($good_rate, -1) == 1 && $accident == '否' && array_slice($good_rate, -2) >= 0.7 && $score >= 85){
+                    $level = '优良';
+                }
+            }else{
+                $level = '不合格';
+            }
+            $param['level'] = $level;
+            $level3->editNode($param);
+            return json(['column1' => $num, 'column2' => $qualified_num, 'column3' => $good_num, 'colunm4' => $good_rate, 'accident' => $accident, 'score' => $score, 'name' => $level3_name, 'quality' => $level3_quality, 'level' => $level]);
+        }
+    }
+
+
+
 
     public function changePrimary(){
         $level3 = new DivideModel();
