@@ -274,68 +274,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td rowspan="7">1</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>2</td>
-                                <td>2</td>
-                                <td>2</td>
-                                <td>2</td>
-                                <td>2</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>3</td>
-                                <td>3</td>
-                                <td>3</td>
-                                <td>3</td>
-                                <td>3</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">合计</td>
-                                <td>4</td>
-                                <td>4</td>
-                                <td>4</td>
-                                <td>4</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">主要分部工程</td>
-                                <td>5</td>
-                                <td>5</td>
-                                <td>5</td>
-                                <td>5</td>
-                            </tr>
-                            <tr>
-                                <td colspan="6">
-                                    <span>施工中是否发生较大质量事故</span>
-                                    <select name="" id="sel3">
-                                        <option value="是">是</option>
-                                        <option value="否">否</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>工程外观质量</td>
-                                <td colspan="5">
-                                    <div class="grade">
-                                        应得<input type="text">分
-                                    </div>
-                                    <div class="grade">
-                                        实得<input type="text">分
-                                    </div>
-                                    <div class="grade">
-                                        得分率<input type="text">
-                                    </div>
-                                </td>
-                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -353,63 +291,6 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <!--<tr>-->
-                            <!--<td>1</td>-->
-                            <!--<td>1</td>-->
-                            <!--<td>1</td>-->
-                            <!--<td>1</td>-->
-                            <!--<td>1</td>-->
-                            <!--<td>1</td>-->
-                            <!--<td rowspan="6">1</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                            <!--<td>2</td>-->
-                            <!--<td>2</td>-->
-                            <!--<td>2</td>-->
-                            <!--<td>2</td>-->
-                            <!--<td>2</td>-->
-                            <!--<td>2</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                            <!--<td>3</td>-->
-                            <!--<td>3</td>-->
-                            <!--<td>3</td>-->
-                            <!--<td>3</td>-->
-                            <!--<td>3</td>-->
-                            <!--<td>3</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                            <!--<td colspan="2">合计</td>-->
-                            <!--<td>4</td>-->
-                            <!--<td>4</td>-->
-                            <!--<td>4</td>-->
-                            <!--<td>4</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                            <!--<td colspan="2">主要单元工程、重要隐藏工程及关键部位单元工程</td>-->
-                            <!--<td>5</td>-->
-                            <!--<td>5</td>-->
-                            <!--<td>5</td>-->
-                            <!--<td>5</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                            <!--<td colspan="6">-->
-                                <!--<span>是否发生质量事故</span>-->
-                                <!--<select name="" id="sel1">-->
-                                    <!--<option value="是">是</option>-->
-                                    <!--<option value="否">否</option>-->
-                                <!--</select>-->
-                            <!--</td>-->
-                        <!--</tr>-->
-                        <!--<tr>-->
-                            <!--<td colspan="2" style="background-color: #bae2f3;font-weight: 700;">主要分部工程</td>-->
-                            <!--<td colspan="5">-->
-                                <!--<select name="" id="sel2">-->
-                                    <!--<option value="是">是</option>-->
-                                    <!--<option value="否">否</option>-->
-                                <!--</select>-->
-                            <!--</td>-->
-                        <!--</tr>-->
                         </tbody>
                     </table>
                 </div>
@@ -1248,6 +1129,7 @@
             '<p class="state">正在上传...</p>' +
             '</div>' );
     });
+
     // 文件上传成功
     uploader.on( 'uploadSuccess', function( file,data, response ) {
         console.log(file);
@@ -1535,11 +1417,38 @@
             })
         }else if(treeNode.level == 2){
             $.ajax({
+                url: "./level2Quality",
+                type: "post",
+                data: {id:treeNode.id},
+                dataType: "json",
+                success: function (res) {
+                    $("#level2 tbody").empty();
+                    console.log(res);
+                }
+            });
+            //获取路径
+            $.ajax({
+                url: "./getParents",
+                type: "post",
+                data: {id:treeNode.id},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res)
+                    idlist = res.idList;
+                    if(res.msg === "success"){
+                        $("#path").text("当前路径:" + res.path)
+                    }
+                }
+            });
+            $("#level3").css("display","block");
+        }else if(treeNode.level == 1){
+            $.ajax({
                 url: "./level3Quality",
                 type: "post",
                 data: {id:treeNode.id},
                 dataType: "json",
                 success: function (res) {
+                    $("#level3 tbody").empty();
                     console.log(res);
                     var len = res.column3.length;
                     $.each(res.column3,function (i,n) {
@@ -1592,15 +1501,15 @@
                         }
                     })
                     var str1 = "";
-                        str1 += "<tr>"
-                             +  "<td colspan=\"6\">"
-                             +  "<span>是否发生质量事故</span>"
-                             +  "<select onchange='change1(this)' id=\"sel1\" value=''>"
-                             +  "<option value=\"是\">是</option>"
-                             +  "<option value=\"否\">否</option>"
-                             +  "</select>"
-                             +  "</td>"
-                             +  "</tr>"
+                    str1 += "<tr>"
+                        +  "<td colspan=\"6\">"
+                        +  "<span>是否发生质量事故</span>"
+                        +  "<select onchange='change1(this)' id=\"sel1\" value=''>"
+                        +  "<option value=\"是\">是</option>"
+                        +  "<option value=\"否\">否</option>"
+                        +  "</select>"
+                        +  "</td>"
+                        +  "</tr>"
                     $("#level3 tbody").append(str1);
                     var str2 = "";
                     str2 += "<tr>"
@@ -1619,23 +1528,6 @@
                     $("#sel2").val(res.primary);
                 }
             });
-            //获取路径
-            $.ajax({
-                url: "./getParents",
-                type: "post",
-                data: {id:treeNode.id},
-                dataType: "json",
-                success: function (res) {
-                    console.log(res)
-                    idlist = res.idList;
-                    if(res.msg === "success"){
-                        $("#path").text("当前路径:" + res.path)
-                    }
-                }
-            });
-            $("#level3").css("display","block");
-        }else if(treeNode.level == 1){
-
             //获取路径
             $.ajax({
                 url: "./getParents",
@@ -1693,9 +1585,6 @@
     };
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
 
-    $("#sel1").change(function () {
-
-    })
 
 </script>
 <script type="text/javascript">

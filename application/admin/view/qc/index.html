@@ -1,7 +1,37 @@
 {include file="public/header" /}
+<link rel="stylesheet" type="text/css" href="/static/admin/webupload/webuploader.css">
+<link rel="stylesheet" type="text/css" href="/static/admin/webupload/style.css">
+<link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
 <link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="/static/admin/css/jedate.css">
+<link rel="stylesheet" href="/static/admin/css/iconfont.css">
 <style>
+    #upload,#upload2{
+        float: right;
+        width: 88px;
+        height: 30px;
+        text-align: center;
+        color: #fff;
+        line-height: 30px;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+    .webuploader-pick{
+        padding: 0 15px;
+        margin-top: 8px;
+    }
+    #mylist{
+        float: right;
+        font-size: 14px;
+        font-weight: 700;
+    }
+    #upload_table_wrapper{
+        padding: 0;
+        padding-bottom: 3px;
+    }
+    #upload_table{
+        margin-top: 30px;
+    }
     .mytable{
         width: 100%;
         text-align: center;
@@ -51,8 +81,10 @@
     .myheader p{
         font-weight: 700;
     }
-    .myheader>p>span{
-        float: right;
+    #save1{
+        position: absolute;
+        right: 20px;
+        margin-top: 8px;
         width: 88px;
         height: 30px;
         text-align: center;
@@ -84,6 +116,13 @@
     .myp{
         background-color: #bae2f3;
         padding: 8px 0;
+        position: absolute;
+        width: 100%;
+    }
+    #table_wrapper{
+        height: 150px;
+        overflow: scroll;
+        width: 100%;
     }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
@@ -226,9 +265,41 @@
                 </div>
                 <div id="flow_content">
                     <div id="step1">
-                        <div id="sel_content" class="myheader">
-                            <p class="myp">选题内容<span>保存</span></p>
-                            <textarea name="" style="width: 100%;min-height: 100px;"></textarea>
+                        <div id="sel_content" class="myheader" style="height: 160px;">
+                            <p class="myp">选题内容</p><span id="save1">保存</span>
+                            <textarea name="" style="width: 100%;min-height: 100px;margin-top: 50px;"></textarea>
+                        </div>
+                        <div id="upload_wrapper" style="margin-top: 20px;">
+                            <div id="header_container">
+                                <div id="list"></div>
+                                <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>选题理由</p>
+                                <div id="upload">上传文件</div>
+                            </div>
+                            <div id="table_wrapper">
+                                <table id="upload_table" width="100%" class="table table-striped table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>文件名称</th>
+                                        <th>上传人</th>
+                                        <th>单位/部门</th>
+                                        <th>上传时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="uploadimg" style="margin-top: 20px;">
+                            <div id="img_header" style="height: 50px;">
+                                <div id="list2"></div>
+                                <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>QC小组活动计划表</p>
+                                <div id="upload2">上传文件</div>
+                            </div>
+                            <div id="img_container">
+                                <p style="text-align: center;font-size: 14px;margin-top: 100px;">请上传图片</p>
+                                <img src="" alt="">
+                            </div>
                         </div>
                     </div>
                     <div id="step2">2</div>
@@ -370,19 +441,111 @@
     </div>
 </div>
 {include file="public/footer" /}
+<script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
+<script src="__JS__/jquery.ztree.all.js"></script>
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/jquery.jedate.js"></script>
 <script>
+    var uploader,uploader2;
     $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
+        console.log($(this).text());
+        if($(this).text() === "管理内容"){
+            if(!uploader){
+                uploader = WebUploader.create({
+
+                    auto: true,// 选完文件后，是否自动上传。
+                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    chunked: false,
+                    fileSizeLimit: 1000 *1024 *1024,
+                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                    pick: '#upload',// 选择文件的按钮。可选。
+                });
+                var flie_count = 0;
+
+                uploader.on( 'fileQueued', function( file ) {
+                    $("#list").append('<div id="' + file.id + '" class="item">' +
+                        '</div>');
+                });
+                // 文件上传过程中创建进度条实时显示。
+                uploader.on('uploadProgress', function (file, percentage) {
+                    var $li = $('#' + file.id),
+                        $percent = $li.find('.progress .progress-bar');
+                    // 避免重复创建
+                    if (!$percent.length) {
+                        $percent = $('<div class="progress progress-striped active">' +
+                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                            '</div>' +
+                            '</div>').appendTo($li).find('.progress-bar');
+                    }
+                    $li.find('p.state').text('上传中');
+                    $percent.css('width', percentage * 100 + '%');
+                });
+                // 文件上传成功
+                uploader.on( 'uploadSuccess', function( file,data, response ) {
+                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                    $("#list").empty();
+                });
+
+                // 文件上传失败，显示上传出错。
+                uploader.on( 'uploadError', function( file ) {
+                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                    $("#list").empty();
+                });
+            }
+            if(!uploader2){
+                uploader2 = WebUploader.create({
+
+                    auto: true,// 选完文件后，是否自动上传。
+                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    chunked: false,
+                    fileSizeLimit: 1000 *1024 *1024,
+                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                    pick: '#upload2',// 选择文件的按钮。可选。
+                });
+                var flie_count = 0;
+
+                uploader2.on( 'fileQueued', function( file ) {
+                    $("#list2").append('<div id="' + file.id + '" class="item">' +
+                        '</div>');
+                });
+                // 文件上传过程中创建进度条实时显示。
+                uploader2.on('uploadProgress', function (file, percentage) {
+                    var $li = $('#' + file.id),
+                        $percent = $li.find('.progress .progress-bar');
+                    // 避免重复创建
+                    if (!$percent.length) {
+                        $percent = $('<div class="progress progress-striped active">' +
+                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                            '</div>' +
+                            '</div>').appendTo($li).find('.progress-bar');
+                    }
+                    $li.find('p.state').text('上传中');
+                    $percent.css('width', percentage * 100 + '%');
+                });
+                // 文件上传成功
+                uploader2.on( 'uploadSuccess', function( file,data, response ) {
+                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                    $("#list").empty();
+                });
+
+                // 文件上传失败，显示上传出错。
+                uploader2.on( 'uploadError', function( file ) {
+                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                    $("#list").empty();
+                });
+            }
+        }
     })
     $("#date").jeDate({
         format: "YYYY-MM-DD"
     });
-    function check(that) {
-        
-    }
+//    function check(that) {
+//
+//    }
     var qc_table = $('#qc_table').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -511,16 +674,58 @@
 //                }
 //            });
         $("#addPeople").modal('show');
-    })
+    });
 
     //流程tab
     $(".exp>span").click(function () {
         var index = $(this).parent("div").index();
         $(".exp>span").css("color","#000");
-        $("this").css("color","#ff9933");
+        $(this).css("color","#ff9933");
         console.log(index)
         $("#flow_content>div").css("display","none").eq(index).css("display","block");
     })
+
+    //上传图片,初始化WebUploader
+
+    var upload_table = $('#upload_table').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/project_attachment_table.php",
+            "async": false
+        },
+        "scrollY": 100,
+        "scrollX": true,
+        "dom": '',
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [5],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
+
+
+
 
     //提交
     $("#myModal .btn-primary").click(function () {
