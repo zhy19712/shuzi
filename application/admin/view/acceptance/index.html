@@ -241,7 +241,7 @@
     .grade{
         display: inline-block;
         vertical-align: middle;
-        width: 30%;
+        width: 25%;
     }
     .grade input{
         line-height: 16px;
@@ -1570,6 +1570,25 @@
                         +  "</tr>"
                     $("#level2 tbody").append(str1);
 
+                    var lstr = "";
+                    lstr += "<tr>"
+                         +  "<td colspan='2'>工程外观质量</td>"
+                         +  "<td colspan='3'>"
+                         +  "<div class='grade'>"
+                         +  "应得<input type=''>分"
+                         +  "</div>"
+                         +  "<div class='grade'>"
+                         +  "实得<input type=''>分"
+                         +  "</div>"
+                         +  "<button style='line-height: 16px;'>开始计算</button>"
+                         +  "<div class='grade'>"
+                         +  "得分率<input type='' readonly='readonly'>"
+                         +  "</div>"
+                         +  "</td>"
+                         +  "</tr>"
+
+                    $("#level2 tbody").append(lstr);
+
                     var len = res.name.length;
 
                     var str3 = "";
@@ -1601,6 +1620,7 @@
                         }
                         $("#level2 tbody").append(str);
                     })
+                $(".grade:first-child").val(res.accident);
                 $("#sel3").val(res.accident);
                 }
             });
