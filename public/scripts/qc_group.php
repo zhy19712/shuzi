@@ -32,10 +32,9 @@ $primaryKey = 'id';
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
     array( 'db' => 'group_name',  'dt' => 1 ),
-    array( 'db' => 'found_date',  'dt' => 2 ),
-    array( 'db' => 'implement_date',  'dt' => 3 ),
-    array( 'db' => 'owner',  'dt' => 4 ),
-    array( 'db' => 'status',  'dt' => 5 )
+    array( 'db' => 'implement_date',  'dt' => 2 ),
+    array( 'db' => 'owner',  'dt' => 3 ),
+    array( 'db' => 'status',  'dt' => 4 )
 );
 
 // SQL server connection information数据库连接信息
