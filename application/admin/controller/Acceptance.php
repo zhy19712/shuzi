@@ -341,8 +341,11 @@ class Acceptance extends Base
             }else{
                 $level = '不合格';
             }
-            $param['level'] = $level;
-            $level4->editNode($param);
+            if(!empty($param['level'])){
+                $param['level'] = $level;
+                $level4->editNode($param);
+            }
+
             return json(['column1' => $level4_name, 'column2' => $num, 'column3' => $qualified_num, 'column4' => $good_num, 'colunm5' => $good_rate, 'primary' => $primary, 'accident' => $accident, 'level' => $level]);
         }
     }
@@ -359,6 +362,7 @@ class Acceptance extends Base
         $good_rate = array();
         $level3_name = array();
         $level3_quality = array();
+        $score = array();
         if(request()->isAjax()) {
             $param = input('post.');
             $pid = $param['id'];
@@ -398,25 +402,30 @@ class Acceptance extends Base
             $level2_data = $level3->getOnebyID($pid);
             $accident = $level2_data['accident'];
 
-            //计算外观质量得分
-            if(!empty($param['appearance1'])&&!empty($param['appearance2'])){
-                $score_design = $param['appearance1'];
-                $score_actual = $param['appearance2'];
-                $score = floor($score_actual/$score_design*1000)/1000*100;
+            //外观质量得分
+            if(!empty($param['score_design'])&&!empty($param['score_actual'])&&!empty($param['score'])){
+                $level3->editNode($param);
             }
+            array_push($score, $level2_data['score_design']);
+            array_push($score, $level2_data['score_actual']);
+            array_push($score, $level2_data['score']);
 
             //计算优良等级
             if($num == $qualified_num){
                 $level = '合格';
-                if(array_slice($good_rate, -1) == 1 && $accident == '否' && array_slice($good_rate, -2) >= 0.7 && $score >= 85){
+                if(array_slice($good_rate, -1) == 1 && $accident == '否' && array_slice($good_rate, -2) >= 0.7 && array_slice($good_rate, -1) >= 85){
                     $level = '优良';
                 }
             }else{
                 $level = '不合格';
             }
-            $param['level'] = $level;
-            $level3->editNode($param);
+            if(!empty($param['level'])){
+                $param['level'] = $level;
+                $level3->editNode($param);
+            }
+
             return json(['column1' => $num, 'column2' => $qualified_num, 'column3' => $good_num, 'colunm4' => $good_rate, 'accident' => $accident, 'score' => $score, 'name' => $level3_name, 'quality' => $level3_quality, 'level' => $level]);
+
         }
     }
 
