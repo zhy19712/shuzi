@@ -120,11 +120,50 @@ class DivideModel extends Model
         return $this->where('pid', $pid)->select();
     }
     //getAll by id
-    //getAll by id
-    public function getAllbyID($id)
+    public function getOnebyID($id)
     {
         return $this->where('id', $id)->find();
     }
+
+    //get counts by id
+    public function getNum($pid)
+    {
+        return $this->where('pid',$pid)->count();
+    }
+    //getAll by pid and primary
+    public function getNumPrimary($pid)
+    {
+        $where['pid'] = $pid;
+        $where['primary'] = '是';
+        return $this->where($where)->count();
+    }
+    public function getQualifiedNum($pid)
+    {
+        $where['pid'] = $pid;
+        $where['level'] = '合格';
+        return $this->where($where)->count();
+    }
+    public function getQualifiedNumPrimary($pid)
+    {
+        $where['pid'] = $pid;
+        $where['primary'] = '是';
+        $where['level'] = '合格';
+        return $this->where($where)->count();
+    }
+    public function getGoodNum($pid)
+    {
+        $where['pid'] = $pid;
+        $where['level'] = '优良';
+        return $this->where($where)->count();
+    }
+    public function getGoodNumPrimary($pid)
+    {
+        $where['pid'] = $pid;
+        $where['primary'] = '是';
+        $where['level'] = '优良';
+        return $this->where($where)->count();
+    }
+
 
 
 
