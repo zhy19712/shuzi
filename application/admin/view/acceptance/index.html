@@ -241,11 +241,15 @@
     .grade{
         display: inline-block;
         vertical-align: middle;
-        width: 30%;
+        width: 25%;
     }
     .grade input{
         line-height: 16px;
         width: 80px;
+    }
+    .style1{
+        background-color: #bae2f3;
+        font-weight: 700;
     }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
@@ -262,17 +266,6 @@
                 <div id="table_info">
                     <div id="level2">
                         <table>
-                            <thead>
-                            <tr>
-                                <th>项次</th>
-                                <th>单元工程类别</th>
-                                <th>单元个数</th>
-                                <th>合格个数</th>
-                                <th>优良个数</th>
-                                <th>优良率</th>
-                                <th>分部工程质量等级</th>
-                            </tr>
-                            </thead>
                             <tbody>
                             </tbody>
                         </table>
@@ -1242,6 +1235,35 @@
             data: {id:id,primary:val}
         })
     }
+    function change3(that) {
+        var val = $(that).val();
+        var id = mytree_node.id;
+        $.ajax({
+            url: "./level2Quality",
+            type: "post",
+            data: {id:id,primary:val},
+            dataType: "json",
+            success: function (res) {
+                $("#accdient2").text(res.level);
+            }
+        })
+    }
+    function count(that) {
+        var val1 = $(that).siblings("#g1").children("input").val();
+        var val2 = $(that).siblings("#g2").children("input").val();
+        var result = Math.floor(val2/val1*1000)/10;
+        console.log(result)
+        $(that).siblings("#g3").children("input").val(result);
+        $.ajax({
+            url: "./level2Quality",
+            type: "post",
+            data: {id:mytree_node.id,score_design:val1,score_actual:val2,score:result},
+            dataType: "json",
+            success: function (res) {
+                $("#accdient2").text(res.level);
+            }
+        })
+    }
 
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
@@ -1530,10 +1552,10 @@
                     str += ""
                         +  "<tr>"
                         +  "<td></td>"
-                        +  "<td>分部个数</td>"
-                        +  "<td>合格个数</td>"
-                        +  "<td>优良个数</td>"
-                        +  "<td>优良率</td>"
+                        +  "<td class='style1'>分部个数</td>"
+                        +  "<td class='style1'>合格个数</td>"
+                        +  "<td class='style1'>优良个数</td>"
+                        +  "<td class='style1'>优良率</td>"
                         +  "</tr>"
                     $("#level2 tbody").append(str);
                     $.each(res.column1,function (i,n) {
@@ -1564,15 +1586,34 @@
                         +  "</tr>"
                     $("#level2 tbody").append(str1);
 
+                    var lstr = "";
+                    lstr += "<tr>"
+                         +  "<td colspan='2'>工程外观质量</td>"
+                         +  "<td colspan='3'>"
+                         +  "<div class='grade' id='g1'>"
+                         +  "应得<input type=''>分"
+                         +  "</div>"
+                         +  "<div class='grade' id='g2'>"
+                         +  "实得<input type=''>分"
+                         +  "</div>"
+                         +  "<button style='line-height: 16px;' onclick='count(this)'>开始计算</button>"
+                         +  "<div class='grade' id='g3'>"
+                         +  "得分率<input type='' readonly='readonly'>"
+                         +  "</div>"
+                         +  "</td>"
+                         +  "</tr>"
+
+                    $("#level2 tbody").append(lstr);
+
                     var len = res.name.length;
 
                     var str3 = "";
                     str3 += ""
                         +  "<tr>"
-                        +  "<td>项次</td>"
-                        +  "<td>分部工程名称</td>"
-                        +  "<td>质量等级</td>"
-                        +  "<td colspan='2'>单位工程质量等级</td>"
+                        +  "<td class='style1'>项次</td>"
+                        +  "<td class='style1'>分部工程名称</td>"
+                        +  "<td class='style1'>质量等级</td>"
+                        +  "<td class='style1' colspan='2'>单位工程质量等级</td>"
                         +  "</tr>"
                     $("#level2 tbody").append(str3);
 
@@ -1583,7 +1624,7 @@
                                 +  "<td>"+ (i+1) +"</td>"
                                 +  "<td>"+ res.name[i] +"</td>"
                                 +  "<td>"+ res.quality[i] +"</td>"
-                                +  "<td colspan='2' rowspan="+ len +">"+ res.level +"</td>"
+                                +  "<td id='accdient2' colspan='2' rowspan="+ len +">"+ res.level +"</td>"
                                 +  "</tr>"
                         }else {
                             var str = "";
@@ -1595,6 +1636,9 @@
                         }
                         $("#level2 tbody").append(str);
                     })
+                $(".grade:first-child input").val(res.score[0]);
+                $(".grade:nth-child(2) input").val(res.score[1]);
+                $(".grade:nth-child(4) input").val(res.score[2]);
                 $("#sel3").val(res.accident);
                 }
             });
