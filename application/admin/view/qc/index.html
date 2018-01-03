@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="/static/admin/css/jedate.css">
 <link rel="stylesheet" href="/static/admin/css/iconfont.css">
 <style>
-    #upload,#upload2,#upload3,#upload4,#upload5,#upload6,#upload7,#upload8,#upload9,#upload10,#upload11,#upload12,#upload13,#upload14{
+    #upload,#upload2,#upload3,#upload4,#upload5,#upload6,#upload7,#upload8,#upload9,#upload10,#upload11,#upload12,#upload13,#upload14,#upload15{
         float: right;
         width: 88px;
         height: 30px;
@@ -81,7 +81,7 @@
     .myheader p{
         font-weight: 700;
     }
-    #save1,#save2{
+    #save1,#save2,#mysave1{
         position: absolute;
         right: 20px;
         margin-top: 8px;
@@ -124,6 +124,9 @@
         overflow: scroll;
         width: 100%;
     }
+    #container{
+        display: none;
+    }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
 <div id="content">
@@ -132,20 +135,17 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>单元工程名称</th>
-                <th>单元工程编号</th>
-                <th></th>
-                <th>桩号(起)</th>
-                <th>桩号(止)</th>
-                <th>高程(起)</th>
-                <th>高程(止)</th>
-                <th>主要单元工程</th>
+                <th>内容(课题名称)</th>
+                <th>实施日期</th>
+                <th>负责人</th>
+                <th>状态</th>
                 <th>操作</th>
             </tr>
             </thead>
         </table>
     </div>
     <div id="container">
+        <button class="btn btn-primary" id="back">返回</button>
         <ul class="nav nav-tabs" id="myTab">
             <li class="active"><a href="#home">QC小组</a></li>
             <li><a href="#profile">管理内容</a></li>
@@ -155,7 +155,8 @@
             <div class="tab-pane active" id="home">
                 <div id="group1">
                     <div class="myheader">
-                        <p>QC小组概况表<span>保存</span></p>
+                        <p style="position: absolute;width: 100%;">QC小组概况表</p>
+                        <span id="mysave1">保存</span>
                     </div>
                     <iframe name="myFrame1" style="display:none;"></iframe>
                     <form class="form-horizontal" name="myform1" id="myform1" target="myFrame1">
@@ -163,34 +164,34 @@
                             <tbody>
                             <tr>
                                 <td>小组名称</td>
-                                <td colspan="3"><input type="text"></td>
+                                <td colspan="3"><input type="text" id="group_name" name="group_name"></td>
                             </tr>
                             <tr>
                                 <td>成立时间</td>
-                                <td><input type="text"></td>
+                                <td><input type="text" id="found_date" name="found_date"></td>
                                 <td>注册时间</td>
-                                <td><input type="text"></td>
+                                <td><input type="text" id="register_date" name="register_date"></td>
                             </tr>
                             <tr>
                                 <td>课题名称</td>
-                                <td colspan="3"><input type="text"></td>
+                                <td colspan="3"><input type="text" id="topic_name1" name="topic_name"></td>
                             </tr>
                             <tr>
                                 <td>课题类型</td>
-                                <td><input type="text"></td>
+                                <td><input type="text" id="topic_type" name="topic_type"></td>
                                 <td>注册登记号</td>
-                                <td><input type="text"></td>
+                                <td><input type="text" id="register_num" name="register_num"></td>
                             </tr>
                             <tr>
                                 <td>小组组长</td>
-                                <td><input type="text"></td>
+                                <td><input type="text" id="group_leader" name="group_leader"></td>
                                 <td>活动时间</td>
-                                <td><input type="text"></td>
+                                <td><input type="text" id="activity_start_date" name="activity_start_date" style="width: 46%;margin-right: 4%;"><input type="text" id="activity_end_date" name="activity_end_date" style="width: 46%;margin-left: 4%;"></td>
                             </tr>
                             <tr>
                                 <td>活动次数</td>
-                                <td><input type="text"></td>
-                                <td colspan="2"><input type="text"></td>
+                                <td><input type="text" id="activity_times_part1" name="activity_times_part1"></td>
+                                <td colspan="2"><input type="text" id="activity_times_part2" name="activity_times_part2"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -581,7 +582,29 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane" id="messages">3</div>
+            <div class="tab-pane" id="messages">
+                <div id="result">
+                    <div style="height: 50px;">
+                        <div id="list15"></div>
+                        <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>成果发布情况</p>
+                        <div id="upload15">上传文件</div>
+                    </div>
+                    <div id="result_table_wrapper1">
+                        <table id="result_table1" width="100%" class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>文件名称</th>
+                                <th>上传人</th>
+                                <th>单位/部门</th>
+                                <th>上传时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -595,12 +618,13 @@
                 </div>
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
-                    <form class="form-horizontal" name="Add" id="Add" method="post" action="{:url('nodeAdd')}">
+                    <form class="form-horizontal" name="Add" id="Add" method="post" action="{:url('qcAdd')}">
+                        <input type="text" id="qcid" name="id" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">课题名称：</label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <input id="name" type="text" class="form-control" name="name" >
+                                    <input id="topic_name" type="text" class="form-control" name="topic_name" >
                                 </div>
                             </div>
                         </div>
@@ -609,7 +633,7 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">实施日期：</label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <input id="date" type="text" class="form-control" name="date" >
+                                    <input id="implement_date" type="text" class="form-control" name="implement_date" >
                                 </div>
                             </div>
                         </div>
@@ -618,7 +642,7 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">负责人：</label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <input id="people" type="text" class="form-control" name="people" >
+                                    <input id="owner" type="text" class="form-control" name="owner" >
                                 </div>
                             </div>
                         </div>
@@ -864,7 +888,7 @@
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/jquery.jedate.js"></script>
 <script>
-    var uploader,uploader2,uploader3,uploader4,uploader5,uploader6,uploader7,uploader8,uploader9,uploader10,uploader11,uploader12,uploader13,uploader14;
+    var uploader,uploader2,uploader3,uploader4,uploader5,uploader6,uploader7,uploader8,uploader9,uploader10,uploader11,uploader12,uploader13,uploader14,uploader15;
     $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
@@ -956,45 +980,148 @@
             }
 
         }
+        if($(this).text() === "成果发布"){
+            if(!uploader15){
+                uploader15 = WebUploader.create({
+
+                    auto: true,// 选完文件后，是否自动上传。
+                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    chunked: false,
+                    fileSizeLimit: 1000 *1024 *1024,
+                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                    pick: '#upload15',// 选择文件的按钮。可选。
+                });
+
+                uploade15r.on( 'fileQueued', function( file ) {
+                    $("#list15").append('<div id="' + file.id + '" class="item">' +
+                        '</div>');
+                });
+                // 文件上传过程中创建进度条实时显示。
+                uploader15.on('uploadProgress', function (file, percentage) {
+                    var $li = $('#' + file.id),
+                        $percent = $li.find('.progress .progress-bar');
+                    // 避免重复创建
+                    if (!$percent.length) {
+                        $percent = $('<div class="progress progress-striped active">' +
+                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                            '</div>' +
+                            '</div>').appendTo($li).find('.progress-bar');
+                    }
+                    $li.find('p.state').text('上传中');
+                    $percent.css('width', percentage * 100 + '%');
+                });
+                // 文件上传成功
+                uploader15.on( 'uploadSuccess', function( file,data, response ) {
+                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                    $("#list15").empty();
+                });
+
+                // 文件上传失败，显示上传出错。
+                uploader15.on( 'uploadError', function( file ) {
+                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                    $("#list15").empty();
+                });
+            }
+
+        }
     })
-    $("#date").jeDate({
+    $("#implement_date").jeDate({
         format: "YYYY-MM-DD"
     });
-//    function check(that) {
-//
-//    }
+    $("#found_date").jeDate({
+        format: "YYYY-MM-DD"
+    });
+    $("#register_date").jeDate({
+        format: "YYYY-MM-DD"
+    });
+    $("#activity_start_date").jeDate({
+        format: "YYYY-MM-DD"
+    });
+    $("#activity_end_date").jeDate({
+        format: "YYYY-MM-DD"
+    });
+    var cid;
+    function detail(that) {
+        $("#container").css("display","block");
+        cid = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $.ajax({
+            url: "./index",
+            type: "post",
+            data: {id:cid},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                $("#group_name").val(res.data.group_name);
+                $("#found_date").val(res.data.found_date);
+                $("#register_date").val(res.data.register_date);
+                $("#topic_name1").val(res.data.topic_name);
+                $("#topic_type").val(res.data.topic_type);
+                $("#register_num").val(res.data.register_num);
+                $("#group_leader").val(res.data.group_leader);
+                $("#activity_start_date").val(res.data.activity_start_date);
+                $("#activity_end_date").val(res.data.activity_end_date);
+                $("#activity_times_part1").val(res.data.activity_times_part1);
+                $("#activity_times_part2").val(res.data.activity_times_part2);
+            }
+        })
+    }
+    function edit(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $("#qcid").val(id);
+        $("#myModal h5").text("编辑");
+        $("#myModal").modal("show");
+        $.ajax({
+            url: "./index",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                $("#topic_name").val(res.data.topic_name);
+                $("#implement_date").val(res.data.implement_date);
+                $("#owner").val(res.data.owner);
+            }
+        })
+    }
+    function del(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./qcDel",
+                data: {'id' : id},
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
+        })
+    }
     var qc_table = $('#qc_table').DataTable( {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/project_table.php"
+            "url": "__SCRIPT__/qc_group.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [9],
+                "targets": [5],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='check(this)' value='查看'/>";
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='detail(this)' value='详情'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
-            },
-            {
-                "searchable": true,
-                "orderable": true,
-                "targets": [2],
-                "render" :  function ( data, type, row ) {
-                    return  data + row[3];
-                }
-            },
-            {
-                "searchable": false,
-                "orderable": false,
-                "visible": false,
-                "targets": [3]
             }
         ],
         "language": {
@@ -1014,18 +1141,11 @@
     $("#qctable_wrapper .mybtn").click(function () {
             $("#myModal input").val("");
             $("#myModal h5").text("新增");
-//            $.ajax({
-//                url: "nodeEdit",
-//                type: "post",
-//                data: {id:id},
-//                dataType: "json",
-//                success: function (res) {
-//                    if(res.msg == "success"){
-//                        $("#new1").val(res.data.sn + res.data.post_sn + "-");
-//                    }
-//                }
-//            });
             $("#myModal").modal('show');
+    });
+
+    $("#back").click(function () {
+        $("#container").css("display","none");
     })
 
     var grouppeople_table = $('#grouppeople_table').DataTable( {
@@ -2127,17 +2247,69 @@
         }
     } );
 
+    var result_table1 = $('#result_table1').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/project_attachment_table.php",
+            "async": false
+        },
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [5],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
+
     //提交
     $("#myModal .btn-primary").click(function () {
         $('#Add').ajaxForm({
-            success: complete,
+            success: function (data) {
+                if(data.code==1){
+                    $("#myModal").modal('hide');
+                    layer.msg("保存成功");
+                    qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
+                }else{
+                    layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                    return false;
+                }
+            },
             dataType: 'json'
         });
     })
 
-    $("#addPeople .btn-primary").click(function () {
-        $('#peopleAdd').ajaxForm({
-            success: complete,
+    $("#mysave1").click(function () {
+        $('#myform1').ajaxSubmit({
+            url: "./qcAdd",
+            type: "post",
+            success: function (data) {
+                if(data.code==1){
+                    layer.msg("保存成功");
+                }else{
+                    layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                    return false;
+                }
+            },
             dataType: 'json'
         });
     })
