@@ -316,15 +316,22 @@ class Acceptance extends Base
             array_push($num, array_sum($num));
             array_push($qualified_num, array_sum($qualified_num));
             array_push($good_num, array_sum($good_num));
-            array_push($good_rate,  floor(end($good_num)/end($num)*100)/100);
+            if(end($num)>0){
+                array_push($good_rate,  floor(end($good_num)/end($num)*100)/100);
+            }else{
+                array_push($good_rate,0);
+            }
 
 
             //主要单位工程数目
             array_push($num, $level5_num_primary);
             array_push($qualified_num, $level5_qualified_num_primary);
             array_push($good_num, $level5_good_num_primary);
-            array_push($good_rate,  floor($level5_good_num_primary/$level5_num_primary*100)/100);
-
+            if($level5_num_primary>0){
+                array_push($good_rate,  floor($level5_good_num_primary/$level5_num_primary*100)/100);
+            }else{
+                array_push($good_rate,0);
+            }
 
             if(!empty($param['accident'])){
                 $level4->editNode($param);
@@ -333,9 +340,9 @@ class Acceptance extends Base
             $accident = $level3_data['accident'];
             $primary = $level3_data['primary'];
             //计算优良等级
-            if($num == $qualified_num){
+            if($num[count($num)-2] == ($qualified_num[count($qualified_num)-2] + $good_num[count($good_num)-2])){
                 $level = '合格';
-                if(array_slice($good_rate, -1) >= 0.9 && $accident == '否' && array_slice($good_rate, -2) >= 0.7){
+                if(end($good_rate) >= 0.9 && $accident == '否' && $good_rate[count($good_rate)]){
                     $level = '优良';
                 }
             }else{
@@ -366,7 +373,7 @@ class Acceptance extends Base
         if(request()->isAjax()) {
             $param = input('post.');
             $pid = $param['id'];
-            $leve3_num = $level3->getNum($pid);                       //获取单位工程包含的分部工程个数
+            $level3_num = $level3->getNum($pid);                       //获取单位工程包含的分部工程个数
             $level3_num_primary = $level3->getNumPrimary($pid);       //获取主要分部工程个数
             $level3_qualified_num = $level3->getQualifiedNum($pid);
             $level3_qualified_num_primary = $level3->getQualifiedNumPrimary($pid);
@@ -375,25 +382,32 @@ class Acceptance extends Base
             $level3_data = $level3->getAllbyPID($pid);                //获取单位工程下的所有分部工程
 
             foreach($level3_data as $data){
-                $level3_num = 0;
-                $level3_qualified_num = 0;
-                $level3_good_num = 0;
                 array_push($level3_name, $data['name']);             //分部工程名
                 array_push($level3_quality, $data['level']);             //分部工程质量等级
             }
 
             //合计
-            array_push($num, $leve3_num);
+            array_push($num, $level3_num);
             array_push($qualified_num, $level3_qualified_num);
             array_push($good_num, $level3_good_num);
-            array_push($good_rate,  floor($level3_good_num/$leve3_num*100)/100);
+            if($level3_num>0){
+                array_push($good_rate,  floor($level3_good_num/$level3_num*100)/100);
+            }else{
+                array_push($good_rate,0);
+            }
+
 
 
             //主要分部工程
             array_push($num, $level3_num_primary);
             array_push($qualified_num, $level3_qualified_num_primary);
             array_push($good_num, $level3_good_num_primary);
-            array_push($good_rate,  floor($level3_good_num_primary/$level3_num_primary*100)/100);
+            if($level3_num_primary>0){
+                array_push($good_rate,  floor($level3_good_num_primary/$level3_num_primary*100)/100);
+            }else{
+                array_push($good_rate,0);
+            }
+
 
 
             if(!empty($param['accident'])){
@@ -411,9 +425,9 @@ class Acceptance extends Base
             array_push($score, $level2_data['score']);
 
             //计算优良等级
-            if($num == $qualified_num){
+            if($num[count($num)-2] == ($qualified_num[count($qualified_num)-2] + $good_num[count($good_num)-2])){
                 $level = '合格';
-                if(array_slice($good_rate, -1) == 1 && $accident == '否' && array_slice($good_rate, -2) >= 0.7 && array_slice($good_rate, -1) >= 85){
+                if(end($good_rate) == 1 && $accident == '否' && $good_rate[count($good_rate)-2] >= 0.7 && end($score) >= 85){
                     $level = '优良';
                 }
             }else{

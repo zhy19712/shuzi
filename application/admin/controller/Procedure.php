@@ -9,7 +9,7 @@
 namespace app\admin\controller;
 
 
-class Process extends Base
+class Procedure extends Base
 {
     public function index()
     {
