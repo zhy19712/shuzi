@@ -1526,6 +1526,76 @@
                 success: function (res) {
                     $("#level2 tbody").empty();
                     console.log(res);
+                    var str = "";
+                    str += ""
+                        +  "<tr>"
+                        +  "<td></td>"
+                        +  "<td>分部个数</td>"
+                        +  "<td>合格个数</td>"
+                        +  "<td>优良个数</td>"
+                        +  "<td>优良率</td>"
+                        +  "</tr>"
+                    $("#level2 tbody").append(str);
+                    $.each(res.column1,function (i,n) {
+                        var txt = "合计";
+                        if(i === 1){
+                            txt = "主要分部工程"
+                        }
+                        var str = "";
+                        str += ""
+                            +  "<tr>"
+                            +  "<td>"+ txt +"</td>"
+                            +  "<td>"+ res.column1[i] +"</td>"
+                            +  "<td>"+ res.column2[i] +"</td>"
+                            +  "<td>"+ res.column3[i] +"</td>"
+                            +  "<td>"+ res.colunm4[i] +"</td>"
+                            +  "</tr>"
+                        $("#level2 tbody").append(str);
+                    });
+                    var str1 = "";
+                    str1 += "<tr>"
+                        +  "<td colspan=\"5\">"
+                        +  "<span>是否发生质量事故</span>"
+                        +  "<select onchange='change3(this)' id=\"sel3\" value=''>"
+                        +  "<option value=\"是\">是</option>"
+                        +  "<option value=\"否\">否</option>"
+                        +  "</select>"
+                        +  "</td>"
+                        +  "</tr>"
+                    $("#level2 tbody").append(str1);
+
+                    var len = res.name.length;
+
+                    var str3 = "";
+                    str3 += ""
+                        +  "<tr>"
+                        +  "<td>项次</td>"
+                        +  "<td>分部工程名称</td>"
+                        +  "<td>质量等级</td>"
+                        +  "<td colspan='2'>单位工程质量等级</td>"
+                        +  "</tr>"
+                    $("#level2 tbody").append(str3);
+
+                    $.each(res.name,function (i,n) {
+                        if(i === 0){
+                            var str = "";
+                            str += "<tr>"
+                                +  "<td>"+ (i+1) +"</td>"
+                                +  "<td>"+ res.name[i] +"</td>"
+                                +  "<td>"+ res.quality[i] +"</td>"
+                                +  "<td colspan='2' rowspan="+ len +">"+ res.level +"</td>"
+                                +  "</tr>"
+                        }else {
+                            var str = "";
+                            str += "<tr>"
+                                +  "<td>"+ (i+1) +"</td>"
+                                +  "<td>"+ res.name[i] +"</td>"
+                                +  "<td>"+ res.quality[i] +"</td>"
+                                +  "</tr>"
+                        }
+                        $("#level2 tbody").append(str);
+                    })
+                $("#sel3").val(res.accident);
                 }
             });
             //获取路径
