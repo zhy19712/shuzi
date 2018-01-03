@@ -1417,32 +1417,6 @@
             })
         }else if(treeNode.level == 2){
             $.ajax({
-                url: "./level2Quality",
-                type: "post",
-                data: {id:treeNode.id},
-                dataType: "json",
-                success: function (res) {
-                    $("#level2 tbody").empty();
-                    console.log(res);
-                }
-            });
-            //获取路径
-            $.ajax({
-                url: "./getParents",
-                type: "post",
-                data: {id:treeNode.id},
-                dataType: "json",
-                success: function (res) {
-                    console.log(res)
-                    idlist = res.idList;
-                    if(res.msg === "success"){
-                        $("#path").text("当前路径:" + res.path)
-                    }
-                }
-            });
-            $("#level3").css("display","block");
-        }else if(treeNode.level == 1){
-            $.ajax({
                 url: "./level3Quality",
                 type: "post",
                 data: {id:treeNode.id},
@@ -1501,15 +1475,15 @@
                         }
                     })
                     var str1 = "";
-                    str1 += "<tr>"
-                        +  "<td colspan=\"6\">"
-                        +  "<span>是否发生质量事故</span>"
-                        +  "<select onchange='change1(this)' id=\"sel1\" value=''>"
-                        +  "<option value=\"是\">是</option>"
-                        +  "<option value=\"否\">否</option>"
-                        +  "</select>"
-                        +  "</td>"
-                        +  "</tr>"
+                        str1 += "<tr>"
+                             +  "<td colspan=\"6\">"
+                             +  "<span>是否发生质量事故</span>"
+                             +  "<select onchange='change1(this)' id=\"sel1\" value=''>"
+                             +  "<option value=\"是\">是</option>"
+                             +  "<option value=\"否\">否</option>"
+                             +  "</select>"
+                             +  "</td>"
+                             +  "</tr>"
                     $("#level3 tbody").append(str1);
                     var str2 = "";
                     str2 += "<tr>"
@@ -1526,6 +1500,32 @@
 
                     $("#sel1").val(res.accident);
                     $("#sel2").val(res.primary);
+                }
+            });
+            //获取路径
+            $.ajax({
+                url: "./getParents",
+                type: "post",
+                data: {id:treeNode.id},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res)
+                    idlist = res.idList;
+                    if(res.msg === "success"){
+                        $("#path").text("当前路径:" + res.path)
+                    }
+                }
+            });
+            $("#level3").css("display","block");
+        }else if(treeNode.level == 1){
+            $.ajax({
+                url: "./level2Quality",
+                type: "post",
+                data: {id:treeNode.id},
+                dataType: "json",
+                success: function (res) {
+                    $("#level2 tbody").empty();
+                    console.log(res);
                 }
             });
             //获取路径
