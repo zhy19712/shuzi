@@ -1248,6 +1248,22 @@
             }
         })
     }
+    function count(that) {
+        var val1 = $(that).siblings("#g1").children("input").val();
+        var val2 = $(that).siblings("#g2").children("input").val();
+        var result = Math.floor(val2/val1*1000)/10;
+        console.log(result)
+        $(that).siblings("#g3").children("input").val(result);
+        $.ajax({
+            url: "./level2Quality",
+            type: "post",
+            data: {id:mytree_node.id,score_design:val1,score_actual:val2,score:result},
+            dataType: "json",
+            success: function (res) {
+                $("#accdient2").text(res.level);
+            }
+        })
+    }
 
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
@@ -1574,14 +1590,14 @@
                     lstr += "<tr>"
                          +  "<td colspan='2'>工程外观质量</td>"
                          +  "<td colspan='3'>"
-                         +  "<div class='grade'>"
+                         +  "<div class='grade' id='g1'>"
                          +  "应得<input type=''>分"
                          +  "</div>"
-                         +  "<div class='grade'>"
+                         +  "<div class='grade' id='g2'>"
                          +  "实得<input type=''>分"
                          +  "</div>"
-                         +  "<button style='line-height: 16px;'>开始计算</button>"
-                         +  "<div class='grade'>"
+                         +  "<button style='line-height: 16px;' onclick='count(this)'>开始计算</button>"
+                         +  "<div class='grade' id='g3'>"
                          +  "得分率<input type='' readonly='readonly'>"
                          +  "</div>"
                          +  "</td>"
@@ -1620,7 +1636,9 @@
                         }
                         $("#level2 tbody").append(str);
                     })
-                $(".grade:first-child").val(res.accident);
+                $(".grade:first-child input").val(res.score[0]);
+                $(".grade:nth-child(2) input").val(res.score[1]);
+                $(".grade:nth-child(4) input").val(res.score[2]);
                 $("#sel3").val(res.accident);
                 }
             });
