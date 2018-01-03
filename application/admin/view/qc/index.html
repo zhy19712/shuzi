@@ -160,6 +160,7 @@
                     </div>
                     <iframe name="myFrame1" style="display:none;"></iframe>
                     <form class="form-horizontal" name="myform1" id="myform1" target="myFrame1">
+                        <input type="text" name="id" id="myform1id" style="display: none;">
                         <table class="mytable">
                             <tbody>
                             <tr>
@@ -211,8 +212,6 @@
                                     <th>年龄</th>
                                     <th>技术职称</th>
                                     <th>QC小组分工</th>
-                                    <th>高程(止)</th>
-                                    <th>主要单元工程</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -1045,6 +1044,7 @@
     function detail(that) {
         $("#container").css("display","block");
         cid = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $("#myform1id").val(cid);
         $.ajax({
             url: "./index",
             type: "post",
@@ -1152,34 +1152,20 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/project_table.php"
+            "url": "__SCRIPT__/qc_member.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [9],
+                "targets": [7],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='check(this)' value='查看'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
-            },
-            {
-                "searchable": true,
-                "orderable": true,
-                "targets": [2],
-                "render" :  function ( data, type, row ) {
-                    return  data + row[3];
-                }
-            },
-            {
-                "searchable": false,
-                "orderable": false,
-                "visible": false,
-                "targets": [3]
             }
         ],
         "language": {
@@ -1199,17 +1185,6 @@
     $("#group2 .mybtn").click(function () {
         $("#addPeople input").val("");
         $("#addPeople h5").text("新增");
-//            $.ajax({
-//                url: "nodeEdit",
-//                type: "post",
-//                data: {id:id},
-//                dataType: "json",
-//                success: function (res) {
-//                    if(res.msg == "success"){
-//                        $("#new1").val(res.data.sn + res.data.post_sn + "-");
-//                    }
-//                }
-//            });
         $("#addPeople").modal('show');
     });
 
