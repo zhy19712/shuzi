@@ -1139,9 +1139,15 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                path1 = res[0].path.substr(1);
-//                path2 = res[1].path.substr(1);
-//                path3 = res[2].path.substr(1);
+                if(res[0]){
+                    path1 = res[0].path.substr(1);
+                }
+                if(res[1]){
+                    path2 = res[1].path.substr(1);
+                }
+                if(res[2]){
+                    path3 = res[2].path.substr(1);
+                }
                 console.log(path1)
                 $("#img_container img").attr("src",path1);
             }
