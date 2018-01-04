@@ -245,9 +245,11 @@ class Qc extends Base
     public function getAttachmentInfo(){
         $param = input('post.');
         $group_id = $param['group_id'];
-        $table_name = $param['table_name'];
+        $table_name1 = $param['table_name1'];
+        $table_name2 = $param['table_name2'];
+        $table_name3 = $param['table_name3'];
         $attachment = new QCAttachmentModel();
-        $data = $attachment->getInfo($group_id, $table_name);
+        $data = $attachment->getInfo($group_id, $table_name1,$table_name2,$table_name3);
         return $data;
     }
 

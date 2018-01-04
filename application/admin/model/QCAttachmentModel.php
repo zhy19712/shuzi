@@ -54,10 +54,14 @@ class QCAttachmentModel extends Model
         return ['code' => 1, 'data' => '', 'msg' => '删除附件成功'];
     }
 
-    public function getInfo($group_id, $table_name)
+    public function getInfo($group_id, $table_name1,$table_name2,$table_name3)
     {
         $where['group_id'] = $group_id;
-        $where['table_name'] = $table_name;
-        return $this->where($where)->find();
+        $where['table_name'] = $table_name1;
+        $where['table_name'] = $table_name2;
+        $where['table_name'] = $table_name3;
+        $where['_logic'] = 'or';
+
+        return $this->where($where)->SELECT();
     }
 }
