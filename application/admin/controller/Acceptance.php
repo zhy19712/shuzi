@@ -351,10 +351,10 @@ class Acceptance extends Base
             }else{
                 $level = '不合格';
             }
-            if(!empty($param['level'])){
+
                 $param['level'] = $level;
                 $level4->editNode($param);
-            }
+
 
             return json(['column1' => $level4_name, 'column2' => $num, 'column3' => $qualified_num, 'column4' => $good_num, 'column5' => $good_rate, 'primary' => $primary, 'accident' => $accident, 'level' => $level]);
 
