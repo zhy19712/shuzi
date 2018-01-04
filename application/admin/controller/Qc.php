@@ -180,20 +180,9 @@ class Qc extends Base
     public function saveAttachmentInfo()
     {
         $attachment = new QCAttachmentModel();
-
         $param = input('post.');
         if(request()->isAjax()){
-            $data = [
-                'owner' => session('username'),
-                'date' => date("Y-m-d H:i:s"),
-                'path' => $param['path'],
-                'filename' => $param['filename'],
-                'type' => $param['type'],
-                'revision' => $param['revision'],
-                'group_id' => $param['group_id'],
-                'phase_id' => $param['phase_id']
-            ];
-            $flag = $attachment->insertAttachment($data);
+            $flag = $attachment->insertAttachment($param);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
