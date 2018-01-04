@@ -127,7 +127,7 @@
     #container{
         display: none;
     }
-    #img_show img,#pic_container img{
+    #img_show img,#pic_container img,#reason_container img{
         position: relative;
         top: 50%;
         left: 50%;
@@ -367,7 +367,9 @@
                             <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>原因分析图</p>
                             <div id="upload6">上传文件</div>
                         </div>
-                        <div id="reason_container" style="height: 80%;background-color:#ccc;"></div>
+                        <div id="reason_container" style="height: 600px;">
+                            <img src="" alt="" style="display: block;max-height: 600px;">
+                        </div>
                     </div>
                     <div id="step5">
                         <div style="height: 50px;">
@@ -378,14 +380,13 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>单元工程名称</th>
-                                    <th>单元工程编号</th>
-                                    <th></th>
-                                    <th>桩号(起)</th>
-                                    <th>桩号(止)</th>
-                                    <th>高程(起)</th>
-                                    <th>高程(止)</th>
-                                    <th>主要单元工程</th>
+                                    <th>末端因素</th>
+                                    <th>确认标准</th>
+                                    <th>确认方法</th>
+                                    <th>确认时间</th>
+                                    <th>确认人</th>
+                                    <th>确认情况</th>
+                                    <th>论证结果</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -748,18 +749,20 @@
                 </div>
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
-                    <form class="form-horizontal" name="reason1" id="reason1" method="post" action="{:url('nodeAdd')}">
+                    <form class="form-horizontal" name="problem" id="problem" method="post" action="{:url('problemAdd')}">
+                        <input type="text" name="id" id="rid" style="display: none;">
+                        <input type="text" name="group_id" id="rgroup_id" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">末端因素：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input type="text" class="form-control" name="people_name" >
+                                    <input type="text" class="form-control" name="problem" id="rproblem">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">确认标准：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input type="text" class="form-control" name="people_name" >
+                                    <input type="text" class="form-control" name="standard" id="rstandard">
                                 </div>
                             </div>
                         </div>
@@ -768,13 +771,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">确认方法：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input type="text" class="form-control" name="people_name" >
+                                    <input type="text" class="form-control" name="method" id="rmethod">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">确认时间：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input type="text" class="form-control" name="people_name" >
+                                    <input type="text" class="form-control" name="date" id="rdate">
                                 </div>
                             </div>
                         </div>
@@ -783,13 +786,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">确认人：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input type="text" class="form-control" name="people_name" >
+                                    <input type="text" class="form-control" name="owner" id="rowner">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">（8）	论证结果：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">论证结果：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="people_sex" class="form-control" >
+                                    <select name="result" class="form-control" id="rresult">
                                         <option value="要因">要因</option>
                                         <option value="非要因">非要因</option>
                                     </select>
@@ -801,7 +804,7 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">确认情况：</label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <textarea name="" id="" style="width: 100%;"></textarea>
+                                    <textarea name="description" id="rdescription" style="width: 100%;min-height: 100px;"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -1151,17 +1154,24 @@
                 if(res[0]){
                     path1 = res[0].path.substr(1);
                     id1 = res[0].id;
+                }else {
+                    path1 = ""
                 }
                 if(res[1]){
                     path2 = res[1].path.substr(1);
                     id2 = res[0].id;
+                }else {
+                    path2 = ""
                 }
                 if(res[2]){
                     path3 = res[2].path.substr(1);
                     id3 = res[0].id;
+                }else{
+                    path3 = ""
                 }
                 $("#img_container img").attr("src",path1);
                 $("#pic_container img").attr("src",path2);
+                $("#reason_container img").attr("src",path3);
             }
         })
     }
@@ -1502,8 +1512,34 @@
                 });
                 // 文件上传成功
                 uploader5.on( 'uploadSuccess', function( file,data, response ) {
-                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
                     $("#list5").empty();
+                    var filename;
+                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
+                    layer.prompt({
+                        formType: 2,
+                        title: '请输入标题',
+                        area: ['200px', '50px'],
+                        btn:['确认','取消'],
+                    }, function(value, index, elem){
+                        filename = value;
+                        console.log(filename,path);
+                        $.ajax({
+                            url: "./saveAttachmentInfo",
+                            type: "post",
+                            data: {path:path,name:filename,group_id:cid,table_name:"mblz"},
+                            dataType: "json",
+                            success: function (res) {
+                                console.log(res);
+                                if(res.msg === "success"){
+                                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                                    target_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=mblz").load();
+                                }else {
+                                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                                }
+                            }
+                        })
+                        layer.close(index);
+                    });
                 });
 
                 // 文件上传失败，显示上传出错。
@@ -1524,6 +1560,11 @@
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
                     pick: '#upload6',// 选择文件的按钮。可选。
+                    accept: {
+                        title: 'Images',
+                        extensions: 'gif,jpg,jpeg,bmp,png',
+                        mimeTypes: 'image/jpg,image/jpeg,image/png'
+                    },
                 });
 
                 uploader6.on( 'fileQueued', function( file ) {
@@ -1546,8 +1587,24 @@
                 });
                 // 文件上传成功
                 uploader6.on( 'uploadSuccess', function( file,data, response ) {
-                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
                     $("#list6").empty();
+                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
+                    $.ajax({
+                        url: "./saveAttachmentInfo",
+                        type: "post",
+                        data: {group_id:cid,table_name:"yyfx",name:"",path:path,id:id3},
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                            if(res.msg === "success"){
+                                layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                                $("#reason_container>img").attr("src",'/uploads/attachment/' + data._raw);
+                                path3 = '/uploads/attachment/' + data._raw;
+                            }else {
+                                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                            }
+                        }
+                    })
                 });
 
                 // 文件上传失败，显示上传出错。
@@ -1936,6 +1993,8 @@
                             upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
                         }else if(parent === "inquire_table"){
                             inquire_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
+                        }else if(parent === "target_table"){
+                            target_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=mblz").load();
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
@@ -1951,6 +2010,8 @@
             $("#img_show img").attr('src',path1);
         }else if(n === 2){
             $("#img_show img").attr('src',path2);
+        }else if(n === 3){
+            $("#img_show img").attr('src',path3);
         }
         $("#img_show").modal('show');
     }
@@ -1959,6 +2020,9 @@
     });
     $("#pic_container img").click(function () {
         imgshow(2);
+    });
+    $("#reason_container img").click(function () {
+        imgshow(3);
     });
     var upload_table = $('#upload_table').DataTable( {
         "processing": true,
@@ -2060,39 +2124,61 @@
             }
         }
     } );
-
+    //原因分析表
+    function redit(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $("#rid").val(id);
+        $("#rgroup_id").val(cid);
+        $("#reason h5").text("编辑");
+        $("#reason").modal("show");
+        $.ajax({
+            url: "./problemEdit",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+//                $("#pname").val(res.data.name);
+            }
+        })
+    }
+    function rdel(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./problemDel",
+                data: {'id' : id},
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        reason_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=yyqrb").load();
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
+        })
+    }
     var reason_table = $('#reason_table').DataTable( {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/project_table.php"
+            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=yyqrb"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [9],
+                "targets": [8],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='check(this)' value='查看'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='redit(this)' value='编辑'/>";
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='rdel(this)' value='删除'/>" ;
                     return html;
                 }
-            },
-            {
-                "searchable": true,
-                "orderable": true,
-                "targets": [2],
-                "render" :  function ( data, type, row ) {
-                    return  data + row[3];
-                }
-            },
-            {
-                "searchable": false,
-                "orderable": false,
-                "visible": false,
-                "targets": [3]
             }
         ],
         "language": {
@@ -2112,17 +2198,7 @@
     $("#step5 .mybtn").click(function () {
         $("#reason input").val("");
         $("#reason h5").text("新增");
-//            $.ajax({
-//                url: "nodeEdit",
-//                type: "post",
-//                data: {id:id},
-//                dataType: "json",
-//                success: function (res) {
-//                    if(res.msg == "success"){
-//                        $("#new1").val(res.data.sn + res.data.post_sn + "-");
-//                    }
-//                }
-//            });
+        $("#rgroup_id").val(cid);
         $("#reason").modal('show');
     })
 
@@ -2573,6 +2649,22 @@
                 layer.msg(res.msg, {time:1500,shade: 0.1});
             }
         })
+    })
+    //要因分析
+    $("#reason .btn-primary").click(function () {
+        $('#problem').ajaxForm({
+            success: function (data) {
+                if(data.code==1){
+                    $("#reason").modal('hide');
+                    layer.msg("保存成功");
+                    reason_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=yyqrb").load();
+                }else{
+                    layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                    return false;
+                }
+            },
+            dataType: 'json'
+        });
     })
 
 </script>
