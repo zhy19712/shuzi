@@ -41,7 +41,7 @@ class QCAttachmentModel extends Model
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
-                return ['code' => 1, 'data' => '', 'msg' => '文件编辑成功'];
+                return ['code' => 1, 'data' => '', 'msg' => 'success'];
             }
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
