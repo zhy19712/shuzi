@@ -669,7 +669,9 @@
                 </div>
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
-                    <form class="form-horizontal" name="peopleAdd" id="peopleAdd" method="post" action="{:url('nodeAdd')}">
+                    <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post" action="{:url('memberAdd')}">
+                        <input type="text" name="id" id="sid" style="display: none;">
+                        <input type="text" name="group_id" id="pgroup_id" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">姓名：</label>
@@ -1040,6 +1042,7 @@
     $("#activity_end_date").jeDate({
         format: "YYYY-MM-DD"
     });
+    //QC管理
     var cid;
     function detail(that) {
         $("#container").css("display","block");
@@ -1147,7 +1150,23 @@
     $("#back").click(function () {
         $("#container").css("display","none");
     })
-
+    //小组成员
+    function pedit(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $("#sid").val(id);
+        $("#pgroup_id").val(cid);
+        $("#addPeople h5").text("编辑");
+        $("#addPeople").modal("show");
+        $.ajax({
+            url: "./memberEdit",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+            }
+        })
+    }
     var grouppeople_table = $('#grouppeople_table').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -1161,9 +1180,8 @@
                 "orderable": false,
                 "targets": [7],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='check(this)' value='查看'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='pedit(this)' value='编辑'/>";
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='pdel(this)' value='删除'/>" ;
                     return html;
                 }
             }
@@ -1185,6 +1203,7 @@
     $("#group2 .mybtn").click(function () {
         $("#addPeople input").val("");
         $("#addPeople h5").text("新增");
+        $("#pgroup_id").val(cid);
         $("#addPeople").modal('show');
     });
 
@@ -2257,6 +2276,7 @@
     } );
 
     //提交
+    //QC管理
     $("#myModal .btn-primary").click(function () {
         $('#Add').ajaxForm({
             success: function (data) {
@@ -2272,7 +2292,7 @@
             dataType: 'json'
         });
     })
-
+    //QC小组
     $("#mysave1").click(function () {
         $('#myform1').ajaxSubmit({
             url: "./qcAdd",
@@ -2280,6 +2300,22 @@
             success: function (data) {
                 if(data.code==1){
                     layer.msg("保存成功");
+                }else{
+                    layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                    return false;
+                }
+            },
+            dataType: 'json'
+        });
+    })
+    //小组成员
+    $("#addPeople .btn-primary").click(function () {
+        $('#memberAdd').ajaxForm({
+            success: function (data) {
+                if(data.code==1){
+                    $("#myModal").modal('hide');
+                    layer.msg("保存成功");
+                    grouppeople_table.ajax.url("__SCRIPT__/qc_member.php").load();
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;
