@@ -127,6 +127,12 @@
     #container{
         display: none;
     }
+    #img_show img{
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
 <div id="content">
@@ -313,7 +319,6 @@
                                         <th>ID</th>
                                         <th>文件名称</th>
                                         <th>上传人</th>
-                                        <th>单位/部门</th>
                                         <th>上传时间</th>
                                         <th>操作</th>
                                     </tr>
@@ -885,13 +890,11 @@
 
 <div id="img_show" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
     <div class="row" style="height: 90%;">
-        <div class="col-sm-12" style="height: 90%;">
-            <div class="ibox float-e-margins" style="height: 90%;">
-                <div class="ibox-content" style="height: 90%;">
-                    <img src="" alt="" style="max-width: 100%;">
-                    <div class="col-xs-12 col-sm-offset-6">&nbsp;&nbsp;
-                        <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
-                    </div>
+        <div class="col-sm-12" style="height: 100%;">
+            <div class="ibox float-e-margins" style="height: 100%;">
+                <div class="ibox-content" style="height: 100%;">
+                    <img src="__IMG__/a1.jpg" alt="" style="max-width: 100%;">
+                    <a class="btn btn-danger" data-dismiss="modal" style="position: absolute;bottom: 10px;left: 50%;margin-left: -30px;"><i class="fa fa-close"></i> 返回</a>
                 </div>
             </div>
         </div>
@@ -1010,6 +1013,15 @@
                 });
                 // 文件上传成功
                 uploader2.on( 'uploadSuccess', function( file,data, response ) {
+//                    $.ajax({
+//                        url: "",
+//                        type: "post",
+//                        data: {group_id:cid,table_name:"qcxz"},
+//                        dataType: "json",
+//                        success: function (res) {
+//                            console.log(res);
+//                        }
+//                    })
                     layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
                     $("#img_container>img").attr("src",'/uploads/attachment/' + data._raw);
                     $("#list2").empty();
@@ -1029,7 +1041,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -1112,6 +1124,7 @@
         })
         grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
         upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
+        upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
         $.ajax({
             url: "./getAttachmentInfo",
             type: "post",
@@ -1299,7 +1312,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -1326,8 +1339,34 @@
                 });
                 // 文件上传成功
                 uploader3.on( 'uploadSuccess', function( file,data, response ) {
-                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
                     $("#list3").empty();
+                    var filename;
+                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
+                    layer.prompt({
+                        formType: 2,
+                        title: '请输入标题',
+                        area: ['200px', '50px'],
+                        btn:['确认','取消'],
+                    }, function(value, index, elem){
+                        filename = value;
+                        console.log(filename,path);
+                        $.ajax({
+                            url: "./saveAttachmentInfo",
+                            type: "post",
+                            data: {path:path,name:filename,group_id:cid,table_name:"xzdc"},
+                            dataType: "json",
+                            success: function (res) {
+                                console.log(res);
+                                if(res.msg === "success"){
+                                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                                    upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
+                                }else {
+                                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                                }
+                            }
+                        })
+                        layer.close(index);
+                    });
                 });
 
                 // 文件上传失败，显示上传出错。
@@ -1343,7 +1382,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -1385,7 +1424,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -1429,7 +1468,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -1473,7 +1512,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -1515,7 +1554,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -1559,7 +1598,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -1601,7 +1640,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -1643,7 +1682,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -1687,7 +1726,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -1729,7 +1768,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -1773,7 +1812,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -1896,18 +1935,17 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/project_attachment_table.php",
+            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc",
             "async": false
         },
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [5],
+                "targets": [4],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
             }
