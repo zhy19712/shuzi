@@ -266,7 +266,7 @@
                     <div id="step1">
                         <div id="sel_content" class="myheader" style="height: 160px;">
                             <p class="myp">选题内容</p><span id="save1">保存</span>
-                            <textarea name="" style="width: 100%;min-height: 80px;margin-top: 50px;"></textarea>
+                            <textarea name="content" id="content1" style="width: 100%;min-height: 80px;margin-top: 50px;"></textarea>
                         </div>
                         <div id="upload_wrapper" style="margin-top: 20px;">
                             <div id="header_container">
@@ -282,7 +282,6 @@
                                         <th>文件名称</th>
                                         <th>上传人</th>
                                         <th>单位/部门</th>
-                                        <th>上传时间</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
@@ -676,13 +675,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">姓名：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="people_name" type="text" class="form-control" name="people_name" >
+                                    <input id="pname" type="text" class="form-control" name="name" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">性别：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="people_sex" id="people_sex" class="form-control" >
+                                    <select name="sex" id="psex" class="form-control" >
                                         <option value="男">男</option>
                                         <option value="女">女</option>
                                     </select>
@@ -694,13 +693,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">年龄：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="age" type="text" class="form-control" name="age" >
+                                    <input id="page" type="text" class="form-control" name="age" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">学历：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="edu" type="text" class="form-control" name="edu" >
+                                    <input id="peducation" type="text" class="form-control" name="education" >
                                 </div>
                             </div>
                         </div>
@@ -709,13 +708,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">技术职称：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="job" type="text" class="form-control" name="job" >
+                                    <input id="ptitle" type="text" class="form-control" name="title" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">小组分工：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="devide" type="text" class="form-control" name="devide" >
+                                    <input id="pdivision" type="text" class="form-control" name="division" >
                                 </div>
                             </div>
                         </div>
@@ -927,8 +926,34 @@
                 });
                 // 文件上传成功
                 uploader.on( 'uploadSuccess', function( file,data, response ) {
-                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
                     $("#list").empty();
+                    var filename;
+                    var path = './uploads/video/' + (data._raw).replace(/\\/g,"\/");
+                    layer.prompt({
+                        formType: 2,
+                        title: '请输入标题',
+                        area: ['200px', '50px'],
+                        btn:['确认','取消'],
+                    }, function(value, index, elem){
+                        filename = value;
+                        console.log(filename,path);
+                        $.ajax({
+                            url: "./saveAttachmentInfo",
+                            type: "post",
+                            data: {path:path,name:filename,group_id:cid,table_name:"qtly"},
+                            dataType: "json",
+                            success: function (res) {
+                                console.log(res);
+                                if(res.msg === "添加成功"){
+                                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                                    admin_table.ajax.url("__SCRIPT__/video_table.php").load();
+                                }else {
+                                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                                }
+                            }
+                        })
+                        layer.close(index);
+                    });
                 });
 
                 // 文件上传失败，显示上传出错。
@@ -1024,7 +1049,6 @@
                     $("#list15").empty();
                 });
             }
-
         }
     })
     $("#implement_date").jeDate({
@@ -1066,8 +1090,10 @@
                 $("#activity_end_date").val(res.data.activity_end_date);
                 $("#activity_times_part1").val(res.data.activity_times_part1);
                 $("#activity_times_part2").val(res.data.activity_times_part2);
+                $("#content1").val(res.data.content);
             }
         })
+        grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
     }
     function edit(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
@@ -1164,14 +1190,40 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
+                $("#pname").val(res.data.name);
+                $("#psex").val(res.data.sex);
+                $("#peducation").val(res.data.education);
+                $("#page").val(res.data.age);
+                $("#ptitle").val(res.data.title);
+                $("#pdivision").val(res.data.division);
             }
+        })
+    }
+    function pdel(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./memberDel",
+                data: {'id' : id},
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
         })
     }
     var grouppeople_table = $('#grouppeople_table').DataTable( {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/qc_member.php"
+            "url": "__SCRIPT__/qc_member.php?group_id=" + cid
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
@@ -1734,13 +1786,13 @@
         }
     })
 
-    //上传图片,初始化WebUploader
+    //datatable
 
     var upload_table = $('#upload_table').DataTable( {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/project_attachment_table.php",
+            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid,
             "async": false
         },
         "dom": '',
@@ -1748,9 +1800,9 @@
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [5],
+                "targets": [4],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
@@ -2313,9 +2365,9 @@
         $('#memberAdd').ajaxForm({
             success: function (data) {
                 if(data.code==1){
-                    $("#myModal").modal('hide');
+                    $("#addPeople").modal('hide');
                     layer.msg("保存成功");
-                    grouppeople_table.ajax.url("__SCRIPT__/qc_member.php").load();
+                    grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;
@@ -2323,6 +2375,20 @@
             },
             dataType: 'json'
         });
+    })
+    //选题内容
+    $("#save1").click(function () {
+        var content = $("#content1").val();
+        $.ajax({
+            url: "./qcAdd",
+            type: "post",
+            data: {id:cid,content:content},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                layer.msg(res.msg, {time:1500,shade: 0.1});
+            }
+        })
     })
 
     function complete(data){
