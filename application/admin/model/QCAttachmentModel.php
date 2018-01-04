@@ -71,4 +71,11 @@ class QCAttachmentModel extends Model
         array_push($data,$this->where($where3)->find());
         return $data;
     }
+
+    public function getImageId($group_id, $table_name)
+    {
+        $where['group_id'] = $group_id;
+        $where['table_name'] = $table_name;
+        return $this->where($where)->find();
+    }
 }

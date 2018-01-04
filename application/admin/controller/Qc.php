@@ -206,9 +206,10 @@ class Qc extends Base
                     ];
                 }
                 $flag = $attachment->insertAttachment($data);
-                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+                $data_newer = $attachment->getImageId($param['group_id'], $param['table_name']);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
             }else{
-                $data_older = $attachment->getOne();
+                $data_older = $attachment->getOne($param['id']);
                 unlink($data_older['path']);
                 if($param['table_name'] == 'ss' || $param['table_name'] == 'smyxzl'){
                     $data = [
@@ -232,7 +233,6 @@ class Qc extends Base
                         'id' =>$param['id']
                     ];
                 }
-
                 $flag = $attachment->editAttachment($data);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
