@@ -606,6 +606,7 @@
         </div>
     </div>
 </div>
+<div id="form_container" style="display: none;"></div>
 
 <div id="myModal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
     <div class="row">
@@ -899,7 +900,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -944,9 +945,9 @@
                             dataType: "json",
                             success: function (res) {
                                 console.log(res);
-                                if(res.msg === "添加成功"){
+                                if(res.msg === "success"){
                                     layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                                    admin_table.ajax.url("__SCRIPT__/video_table.php").load();
+                                    upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
                                 }else {
                                     layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
                                 }
@@ -1787,13 +1788,53 @@
     })
 
     //datatable
+    //文件下载
+    function download(that) {
+        $("#form_container").empty();
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var str = "";
+        str += ""
+            + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+            + "<form name=download"+ id +" action='./attachmentDownload' method='get' target=downloadFrame"+ id +">"
+            + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+            + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+            + "<button type='submit' class=btn" + id +"></button>"
+            + "</form>"
+        $("#form_container").append(str);
+        $("#form_container").find(".btn" + id).click();
+    }
+    //文件删除
+    function fdel(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var parent = $(that).parent("td").parent("tr").parent("tbody").parent("table").attr("id");
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./attachmentDel",
+                data: {'id' : id},
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        if(parent === "upload_table"){
+                            upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
+                        }
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
+        })
+    }
 
     var upload_table = $('#upload_table').DataTable( {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid,
+            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly",
             "async": false
+
         },
         "dom": '',
         "columnDefs": [
@@ -1802,9 +1843,8 @@
                 "orderable": false,
                 "targets": [4],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
             }
