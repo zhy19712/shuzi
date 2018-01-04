@@ -208,6 +208,28 @@ class Qc extends Base
                 $flag = $attachment->insertAttachment($data);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }else{
+                $data_older = $attachment->getOne($param['id']);
+                unlink($data_older['path']); //删除原先的文件
+                if($param['table_name'] == 'ss' || $param['table_name'] == 'smyxzl'){
+                    $data = [
+                        'owner' => session('username'),
+                        'date' => date("Y-m-d H:i:s"),
+                        'path' => $param['path'],
+                        'name' => $param['name'],
+                        'revision' => $param['revision'],
+                        'group_id' => $param['group_id'],
+                        'table_name' => $param['table_name']
+                    ];
+                }else{
+                    $data = [
+                        'owner' => session('username'),
+                        'date' => date("Y-m-d H:i:s"),
+                        'path' => $param['path'],
+                        'name' => $param['name'],
+                        'group_id' => $param['group_id'],
+                        'table_name' => $param['table_name']
+                    ];
+                }
                 $flag = $attachment->editAttachment($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
