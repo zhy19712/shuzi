@@ -188,7 +188,7 @@ class Qc extends Base
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
                     'path' => $param['path'],
-                    'filename' => $param['filename'],
+                    'name' => $param['name'],
                     'revision' => $param['revision'],
                     'group_id' => $param['group_id'],
                     'table_name' => $param['table_name']
@@ -198,7 +198,7 @@ class Qc extends Base
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
                     'path' => $param['path'],
-                    'filename' => $param['filename'],
+                    'name' => $param['name'],
                     'group_id' => $param['group_id'],
                     'table_name' => $param['table_name']
                 ];
@@ -215,7 +215,7 @@ class Qc extends Base
         $attachment = new QCAttachmentModel();
         $param = $attachment->getOne($id);
         $filePath = $param['path'];
-        $fileName = $param['filename'];
+        $fileName = $param['name'];
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         Header("Content-type:application/octet-stream ");

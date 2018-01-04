@@ -929,7 +929,7 @@
                 uploader.on( 'uploadSuccess', function( file,data, response ) {
                     $("#list").empty();
                     var filename;
-                    var path = './uploads/video/' + (data._raw).replace(/\\/g,"\/");
+                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
                     layer.prompt({
                         formType: 2,
                         title: '请输入标题',
@@ -941,7 +941,7 @@
                         $.ajax({
                             url: "./saveAttachmentInfo",
                             type: "post",
-                            data: {path:path,name:filename,group_id:cid,table_name:"qtly"},
+                            data: {path:path,name:filename,group_id:cid,table_name:"xtly"},
                             dataType: "json",
                             success: function (res) {
                                 console.log(res);
@@ -1095,6 +1095,7 @@
             }
         })
         grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
+        upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
     }
     function edit(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();

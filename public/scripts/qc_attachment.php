@@ -70,7 +70,7 @@ if(!empty($_GET["group_id"])&&!empty($_GET["table_name"]))
 
 
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "type = '1' and group_id = '$group_id' and table_name = '$table_name'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$group_id' and table_name = '$table_name'" )
     );
 }
 else{
