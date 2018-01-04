@@ -183,29 +183,35 @@ class Qc extends Base
 
         $param = input('post.');
         if(request()->isAjax()){
-            if($param['table_name'] == 'ss' || $param['table_name'] == 'smyxzl'){
-                $data = [
-                    'owner' => session('username'),
-                    'date' => date("Y-m-d H:i:s"),
-                    'path' => $param['path'],
-                    'name' => $param['name'],
-                    'revision' => $param['revision'],
-                    'group_id' => $param['group_id'],
-                    'table_name' => $param['table_name']
-                ];
+            if(empty($param['id']))
+            {
+                if($param['table_name'] == 'ss' || $param['table_name'] == 'smyxzl'){
+                    $data = [
+                        'owner' => session('username'),
+                        'date' => date("Y-m-d H:i:s"),
+                        'path' => $param['path'],
+                        'name' => $param['name'],
+                        'revision' => $param['revision'],
+                        'group_id' => $param['group_id'],
+                        'table_name' => $param['table_name']
+                    ];
+                }else{
+                    $data = [
+                        'owner' => session('username'),
+                        'date' => date("Y-m-d H:i:s"),
+                        'path' => $param['path'],
+                        'name' => $param['name'],
+                        'group_id' => $param['group_id'],
+                        'table_name' => $param['table_name']
+                    ];
+                }
+                $flag = $attachment->insertAttachment($data);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }else{
-                $data = [
-                    'owner' => session('username'),
-                    'date' => date("Y-m-d H:i:s"),
-                    'path' => $param['path'],
-                    'name' => $param['name'],
-                    'group_id' => $param['group_id'],
-                    'table_name' => $param['table_name']
-                ];
+                $flag = $attachment->editAttachment($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
 
-            $flag = $attachment->insertAttachment($data);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
 
