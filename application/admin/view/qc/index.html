@@ -301,7 +301,7 @@
                                 <div id="upload2">上传文件</div>
                             </div>
                             <div id="img_container">
-                                <img src="" alt="请上传图片" style="max-height: 300px;display: block;margin: 0 auto;">
+                                <img src="" alt="" style="max-height: 300px;display: block;margin: 0 auto;">
                             </div>
                         </div>
                     </div>
@@ -893,7 +893,7 @@
         <div class="col-sm-12" style="height: 100%;">
             <div class="ibox float-e-margins" style="height: 100%;">
                 <div class="ibox-content" style="height: 100%;">
-                    <img src="__IMG__/a1.jpg" alt="" style="max-width: 100%;">
+                    <img src="" alt="" style="max-height: 85%;">
                     <a class="btn btn-danger" data-dismiss="modal" style="position: absolute;bottom: 10px;left: 50%;margin-left: -30px;"><i class="fa fa-close"></i> 返回</a>
                 </div>
             </div>
@@ -908,6 +908,7 @@
 <script src="__JS__/jquery.jedate.js"></script>
 <script>
     var uploader,uploader2,uploader3,uploader4,uploader5,uploader6,uploader7,uploader8,uploader9,uploader10,uploader11,uploader12,uploader13,uploader14,uploader15;
+    var path1,path2,path3;
     $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
@@ -1013,18 +1014,24 @@
                 });
                 // 文件上传成功
                 uploader2.on( 'uploadSuccess', function( file,data, response ) {
-//                    $.ajax({
-//                        url: "",
-//                        type: "post",
-//                        data: {group_id:cid,table_name:"qcxz"},
-//                        dataType: "json",
-//                        success: function (res) {
-//                            console.log(res);
-//                        }
-//                    })
-                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                    $("#img_container>img").attr("src",'/uploads/attachment/' + data._raw);
+                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
                     $("#list2").empty();
+                    $.ajax({
+                        url: "./saveAttachmentInfo",
+                        type: "post",
+                        data: {group_id:cid,table_name:"qcxz",name:"",path:path},
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                            if(res.msg === "success"){
+                                layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                                $("#img_container>img").attr("src",'/uploads/attachment/' + data._raw);
+                                path1 = '/uploads/attachment/' + data._raw;
+                            }else {
+                                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                            }
+                        }
+                    })
                 });
 
                 // 文件上传失败，显示上传出错。
@@ -1132,6 +1139,11 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
+                path1 = res[0].path.substr(1);
+//                path2 = res[1].path.substr(1);
+//                path3 = res[2].path.substr(1);
+                console.log(path1)
+                $("#img_container img").attr("src",path1);
             }
         })
     }
@@ -1894,6 +1906,7 @@
     }
     //图片展示
     $("#img_container img").click(function () {
+        $("#img_show img").attr('src',path1);
         $("#img_show").modal('show');
     })
     var upload_table = $('#upload_table').DataTable( {
