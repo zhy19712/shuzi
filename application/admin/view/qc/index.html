@@ -295,8 +295,7 @@
                                 <div id="upload2">上传文件</div>
                             </div>
                             <div id="img_container">
-                                <p style="text-align: center;font-size: 14px;margin-top: 100px;">请上传图片</p>
-                                <img src="" alt="">
+                                <img src="" alt="请上传图片" style="max-height: 300px;display: block;margin: 0 auto;">
                             </div>
                         </div>
                     </div>
@@ -883,6 +882,22 @@
         </div>
     </div>
 </div>
+
+<div id="img_show" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
+    <div class="row" style="height: 90%;">
+        <div class="col-sm-12" style="height: 90%;">
+            <div class="ibox float-e-margins" style="height: 90%;">
+                <div class="ibox-content" style="height: 90%;">
+                    <img src="" alt="" style="max-width: 100%;">
+                    <div class="col-xs-12 col-sm-offset-6">&nbsp;&nbsp;
+                        <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 <script src="__JS__/jquery.ztree.all.js"></script>
@@ -968,7 +983,7 @@
 
                     auto: true,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadvideo')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
@@ -996,6 +1011,7 @@
                 // 文件上传成功
                 uploader2.on( 'uploadSuccess', function( file,data, response ) {
                     layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                    $("#img_container>img").attr("src",'/uploads/attachment/' + data._raw);
                     $("#list2").empty();
                 });
 
@@ -1096,6 +1112,15 @@
         })
         grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
         upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
+        $.ajax({
+            url: "./getAttachmentInfo",
+            type: "post",
+            data: {id:cid},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+            }
+        })
     }
     function edit(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
@@ -1828,7 +1853,10 @@
             layer.close(index);
         })
     }
-
+    //图片展示
+    $("#img_container img").click(function () {
+        $("#img_show").modal('show');
+    })
     var upload_table = $('#upload_table').DataTable( {
         "processing": true,
         "serverSide": true,
