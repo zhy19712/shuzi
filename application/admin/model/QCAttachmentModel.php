@@ -56,12 +56,19 @@ class QCAttachmentModel extends Model
 
     public function getInfo($group_id, $table_name1,$table_name2,$table_name3)
     {
-        $where['group_id'] = $group_id;
-        $where['table_name'] = $table_name1;
-        $where['table_name'] = $table_name2;
-        $where['table_name'] = $table_name3;
-        $where['_logic'] = 'or';
+        $data = array();
+        $where1['group_id'] = $group_id;
+        $where1['table_name'] = $table_name1;
 
-        return $this->where($where)->SELECT();
+        $where2['group_id'] = $group_id;
+        $where2['table_name'] = $table_name2;
+
+        $where3['group_id'] = $group_id;
+        $where3['table_name'] = $table_name3;
+
+        array_push($data,$this->where($where1)->find());
+        array_push($data,$this->where($where2)->find());
+        array_push($data,$this->where($where3)->find());
+        return $data;
     }
 }
