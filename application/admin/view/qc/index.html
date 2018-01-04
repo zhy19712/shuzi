@@ -127,7 +127,7 @@
     #container{
         display: none;
     }
-    #img_show img{
+    #img_show img,#pic_container img{
         position: relative;
         top: 50%;
         left: 50%;
@@ -330,14 +330,16 @@
                     <div id="step3">
                         <div class="myheader" style="height: 160px;">
                             <p class="myp">制定目标</p><span id="save2">保存</span>
-                            <textarea name="" style="width: 100%;min-height: 80px;margin-top: 50px;"></textarea>
+                            <textarea name="goal" id="goal" style="width: 100%;min-height: 80px;margin-top: 50px;"></textarea>
                         </div>
                         <div style="height: 50px;">
                             <div id="list4"></div>
                             <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>目标设定对比柱状图</p>
                             <div id="upload4">上传文件</div>
                         </div>
-                        <div id="pic_container" style="height: 300px;background-color:#ccc;"></div>
+                        <div id="pic_container" style="height: 300px;">
+                            <img src="" alt="" style="max-height: 300px;display: block;">
+                        </div>
                         <div id="target">
                             <div style="height: 50px;">
                                 <div id="list5"></div>
@@ -351,7 +353,6 @@
                                         <th>ID</th>
                                         <th>文件名称</th>
                                         <th>上传人</th>
-                                        <th>单位/部门</th>
                                         <th>上传时间</th>
                                         <th>操作</th>
                                     </tr>
@@ -908,7 +909,8 @@
 <script src="__JS__/jquery.jedate.js"></script>
 <script>
     var uploader,uploader2,uploader3,uploader4,uploader5,uploader6,uploader7,uploader8,uploader9,uploader10,uploader11,uploader12,uploader13,uploader14,uploader15;
-    var path1,path2,path3;
+    var path1,path2,path3,id1="",id2="",id3="";
+    //tab切换
     $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
@@ -992,6 +994,11 @@
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
                     pick: '#upload2',// 选择文件的按钮。可选。
+                    accept: {
+                        title: 'Images',
+                        extensions: 'gif,jpg,jpeg,bmp,png',
+                        mimeTypes: 'image/jpg,image/jpeg,image/png'
+                    },
                 });
 
                 uploader2.on( 'fileQueued', function( file ) {
@@ -1019,7 +1026,7 @@
                     $.ajax({
                         url: "./saveAttachmentInfo",
                         type: "post",
-                        data: {group_id:cid,table_name:"qcxz",name:"",path:path},
+                        data: {group_id:cid,table_name:"qcxz",name:"",path:path,id:id1},
                         dataType: "json",
                         success: function (res) {
                             console.log(res);
@@ -1087,6 +1094,7 @@
             }
         }
     })
+    //日期插件
     $("#implement_date").jeDate({
         format: "YYYY-MM-DD"
     });
@@ -1127,29 +1135,33 @@
                 $("#activity_times_part1").val(res.data.activity_times_part1);
                 $("#activity_times_part2").val(res.data.activity_times_part2);
                 $("#content1").val(res.data.content);
+                $("#goal").val(res.data.goal);
             }
         })
         grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
         upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
-        upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
+        inquire_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
         $.ajax({
             url: "./getAttachmentInfo",
             type: "post",
-            data: {group_id:cid,table_name1:"qcxz",table_name2:"zdmb",table_name3:"yyfx"},
+            data: {group_id:cid,table_name1:"qcxz",table_name2:"mbsd",table_name3:"yyfx"},
             dataType: "json",
             success: function (res) {
                 console.log(res);
                 if(res[0]){
                     path1 = res[0].path.substr(1);
+                    id1 = res[0].id;
                 }
                 if(res[1]){
                     path2 = res[1].path.substr(1);
+                    id2 = res[0].id;
                 }
                 if(res[2]){
                     path3 = res[2].path.substr(1);
+                    id3 = res[0].id;
                 }
-                console.log(path1)
                 $("#img_container img").attr("src",path1);
+                $("#pic_container img").attr("src",path2);
             }
         })
     }
@@ -1377,7 +1389,7 @@
                                 console.log(res);
                                 if(res.msg === "success"){
                                     layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                                    upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
+                                    inquire_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
                                 }else {
                                     layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
                                 }
@@ -1405,6 +1417,11 @@
                     fileSizeLimit: 1000 *1024 *1024,
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
                     pick: '#upload4',// 选择文件的按钮。可选。
+                    accept: {
+                        title: 'Images',
+                        extensions: 'gif,jpg,jpeg,bmp,png',
+                        mimeTypes: 'image/jpg,image/jpeg,image/png'
+                    },
                 });
 
                 uploader4.on( 'fileQueued', function( file ) {
@@ -1427,14 +1444,30 @@
                 });
                 // 文件上传成功
                 uploader4.on( 'uploadSuccess', function( file,data, response ) {
-                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
                     $("#list4").empty();
+                    $.ajax({
+                        url: "./saveAttachmentInfo",
+                        type: "post",
+                        data: {group_id:cid,table_name:"mbsd",name:"",path:path,id:id2},
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                            if(res.msg === "success"){
+                                layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+                                $("#pic_container>img").attr("src",'/uploads/attachment/' + data._raw);
+                                path2 = '/uploads/attachment/' + data._raw;
+                            }else {
+                                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                            }
+                        }
+                    })
                 });
 
                 // 文件上传失败，显示上传出错。
                 uploader4.on( 'uploadError', function( file ) {
                     layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list3").empty();
+                    $("#list4").empty();
                 });
             }
             if(!uploader5){
@@ -1901,6 +1934,8 @@
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         if(parent === "upload_table"){
                             upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
+                        }else if(parent === "inquire_table"){
+                            inquire_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
@@ -1911,10 +1946,20 @@
         })
     }
     //图片展示
-    $("#img_container img").click(function () {
-        $("#img_show img").attr('src',path1);
+    function imgshow(n) {
+        if(n === 1){
+            $("#img_show img").attr('src',path1);
+        }else if(n === 2){
+            $("#img_show img").attr('src',path2);
+        }
         $("#img_show").modal('show');
-    })
+    }
+    $("#img_container img").click(function () {
+        imgshow(1);
+    });
+    $("#pic_container img").click(function () {
+        imgshow(2);
+    });
     var upload_table = $('#upload_table').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -1987,18 +2032,17 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/project_attachment_table.php",
+            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=mblz",
             "async": false
         },
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [5],
+                "targets": [4],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
             }
@@ -2516,18 +2560,21 @@
             }
         })
     })
+    //制定目标
+    $("#save2").click(function () {
+        var goal = $("#goal").val();
+        $.ajax({
+            url: "./qcAdd",
+            type: "post",
+            data: {id:cid,goal:goal},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                layer.msg(res.msg, {time:1500,shade: 0.1});
+            }
+        })
+    })
 
-    function complete(data){
-        console.log(data);
-        if(data.code==1){
-            $("#myModal").modal('hide');
-            layer.msg("保存成功");
-//            admin_table.ajax.url("__SCRIPT__/project_table.php?pid=" + mytree_node.id).load();
-        }else{
-            layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
-            return false;
-        }
-    }
 </script>
 </body>
 </html>
