@@ -215,7 +215,7 @@ class Qc extends Base
         $attachment = new QCAttachmentModel();
         $param = $attachment->getOne($id);
         $filePath = $param['path'];
-        $fileName = $param['name'];
+        $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1); ;
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         Header("Content-type:application/octet-stream ");
@@ -240,6 +240,15 @@ class Qc extends Base
             $flag = $qc->delAttachment($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
+    }
+
+    public function getAttachmentInfo(){
+        $param = input('post.');
+        $group_id = $param['group_id'];
+        $table_name = $param['table_name'];
+        $attachment = new QCAttachmentModel();
+        $data = $attachment->getInfo($group_id, $table_name);
+        return $data;
     }
 
 }

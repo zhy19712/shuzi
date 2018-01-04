@@ -53,4 +53,11 @@ class QCAttachmentModel extends Model
         $this->where('id', $id)->delete();
         return ['code' => 1, 'data' => '', 'msg' => '删除附件成功'];
     }
+
+    public function getInfo($group_id, $table_name)
+    {
+        $where['group_id'] = $group_id;
+        $where['table_name'] = $table_name;
+        return $this->where($where)->find();
+    }
 }
