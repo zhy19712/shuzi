@@ -1113,6 +1113,9 @@
     $("#activity_end_date").jeDate({
         format: "YYYY-MM-DD"
     });
+    $("#rdate").jeDate({
+        format: "YYYY-MM-DD"
+    });
     //QC管理
     var cid;
     function detail(that) {
@@ -1144,6 +1147,7 @@
         grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
         upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
         inquire_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
+        reason_table.ajax.url("__SCRIPT__/qc_problem.php?group_id=" + cid).load();
         $.ajax({
             url: "./getAttachmentInfo",
             type: "post",
@@ -2138,7 +2142,13 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-//                $("#pname").val(res.data.name);
+                $("#rproblem").val(res.data.problem);
+                $("#rstandard").val(res.data.standard);
+                $("#rmethod").val(res.data.method);
+                $("#rdate").val(res.data.date);
+                $("#rowner").val(res.data.owner);
+                $("#rdescription").val(res.data.description);
+                $("#rresult").val(res.data.result);
             }
         })
     }
@@ -2153,7 +2163,7 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        reason_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=yyqrb").load();
+                        reason_table.ajax.url("__SCRIPT__/qc_problem.php?group_id=" + cid).load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -2166,7 +2176,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=yyqrb"
+            "url": "__SCRIPT__/qc_problem.php?group_id=" + cid
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
@@ -2197,6 +2207,7 @@
     $("div.mybtn").html('<div>新增</div>');
     $("#step5 .mybtn").click(function () {
         $("#reason input").val("");
+        $("#reason textarea").val("");
         $("#reason h5").text("新增");
         $("#rgroup_id").val(cid);
         $("#reason").modal('show');
@@ -2657,7 +2668,7 @@
                 if(data.code==1){
                     $("#reason").modal('hide');
                     layer.msg("保存成功");
-                    reason_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=yyqrb").load();
+                    reason_table.ajax.url("__SCRIPT__/qc_problem.php?group_id=" + cid ).load();
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;
