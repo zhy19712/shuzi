@@ -1003,7 +1003,7 @@
                 </div>
                 <div class="ibox-content">
                     <div class="col-lg-12 col-xs-12">
-                        <label class="col-xs-3 control-label">标题：</label>
+                        <label class="col-xs-3 control-label">版本：</label>
                         <div class="myblock col-xs-8 input-group">
                             <input id="finame" type="text" class="form-control" name="name" >
                         </div>
@@ -1036,7 +1036,7 @@
     var path1,path2,path3,id1="",id2="",id3="";
     var tabtxt = "文件资料";
     var name="",sex="";
-    $("#upload").click(function () {
+    function myupload(container_id,id,group_id,table_name,revision) {
         $("#fname input").val("");
         $("#file_list").empty();
         $("#fname").modal('show');
@@ -1049,11 +1049,11 @@
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"userName":"123456","sex":"一二三"},
+                formData: {"id":"","table_name":"","group_id":"","revision":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
-                        id: '#file_upload'
+                    id: container_id
                 }
             });
 
@@ -1076,10 +1076,12 @@
                 $('.'+file.id).remove();
                 console.log("remove");
             });
-            // uploader.on("startUpload",function () {
-            //     name = "吉安娜";
-            //     sex = "女";
-            // })
+            uploader.on("uploadStart",function () {
+                uploader.options.formData.id = id;
+                uploader.options.formData.table_name = table_name;
+                uploader.options.formData.group_id = group_id;
+                uploader.options.formData.revision = revision;
+            })
             // 文件上传过程中创建进度条实时显示。
             uploader.on('uploadProgress', function (file, percentage) {
                 var $li = $('#' + file.id),
@@ -1098,45 +1100,23 @@
             uploader.on( 'uploadSuccess', function( file,data, response ) {
                 console.log(file)
                 console.log(data)
-                console.log(response);
+                layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
+                $("#fname").modal('hide');
                 $("#file_per").empty();
-                var filename = $("#finame").val();
-                var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
-//                $.ajax({
-//                    url: "./saveAttachmentInfo",
-//                    type: "post",
-//                    data: {path:path,name:file.name,group_id:cid,table_name:"xtly"},
-//                    dataType: "json",
-//                    success: function (res) {
-//                        console.log(res);
-//                        if(res.msg === "success"){
-//                            layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
-//                            $("#fname").modal('hide');
-//                            flag = true;
-//                            upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
-//                        }else {
-//                            layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-//                            flag = true;
-//                        }
-//                    }
-//                })
             });
 
             // 文件上传失败，显示上传出错。
             uploader.on( 'uploadError', function( file ) {
                 layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                flag = true;
                 $("#file_per").empty();
             });
         }
+    }
+    $("#upload").click(function () {
+        myupload("#file_upload","",cid,"xtly","");
     });
-    var flag = true;
     $("#fname .btn-primary").click(function () {
-        console.log(flag)
-        if(flag){
-            flag = false;
             uploader.upload();
-        }
     })
     //tab切换
     $('#myTab a').click(function (e) {
