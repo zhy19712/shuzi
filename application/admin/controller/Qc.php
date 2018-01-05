@@ -185,7 +185,7 @@ class Qc extends Base
         if(request()->isAjax()){
             if(empty($param['id']))
             {
-                if($param['table_name'] == 'ss' || $param['table_name'] == 'smyxzl'){
+                if($param['table_name'] == 'ss' || $param['table_name'] == 'smyxzl' || $param['table_name'] == 'smyx' || $param['table_name'] == 'wjzl'){
                     $data = [
                         'owner' => session('username'),
                         'date' => date("Y-m-d H:i:s"),
@@ -211,7 +211,7 @@ class Qc extends Base
             }else{
                 $data_older = $attachment->getOne($param['id']);
                 unlink($data_older['path']);
-                if($param['table_name'] == 'ss' || $param['table_name'] == 'smyxzl'){
+                if($param['table_name'] == 'ss' || $param['table_name'] == 'smyxzl' || $param['table_name'] == 'smyx' || $param['table_name'] == 'wjzl'){
                     $data = [
                         'owner' => session('username'),
                         'date' => date("Y-m-d H:i:s"),
@@ -234,7 +234,8 @@ class Qc extends Base
                     ];
                 }
                 $flag = $attachment->editAttachment($data);
-                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+                $data_newer = $attachment->getImageId($param['group_id'], $param['table_name']);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
             }
 
         }

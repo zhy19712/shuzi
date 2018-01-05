@@ -50,7 +50,7 @@ if(!empty($_GET["group_id"])&&!empty($_GET["table_name"]))
 {
     $group_id = $_GET["group_id"];
     $table_name = $_GET["table_name"];
-    if($table_name == "ss" || $table_name == "smyxzl"){
+    if($table_name == "ss" || $table_name == "smyxzl" || $table_name == "wjzl" || $table_name == "smyx"){
         $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
             array( 'db' => 'id',  'dt' => 0 ),
             array( 'db' => 'name',  'dt' => 1 ),
