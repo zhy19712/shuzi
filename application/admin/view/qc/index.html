@@ -7,16 +7,18 @@
 <link rel="stylesheet" href="/static/admin/css/iconfont.css">
 <style>
     #upload,#upload2,#upload3,#upload4,#upload5,#upload6,#upload7,#upload8,#upload9,#upload10,#upload11,#upload12,#upload13,#upload14,#upload15{
-        float: right;
+        position: absolute;
+        right: 40px;
+        margin-top: 8px;
         width: 88px;
         height: 30px;
         text-align: center;
         color: #fff;
         line-height: 30px;
-        margin-right: 20px;
         cursor: pointer;
+        background-color: #00a2d4;
     }
-    .webuploader-pick{
+    #upload2 .webuploader-pick{
         padding: 0 15px;
         margin-top: 8px;
     }
@@ -30,7 +32,7 @@
         padding-bottom: 3px;
     }
     #upload_table{
-        margin-top: 30px;
+        margin-top: 46px;
     }
     .mytable{
         width: 100%;
@@ -151,6 +153,12 @@
     }
     #tab_con>div:nth-child(2){
         display: none;
+    }
+    .ibox-content>div{
+        margin-top: 20px;
+    }
+    .ibox-content label{
+        text-align: right;
     }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
@@ -986,6 +994,38 @@
     </div>
 </div>
 
+<div id="fname" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5></h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label">标题：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="finame" type="text" class="form-control" name="name" >
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" id="file">文件：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <div id="file_per" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_upload" style="display: inline-block;vertical-align: middle;">上传文件</div>
+                            <div id="file_list" style="display: inline-block;vertical-align: middle;"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-offset-6">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 <script src="__JS__/jquery.ztree.all.js"></script>
@@ -995,80 +1035,116 @@
     var uploader,uploader2,uploader3,uploader4,uploader5,uploader6,uploader7,uploader8,uploader9,uploader10,uploader11,uploader12,uploader13,uploader14,uploader15;
     var path1,path2,path3,id1="",id2="",id3="";
     var tabtxt = "文件资料";
+    var name="",sex="";
+    $("#upload").click(function () {
+        $("#fname input").val("");
+        $("#file_list").empty();
+        $("#fname").modal('show');
+        if(!uploader){
+            uploader = WebUploader.create({
+
+                auto: false,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('Upload/uploadtest')}",// 文件接收服务端。
+                chunked: false,
+                fileSizeLimit: 1000 *1024 *1024,
+                fileNumLimit: 1,
+                formData: {"userName":name,"sex":sex},
+                duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: false,
+                        id: '#file_upload'
+                }
+            });
+
+            uploader.on( 'fileQueued', function( file ) {
+                $("#file_per").append('<div id="' + file.id + '" class="item">' +
+                    '</div>');
+                $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                    '<span class="info">' + file.name + '</span>&nbsp' +
+                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>' );
+            });
+            $("#file_list").on("click", ".webuploadDelbtn", function () {
+                var $ele = $(this);
+                var id = $ele.parent().attr("class");
+                var file = uploader.getFile(id);
+                uploader.removeFile(file,true);
+            });
+            uploader.on('fileDequeued', function (file) {
+                $(file.id).remove();
+                $('.'+file.id).remove();
+                console.log("remove");
+            });
+            uploader.on("startUpload",function () {
+                name = "吉安娜";
+                sex = "女";
+            })
+            // 文件上传过程中创建进度条实时显示。
+            uploader.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            uploader.on( 'uploadSuccess', function( file,data, response ) {
+                console.log(file)
+                console.log(data)
+                console.log(response);
+                $("#file_per").empty();
+                var filename = $("#finame").val();
+                var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
+//                $.ajax({
+//                    url: "./saveAttachmentInfo",
+//                    type: "post",
+//                    data: {path:path,name:file.name,group_id:cid,table_name:"xtly"},
+//                    dataType: "json",
+//                    success: function (res) {
+//                        console.log(res);
+//                        if(res.msg === "success"){
+//                            layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
+//                            $("#fname").modal('hide');
+//                            flag = true;
+//                            upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
+//                        }else {
+//                            layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+//                            flag = true;
+//                        }
+//                    }
+//                })
+            });
+
+            // 文件上传失败，显示上传出错。
+            uploader.on( 'uploadError', function( file ) {
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                flag = true;
+                $("#file_per").empty();
+            });
+        }
+    });
+    var flag = true;
+    $("#fname .btn-primary").click(function () {
+        console.log(flag)
+        if(flag){
+            flag = false;
+            uploader.upload();
+        }
+    })
     //tab切换
     $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
         console.log($(this).text());
         if($(this).text() === "管理内容"){
-            if(!uploader){
-                uploader = WebUploader.create({
 
-                    auto: true,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload',// 选择文件的按钮。可选。
-                });
-
-                uploader.on( 'fileQueued', function( file ) {
-                    $("#list").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader.on( 'uploadSuccess', function( file,data, response ) {
-                    $("#list").empty();
-                    var filename;
-                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
-                    layer.prompt({
-                        formType: 2,
-                        title: '请输入标题',
-                        area: ['200px', '50px'],
-                        btn:['确认','取消'],
-                    }, function(value, index, elem){
-                        filename = value;
-                        console.log(filename,path);
-                        $.ajax({
-                            url: "./saveAttachmentInfo",
-                            type: "post",
-                            data: {path:path,name:filename,group_id:cid,table_name:"xtly"},
-                            dataType: "json",
-                            success: function (res) {
-                                console.log(res);
-                                if(res.msg === "success"){
-                                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                                    upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
-                                }else {
-                                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                                }
-                            }
-                        })
-                        layer.close(index);
-                    });
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list").empty();
-                });
-            }
             if(!uploader2){
                 uploader2 = WebUploader.create({
 
