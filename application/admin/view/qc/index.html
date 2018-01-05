@@ -1036,7 +1036,7 @@
     var path1,path2,path3,id1="",id2="",id3="";
     var tabtxt = "文件资料";
     var name="",sex="";
-    function myupload(container_id,id,group_id,table_name,revision,publish_date) {
+    function myupload(uid,group_id,table_name,revision,publish_date) {
         $("#fname input").val("");
         $("#file_list").empty();
         $("#fname").modal('show');
@@ -1049,11 +1049,11 @@
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"id":"","table_name":"","group_id":"","revision":"","publish_date":""},
+                formData: {"uid":"","table_name":"","group_id":"","revision":"","publish_date":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
-                    id: container_id
+                    id: "#file_upload"
                 }
             });
 
@@ -1077,7 +1077,7 @@
                 console.log("remove");
             });
             uploader.on("uploadStart",function () {
-                uploader.options.formData.id = id;
+                uploader.options.formData.id = uid;
                 uploader.options.formData.table_name = table_name;
                 uploader.options.formData.group_id = group_id;
                 uploader.options.formData.revision = revision;
@@ -1102,7 +1102,15 @@
                 console.log(file)
                 console.log(data)
                 layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
-                upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
+                if(table_name === "xtly"){
+                    upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
+                }
+//                else if(table_name === "qcxz"){
+//                    $("#img_container>img").attr("src",'/uploads/attachment/' + data._raw);
+//                    id1 = res.id;
+//                    path1 = '/uploads/attachment/' + data._raw;
+//                }
+
                 $("#fname").modal('hide');
                 $("#file_per").empty();
             });
@@ -1115,7 +1123,7 @@
         }
     }
     $("#upload").click(function () {
-        myupload("#file_upload","",cid,"xtly","","");
+        myupload("",cid,"xtly","","");
     });
     $("#fname .btn-primary").click(function () {
             uploader.upload();
