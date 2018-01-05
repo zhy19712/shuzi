@@ -1049,7 +1049,7 @@
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"userName":name,"sex":sex},
+                formData: {"userName":"123456","sex":"一二三"},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -1076,10 +1076,10 @@
                 $('.'+file.id).remove();
                 console.log("remove");
             });
-            uploader.on("startUpload",function () {
-                name = "吉安娜";
-                sex = "女";
-            })
+            // uploader.on("startUpload",function () {
+            //     name = "吉安娜";
+            //     sex = "女";
+            // })
             // 文件上传过程中创建进度条实时显示。
             uploader.on('uploadProgress', function (file, percentage) {
                 var $li = $('#' + file.id),
