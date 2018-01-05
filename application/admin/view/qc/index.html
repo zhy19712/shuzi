@@ -1012,7 +1012,7 @@
                         <label class="col-xs-3 control-label" id="file">文件：</label>
                         <div class="myblock col-xs-8 input-group">
                             <div id="file_per" style="display: inline-block;vertical-align: middle;"></div>
-                            <div id="file_upload" style="display: inline-block;vertical-align: middle;">上传文件</div>
+                            <div id="file_upload" style="display: inline-block;vertical-align: middle;"></div>
                             <div id="file_list" style="display: inline-block;vertical-align: middle;"></div>
                         </div>
                     </div>
@@ -1053,7 +1053,8 @@
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
-                    id: "#file_upload"
+                    id: "#file_upload",
+                    innerHTML: "上传文件"
                 }
             });
 
@@ -1105,6 +1106,8 @@
                 if(table_name === "xtly"){
                     upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
                 }
+                uploader = null;
+                $("#file_upload").empty();
 //                else if(table_name === "qcxz"){
 //                    $("#img_container>img").attr("src",'/uploads/attachment/' + data._raw);
 //                    id1 = res.id;
@@ -1119,6 +1122,8 @@
             uploader.on( 'uploadError', function( file ) {
                 layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
                 $("#file_per").empty();
+                uploader = null;
+                $("#file_upload").empty();
             });
         }
     }
