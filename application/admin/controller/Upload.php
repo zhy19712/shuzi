@@ -42,16 +42,14 @@ class Upload extends Base
         }
     }
 
-    //文件上传
     public function uploadtest(){
+        $request_body = request()->param('sex');
         $file = request()->file('file');
-        $param = input('post.');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/attachment');
-        if($info){
-            //echo $info->getSaveName();
-            $qc = new QCAttachmentModel();
-            return $param;
 
+        $data = json_decode($request_body);;
+        if($info){
+            return json(['data' => $request_body]);
         }else{
             echo $file->getError();
         }
