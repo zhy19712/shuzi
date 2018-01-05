@@ -83,6 +83,22 @@ class ProjectModel extends Model
         return $this->where($where)->select();
     }
 
+    /**
+     * [根据条件获取所有的单元工程数量]
+     */
+    public function getAllProject($where)
+    {
+        return $this->where($where)->count();
+    }
+    /**
+     * [ 根据条件获取工程列表信息]
+     */
+    public function getProjectByWhere($map, $Nowpage, $limits)
+    {
+        return $this->where($map)->page($Nowpage, $limits)->order('id desc')->select();
+    }
+
+
 
     /**
      * 根据id获取信息

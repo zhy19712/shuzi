@@ -4,6 +4,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\File;
 use think\Request;
+use app\admin\model\QCAttachmentModel;
 
 class Upload extends Base
 {
@@ -40,6 +41,22 @@ class Upload extends Base
             echo $file->getError();
         }
     }
+
+    //文件上传
+    public function uploadtest(){
+        $file = request()->file('file');
+        $param = input('post.');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/attachment');
+        if($info){
+            //echo $info->getSaveName();
+            $qc = new QCAttachmentModel();
+            return $param;
+
+        }else{
+            echo $file->getError();
+        }
+    }
+
 
     //视频上传
     public function uploadvideo(){
