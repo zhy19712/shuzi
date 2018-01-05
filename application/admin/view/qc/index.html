@@ -18,10 +18,6 @@
         cursor: pointer;
         background-color: #00a2d4;
     }
-    #upload2 .webuploader-pick{
-        padding: 0 15px;
-        margin-top: 8px;
-    }
     #mylist{
         float: right;
         font-size: 14px;
@@ -641,8 +637,8 @@
                                 <th>ID</th>
                                 <th>文件名称</th>
                                 <th>上传人</th>
-                                <th>单位/部门</th>
                                 <th>上传时间</th>
+                                <th>发布时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -948,51 +944,6 @@
     </div>
 </div>
 
-<div id="rev" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5></h5>
-                </div>
-                <div class="ibox-content">
-                    <!--新增用户信息开始-->
-                    <form class="form-horizontal" name="frev" id="frev" method="post" action="{:url('saveAttachmentInfo')}">
-                        <input type="text" name="id" style="display: none;">
-                        <input type="text" name="table_name" id="table_name" style="display: none;">
-                        <input type="text" name="path" id="path" style="display: none;">
-                        <input type="text" name="group_id" id="frev_id" style="display: none;">
-                        <div class="form-group">
-                            <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-3 control-label">标题：</label>
-                                <div class="myblock col-xs-8 input-group">
-                                    <input id="name" type="text" class="form-control" name="name" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-3 control-label" id="txt">版本：</label>
-                                <div class="myblock col-xs-8 input-group">
-                                    <input id="revision" type="text" class="form-control" name="revision" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-xs-12 col-sm-offset-6">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
-                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
-                            </div>
-                        </div>
-                    </form>
-                    <!--新增用户信息结束-->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div id="fname" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
     <div class="row">
@@ -1002,10 +953,16 @@
                     <h5></h5>
                 </div>
                 <div class="ibox-content">
-                    <div class="col-lg-12 col-xs-12">
+                    <div class="col-lg-12 col-xs-12" id="revision">
                         <label class="col-xs-3 control-label">版本：</label>
                         <div class="myblock col-xs-8 input-group">
                             <input id="finame" type="text" class="form-control" name="name" >
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xs-12" id="publish_date">
+                        <label class="col-xs-3 control-label">发布时间：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input type="text" class="form-control" name="name" >
                         </div>
                     </div>
                     <div class="col-lg-12 col-xs-12">
@@ -1032,13 +989,25 @@
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/jquery.jedate.js"></script>
 <script>
-    var uploader,uploader2,uploader3,uploader4,uploader5,uploader6,uploader7,uploader8,uploader9,uploader10,uploader11,uploader12,uploader13,uploader14,uploader15;
+    var uploader;
     var path1,path2,path3,id1="",id2="",id3="";
     var tabtxt = "文件资料";
-    var name="",sex="";
+    var tablename = "wjzl";
     function myupload(uid,group_id,table_name,revision,publish_date) {
         $("#fname input").val("");
         $("#file_list").empty();
+        if(revision == "bb"){
+            $("#revision label").text("版本:");
+            $("#revision").css("display","block");
+        }else {
+            $("#revision").css("display","none");
+        }
+        if(publish_date === "date"){
+            $("#publish_date").css("display","block");
+        }else {
+            $("#publish_date").css("display","none");
+        }
+
         $("#fname").modal('show');
         if(!uploader){
             uploader = WebUploader.create({
@@ -1078,6 +1047,12 @@
                 console.log("remove");
             });
             uploader.on("uploadStart",function () {
+                if(revision == "bb"){
+                    revision = $("#revision input").val();
+                }
+                if(publish_date === "date"){
+                    publish_date = $("#publish_date input").val();
+                }
                 uploader.options.formData.id = uid;
                 uploader.options.formData.table_name = table_name;
                 uploader.options.formData.group_id = group_id;
@@ -1105,15 +1080,69 @@
                 layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
                 if(table_name === "xtly"){
                     upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
+                }else if(table_name === "qcxz"){
+                    id1 = data.id;
+                    path1 = data.path.substr(1);
+                    $("#img_container>img").attr("src",path1);
+                }else if(table_name === "xzdc"){
+                    inquire_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
+                }else if(table_name === "mbsd"){
+                    id2 = data.id;
+                    path2 = data.path.substr(1);
+                    $("#pic_container>img").attr("src",path2);
+                }else if(table_name === "mblz"){
+                    target_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=mblz").load();
+                }else if(table_name === "yyfx"){
+                    id3 = data.id;
+                    path3 = data.path.substr(1);
+                    $("#reason_container>img").attr("src",path3);
+                }else if(table_name === "ss"){
+                    implement_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=ss").load();
+                }else if(table_name === "smyxzl"){
+                    implement_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=smyxzl").load();
+                }else if(table_name === "wjzl"){
+                    check_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=wjzl").load();
+                }else if(table_name === "smyx"){
+                    check_table4.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=smyx").load();
+                }else if(table_name === "jjxy"){
+                    check_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=jjxy").load();
+                }else if(table_name === "shxy"){
+                    check_table3.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=shxy").load();
+                }else if(table_name === "ggcs"){
+                    standard_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=ggcs").load();
+                }else if(table_name === "bzh"){
+                    standard_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=bzh").load();
+                }else if(table_name === "zj"){
+                    summarize_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=zj").load();
+                    $.ajax({
+                        url: "./qcAdd",
+                        type: "post",
+                        data: {id:cid,status:"已完成"},
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                            if(res.code === 1){
+                                qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
+                            }
+                        }
+                    })
+                }else if(table_name === "cgfbqk"){
+                    result_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=cgfbqk").load();
+                    $.ajax({
+                        url: "./qcAdd",
+                        type: "post",
+                        data: {id:cid,status:"已发布"},
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                            if(res.code === 1){
+                                qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
+                            }
+                        }
+                    })
                 }
                 uploader = null;
                 $("#file_upload").empty();
-//                else if(table_name === "qcxz"){
-//                    $("#img_container>img").attr("src",'/uploads/attachment/' + data._raw);
-//                    id1 = res.id;
-//                    path1 = '/uploads/attachment/' + data._raw;
-//                }
-
                 $("#fname").modal('hide');
                 $("#file_per").empty();
             });
@@ -1130,6 +1159,48 @@
     $("#upload").click(function () {
         myupload("",cid,"xtly","","");
     });
+    $("#upload2").click(function () {
+        myupload("",cid,"qcxz","","");
+    });
+    $("#upload3").click(function () {
+        myupload("",cid,"xzdc","","");
+    });
+    $("#upload4").click(function () {
+        myupload("",cid,"mbsd","","");
+    });
+    $("#upload5").click(function () {
+        myupload("",cid,"mblz","","");
+    });
+    $("#upload6").click(function () {
+        myupload("",cid,"yyfx","","");
+    });
+    $("#upload7").click(function () {
+        myupload("",cid,"ss","bb","");
+    });
+    $("#upload8").click(function () {
+        myupload("",cid,"smyxzl","bb","");
+    });
+    $("#upload9").click(function () {
+        myupload("",cid,tablename,"bb","");
+    });
+    $("#upload10").click(function () {
+        myupload("",cid,"jjxy","","");
+    });
+    $("#upload11").click(function () {
+        myupload("",cid,"shxy","","");
+    });
+    $("#upload12").click(function () {
+        myupload("",cid,"ggcs","","");
+    });
+    $("#upload13").click(function () {
+        myupload("",cid,"bzh","","");
+    });
+    $("#upload14").click(function () {
+        myupload("",cid,"zj","","");
+    });
+    $("#upload15").click(function () {
+        myupload("",cid,"cgfbqk","","date");
+    });
     $("#fname .btn-primary").click(function () {
             uploader.upload();
     })
@@ -1138,125 +1209,16 @@
         e.preventDefault();
         $(this).tab('show');
         console.log($(this).text());
-        if($(this).text() === "管理内容"){
-
-            if(!uploader2){
-                uploader2 = WebUploader.create({
-
-                    auto: true,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload2',// 选择文件的按钮。可选。
-                    accept: {
-                        title: 'Images',
-                        extensions: 'gif,jpg,jpeg,bmp,png',
-                        mimeTypes: 'image/jpg,image/jpeg,image/png'
-                    },
-                });
-
-                uploader2.on( 'fileQueued', function( file ) {
-                    $("#list2").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader2.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader2.on( 'uploadSuccess', function( file,data, response ) {
-                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
-                    $("#list2").empty();
-                    $.ajax({
-                        url: "./saveAttachmentInfo",
-                        type: "post",
-                        data: {group_id:cid,table_name:"qcxz",name:"",path:path,id:id1},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                            if(res.msg === "success"){
-                                layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                                $("#img_container>img").attr("src",'/uploads/attachment/' + data._raw);
-                                id1 = res.id;
-                                path1 = '/uploads/attachment/' + data._raw;
-                            }else {
-                                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                            }
-                        }
-                    })
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader2.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list2").empty();
-                });
-            }
-        }
-        if($(this).text() === "成果发布"){
-            if(!uploader15){
-                uploader15 = WebUploader.create({
-
-                    auto: true,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload15',// 选择文件的按钮。可选。
-                });
-
-                uploade15r.on( 'fileQueued', function( file ) {
-                    $("#list15").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader15.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader15.on( 'uploadSuccess', function( file,data, response ) {
-                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                    $("#list15").empty();
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader15.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list15").empty();
-                });
-            }
-        }
     });
 
     $("#tab_li>div").click(function () {
         var index = $(this).index();
         if(index === 1){
             tabtxt = "数码影像";
+            tablename = "smyx"
         }else {
             tabtxt = "文件资料";
+            tablename = "wjzl"
         }
         $("#tab_li>div").css("background-color","#fff").eq(index).css("background-color","#bae2f3");
         $("#tab_con>div").css("display","none").eq(index).css("display","block");
@@ -1281,6 +1243,9 @@
         format: "YYYY-MM-DD"
     });
     $("#wdate").jeDate({
+        format: "YYYY-MM-DD"
+    });
+    $("#publish_date input").jeDate({
         format: "YYYY-MM-DD"
     });
     //QC管理
@@ -1314,6 +1279,7 @@
         grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
         upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
         inquire_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
+        target_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=mblz").load();
         reason_table.ajax.url("__SCRIPT__/qc_problem.php?group_id=" + cid).load();
         way_table.ajax.url("__SCRIPT__/qc_strategy.php?group_id=" + cid).load();
         implement_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=ss").load();
@@ -1325,6 +1291,7 @@
         standard_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=ggcs").load();
         standard_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=bzh").load();
         summarize_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=zj").load();
+        result_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=cgfbqk").load();
         $.ajax({
             url: "./getAttachmentInfo",
             type: "post",
@@ -1527,773 +1494,6 @@
         $(this).css("color","#ff9933");
         console.log(index)
         $("#flow_content>div").css("display","none").eq(index).css("display","block");
-        if($(this).text() === "现状调查"){
-            if(!uploader3){
-                uploader3 = WebUploader.create({
-
-                    auto: true,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload3',// 选择文件的按钮。可选。
-                });
-
-                uploader3.on( 'fileQueued', function( file ) {
-                    $("#list3").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader3.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader3.on( 'uploadSuccess', function( file,data, response ) {
-                    $("#list3").empty();
-                    var filename;
-                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
-                    layer.prompt({
-                        formType: 2,
-                        title: '请输入标题',
-                        area: ['200px', '50px'],
-                        btn:['确认','取消'],
-                    }, function(value, index, elem){
-                        filename = value;
-                        console.log(filename,path);
-                        $.ajax({
-                            url: "./saveAttachmentInfo",
-                            type: "post",
-                            data: {path:path,name:filename,group_id:cid,table_name:"xzdc"},
-                            dataType: "json",
-                            success: function (res) {
-                                console.log(res);
-                                if(res.msg === "success"){
-                                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                                    inquire_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
-                                }else {
-                                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                                }
-                            }
-                        })
-                        layer.close(index);
-                    });
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader3.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list3").empty();
-                });
-            }
-        }
-        if($(this).text() === "目标确定"){
-            if(!uploader4){
-                uploader4 = WebUploader.create({
-
-                    auto: true,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload4',// 选择文件的按钮。可选。
-                    accept: {
-                        title: 'Images',
-                        extensions: 'gif,jpg,jpeg,bmp,png',
-                        mimeTypes: 'image/jpg,image/jpeg,image/png'
-                    },
-                });
-
-                uploader4.on( 'fileQueued', function( file ) {
-                    $("#list4").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader4.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader4.on( 'uploadSuccess', function( file,data, response ) {
-                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
-                    $("#list4").empty();
-                    $.ajax({
-                        url: "./saveAttachmentInfo",
-                        type: "post",
-                        data: {group_id:cid,table_name:"mbsd",name:"",path:path,id:id2},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                            if(res.msg === "success"){
-                                layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                                $("#pic_container>img").attr("src",'/uploads/attachment/' + data._raw);
-                                id2 = res.id;
-                                path2 = '/uploads/attachment/' + data._raw;
-                            }else {
-                                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                            }
-                        }
-                    })
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader4.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list4").empty();
-                });
-            }
-            if(!uploader5){
-                uploader5 = WebUploader.create({
-
-                    auto: true,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload5',// 选择文件的按钮。可选。
-                });
-
-                uploader5.on( 'fileQueued', function( file ) {
-                    $("#list5").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader5.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader5.on( 'uploadSuccess', function( file,data, response ) {
-                    $("#list5").empty();
-                    var filename;
-                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
-                    layer.prompt({
-                        formType: 2,
-                        title: '请输入标题',
-                        area: ['200px', '50px'],
-                        btn:['确认','取消'],
-                    }, function(value, index, elem){
-                        filename = value;
-                        console.log(filename,path);
-                        $.ajax({
-                            url: "./saveAttachmentInfo",
-                            type: "post",
-                            data: {path:path,name:filename,group_id:cid,table_name:"mblz"},
-                            dataType: "json",
-                            success: function (res) {
-                                console.log(res);
-                                if(res.msg === "success"){
-                                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                                    target_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=mblz").load();
-                                }else {
-                                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                                }
-                            }
-                        })
-                        layer.close(index);
-                    });
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader5.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list5").empty();
-                });
-            }
-        }
-        if($(this).text() === "原因分析"){
-            if(!uploader6){
-                uploader6 = WebUploader.create({
-
-                    auto: true,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload6',// 选择文件的按钮。可选。
-                    accept: {
-                        title: 'Images',
-                        extensions: 'gif,jpg,jpeg,bmp,png',
-                        mimeTypes: 'image/jpg,image/jpeg,image/png'
-                    },
-                });
-
-                uploader6.on( 'fileQueued', function( file ) {
-                    $("#list6").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader6.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader6.on( 'uploadSuccess', function( file,data, response ) {
-                    $("#list6").empty();
-                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
-                    $.ajax({
-                        url: "./saveAttachmentInfo",
-                        type: "post",
-                        data: {group_id:cid,table_name:"yyfx",name:"",path:path,id:id3},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                            if(res.msg === "success"){
-                                layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                                $("#reason_container>img").attr("src",'/uploads/attachment/' + data._raw);
-                                id3 = res.id;
-                                path3 = '/uploads/attachment/' + data._raw;
-                            }else {
-                                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                            }
-                        }
-                    })
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader6.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list6").empty();
-                });
-            }
-        }
-        if($(this).text() === "对策实施"){
-            if(!uploader7){
-                uploader7 = WebUploader.create({
-
-                    auto: true,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload7',// 选择文件的按钮。可选。
-                });
-
-                uploader7.on( 'fileQueued', function( file ) {
-                    $("#list7").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader7.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader7.on( 'uploadSuccess', function( file,data, response ) {
-                    $("#list7").empty();
-                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
-                    $("txt").text("版本");
-                    $("#rev").modal('show');
-                    $("#rev input").val("");
-                    $("#table_name").val("ss");
-                    $("#path").val(path);
-                    $("#frev_id").val(cid);
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader7.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list7").empty();
-                });
-            }
-            if(!uploader8){
-                uploader8 = WebUploader.create({
-
-                    auto: true,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload8',// 选择文件的按钮。可选。
-                });
-
-                uploader8.on( 'fileQueued', function( file ) {
-                    $("#list8").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader8.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader8.on( 'uploadSuccess', function( file,data, response ) {
-                    $("#list8").empty();
-                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
-                    $("txt").text("版本");
-                    $("#rev").modal('show');
-                    $("#rev input").val("");
-                    $("#table_name").val("smyxzl");
-                    $("#path").val(path);
-                    $("#frev_id").val(cid);
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader8.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list8").empty();
-                });
-            }
-        }
-        if($(this).text() === "效果检查"){
-            if(!uploader9){
-                uploader9 = WebUploader.create({
-
-                    auto: true,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload9',// 选择文件的按钮。可选。
-                });
-
-                uploader9.on( 'fileQueued', function( file ) {
-                    $("#list9").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader9.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader9.on( 'uploadSuccess', function( file,data, response ) {
-                    $("#list9").empty();
-                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
-                    $("#rev").modal('show');
-                    $("#rev input").val("");
-                    if(tabtxt == "文件资料"){
-                        $("#table_name").val("wjzl");
-                        $("txt").text("版本");
-                    }else {
-                        $("#table_name").val("smyx");
-                        $("txt").text("备注");
-                    }
-                    $("#path").val(path);
-                    $("#frev_id").val(cid);
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader9.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list9").empty();
-                });
-            }
-            if(!uploader10){
-                uploader10 = WebUploader.create({
-
-                    auto: true,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload10',// 选择文件的按钮。可选。
-                });
-
-                uploader10.on( 'fileQueued', function( file ) {
-                    $("#list10").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader10.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader10.on( 'uploadSuccess', function( file,data, response ) {
-                    $("#list10").empty();
-                    var filename;
-                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g,"\/");
-                    layer.prompt({
-                        formType: 2,
-                        title: '请输入标题',
-                        area: ['200px', '50px'],
-                        btn:['确认','取消'],
-                    }, function(value, index, elem){
-                        filename = value;
-                        console.log(filename,path);
-                        $.ajax({
-                            url: "./saveAttachmentInfo",
-                            type: "post",
-                            data: {path:path,name:filename,group_id:cid,table_name:"jjxy"},
-                            dataType: "json",
-                            success: function (res) {
-                                console.log(res);
-                                if(res.msg === "success"){
-                                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                                    check_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=jjxy").load();
-                                }else {
-                                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                                }
-                            }
-                        })
-                        layer.close(index);
-                    });
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader10.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list10").empty();
-                });
-            }
-            if(!uploader11){
-                uploader11 = WebUploader.create({
-
-                    auto: true,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload11',// 选择文件的按钮。可选。
-                });
-
-                uploader11.on( 'fileQueued', function( file ) {
-                    $("#list11").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader11.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader11.on( 'uploadSuccess', function( file,data, response ) {
-                    $("#list11").empty();
-                    var filename;
-                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g, "\/");
-                    layer.prompt({
-                        formType: 2,
-                        title: '请输入标题',
-                        area: ['200px', '50px'],
-                        btn: ['确认', '取消'],
-                    }, function (value, index, elem) {
-                        filename = value;
-                        console.log(filename, path);
-                        $.ajax({
-                            url: "./saveAttachmentInfo",
-                            type: "post",
-                            data: {path: path, name: filename, group_id: cid, table_name: "shxy"},
-                            dataType: "json",
-                            success: function (res) {
-                                console.log(res);
-                                if (res.msg === "success") {
-                                    layer.msg("上传成功", {icon: 1, time: 1500, shade: 0.1});
-                                    check_table3.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=shxy").load();
-                                } else {
-                                    layer.msg("上传失败", {icon: 2, time: 1500, shade: 0.1});
-                                }
-                            }
-                        })
-                        layer.close(index);
-                    });
-                })
-
-                // 文件上传失败，显示上传出错。
-                uploader11.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list11").empty();
-                });
-            }
-        }
-        if($(this).text() === "巩固措施与标准化"){
-            if(!uploader12){
-                uploader12 = WebUploader.create({
-
-                    auto: true,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload12',// 选择文件的按钮。可选。
-                });
-
-                uploader12.on( 'fileQueued', function( file ) {
-                    $("#list12").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader12.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader12.on( 'uploadSuccess', function( file,data, response ) {
-                    $("#list12").empty();
-                    var filename;
-                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g, "\/");
-                    layer.prompt({
-                        formType: 2,
-                        title: '请输入标题',
-                        area: ['200px', '50px'],
-                        btn: ['确认', '取消'],
-                    }, function (value, index, elem) {
-                        filename = value;
-                        console.log(filename, path);
-                        $.ajax({
-                            url: "./saveAttachmentInfo",
-                            type: "post",
-                            data: {path: path, name: filename, group_id: cid, table_name: "ggcs"},
-                            dataType: "json",
-                            success: function (res) {
-                                console.log(res);
-                                if (res.msg === "success") {
-                                    layer.msg("上传成功", {icon: 1, time: 1500, shade: 0.1});
-                                    standard_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=ggcs").load();
-                                } else {
-                                    layer.msg("上传失败", {icon: 2, time: 1500, shade: 0.1});
-                                }
-                            }
-                        })
-                        layer.close(index);
-                    });
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader12.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list12").empty();
-                });
-            }
-            if(!uploader13){
-                uploader13 = WebUploader.create({
-
-                    auto: true,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload13',// 选择文件的按钮。可选。
-                });
-
-                uploader13.on( 'fileQueued', function( file ) {
-                    $("#list13").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader13.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader13.on( 'uploadSuccess', function( file,data, response ) {
-                    $("#list13").empty();
-                    var filename;
-                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g, "\/");
-                    layer.prompt({
-                        formType: 2,
-                        title: '请输入标题',
-                        area: ['200px', '50px'],
-                        btn: ['确认', '取消'],
-                    }, function (value, index, elem) {
-                        filename = value;
-                        console.log(filename, path);
-                        $.ajax({
-                            url: "./saveAttachmentInfo",
-                            type: "post",
-                            data: {path: path, name: filename, group_id: cid, table_name: "bzh"},
-                            dataType: "json",
-                            success: function (res) {
-                                console.log(res);
-                                if (res.msg === "success") {
-                                    layer.msg("上传成功", {icon: 1, time: 1500, shade: 0.1});
-                                    standard_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=bzh").load();
-                                } else {
-                                    layer.msg("上传失败", {icon: 2, time: 1500, shade: 0.1});
-                                }
-                            }
-                        })
-                        layer.close(index);
-                    });
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader13.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list13").empty();
-                });
-            }
-        }
-        if($(this).text() === "总结"){
-            if(!uploader14){
-                uploader14 = WebUploader.create({
-
-                    auto: false,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: '#upload14',// 选择文件的按钮。可选。
-                });
-
-                uploader14.on( 'fileQueued', function( file ) {
-                    $("#list14").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader14.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader14.on( 'uploadSuccess', function( file,data, response ) {
-                    $("#list14").empty();
-                    var filename;
-                    var path = './uploads/attachment/' + (data._raw).replace(/\\/g, "\/");
-                    layer.prompt({
-                        formType: 2,
-                        title: '请输入标题',
-                        area: ['200px', '50px'],
-                        btn: ['确认', '取消'],
-                    }, function (value, index, elem) {
-                        filename = value;
-                        console.log(filename, path);
-                        $.ajax({
-                            url: "./saveAttachmentInfo",
-                            type: "post",
-                            data: {path: path, name: filename, group_id: cid, table_name: "zj"},
-                            dataType: "json",
-                            success: function (res) {
-                                console.log(res);
-                                if (res.msg === "success") {
-                                    layer.msg("上传成功", {icon: 1, time: 1500, shade: 0.1});
-                                    summarize_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=zj").load();
-                                } else {
-                                    layer.msg("上传失败", {icon: 2, time: 1500, shade: 0.1});
-                                }
-                            }
-                        })
-                        layer.close(index);
-                    });
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader14.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#list14").empty();
-                });
-            }
-        }
     })
 
     //datatable
@@ -2349,6 +1549,8 @@
                             standard_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=bzh").load();
                         }else if(parent === "summarize_table1"){
                             summarize_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=zj").load();
+                        }else if(parent === "result_table1"){
+                            result_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=cgfbqk").load();
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
@@ -2947,7 +2149,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/project_attachment_table.php",
+            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=cgfbqk",
             "async": false
         },
         "columnDefs": [
@@ -2956,9 +2158,8 @@
                 "orderable": false,
                 "targets": [5],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
             }
