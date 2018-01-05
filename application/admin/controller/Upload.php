@@ -55,6 +55,55 @@ class Upload extends Base
         }
     }
 
+    public function uploadQC(){
+        $qc = new QCAttachmentModel();
+        $id = request()->param('id');
+        $table_name = request()->param('table_name');
+        $group_id = request()->param('group_id');
+        $revision = request()->param('revision');
+        $publish_date = request()->param('publish_date');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/attachment');
+        if($info){
+            if(empty($id))
+            {
+                $data = [
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $info->getPath(),
+                    'name' => $file->getFilename(),
+                    'revision' => $revision,
+                    'group_id' => $group_id,
+                    'table_name' => $table_name,
+                    'publish_date' => $publish_date
+                ];
+                $flag = $qc->insertAttachment($data);
+                $data_newer = $qc->getImageId($group_id, $table_name);
+                return json(['code' => $flag['code'], 'path' => $info->getPath(), 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
+            }else{
+                $data_older = $qc->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $info->getPath(),
+                    'name' => $file->getFilename(),
+                    'revision' => $revision,
+                    'group_id' => $group_id,
+                    'table_name' => $table_name,
+                    'publish_date' => $publish_date
+                ];
+                $flag = $qc->editAttachment($data);
+                $data_newer = $qc->getImageId($group_id, $table_name);
+                return json(['code' => $flag['code'], 'path' => $info->getPath(), 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+
 
     //视频上传
     public function uploadvideo(){
