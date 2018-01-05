@@ -65,7 +65,8 @@ class Upload extends Base
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/attachment');
         if($info){
-            $path = './uploads/attachment/' . $info->getFilename();
+            $temp = $info->getSaveName();
+            $path = './uploads/attachment/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             if(empty($id))
             {
