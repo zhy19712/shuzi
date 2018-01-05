@@ -57,7 +57,7 @@ class Upload extends Base
 
     public function uploadQC(){
         $qc = new QCAttachmentModel();
-        $id = request()->param('id');
+        $id = request()->param('uid');
         $table_name = request()->param('table_name');
         $group_id = request()->param('group_id');
         $revision = request()->param('revision');
@@ -65,13 +65,15 @@ class Upload extends Base
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/attachment');
         if($info){
+            $path = './uploads/attachment/' . $info->getFilename();
+            $filename = $file->getInfo('name');
             if(empty($id))
             {
                 $data = [
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
-                    'path' => $info->getPath(),
-                    'name' => $file->getFilename(),
+                    'path' => $path,
+                    'name' => $filename,
                     'revision' => $revision,
                     'group_id' => $group_id,
                     'table_name' => $table_name,
@@ -79,7 +81,7 @@ class Upload extends Base
                 ];
                 $flag = $qc->insertAttachment($data);
                 $data_newer = $qc->getImageId($group_id, $table_name);
-                return json(['code' => $flag['code'], 'path' => $info->getPath(), 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
             }else{
                 $data_older = $qc->getOne($id);
                 unlink($data_older['path']);
@@ -87,8 +89,8 @@ class Upload extends Base
                     'id' => $id,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
-                    'path' => $info->getPath(),
-                    'name' => $file->getFilename(),
+                    'path' => $path,
+                    'name' => $filename,
                     'revision' => $revision,
                     'group_id' => $group_id,
                     'table_name' => $table_name,
@@ -96,7 +98,7 @@ class Upload extends Base
                 ];
                 $flag = $qc->editAttachment($data);
                 $data_newer = $qc->getImageId($group_id, $table_name);
-                return json(['code' => $flag['code'], 'path' => $info->getPath(), 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
             }
         }else{
             echo $file->getError();
