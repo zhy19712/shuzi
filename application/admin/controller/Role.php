@@ -2,6 +2,7 @@
 
 namespace app\admin\controller;
 use app\admin\model\Node;
+use app\admin\model\UserModel;
 use app\admin\model\UserType;
 use think\Db;
 
@@ -100,6 +101,8 @@ class Role extends Base
     {
         $id = input('param.id');
         $role = new UserType();
+        $user = new UserModel();
+        $user -> delUserbyGroupid($id);
         $flag = $role->delRole($id);
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }

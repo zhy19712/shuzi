@@ -93,6 +93,23 @@ class UserModel extends Model
         }
     }
 
+    /**
+     * 删除管理员
+     * @param $pid
+     */
+    public function delUserbyGroupid($groupid)
+    {
+        try{
+
+            $this->where('groupid', $groupid)->delete();
+            Db::name('auth_group_access')->where('group_id', $groupid)->delete();
+            return ['code' => 1, 'data' => '', 'msg' => '删除用户成功'];
+
+        }catch( PDOException $e){
+            return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
+        }
+    }
+
 
 
 }
