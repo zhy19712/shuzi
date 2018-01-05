@@ -1036,7 +1036,7 @@
     var path1,path2,path3,id1="",id2="",id3="";
     var tabtxt = "文件资料";
     var name="",sex="";
-    function myupload(container_id,id,group_id,table_name,revision) {
+    function myupload(container_id,id,group_id,table_name,revision,publish_date) {
         $("#fname input").val("");
         $("#file_list").empty();
         $("#fname").modal('show');
@@ -1045,11 +1045,11 @@
 
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadtest')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadQC')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"id":"","table_name":"","group_id":"","revision":""},
+                formData: {"id":"","table_name":"","group_id":"","revision":"","publish_date":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -1081,6 +1081,7 @@
                 uploader.options.formData.table_name = table_name;
                 uploader.options.formData.group_id = group_id;
                 uploader.options.formData.revision = revision;
+                uploader.options.formData.publish_date = publish_date;
             })
             // 文件上传过程中创建进度条实时显示。
             uploader.on('uploadProgress', function (file, percentage) {
@@ -1101,6 +1102,7 @@
                 console.log(file)
                 console.log(data)
                 layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
+                upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
                 $("#fname").modal('hide');
                 $("#file_per").empty();
             });
@@ -1113,7 +1115,7 @@
         }
     }
     $("#upload").click(function () {
-        myupload("#file_upload","",cid,"xtly","");
+        myupload("#file_upload","",cid,"xtly","","");
     });
     $("#fname .btn-primary").click(function () {
             uploader.upload();
