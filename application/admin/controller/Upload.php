@@ -45,12 +45,12 @@ class Upload extends Base
     //文件上传
     public function uploadtest(){
         $file = request()->file('file');
-        $param = input('post.');
+        $param1 = request()->get("name");
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/attachment');
         if($info){
             //echo $info->getSaveName();
             $qc = new QCAttachmentModel();
-            return $param;
+            echo $param1['name'];
 
         }else{
             echo $file->getError();
