@@ -995,7 +995,7 @@
     define('runtime/client',[
         'base',
         'mediator',
-        'runtime/runtime'
+        'application/admin/view/runtime/runtime'
     ], function( Base, Mediator, Runtime ) {
     
         var cache;
@@ -1134,7 +1134,7 @@
     define('lib/dnd',[
         'base',
         'mediator',
-        'runtime/client'
+        'application/admin/view/runtime/client'
     ], function( Base, Mediator, RuntimeClent ) {
     
         var $ = Base.$;
@@ -1411,7 +1411,7 @@
     define('lib/filepaste',[
         'base',
         'mediator',
-        'runtime/client'
+        'application/admin/view/runtime/client'
     ], function( Base, Mediator, RuntimeClent ) {
     
         var $ = Base.$;
@@ -1494,7 +1494,7 @@
      */
     define('lib/blob',[
         'base',
-        'runtime/client'
+        'application/admin/view/runtime/client'
     ], function( Base, RuntimeClient ) {
     
         function Blob( ruid, source ) {
@@ -1575,7 +1575,7 @@
      */
     define('lib/filepicker',[
         'base',
-        'runtime/client',
+        'application/admin/view/runtime/client',
         'lib/file'
     ], function( Base, RuntimeClent, File ) {
     
@@ -1838,7 +1838,7 @@
      */
     define('lib/image',[
         'base',
-        'runtime/client',
+        'application/admin/view/runtime/client',
         'lib/blob'
     ], function( Base, RuntimeClient, Blob ) {
         var $ = Base.$;
@@ -2609,7 +2609,7 @@
         'queue',
         'file',
         'lib/file',
-        'runtime/client',
+        'application/admin/view/runtime/client',
         'widgets/widget'
     ], function( Base, Uploader, Queue, WUFile, File, RuntimeClient ) {
     
@@ -2894,7 +2894,7 @@
      */
     define('widgets/runtime',[
         'uploader',
-        'runtime/runtime',
+        'application/admin/view/runtime/runtime',
         'widgets/widget'
     ], function( Uploader, Runtime ) {
     
@@ -2943,7 +2943,7 @@
      */
     define('lib/transport',[
         'base',
-        'runtime/client',
+        'application/admin/view/runtime/client',
         'mediator'
     ], function( Base, RuntimeClient, Mediator ) {
     
@@ -3977,8 +3977,8 @@
      */
     define('runtime/html5/runtime',[
         'base',
-        'runtime/runtime',
-        'runtime/compbase'
+        'application/admin/view/runtime/runtime',
+        'application/admin/view/runtime/compbase'
     ], function( Base, Runtime, CompBase ) {
     
         var type = 'html5',
@@ -4047,7 +4047,7 @@
      * @fileOverview Blob Html实现
      */
     define('runtime/html5/blob',[
-        'runtime/html5/runtime',
+        'application/admin/view/runtime/html5/runtime',
         'lib/blob'
     ], function( Html5Runtime, Blob ) {
     
@@ -4067,7 +4067,7 @@
      */
     define('runtime/html5/dnd',[
         'base',
-        'runtime/html5/runtime',
+        'application/admin/view/runtime/html5/runtime',
         'lib/file'
     ], function( Base, Html5Runtime, File ) {
     
@@ -4260,7 +4260,7 @@
      */
     define('runtime/html5/filepaste',[
         'base',
-        'runtime/html5/runtime',
+        'application/admin/view/runtime/html5/runtime',
         'lib/file'
     ], function( Base, Html5Runtime, File ) {
     
@@ -4327,7 +4327,7 @@
      */
     define('runtime/html5/filepicker',[
         'base',
-        'runtime/html5/runtime'
+        'application/admin/view/runtime/html5/runtime'
     ], function( Base, Html5Runtime ) {
     
         var $ = Base.$;
@@ -4525,7 +4525,7 @@
      * @fileOverview Image控件
      */
     define('runtime/html5/imagemeta',[
-        'runtime/html5/util'
+        'application/admin/view/runtime/html5/util'
     ], function( Util ) {
     
         var api;
@@ -4694,7 +4694,7 @@
     // SceneCaptureType : Standard
     define('runtime/html5/imagemeta/exif',[
         'base',
-        'runtime/html5/imagemeta'
+        'application/admin/view/runtime/html5/imagemeta'
     ], function( Base, ImageMeta ) {
     
         var EXIF = {};
@@ -4964,8 +4964,8 @@
      */
     define('runtime/html5/image',[
         'base',
-        'runtime/html5/runtime',
-        'runtime/html5/util'
+        'application/admin/view/runtime/html5/runtime',
+        'application/admin/view/runtime/html5/util'
     ], function( Base, Html5Runtime, Util ) {
     
         var BLANK = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D';
@@ -5360,7 +5360,7 @@
      */
     define('runtime/html5/transport',[
         'base',
-        'runtime/html5/runtime'
+        'application/admin/view/runtime/html5/runtime'
     ], function( Base, Html5Runtime ) {
     
         var noop = Base.noop,
@@ -5540,13 +5540,13 @@
     
         // runtimes
         // html5
-        'runtime/html5/blob',
-        'runtime/html5/dnd',
-        'runtime/html5/filepaste',
-        'runtime/html5/filepicker',
-        'runtime/html5/imagemeta/exif',
-        'runtime/html5/image',
-        'runtime/html5/transport'
+        'application/admin/view/runtime/html5/blob',
+        'application/admin/view/runtime/html5/dnd',
+        'application/admin/view/runtime/html5/filepaste',
+        'application/admin/view/runtime/html5/filepicker',
+        'application/admin/view/runtime/html5/imagemeta/exif',
+        'application/admin/view/runtime/html5/image',
+        'application/admin/view/runtime/html5/transport'
     ], function( Base ) {
         return Base;
     });

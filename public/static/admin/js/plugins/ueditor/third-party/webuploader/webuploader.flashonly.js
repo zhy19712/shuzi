@@ -995,7 +995,7 @@
     define('runtime/client',[
         'base',
         'mediator',
-        'runtime/runtime'
+        'application/admin/view/runtime/runtime'
     ], function( Base, Mediator, Runtime ) {
     
         var cache;
@@ -1133,7 +1133,7 @@
      */
     define('lib/blob',[
         'base',
-        'runtime/client'
+        'application/admin/view/runtime/client'
     ], function( Base, RuntimeClient ) {
     
         function Blob( ruid, source ) {
@@ -1214,7 +1214,7 @@
      */
     define('lib/filepicker',[
         'base',
-        'runtime/client',
+        'application/admin/view/runtime/client',
         'lib/file'
     ], function( Base, RuntimeClent, File ) {
     
@@ -1644,7 +1644,7 @@
      */
     define('lib/image',[
         'base',
-        'runtime/client',
+        'application/admin/view/runtime/client',
         'lib/blob'
     ], function( Base, RuntimeClient, Blob ) {
         var $ = Base.$;
@@ -2415,7 +2415,7 @@
         'queue',
         'file',
         'lib/file',
-        'runtime/client',
+        'application/admin/view/runtime/client',
         'widgets/widget'
     ], function( Base, Uploader, Queue, WUFile, File, RuntimeClient ) {
     
@@ -2700,7 +2700,7 @@
      */
     define('widgets/runtime',[
         'uploader',
-        'runtime/runtime',
+        'application/admin/view/runtime/runtime',
         'widgets/widget'
     ], function( Uploader, Runtime ) {
     
@@ -2749,7 +2749,7 @@
      */
     define('lib/transport',[
         'base',
-        'runtime/client',
+        'application/admin/view/runtime/client',
         'mediator'
     ], function( Base, RuntimeClient, Mediator ) {
     
@@ -3783,8 +3783,8 @@
      */
     define('runtime/flash/runtime',[
         'base',
-        'runtime/runtime',
-        'runtime/compbase'
+        'application/admin/view/runtime/runtime',
+        'application/admin/view/runtime/compbase'
     ], function( Base, Runtime, CompBase ) {
     
         var $ = Base.$,
@@ -3966,7 +3966,7 @@
      */
     define('runtime/flash/filepicker',[
         'base',
-        'runtime/flash/runtime'
+        'application/admin/view/runtime/flash/runtime'
     ], function( Base, FlashRuntime ) {
         var $ = Base.$;
     
@@ -3998,7 +3998,7 @@
      * @fileOverview 图片压缩
      */
     define('runtime/flash/image',[
-        'runtime/flash/runtime'
+        'application/admin/view/runtime/flash/runtime'
     ], function( FlashRuntime ) {
     
         return FlashRuntime.register( 'Image', {
@@ -4026,8 +4026,8 @@
      */
     define('runtime/flash/transport',[
         'base',
-        'runtime/flash/runtime',
-        'runtime/client'
+        'application/admin/view/runtime/flash/runtime',
+        'application/admin/view/runtime/client'
     ], function( Base, FlashRuntime, RuntimeClient ) {
         var $ = Base.$;
     
@@ -4161,9 +4161,9 @@
         // runtimes
     
         // flash
-        'runtime/flash/filepicker',
-        'runtime/flash/image',
-        'runtime/flash/transport'
+        'application/admin/view/runtime/flash/filepicker',
+        'application/admin/view/runtime/flash/image',
+        'application/admin/view/runtime/flash/transport'
     ], function( Base ) {
         return Base;
     });
