@@ -68,7 +68,7 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/qc');
         if($info){
             $temp = $info->getSaveName();
-            $path = './uploads/attachment/' . str_replace("\\","/",$temp);
+            $path = './uploads/qc/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             if(empty($id))
             {
@@ -119,7 +119,7 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/Prototype');
         if($info){
             $temp = $info->getSaveName();
-            $path = './uploads/attachment/' . str_replace("\\","/",$temp);
+            $path = './uploads/prototype/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             if(empty($id))
             {
@@ -170,7 +170,7 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/Procedure');
         if($info){
             $temp = $info->getSaveName();
-            $path = './uploads/attachment/' . str_replace("\\","/",$temp);
+            $path = './uploads/procedure/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             if(empty($id))
             {

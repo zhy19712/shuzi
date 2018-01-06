@@ -17,7 +17,7 @@ var lunhui = {
 
     // 确认弹出层
     confirm : function(id,url) {
-        layer.confirm('删除该组织将会删除属于该组织的所有用户！确认删除?', {icon: 3, title:'提示'}, function(index){
+        layer.confirm('警告！删除该组织将会删除属于该组织的所有用户！确认删除?', {icon: 3, title:'提示'}, function(index){
             $.getJSON(url, {'id' : id}, function(res){
                 if(res.code == 1){
                     layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});

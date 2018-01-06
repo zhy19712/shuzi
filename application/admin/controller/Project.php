@@ -127,10 +127,11 @@ class project extends Base
     {
         $id = input('param.id');
         $node = new DivideModel();
+        $project = new ProjectModel();
 
         $childList = $node->cateTree($id);
         foreach ($childList as $child){
-           $node->delNode($child['id']);
+            $node->delNode($child['id']);
         }
         $flag = $node->delNode($id);
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
