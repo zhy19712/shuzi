@@ -1,6 +1,8 @@
 <?php
 
 namespace app\admin\controller;
+use app\admin\model\ProcedureAttachmentModel;
+use app\admin\model\PrototypeAttachmentModel;
 use think\Controller;
 use think\File;
 use think\Request;
@@ -34,7 +36,7 @@ class Upload extends Base
     //文件上传
     public function uploadfile(){
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/attachment');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/acceptance');
         if($info){
             echo $info->getSaveName();
         }else{
@@ -63,7 +65,7 @@ class Upload extends Base
         $revision = request()->param('revision');
         $publish_date = request()->param('publish_date');
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/attachment');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/qc');
         if($info){
             $temp = $info->getSaveName();
             $path = './uploads/attachment/' . str_replace("\\","/",$temp);
@@ -106,10 +108,111 @@ class Upload extends Base
         }
     }
 
+    public function uploadPrototype(){
+        $prototype = new PrototypeAttachmentModel();
+        $id = request()->param('uid');
+        $table_name = request()->param('table_name');
+        $group_id = request()->param('group_id');
+        $revision = request()->param('revision');
+        $publish_date = request()->param('publish_date');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/Prototype');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/attachment/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'name' => $filename,
+                    'revision' => $revision,
+                    'group_id' => $group_id,
+                    'table_name' => $table_name,
+                    'publish_date' => $publish_date
+                ];
+                $flag = $prototype->insertAttachment($data);
+                $data_newer = $prototype->getImageId($group_id, $table_name);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
+            }else{
+                $data_older = $prototype->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'name' => $filename,
+                    'revision' => $revision,
+                    'group_id' => $group_id,
+                    'table_name' => $table_name,
+                    'publish_date' => $publish_date
+                ];
+                $flag = $prototype->editAttachment($data);
+                $data_newer = $prototype->getImageId($group_id, $table_name);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    public function uploadProcedure(){
+        $procedure = new ProcedureAttachmentModel();
+        $id = request()->param('uid');
+        $table_name = request()->param('table_name');
+        $group_id = request()->param('group_id');
+        $revision = request()->param('revision');
+        $publish_date = request()->param('publish_date');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/Procedure');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/attachment/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'name' => $filename,
+                    'revision' => $revision,
+                    'group_id' => $group_id,
+                    'table_name' => $table_name,
+                    'publish_date' => $publish_date
+                ];
+                $flag = $procedure->insertAttachment($data);
+                $data_newer = $procedure->getImageId($group_id, $table_name);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
+            }else{
+                $data_older = $procedure->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'name' => $filename,
+                    'revision' => $revision,
+                    'group_id' => $group_id,
+                    'table_name' => $table_name,
+                    'publish_date' => $publish_date
+                ];
+                $flag = $procedure->editAttachment($data);
+                $data_newer = $procedure->getImageId($group_id, $table_name);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
 
 
-    //视频上传
-    public function uploadvideo(){
+    //视频上传V
+    public function uploadVideo(){
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/video');
         if($info){

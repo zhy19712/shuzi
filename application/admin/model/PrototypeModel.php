@@ -13,7 +13,7 @@ use think\Model;
 
 class PrototypeModel extends Model
 {
-    protected $name = 'qc_prototype';
+    protected $name = 'prototype';
 
     public function insertPrototype($param)
     {
