@@ -358,25 +358,30 @@ class project extends Base
                 $root_pid = Db::name('project_divide_copy')->insertGetId($divide); // 插入根节点
             }
             // 批量插入二级节点
-            $data = $sn_array =[];
+            $data = $sn_array =[];$i=0;
             foreach($excel_array as $k=>$v){
                 if($k > 0 && !empty($v[3])){
-                    $data[$k]['pid'] = $root_pid; // 根节点pid
-                    $data[$k]['sn'] = $v[0]; // 单位工程编号
-                    $data[$k]['name'] = $v[3]; // 单位工程名称
-                    $data[$k]['primary'] = $v[4]; // 是否主要单位工程
+                    $data[$i]['pid'] = $root_pid; // 根节点pid
+                    $data[$i]['sn'] = $v[0]; // 单位工程编号
+                    $data[$i]['name'] = $v[3]; // 单位工程名称
+                    $data[$i]['primary'] = $v[4]; // 是否主要单位工程
                     $sn_array[] = $v[0];
                 }
             }
             array_shift($data);  // 删除第一个数组(标题);
             // 如果是同一个文件上传，新上传的将会覆盖之前的。该新增的新增该删除的删除
             $all_data = Db::name('project_divide_copy')->where('pid',$root_pid)->column('id');
-            $insert_data = Db::name('project_divide_copy')->whereIn('sn',$sn_array)->column('id');
-            $update_data = array_filter($all_data,$insert_data);
+            $update_data = Db::name('project_divide_copy')->whereIn('sn',$sn_array)->column('id');
+            $insert_data = array_diff($all_data,$update_data);
+
+            dump($all_data);
+            dump($update_data);
+            dump($insert_data);
+            die();
             if(1==1){
 
             }else{
-                $success = Db::name('project_divide')->insertAll($data);
+                $success = Db::name('project_divide')->insertAll($insert_data);
             }
             // 获取二级节点的自增编号做为三级节点的pid
             $second_pid = Db::name('project_divide')->where('pid',$root_pid)->field('id,sn,primary')->select();
