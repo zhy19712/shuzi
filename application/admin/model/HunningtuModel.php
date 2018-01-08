@@ -66,7 +66,7 @@ class HunningtuModel extends Model
     public function getQualifiedNum($uid)
     {
         $where['uid'] = $uid;
-        $where['pass'] = '是';
+        $where['quality_level'] = '合格';
         return $this->where($where)->count();
     }
     public function getGoodNum($uid)

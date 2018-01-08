@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: admin
- * Date: 2018/1/3
- * Time: 12:58
+ * User: waterforest
+ * Date: 2018/1/7
+ * Time: 0:13
  */
 
 namespace app\admin\model;
@@ -11,9 +11,9 @@ namespace app\admin\model;
 
 use think\Model;
 
-class QCAttachmentModel extends Model
+class ProcedureAttachmentModel extends Model
 {
-    protected $name = 'qc_attachment';
+    protected $name = 'procedure_attachment';
 
     public function getOne($id)
     {

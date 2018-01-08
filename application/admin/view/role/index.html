@@ -7,24 +7,24 @@
             <h5>组织机构列表</h5>
         </div>
         <div class="ibox-content">
-            <!--搜索框开始-->           
+            <!--搜索框开始-->
             <div class="row">
-                <div class="col-sm-12">   
-                <div  class="col-sm-2" style="width: 100px">
-                    <div class="input-group" >  
-                        <a href="{:url('roleAdd')}"><button class="btn btn-outline btn-primary" type="button">添加组织</button></a>
+                <div class="col-sm-12">
+                    <div  class="col-sm-2" style="width: 100px">
+                        <div class="input-group" >
+                            <a href="{:url('roleAdd')}"><button class="btn btn-outline btn-primary" type="button">添加组织</button></a>
+                        </div>
                     </div>
-                </div>                                            
                     <form name="admin_list_sea" class="form-search" method="post" action="{:url('index')}">
                         <div class="col-sm-3">
                             <div class="input-group">
-                                <input type="text" id="key" class="form-control" name="key" value="{$val}" placeholder="输入需查询的角色名" />   
-                                <span class="input-group-btn"> 
-                                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 搜索</button> 
+                                <input type="text" id="key" class="form-control" name="key" value="{$val}" placeholder="输入需查询的组织机构名" />
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> 搜索</button>
                                 </span>
                             </div>
                         </div>
-                    </form>                         
+                    </form>
                 </div>
             </div>
             <!--搜索框结束-->
@@ -34,81 +34,49 @@
                 <div class="example">
                     <table class="table table-bordered table-hover">
                         <thead>
-                            <tr class="long-tr">
-                                <th>ID</th>
-                                <th>组织名称</th>
-                                <th>状态</th>
-                                <th width="15%">添加时间</th>
-                                <th width="15%">更新时间</th>
-                                <th width="25%">操作</th>
-                            </tr>
-                        </thead>
-                        <!--<script id="list-template" type="text/html">-->
-                            <!--{{# for(var i=0;i<d.length;i++){  }}-->
-                                <!--<tr class="long-td">-->
-                                    <!--<td>{{d[i].id}}</td>-->
-                                    <!--<td>{{d[i].title}}</td>  -->
-                                    <!--<td>-->
-                                        <!--{{# if(d[i].id!==1){ }}-->
-                                            <!--{{# if(d[i].status==1){ }}-->
-                                                <!--<a href="javascript:;" onclick="role_state({{d[i].id}});">-->
-                                                    <!--<div id="zt{{d[i].id}}"><span class="label label-info">开启</span></div>-->
-                                                <!--</a>-->
-                                            <!--{{# }else{ }}-->
-                                                <!--<a href="javascript:;" onclick="role_state({{d[i].id}});">-->
-                                                    <!--<div id="zt{{d[i].id}}"><span class="label label-danger">禁用</span></div>-->
-                                                <!--</a>-->
-                                            <!--{{# } }}-->
-                                        <!--{{# } }}-->
-                                    <!--</td>                                -->
-                                    <!--<td>{{d[i].create_time}}</td>-->
-                                    <!--<td>{{d[i].update_time}}</td>                                                            -->
-                                    <!--<td>-->
-                                        <!--{{# if(d[i].id!==1){ }}-->
-                                            <!--<a href="javascript:;" onclick="giveQx({{d[i].id}})" class="btn btn-info btn-outline btn-xs">-->
-                                                <!--<i class="fa fa-paste"></i> 权限分配</a>&nbsp;&nbsp;-->
-                                            <!--<a href="javascript:;" onclick="roleEdit({{d[i].id}})" class="btn btn-primary btn-outline btn-xs">-->
-                                                <!--<i class="fa fa-paste"></i> 编辑</a>&nbsp;&nbsp;-->
-                                            <!--<a href="javascript:;" onclick="roleDel({{d[i].id}})" class="btn btn-danger btn-outline btn-xs">-->
-                                                <!--<i class="fa fa-trash-o"></i> 删除</a>-->
-                                        <!--{{# } }}    -->
-                                    <!--</td>-->
-                                <!--</tr>-->
-                            <!--{{# } }}-->
-                        <!--</script>-->
-                        <tbody id="list-content">
-
-                        {foreach name="auth_group" item="v"}
-                        <tr class="long-td">
-                            <td>{$v.id}</td>
-                            <td style='text-align:left;padding-left:{if condition="$v.leftpin neq 0"}{$v.leftpin}px{/if}'>{$v.lefthtml}{$v.title}</td>
-                            <td>
-                                {if condition="$v.status eq 1"}
-                                <a class="red" href="javascript:;" onclick="role_state({$v.id});">
-                                    <div id="zt{$v.id}"><span class="label label-info">开启</span></div>
-                                </a>
-                                {else/}
-                                <a class="red" href="javascript:;" onclick="role_state({$v.id});">
-                                    <div id="zt{$v.id}"><span class="label label-danger">禁用</span></div>
-                                </a>
-                                {/if}
-                            </td>
-                            <td>{$v.create_time}</td>
-                            <td>{$v.update_time}</td>
-                            <td>
-                                {if condition="$v.id neq 1"}
-                                <a href="javascript:;" onclick="giveQx({$v.id})" class="btn btn-info btn-outline btn-xs">
-                                    <i class="fa fa-paste"></i> 权限分配</a>&nbsp;&nbsp;
-                                <a href="{:url('roleedit',['id'=>$v.id])}" class="btn btn-primary btn-outline btn-xs">
-                                    <i class="fa fa-paste"></i> 编辑</a>&nbsp;&nbsp;
-                                <a href="javascript:;" onclick="roleDel({$v.id})" class="btn btn-danger btn-outline btn-xs">
-                                    <i class="fa fa-trash-o"></i> 删除</a>
-                                {/if}
-                            </td>
+                        <tr class="long-tr">
+                            <th>ID</th>
+                            <th>组织机构名称</th>
+                            <th>状态</th>
+                            <th width="15%">添加时间</th>
+                            <th width="15%">更新时间</th>
+                            <th width="25%">操作</th>
                         </tr>
-                        {/foreach}
-
-                        </tbody>
+                        </thead>
+                        <script id="list-template" type="text/html">
+                            {{# for(var i=0;i<d.length;i++){  }}
+                            <tr class="long-td">
+                                <td>{{d[i].id}}</td>
+                                <td>{{d[i].title}}</td>
+                                <td>
+                                    {{# if(d[i].id!==1){ }}
+                                    {{# if(d[i].status==1){ }}
+                                    <a href="javascript:;" onclick="role_state({{d[i].id}});">
+                                        <div id="zt{{d[i].id}}"><span class="label label-info">开启</span></div>
+                                    </a>
+                                    {{# }else{ }}
+                                    <a href="javascript:;" onclick="role_state({{d[i].id}});">
+                                        <div id="zt{{d[i].id}}"><span class="label label-danger">禁用</span></div>
+                                    </a>
+                                    {{# } }}
+                                    {{# } }}
+                                </td>
+                                <td>{{d[i].create_time}}</td>
+                                <td>{{d[i].update_time}}</td>
+                                <td>
+                                    {{# if(d[i].id!==1){ }}
+                                    <a href="javascript:;" onclick="giveQx({{d[i].id}})" class="btn btn-info btn-outline btn-xs">
+                                        <i class="fa fa-paste"></i> 权限分配</a>&nbsp;&nbsp;
+                                    <a href="javascript:;" onclick="roleEdit({{d[i].id}})" class="btn btn-primary btn-outline btn-xs">
+                                        <i class="fa fa-paste"></i> 编辑</a>&nbsp;&nbsp;
+                                    <a href="javascript:;" onclick="roleDel({{d[i].id}})" class="btn btn-danger btn-outline btn-xs">
+                                        <i class="fa fa-trash-o"></i> 删除</a>
+                                    {{# } }}
+                                </td>
+                            </tr>
+                            {{# } }}
+                        </script>
+                        <tbody id="list-content"></tbody>
                     </table>
                     <div id="AjaxPage" style=" text-align: right;"></div>
                     <div id="allpage" style=" text-align: right;"></div>
@@ -130,7 +98,7 @@
     </div>
 </div>
 
-<!-- 角色分配 -->
+<!-- 组织机构分配 -->
 <div class="zTreeDemoBackground left" style="display: none" id="role">
     <input type="hidden" id="nodeid">
     <div class="form-group">
@@ -153,7 +121,7 @@
 <script type="text/javascript" src="/static/admin/js/plugins/zTree/jquery.ztree.exedit-3.5.js"></script>
 
 <script type="text/javascript">
-   
+
     //laypage分页
     Ajaxpage();
     function Ajaxpage(curr){
@@ -188,17 +156,17 @@
 
 
 
-    //编辑角色
+    //编辑组织机构
     function roleEdit(id){
         location.href = './roleEdit/id/'+id+'.html';
     }
 
-    //删除角色
+    //删除组织机构
     function roleDel(id){
-        lunhui.confirm(id,'{:url('roleDel')}');
+        lunhui.confirm(id,'{:url("roleDel")}');
     }
 
-    //角色状态
+    //组织机构状态
     function role_state(id){
         lunhui.status(id,'{:url("role_state")}');
     }

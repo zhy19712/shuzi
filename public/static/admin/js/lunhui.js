@@ -1,66 +1,52 @@
 var lunhui = {
 
-	//成功弹出层
-	success: function(message,url){
-		layer.msg(message, {icon: 1,time:2000}, function(index){
+    //成功弹出层
+    success: function(message,url){
+        layer.msg(message, {icon: 1,time:2000}, function(index){
             layer.close(index);
             window.location.href=url;
         });
-	},
-
-	// 错误弹出层
-	error: function(message) {
-        layer.msg(message, {icon: 2,time:2000}, function(index){
-            layer.close(index);
-        });       
     },
 
-	// 确认弹出层
+    // 错误弹出层
+    error: function(message) {
+        layer.msg(message, {icon: 2,time:2000}, function(index){
+            layer.close(index);
+        });
+    },
+
+    // 确认弹出层
     confirm : function(id,url) {
-        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
-        	$.ajax({
-				url: url,
-				async: false,
-				data: {'id' : id},
-				type: "get",
-				dataType: "json",
-				success: function (res) {
-                    if(res.code == 1){
-                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        admin_table.ajax.url("__SCRIPT__/test.php").load();
-                    }else{
-                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
-                    }
+        layer.confirm('警告！删除该组织将会删除属于该组织的所有用户！确认删除?', {icon: 3, title:'提示'}, function(index){
+            $.getJSON(url, {'id' : id}, function(res){
+                if(res.code == 1){
+                    layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                    Ajaxpage();
+                }else{
+                    layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                 }
-			})
-	        // $.getJSON(url, {'id' : id}, function(res){
-	        //     if(res.code == 1){
-	        //         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-	        //     }else{
-	        //         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
-	        //     }
-	        // });
-	        layer.close(index);
-	    })
+            });
+            layer.close(index);
+        })
     },
 
     //状态
     status : function(id,url){
-	    $.post(url,{id:id},function(data){	         
-	        if(data.code==1){
-	            var a='<span class="label label-danger">禁用</span>'
-	            $('#zt'+id).html(a);
-	            layer.msg(data.msg,{icon:2,time:1500,shade: 0.1,});
-	            return false;
-	        }else{
-	            var b='<span class="label label-info">开启</span>'
-	            $('#zt'+id).html(b);
-	            layer.msg(data.msg,{icon:1,time:1500,shade: 0.1,});
-	            return false;
-	        }         	        
-	    });
-	    return false;
-	}
+        $.post(url,{id:id},function(data){
+            if(data.code==1){
+                var a='<span class="label label-danger">禁用</span>'
+                $('#zt'+id).html(a);
+                layer.msg(data.msg,{icon:2,time:1500,shade: 0.1,});
+                return false;
+            }else{
+                var b='<span class="label label-info">开启</span>'
+                $('#zt'+id).html(b);
+                layer.msg(data.msg,{icon:1,time:1500,shade: 0.1,});
+                return false;
+            }
+        });
+        return false;
+    }
 
 
 }

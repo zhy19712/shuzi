@@ -41,15 +41,29 @@
     #mytable1_wrapper{
         display: none;
     }
+    .webuploader-pick{
+        right: 24px;
+        top: 3px;
+        background-color: transparent;
+    }
+    .webuploader-pick:hover{
+        background-color: transparent;
+    }
+    #btn_upload{
+        display: none;
+    }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
 <div id="mycontent" style="min-width: 15%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;">
     <div style="text-align: center;background-color:#1ab394;line-height: 30px;color: #fff;">工程划分</div>
+    <div id="file_per"></div>
+    <div id="file_list"></div>
+    <!--<button id="btn_upload" class="btn">确认导入</button>-->
     <div id="operate">
         <i class="iconfont icon-tianjiajiahaowubiankuang"></i>
         <i class="iconfont icon-bianji"></i>
         <i class="iconfont icon-shanchu"></i>
-        <i class="iconfont icon-daoru"></i>
+        <i class="iconfont icon-daoru" id="file_upload"></i>
     </div>
     <div id="tree_container" class="ztree"></div>
     <p style="display: none;"></p>
@@ -659,7 +673,7 @@ function edit(that) {
 //树结构删除节点
     $("#operate>i:nth-child(3)").click(function () {
         if(mytree_node){
-            layer.confirm("你确定删除"+ mytree_node.name +"节点以及它所包含的所有子节点吗？", {icon: 3, title:'提示'}, function(index){
+            layer.confirm("警告！删除"+ mytree_node.name +"节点将会删除它的所有子节点！确认删除?", {icon: 3, title:'提示'}, function(index){
                 var id = mytree_node.id;
                 $.ajax({
                     url: "nodeDel",
@@ -825,6 +839,79 @@ function edit(that) {
     for (var selector in config) {
         $(selector).chosen(config[selector]);
     }
+</script>
+<script>
+        uploader = WebUploader.create({
+            auto: true,// 选完文件后，是否自动上传。
+            swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+            server: "{:url('Upload/uploadQC')}",// 文件接收服务端。
+            chunked: false,
+            fileSizeLimit: 1000 *1024 *1024,
+            fileNumLimit: 1,
+//            formData: {"uid":"","table_name":"","group_id":"","revision":"","publish_date":""},
+            duplicate :true,// 重复上传图片，true为可重复false为不可重复
+            pick: {
+                multiple: false,
+                id: "#file_upload",
+                innerHTML: ""
+            },
+            accept: {
+                title: 'excel',
+                extensions: 'xls,xlsx',
+                mimeTypes: '.xls,.xlsx'
+            }
+        });
+
+        uploader.on( 'fileQueued', function( file ) {
+            $("#file_per").append('<div id="' + file.id + '" class="item">' +
+                '</div>');
+//            $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+//                '<span class="info">' + file.name + '</span>&nbsp' +
+//                '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+//                '</div>' );
+//            $("#btn_upload").css("display","block");
+        });
+        $("#file_list").on("click", ".webuploadDelbtn", function () {
+            var $ele = $(this);
+            var id = $ele.parent().attr("class");
+            var file = uploader.getFile(id);
+            uploader.removeFile(file,true);
+        });
+        uploader.on('fileDequeued', function (file) {
+            $(file.id).remove();
+            $('.'+file.id).remove();
+            console.log("remove");
+        });
+        // 文件上传过程中创建进度条实时显示。
+        uploader.on('uploadProgress', function (file, percentage) {
+            var $li = $('#' + file.id),
+                $percent = $li.find('.progress .progress-bar');
+            // 避免重复创建
+            if (!$percent.length) {
+                $percent = $('<div class="progress progress-striped active">' +
+                    '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                    '</div>' +
+                    '</div>').appendTo($li).find('.progress-bar');
+            }
+            $li.find('p.state').text('上传中');
+            $percent.css('width', percentage * 100 + '%');
+        });
+        // 文件上传成功
+        uploader.on( 'uploadSuccess', function( file,data, response ) {
+            console.log(file)
+            console.log(data)
+            layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
+            $("#file_per").empty();
+        });
+
+        // 文件上传失败，显示上传出错。
+        uploader.on( 'uploadError', function( file ) {
+            layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+            $("#file_per").empty();
+        });
+//        $("#btn_upload").click(function () {
+//            uploader.upload();
+//        })
 </script>
 </body>
 </html>
