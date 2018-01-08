@@ -854,7 +854,7 @@ function edit(that) {
         uploader = WebUploader.create({
             auto: true,// 选完文件后，是否自动上传。
             swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-            server: "{:url('Upload/uploadQC')}",// 文件接收服务端。
+            server: "{:url('Project/importExcel')}",// 文件接收服务端。
             chunked: false,
             fileSizeLimit: 1000 *1024 *1024,
             fileNumLimit: 1,
@@ -910,6 +910,7 @@ function edit(that) {
         uploader.on( 'uploadSuccess', function( file,data, response ) {
             console.log(file)
             console.log(data)
+            console.log(response)
             layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
             $("#file_per").empty();
         });

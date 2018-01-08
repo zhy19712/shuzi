@@ -48,7 +48,6 @@ class Upload extends Base
         $request_body = request()->param('sex');
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/attachment');
-
         $data = json_decode($request_body);;
         if($info){
             return json(['data' => $request_body]);

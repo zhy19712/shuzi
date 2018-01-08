@@ -168,7 +168,7 @@ class project extends Base
      * [导入excel到数据库里]
      */
     public function importExcel(){
-        $file = request()->file('excel');
+        $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/excel');
         if($info){
             // 调用插件PHPExcel把excel文件导入数据库
