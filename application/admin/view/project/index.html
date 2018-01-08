@@ -42,8 +42,11 @@
         display: none;
     }
     .webuploader-pick{
-        right: 24px;
-        top: 3px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
         background-color: transparent;
     }
     .webuploader-pick:hover{
@@ -51,6 +54,13 @@
     }
     #btn_upload{
         display: none;
+    }
+    #file_upload>div:nth-child(2){
+        position: absolute;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100%;
+        height: 100%;
     }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
