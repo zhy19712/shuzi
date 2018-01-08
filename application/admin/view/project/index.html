@@ -107,8 +107,6 @@
 </div>
 
 
-
-
 <div id="myModal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
     <div class="row">
         <div class="col-sm-12">
@@ -877,17 +875,17 @@ function edit(that) {
 //                '</div>' );
 //            $("#btn_upload").css("display","block");
         });
-        $("#file_list").on("click", ".webuploadDelbtn", function () {
-            var $ele = $(this);
-            var id = $ele.parent().attr("class");
-            var file = uploader.getFile(id);
-            uploader.removeFile(file,true);
-        });
-        uploader.on('fileDequeued', function (file) {
-            $(file.id).remove();
-            $('.'+file.id).remove();
-            console.log("remove");
-        });
+//        $("#file_list").on("click", ".webuploadDelbtn", function () {
+//            var $ele = $(this);
+//            var id = $ele.parent().attr("class");
+//            var file = uploader.getFile(id);
+//            uploader.removeFile(file,true);
+//        });
+//        uploader.on('fileDequeued', function (file) {
+//            $(file.id).remove();
+//            $('.'+file.id).remove();
+//            console.log("remove");
+//        });
         // 文件上传过程中创建进度条实时显示。
         uploader.on('uploadProgress', function (file, percentage) {
             var $li = $('#' + file.id),
