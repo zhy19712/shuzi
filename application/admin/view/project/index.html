@@ -106,11 +106,7 @@
     </div>
 </div>
 
-<!-- 测试导入 -->
-<div><form method="post" action="{:url('Project/importExcelTest')}" class="form-signin" enctype="multipart/form-data" >
-    <input name="excel" type="file" class="form-control">
-    <button class="btn btn-lg btn-primary btn-block">导入</button>
-</form>  </div><!-- 测试导入 -->
+
 
 
 <div id="myModal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
@@ -907,17 +903,16 @@ function edit(that) {
             $percent.css('width', percentage * 100 + '%');
         });
         // 文件上传成功
-        uploader.on( 'uploadSuccess', function( file,data, response ) {
+        uploader.on( 'uploadSuccess', function( file,data ) {
             console.log(file)
             console.log(data)
-            console.log(response)
-            layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
+            layer.msg(file.name + data.info,{icon:1,time:1500,shade: 0.1});
             $("#file_per").empty();
         });
 
         // 文件上传失败，显示上传出错。
         uploader.on( 'uploadError', function( file ) {
-            layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+            layer.msg(file.name + data.info,{icon:2,time:1500,shade: 0.1});
             $("#file_per").empty();
         });
 //        $("#btn_upload").click(function () {

@@ -170,6 +170,7 @@ class project extends Base
     public function importExcel(){
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/excel');
+
         if($info){
             // 调用插件PHPExcel把excel文件导入数据库
             Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
@@ -282,8 +283,8 @@ class project extends Base
                         $row_array[$i][$pk]['sn'] = $page_v[4]; // 单元工程编号
                         $row_array[$i][$pk]['name'] = $page_v[5]; // 单元工程名称
                         $row_array[$i][$pk]['primary'] = $current_primary; // 是否主要单元工程 继承上级
-                        $row_array[$i][$pk]['job_content'] = $page_v[6]; // 单元工程 工作内容
-                        $row_array[$i][$pk]['principle'] = $page_v[7]; // 单元工程 划分原则
+//                        $row_array[$i][$pk]['job_content'] = $page_v[6]; // 单元工程 工作内容
+//                        $row_array[$i][$pk]['principle'] = $page_v[7]; // 单元工程 划分原则
                     }
                 }
             }
@@ -339,7 +340,7 @@ class project extends Base
     }
 
     public function importExcelTest(){
-        $file = request()->file('excel');
+        $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/excel');
         if($info){
             // 调用插件PHPExcel把excel文件导入数据库
@@ -360,29 +361,14 @@ class project extends Base
             // 批量插入二级节点
             $data = $sn_array =[];$i=0;
             foreach($excel_array as $k=>$v){
-                if($k > 0 && !empty($v[3])){
+                if($k > 1 && !empty($v[3])){
                     $data[$i]['pid'] = $root_pid; // 根节点pid
                     $data[$i]['sn'] = $v[0]; // 单位工程编号
                     $data[$i]['name'] = $v[3]; // 单位工程名称
                     $data[$i]['primary'] = $v[4]; // 是否主要单位工程
-                    $sn_array[] = $v[0];
                 }
             }
-            array_shift($data);  // 删除第一个数组(标题);
-            // 如果是同一个文件上传，新上传的将会覆盖之前的。该新增的新增该删除的删除
-            $all_data = Db::name('project_divide_copy')->where('pid',$root_pid)->column('id');
-            $update_data = Db::name('project_divide_copy')->whereIn('sn',$sn_array)->column('id');
-            $insert_data = array_diff($all_data,$update_data);
-
-            dump($all_data);
-            dump($update_data);
-            dump($insert_data);
-            die();
-            if(1==1){
-
-            }else{
-                $success = Db::name('project_divide')->insertAll($insert_data);
-            }
+            $success = Db::name('project_divide')->insertAll($data);
             // 获取二级节点的自增编号做为三级节点的pid
             $second_pid = Db::name('project_divide')->where('pid',$root_pid)->field('id,sn,primary')->select();
             $second_pid_value = $second_pid_array = $second_primary_array = [];
@@ -457,8 +443,8 @@ class project extends Base
                         $row_array[$i][$pk]['sn'] = $page_v[4]; // 单元工程编号
                         $row_array[$i][$pk]['name'] = $page_v[5]; // 单元工程名称
                         $row_array[$i][$pk]['primary'] = $current_primary; // 是否主要单元工程 继承上级
-                        $row_array[$i][$pk]['job_content'] = $page_v[6]; // 单元工程 工作内容
-                        $row_array[$i][$pk]['principle'] = $page_v[7]; // 单元工程 划分原则
+//                        $row_array[$i][$pk]['job_content'] = $page_v[6]; // 单元工程 工作内容
+//                        $row_array[$i][$pk]['principle'] = $page_v[7]; // 单元工程 划分原则
                     }
                 }
             }
