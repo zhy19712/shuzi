@@ -8,7 +8,10 @@
 
 namespace app\admin\controller;
 use app\admin\model\DivideModel;
+use app\admin\model\HunningtuModel;
+use app\admin\model\KaiwaModel;
 use app\admin\model\ProjectModel;
+use app\admin\model\ZhihuModel;
 use think\Db;
 
 use think\Loader;
@@ -32,6 +35,9 @@ class project extends Base
     public function projectAdd()
     {
         $project = new ProjectModel();
+        $kaiwa = new KaiwaModel();
+        $zhihu = new ZhihuModel();
+        $hunningtu = new HunningtuModel();
         $param = input('post.');
         if(request()->isAjax()){
 
@@ -39,6 +45,16 @@ class project extends Base
             {
 
                 $flag = $project->insertProject($param);
+                 $data = [
+                     'uid' => $project->getLastInsID()
+                 ];
+                if($param['cate'] == '开挖'){
+                    $kaiwa->insertKaiwa($data);
+                }else if( $param['cate'] == '支护'){
+                    $zhihu->insertZhihu($data);
+                }else if( $param['cate'] == '混凝土'){
+                    $hunningtu->insertHunningtu($data);
+                }
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
             else if(!empty($param['id']))

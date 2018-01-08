@@ -25,7 +25,7 @@ class ProjectModel extends Model
             if(false === $result){
                 return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
             }else{
-                return ['code' => 1, 'data' => '', 'msg' => '工程信息添加成功'];
+                return ['code' => 1, 'data' =>$result, 'msg' => '工程信息添加成功'];
             }
         }catch( PDOException $e){
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
