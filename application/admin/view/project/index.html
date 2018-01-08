@@ -58,7 +58,7 @@
     <div style="text-align: center;background-color:#1ab394;line-height: 30px;color: #fff;">工程划分</div>
     <div id="file_per"></div>
     <div id="file_list"></div>
-    <button id="btn_upload" class="btn">确认导入</button>
+    <!--<button id="btn_upload" class="btn">确认导入</button>-->
     <div id="operate">
         <i class="iconfont icon-tianjiajiahaowubiankuang"></i>
         <i class="iconfont icon-bianji"></i>
@@ -835,7 +835,7 @@ function edit(that) {
 </script>
 <script>
         uploader = WebUploader.create({
-            auto: false,// 选完文件后，是否自动上传。
+            auto: true,// 选完文件后，是否自动上传。
             swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
             server: "{:url('Upload/uploadQC')}",// 文件接收服务端。
             chunked: false,
@@ -852,17 +852,17 @@ function edit(that) {
                 title: 'excel',
                 extensions: 'xls,xlsx',
                 mimeTypes: '.xls,.xlsx'
-            },
+            }
         });
 
         uploader.on( 'fileQueued', function( file ) {
             $("#file_per").append('<div id="' + file.id + '" class="item">' +
                 '</div>');
-            $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
-                '<span class="info">' + file.name + '</span>&nbsp' +
-                '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                '</div>' );
-            $("#btn_upload").css("display","block");
+//            $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+//                '<span class="info">' + file.name + '</span>&nbsp' +
+//                '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+//                '</div>' );
+//            $("#btn_upload").css("display","block");
         });
         $("#file_list").on("click", ".webuploadDelbtn", function () {
             var $ele = $(this);
@@ -875,19 +875,6 @@ function edit(that) {
             $('.'+file.id).remove();
             console.log("remove");
         });
-        uploader.on("uploadStart",function () {
-            if(revision == "bb"){
-                revision = $("#revision input").val();
-            }
-            if(publish_date === "date"){
-                publish_date = $("#publish_date input").val();
-            }
-            uploader.options.formData.id = uid;
-            uploader.options.formData.table_name = table_name;
-            uploader.options.formData.group_id = group_id;
-            uploader.options.formData.revision = revision;
-            uploader.options.formData.publish_date = publish_date;
-        })
         // 文件上传过程中创建进度条实时显示。
         uploader.on('uploadProgress', function (file, percentage) {
             var $li = $('#' + file.id),
@@ -915,9 +902,9 @@ function edit(that) {
             layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
             $("#file_per").empty();
         });
-        $("#btn_upload").click(function () {
-            uploader.upload();
-        })
+//        $("#btn_upload").click(function () {
+//            uploader.upload();
+//        })
 </script>
 </body>
 </html>
