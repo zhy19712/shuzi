@@ -81,6 +81,27 @@ class Procedure extends Base
         }
     }
 
+    //编辑，没有替换附件时保存上传附件信息
+    public function editProcedureNoUpload()
+    {
+        $attachment = new ProcedureModel();
+
+        $param = input('post.');
+        if(request()->isAjax()){
+            $data = [
+                'id' => $param['uid'],
+                'owner' => session('username'),
+                'date' => date("Y-m-d H:i:s"),
+                'year' => $param['year'],
+                'season' =>  $param['season'],
+                'name' =>  $param['uname'],
+            ];
+            $flag = $attachment->insertProcedure($data);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+
     public function procedureListEdit()
     {
         $procedure_list = new ProcedureListModel();
