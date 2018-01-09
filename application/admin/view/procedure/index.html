@@ -649,9 +649,11 @@
 //    }
     function edit(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $("#qcid").val(id);
-        $("#myModal h5").text("编辑");
-        $("#myModal").modal("show");
+        $("#standard_modal input").val("");
+        $("#id1").val(id);
+        $("#standard_list").empty();
+        $("#standard_modal h5").text("编辑");
+        $("#standard_modal").modal("show");
         $.ajax({
             url: "./index",
             type: "post",
@@ -659,9 +661,9 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                $("#topic_name").val(res.data.topic_name);
-                $("#implement_date").val(res.data.implement_date);
-                $("#owner").val(res.data.owner);
+                $("#name").val(res.data.name);
+                $("#year").val(res.data.year);
+                $("#season").val(res.data.season);
             }
         })
     }
@@ -699,6 +701,7 @@
                 "targets": [6],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
@@ -732,7 +735,7 @@
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"uid":"","name":"","year":"","season":""},
+                formData: {"uid":"","uname":"","year":"","season":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -762,7 +765,7 @@
             });
             standard_uploader.on("uploadStart",function () {
                 standard_uploader.options.formData.uid = $("#id1").val();
-                standard_uploader.options.formData.name = $("#name").val();
+                standard_uploader.options.formData.uname = $("#name").val();
                 standard_uploader.options.formData.year = $("#year").val();
                 standard_uploader.options.formData.season = $("#season").val();
             })
@@ -784,7 +787,7 @@
             standard_uploader.on( 'uploadSuccess', function( file,data, response ) {
                 console.log(file)
                 console.log(data)
-                layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
+                layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
                 standard_uploader = null;
                 standard_table.ajax.url("__SCRIPT__/procedure.php").load();
                 $("#standard_modal").modal('hide');
@@ -792,7 +795,7 @@
             });
 
             // 文件上传失败，显示上传出错。
-            uploader.on( 'uploadError', function( file ) {
+            standard_uploader.on( 'uploadError', function( file ) {
                 layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
                 $("#standard_per").empty();
                 $("#standard_upload").empty();
@@ -800,7 +803,21 @@
         }
     });
     $("#standard_modal .btn-primary").click(function () {
-        standard_uploader.upload();
+        if($("#standard_list").html()){
+            standard_uploader.upload();
+        }else {
+            $.ajax({
+                url: "./editProcedureNoUpload",
+                type: "post",
+                data: {uid:$("#id1").val(),uname:$("#name").val(),year:$("#year").val(),season:$("#season").val()},
+                datatype: "json",
+                success: function (res) {
+                    console.log(res);
+                    layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
+                }
+            })
+        }
+
     })
 
     $("#pro_back").click(function () {
