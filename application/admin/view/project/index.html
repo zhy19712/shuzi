@@ -851,7 +851,6 @@ function edit(that) {
             server: "{:url('Project/importExcel')}",// 文件接收服务端。
             chunked: false,
             fileSizeLimit: 1000 *1024 *1024,
-            fileNumLimit: 1,
 //            formData: {"uid":"","table_name":"","group_id":"","revision":"","publish_date":""},
             duplicate :true,// 重复上传图片，true为可重复false为不可重复
             pick: {
@@ -907,6 +906,7 @@ function edit(that) {
             zTreeObj.reAsyncChildNodes(null, "refresh");
             layer.msg(file.name + data.info,{icon:1,time:1500,shade: 0.1});
             $("#file_per").empty();
+            $("#file_upload input").val("");
         });
 
         // 文件上传失败，显示上传出错。
