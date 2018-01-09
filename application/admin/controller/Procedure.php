@@ -81,6 +81,18 @@ class Procedure extends Base
         }
     }
 
+    public function procedureEditDel()
+    {
+        $attachment = new ProcedureModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $data = $attachment->getOne($param['id']);
+            $path = $data['path'];
+            unlink($path); //删除文件
+            return json([ 'msg' => 'success']);
+        }
+    }
+
     //编辑，没有替换附件时保存上传附件信息
     public function editProcedureNoUpload()
     {
@@ -96,7 +108,7 @@ class Procedure extends Base
                 'season' =>  $param['season'],
                 'name' =>  $param['uname'],
             ];
-            $flag = $attachment->insertProcedure($data);
+            $flag = $attachment->editProcedure($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }

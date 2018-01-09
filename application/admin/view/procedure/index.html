@@ -644,7 +644,7 @@
     function delatt(that) {
         var id = $(that).parent("div").attr("id");
         $.ajax({
-            url: "./procedureDel",
+            url: "./procedureEditDel",
             type: "post",
             data: {id:id},
             datatype: "json",

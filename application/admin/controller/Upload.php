@@ -229,8 +229,6 @@ class Upload extends Base
                 $flag = $procedure->insertProcedure($data);
                 return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
             }else{
-                $data_older = $procedure->getOne($id);
-                unlink($data_older['path']);
                 $data = [
                     'id' => $id,
                     'owner' => session('username'),
