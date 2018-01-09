@@ -1706,7 +1706,7 @@
         this.val = val;
     }
     function intnumber(arr) {
-        var reg = /^\d+$/;
+        var reg = /^([0-9]+(\.[0-9]+)|\d+)$/;
         var alt = "";
         $.each(arr,function (i,n) {
             if(!reg.test(n.val)){
@@ -1721,7 +1721,7 @@
         }
     }
     function floatnumber(arr) {
-        var reg = /^[0-9]+(\.[0-9]{1})$/;
+        var reg = /^([0-9]+(\.[0-9]+)|\d+)$/;
         var alt = "";
         $.each(arr,function (i,n) {
             if(!reg.test(n.val)){
@@ -1739,6 +1739,14 @@
         $.each($("form"),function (i,n) {
             if($(n).css("display") === "block"){
                 if($(n).attr("id") === "model1"){
+                    if(!$("#evaluated_date").val()){
+                        alert("评定日期不能为空");
+                        return;
+                    }
+                    if(!$("#evaluated_by").val()){
+                        alert("评定人不能为空");
+                        return;
+                    }
                     var arr1 = [];
                     arr1.push(new newobj("检查孔数",$("#holes").val()),
                         new newobj("检查断面",$("#sections").val()),
@@ -1774,6 +1782,14 @@
                         });
                     }
                 }else if($(n).attr("id") === "model2"){
+                    if(!$("#evaluated_date2").val()){
+                        alert("评定日期不能为空");
+                        return;
+                    }
+                    if(!$("#evaluated_by2").val()){
+                        alert("评定人不能为空");
+                        return;
+                    }
                     var arr1 = [];
                     arr1.push(new newobj("设计厚度",$("#thickness2").val()),
                         new newobj("检测点数",$("#points2").val()),
@@ -1810,6 +1826,14 @@
                         });
                     }
                 }else if($(n).attr("id") === "model3"){
+                    if(!$("#evaluated_date3").val()){
+                        alert("评定日期不能为空");
+                        return;
+                    }
+                    if(!$("#evaluated_by3").val()){
+                        alert("评定人不能为空");
+                        return;
+                    }
                     var arr1 = [];
                     arr1.push(new newobj("施工单位自检组数",$("#num_self").val()),
                         new newobj("监理单位自检组数",$("#num_inspection").val()),
