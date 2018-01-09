@@ -112,7 +112,7 @@ class Upload extends Base
     public function uploadPrototype(){
         $prototype = new PrototypeModel();
         $id = request()->param('uid');
-        $name = request()->param('name');
+        $name = request()->param('uname');
         $year = request()->param('year');
         $season = request()->param('season');
         $file = request()->file('file');
@@ -206,7 +206,7 @@ class Upload extends Base
     public function uploadProcedure(){
         $procedure = new ProcedureModel();
         $id = request()->param('uid');
-        $name = request()->param('name');
+        $name = request()->param('uname');
         $year = request()->param('year');
         $season = request()->param('season');
         $file = request()->file('file');
