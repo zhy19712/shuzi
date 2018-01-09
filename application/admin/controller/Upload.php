@@ -2,6 +2,7 @@
 
 namespace app\admin\controller;
 use app\admin\model\ProcedureAttachmentModel;
+use app\admin\model\ProcedureModel;
 use app\admin\model\PrototypeAttachmentModel;
 use app\admin\model\PrototypeModel;
 use think\Controller;
@@ -203,7 +204,7 @@ class Upload extends Base
 
     //标准工艺文件上传
     public function uploadProcedure(){
-        $procedure = new ProcedureAttachmentModel();
+        $procedure = new ProcedureModel();
         $id = request()->param('uid');
         $name = request()->param('name');
         $year = request()->param('year');
@@ -225,7 +226,7 @@ class Upload extends Base
                     'name' => $name,
                     'filename' => $filename
                 ];
-                $flag = $procedure->insertAttachment($data);
+                $flag = $procedure->insertProcedure($data);
                 return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
             }else{
                 $data_older = $procedure->getOne($id);
@@ -240,7 +241,7 @@ class Upload extends Base
                     'name' => $name,
                     'filename' => $filename
                 ];
-                $flag = $procedure->editAttachment($data);
+                $flag = $procedure->editProcedure($data);
                 return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
             }
         }else{
