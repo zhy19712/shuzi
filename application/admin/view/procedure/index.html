@@ -164,10 +164,11 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>内容(课题名称)</th>
-                <th>实施日期</th>
-                <th>负责人</th>
-                <th>状态</th>
+                <th>名称</th>
+                <th>年度</th>
+                <th>季度</th>
+                <th>上传人</th>
+                <th>上传时间</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -374,23 +375,24 @@
                 <div class="ibox-title">
                     <h5></h5>
                 </div>
+                <input type="text" name="id" id="id1" style="display: none;" value="">
                 <div class="ibox-content">
                     <div class="col-lg-12 col-xs-12">
                         <label class="col-xs-3 control-label">名称：</label>
                         <div class="myblock col-xs-8 input-group">
-                            <input id="topic_name" type="text" class="form-control" name="topic_name" >
+                            <input id="name" type="text" class="form-control" name="name" >
                         </div>
                     </div>
                     <div class="col-lg-12 col-xs-12">
                         <label class="col-xs-3 control-label">年度：</label>
                         <div class="myblock col-xs-8 input-group">
-                            <input id="implement_date" type="text" class="form-control" name="implement_date" >
+                            <input id="year" type="text" class="form-control" name="year" >
                         </div>
                     </div>
                     <div class="col-lg-12 col-xs-12">
                         <label class="col-xs-3 control-label">季度：</label>
                         <div class="myblock col-xs-8 input-group">
-                            <select name="sex" id="" class="form-control" >
+                            <select name="season" id="season" class="form-control" >
                                 <option value="第一季度">第一季度</option>
                                 <option value="第二季度">第二季度</option>
                                 <option value="第三季度">第三季度</option>
@@ -399,7 +401,7 @@
                         </div>
                     </div>
                     <div class="col-lg-12 col-xs-12">
-                        <label class="col-xs-3 control-label" id="file">文件：</label>
+                        <label class="col-xs-3 control-label">文件：</label>
                         <div class="myblock col-xs-8 input-group">
                             <div id="standard_per" style="display: inline-block;vertical-align: middle;"></div>
                             <div id="standard_upload" style="display: inline-block;vertical-align: middle;"></div>
@@ -425,8 +427,7 @@
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post" action="{:url('memberAdd')}">
-                        <input type="text" name="id" id="sid" style="display: none;">
-                        <input type="text" name="group_id" id="pgroup_id" style="display: none;">
+
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">标准工艺名称：</label>
@@ -515,7 +516,6 @@
         $("#fname").modal('show');
         if(!uploader){
             uploader = WebUploader.create({
-
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
                 server: "{:url('Upload/uploadQC')}",// 文件接收服务端。
@@ -584,66 +584,6 @@
                 layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
                 if(table_name === "xtly"){
                     upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
-                }else if(table_name === "qcxz"){
-                    id1 = data.id;
-                    path1 = data.path.substr(1);
-                    $("#img_container>img").attr("src",path1);
-                }else if(table_name === "xzdc"){
-                    inquire_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
-                }else if(table_name === "mbsd"){
-                    id2 = data.id;
-                    path2 = data.path.substr(1);
-                    $("#pic_container>img").attr("src",path2);
-                }else if(table_name === "mblz"){
-                    target_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=mblz").load();
-                }else if(table_name === "yyfx"){
-                    id3 = data.id;
-                    path3 = data.path.substr(1);
-                    $("#reason_container>img").attr("src",path3);
-                }else if(table_name === "ss"){
-                    implement_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=ss").load();
-                }else if(table_name === "smyxzl"){
-                    implement_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=smyxzl").load();
-                }else if(table_name === "wjzl"){
-                    check_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=wjzl").load();
-                }else if(table_name === "smyx"){
-                    check_table4.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=smyx").load();
-                }else if(table_name === "jjxy"){
-                    check_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=jjxy").load();
-                }else if(table_name === "shxy"){
-                    check_table3.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=shxy").load();
-                }else if(table_name === "ggcs"){
-                    standard_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=ggcs").load();
-                }else if(table_name === "bzh"){
-                    standard_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=bzh").load();
-                }else if(table_name === "zj"){
-                    summarize_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=zj").load();
-                    $.ajax({
-                        url: "./qcAdd",
-                        type: "post",
-                        data: {id:cid,status:"已完成"},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                            if(res.code === 1){
-                                qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
-                            }
-                        }
-                    })
-                }else if(table_name === "cgfbqk"){
-                    result_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=cgfbqk").load();
-                    $.ajax({
-                        url: "./qcAdd",
-                        type: "post",
-                        data: {id:cid,status:"已发布"},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                            if(res.code === 1){
-                                qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
-                            }
-                        }
-                    })
                 }
                 uploader = null;
                 $("#file_upload").empty();
@@ -700,13 +640,13 @@
     });
     //标准工艺
     var cid;
-    function detail(that) {
-//        $("#container").css("display","block");
-        $("#pro_wrapper").css("display","block");
-        cid = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $("#myform1id").val(cid);
-//        grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
-    }
+//    function detail(that) {
+////        $("#container").css("display","block");
+//        $("#pro_wrapper").css("display","block");
+//        cid = $(that).parent("td").parent("tr").children("td:first-child").text();
+//        $("#myform1id").val(cid);
+////        grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
+//    }
     function edit(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         $("#qcid").val(id);
@@ -749,17 +689,16 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/qc_group.php"
+            "url": "__SCRIPT__/procedure.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [5],
+                "targets": [6],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='detail(this)' value='详情'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
@@ -788,11 +727,11 @@
 
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadQC')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadProcedure')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"uid":"","table_name":"","group_id":"","revision":"","publish_date":""},
+                formData: {"id":"","name":"","year":"","season":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -821,11 +760,10 @@
                 console.log("remove");
             });
             standard_uploader.on("uploadStart",function () {
-                standard_uploader.options.formData.id = uid;
-                standard_uploader.options.formData.table_name = table_name;
-                standard_uploader.options.formData.group_id = group_id;
-                standard_uploader.options.formData.revision = revision;
-                standard_uploader.options.formData.publish_date = publish_date;
+                standard_uploader.options.formData.id = $("#id1").val();
+                standard_uploader.options.formData.name = $("#name").val();
+                standard_uploader.options.formData.year = $("#year").val();
+                standard_uploader.options.formData.season = $("#season").val();
             })
             // 文件上传过程中创建进度条实时显示。
             standard_uploader.on('uploadProgress', function (file, percentage) {
@@ -860,6 +798,9 @@
             });
         }
     });
+    $("#standard_modal .btn-primary").click(function () {
+        standard_uploader.upload();
+    })
 
     $("#pro_back").click(function () {
         $("#pro_wrapper").css("display","none");
