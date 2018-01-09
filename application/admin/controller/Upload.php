@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 use app\admin\model\ProcedureAttachmentModel;
 use app\admin\model\PrototypeAttachmentModel;
+use app\admin\model\PrototypeModel;
 use think\Controller;
 use think\File;
 use think\Request;
@@ -108,12 +109,11 @@ class Upload extends Base
     }
 
     public function uploadPrototype(){
-        $prototype = new PrototypeAttachmentModel();
-        $id = request()->param('uid');
-        $table_name = request()->param('table_name');
-        $group_id = request()->param('group_id');
-        $revision = request()->param('revision');
-        $publish_date = request()->param('publish_date');
+        $prototype = new PrototypeModel();
+        $id = request()->param('id');
+        $name = request()->param('name');
+        $year = request()->param('year');
+        $season = request()->param('season');
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/Prototype');
         if($info){
@@ -126,15 +126,13 @@ class Upload extends Base
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
                     'path' => $path,
-                    'name' => $filename,
-                    'revision' => $revision,
-                    'group_id' => $group_id,
-                    'table_name' => $table_name,
-                    'publish_date' => $publish_date
+                    'year' => $year,
+                    'season' => $season,
+                    'name' => $name,
+                    'filename' => $filename
                 ];
-                $flag = $prototype->insertAttachment($data);
-                $data_newer = $prototype->getImageId($group_id, $table_name);
-                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
+                $flag = $prototype->insertPrototype($data);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
             }else{
                 $data_older = $prototype->getOne($id);
                 unlink($data_older['path']);
@@ -143,15 +141,60 @@ class Upload extends Base
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
                     'path' => $path,
-                    'name' => $filename,
-                    'revision' => $revision,
-                    'group_id' => $group_id,
+                    'year' => $year,
+                    'season' => $season,
+                    'name' => $name,
+                    'filename' => $filename
+                ];
+                $flag = $prototype->editPrototype($data);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+
+    public function uploadPrototypeAttachment(){
+        $prototype = new PrototypeAttachmentModel();
+        $id = request()->param('id');
+        $table_name = request()->param('table_name');
+        $group_id = request()->param('group_id');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/Prototype/Attachment');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/prototype/Attachment' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
                     'table_name' => $table_name,
-                    'publish_date' => $publish_date
+                    'group_id' => $group_id,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark,
+                    'name' => $filename
+                ];
+                $flag = $prototype->insertAttachment($data);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
+            }else{
+                $data_older = $prototype->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'table_name' => $table_name,
+                    'group_id' => $group_id,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark,
+                    'name' => $filename
                 ];
                 $flag = $prototype->editAttachment($data);
-                $data_newer = $prototype->getImageId($group_id, $table_name);
-                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
             }
         }else{
             echo $file->getError();
