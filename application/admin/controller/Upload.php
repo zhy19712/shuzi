@@ -158,8 +158,10 @@ class Upload extends Base
         }
     }
 
+    //标准工艺文件上传
     public function uploadProcedure(){
         $procedure = new ProcedureAttachmentModel();
+        $id = request()->param('id');
         $name = request()->param('name');
         $year = request()->param('year');
         $season = request()->param('season');
@@ -194,6 +196,53 @@ class Upload extends Base
                     'season' => $season,
                     'name' => $name,
                     'filename' => $filename
+                ];
+                $flag = $procedure->editAttachment($data);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    //标准工艺附件
+    public function uploadProcedureAttachment(){
+        $procedure = new ProcedureAttachmentModel();
+        $id = request()->param('id');
+        $table_name = request()->param('table_name');
+        $group_id = request()->param('group_id');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/Procedure/Attachment');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/procedure/Attachment/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'table_name' => $table_name,
+                    'group_id' => $group_id,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark,
+                    'name' => $filename
+                ];
+                $flag = $procedure->insertAttachment($data);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
+            }else{
+                $data_older = $procedure->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'table_name' => $table_name,
+                    'group_id' => $group_id,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark,
+                    'name' => $filename
                 ];
                 $flag = $procedure->editAttachment($data);
                 return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
