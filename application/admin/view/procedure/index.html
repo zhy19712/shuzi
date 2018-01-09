@@ -720,6 +720,7 @@
     $("div.mybtn").html('<div>新增</div>');
     $("#standard_wrapper .mybtn").click(function () {
         $("#standard_modal input").val("");
+        $("#standard_list").empty();
         $("#standard_modal h5").text("新增");
         $("#standard_modal").modal('show');
         if(!standard_uploader){
@@ -785,6 +786,7 @@
                 console.log(data)
                 layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
                 uploader = null;
+                standard_table.ajax.url("__SCRIPT__/procedure.php").load();
                 $("#standard_upload").empty();
                 $("#standard_modal").modal('hide');
                 $("#standard_per").empty();
