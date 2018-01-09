@@ -375,7 +375,7 @@
                 <div class="ibox-title">
                     <h5></h5>
                 </div>
-                <input type="text" name="id" id="id1" style="display: none;" value="">
+                <input type="text" name="uid" id="id1" style="display: none;" value="">
                 <div class="ibox-content">
                     <div class="col-lg-12 col-xs-12">
                         <label class="col-xs-3 control-label">名称：</label>
@@ -731,7 +731,7 @@
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"id":"","name":"","year":"","season":""},
+                formData: {"uid":"","name":"","year":"","season":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -760,7 +760,7 @@
                 console.log("remove");
             });
             standard_uploader.on("uploadStart",function () {
-                standard_uploader.options.formData.id = $("#id1").val();
+                standard_uploader.options.formData.uid = $("#id1").val();
                 standard_uploader.options.formData.name = $("#name").val();
                 standard_uploader.options.formData.year = $("#year").val();
                 standard_uploader.options.formData.season = $("#season").val();
