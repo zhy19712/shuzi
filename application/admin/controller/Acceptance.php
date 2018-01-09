@@ -274,42 +274,49 @@ class Acceptance extends Base
                 array_push($level4_name, $dd['name']);             //单元工程名
                 $level5_data = $level5->getAllbyPID($dd['id']);    //全部单元工程
                 $level5_data_primary =  $level5->getAllbyPIDandPrimary($dd['id']); //主要单元工程
-                foreach($level5_data as $data) {
-                    if ($data['cate'] == '开挖') {
-                        $level5_num += $level5_kaiwa->getNum($data['id']);
-                        $level5_qualified_num += $level5_kaiwa->getQualifiedNum($data['id']);
-                        $level5_good_num += $level5_kaiwa->getGoodNum($data['id']);
+                    foreach($level5_data as $data) {
+                        if ($data['cate'] == '开挖') {
+                            $level5_num += $level5_kaiwa->getNum($data['id']);
+                            $level5_qualified_num += $level5_kaiwa->getQualifiedNum($data['id']);
+                            $level5_good_num += $level5_kaiwa->getGoodNum($data['id']);
 
-                    }else if($data['cate'] == '支护'){
-                        $level5_num += $level5_zhihu->getNum($data['id']);
-                        $level5_qualified_num += $level5_zhihu->getQualifiedNum($data['id']);
-                        $level5_good_num += $level5_zhihu->getGoodNum($data['id']);
-                    }else if($data['cate'] == '混凝土'){
-                        $level5_num += $level5_hunningtu->getNum($data['id']);
-                        $level5_qualified_num += $level5_hunningtu->getQualifiedNum($data['id']);
-                        $level5_good_num += $level5_hunningtu->getGoodNum($data['id']);
+                        }else if($data['cate'] == '支护'){
+                            $level5_num += $level5_zhihu->getNum($data['id']);
+                            $level5_qualified_num += $level5_zhihu->getQualifiedNum($data['id']);
+                            $level5_good_num += $level5_zhihu->getGoodNum($data['id']);
+                        }else if($data['cate'] == '混凝土'){
+                            $level5_num += $level5_hunningtu->getNum($data['id']);
+                            $level5_qualified_num += $level5_hunningtu->getQualifiedNum($data['id']);
+                            $level5_good_num += $level5_hunningtu->getGoodNum($data['id']);
+                        }
                     }
-                }
-                foreach($level5_data_primary as $data_primary) {
-                    if ($data_primary['cate'] == '开挖') {
-                        $level5_num_primary += $level5_kaiwa->getNum($data_primary['id']);
-                        $level5_qualified_num_primary += $level5_kaiwa->getQualifiedNum($data_primary['id']);
-                        $level5_good_num_primary += $level5_kaiwa->getGoodNum($data_primary['id']);
 
-                    }else if($data_primary['cate'] == '支护'){
-                        $level5_num_primary += $level5_zhihu->getNum($data_primary['id']);
-                        $level5_qualified_num_primary += $level5_zhihu->getQualifiedNum($data_primary['id']);
-                        $level5_good_num_primary += $level5_zhihu->getGoodNum($data_primary['id']);
-                    }else if($data_primary['cate'] == '混凝土'){
-                        $level5_num_primary += $level5_hunningtu->getNum($data_primary['id']);
-                        $level5_qualified_num_primary += $level5_hunningtu->getQualifiedNum($data_primary['id']);
-                        $level5_good_num_primary += $level5_hunningtu->getGoodNum($data_primary['id']);
+                    foreach($level5_data_primary as $data_primary) {
+                        if ($data_primary['cate'] == '开挖') {
+                            $level5_num_primary += $level5_kaiwa->getNum($data_primary['id']);
+                            $level5_qualified_num_primary += $level5_kaiwa->getQualifiedNum($data_primary['id']);
+                            $level5_good_num_primary += $level5_kaiwa->getGoodNum($data_primary['id']);
+
+                        }else if($data_primary['cate'] == '支护'){
+                            $level5_num_primary += $level5_zhihu->getNum($data_primary['id']);
+                            $level5_qualified_num_primary += $level5_zhihu->getQualifiedNum($data_primary['id']);
+                            $level5_good_num_primary += $level5_zhihu->getGoodNum($data_primary['id']);
+                        }else if($data_primary['cate'] == '混凝土'){
+                            $level5_num_primary += $level5_hunningtu->getNum($data_primary['id']);
+                            $level5_qualified_num_primary += $level5_hunningtu->getQualifiedNum($data_primary['id']);
+                            $level5_good_num_primary += $level5_hunningtu->getGoodNum($data_primary['id']);
+                        }
                     }
-                }
+
                 array_push($num, $level5_num);
                 array_push($qualified_num, $level5_qualified_num);
                 array_push($good_num, $level5_good_num);
-                array_push($good_rate, floor($level5_good_num/$level5_num*100)/100);
+                if($level5_num>0){
+                    array_push($good_rate, floor($level5_good_num/$level5_num*100)/100);
+                }else{
+                    array_push($good_rate,0);
+                }
+
             }
 
             //合计数目
@@ -340,7 +347,7 @@ class Acceptance extends Base
             $accident = $level3_data['accident'];
             $primary = $level3_data['primary'];
             //计算优良等级
-            if($num[count($num)-2] == ($qualified_num[count($qualified_num)-2] + $good_num[count($good_num)-2])){
+            if($num[count($num)-2] != 0 && $num[count($num)-2] == ($qualified_num[count($qualified_num)-2] + $good_num[count($good_num)-2])){
                 $level = '合格';
                 if($level5_num_primary == 0 && $accident == '否' && $good_rate[count($good_rate)-1]){
                     $level = '优良';
@@ -349,7 +356,7 @@ class Acceptance extends Base
                     $level = '优良';
                 }
             }else{
-                $level = '不合格';
+                $level = '尚未评定完成';
             }
 
                 $param['level'] = $level;
@@ -433,14 +440,19 @@ class Acceptance extends Base
             if($num[count($num)-2] == ($qualified_num[count($qualified_num)-2] + $good_num[count($good_num)-2])){
                 $level = '合格';
                 //主要分布工程数目为0的情况
-                if($level3_num_primary == 0 && $accident == '否' && $good_rate[count($good_rate)-2] >= 0.7 && end($score) >= 85){
-                    $level = '优良';
+                if(end($score)!= null){
+                    if($level3_num_primary == 0 && $accident == '否' && $good_rate[count($good_rate)-2] >= 0.7 && end($score) >= 85){
+                        $level = '优良';
+                    }
+                    if(end($good_rate) == 1 && $accident == '否' && $good_rate[count($good_rate)-2] >= 0.7 && end($score) >= 85){
+                        $level = '优良';
+                    }
+                }else{
+                    $level = '尚未评定完成';
                 }
-                if(end($good_rate) == 1 && $accident == '否' && $good_rate[count($good_rate)-2] >= 0.7 && end($score) >= 85){
-                    $level = '优良';
-                }
+
             }else{
-                $level = '不合格';
+                $level = '尚未评定完成';
             }
 
                 $param['level'] = $level;
