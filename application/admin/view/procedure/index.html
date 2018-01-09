@@ -635,8 +635,8 @@
         $("#tab_con>div").css("display","none").eq(index).css("display","block");
     })
     //日期插件
-    $("#implement_date").jeDate({
-        format: "YYYY-MM-DD"
+    $("#year").jeDate({
+        format: "YYYY"
     });
     //标准工艺
     var cid;
@@ -785,9 +785,8 @@
                 console.log(file)
                 console.log(data)
                 layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
-                uploader = null;
+                standard_uploader = null;
                 standard_table.ajax.url("__SCRIPT__/procedure.php").load();
-                $("#standard_upload").empty();
                 $("#standard_modal").modal('hide');
                 $("#standard_per").empty();
             });
