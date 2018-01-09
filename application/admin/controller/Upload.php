@@ -110,7 +110,7 @@ class Upload extends Base
 
     public function uploadPrototype(){
         $prototype = new PrototypeModel();
-        $id = request()->param('id');
+        $id = request()->param('uid');
         $name = request()->param('name');
         $year = request()->param('year');
         $season = request()->param('season');
@@ -157,7 +157,7 @@ class Upload extends Base
 
     public function uploadPrototypeAttachment(){
         $prototype = new PrototypeAttachmentModel();
-        $id = request()->param('id');
+        $id = request()->param('uid');
         $table_name = request()->param('table_name');
         $group_id = request()->param('group_id');
         $remark = request()->param('remark');
@@ -204,7 +204,7 @@ class Upload extends Base
     //标准工艺文件上传
     public function uploadProcedure(){
         $procedure = new ProcedureAttachmentModel();
-        $id = request()->param('id');
+        $id = request()->param('uid');
         $name = request()->param('name');
         $year = request()->param('year');
         $season = request()->param('season');
@@ -251,7 +251,7 @@ class Upload extends Base
     //标准工艺附件
     public function uploadProcedureAttachment(){
         $procedure = new ProcedureAttachmentModel();
-        $id = request()->param('id');
+        $id = request()->param('uid');
         $table_name = request()->param('table_name');
         $group_id = request()->param('group_id');
         $remark = request()->param('remark');
