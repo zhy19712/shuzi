@@ -11,7 +11,7 @@ namespace app\admin\controller;
 
 use app\admin\model\ProjectStageModel;
 
-class ProjectStage extends Base
+class Stage extends Base
 {
     public function index()
     {

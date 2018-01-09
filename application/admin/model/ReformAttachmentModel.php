@@ -15,7 +15,7 @@ class ReformAttachmentModel extends Model
 {
     protected $name = 'reform_attachment';
 
-    public function insertReformAttachment($param)
+    public function insertAttachment($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -29,7 +29,7 @@ class ReformAttachmentModel extends Model
         }
     }
 
-    public function editReformAttachment($param)
+    public function editAttachment($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -43,7 +43,7 @@ class ReformAttachmentModel extends Model
         }
     }
 
-    public function delReformAttachment($id)
+    public function delAttachment($id)
     {
         try{
             $this->where('id', $id)->delete();
