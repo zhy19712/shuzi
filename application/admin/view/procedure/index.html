@@ -640,19 +640,101 @@
     });
     //标准工艺
     var cid;
-//    function detail(that) {
-////        $("#container").css("display","block");
-//        $("#pro_wrapper").css("display","block");
-//        cid = $(that).parent("td").parent("tr").children("td:first-child").text();
-//        $("#myform1id").val(cid);
-////        grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
-//    }
+    var file_name1,file_name2;
+    function delatt(that) {
+        var id = $(that).parent("div").attr("id");
+        $.ajax({
+            url: "./procedureDel",
+            type: "post",
+            data: {id:id},
+            datatype: "json",
+            success: function (res) {
+                $("#"+id).remove();
+            }
+        })
+    }
     function edit(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         $("#standard_modal input").val("");
         $("#id1").val(id);
         $("#standard_list").empty();
         $("#standard_modal h5").text("编辑");
+        if(!standard_uploader){
+            standard_uploader = WebUploader.create({
+
+                auto: false,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('Upload/uploadProcedure')}",// 文件接收服务端。
+                chunked: false,
+                fileSizeLimit: 1000 *1024 *1024,
+                fileNumLimit: 1,
+                formData: {"uid":"","uname":"","year":"","season":""},
+                duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: false,
+                    id: "#standard_upload",
+                    innerHTML: "上传文件"
+                }
+            });
+
+            standard_uploader.on( 'fileQueued', function( file ) {
+                file_name2 = file.name;
+                $("#standard_per").append('<div id="' + file.id + '" class="item">' +
+                    '</div>');
+                $("#standard_list").empty().append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                    '<span class="info">' + file.name + '</span>&nbsp' +
+                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>' );
+            });
+            $("#file_list").on("click", ".webuploadDelbtn", function () {
+                var $ele = $(this);
+                var id = $ele.parent().attr("class");
+                var file = uploader.getFile(id);
+                uploader.removeFile(file,true);
+            });
+            standard_uploader.on('fileDequeued', function (file) {
+                $(file.id).remove();
+                $('.'+file.id).remove();
+                console.log("remove");
+            });
+            standard_uploader.on("uploadStart",function () {
+                standard_uploader.options.formData.uid = $("#id1").val();
+                standard_uploader.options.formData.uname = $("#name").val();
+                standard_uploader.options.formData.year = $("#year").val();
+                standard_uploader.options.formData.season = $("#season").val();
+            })
+            // 文件上传过程中创建进度条实时显示。
+            standard_uploader.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            standard_uploader.on( 'uploadSuccess', function( file,data, response ) {
+                console.log(file)
+                console.log(data)
+                layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
+                standard_uploader = null;
+                standard_table.ajax.url("__SCRIPT__/procedure.php").load();
+                $("#standard_modal").modal('hide');
+                $("#standard_per").empty();
+            });
+
+            // 文件上传失败，显示上传出错。
+            standard_uploader.on( 'uploadError', function( file ) {
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                $("#standard_per").empty();
+                $("#standard_upload").empty();
+            });
+        }
         $("#standard_modal").modal("show");
         $.ajax({
             url: "./index",
@@ -664,6 +746,12 @@
                 $("#name").val(res.data.name);
                 $("#year").val(res.data.year);
                 $("#season").val(res.data.season);
+                file_name1 = res.data.filename;
+                file_name2 = res.data.filename;
+                $("#standard_list").append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                    '<span class="info">' + res.data.filename + '</span>&nbsp' +
+                    '<span onclick="delatt(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>' );
             }
         })
     }
@@ -671,14 +759,14 @@
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
-                url: "./qcDel",
+                url: "./procedureDel",
                 data: {'id' : id},
                 type: "post",
                 dataType: "json",
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
+                        standard_table.ajax.url("__SCRIPT__/procedure.php").load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -686,6 +774,21 @@
             })
             layer.close(index);
         })
+    }
+    //文件下载
+    function download(that) {
+        $("#form_container").empty();
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var str = "";
+        str += ""
+            + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+            + "<form name=download"+ id +" action='./procedureDownload' method='get' target=downloadFrame"+ id +">"
+            + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+            + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+            + "<button type='submit' class=btn" + id +"></button>"
+            + "</form>"
+        $("#form_container").append(str);
+        $("#form_container").find(".btn" + id).click();
     }
     var standard_table = $('#standard_table').DataTable( {
         "processing": true,
@@ -745,6 +848,7 @@
             });
 
             standard_uploader.on( 'fileQueued', function( file ) {
+                file_name2 = file.name;
                 $("#standard_per").append('<div id="' + file.id + '" class="item">' +
                     '</div>');
                 $("#standard_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
@@ -804,20 +908,32 @@
     });
     $("#standard_modal .btn-primary").click(function () {
         if($("#standard_list").html()){
-            standard_uploader.upload();
+            if(file_name1 === file_name2){
+                $.ajax({
+                    url: "./editProcedureNoUpload",
+                    type: "post",
+                    data: {uid:$("#id1").val(),uname:$("#name").val(),year:$("#year").val(),season:$("#season").val()},
+                    datatype: "json",
+                    success: function (res) {
+                        if(res.code === 1){
+                            layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
+                            standard_table.ajax.url("__SCRIPT__/procedure.php").load();
+                            $("#standard_modal").modal('hide');
+                        }else {
+                            layer.msg("提交失败",{icon:1,time:1500,shade: 0.1});
+                        }
+                    }
+                })
+            }else {
+                standard_uploader.upload();
+            }
         }else {
-            $.ajax({
-                url: "./editProcedureNoUpload",
-                type: "post",
-                data: {uid:$("#id1").val(),uname:$("#name").val(),year:$("#year").val(),season:$("#season").val()},
-                datatype: "json",
-                success: function (res) {
-                    console.log(res);
-                    layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
-                }
-            })
+            alert("请选择上传文件");
         }
 
+    })
+    $("#standard_modal .btn-danger").click(function () {
+        standard_uploader = null;
     })
 
     $("#pro_back").click(function () {
@@ -903,21 +1019,7 @@
     })
 
     //datatable
-    //文件下载
-    function download(that) {
-        $("#form_container").empty();
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        var str = "";
-        str += ""
-            + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-            + "<form name=download"+ id +" action='./attachmentDownload' method='get' target=downloadFrame"+ id +">"
-            + "<span class='file_name' style='color: #000;'>"+str+"</span>"
-            + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
-            + "<button type='submit' class=btn" + id +"></button>"
-            + "</form>"
-        $("#form_container").append(str);
-        $("#form_container").find(".btn" + id).click();
-    }
+
     //文件删除
     function fdel(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
