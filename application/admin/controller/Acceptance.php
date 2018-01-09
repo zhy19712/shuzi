@@ -356,7 +356,7 @@ class Acceptance extends Base
                     $level = '优良';
                 }
             }else{
-                $level = '尚未评定完成';
+                $level = '尚未评定';
             }
 
                 $param['level'] = $level;
@@ -448,11 +448,11 @@ class Acceptance extends Base
                         $level = '优良';
                     }
                 }else{
-                    $level = '尚未评定完成';
+                    $level = '尚未评定';
                 }
 
             }else{
-                $level = '尚未评定完成';
+                $level = '尚未评定';
             }
 
                 $param['level'] = $level;
