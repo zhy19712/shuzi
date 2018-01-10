@@ -116,7 +116,7 @@ class UserModel extends Model
      */
     public function getNodeInfo_2()
     {
-        $result = $this->field('id,name,groupid')->where('id','<>',1)->select();
+        $result = $this->field('id,username,groupid')->where('id','<>',1)->select();
         $str = "";
 
         foreach($result as $key=>$vo){
