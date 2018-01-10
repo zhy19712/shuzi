@@ -278,8 +278,8 @@ class Procedure extends Base
         $attachment = new ProcedureAttachmentModel();
         if(request()->isAjax()) {
             $param = input('post.');
-            $flag = $attachment->editAttachment($param['id']);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            $data = $attachment->getOne($param['id']);
+            return json(['data' => $data]);
         }
     }
 
