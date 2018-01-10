@@ -28,18 +28,12 @@ class Procedure extends Base
         }
         return $this->fetch();
     }
-
-//    public function procedureAdd()
+//
+//    public function procedureEdit()
 //    {
 //        $procedure = new ProcedureModel();
 //        if(request()->isAjax()){
-//            $param = input('post.');
-//            if(empty($param['id']))
-//            {
-//                $flag = $procedure->insertProcedure($param);
-//                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-//            }
-//            else if(!empty($param['id']))
+//           if(!empty($param['id']))
 //            {
 //                $flag = $procedure->editProcedure($param);
 //                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
@@ -180,9 +174,9 @@ class Procedure extends Base
         $procedure_list_sublist = new ProcedureListSublistModel();
         if(request()->isAjax()){
             $param = input('post.');
-            $param['date'] = date("Y-m-d H:i:s");
             if(empty($param['id']))
             {
+                $param['date'] = date("Y-m-d H:i:s");
                 $flag = $procedure_list_sublist->insertProcedureListSublist($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
