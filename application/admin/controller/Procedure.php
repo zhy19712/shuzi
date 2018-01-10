@@ -180,6 +180,7 @@ class Procedure extends Base
         $procedure_list_sublist = new ProcedureListSublistModel();
         if(request()->isAjax()){
             $param = input('post.');
+            $param['date'] = date("Y-m-d H:i:s");
             if(empty($param['id']))
             {
                 $flag = $procedure_list_sublist->insertProcedureListSublist($param);
@@ -204,6 +205,54 @@ class Procedure extends Base
         }
     }
 
+
+    public function procedureAttachmentEditDel()
+    {
+        $attachment = new ProcedureAttachmentModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $data = $attachment->getOne($param['id']);
+            $path = $data['path'];
+            unlink($path); //删除文件
+            return json([ 'msg' => 'success']);
+        }
+    }
+
+    //编辑，没有替换附件时保存上传附件信息
+    public function editProcedureAttachmentNoUpload()
+    {
+        $attachment = new ProcedureAttachmentModel();
+
+        $param = input('post.');
+        if(request()->isAjax()){
+            $data = [
+                'id' => $param['uid'],
+                'group_id' => $param['group_id'],
+                'owner' => session('username'),
+                'date' => date("Y-m-d H:i:s"),
+                'remark' =>  $param['remark'],
+                'table_name' =>  $param['table_name'],
+            ];
+            $flag = $attachment->editAttachment($data);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+
+    public function attachmentDel()
+    {
+        $attachment = new ProcedureAttachmentModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $data = $attachment->getOne($param['id']);
+            $path = $data['path'];
+            unlink($path); //删除文件
+            $flag = $attachment->delAttachment($param['id']);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+
     public function attachmentDownload()
     {
         $id = input('param.id');
@@ -224,15 +273,12 @@ class Procedure extends Base
         exit;
     }
 
-    public function attachmentDel()
+    public function attachmentEdit()
     {
         $attachment = new ProcedureAttachmentModel();
         if(request()->isAjax()) {
             $param = input('post.');
-            $data = $attachment->getOne($param['id']);
-            $path = $data['path'];
-            unlink($path); //删除文件
-            $flag = $attachment->delAttachment($param['id']);
+            $flag = $attachment->editAttachment($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
