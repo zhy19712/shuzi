@@ -51,7 +51,10 @@ class project extends Base
                 $limit = 28;
             }
 
-            $param['exceed'] =$diff - $limit  ;
+            $param['exceed'] =$diff - $limit;
+            if($param['exceed']>0){
+                $param['status'] == '预警中';
+            }
 
             if(empty($param['id']))
             {

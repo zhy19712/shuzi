@@ -239,6 +239,18 @@ class Procedure extends Base
     }
 
 
+    public function attachmentDel()
+    {
+        $attachment = new ProcedureAttachmentModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $data = $attachment->getOne($param['id']);
+            $path = $data['path'];
+            unlink($path); //删除文件
+            $flag = $attachment->delAttachment($param['id']);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
 
 
     public function attachmentDownload()
@@ -261,15 +273,12 @@ class Procedure extends Base
         exit;
     }
 
-    public function attachmentDel()
+    public function attachmentEdit()
     {
         $attachment = new ProcedureAttachmentModel();
         if(request()->isAjax()) {
             $param = input('post.');
-            $data = $attachment->getOne($param['id']);
-            $path = $data['path'];
-            unlink($path); //删除文件
-            $flag = $attachment->delAttachment($param['id']);
+            $flag = $attachment->editAttachment($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
