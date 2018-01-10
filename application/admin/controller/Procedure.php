@@ -124,6 +124,7 @@ class Procedure extends Base
         $procedure_list = new ProcedureListModel();
         if(request()->isAjax()){
             $param = input('post.');
+            $param['date'] = date("Y-m-d H:i:s");
             if(empty($param['id']))
             {
                 $flag = $procedure_list->insertProcedureList($param);
