@@ -904,14 +904,21 @@ function edit(that) {
             console.log(file)
             console.log(data)
             zTreeObj.reAsyncChildNodes(null, "refresh");
-            layer.msg(file.name + data.info,{icon:1,time:1500,shade: 0.1});
+//            layer.msg(file.name + data.info,{icon:1,time:1500,shade: 0.1});
+            var msg = file.name + data.info;
+            layer.confirm(msg, {icon: 3, title:'提示'}, function(index){
+                layer.close(index);
+            })
             $("#file_per").empty();
             $("#file_upload input").val("");
         });
 
         // 文件上传失败，显示上传出错。
-        uploader.on( 'uploadError', function( file ) {
-            layer.msg(file.name + data.info,{icon:2,time:1500,shade: 0.1});
+        uploader.on( 'uploadError', function( file ,data) {
+            var msg = file.name + data.info;
+            layer.confirm(msg, function(index){
+                layer.close(index);
+            });
             $("#file_per").empty();
         });
 //        $("#btn_upload").click(function () {
