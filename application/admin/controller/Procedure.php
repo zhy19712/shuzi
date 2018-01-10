@@ -29,24 +29,18 @@ class Procedure extends Base
         return $this->fetch();
     }
 
-//    public function procedureAdd()
-//    {
-//        $procedure = new ProcedureModel();
-//        if(request()->isAjax()){
-//            $param = input('post.');
-//            if(empty($param['id']))
-//            {
-//                $flag = $procedure->insertProcedure($param);
-//                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-//            }
-//            else if(!empty($param['id']))
-//            {
-//                $flag = $procedure->editProcedure($param);
-//                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-//            }
-//
-//        }
-//    }
+    public function procedureEdit()
+    {
+        $procedure = new ProcedureModel();
+        if(request()->isAjax()){
+           if(!empty($param['id']))
+            {
+                $flag = $procedure->editProcedure($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
+
+        }
+    }
 
     public function procedureDownload()
     {
