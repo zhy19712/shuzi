@@ -1041,7 +1041,7 @@
         $("#standard_table tbody tr:nth-child(even)").css("background-color","#fff");
         $(this).css("background-color","#AAAAAA");
         cid = $(this).children("td:first-child").text();
-        ss_table.ajax.url("__SCRIPT__/procedure_list.php?groupid=" + cid).load();
+        ss_table.ajax.url("__SCRIPT__/procedure_list.php?group_id=" + cid).load();
         $("#ssgy").css("display","block");
     })
 
@@ -1083,7 +1083,7 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        ss_table.ajax.url("__SCRIPT__/procedure_list.php?groupid=" + cid).load();
+                        ss_table.ajax.url("__SCRIPT__/procedure_list.php?group_id=" + cid).load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -1096,7 +1096,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/procedure_list.php?groupid=" + cid
+            "url": "__SCRIPT__/procedure_list.php?group_id=" + cid
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
@@ -1540,7 +1540,7 @@
                 if(data.code==1){
                     $("#ss_modal").modal('hide');
                     layer.msg("保存成功");
-                    ss_table.ajax.url("__SCRIPT__/procedure_list.php?groupid=" + cid).load();
+                    ss_table.ajax.url("__SCRIPT__/procedure_list.php?group_id=" + cid).load();
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;
