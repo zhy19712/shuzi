@@ -911,7 +911,9 @@ function edit(that) {
 
         // 文件上传失败，显示上传出错。
         uploader.on( 'uploadError', function( file ) {
-            layer.msg(file.name + data.info,{icon:2,time:1500,shade: 0.1});
+            layer.confirm(file.name + data.info, function(index){
+                layer.close(index);
+            });
             $("#file_per").empty();
         });
 //        $("#btn_upload").click(function () {
