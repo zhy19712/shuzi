@@ -610,7 +610,8 @@
     var mytablename;
     var tabtxt = "文件资料";
     var tablename = "wjzl";
-    function myupload(uid,group_id,table_name,remark) {
+    var uid,cid3,table_name,myremark;
+    function myupload() {
         $("#fname input").val("");
         $("#file_list").empty();
         mytablename = table_name;
@@ -654,8 +655,8 @@
             uploader.on("uploadStart",function () {
                 uploader.options.formData.id = uid;
                 uploader.options.formData.table_name = table_name;
-                uploader.options.formData.group_id = group_id;
-                uploader.options.formData.remark = remark;
+                uploader.options.formData.group_id = cid3;
+                uploader.options.formData.remark = myremark;
             })
             // 文件上传过程中创建进度条实时显示。
             uploader.on('uploadProgress', function (file, percentage) {
@@ -697,7 +698,9 @@
         }
     }
     $("#upload9").click(function () {
-        myupload("",cid3,tablename,$("#fremark").val());
+        uid = "";
+        table_name = tablename;
+        myupload();
     });
 //    $("#upload7").click(function () {
 //        myupload("",cid,"ss","bb","");
@@ -715,9 +718,9 @@
 //    $("#upload12").click(function () {
 //        myupload("",cid,"ggcs","","");
 //    });
-    $("#fname .btn-primary").click(function () {
-        uploader.upload();
-    });
+//    $("#fname .btn-primary").click(function () {
+//        uploader.upload();
+//    });
 
     $("#tab_li>div").click(function () {
         var index = $(this).index();
@@ -961,7 +964,7 @@
                     '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
                     '</div>' );
             });
-            $("#file_list").on("click", ".webuploadDelbtn", function () {
+            $("#standard_list").on("click", ".webuploadDelbtn", function () {
                 var $ele = $(this);
                 var id = $ele.parent().attr("class");
                 var file = uploader.getFile(id);
@@ -1407,8 +1410,8 @@
             uploader.on("uploadStart",function () {
                 uploader.options.formData.id = uid;
                 uploader.options.formData.table_name = table_name;
-                uploader.options.formData.group_id = group_id;
-                uploader.options.formData.remark = remark;
+                uploader.options.formData.group_id = cid3;
+                uploader.options.formData.remark = myremark;
             })
             // 文件上传过程中创建进度条实时显示。
             uploader.on('uploadProgress', function (file, percentage) {
@@ -1465,10 +1468,10 @@
             success: function (res) {
                 console.log(res);
                 $("#fremark").val(res.data.remark);
-                file_name3 = res.data.filename;
-                file_name4 = res.data.filename;
-                $("#standard_list").append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
-                    '<span class="info">' + res.data.filename + '</span>&nbsp' +
+                file_name3 = res.data.name;
+                file_name4 = res.data.name;
+                $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                    '<span class="info">' + res.data.name + '</span>&nbsp' +
                     '<span onclick="fdelatt(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
                     '</div>' );
             }
@@ -1476,34 +1479,38 @@
     }
     $("#fname .btn-primary").click(function () {
         if($("#file_list").html()){
-            if(file_name3 === file_name4){
-                $.ajax({
-                    url: "./editProcedureAttachmentNoUpload",
-                    type: "post",
-                    data: {uid:$("#id4").val(),remark:$("#fremark").val()},
-                    datatype: "json",
-                    success: function (res) {
-                        if(res.code === 1){
-                            layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
-                            if(mytablename === "wjzl"){
-                                check_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=wjzl").load();
-                            }else if(mytablename === "smyx"){
-                                check_table4.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=smyx").load();
-                            }
-                            $("#fname").modal('hide');
-                        }else {
-                            layer.msg("提交失败",{icon:1,time:1500,shade: 0.1});
-                        }
-                    }
-                })
-            }else {
-                myupload("",cid3,mytablename,$("#fremark").val());
+            myremark = $("#fremark").val();
+            uid = $("#id4").val();
+            if(!$("#id4").val()){
                 uploader.upload();
+            }else {
+                if(file_name3 === file_name4){
+                    $.ajax({
+                        url: "./editProcedureAttachmentNoUpload",
+                        type: "post",
+                        data: {uid:uid,remark:myremark,group_id:cid3,table_name:mytablename},
+                        datatype: "json",
+                        success: function (res) {
+                            if(res.code === 1){
+                                layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
+                                if(mytablename === "wjzl"){
+                                    check_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=wjzl").load();
+                                }else if(mytablename === "smyx"){
+                                    check_table4.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=smyx").load();
+                                }
+                                $("#fname").modal('hide');
+                            }else {
+                                layer.msg("提交失败",{icon:1,time:1500,shade: 0.1});
+                            }
+                        }
+                    })
+                }else {
+                    uploader.upload();
+                }
             }
         }else {
             alert("请选择上传文件");
         }
-
     })
 
     var check_table1 = $('#check_table1').DataTable( {
