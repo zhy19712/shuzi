@@ -19,6 +19,7 @@ use app\admin\model\HunningtuModel;
 
 class Acceptance extends Base
 {
+    //质量验收界面组合五级树结构
     public function index()
     {
         if(request()->isAjax()){
@@ -138,13 +139,6 @@ class Acceptance extends Base
         $flag = $maogan->delMaogan($id);
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
-
-    //获取分部工程验收信息
-    public function getLevelThree()
-    {
-
-    }
-
 
     /**
      * [获取当前节点的所有父级]
@@ -356,7 +350,7 @@ class Acceptance extends Base
                     $level = '优良';
                 }
             }else{
-                $level = '尚未评定完成';
+                $level = '尚未评定';
             }
 
                 $param['level'] = $level;
@@ -448,11 +442,11 @@ class Acceptance extends Base
                         $level = '优良';
                     }
                 }else{
-                    $level = '尚未评定完成';
+                    $level = '尚未评定';
                 }
 
             }else{
-                $level = '尚未评定完成';
+                $level = '尚未评定';
             }
 
                 $param['level'] = $level;
@@ -466,7 +460,7 @@ class Acceptance extends Base
 
 
 
-
+   //改变是否为主要分布/单元工程的值
     public function changePrimary(){
         $level3 = new DivideModel();
         if(request()->isAjax()) {

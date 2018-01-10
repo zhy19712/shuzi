@@ -3,8 +3,11 @@
 namespace app\admin\controller;
 use app\admin\model\ProcedureAttachmentModel;
 use app\admin\model\ProcedureModel;
+use app\admin\model\ProjectStageModel;
 use app\admin\model\PrototypeAttachmentModel;
 use app\admin\model\PrototypeModel;
+use app\admin\model\ReformAttachmentModel;
+use app\admin\model\ReformModel;
 use think\Controller;
 use think\File;
 use think\Request;
@@ -135,8 +138,8 @@ class Upload extends Base
                 $flag = $prototype->insertPrototype($data);
                 return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
             }else{
-                $data_older = $prototype->getOne($id);
-                unlink($data_older['path']);
+//                $data_older = $prototype->getOne($id);
+//                unlink($data_older['path']);
                 $data = [
                     'id' => $id,
                     'owner' => session('username'),
@@ -166,7 +169,7 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/Prototype/Attachment');
         if($info){
             $temp = $info->getSaveName();
-            $path = './uploads/prototype/Attachment' . str_replace("\\","/",$temp);
+            $path = './uploads/prototype/Attachment/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             if(empty($id))
             {
@@ -182,8 +185,8 @@ class Upload extends Base
                 $flag = $prototype->insertAttachment($data);
                 return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
             }else{
-                $data_older = $prototype->getOne($id);
-                unlink($data_older['path']);
+//                $data_older = $prototype->getOne($id);
+//                unlink($data_older['path']);
                 $data = [
                     'id' => $id,
                     'table_name' => $table_name,
@@ -229,8 +232,6 @@ class Upload extends Base
                 $flag = $procedure->insertProcedure($data);
                 return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
             }else{
-                $data_older = $procedure->getOne($id);
-                unlink($data_older['path']);
                 $data = [
                     'id' => $id,
                     'owner' => session('username'),
@@ -276,8 +277,8 @@ class Upload extends Base
                 $flag = $procedure->insertAttachment($data);
                 return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
             }else{
-                $data_older = $procedure->getOne($id);
-                unlink($data_older['path']);
+//                $data_older = $procedure->getOne($id);
+//                unlink($data_older['path']);
                 $data = [
                     'id' => $id,
                     'table_name' => $table_name,
@@ -295,6 +296,111 @@ class Upload extends Base
             echo $file->getError();
         }
     }
+
+    public function uploadProjectStage(){
+        $stage = new ProjectStageModel();
+        $id = request()->param('uid');
+        $table_name = request()->param('table_name');
+        $name = request()->param('uname');
+        $status = request()->param('status');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/StageAcceptance');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/StageAcceptance/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'table_name' => $table_name,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'name' => $name,
+                    'status' => $status,
+                    'filename' => $filename
+                ];
+                $flag = $stage->insertStage($data);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
+            }else{
+//                $data_older = $prototype->getOne($id);
+//                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'table_name' => $table_name,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'name' => $name,
+                    'status' => $status,
+                    'filename' => $filename
+                ];
+                $flag = $stage->editStage($data);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    public function uploadReform()
+    {
+        $reform = new ReformModel();
+        $file = request()->file('file');
+        $id = request()->param('uid');
+        $table_name = request()->param('table_name');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/Reform');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/Reform/' . str_replace("\\","/",$temp);
+            if($table_name == 'jc'){
+                $data = [
+                    'id' => $id,
+                    'reform_image_path' => $path
+                ];
+                $flag = $reform->editReform($data);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
+            }else if($table_name == 'jcbhg'){
+                $data = [
+                    'id' => $id,
+                    'unqualified_image_path' => $path
+                ];
+                $flag = $reform->editReform($data);
+                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    public function uploadReformAttachment()
+    {
+        $attachment = new ReformAttachmentModel();
+        $id = request()->param('uid');
+        $table_name = request()->param('table_name');
+        $group_id = request()->param('group_id');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/Reform/Attachment');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/Reform/Attachment/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            $data = [
+                'owner' => session('username'),
+                'date' => date("Y-m-d H:i:s"),
+                'path' => $path,
+                'name' => $filename,
+                'group_id' => $group_id,
+                'table_name' => $table_name
+            ];
+            $flag = $attachment->insertAttachment($data);
+            return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+        }else{
+            echo $file->getError();
+        }
+    }
+
+
 
 
     //视频上传V
