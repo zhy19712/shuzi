@@ -445,6 +445,8 @@
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" name="ssAdd" id="ssAdd" method="post" action="{:url('procedureListAdd')}">
+                        <input type="text" name="id" id="id2" style="display: none;">
+                        <input type="text" name="group_id" id="group_id2" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">名称：</label>
@@ -1039,6 +1041,25 @@
     })
 
     //sstable
+    function sedit(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $("#ss_modal input").val("");
+        $("#id2").val(id);
+        $("#ss_modal h5").text("编辑");
+        $.ajax({
+            url: "./procedureListEdit",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                $("#ssname").val(res.data.name);
+                $("#sscontent").val(res.data.content);
+                $("#ssremark").val(res.data.remark);
+                $("#ssowner").val(res.data.owner);
+            }
+        })
+    }
     var ss_table = $('#ss_table').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -1074,6 +1095,7 @@
     $("#ssgy .mybtn").click(function () {
         $("#ss_modal input").val("");
         $("#ss_modal h5").text("新增");
+        $("#group_id2").val(cid);
         $("#ss_modal").modal('show');
     });
     function zTreeOnClick(event, treeId, treeNode) {
@@ -1474,13 +1496,13 @@
 
     //提交
     //QC管理
-    $("#myModal .btn-primary").click(function () {
-        $('#Add').ajaxForm({
+    $("#ss_modal .btn-primary").click(function () {
+        $('#ssAdd').ajaxForm({
             success: function (data) {
                 if(data.code==1){
-                    $("#myModal").modal('hide');
+                    $("#ss_modal").modal('hide');
                     layer.msg("保存成功");
-                    qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
+                    ss_table.ajax.url("__SCRIPT__/procedure_list.php?groupid=" + cid).load();
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;
