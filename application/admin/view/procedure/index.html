@@ -1,10 +1,10 @@
 {include file="public/header" /}
 <link rel="stylesheet" type="text/css" href="/static/admin/webupload/webuploader.css">
 <link rel="stylesheet" type="text/css" href="/static/admin/webupload/style.css">
-<link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
 <link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="/static/admin/css/jedate.css">
 <link rel="stylesheet" href="/static/admin/css/iconfont.css">
+<link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
 <style>
     #upload,#upload2,#upload3,#upload4,#upload5,#upload6,#upload7,#upload8,#upload9,#upload10,#upload11,#upload12,#upload13,#upload14,#upload15{
         position: absolute;
@@ -198,9 +198,10 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>内容(课题名称)</th>
-                <th>实施日期</th>
-                <th>负责人</th>
+                <th>工程部位</th>
+                <th>责任人</th>
+                <th>日期</th>
+                <th>备注</th>
                 <th>状态</th>
                 <th>操作</th>
             </tr>
@@ -485,7 +486,7 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label"></label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <div id="tree_container"></div>
+                                    <div id="tree_container" class="ztree"></div>
                                 </div>
                             </div>
                         </div>
@@ -511,22 +512,14 @@
                     <h5></h5>
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post" action="{:url('memberAdd')}">
-
+                    <form class="form-horizontal" name="pro_modalAdd" id="pro_modalAdd" method="post" action="{:url('procedureListSublistAdd')}">
+                        <input type="text" name="id" id="id3" style="display: none;">
+                        <input type="text" name="group_id" id="group_id3" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-3 control-label">标准工艺名称：</label>
+                                <label class="col-xs-3 control-label">工程部位：</label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <input id="topic_name" type="text" class="form-control" name="topic_name" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-3 control-label">内容：</label>
-                                <div class="myblock col-xs-8 input-group">
-                                    <textarea name="" id="" style="width: 100%;min-height: 100px;"></textarea>
+                                    <input id="ppart" type="text" class="form-control" name="part" >
                                 </div>
                             </div>
                         </div>
@@ -535,7 +528,25 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">备注：</label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <textarea name="" id="" style="width: 100%;min-height: 100px;"></textarea>
+                                    <textarea name="remark" id="premark" style="width: 100%;min-height: 100px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-3 control-label">责任人：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <input id="powner" type="text" class="form-control" name="owner" placeholder="请在下方树结构选取责任人" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-3 control-label"></label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <div id="tree_container2" class="ztree"></div>
                                 </div>
                             </div>
                         </div>
@@ -593,6 +604,7 @@
 <script src="__JS__/jquery.jedate.js"></script>
 <script>
     var uploader,standard_uploader;
+    var ss_table;
     var tabtxt = "文件资料";
     var tablename = "wjzl";
     function myupload(uid,group_id,table_name,revision,publish_date) {
@@ -1036,16 +1048,28 @@
     })
     $("#standard_table").on("click","tr",function () {
         console.log($(this).children("td:first-child").text())
+        $("#standard_table tbody tr:nth-child(odd)").css("background-color","#f9f9f9");
+        $("#standard_table tbody tr:nth-child(even)").css("background-color","#fff");
+        $(this).css("background-color","#AAAAAA");
         cid = $(this).children("td:first-child").text();
+        ss_table.ajax.url("__SCRIPT__/procedure_list.php?group_id=" + cid).load();
         $("#ssgy").css("display","block");
     })
 
     //sstable
+    var zTreeObj,cid2;
+    function sdetail(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        cid2 = id;
+        pro_table.ajax.url("__SCRIPT__/procedure_list_sublist.php?group_id=" + cid2).load();
+        $("#pro_wrapper").css("display","block");
+    }
     function sedit(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $("#ss_modal input").val("");
         $("#id2").val(id);
         $("#ss_modal h5").text("编辑");
+        zTreeObj.reAsyncChildNodes(null, "refresh");
+        $("#ss_modal").modal("show");
         $.ajax({
             url: "./procedureListEdit",
             type: "post",
@@ -1060,11 +1084,31 @@
             }
         })
     }
-    var ss_table = $('#ss_table').DataTable( {
+    function sdel(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./procedureListDel",
+                data: {'id' : id},
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        ss_table.ajax.url("__SCRIPT__/procedure_list.php?group_id=" + cid).load();
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
+        })
+    }
+    ss_table = $('#ss_table').DataTable( {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/procedure_list.php?groupid=" + cid
+            "url": "__SCRIPT__/procedure_list.php?group_id=" + cid
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
@@ -1073,8 +1117,9 @@
                 "orderable": false,
                 "targets": [6],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='sedit(this)' value='编辑'/>";
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='sdetail(this)' value='详情'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='sedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='sdel(this)' value='删除'/>" ;
                     return html;
                 }
             }
@@ -1094,12 +1139,17 @@
     } );
     $("#ssgy .mybtn").click(function () {
         $("#ss_modal input").val("");
-        $("#ss_modal h5").text("新增");
+        $("#ss_modal textarea").val("");
+        zTreeObj.reAsyncChildNodes(null, "refresh");
         $("#group_id2").val(cid);
+        $("#ss_modal h5").text("新增");
         $("#ss_modal").modal('show');
     });
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
+        if(treeNode.uid){
+            $("#ssowner").val(treeNode.name);
+        }
     };
     var setting = {
         async: {
@@ -1126,6 +1176,8 @@
     };
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
 
+
+    //protable
     function pro_detail(that) {
         $("#container").css("display","block");
 //        $("#pro_wrapper").css("display","block");
@@ -1135,38 +1187,60 @@
 
     function pro_edit(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-//        $("#qcid").val(id);
+        $("#id3").val(id);
+        $("#group_id3").val(cid2);
         $("#pro_modal h5").text("编辑");
+        zTreeObj2.reAsyncChildNodes(null, "refresh");
         $("#pro_modal").modal("show");
-//        $.ajax({
-//            url: "./index",
-//            type: "post",
-//            data: {id:id},
-//            dataType: "json",
-//            success: function (res) {
-//                console.log(res);
-//                $("#topic_name").val(res.data.topic_name);
-//                $("#implement_date").val(res.data.implement_date);
-//                $("#owner").val(res.data.owner);
-//            }
-//        })
+        $.ajax({
+            url: "./procedureListSublistEdit",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                $("#ppart").val(res.data.part);
+                $("#premark").val(res.data.remark);
+                $("#powner").val(res.data.owner);
+            }
+        })
+    }
+    function pdel(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./procedureListSublistDel",
+                data: {'id' : id},
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        pro_table.ajax.url("__SCRIPT__/procedure_list_sublist.php?group_id=" + cid2).load();
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
+        })
     }
     var pro_table = $('#pro_table').DataTable( {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/qc_group.php"
+            "url": "__SCRIPT__/procedure_list_sublist.php?group_id=" + cid2
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [5],
+                "targets": [6],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='pro_detail(this)' value='详情'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='pro_edit(this)' value='编辑'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='pdel(this)' value='删除'/>" ;
                     return html;
                 }
             }
@@ -1187,10 +1261,42 @@
     $("div.mybtn").html('<div>新增</div>');
     $("#pro_wrapper .mybtn").click(function () {
         $("#pro_modal input").val("");
+        $("#pro_modal textarea").val("");
+        zTreeObj2.reAsyncChildNodes(null, "refresh");
+        $("#group_id3").val(cid2);
         $("#pro_modal h5").text("新增");
         $("#pro_modal").modal('show');
     });
-
+    var setting2 = {
+        async: {
+            enable : true,
+            autoParam: ["pId"],
+            type : "post",
+            url : "./getOwner",
+            dataType :"json"
+        },
+        data:{
+            keep: {
+                leaf : true,
+                parent : true
+            },
+            simpleData : {
+                enable:true,
+                idkey: "id",
+                pIdKey: "pId"
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick2
+        }
+    };
+    function zTreeOnClick2(event, treeId, treeNode) {
+        console.log(treeNode);
+        if(treeNode.uid){
+            $("#powner").val(treeNode.name);
+        }
+    };
+    zTreeObj2 = $.fn.zTree.init($("#tree_container2"), setting2,null);
 
     //流程tab
     $(".exp>span").click(function () {
@@ -1495,14 +1601,14 @@
     } );
 
     //提交
-    //QC管理
+    //sstable
     $("#ss_modal .btn-primary").click(function () {
         $('#ssAdd').ajaxForm({
             success: function (data) {
                 if(data.code==1){
                     $("#ss_modal").modal('hide');
                     layer.msg("保存成功");
-                    ss_table.ajax.url("__SCRIPT__/procedure_list.php?groupid=" + cid).load();
+                    ss_table.ajax.url("__SCRIPT__/procedure_list.php?group_id=" + cid).load();
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;
@@ -1511,14 +1617,14 @@
             dataType: 'json'
         });
     })
-    //QC小组
-    $("#mysave1").click(function () {
-        $('#myform1').ajaxSubmit({
-            url: "./qcAdd",
-            type: "post",
+    //protable
+    $("#pro_modal .btn-primary").click(function () {
+        $('#pro_modalAdd').ajaxForm({
             success: function (data) {
                 if(data.code==1){
+                    $("#pro_modal").modal('hide');
                     layer.msg("保存成功");
+                    pro_table.ajax.url("__SCRIPT__/procedure_list_sublist.php?group_id=" + cid2).load();
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;
