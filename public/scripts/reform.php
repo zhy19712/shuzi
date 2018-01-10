@@ -20,7 +20,7 @@
  */
 
 // DB table to use
-$table = 'think_procedure';
+$table = 'think_reform';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -32,10 +32,10 @@ $primaryKey = 'id';
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
     array( 'db' => 'name',  'dt' => 1 ),
-    array( 'db' => 'year',  'dt' => 2 ),
-    array( 'db' => 'season',  'dt' => 3 ),
-    array( 'db' => 'owner',  'dt' => 4 ),
-    array( 'db' => 'date',  'dt' => 5 )
+    array( 'db' => 'cate',  'dt' => 2 ),
+    array( 'db' => 'owner1',  'dt' => 3 ),
+    array( 'db' => 'date_check',  'dt' => 4 ),
+    array( 'db' => 'status',  'dt' => 5 )
 );
 
 // SQL server connection information数据库连接信息

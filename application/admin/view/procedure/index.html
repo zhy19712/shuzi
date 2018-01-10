@@ -156,6 +156,9 @@
     .ibox-content label{
         text-align: right;
     }
+    #ssgy{
+        display: none;
+    }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
 <div id="content">
@@ -164,10 +167,26 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>内容(课题名称)</th>
-                <th>实施日期</th>
+                <th>名称</th>
+                <th>年度</th>
+                <th>季度</th>
+                <th>上传人</th>
+                <th>上传时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+    <div id="ssgy">
+        <table id="ss_table" width="100%" class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>标准工艺名称</th>
+                <th>内容</th>
                 <th>负责人</th>
-                <th>状态</th>
+                <th>日期</th>
+                <th>备注</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -374,23 +393,24 @@
                 <div class="ibox-title">
                     <h5></h5>
                 </div>
+                <input type="text" name="uid" id="id1" style="display: none;" value="">
                 <div class="ibox-content">
                     <div class="col-lg-12 col-xs-12">
                         <label class="col-xs-3 control-label">名称：</label>
                         <div class="myblock col-xs-8 input-group">
-                            <input id="topic_name" type="text" class="form-control" name="topic_name" >
+                            <input id="name" type="text" class="form-control" name="name" >
                         </div>
                     </div>
                     <div class="col-lg-12 col-xs-12">
                         <label class="col-xs-3 control-label">年度：</label>
                         <div class="myblock col-xs-8 input-group">
-                            <input id="implement_date" type="text" class="form-control" name="implement_date" >
+                            <input id="year" type="text" class="form-control" name="year" >
                         </div>
                     </div>
                     <div class="col-lg-12 col-xs-12">
                         <label class="col-xs-3 control-label">季度：</label>
                         <div class="myblock col-xs-8 input-group">
-                            <select name="sex" id="" class="form-control" >
+                            <select name="season" id="season" class="form-control" >
                                 <option value="第一季度">第一季度</option>
                                 <option value="第二季度">第二季度</option>
                                 <option value="第三季度">第三季度</option>
@@ -399,7 +419,7 @@
                         </div>
                     </div>
                     <div class="col-lg-12 col-xs-12">
-                        <label class="col-xs-3 control-label" id="file">文件：</label>
+                        <label class="col-xs-3 control-label">文件：</label>
                         <div class="myblock col-xs-8 input-group">
                             <div id="standard_per" style="display: inline-block;vertical-align: middle;"></div>
                             <div id="standard_upload" style="display: inline-block;vertical-align: middle;"></div>
@@ -416,6 +436,73 @@
     </div>
 </div>
 
+<div id="ss_modal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5></h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal" name="ssAdd" id="ssAdd" method="post" action="{:url('procedureListAdd')}">
+                        <input type="text" name="id" id="id2" style="display: none;">
+                        <input type="text" name="group_id" id="group_id2" style="display: none;">
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-3 control-label">名称：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <input id="ssname" type="text" class="form-control" name="name" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-3 control-label">内容：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <textarea name="content" id="sscontent" style="width: 100%;min-height: 100px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-3 control-label">备注：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <textarea name="remark" id="ssremark" style="width: 100%;min-height: 100px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-3 control-label">责任人：</label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <input id="ssowner" type="text" class="form-control" name="owner" placeholder="请在下方树结构选取责任人" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-3 control-label"></label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <div id="tree_container"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-sm-offset-5">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="pro_modal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
     <div class="row">
         <div class="col-sm-12" style="background-color:#fff;">
@@ -425,8 +512,7 @@
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post" action="{:url('memberAdd')}">
-                        <input type="text" name="id" id="sid" style="display: none;">
-                        <input type="text" name="group_id" id="pgroup_id" style="display: none;">
+
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">标准工艺名称：</label>
@@ -515,7 +601,6 @@
         $("#fname").modal('show');
         if(!uploader){
             uploader = WebUploader.create({
-
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
                 server: "{:url('Upload/uploadQC')}",// 文件接收服务端。
@@ -584,66 +669,6 @@
                 layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
                 if(table_name === "xtly"){
                     upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
-                }else if(table_name === "qcxz"){
-                    id1 = data.id;
-                    path1 = data.path.substr(1);
-                    $("#img_container>img").attr("src",path1);
-                }else if(table_name === "xzdc"){
-                    inquire_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
-                }else if(table_name === "mbsd"){
-                    id2 = data.id;
-                    path2 = data.path.substr(1);
-                    $("#pic_container>img").attr("src",path2);
-                }else if(table_name === "mblz"){
-                    target_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=mblz").load();
-                }else if(table_name === "yyfx"){
-                    id3 = data.id;
-                    path3 = data.path.substr(1);
-                    $("#reason_container>img").attr("src",path3);
-                }else if(table_name === "ss"){
-                    implement_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=ss").load();
-                }else if(table_name === "smyxzl"){
-                    implement_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=smyxzl").load();
-                }else if(table_name === "wjzl"){
-                    check_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=wjzl").load();
-                }else if(table_name === "smyx"){
-                    check_table4.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=smyx").load();
-                }else if(table_name === "jjxy"){
-                    check_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=jjxy").load();
-                }else if(table_name === "shxy"){
-                    check_table3.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=shxy").load();
-                }else if(table_name === "ggcs"){
-                    standard_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=ggcs").load();
-                }else if(table_name === "bzh"){
-                    standard_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=bzh").load();
-                }else if(table_name === "zj"){
-                    summarize_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=zj").load();
-                    $.ajax({
-                        url: "./qcAdd",
-                        type: "post",
-                        data: {id:cid,status:"已完成"},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                            if(res.code === 1){
-                                qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
-                            }
-                        }
-                    })
-                }else if(table_name === "cgfbqk"){
-                    result_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=cgfbqk").load();
-                    $.ajax({
-                        url: "./qcAdd",
-                        type: "post",
-                        data: {id:cid,status:"已发布"},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                            if(res.code === 1){
-                                qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
-                            }
-                        }
-                    })
                 }
                 uploader = null;
                 $("#file_upload").empty();
@@ -695,23 +720,115 @@
         $("#tab_con>div").css("display","none").eq(index).css("display","block");
     })
     //日期插件
-    $("#implement_date").jeDate({
-        format: "YYYY-MM-DD"
+    $("#year").jeDate({
+        format: "YYYY"
     });
     //标准工艺
     var cid;
-    function detail(that) {
-//        $("#container").css("display","block");
-        $("#pro_wrapper").css("display","block");
-        cid = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $("#myform1id").val(cid);
-//        grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
+    var file_name1,file_name2;
+    function delatt(that) {
+        var id = $(that).parent("div").attr("id");
+        $.ajax({
+            url: "./procedureEditDel",
+            type: "post",
+            data: {id:id},
+            datatype: "json",
+            success: function (res) {
+                $("#"+id).remove();
+            }
+        })
     }
     function edit(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $("#qcid").val(id);
-        $("#myModal h5").text("编辑");
-        $("#myModal").modal("show");
+        $("#standard_modal input").val("");
+        $("#id1").val(id);
+        $("#standard_list").empty();
+        $("#standard_modal h5").text("编辑");
+        if(!standard_uploader){
+            standard_uploader = WebUploader.create({
+
+                auto: false,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('Upload/uploadProcedure')}",// 文件接收服务端。
+                chunked: false,
+                fileSizeLimit: 1000 *1024 *1024,
+                fileNumLimit: 1,
+                formData: {"uid":"","uname":"","year":"","season":""},
+                duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: false,
+                    id: "#standard_upload",
+                    innerHTML: "上传文件"
+                }
+            });
+
+            standard_uploader.on( 'fileQueued', function( file ) {
+                file_name2 = file.name;
+                $("#standard_per").append('<div id="' + file.id + '" class="item">' +
+                    '</div>');
+                $("#standard_list").empty().append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                    '<span class="info">' + file.name + '</span>&nbsp' +
+                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>' );
+            });
+            $("#file_list").on("click", ".webuploadDelbtn", function () {
+                var $ele = $(this);
+                var id = $ele.parent().attr("class");
+                var file = uploader.getFile(id);
+                uploader.removeFile(file,true);
+            });
+            standard_uploader.on('fileDequeued', function (file) {
+                $(file.id).remove();
+                $('.'+file.id).remove();
+                console.log("remove");
+            });
+            standard_uploader.on("uploadStart",function () {
+                standard_uploader.options.formData.uid = $("#id1").val();
+                standard_uploader.options.formData.uname = $("#name").val();
+                standard_uploader.options.formData.year = $("#year").val();
+                standard_uploader.options.formData.season = $("#season").val();
+            });
+            standard_uploader.on('beforeFileQueued', function (file) {
+                if($("#standard_list").html()){
+                    alert("请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
+            // 文件上传过程中创建进度条实时显示。
+            standard_uploader.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            standard_uploader.on( 'uploadSuccess', function( file,data, response ) {
+                console.log(file)
+                console.log(data)
+                layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
+                standard_uploader = null;
+                standard_table.ajax.url("__SCRIPT__/procedure.php").load();
+                $("#standard_modal").modal('hide');
+                $("#standard_per").empty();
+            });
+
+            // 文件上传失败，显示上传出错。
+            standard_uploader.on( 'uploadError', function( file ) {
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                $("#standard_per").empty();
+                $("#standard_upload").empty();
+            });
+        }
+        $("#standard_modal").modal("show");
         $.ajax({
             url: "./index",
             type: "post",
@@ -719,9 +836,15 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                $("#topic_name").val(res.data.topic_name);
-                $("#implement_date").val(res.data.implement_date);
-                $("#owner").val(res.data.owner);
+                $("#name").val(res.data.name);
+                $("#year").val(res.data.year);
+                $("#season").val(res.data.season);
+                file_name1 = res.data.filename;
+                file_name2 = res.data.filename;
+                $("#standard_list").append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                    '<span class="info">' + res.data.filename + '</span>&nbsp' +
+                    '<span onclick="delatt(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>' );
             }
         })
     }
@@ -729,14 +852,14 @@
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
-                url: "./qcDel",
+                url: "./procedureDel",
                 data: {'id' : id},
                 type: "post",
                 dataType: "json",
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
+                        standard_table.ajax.url("__SCRIPT__/procedure.php").load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -745,21 +868,36 @@
             layer.close(index);
         })
     }
+    //文件下载
+    function download(that) {
+        $("#form_container").empty();
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var str = "";
+        str += ""
+            + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+            + "<form name=download"+ id +" action='./procedureDownload' method='get' target=downloadFrame"+ id +">"
+            + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+            + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+            + "<button type='submit' class=btn" + id +"></button>"
+            + "</form>"
+        $("#form_container").append(str);
+        $("#form_container").find(".btn" + id).click();
+    }
     var standard_table = $('#standard_table').DataTable( {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/qc_group.php"
+            "url": "__SCRIPT__/procedure.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [5],
+                "targets": [6],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='detail(this)' value='详情'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
@@ -781,6 +919,7 @@
     $("div.mybtn").html('<div>新增</div>');
     $("#standard_wrapper .mybtn").click(function () {
         $("#standard_modal input").val("");
+        $("#standard_list").empty();
         $("#standard_modal h5").text("新增");
         $("#standard_modal").modal('show');
         if(!standard_uploader){
@@ -788,11 +927,11 @@
 
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadQC')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadProcedure')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"uid":"","table_name":"","group_id":"","revision":"","publish_date":""},
+                formData: {"uid":"","uname":"","year":"","season":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -802,6 +941,7 @@
             });
 
             standard_uploader.on( 'fileQueued', function( file ) {
+                file_name2 = file.name;
                 $("#standard_per").append('<div id="' + file.id + '" class="item">' +
                     '</div>');
                 $("#standard_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
@@ -821,11 +961,10 @@
                 console.log("remove");
             });
             standard_uploader.on("uploadStart",function () {
-                standard_uploader.options.formData.id = uid;
-                standard_uploader.options.formData.table_name = table_name;
-                standard_uploader.options.formData.group_id = group_id;
-                standard_uploader.options.formData.revision = revision;
-                standard_uploader.options.formData.publish_date = publish_date;
+                standard_uploader.options.formData.uid = $("#id1").val();
+                standard_uploader.options.formData.uname = $("#name").val();
+                standard_uploader.options.formData.year = $("#year").val();
+                standard_uploader.options.formData.season = $("#season").val();
             })
             // 文件上传过程中创建进度条实时显示。
             standard_uploader.on('uploadProgress', function (file, percentage) {
@@ -845,28 +984,147 @@
             standard_uploader.on( 'uploadSuccess', function( file,data, response ) {
                 console.log(file)
                 console.log(data)
-                layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
-                uploader = null;
-                $("#standard_upload").empty();
+                layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
+                standard_uploader = null;
+                standard_table.ajax.url("__SCRIPT__/procedure.php").load();
                 $("#standard_modal").modal('hide');
                 $("#standard_per").empty();
             });
 
             // 文件上传失败，显示上传出错。
-            uploader.on( 'uploadError', function( file ) {
+            standard_uploader.on( 'uploadError', function( file ) {
                 layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
                 $("#standard_per").empty();
                 $("#standard_upload").empty();
             });
         }
     });
+    $("#standard_modal .btn-primary").click(function () {
+        if($("#standard_list").html()){
+            if(file_name1 === file_name2){
+                $.ajax({
+                    url: "./editProcedureNoUpload",
+                    type: "post",
+                    data: {uid:$("#id1").val(),uname:$("#name").val(),year:$("#year").val(),season:$("#season").val()},
+                    datatype: "json",
+                    success: function (res) {
+                        if(res.code === 1){
+                            layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
+                            standard_table.ajax.url("__SCRIPT__/procedure.php").load();
+                            $("#standard_modal").modal('hide');
+                        }else {
+                            layer.msg("提交失败",{icon:1,time:1500,shade: 0.1});
+                        }
+                    }
+                })
+            }else {
+                standard_uploader.upload();
+            }
+        }else {
+            alert("请选择上传文件");
+        }
 
+    })
+    $("#standard_modal .btn-danger").click(function () {
+        standard_uploader = null;
+    });
     $("#pro_back").click(function () {
         $("#pro_wrapper").css("display","none");
     })
     $("#back").click(function () {
         $("#container").css("display","none");
     })
+    $("#standard_table").on("click","tr",function () {
+        console.log($(this).children("td:first-child").text())
+        cid = $(this).children("td:first-child").text();
+        $("#ssgy").css("display","block");
+    })
+
+    //sstable
+    function sedit(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $("#ss_modal input").val("");
+        $("#id2").val(id);
+        $("#ss_modal h5").text("编辑");
+        $.ajax({
+            url: "./procedureListEdit",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                $("#ssname").val(res.data.name);
+                $("#sscontent").val(res.data.content);
+                $("#ssremark").val(res.data.remark);
+                $("#ssowner").val(res.data.owner);
+            }
+        })
+    }
+    var ss_table = $('#ss_table').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/procedure_list.php?groupid=" + cid
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [6],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='sedit(this)' value='编辑'/>";
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
+    $("#ssgy .mybtn").click(function () {
+        $("#ss_modal input").val("");
+        $("#ss_modal h5").text("新增");
+        $("#group_id2").val(cid);
+        $("#ss_modal").modal('show');
+    });
+    function zTreeOnClick(event, treeId, treeNode) {
+        console.log(treeNode);
+    };
+    var setting = {
+        async: {
+            enable : true,
+            autoParam: ["pId"],
+            type : "post",
+            url : "./getOwner",
+            dataType :"json"
+        },
+        data:{
+            keep: {
+                leaf : true,
+                parent : true
+            },
+            simpleData : {
+                enable:true,
+                idkey: "id",
+                pIdKey: "pId"
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick
+        }
+    };
+    zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
 
     function pro_detail(that) {
         $("#container").css("display","block");
@@ -944,21 +1202,7 @@
     })
 
     //datatable
-    //文件下载
-    function download(that) {
-        $("#form_container").empty();
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        var str = "";
-        str += ""
-            + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-            + "<form name=download"+ id +" action='./attachmentDownload' method='get' target=downloadFrame"+ id +">"
-            + "<span class='file_name' style='color: #000;'>"+str+"</span>"
-            + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
-            + "<button type='submit' class=btn" + id +"></button>"
-            + "</form>"
-        $("#form_container").append(str);
-        $("#form_container").find(".btn" + id).click();
-    }
+
     //文件删除
     function fdel(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
@@ -1252,13 +1496,13 @@
 
     //提交
     //QC管理
-    $("#myModal .btn-primary").click(function () {
-        $('#Add').ajaxForm({
+    $("#ss_modal .btn-primary").click(function () {
+        $('#ssAdd').ajaxForm({
             success: function (data) {
                 if(data.code==1){
-                    $("#myModal").modal('hide');
+                    $("#ss_modal").modal('hide');
                     layer.msg("保存成功");
-                    qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
+                    ss_table.ajax.url("__SCRIPT__/procedure_list.php?groupid=" + cid).load();
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;

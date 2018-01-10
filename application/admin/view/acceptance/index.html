@@ -253,12 +253,12 @@
     }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
-<div id="mycontent" style="min-width: 15%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;">
+<div id="mycontent" style="width: 20%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;">
     <div style="text-align: center;background-color:#1ab394;line-height: 30px;color: #fff;">工程划分</div>
     <div id="tree_container" class="ztree"></div>
     <p style="display: none;"></p>
 </div>
-<div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 83%;vertical-align: top;padding: 0;">
+<div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 78%;vertical-align: top;padding: 0;">
     <div class="ibox float-e-margins">
         <div class="ibox-content">
             <div class="row">
@@ -337,12 +337,12 @@
                                                 <span>一检合格</span>
                                                 <select name="pass" id="pass">
                                                     <option value="是">是</option>
-                                                    <option value="否">否</option>
                                                 </select>
                                             </div>
                                             <div class="db">
                                                 <span>质量等级</span>
                                                 <select name="quality_level" id="quality_level">
+                                                    <option value="尚未评定">尚未评定</option>
                                                     <option value="优良">优良</option>
                                                     <option value="合格">合格</option>
                                                 </select>
@@ -368,9 +368,9 @@
                                                 <span>检查时间</span>
                                             </div>
                                             <div class="bottom">
-                                                <input type="text" id="holes" name="holes">
-                                                <input type="text" id="ave_size" name="ave_size">
-                                                <input type="text" id="ave_length" name="ave_length">
+                                                <input type="text" id="holes" name="holes" placeholder="此处只能输入整数">
+                                                <input type="text" id="ave_size" name="ave_size" placeholder="此处最多保留一位小数">
+                                                <input type="text" id="ave_length" name="ave_length" placeholder="此处最多保留一位小数">
                                                 <input type="text" id="half_percentage" name="half_percentage">
                                                 <input type="text" id="holes_test_date" name="holes_test_date">
                                             </div>
@@ -451,12 +451,12 @@
                                                 <span>一检合格</span>
                                                 <select name="pass" id="pass2">
                                                     <option value="是">是</option>
-                                                    <option value="否">否</option>
                                                 </select>
                                             </div>
                                             <div class="db">
                                                 <span>质量等级</span>
                                                 <select name="quality_level" id="quality_level2">
+                                                    <option value="尚未评定">尚未评定</option>
                                                     <option value="优良">优良</option>
                                                     <option value="合格">合格</option>
                                                 </select>
@@ -571,12 +571,12 @@
                                                 <span>一检合格</span>
                                                 <select name="pass" id="pass3">
                                                     <option value="是">是</option>
-                                                    <option value="否">否</option>
                                                 </select>
                                             </div>
                                             <div class="db">
                                                 <span>质量等级</span>
                                                 <select name="quality_level" id="quality_level3">
+                                                    <option value="尚未评定">尚未评定</option>
                                                     <option value="优良">优良</option>
                                                     <option value="合格">合格</option>
                                                 </select>
@@ -1702,30 +1702,174 @@
 
 </script>
 <script type="text/javascript">
+    function newobj(str,val) {
+        this.str = str;
+        this.val = val;
+    }
+    function intnumber(arr) {
+        var reg = /^([0-9]+(\.[0-9]+)|\d+)$/;
+        var alt = "";
+        $.each(arr,function (i,n) {
+            if(!reg.test(n.val)){
+                alt += n.str + ","
+            }
+        })
+        if(alt){
+            alert(alt + "只能为非负整数");
+            return false;
+        }else {
+            return true;
+        }
+    }
+    function floatnumber(arr) {
+        var reg = /^([0-9]+(\.[0-9]+)|\d+)$/;
+        var alt = "";
+        $.each(arr,function (i,n) {
+            if(!reg.test(n.val)){
+                alt += n.str + ","
+            }
+        })
+        if(alt){
+            alert(alt + "只能为保留一位小数");
+            return false;
+        }else {
+            return true;
+        }
+    }
     $("#save").click(function () {
         $.each($("form"),function (i,n) {
             if($(n).css("display") === "block"){
                 if($(n).attr("id") === "model1"){
-                    $('#model1').ajaxSubmit({
-                        url: "./dataAdd",
-                        type: "post",
-                        success: complete1,
-                        dataType: 'json'
-                    });
+                    if(!$("#evaluated_date").val()){
+                        alert("评定日期不能为空");
+                        return;
+                    }
+                    if(!$("#evaluated_by").val()){
+                        alert("评定人不能为空");
+                        return;
+                    }
+                    var arr1 = [];
+                    arr1.push(new newobj("检查孔数",$("#holes").val()),
+                        new newobj("检查断面",$("#sections").val()),
+                        new newobj("检查点数",$("#points").val()),
+                        new newobj("检查断面(超挖)",$("#sections_overbreak").val()),
+                        new newobj("检查点数(超挖)",$("#points").val()),
+                        new newobj("检查断面(欠挖)",$("#sections_underbreak").val()),
+                        new newobj("检查点数(欠挖)",$("#points_underbreak").val())
+                    );
+                    var arr2 = [];
+                    arr2.push(new newobj("平均进尺",$("#ave_size").val()),
+                        new newobj("平均残孔长度",$("#ave_length").val()),
+                        new newobj("最大值",$("#max").val()),
+                        new newobj("最小值",$("#min").val()),
+                        new newobj("平均值",$("#ave").val()),
+                        new newobj("最大超挖",$("#max_overbreak").val()),
+                        new newobj("最小超挖",$("#min_overbreak").val()),
+                        new newobj("平均超挖",$("#ave_overbreak").val()),
+                        new newobj("合格率(超挖)",$("#pass_overbreak").val()),
+                        new newobj("最大欠挖",$("#max_underbreak").val()),
+                        new newobj("最小欠挖",$("#min_underbreak").val()),
+                        new newobj("平均欠挖",$("#ave_underbreak").val()),
+                        new newobj("合格率(欠挖)",$("#pass_underbreak").val())
+                    );
+                    var test1 = intnumber(arr1);
+                    var test2 = floatnumber(arr2);
+                    if(test1 && test2){
+                        $('#model1').ajaxSubmit({
+                            url: "./dataAdd",
+                            type: "post",
+                            success: complete1,
+                            dataType: 'json'
+                        });
+                    }
                 }else if($(n).attr("id") === "model2"){
-                    $('#model2').ajaxSubmit({
-                        url: "./dataAdd",
-                        type: "post",
-                        success: complete1,
-                        dataType: 'json'
-                    });
+                    if(!$("#evaluated_date2").val()){
+                        alert("评定日期不能为空");
+                        return;
+                    }
+                    if(!$("#evaluated_by2").val()){
+                        alert("评定人不能为空");
+                        return;
+                    }
+                    var arr1 = [];
+                    arr1.push(new newobj("设计厚度",$("#thickness2").val()),
+                        new newobj("检测点数",$("#points2").val()),
+                        new newobj("施工数量(施工)",$("#quantity_self2").val()),
+                        new newobj("施工自检根数(施工)",$("#num_self2").val()),
+                        new newobj("合格根数(施工)",$("#pass_self2").val()),
+                        new newobj("施工数量(监理)",$("#quantity_inspection2").val()),
+                        new newobj("施工自检根数(监理)",$("#num_inspection2").val()),
+                        new newobj("合格根数(监理)",$("#pass_self2").val())
+                    );
+                    var arr2 = [];
+                    arr2.push(new newobj("支护面积",$("#area").val()),
+                        new newobj("最大值",$("#max2").val()),
+                        new newobj("最小值",$("#min2").val()),
+                        new newobj("平均值",$("#ave2").val()),
+                        new newobj("方量",$("#max_overbreak2").val()),
+                        new newobj("最大值（施工锚杆长度）",$("#anchor_max_self2").val()),
+                        new newobj("最小值（施工锚杆长度）",$("#anchor_min_self2").val()),
+                        new newobj("最大值（施工注浆密实度）",$("#casting_max_self2").val()),
+                        new newobj("最小值（施工注浆密实度）",$("#casting_min_self2").val()),
+                        new newobj("最大值（监理锚杆长度）",$("#anchor_max_inspection2").val()),
+                        new newobj("最小值（监理锚杆长度）",$("#anchor_min_inspection2").val()),
+                        new newobj("最大值（监理注浆密实度）",$("#casting_max_inspection2").val()),
+                        new newobj("最小值（监理注浆密实度）",$("#casting_min_inspection2").val())
+                    );
+                    var test1 = intnumber(arr1);
+                    var test2 = floatnumber(arr2);
+                    if(test1 && test2){
+                        $('#model2').ajaxSubmit({
+                            url: "./dataAdd",
+                            type: "post",
+                            success: complete1,
+                            dataType: 'json'
+                        });
+                    }
                 }else if($(n).attr("id") === "model3"){
-                    $('#model3').ajaxSubmit({
-                        url: "./dataAdd",
-                        type: "post",
-                        success: complete1,
-                        dataType: 'json'
-                    });
+                    if(!$("#evaluated_date3").val()){
+                        alert("评定日期不能为空");
+                        return;
+                    }
+                    if(!$("#evaluated_by3").val()){
+                        alert("评定人不能为空");
+                        return;
+                    }
+                    var arr1 = [];
+                    arr1.push(new newobj("施工单位自检组数",$("#num_self").val()),
+                        new newobj("监理单位自检组数",$("#num_inspection").val()),
+                        new newobj("测点数(平面)",$("#points_flat").val()),
+                        new newobj("测点数(竖面)",$("#points_vertical").val()),
+                        new newobj("检查点数(联合检测)",$("#points_union").val())
+                    );
+                    var arr2 = [];
+                    arr2.push(new newobj("方量(施工)",$("#volume_self").val()),
+                        new newobj("最大值(施工)",$("#max_self").val()),
+                        new newobj("最小值(施工)",$("#min_self").val()),
+                        new newobj("平均值(施工)",$("#ave_self").val()),
+                        new newobj("合格率(施工)",$("#pass_self").val()),
+                        new newobj("方量(监理)",$("#volume_inspection").val()),
+                        new newobj("最大值(监理)",$("#max_inspection").val()),
+                        new newobj("最小值(监理)",$("#min_inspection").val()),
+                        new newobj("平均值(监理)",$("#ave_inspection").val()),
+                        new newobj("合格率(监理)",$("#pass_inspection").val()),
+                        new newobj("合格率(联合检测平面)",$("#pass_flat").val()),
+                        new newobj("合格率(联合检测竖面)",$("#pass_vertical").val()),
+                        new newobj("最大值(联合)",$("#max_union").val()),
+                        new newobj("最小值(联合)",$("#min_union").val()),
+                        new newobj("平均值(联合)",$("#ave_union").val()),
+                        new newobj("合格率(联合)",$("#pass_union").val())
+                    );
+                    var test1 = intnumber(arr1);
+                    var test2 = floatnumber(arr2);
+                    if(test1 && test2){
+                        $('#model3').ajaxSubmit({
+                            url: "./dataAdd",
+                            type: "post",
+                            success: complete1,
+                            dataType: 'json'
+                        });
+                    }
                 }
             }
         })
@@ -1742,12 +1886,54 @@
         }
     }
     $("#myModal .btn-primary").click(function () {
-        $('#projectAdd').ajaxSubmit({
-            url: "./dataAdd",
-            type: "post",
-            success: complete,
-            dataType: 'json'
-        });
+        var arr1 = [];
+        arr1.push(new newobj("施工数量(施工无损检测)",$("#quantity_self_m").val()),
+            new newobj("施工单位自检根数(施工无损检测)",$("#num_self_m").val()),
+            new newobj("合格根数(施工无损检测)",$("#pass_self_m").val()),
+            new newobj("施工数量(监理无损检测)",$("#quantity_inspection_m").val()),
+            new newobj("监理单位抽检根数(监理无损检测)",$("#num_inspection_m").val()),
+            new newobj("合格根数(监理无损检测)",$("#pass_inspection_m").val()),
+            new newobj("设计拉拔力值(施工拉拔力检测)",$("#pull_self_m").val()),
+            new newobj("施工单位自检根数(施工拉拔力检测)",$("#test_num_self_m").val()),
+            new newobj("合格根数(施工拉拔力检测)",$("#pass_num_self_m").val()),
+            new newobj("设计拉拔力值(监理拉拔力检测)",$("#pull_inspection_m").val()),
+            new newobj("监理单位自检根数(监理拉拔力检测)",$("#test_num_inspection_m").val()),
+            new newobj("合格根数(监理拉拔力检测)",$("#pass_num_inspection_m").val()),
+            new newobj("施工单位检测组数(施工)",$("#mortar_num_self_m").val()),
+            new newobj("施工单位检测组数(监理)",$("#mortar_num_inspection_m").val())
+        );
+        var arr2 = [];
+        arr2.push(new newobj("锚杆长度最大值(施工)",$("#anchor_max_self_m").val()),
+            new newobj("锚杆长度最小值(施工)",$("#anchor_min_self_m").val()),
+            new newobj("注浆密实度最大值(施工)",$("#casting_max_self_m").val()),
+            new newobj("注浆密实度最小值(施工)",$("#casting_min_self_m").val()),
+            new newobj("锚杆长度最大值(监理)",$("#anchor_max_inspection_m").val()),
+            new newobj("锚杆长度最小值(监理)",$("#anchor_min_inspection_m").val()),
+            new newobj("注浆密实度最大值(监理)",$("#casting_max_inspection_m").val()),
+            new newobj("注浆密实度最小值(监理)",$("#casting_min_inspection_m").val()),
+            new newobj("最大值(施工拉拔力检测)",$("#pull_max_self_m").val()),
+            new newobj("最小值(施工拉拔力检测)",$("#pull_min_self_m").val()),
+            new newobj("平均值(施工拉拔力检测)",$("#pull_ave_self_m").val()),
+            new newobj("最大值(监理拉拔力检测)",$("#pull_max_inspection_m").val()),
+            new newobj("最小值(监理拉拔力检测)",$("#pull_min_inspection_m").val()),
+            new newobj("平均值(监理拉拔力检测)",$("#pull_ave_inspection_m").val()),
+            new newobj("最大值(施工砂浆强度)",$("#mortar_max_self_m").val()),
+            new newobj("最小值(施工砂浆强度)",$("#mortar_min_self_m").val()),
+            new newobj("平均值(施工砂浆强度)",$("#mortar_ave_self_m").val()),
+            new newobj("最大值(监理砂浆强度)",$("#mortar_max_inspection_m").val()),
+            new newobj("最小值(监理砂浆强度)",$("#mortar_min_inspection_m").val()),
+            new newobj("平均值(监理砂浆强度)",$("#mortar_ave_inspection_m").val())
+        );
+        var test1 = intnumber(arr1);
+        var test2 = floatnumber(arr2);
+        if(test1 && test2){
+            $('#projectAdd').ajaxSubmit({
+                url: "./dataAdd",
+                type: "post",
+                success: complete,
+                dataType: 'json'
+            });
+        }
     })
     function complete(data){
         if(data.code==1){

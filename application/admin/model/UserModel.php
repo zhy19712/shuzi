@@ -110,6 +110,24 @@ class UserModel extends Model
         }
     }
 
+    /**
+     * [getNodeInfo 获取组织机构及用户树的用户部分]
+     *
+     */
+    public function getNodeInfo_2()
+    {
+        $result = $this->field('id,username,groupid')->where('id','<>',1)->select();
+        $str = "";
+
+        foreach($result as $key=>$vo){
+            $str .= '{ "uid": "' . $vo['id'] . '", "pId":"' . $vo['groupid'] . '", "name":"' . $vo['username'].'"';
+
+            $str .= '},';
+        }
+
+        return $str;
+    }
+
 
 
 }

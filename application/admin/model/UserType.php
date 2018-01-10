@@ -181,6 +181,24 @@ class UserType extends Model
         return "[" . substr($str, 0, -1) . "]";
     }
 
+    /**
+     * [getNodeInfo 获取组织机构及用户树的组织机构部分]
+     *
+     */
+    public function getNodeInfo_1()
+    {
+        $result = $this->field('id,title,pid')->where('id','<>',1)->select();
+        $str = "";
+
+        foreach($result as $key=>$vo){
+            $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "name":"' . $vo['title'].'"';
+
+            $str .= '},';
+        }
+
+        return $str;
+    }
+
 
 
     //递归获取当前节点的所有子节点

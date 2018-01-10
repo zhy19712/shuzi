@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: waterforest
- * Date: 2018/1/7
- * Time: 0:13
+ * User: zhuangyf
+ * Date: 2018/1/9
+ * Time: 20:06
  */
 
 namespace app\admin\model;
@@ -11,14 +11,9 @@ namespace app\admin\model;
 
 use think\Model;
 
-class ProcedureAttachmentModel extends Model
+class ReformAttachmentModel extends Model
 {
-    protected $name = 'procedure_attachment';
-
-    public function getOne($id)
-    {
-        return $this->where('id', $id)->find();
-    }
+    protected $name = 'reform_attachment';
 
     public function insertAttachment($param)
     {
@@ -27,7 +22,7 @@ class ProcedureAttachmentModel extends Model
             if(false === $result){
                 return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
             }else{
-                return ['code' => 1, 'data' => '', 'msg' => 'success'];
+                return ['code' => 1, 'data' => '', 'msg' => '添加成功'];
             }
         }catch( PDOException $e){
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
@@ -41,7 +36,7 @@ class ProcedureAttachmentModel extends Model
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
-                return ['code' => 1, 'data' => '', 'msg' => 'success'];
+                return ['code' => 1, 'data' => '', 'msg' => '编辑成功'];
             }
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
@@ -50,8 +45,17 @@ class ProcedureAttachmentModel extends Model
 
     public function delAttachment($id)
     {
-        $this->where('id', $id)->delete();
-        return ['code' => 1, 'data' => '', 'msg' => '删除附件成功'];
+        try{
+            $this->where('id', $id)->delete();
+            return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
+
+        }catch( PDOException $e){
+            return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
+        }
     }
 
+    public function getOne($id)
+    {
+        return $this->where('id', $id)->find();
+    }
 }
