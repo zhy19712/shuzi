@@ -1,10 +1,10 @@
 {include file="public/header" /}
 <link rel="stylesheet" type="text/css" href="/static/admin/webupload/webuploader.css">
 <link rel="stylesheet" type="text/css" href="/static/admin/webupload/style.css">
-<link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
 <link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="/static/admin/css/jedate.css">
 <link rel="stylesheet" href="/static/admin/css/iconfont.css">
+<link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
 <style>
     #upload,#upload2,#upload3,#upload4,#upload5,#upload6,#upload7,#upload8,#upload9,#upload10,#upload11,#upload12,#upload13,#upload14,#upload15{
         position: absolute;
@@ -485,7 +485,7 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label"></label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <div id="tree_container"></div>
+                                    <div id="tree_container" class="ztree"></div>
                                 </div>
                             </div>
                         </div>
@@ -1036,6 +1036,8 @@
     })
     $("#standard_table").on("click","tr",function () {
         console.log($(this).children("td:first-child").text())
+        $("#standard_table tbody tr:nth-child(odd)").css("background-color","#f9f9f9");
+        $(this).css("background-color","#AAAAAA");
         cid = $(this).children("td:first-child").text();
         $("#ssgy").css("display","block");
     })
