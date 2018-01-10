@@ -180,6 +180,7 @@ class Procedure extends Base
         $procedure_list_sublist = new ProcedureListSublistModel();
         if(request()->isAjax()){
             $param = input('post.');
+            $param['date'] = date("Y-m-d H:i:s");
             if(empty($param['id']))
             {
                 $flag = $procedure_list_sublist->insertProcedureListSublist($param);

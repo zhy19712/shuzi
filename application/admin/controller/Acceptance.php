@@ -80,10 +80,17 @@ class Acceptance extends Base
         $zhihu = new ZhihuModel();
         $hunningtu = new HunningtuModel();
         $maogan = new MaoganModel();
+        $project = new ProjectModel();
 
         $param = input('post.');
         if(request()->isAjax()){
-
+            if($param['cate'] != '锚杆'){
+                $projectData = [
+                    'id' => $param['uid'],
+                    'pingding_date' => $param['evaluated_date']
+                ];
+                $project->editProject($projectData);
+            }
             if(empty($param['edit'])&&$param['cate']=='开挖')
             {
                 $flag = $kaiwa->insertKaiwa($param);
