@@ -1037,17 +1037,25 @@
     $("#standard_table").on("click","tr",function () {
         console.log($(this).children("td:first-child").text())
         $("#standard_table tbody tr:nth-child(odd)").css("background-color","#f9f9f9");
+        $("#standard_table tbody tr:nth-child(even)").css("background-color","#fff");
         $(this).css("background-color","#AAAAAA");
         cid = $(this).children("td:first-child").text();
         $("#ssgy").css("display","block");
     })
 
     //sstable
+    var zTreeObj,cid2;
+    function sdetail(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        cid2 = id;
+        $("#pro_wrapper").css("display","block");
+    }
     function sedit(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $("#ss_modal input").val("");
         $("#id2").val(id);
         $("#ss_modal h5").text("编辑");
+        zTreeObj.reAsyncChildNodes(null, "refresh");
+        $("#ss_modal").modal("show");
         $.ajax({
             url: "./procedureListEdit",
             type: "post",
@@ -1060,6 +1068,26 @@
                 $("#ssremark").val(res.data.remark);
                 $("#ssowner").val(res.data.owner);
             }
+        })
+    }
+    function sdel(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./procedureListDel",
+                data: {'id' : id},
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        ss_table.ajax.url("__SCRIPT__/procedure_list.php?groupid=" + cid).load();
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
         })
     }
     var ss_table = $('#ss_table').DataTable( {
@@ -1075,8 +1103,9 @@
                 "orderable": false,
                 "targets": [6],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='sedit(this)' value='编辑'/>";
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='sdetail(this)' value='详情'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='sedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='sdel(this)' value='删除'/>" ;
                     return html;
                 }
             }
@@ -1096,12 +1125,17 @@
     } );
     $("#ssgy .mybtn").click(function () {
         $("#ss_modal input").val("");
+        $("#ss_modal textarea").val("");
+        zTreeObj.reAsyncChildNodes(null, "refresh");
         $("#ss_modal h5").text("新增");
         $("#group_id2").val(cid);
         $("#ss_modal").modal('show');
     });
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
+        if(treeNode.uid){
+            $("#ssowner").val(treeNode.name);
+        }
     };
     var setting = {
         async: {
