@@ -884,7 +884,7 @@
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
-                url: "./ prototypeDel",
+                url: "./prototypeDel",
                 data: {'id' : id},
                 type: "post",
                 dataType: "json",
