@@ -177,6 +177,16 @@ class Prototype extends Base
         }
     }
 
+    public function attachmentEdit()
+    {
+        $attachment = new PrototypeAttachmentModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $data = $attachment->getOne($param['id']);
+            return json(['data' => $data]);
+        }
+    }
+
     public function attachmentDownload()
     {
         $id = input('param.id');
