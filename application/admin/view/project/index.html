@@ -906,9 +906,9 @@ function edit(that) {
             zTreeObj.reAsyncChildNodes(null, "refresh");
 //            layer.msg(file.name + data.info,{icon:1,time:1500,shade: 0.1});
             var msg = file.name + data.info;
-            layer.confirm(msg, {icon: 3, title:'提示'}, function(index){
+            layer.confirm(msg, {btn:'关闭',icon: 3, title:'提示'}, function(index){
                 layer.close(index);
-            })
+            });
             $("#file_per").empty();
             $("#file_upload input").val("");
         });
