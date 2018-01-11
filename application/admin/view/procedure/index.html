@@ -717,7 +717,7 @@
                 console.log("remove");
             });
             uploader.on("uploadStart",function () {
-                uploader.options.formData.id = $("#id4").val();
+                uploader.options.formData.uid = $("#id4").val();
                 uploader.options.formData.table_name = mytablename;
                 uploader.options.formData.group_id = cid3;
                 uploader.options.formData.remark = $("#fremark").val();

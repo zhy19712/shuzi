@@ -1,12 +1,12 @@
 {include file="public/header" /}
 <link rel="stylesheet" type="text/css" href="/static/admin/webupload/webuploader.css">
 <link rel="stylesheet" type="text/css" href="/static/admin/webupload/style.css">
-<link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
 <link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="/static/admin/css/jedate.css">
 <link rel="stylesheet" href="/static/admin/css/iconfont.css">
+<link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
 <style>
-    #upload,#upload2,#upload3,#upload4,#upload5,#upload6,#upload7,#upload8,#upload9,#upload10,#upload11,#upload12,#upload13,#upload14,#upload15{
+    #upload,#upload2,#upload3,#upload4,#upload5,#upload6,#upload7,#upload8,#upload9,#upload10,#upload15,#upload12,#upload13,#upload14,#upload99{
         position: absolute;
         right: 40px;
         margin-top: 8px;
@@ -59,7 +59,7 @@
     #qc_table td,#qc_table th{
         text-align: center;
     }
-    #container,#pro_wrapper{
+    #container,#container2{
         width: 100%;
         height: 100%;
         position: absolute;
@@ -122,7 +122,7 @@
         overflow: scroll;
         width: 100%;
     }
-    #container,#pro_wrapper{
+    #container,#container2{
         display: none;
     }
     #img_show img,#pic_container img,#reason_container img{
@@ -156,6 +156,9 @@
     .ibox-content label{
         text-align: right;
     }
+    #ssgy{
+        display: none;
+    }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
 <div id="content">
@@ -164,9 +167,10 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>内容(课题名称)</th>
-                <th>实施日期</th>
-                <th>负责人</th>
+                <th>内容描述</th>
+                <th>类别</th>
+                <th>监理责任人</th>
+                <th>检查时间</th>
                 <th>状态</th>
                 <th>操作</th>
             </tr>
@@ -182,21 +186,22 @@
                     <img src="__IMG__/arr.png" alt="">
                 </div>
                 <div class="exp">
-                    <span>整改、处理措施</span>
+                    <span>整改处理措施</span>
                     <img src="__IMG__/arr.png" alt="">
                 </div>
                 <div class="exp">
-                    <span>最终效果检查</span>
+                    <span>检查</span>
                 </div>
             </div>
             <div id="flow_content">
                 <div id="step7">
                     <div id="check">
                         <div style="height: 50px;">
-                            <div id="list11"></div>
-                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>质量缺陷描述</p>
+                            <div id="list9"></div>
+                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>目标检查</p>
+                            <div id="mysave1">保存</div>
                         </div>
-                        <textarea name="" id="" style="width: 100%;min-height: 100px;"></textarea>
+                        <textarea name="description" id="sdescription" style="width: 100%;min-height: 100px;"></textarea>
                         <div style="height: 50px;">
                             <div id="list10"></div>
                             <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>附件</p>
@@ -207,7 +212,7 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>文件名称</th>
+                                    <th>名称</th>
                                     <th>上传人</th>
                                     <th>上传时间</th>
                                     <th>操作</th>
@@ -215,54 +220,13 @@
                                 </thead>
                             </table>
                         </div>
-
                     </div>
                 </div>
                 <div id="step8">
                     <div id="implement">
                         <div style="height: 50px;">
-                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>整改处理措施</p>
-                            <div id="">保存</div>
-                        </div>
-                        <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post" action="{:url('memberAdd')}">
-                            <input type="text" name="id" id="sid" style="display: none;">
-                            <input type="text" name="group_id" id="pgroup_id" style="display: none;">
-                            <div class="form-group">
-                                <div class="col-lg-12 col-xs-12">
-                                    <label class="col-xs-3 control-label">质量问题类别：</label>
-                                    <div class="myblock col-xs-8 input-group">
-                                        <textarea name="" id="" style="width: 100%;min-height: 100px;"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group">
-                                <div class="col-lg-12 col-xs-12">
-                                    <label class="col-xs-3 control-label">要求整改、处理完成时间：</label>
-                                    <div class="myblock col-xs-8 input-group">
-                                        <input type="text" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group">
-                                <div class="col-lg-6 col-xs-12">
-                                    <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">监理负责人：</label>
-                                    <div class="myblock col-xs-6 input-group">
-                                        <input type="text" class="form-control" name="problem" id="wproblem">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-xs-12">
-                                    <label class="col-xs-6 col-sm-4 control-label">标段负责人：</label>
-                                    <div class="myblock col-xs-6 input-group">
-                                        <input type="text" class="form-control" name="strategy" id="wstrategy">
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <div style="height: 50px;">
                             <div id="list7"></div>
-                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>附件</p>
+                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>实施</p>
                             <div id="upload7">上传文件</div>
                         </div>
                         <div id="implement_table_wrapper1">
@@ -273,29 +237,73 @@
                                     <th>文件名称</th>
                                     <th>上传人</th>
                                     <th>上传时间</th>
-                                    <th>版本</th>
+                                    <th>备注</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
                             </table>
                         </div>
+                        <div style="height: 50px;">
+                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>未实施原因分析</p>
+                            <div>保存</div>
+                        </div>
+                        <textarea name="" id="reason" style="min-height: 100px;width: 100%;"></textarea>
                     </div>
                 </div>
-                <div id="step10">
-                    <div id="summarize">
+                <div id="step9">
+                    <div id="standard">
                         <div style="height: 50px;">
-                            <div id="list14"></div>
-                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>总结</p>
-                            <div id="upload14">上传文件</div>
+                            <div id="list12"></div>
+                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>检查</p>
+                            <div id="upload12">上传文件</div>
                         </div>
-                        <div id="summarize_table_wrapper1">
-                            <table id="summarize_table1" width="100%" class="table table-striped table-bordered">
+                        <div id="standard_table_wrapper1">
+                            <table id="standard_table1" width="100%" class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>文件名称</th>
                                     <th>上传人</th>
                                     <th>上传时间</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div style="height: 50px;">
+                            <div id="list13"></div>
+                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>检查-不合格记录</p>
+                            <div id="upload13">上传文件</div>
+                        </div>
+                        <div id="standard_table_wrapper2">
+                            <table id="standard_table2" width="100%" class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>文件名称</th>
+                                    <th>上传人</th>
+                                    <th>上传时间</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div style="height: 50px;">
+                            <div id="list99"></div>
+                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>数码影像资料</p>
+                            <div id="upload99">上传文件</div>
+                        </div>
+                        <div id="standard_table_wrapper3">
+                            <table id="standard_table3" width="100%" class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>文件名称</th>
+                                    <th>上传人</th>
+                                    <th>上传时间</th>
+                                    <th>备注</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -306,6 +314,7 @@
             </div>
         </div>
     </div>
+    <div id="container2"></div>
 </div>
 <div id="form_container" style="display: none;"></div>
 
@@ -317,14 +326,13 @@
                     <h5></h5>
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post" action="{:url('memberAdd')}">
-                        <input type="text" name="id" id="sid" style="display: none;">
-                        <input type="text" name="group_id" id="pgroup_id" style="display: none;">
+                    <form class="form-horizontal" name="standardAdd" id="standardAdd" method="post" action="{:url('ReformAdd')}">
+                        <input type="text" name="id" id="id1" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">质量问题类别：</label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <select name="sex" id="" class="form-control" >
+                                    <select name="cate" id="scate" class="form-control" >
                                         <option value="质量缺陷">质量缺陷</option>
                                         <option value="质量事故">质量事故</option>
                                     </select>
@@ -336,7 +344,7 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">检查时间：</label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <input type="text" class="form-control">
+                                    <input id="sdate_check" type="text" class="form-control" name="date_check" >
                                 </div>
                             </div>
                         </div>
@@ -345,7 +353,7 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">内容描述：</label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <textarea name="" id="" style="width: 100%;min-height: 100px;" class="form-control"></textarea>
+                                    <textarea name="name" id="sname" class="form-control" style="width: 100%;min-height: 100px;"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -363,7 +371,7 @@
     </div>
 </div>
 
-<div id="pro_modal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
+<div id="ss_modal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
     <div class="row">
         <div class="col-sm-12" style="background-color:#fff;">
             <div class="ibox float-e-margins">
@@ -371,14 +379,14 @@
                     <h5></h5>
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post" action="{:url('memberAdd')}">
-                        <input type="text" name="id" id="sid" style="display: none;">
-                        <input type="text" name="group_id" id="pgroup_id" style="display: none;">
+                    <form class="form-horizontal" name="pro_modalAdd" id="pro_modalAdd" method="post" action="{:url('prototypeListAdd')}">
+                        <input type="text" name="id" id="id2" style="display: none;">
+                        <input type="text" name="group_id" id="group_id2" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-3 control-label">标准工艺名称：</label>
+                                <label class="col-xs-3 control-label">工程部位：</label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <input id="topic_name" type="text" class="form-control" name="topic_name" >
+                                    <input id="ppart" type="text" class="form-control" name="part" >
                                 </div>
                             </div>
                         </div>
@@ -387,16 +395,25 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-3 control-label">内容：</label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <textarea name="" id="" style="width: 100%;min-height: 100px;"></textarea>
+                                    <textarea name="content" id="pcontent" style="width: 100%;min-height: 100px;"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-3 control-label">备注：</label>
+                                <label class="col-xs-3 control-label">责任人：</label>
                                 <div class="myblock col-xs-8 input-group">
-                                    <textarea name="" id="" style="width: 100%;min-height: 100px;"></textarea>
+                                    <input id="powner" type="text" class="form-control" name="owner" placeholder="请在下方树结构选取责任人" readonly="readonly">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-3 control-label"></label>
+                                <div class="myblock col-xs-8 input-group">
+                                    <div id="tree_container" class="ztree"></div>
                                 </div>
                             </div>
                         </div>
@@ -413,6 +430,7 @@
         </div>
     </div>
 </div>
+
 
 
 <div id="fname" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
@@ -423,10 +441,11 @@
                     <h5></h5>
                 </div>
                 <div class="ibox-content">
+                    <input type="text" name="id" id="id4" style="display: none;" value="">
                     <div class="col-lg-12 col-xs-12" id="revision">
                         <label class="col-xs-3 control-label">备注：</label>
                         <div class="myblock col-xs-8 input-group">
-                            <input id="finame" type="text" class="form-control" name="name" >
+                            <input id="fremark" type="text" class="form-control" name="remark" >
                         </div>
                     </div>
                     <div class="col-lg-12 col-xs-12">
@@ -453,23 +472,40 @@
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/jquery.jedate.js"></script>
 <script>
-    var uploader,standard_uploader;
-    var tabtxt = "文件资料";
-    var tablename = "wjzl";
-    function myupload(uid,group_id,table_name,revision,publish_date) {
+    var uploader;
+    var ss_table;
+    var cid,cid3;
+    var mytablename;
+    function table_refresh() {
+       if(mytablename === "bzhgysfp"){
+            check_table2.ajax.url("__SCRIPT__/reform_attachment.php?group_id=" + cid + "&table_name=bzhgysfp").load();
+        }else if(mytablename === "ss"){
+            implement_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
+        }else if(mytablename === "jc"){
+            standard_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
+        }else if(mytablename === "bhg"){
+            standard_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
+        }else if(mytablename === "smyxzl"){
+            standard_table3.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=smyxzl1").load();
+        }else if(mytablename === "chhzb"){
+            summarize_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=chhzb").load();
+        }else if(mytablename === "abc"){
+            summarize_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=abc").load();
+        }
+    }
+    function myupload() {
         $("#fname input").val("");
         $("#file_list").empty();
         $("#fname").modal('show');
         if(!uploader){
             uploader = WebUploader.create({
-
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadQC')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadReformAttachment')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"uid":"","table_name":"","group_id":"","revision":"","publish_date":""},
+                formData: {"uid":"","table_name":"","group_id":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -498,18 +534,17 @@
                 console.log("remove");
             });
             uploader.on("uploadStart",function () {
-                if(revision == "bb"){
-                    revision = $("#revision input").val();
+                uploader.options.formData.table_name = mytablename;
+                uploader.options.formData.group_id = cid;
+            });
+            uploader.on('beforeFileQueued', function (file) {
+                if($("#file_list").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
                 }
-                if(publish_date === "date"){
-                    publish_date = $("#publish_date input").val();
-                }
-                uploader.options.formData.id = uid;
-                uploader.options.formData.table_name = table_name;
-                uploader.options.formData.group_id = group_id;
-                uploader.options.formData.revision = revision;
-                uploader.options.formData.publish_date = publish_date;
-            })
+            });
             // 文件上传过程中创建进度条实时显示。
             uploader.on('uploadProgress', function (file, percentage) {
                 var $li = $('#' + file.id),
@@ -529,73 +564,44 @@
                 console.log(file)
                 console.log(data)
                 layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
-                if(table_name === "xtly"){
-                    upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
-                }else if(table_name === "qcxz"){
-                    id1 = data.id;
-                    path1 = data.path.substr(1);
-                    $("#img_container>img").attr("src",path1);
-                }else if(table_name === "xzdc"){
-                    inquire_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xzdc").load();
-                }else if(table_name === "mbsd"){
-                    id2 = data.id;
-                    path2 = data.path.substr(1);
-                    $("#pic_container>img").attr("src",path2);
-                }else if(table_name === "mblz"){
-                    target_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=mblz").load();
-                }else if(table_name === "yyfx"){
-                    id3 = data.id;
-                    path3 = data.path.substr(1);
-                    $("#reason_container>img").attr("src",path3);
-                }else if(table_name === "ss"){
-                    implement_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=ss").load();
-                }else if(table_name === "smyxzl"){
-                    implement_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=smyxzl").load();
-                }else if(table_name === "wjzl"){
-                    check_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=wjzl").load();
-                }else if(table_name === "smyx"){
-                    check_table4.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=smyx").load();
-                }else if(table_name === "jjxy"){
-                    check_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=jjxy").load();
-                }else if(table_name === "shxy"){
-                    check_table3.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=shxy").load();
-                }else if(table_name === "ggcs"){
-                    standard_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=ggcs").load();
-                }else if(table_name === "bzh"){
-                    standard_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=bzh").load();
-                }else if(table_name === "zj"){
-                    summarize_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=zj").load();
-                    $.ajax({
-                        url: "./qcAdd",
-                        type: "post",
-                        data: {id:cid,status:"已完成"},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                            if(res.code === 1){
-                                qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
-                            }
-                        }
-                    })
-                }else if(table_name === "cgfbqk"){
-                    result_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=cgfbqk").load();
-                    $.ajax({
-                        url: "./qcAdd",
-                        type: "post",
-                        data: {id:cid,status:"已发布"},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                            if(res.code === 1){
-                                qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
-                            }
-                        }
-                    })
-                }
+                table_refresh();
                 uploader = null;
                 $("#file_upload").empty();
                 $("#fname").modal('hide');
                 $("#file_per").empty();
+                if(mytablename === "ss"){
+                    $.ajax({
+                        url: "./prototypeListAdd",
+                        type: "post",
+                        data: {id:cid3,status:"实施"},
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                        }
+                    })
+                }
+                if(mytablename === "jc"){
+                    $.ajax({
+                        url: "./prototypeListAdd",
+                        type: "post",
+                        data: {id:cid3,status:"检查"},
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                        }
+                    })
+                }
+                if(mytablename === "chhzb"){
+                    $.ajax({
+                        url: "./prototypeListAdd",
+                        type: "post",
+                        data: {id:cid3,status:"完成"},
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                        }
+                    })
+                }
             });
 
             // 文件上传失败，显示上传出错。
@@ -607,58 +613,46 @@
             });
         }
     }
-    $("#upload7").click(function () {
-        myupload("",cid,"ss","bb","");
-    });
-    $("#upload8").click(function () {
-        myupload("",cid,"smyxzl","bb","");
-    });
-    $("#upload9").click(function () {
-        myupload("",cid,tablename,"bb","");
-    });
     $("#upload10").click(function () {
-        myupload("",cid,"jjxy","","");
+        mytablename = "bzhgysfp";
+        myupload();
     });
-    $("#upload11").click(function () {
-        myupload("",cid,"shxy","","");
+    $("#upload7").click(function () {
+        mytablename = "ss";
+        myupload();
     });
     $("#upload12").click(function () {
-        myupload("",cid,"ggcs","","");
+        mytablename = "jc";
+        myupload();
     });
-    $("#fname .btn-primary").click(function () {
-        uploader.upload();
-    })
+    $("#upload13").click(function () {
+        mytablename = "bhg";
+        myupload();
+    });
+    $("#upload99").click(function () {
+        mytablename = "smyxzl1";
+        myupload();
+    });
+    $("#upload14").click(function () {
+        mytablename = "chhzb";
+        myupload();
+    });
 
-    $("#tab_li>div").click(function () {
-        var index = $(this).index();
-        if(index === 1){
-            tabtxt = "数码影像";
-            tablename = "smyx"
-        }else {
-            tabtxt = "文件资料";
-            tablename = "wjzl"
-        }
-        $("#tab_li>div").css("background-color","#fff").eq(index).css("background-color","#bae2f3");
-        $("#tab_con>div").css("display","none").eq(index).css("display","block");
-    })
+    $("#upload15").click(function () {
+        mytablename = "abc";
+        myupload();
+    });
+
     //日期插件
-    $("#implement_date").jeDate({
+    $("#sdate_check").jeDate({
         format: "YYYY-MM-DD"
     });
     //标准工艺
-    var cid;
-    function detail(that) {
-//        $("#container").css("display","block");
-        $("#container").css("display","block");
-        cid = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $("#myform1id").val(cid);
-//        grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
-    }
     function edit(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $("#qcid").val(id);
-        $("#myModal h5").text("编辑");
-        $("#myModal").modal("show");
+        $("#id1").val(id);
+        $("#standard_modal h5").text("编辑");
+        $("#standard_modal").modal("show");
         $.ajax({
             url: "./index",
             type: "post",
@@ -666,9 +660,9 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                $("#topic_name").val(res.data.topic_name);
-                $("#implement_date").val(res.data.implement_date);
-                $("#owner").val(res.data.owner);
+                $("#sname").val(res.data.name);
+                $("#scate").val(res.data.cate);
+                $("#sdate_check").val(res.data.date_check);
             }
         })
     }
@@ -676,14 +670,14 @@
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
-                url: "./qcDel",
+                url: "./ReformDel",
                 data: {'id' : id},
                 type: "post",
                 dataType: "json",
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
+                        standard_table.ajax.url("__SCRIPT__/reform.php").load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -692,21 +686,40 @@
             layer.close(index);
         })
     }
+    function detail(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        cid = id;
+        var cate = $(that).parent("td").parent("tr").children("td:nth-child(3)").text();
+        if(cate === "质量缺陷"){
+            $.ajax({
+                url: "./index",
+                type: "post",
+                data: {id:id},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                    $("#sdescription").val(res.data.description);
+                }
+            });
+            check_table2.ajax.url("__SCRIPT__/reform_attachment.php?group_id=" + cid + "&table_name=bzhgysfp").load();
+            $("#container").css("display","block");
+        }
+    }
     var standard_table = $('#standard_table').DataTable( {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/qc_group.php"
+            "url": "__SCRIPT__/reform.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [5],
+                "targets": [6],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='detail(this)' value='详情'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
@@ -728,88 +741,13 @@
     $("div.mybtn").html('<div>新增</div>');
     $("#standard_wrapper .mybtn").click(function () {
         $("#standard_modal input").val("");
+        $("#standard_modal textarea").val("");
         $("#standard_modal h5").text("新增");
         $("#standard_modal").modal('show');
-        if(!standard_uploader){
-            standard_uploader = WebUploader.create({
-
-                auto: false,// 选完文件后，是否自动上传。
-                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadQC')}",// 文件接收服务端。
-                chunked: false,
-                fileSizeLimit: 1000 *1024 *1024,
-                fileNumLimit: 1,
-                formData: {"uid":"","table_name":"","group_id":"","revision":"","publish_date":""},
-                duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                pick: {
-                    multiple: false,
-                    id: "#standard_upload",
-                    innerHTML: "上传文件"
-                }
-            });
-
-            standard_uploader.on( 'fileQueued', function( file ) {
-                $("#standard_per").append('<div id="' + file.id + '" class="item">' +
-                    '</div>');
-                $("#standard_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
-                    '<span class="info">' + file.name + '</span>&nbsp' +
-                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                    '</div>' );
-            });
-            $("#file_list").on("click", ".webuploadDelbtn", function () {
-                var $ele = $(this);
-                var id = $ele.parent().attr("class");
-                var file = uploader.getFile(id);
-                uploader.removeFile(file,true);
-            });
-            standard_uploader.on('fileDequeued', function (file) {
-                $(file.id).remove();
-                $('.'+file.id).remove();
-                console.log("remove");
-            });
-            standard_uploader.on("uploadStart",function () {
-                standard_uploader.options.formData.id = uid;
-                standard_uploader.options.formData.table_name = table_name;
-                standard_uploader.options.formData.group_id = group_id;
-                standard_uploader.options.formData.revision = revision;
-                standard_uploader.options.formData.publish_date = publish_date;
-            })
-            // 文件上传过程中创建进度条实时显示。
-            standard_uploader.on('uploadProgress', function (file, percentage) {
-                var $li = $('#' + file.id),
-                    $percent = $li.find('.progress .progress-bar');
-                // 避免重复创建
-                if (!$percent.length) {
-                    $percent = $('<div class="progress progress-striped active">' +
-                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                        '</div>' +
-                        '</div>').appendTo($li).find('.progress-bar');
-                }
-                $li.find('p.state').text('上传中');
-                $percent.css('width', percentage * 100 + '%');
-            });
-            // 文件上传成功
-            standard_uploader.on( 'uploadSuccess', function( file,data, response ) {
-                console.log(file)
-                console.log(data)
-                layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
-                uploader = null;
-                $("#standard_upload").empty();
-                $("#standard_modal").modal('hide');
-                $("#standard_per").empty();
-            });
-
-            // 文件上传失败，显示上传出错。
-            uploader.on( 'uploadError', function( file ) {
-                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                $("#standard_per").empty();
-                $("#standard_upload").empty();
-            });
-        }
     });
-
     $("#back").click(function () {
         $("#container").css("display","none");
+        ss_table.ajax.url("__SCRIPT__/prototype_list.php?group_id=" + cid).load();
     })
 
 
@@ -822,9 +760,56 @@
         $("#flow_content>div").css("display","none").eq(index).css("display","block");
     })
 
-    //datatable
-    //文件下载
-    function download(that) {
+    //文件删除
+    var file_name3,file_name4;
+    function fdelatt(that) {
+        var id = $(that).parent("div").attr("id");
+        $.ajax({
+            url: "./prototypeAttachmentEditDel",
+            type: "post",
+            data: {id:id},
+            datatype: "json",
+            success: function (res) {
+                $("#"+id).remove();
+            }
+        })
+    }
+    function fdel(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var parent = $(that).parent("td").parent("tr").parent("tbody").parent("table").attr("id");
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./attachmentDel",
+                data: {'id' : id},
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        if(parent === "check_table2"){
+                            check_table2.ajax.url("__SCRIPT__/reform_attachment.php?group_id=" + cid + "&table_name=bzhgysfp").load();
+                        }else if(parent === "implement_table1"){
+                            implement_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
+                        }else if(parent === "standard_table1"){
+                            standard_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
+                        }else if(parent === "standard_table2"){
+                            standard_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
+                        }else if(parent === "standard_table3"){
+                            standard_table3.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=smyxzl").load();
+                        }else if(parent === "summarize_table1"){
+                            summarize_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=chhzb").load();
+                        }else if(parent === "summarize_table2"){
+                            summarize_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=abc").load();
+                        }
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
+        })
+    }
+    function fdownload(that) {
         $("#form_container").empty();
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         var str = "";
@@ -838,104 +823,42 @@
         $("#form_container").append(str);
         $("#form_container").find(".btn" + id).click();
     }
-    //文件删除
-    function fdel(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        var parent = $(that).parent("td").parent("tr").parent("tbody").parent("table").attr("id");
-        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
-            $.ajax({
-                url: "./attachmentDel",
-                data: {'id' : id},
-                type: "post",
-                dataType: "json",
-                success: function (res) {
-                    if(res.code == 1){
-                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-//                        if(parent === "upload_table"){
-//                            upload_table.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=xtly").load();
-//                        }
-                    }else{
-                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
-                    }
-                }
-            })
-            layer.close(index);
-        })
-    }
-
-
-
-    var check_table1 = $('#check_table1').DataTable( {
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=wjzl",
-            "async": false
-        },
-        "columnDefs": [
-            {
-                "searchable": false,
-                "orderable": false,
-                "targets": [5],
-                "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
-                    return html;
+    $("#fname .btn-primary").click(function () {
+        if($("#file_list").html()){
+            if(!$("#id4").val()){
+                uploader.upload();
+            }else {
+                if(file_name3 === file_name4){
+                    $.ajax({
+                        url: "./editPrototypeAttachmentNoUpload",
+                        type: "post",
+                        data: {uid:$("#id4").val(),remark:$("#fremark").val(),group_id:cid3,table_name:mytablename},
+                        datatype: "json",
+                        success: function (res) {
+                            if(res.code === 1){
+                                layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
+                                table_refresh();
+                                $("#fname").modal('hide');
+                            }else {
+                                layer.msg("提交失败",{icon:1,time:1500,shade: 0.1});
+                            }
+                        }
+                    })
+                }else {
+                    uploader.upload();
                 }
             }
-        ],
-        "language": {
-            "lengthMenu": "每页_MENU_ 条记录",
-            "zeroRecords": "没有找到记录",
-            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-            "infoEmpty": "无记录",
-            "search": "搜索：",
-            "infoFiltered": "(从 _MAX_ 条记录过滤)",
-            "paginate": {
-                "previous": "上一页",
-                "next": "下一页"
-            }
+        }else {
+            alert("请选择上传文件");
         }
-    } );
+    })
 
-    var check_table4 = $('#check_table4').DataTable( {
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=smyx",
-            "async": false
-        },
-        "columnDefs": [
-            {
-                "searchable": false,
-                "orderable": false,
-                "targets": [5],
-                "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
-                    return html;
-                }
-            }
-        ],
-        "language": {
-            "lengthMenu": "每页_MENU_ 条记录",
-            "zeroRecords": "没有找到记录",
-            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-            "infoEmpty": "无记录",
-            "search": "搜索：",
-            "infoFiltered": "(从 _MAX_ 条记录过滤)",
-            "paginate": {
-                "previous": "上一页",
-                "next": "下一页"
-            }
-        }
-    } );
 
     var check_table2 = $('#check_table2').DataTable( {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=jjxy",
+            "url": "__SCRIPT__/reform_attachment.php?group_id=" + cid + "&table_name=bzhgysfp",
             "async": false
         },
         "columnDefs": [
@@ -944,40 +867,7 @@
                 "orderable": false,
                 "targets": [4],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
-                    return html;
-                }
-            }
-        ],
-        "language": {
-            "lengthMenu": "每页_MENU_ 条记录",
-            "zeroRecords": "没有找到记录",
-            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-            "infoEmpty": "无记录",
-            "search": "搜索：",
-            "infoFiltered": "(从 _MAX_ 条记录过滤)",
-            "paginate": {
-                "previous": "上一页",
-                "next": "下一页"
-            }
-        }
-    } );
-
-    var check_table3 = $('#check_table3').DataTable( {
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=shxy",
-            "async": false
-        },
-        "columnDefs": [
-            {
-                "searchable": false,
-                "orderable": false,
-                "targets": [4],
-                "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1001,7 +891,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=ss",
+            "url": "__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=ss",
             "async": false
         },
         "columnDefs": [
@@ -1010,7 +900,8 @@
                 "orderable": false,
                 "targets": [5],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1034,17 +925,19 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=ggcs",
+            "url": "__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=jc",
             "async": false
         },
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [4],
+                "targets": [5],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
+                    html += "<input type='button' class='btn btn-warning btn-outline btn-xs' style='margin-left: 5px;' onclick='unqua(this)' value='不合格'/>" ;
                     return html;
                 }
             }
@@ -1067,16 +960,51 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=bzh",
+            "url": "__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bhg",
             "async": false
         },
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [4],
+                "targets": [5],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
+
+    var standard_table3 = $('#standard_table3').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=smyxzl1",
+            "async": false
+        },
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [5],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1100,16 +1028,51 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=zj",
+            "url": "__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=chhzb",
             "async": false
         },
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [4],
+                "targets": [5],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
+
+    var summarize_table2 = $('#summarize_table2').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=abc",
+            "async": false
+        },
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [5],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1130,14 +1093,14 @@
     } );
 
     //提交
-    //QC管理
-    $("#myModal .btn-primary").click(function () {
-        $('#Add').ajaxForm({
+    //standard_table
+    $("#standard_modal .btn-primary").click(function () {
+        $('#standardAdd').ajaxForm({
             success: function (data) {
                 if(data.code==1){
-                    $("#myModal").modal('hide');
+                    $("#standard_modal").modal('hide');
                     layer.msg("保存成功");
-                    qc_table.ajax.url("__SCRIPT__/qc_group.php").load();
+                    standard_table.ajax.url("__SCRIPT__/reform.php").load();
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;
@@ -1146,115 +1109,38 @@
             dataType: 'json'
         });
     })
-    //QC小组
+    //sstable
+    $("#ss_modal .btn-primary").click(function () {
+        $('#pro_modalAdd').ajaxForm({
+            success: function (data) {
+                if(data.code==1){
+                    $("#ss_modal").modal('hide');
+                    layer.msg("保存成功");
+                    ss_table.ajax.url("__SCRIPT__/prototype_list.php?group_id=" + cid).load();
+                }else{
+                    layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                    return false;
+                }
+            },
+            dataType: 'json'
+        });
+    })
+    //save
     $("#mysave1").click(function () {
-        $('#myform1').ajaxSubmit({
-            url: "./qcAdd",
-            type: "post",
-            success: function (data) {
-                if(data.code==1){
-                    layer.msg("保存成功");
-                }else{
-                    layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
-                    return false;
-                }
-            },
-            dataType: 'json'
-        });
-    })
-    //小组成员
-    $("#addPeople .btn-primary").click(function () {
-        $('#memberAdd').ajaxForm({
-            success: function (data) {
-                if(data.code==1){
-                    $("#addPeople").modal('hide');
-                    layer.msg("保存成功");
-                    grouppeople_table.ajax.url("__SCRIPT__/qc_member.php?group_id=" + cid).load();
-                }else{
-                    layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
-                    return false;
-                }
-            },
-            dataType: 'json'
-        });
-    })
-    //选题内容
-    $("#save1").click(function () {
-        var content = $("#content1").val();
         $.ajax({
-            url: "./qcAdd",
+            url: "./ReformAdd",
             type: "post",
-            data: {id:cid,content:content},
+            data: {id:cid,description:$("#sdescription").val()},
             dataType: "json",
             success: function (res) {
-                console.log(res);
-                layer.msg(res.msg, {time:1500,shade: 0.1});
-            }
-        })
-    })
-    //制定目标
-    $("#save2").click(function () {
-        var goal = $("#goal").val();
-        $.ajax({
-            url: "./qcAdd",
-            type: "post",
-            data: {id:cid,goal:goal},
-            dataType: "json",
-            success: function (res) {
-                console.log(res);
-                layer.msg(res.msg, {time:1500,shade: 0.1});
-            }
-        })
-    })
-    //要因分析
-    $("#reason .btn-primary").click(function () {
-        $('#problem').ajaxForm({
-            success: function (data) {
-                if(data.code==1){
-                    $("#reason").modal('hide');
+                if(res.code==1){
                     layer.msg("保存成功");
-                    reason_table.ajax.url("__SCRIPT__/qc_problem.php?group_id=" + cid ).load();
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;
                 }
-            },
-            dataType: 'json'
-        });
-    })
-    //制定对策
-    $("#way .btn-primary").click(function () {
-        $('#reason1').ajaxForm({
-            success: function (data) {
-                if(data.code==1){
-                    $("#way").modal('hide');
-                    layer.msg("保存成功");
-                    way_table.ajax.url("__SCRIPT__/qc_strategy.php?group_id=" + cid).load();
-                }else{
-                    layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
-                    return false;
-                }
-            },
-            dataType: 'json'
-        });
-    })
-    //实施
-    $("#rev .btn-primary").click(function () {
-        $('#frev').ajaxForm({
-            success: function (res) {
-                if(res.msg === "success"){
-                    layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                    $("#rev").modal('hide');
-                    implement_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=ss").load();
-                    implement_table2.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=smyxzl").load();
-                    check_table1.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=wjzl").load();
-                    check_table4.ajax.url("__SCRIPT__/qc_attachment.php?group_id=" + cid + "&table_name=smyx").load();
-                }else {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                }
-            },
-            dataType: 'json'
-        });
+            }
+        })
     })
 </script>
 </body>
