@@ -1298,7 +1298,15 @@
                 uploader.options.formData.table_name = mytablename;
                 uploader.options.formData.group_id = cid3;
                 uploader.options.formData.remark = $("#fremark").val();
-            })
+            });
+            uploader.on('beforeFileQueued', function (file) {
+                if($("#file_list").html()){
+                    alert("请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
             // 文件上传过程中创建进度条实时显示。
             uploader.on('uploadProgress', function (file, percentage) {
                 var $li = $('#' + file.id),
