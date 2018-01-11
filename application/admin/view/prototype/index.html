@@ -236,7 +236,7 @@
                             </div>
                         <div style="height: 50px;">
                             <div id="list10"></div>
-                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>标准化工艺示范牌</p>
+                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>数码影像资料</p>
                             <div id="upload10">上传文件</div>
                         </div>
                         <div id="check_table_wrapper2">
@@ -551,19 +551,19 @@
         if(mytablename === "mbjc"){
             check_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=mbjc").load();
         }else if(mytablename === "bzhgysfp"){
-            check_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bzhgysfp").load();
+            check_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bzhgysfp").load();
         }else if(mytablename === "ss"){
-            implement_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
+            implement_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
         }else if(mytablename === "jc"){
-            standard_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
+            standard_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
         }else if(mytablename === "bhg"){
-            standard_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
+            standard_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
         }else if(mytablename === "smyxzl"){
-            standard_table3.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=smyxzl1").load();
+            standard_table3.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=smyxzl1").load();
         }else if(mytablename === "chhzb"){
-            summarize_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=chhzb").load();
+            summarize_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=chhzb").load();
         }else if(mytablename === "abc"){
-            summarize_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=abc").load();
+            summarize_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=abc").load();
         }
     }
     function myupload() {
@@ -638,7 +638,7 @@
                 $("#file_per").empty();
                 if(mytablename === "ss"){
                     $.ajax({
-                        url: "./procedureListSublistAdd",
+                        url: "./prototypeListAdd",
                         type: "post",
                         data: {id:cid3,status:"实施"},
                         dataType: "json",
@@ -649,7 +649,7 @@
                 }
                 if(mytablename === "jc"){
                     $.ajax({
-                        url: "./procedureListSublistAdd",
+                        url: "./prototypeListAdd",
                         type: "post",
                         data: {id:cid3,status:"检查"},
                         dataType: "json",
@@ -660,7 +660,7 @@
                 }
                 if(mytablename === "chhzb"){
                     $.ajax({
-                        url: "./procedureListSublistAdd",
+                        url: "./prototypeListAdd",
                         type: "post",
                         data: {id:cid3,status:"完成"},
                         dataType: "json",
@@ -714,19 +714,6 @@
         myupload();
     });
 
-
-    $("#tab_li>div").click(function () {
-        var index = $(this).index();
-        if(index === 1){
-            tabtxt = "数码影像";
-            tablename = "smyx"
-        }else {
-            tabtxt = "文件资料";
-            tablename = "wjzl"
-        }
-        $("#tab_li>div").css("background-color","#fff").eq(index).css("background-color","#bae2f3");
-        $("#tab_con>div").css("display","none").eq(index).css("display","block");
-    })
     //日期插件
     $("#year").jeDate({
         format: "YYYY"
@@ -1037,6 +1024,7 @@
     });
     $("#back").click(function () {
         $("#container").css("display","none");
+        ss_table.ajax.url("__SCRIPT__/prototype_list.php?group_id=" + cid).load();
     })
     $("#standard_table").on("click","tbody tr",function () {
         console.log($(this).children("td:first-child").text())
@@ -1053,7 +1041,7 @@
     function sdetail(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         cid3 = id;
-        check_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=wjzl").load();
+        check_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=mbjc").load();
         check_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bzhgysfp").load();
         implement_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
         standard_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
@@ -1063,7 +1051,7 @@
         summarize_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=abc").load();
         $("#container").css("display","block");
         $.ajax({
-            url: "./procedureListSublistEdit",
+            url: "./prototypeListEdit",
             type: "post",
             data: {id:id},
             dataType: "json",
@@ -1226,19 +1214,19 @@
                         if(parent === "check_table1"){
                             check_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=mbjc").load();
                         }else if(parent === "check_table2"){
-                            check_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bzhgysfp").load();
+                            check_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bzhgysfp").load();
                         }else if(parent === "implement_table1"){
-                            implement_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
+                            implement_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
                         }else if(parent === "standard_table1"){
-                            standard_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
+                            standard_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
                         }else if(parent === "standard_table2"){
-                            standard_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
+                            standard_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
                         }else if(parent === "standard_table3"){
-                            standard_table3.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=smyxzl").load();
+                            standard_table3.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=smyxzl").load();
                         }else if(parent === "summarize_table1"){
-                            summarize_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=chhzb").load();
+                            summarize_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=chhzb").load();
                         }else if(parent === "summarize_table2"){
-                            summarize_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=abc").load();
+                            summarize_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=abc").load();
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
@@ -1383,9 +1371,9 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        implement_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
-                        standard_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
-                        standard_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
+                        implement_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
+                        standard_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
+                        standard_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -1401,7 +1389,7 @@
             }else {
                 if(file_name3 === file_name4){
                     $.ajax({
-                        url: "./editProcedureAttachmentNoUpload",
+                        url: "./editPrototypeAttachmentNoUpload",
                         type: "post",
                         data: {uid:$("#id4").val(),remark:$("#fremark").val(),group_id:cid3,table_name:mytablename},
                         datatype: "json",
@@ -1462,7 +1450,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bzhgysfp",
+            "url": "__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bzhgysfp",
             "async": false
         },
         "columnDefs": [
@@ -1496,7 +1484,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=ss",
+            "url": "__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=ss",
             "async": false
         },
         "columnDefs": [
@@ -1530,7 +1518,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=jc",
+            "url": "__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=jc",
             "async": false
         },
         "columnDefs": [
@@ -1565,7 +1553,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bhg",
+            "url": "__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bhg",
             "async": false
         },
         "columnDefs": [
@@ -1599,7 +1587,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=smyxzl1",
+            "url": "__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=smyxzl1",
             "async": false
         },
         "columnDefs": [
@@ -1633,7 +1621,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=chhzb",
+            "url": "__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=chhzb",
             "async": false
         },
         "columnDefs": [
@@ -1667,7 +1655,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=abc",
+            "url": "__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=abc",
             "async": false
         },
         "columnDefs": [
@@ -1717,7 +1705,7 @@
     //save
     $("#mysave1").click(function () {
         $.ajax({
-            url: "./procedureListSublistAdd",
+            url: "./prototypeListAdd",
             type: "post",
             data: {id:cid3,reason:$("#reason").val()},
             dataType: "json",
