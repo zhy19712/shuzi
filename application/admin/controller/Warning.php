@@ -16,7 +16,7 @@ class Warning extends Base
         $warning = new ProjectModel();
         if(request()->isAjax()){
             $param = input('post.');
-            $data = $warning->getOne($param['id']);
+            $data = $warning->getOneProject($param['id']);
             return json(['data' => $data]);
         }
         return $this->fetch();
