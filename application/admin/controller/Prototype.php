@@ -12,6 +12,8 @@ namespace app\admin\controller;
 use app\admin\model\PrototypeAttachmentModel;
 use app\admin\model\PrototypeListModel;
 use app\admin\model\PrototypeModel;
+use app\admin\model\UserModel;
+use app\admin\model\UserType;
 
 class Prototype extends Base
 {
@@ -128,6 +130,48 @@ class Prototype extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $flag = $prototype->delPrototypeList($param['id']);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    //从组织机构及用户树中选择负责人
+    public function getOwner(){
+        $node1 = new UserType();
+        $node2 = new UserModel();
+        $nodeStr1 = $node1->getNodeInfo_1();
+        $nodeStr2 = $node2->getNodeInfo_2();
+        $nodeStr = "[" . substr($nodeStr1 . $nodeStr2, 0, -1) . "]";
+        return json($nodeStr);
+    }
+
+    public function prototypeAttachmentEditDel()
+    {
+        $attachment = new PrototypeAttachmentModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $data = $attachment->getOne($param['id']);
+            $path = $data['path'];
+            unlink($path); //删除文件
+            return json([ 'msg' => 'success']);
+        }
+    }
+
+    //编辑，没有替换附件时保存上传附件信息
+    public function editPrototypeAttachmentNoUpload()
+    {
+        $attachment = new PrototypeAttachmentModel();
+
+        $param = input('post.');
+        if(request()->isAjax()){
+            $data = [
+                'id' => $param['uid'],
+                'group_id' => $param['group_id'],
+                'owner' => session('username'),
+                'date' => date("Y-m-d H:i:s"),
+                'remark' =>  $param['remark'],
+                'table_name' =>  $param['table_name'],
+            ];
+            $flag = $attachment->editAttachment($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
