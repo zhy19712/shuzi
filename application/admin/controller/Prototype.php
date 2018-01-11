@@ -110,6 +110,7 @@ class Prototype extends Base
         $prototype = new PrototypeListModel();
         if(request()->isAjax()){
             $param = input('post.');
+            $param['date'] = date('Y-m-d');
             if(empty($param['id']))
             {
                 $flag = $prototype->insertPrototypeList($param);
@@ -173,6 +174,16 @@ class Prototype extends Base
             ];
             $flag = $attachment->editAttachment($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    public function attachmentEdit()
+    {
+        $attachment = new PrototypeAttachmentModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $data = $attachment->getOne($param['id']);
+            return json(['data' => $data]);
         }
     }
 
