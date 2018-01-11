@@ -13,6 +13,12 @@ class Warning extends Base
 {
     public function index()
     {
+        $warning = new ProjectModel();
+        if(request()->isAjax()){
+            $param = input('post.');
+            $data = $warning->getOneProject($param['id']);
+            return json(['data' => $data]);
+        }
         return $this->fetch();
     }
 }
