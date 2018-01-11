@@ -300,43 +300,25 @@ class Upload extends Base
     public function uploadProjectStage(){
         $stage = new ProjectStageModel();
         $id = request()->param('uid');
-        $table_name = request()->param('table_name');
-        $name = request()->param('uname');
-        $status = request()->param('status');
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/StageAcceptance');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/ProjectStage');
         if($info){
             $temp = $info->getSaveName();
-            $path = './uploads/StageAcceptance/' . str_replace("\\","/",$temp);
+            $path = './uploads/ProjectStage/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
-            if(empty($id))
+            if(!empty($id))
             {
                 $data = [
-                    'table_name' => $table_name,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
                     'path' => $path,
-                    'name' => $name,
-                    'status' => $status,
-                    'filename' => $filename
-                ];
-                $flag = $stage->insertStage($data);
-                return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
-            }else{
-//                $data_older = $prototype->getOne($id);
-//                unlink($data_older['path']);
-                $data = [
-                    'id' => $id,
-                    'table_name' => $table_name,
-                    'owner' => session('username'),
-                    'date' => date("Y-m-d H:i:s"),
-                    'path' => $path,
-                    'name' => $name,
-                    'status' => $status,
+                    'status' => '已上传',
                     'filename' => $filename
                 ];
                 $flag = $stage->editStage($data);
                 return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
+            }else{
+                return json(['msg' => 'error!']);
             }
         }else{
             echo $file->getError();
