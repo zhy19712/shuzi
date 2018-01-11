@@ -471,7 +471,7 @@
                     <h5></h5>
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal" name="pro_modalAdd" id="pro_modalAdd" method="post" action="{:url('procedureListSublistAdd')}">
+                    <form class="form-horizontal" name="pro_modalAdd" id="pro_modalAdd" method="post" action="{:url('prototypeListAdd')}">
                         <input type="text" name="id" id="id2" style="display: none;">
                         <input type="text" name="group_id" id="group_id2" style="display: none;">
                         <div class="form-group">
@@ -1018,7 +1018,7 @@
                 console.log(data)
                 layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
                 standard_uploader = null;
-                standard_table.ajax.url("__SCRIPT__/procedure.php").load();
+                standard_table.ajax.url("__SCRIPT__/prototype.php").load();
                 $("#standard_modal").modal('hide');
                 $("#standard_per").empty();
             });
@@ -1069,7 +1069,7 @@
         $("#standard_table tbody tr:nth-child(even)").css("background-color","#fff");
         $(this).css("background-color","#AAAAAA");
         cid = $(this).children("td:first-child").text();
-        ss_table.ajax.url("__SCRIPT__/procedure_list.php?group_id=" + cid).load();
+        ss_table.ajax.url("__SCRIPT__/prototype_list.php?group_id=" + cid).load();
         $("#ssgy").css("display","block");
     })
 
@@ -1106,7 +1106,7 @@
         zTreeObj.reAsyncChildNodes(null, "refresh");
         $("#ss_modal").modal("show");
         $.ajax({
-            url: "./procedureListEdit",
+            url: "./prototypeListEdit",
             type: "post",
             data: {id:id},
             dataType: "json",
@@ -1122,14 +1122,14 @@
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
-                url: "./procedureListDel",
+                url: "./prototypeListDel",
                 data: {'id' : id},
                 type: "post",
                 dataType: "json",
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        ss_table.ajax.url("__SCRIPT__/procedure_list.php?group_id=" + cid).load();
+                        ss_table.ajax.url("__SCRIPT__/prototype_list.php?group_id=" + cid).load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -1142,7 +1142,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/procedure_list.php?group_id=" + cid
+            "url": "__SCRIPT__/prototype_list.php?group_id=" + cid
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
@@ -1762,12 +1762,12 @@
     //提交
     //sstable
     $("#ss_modal .btn-primary").click(function () {
-        $('#ssAdd').ajaxForm({
+        $('#pro_modalAdd').ajaxForm({
             success: function (data) {
                 if(data.code==1){
                     $("#ss_modal").modal('hide');
                     layer.msg("保存成功");
-                    ss_table.ajax.url("__SCRIPT__/procedure_list.php?group_id=" + cid).load();
+                    ss_table.ajax.url("__SCRIPT__/prototype_list.php?group_id=" + cid).load();
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;
