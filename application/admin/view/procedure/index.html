@@ -651,7 +651,7 @@
 <script>
     var uploader,standard_uploader;
     var ss_table;
-    var cid3;
+    var cid,cid2,cid3;
     var mytablename = "wjzl";
     var tabtxt = "文件资料";
     var tablename = "wjzl";
@@ -746,6 +746,39 @@
                 $("#file_upload").empty();
                 $("#fname").modal('hide');
                 $("#file_per").empty();
+                if(mytablename === "ss"){
+                    $.ajax({
+                        url: "./procedureListSublistAdd",
+                        type: "post",
+                        data: {id:cid3,status:"实施"},
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                        }
+                    })
+                }
+                if(mytablename === "jc"){
+                    $.ajax({
+                        url: "./procedureListSublistAdd",
+                        type: "post",
+                        data: {id:cid3,status:"检查"},
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                        }
+                    })
+                }
+                if(mytablename === "chhzb"){
+                    $.ajax({
+                        url: "./procedureListSublistAdd",
+                        type: "post",
+                        data: {id:cid3,status:"完成"},
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                        }
+                    })
+                }
             });
 
             // 文件上传失败，显示上传出错。
@@ -809,7 +842,6 @@
         format: "YYYY"
     });
     //标准工艺
-    var cid;
     var file_name1,file_name2;
     function delatt(that) {
         var id = $(that).parent("div").attr("id");
@@ -1118,6 +1150,7 @@
     })
     $("#back").click(function () {
         $("#container").css("display","none");
+        pro_table.ajax.url("__SCRIPT__/procedure_list_sublist.php?group_id=" + cid2).load();
     })
     $("#standard_table").on("click","tbody tr",function () {
         console.log($(this).children("td:first-child").text())
@@ -1130,7 +1163,7 @@
     })
 
     //sstable
-    var zTreeObj,cid2;
+    var zTreeObj;
     function sdetail(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         cid2 = id;
