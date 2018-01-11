@@ -54,7 +54,7 @@ class Prototype extends Base
             $data = $attachment->getOne($param['id']);
             $path = $data['path'];
             unlink($path); //删除文件
-            $flag = $attachment->delProcedure($param['id']);
+            $flag = $attachment->delPrototype($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
