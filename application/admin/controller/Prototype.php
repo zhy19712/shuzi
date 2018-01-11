@@ -110,6 +110,7 @@ class Prototype extends Base
         $prototype = new PrototypeListModel();
         if(request()->isAjax()){
             $param = input('post.');
+            $param['date'] = date('Y-m-d');
             if(empty($param['id']))
             {
                 $flag = $prototype->insertPrototypeList($param);
