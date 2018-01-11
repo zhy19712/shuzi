@@ -736,6 +736,14 @@
                 $li.find('p.state').text('上传中');
                 $percent.css('width', percentage * 100 + '%');
             });
+            uploader.on('beforeFileQueued', function (file) {
+                if($("#file_list").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
             // 文件上传成功
             uploader.on( 'uploadSuccess', function( file,data, response ) {
                 console.log(file)
@@ -1069,8 +1077,8 @@
             $("#standard_list").on("click", ".webuploadDelbtn", function () {
                 var $ele = $(this);
                 var id = $ele.parent().attr("class");
-                var file = uploader.getFile(id);
-                uploader.removeFile(file,true);
+                var file = standard_uploader.getFile(id);
+                standard_uploader.removeFile(file,true);
             });
             standard_uploader.on('fileDequeued', function (file) {
                 $(file.id).remove();
@@ -1083,6 +1091,14 @@
                 standard_uploader.options.formData.year = $("#year").val();
                 standard_uploader.options.formData.season = $("#season").val();
             })
+            standard_uploader.on('beforeFileQueued', function (file) {
+                if($("#standard_list").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
             // 文件上传过程中创建进度条实时显示。
             standard_uploader.on('uploadProgress', function (file, percentage) {
                 var $li = $('#' + file.id),

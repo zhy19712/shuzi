@@ -611,7 +611,15 @@
                 uploader.options.formData.table_name = mytablename;
                 uploader.options.formData.group_id = cid3;
                 uploader.options.formData.remark = $("#fremark").val();
-            })
+            });
+            uploader.on('beforeFileQueued', function (file) {
+                if($("#file_list").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
             // 文件上传过程中创建进度条实时显示。
             uploader.on('uploadProgress', function (file, percentage) {
                 var $li = $('#' + file.id),
@@ -946,13 +954,21 @@
             $("#standard_list").on("click", ".webuploadDelbtn", function () {
                 var $ele = $(this);
                 var id = $ele.parent().attr("class");
-                var file = uploader.getFile(id);
-                uploader.removeFile(file,true);
+                var file = standard_uploader.getFile(id);
+                standard_uploader.removeFile(file,true);
             });
             standard_uploader.on('fileDequeued', function (file) {
                 $(file.id).remove();
                 $('.'+file.id).remove();
                 console.log("remove");
+            });
+            standard_uploader.on('beforeFileQueued', function (file) {
+                if($("#standard_list").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
             });
             standard_uploader.on("uploadStart",function () {
                 standard_uploader.options.formData.uid = $("#id1").val();
@@ -1182,8 +1198,6 @@
         console.log(index)
         $("#flow_content>div").css("display","none").eq(index).css("display","block");
     })
-
-    //datatable
 
     //文件删除
     var file_name3,file_name4;
