@@ -138,6 +138,27 @@ class Prototype extends Base
         $check = new PrototypeAttachmentModel();
         if(request()->isAjax()) {
             $param = input('post.');
+            $data = $check ->getOne($param['id']);
+            $path = $data['path'];
+
+            $path_copy = $data['path'] . 'bak';
+            if (file_exists($path) == false)
+            {
+                die ('文件不在,无法复制');
+            }else{
+                copy($path, $path_copy);
+            }
+
+            $newData = [
+                'group_id' => $data['group_id'],
+                'table_name' => 'bhg',
+                'path' => $path_copy,
+                'name' => $data['name'],
+                'owner' => $data['owner'],
+                'date' => $data['date'],
+                'remark' => $data['remark']
+            ];
+            $check->insertAttachment($newData);
             $param['table_name'] = 'ss';
             $flag = $check->editAttachment($param);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
