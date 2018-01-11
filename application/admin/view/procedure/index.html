@@ -666,8 +666,8 @@
             implement_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
         }else if(mytablename === "jc"){
             standard_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
-        }else if(mytablename === "jcbhgjl"){
-            standard_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=jcbhgjl").load();
+        }else if(mytablename === "bhg"){
+            standard_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
         }else if(mytablename === "smyxzl"){
             standard_table3.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=smyxzl1").load();
         }else if(mytablename === "chhzb"){
@@ -774,7 +774,7 @@
         myupload();
     });
     $("#upload13").click(function () {
-        mytablename = "jcbhgjl";
+        mytablename = "bhg";
         myupload();
     });
     $("#upload99").click(function () {
@@ -1119,7 +1119,7 @@
     $("#back").click(function () {
         $("#container").css("display","none");
     })
-    $("#standard_table").on("click","tr",function () {
+    $("#standard_table").on("click","tbody tr",function () {
         console.log($(this).children("td:first-child").text())
         $("#standard_table tbody tr:nth-child(odd)").css("background-color","#f9f9f9");
         $("#standard_table tbody tr:nth-child(even)").css("background-color","#fff");
@@ -1259,7 +1259,7 @@
         check_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bzhgysfp").load();
         implement_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
         standard_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
-        standard_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=jcbhgjl").load();
+        standard_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
         standard_table3.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=smyxzl1").load();
         summarize_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=chhzb").load();
         summarize_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=abc").load();
@@ -1436,7 +1436,7 @@
                         }else if(parent === "standard_table1"){
                             standard_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
                         }else if(parent === "standard_table2"){
-                            standard_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=jcbhgjl").load();
+                            standard_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
                         }else if(parent === "standard_table3"){
                             standard_table3.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=smyxzl").load();
                         }else if(parent === "summarize_table1"){
@@ -1573,6 +1573,29 @@
                     '<span onclick="fdelatt(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
                     '</div>' );
             }
+        })
+    }
+    function unqua(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var parent = $(that).parent("td").parent("tr").parent("tbody").parent("table").attr("id");
+        layer.confirm('确认将此条记录设为不合格吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./sendBack",
+                data: {'id' : id,group_id:cid3},
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                            implement_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
+                            standard_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
+                            standard_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
         })
     }
     $("#fname .btn-primary").click(function () {
@@ -1757,6 +1780,7 @@
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
+                    html += "<input type='button' class='btn btn-warning btn-outline btn-xs' style='margin-left: 5px;' onclick='unqua(this)' value='不合格'/>" ;
                     return html;
                 }
             }
@@ -1779,7 +1803,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=jcbhgjl",
+            "url": "__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bhg",
             "async": false
         },
         "columnDefs": [
