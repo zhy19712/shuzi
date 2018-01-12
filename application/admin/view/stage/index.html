@@ -66,7 +66,32 @@
         </div>
     </div>
 </div>
-
+<div id="form_container" style="display: none;"></div>
+<div id="fname" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5></h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" id="file" style="text-align: right;line-height: 44px;">文件：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <div id="file_per" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_upload" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_list" style="display: inline-block;vertical-align: middle;"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-offset-6">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
@@ -77,20 +102,26 @@
         $(this).tab('show');
         console.log($(this).text());
     });
-    function myupload(container) {
+    var uploader,tablename;
+    function upload(that) {
+        var cid = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var parent = $(that).parents("table").attr("id");
+        $("#file_list").empty();
+        $("#fname").modal('show');
         if(!uploader){
             uploader = WebUploader.create({
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadReformAttachment')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadProjectStage')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"uid":"","table_name":"","group_id":""},
+                formData: {"uid":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
-                    id: container
+                    id: "#file_upload",
+                    innerHTML: "上传文件"
                 }
             });
 
@@ -114,7 +145,7 @@
                 console.log("remove");
             });
             uploader.on("uploadStart",function () {
-                uploader.options.formData.group_id = cid;
+                uploader.options.formData.uid = cid;
             });
             uploader.on('beforeFileQueued', function (file) {
                 if($("#file_list").html()){
@@ -143,44 +174,70 @@
                 console.log(file)
                 console.log(data)
                 layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
-                table_refresh();
                 uploader = null;
                 $("#file_upload").empty();
                 $("#fname").modal('hide');
                 $("#file_per").empty();
-
-                if(mytablename === "jc"){
-                    $.ajax({
-                        url: "./prototypeListAdd",
-                        type: "post",
-                        data: {id:cid3,status:"检查"},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                        }
-                    })
-                }
-                if(mytablename === "chhzb"){
-                    $.ajax({
-                        url: "./prototypeListAdd",
-                        type: "post",
-                        data: {id:cid3,status:"完成"},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                        }
-                    })
+                if(parent === "table1"){
+                    table1.ajax.url("__SCRIPT__/project_stage.php?table_name=jlys").load();
+                }else if(parent === "table2"){
+                    table2.ajax.url("__SCRIPT__/project_stage.php?table_name=xsys").load();
+                }else if(parent === "table3"){
+                    table3.ajax.url("__SCRIPT__/project_stage.php?table_name=jzqdys").load();
                 }
             });
 
             // 文件上传失败，显示上传出错。
             uploader.on( 'uploadError', function( file ) {
                 layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                $("#file_per").empty();
-                uploader = null;
-                $("#file_upload").empty();
+//                $("#file_per").empty();
+//                $("#file_upload").empty();
             });
         }
+    }
+    $("#fname .btn-primary").click(function () {
+        uploader.upload();
+    })
+    function del(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var parent = $(that).parent("td").parent("tr").parent("tbody").parent("table").attr("id");
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./stageDel",
+                data: {'id' : id},
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        if(parent === "table1"){
+                            table1.ajax.url("__SCRIPT__/project_stage.php?table_name=jlys").load();
+                        }else if(parent === "table2"){
+                            table2.ajax.url("__SCRIPT__/project_stage.php?table_name=xsys").load();
+                        }else if(parent === "table3"){
+                            table3.ajax.url("__SCRIPT__/project_stage.php?table_name=jzqdys").load();
+                        }
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
+        })
+    }
+    function download(that) {
+        $("#form_container").empty();
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var str = "";
+        str += ""
+            + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+            + "<form name=download"+ id +" action='./stageDownload' method='get' target=downloadFrame"+ id +">"
+            + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+            + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+            + "<button type='submit' class=btn" + id +"></button>"
+            + "</form>"
+        $("#form_container").append(str);
+        $("#form_container").find(".btn" + id).click();
     }
     var table1 = $('#table1').DataTable( {
         "processing": true,
@@ -189,6 +246,77 @@
             "url": "__SCRIPT__/project_stage.php?table_name=jlys",
             "async": false
         },
+        "dom": 'f',
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [5],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='upload(this)' value='上传'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
+
+    var table2 = $('#table2').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/project_stage.php?table_name=xsys",
+            "async": false
+        },
+        "dom": 'f',
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [5],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='upload(this)' value='上传'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
+
+    var table3 = $('#table3').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/project_stage.php?table_name=jzqdys",
+            "async": false
+        },
+        "dom": 'f',
         "columnDefs": [
             {
                 "searchable": false,

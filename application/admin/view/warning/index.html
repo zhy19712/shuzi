@@ -1,16 +1,34 @@
 {include file="public/header" /}
 <link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
 <style>
-    .mybtn{
-        margin-right: 30px;
-        float: left;
-    }
-    #imgPicker>div:nth-child(2){
-        width: 100% !important;
-        height: 100% !important;
-    }
-    #mytable1_wrapper th,#mytable1_wrapper td{
+    #info{
+        width: 100%;
         text-align: center;
+        border-top: 1px solid #000;
+        border-left: 1px solid #000;
+        line-height: 30px;
+    }
+    #info td{
+        border-bottom: 1px solid #000;
+        border-right: 1px solid #000;
+        width: 16%;
+    }
+    #info2{
+        width: 100%;
+        line-height: 30px;
+        text-align: center;
+        border-left: 1px solid #000;
+    }
+    #info2 td{
+        border-bottom: 1px solid #000;
+        border-right: 1px solid #000;
+    }
+    #info2 td{
+        width: 20%;
+    }
+    .style{
+        background-color: #bae2f3;
+        font-weight: 700;
     }
 </style>
 <body class="gray-bg" style="background-color:#fff; text-align: center">
@@ -33,6 +51,58 @@
                         </tr>
                         </thead>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5></h5>
+                </div>
+                <div class="ibox-content">
+                    <table id="info">
+                        <tbody>
+                        <tr>
+                            <td class="style">单元工程名称</td>
+                            <td colspan="2" id="name"></td>
+                            <td class="style">单元工程编号</td>
+                            <td colspan="2" id="sn"></td>
+                        </tr>
+                        <tr>
+                            <td class="style">桩号</td>
+                            <td id="zhuanghaoqi"></td>
+                            <td id="zhuanghaozhi"></td>
+                            <td class="style">高程</td>
+                            <td id="gaochengqi"></td>
+                            <td id="gaochengzhi"></td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                    <table id="info2">
+                        <tbody>
+                        <tr>
+                            <td class="style">施工完成日期</td>
+                            <td class="style">当前日期</td>
+                            <td class="style">类别</td>
+                            <td class="style">限定日期</td>
+                            <td class="style">超期(天)</td>
+                        </tr>
+                        <tr>
+                            <td id="wangong_date"></td>
+                            <td id="currentDate"></td>
+                            <td id="cate"></td>
+                            <td id="limit"></td>
+                            <td id="exceed"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a class="btn btn-danger" data-dismiss="modal" style="margin-top: 20px;"><i class="fa fa-close"></i> 返回</a>
                 </div>
             </div>
         </div>
@@ -74,11 +144,30 @@
         }
     } );
 
-    // function detail(id){
-    //     location.href = './userEdit/id/'+id+'.html';
-    // }
-
-
+     function detail(that){
+         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+         $.ajax({
+             url: "./index",
+             type: "post",
+             data: {id:id},
+             dataType: "json",
+             success: function (res) {
+                 console.log(res);
+                 $("#name").text(res.data.name);
+                 $("#sn").text(res.data.sn + res.data.post_sn);
+                 $("#zhuanghaoqi").text("起:" + res.data.zhuanghaoqi);
+                 $("#zhuanghaozhi").text("止:" + res.data.zhuanghaozhi);
+                 $("#gaochengqi").text("起:" + res.data.gaochengqi);
+                 $("#gaochengzhi").text("止:" + res.data.gaochengzhi);
+                 $("#wangong_date").text(res.data.wangong_date);
+                 $("#currentDate").text(res.data.currentDate);
+                 $("#cate").text(res.data.cate);
+                 $("#limit").text(res.data.limit);
+                 $("#exceed").text(res.data.exceed);
+                 $("#myModal").modal();
+             }
+         })
+     }
 
 </script>
 </body>
