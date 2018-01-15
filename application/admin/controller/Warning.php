@@ -17,7 +17,18 @@ class Warning extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $data = $warning->getOneProject($param['id']);
-            return json(['data' => $data]);
+            $limit = 0;
+            if($data['cate'] == '开挖'){
+                $limit = 7;
+
+            }else if($data['cate'] == '支护'){
+                $limit = 28;
+
+            }else if($data['cate'] == '混凝土'){
+                $limit = 28;
+            }
+            $currentDate = date("Y-m-d");
+            return json(['data' => $data, 'limit' => $limit, 'currentDate' => $currentDate]);
         }
         return $this->fetch();
     }

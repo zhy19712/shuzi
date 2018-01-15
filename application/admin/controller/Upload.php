@@ -309,6 +309,7 @@ class Upload extends Base
             if(!empty($id))
             {
                 $data = [
+                    'id' => $id,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
                     'path' => $path,
