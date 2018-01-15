@@ -218,7 +218,9 @@ class Acceptance extends Base
             $attachment = new ProjectAttachmentModel();
             $data = $attachment->getOne($id);
             $path = $data['path'];
-            unlink($path); //删除文件
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
             $flag = $attachment->delAttachment($id);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }

@@ -55,7 +55,9 @@ class Prototype extends Base
             $param = input('post.');
             $data = $attachment->getOne($param['id']);
             $path = $data['path'];
-            unlink($path); //删除文件
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
             $flag = $attachment->delPrototype($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
@@ -68,7 +70,9 @@ class Prototype extends Base
             $param = input('post.');
             $data = $attachment->getOne($param['id']);
             $path = $data['path'];
-            unlink($path); //删除文件
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
             return json([ 'msg' => 'success']);
         }
     }
@@ -152,7 +156,9 @@ class Prototype extends Base
             $param = input('post.');
             $data = $attachment->getOne($param['id']);
             $path = $data['path'];
-            unlink($path); //删除文件
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
             return json([ 'msg' => 'success']);
         }
     }
@@ -214,7 +220,9 @@ class Prototype extends Base
             $param = input('post.');
             $data = $attachment->getOne($param['id']);
             $path = $data['path'];
-            unlink($path); //删除文件
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
             $flag = $attachment->delAttachment($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }

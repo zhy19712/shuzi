@@ -210,7 +210,10 @@ class Qc extends Base
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg'], 'id' => $data_newer['id']]);
             }else{
                 $data_older = $attachment->getOne($param['id']);
-                unlink($data_older['path']);
+                if(file_exists($data_older['path'])){
+                    unlink($data_older['path']);
+                }
+
                 if($param['table_name'] == 'ss' || $param['table_name'] == 'smyxzl' || $param['table_name'] == 'smyx' || $param['table_name'] == 'wjzl'){
                     $data = [
                         'owner' => session('username'),
@@ -268,7 +271,9 @@ class Qc extends Base
             $param = input('post.');
             $data = $qc->getOne($param['id']);
             $path = $data['path'];
-            unlink($path); //删除文件
+            if(file_exists($path)){
+                unlink($path);
+            }
             $flag = $qc->delAttachment($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }

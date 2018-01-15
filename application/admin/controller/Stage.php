@@ -51,7 +51,9 @@ class Stage extends Base
             $param = input('post.');
             $data = $attachment->getOne($param['id']);
             $path = $data['path'];
-            unlink($path); //删除文件
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
             $new_data = [
                 'id' => $param['id'],
                 'owner' => '',

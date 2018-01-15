@@ -82,7 +82,9 @@ class Construction extends Base
             $video = new ConstructionModel();
             $data = $video->getOne($id);
             $path = $data['path'];
-            unlink($path); //删除文件
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
             $flag = $video->delVideo($id);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
