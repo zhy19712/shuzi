@@ -28,7 +28,9 @@ class Warning extends Base
                 $limit = 28;
             }
             $currentDate = date("Y-m-d");
-            return json(['data' => $data, 'limit' => $limit, 'currentDate' => $currentDate]);
+            $data['limit'] = $limit;
+            $data['currentDate'] = $currentDate;
+            return json(['data' => $data]);
         }
         return $this->fetch();
     }
