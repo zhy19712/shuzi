@@ -20,7 +20,7 @@ class Reform extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $data = $reform->getOne($param['id']);
-            return json(['data' => $data]);
+            return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }

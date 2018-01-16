@@ -23,7 +23,7 @@ class Qc extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $data = $qc->getOne($param['id']);
-            return json(['data' => $data]);
+            return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
@@ -63,7 +63,7 @@ class Qc extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $data = $qc->getOne($param['id']);
-            return json(['data' => $data]);
+            return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
@@ -103,7 +103,7 @@ class Qc extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $data = $qc->getOne($param['id']);
-            return json(['data' => $data]);
+            return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
@@ -143,7 +143,7 @@ class Qc extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $data = $qc->getOne($param['id']);
-            return json(['data' => $data]);
+            return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
@@ -291,7 +291,7 @@ class Qc extends Base
         $table_name3 = $param['table_name3'];
         $attachment = new QCAttachmentModel();
         $data = $attachment->getInfo($group_id, $table_name1,$table_name2,$table_name3);
-        return $data;
+        return json(['code'=> 1, 'data' => $data]);
     }
 
 }
