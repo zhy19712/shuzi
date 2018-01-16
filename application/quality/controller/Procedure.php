@@ -23,7 +23,7 @@ class Procedure extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $data = $procedure->getOne($param['id']);
-            return json(['data' => $data]);
+            return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
@@ -89,7 +89,7 @@ class Procedure extends Base
             if(file_exists($path)){
                 unlink($path); //删除文件
             }
-            return json([ 'msg' => 'success']);
+            return json([ 'code' => 1, 'msg' => 'success']);
         }
     }
 
@@ -120,7 +120,7 @@ class Procedure extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $data = $procedure_list->getOne($param['id']);
-            return json(['data' => $data]);
+            return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
@@ -171,7 +171,7 @@ class Procedure extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $data = $procedure_list_sublist->getOne($param['id']);
-            return json(['data' => $data]);
+            return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
@@ -217,7 +217,7 @@ class Procedure extends Base
             if(file_exists($path)){
                 unlink($path); //删除文件
             }
-            return json([ 'msg' => 'success']);
+            return json([ 'code' => 1, 'msg' => 'success']);
         }
     }
 
@@ -287,7 +287,7 @@ class Procedure extends Base
         if(request()->isAjax()) {
             $param = input('post.');
             $data = $attachment->getOne($param['id']);
-            return json(['data' => $data]);
+            return json(['code'=> 1, 'data' => $data]);
         }
     }
 
