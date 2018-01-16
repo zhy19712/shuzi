@@ -1,6 +1,21 @@
 <?php
 use think\Db;
 
+//上传权限判断
+function uploadAccess()
+{
+    $auth = new \com\Auth();
+    $module     = strtolower(request()->module());
+    $controller = strtolower(request()->controller());
+    $action     = strtolower(request()->action());
+    $url        = $module."/".$controller."/".$action;
+    if(session('uid')!=1){
+        if(!$auth->check($url,session('uid'))){
+            return json(['msg'=> '抱歉，您没有操作权限']);
+        }
+    }
+}
+
 
 /**
  * 求两个日期之间相差的天数

@@ -21,7 +21,8 @@ class Base extends Controller
 
         //跳过检测以及主页权限
         if(session('uid')!=1){
-            if(!in_array($url, ['admin/index/index','admin/index/indexpage','quality/upload/uploadPrototypeAttachment'])){
+            if(!in_array($url, ['admin/index/index',
+                'admin/index/indexpage'])){
                 if(!$auth->check($url,session('uid'))){
                     $this->error('抱歉，您没有操作权限');
                 }
