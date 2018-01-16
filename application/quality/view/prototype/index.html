@@ -638,45 +638,50 @@
             uploader.on( 'uploadSuccess', function( file,data, response ) {
                 console.log(file)
                 console.log(data)
-                layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
-                table_refresh();
-                uploader = null;
-                $("#file_upload").empty();
-                $("#fname").modal('hide');
-                $("#file_per").empty();
-                if(mytablename === "ss"){
-                    $.ajax({
-                        url: "./prototypeListAdd",
-                        type: "post",
-                        data: {id:cid3,status:"实施"},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                        }
-                    })
+                if(data.code === 1){
+                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    table_refresh();
+                    uploader = null;
+                    $("#file_upload").empty();
+                    $("#fname").modal('hide');
+                    $("#file_per").empty();
+                    if(mytablename === "ss"){
+                        $.ajax({
+                            url: "./prototypeListAdd",
+                            type: "post",
+                            data: {id:cid3,status:"实施"},
+                            dataType: "json",
+                            success: function (res) {
+                                console.log(res);
+                            }
+                        })
+                    }
+                    if(mytablename === "jc"){
+                        $.ajax({
+                            url: "./prototypeListAdd",
+                            type: "post",
+                            data: {id:cid3,status:"检查"},
+                            dataType: "json",
+                            success: function (res) {
+                                console.log(res);
+                            }
+                        })
+                    }
+                    if(mytablename === "chhzb"){
+                        $.ajax({
+                            url: "./prototypeListAdd",
+                            type: "post",
+                            data: {id:cid3,status:"完成"},
+                            dataType: "json",
+                            success: function (res) {
+                                console.log(res);
+                            }
+                        })
+                    }
+                }else {
+                    layer.msg(data.msg);
                 }
-                if(mytablename === "jc"){
-                    $.ajax({
-                        url: "./prototypeListAdd",
-                        type: "post",
-                        data: {id:cid3,status:"检查"},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                        }
-                    })
-                }
-                if(mytablename === "chhzb"){
-                    $.ajax({
-                        url: "./prototypeListAdd",
-                        type: "post",
-                        data: {id:cid3,status:"完成"},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                        }
-                    })
-                }
+
             });
 
             // 文件上传失败，显示上传出错。
@@ -820,11 +825,16 @@
             standard_uploader.on( 'uploadSuccess', function( file,data, response ) {
                 console.log(file)
                 console.log(data)
-                layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
-                standard_uploader = null;
-                standard_table.ajax.url("__SCRIPT__/prototype.php").load();
-                $("#standard_modal").modal('hide');
-                $("#standard_per").empty();
+                if(data.code === 1){
+                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    standard_uploader = null;
+                    standard_table.ajax.url("__SCRIPT__/prototype.php").load();
+                    $("#standard_modal").modal('hide');
+                    $("#standard_per").empty();
+                }else {
+                    layer.msg(data.msg);
+                }
+
             });
 
             // 文件上传失败，显示上传出错。
@@ -1004,11 +1014,15 @@
             standard_uploader.on( 'uploadSuccess', function( file,data, response ) {
                 console.log(file)
                 console.log(data)
-                layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
-                standard_uploader = null;
-                standard_table.ajax.url("__SCRIPT__/prototype.php").load();
-                $("#standard_modal").modal('hide');
-                $("#standard_per").empty();
+                if(data.code === 1){
+                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    standard_uploader = null;
+                    standard_table.ajax.url("__SCRIPT__/prototype.php").load();
+                    $("#standard_modal").modal('hide');
+                    $("#standard_per").empty();
+                }else {
+                    layer.msg(data.msg);
+                }
             });
 
             // 文件上传失败，显示上传出错。
@@ -1075,7 +1089,7 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-//                if(res.code === 1){
+                if(res.code === 1){
                     check_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=mbjc").load();
                     check_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bzhgysfp").load();
                     implement_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
@@ -1086,9 +1100,9 @@
                     summarize_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=abc").load();
                     $("#container").css("display","block");
                     $("#reason").val(res.data.reason);
-//                }else {
-//                    layer.msg(res.msg);
-//                }
+                }else {
+                    layer.msg(res.msg);
+                }
 
             }
         })
