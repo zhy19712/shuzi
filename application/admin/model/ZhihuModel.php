@@ -24,7 +24,7 @@ class ZhihuModel extends Model
             if(false === $result){
                 return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
             }else{
-                return ['code' => 1, 'data' => '', 'msg' => '节点添加成功'];
+                return ['code' => 1, 'data' => '', 'msg' => '添加成功'];
             }
         }catch( PDOException $e){
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
@@ -41,7 +41,7 @@ class ZhihuModel extends Model
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
-                return ['code' => 1, 'data' => '', 'msg' => '节点信息编辑成功'];
+                return ['code' => 1, 'data' => '', 'msg' => '编辑成功'];
             }
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];

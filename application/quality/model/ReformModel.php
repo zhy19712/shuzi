@@ -1,21 +1,21 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: admin
- * Date: 2018/1/3
- * Time: 10:45
+ * User: zhuangyf
+ * Date: 2018/1/9
+ * Time: 20:05
  */
 
-namespace app\admin\model;
+namespace app\quality\model;
 
 
 use think\Model;
 
-class QCModel extends Model
+class ReformModel extends Model
 {
-    protected $name = 'qc_group';
+    protected $name = 'reform';
 
-    public function insertQc($param)
+    public function insertReform($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -29,7 +29,7 @@ class QCModel extends Model
         }
     }
 
-    public function editQc($param)
+    public function editReform($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -43,7 +43,7 @@ class QCModel extends Model
         }
     }
 
-    public function delQc($id)
+    public function delReform($id)
     {
         try{
             $this->where('id', $id)->delete();
@@ -58,5 +58,4 @@ class QCModel extends Model
     {
         return $this->where('id', $id)->find();
     }
-
 }

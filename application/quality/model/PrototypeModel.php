@@ -2,20 +2,20 @@
 /**
  * Created by PhpStorm.
  * User: admin
- * Date: 2018/1/3
- * Time: 15:18
+ * Date: 2018/1/4
+ * Time: 15:37
  */
 
-namespace app\admin\model;
+namespace app\quality\model;
 
 
 use think\Model;
 
-class ProcedureModel extends Model
+class PrototypeModel extends Model
 {
-    protected $name = 'procedure';
+    protected $name = 'prototype';
 
-    public function insertProcedure($param)
+    public function insertPrototype($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -29,7 +29,7 @@ class ProcedureModel extends Model
         }
     }
 
-    public function editProcedure($param)
+    public function editPrototype($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -43,7 +43,7 @@ class ProcedureModel extends Model
         }
     }
 
-    public function delProcedure($id)
+    public function delPrototype($id)
     {
         try{
             $this->where('id', $id)->delete();

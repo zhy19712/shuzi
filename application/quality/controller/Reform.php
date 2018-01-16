@@ -6,11 +6,11 @@
  * Time: 9:35
  */
 
-namespace app\admin\controller;
+namespace app\quality\controller;
 
-
-use app\admin\model\ReformAttachmentModel;
-use app\admin\model\ReformModel;
+use app\admin\controller\Base;
+use app\quality\model\ReformAttachmentModel;
+use app\quality\model\ReformModel;
 
 class Reform extends Base
 {

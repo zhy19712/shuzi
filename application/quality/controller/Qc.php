@@ -6,12 +6,13 @@
  * Time: 9:35
  */
 
-namespace app\admin\controller;
-use app\admin\model\QCMemberModel;
-use app\admin\model\QCModel;
-use app\admin\model\QCAttachmentModel;
-use app\admin\model\QCProblemModel;
-use app\admin\model\QCStrategyModel;
+namespace app\quality\controller;
+use app\admin\controller\Base;
+use app\quality\model\QCMemberModel;
+use app\quality\model\QCModel;
+use app\quality\model\QCAttachmentModel;
+use app\quality\model\QCProblemModel;
+use app\quality\model\QCStrategyModel;
 
 
 class Qc extends Base
@@ -251,17 +252,20 @@ class Qc extends Base
         $param = $attachment->getOne($id);
         $filePath = $param['path'];
         $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1); ;
-        $file = fopen($filePath, "r"); //   打开文件
-        //输入文件标签
-        Header("Content-type:application/octet-stream ");
-        Header("Accept-Ranges:bytes ");
-        Header("Accept-Length:   " . filesize($filePath));
-        Header("Content-Disposition:   attachment;   filename= " . $fileName);
+        if(file_exists($filePath)) {
+            $file = fopen($filePath, "r"); //   打开文件
 
-        //   输出文件内容
-        echo fread($file, filesize($filePath));
-        fclose($file);
-        exit;
+            //输入文件标签
+            Header("Content-type:application/octet-stream ");
+            Header("Accept-Ranges:bytes ");
+            Header("Accept-Length:   " . filesize($filePath));
+            Header("Content-Disposition:   attachment;   filename= " . $fileName);
+
+            //   输出文件内容
+            echo fread($file, filesize($filePath));
+            fclose($file);
+            exit;
+        }
     }
 
     public function attachmentDel()

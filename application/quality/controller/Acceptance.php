@@ -6,9 +6,10 @@
  * Time: 9:33
  */
 
-namespace app\admin\controller;
+namespace app\quality\controller;
+use app\admin\controller\Base;
 use app\admin\model\MaoganModel;
-use app\admin\model\ProjectAttachmentModel;
+use app\quality\model\ProjectAttachmentModel;
 use app\admin\model\ZhihuModel;
 use think\Db;
 use app\admin\model\DivideModel;
@@ -235,17 +236,20 @@ class Acceptance extends Base
         $param = $attachment->getOne($id);
         $filePath = $param['path'];
         $fileName = $param['filename'];
-        $file = fopen($filePath, "r"); //   打开文件
-        //输入文件标签
-        Header("Content-type:application/octet-stream ");
-        Header("Accept-Ranges:bytes ");
-        Header("Accept-Length:   " . filesize($filePath));
-        Header("Content-Disposition:   attachment;   filename= " . $fileName);
+        if(file_exists($filePath)) {
+            $file = fopen($filePath, "r"); //   打开文件
 
-        //   输出文件内容
-        echo fread($file, filesize($filePath));
-        fclose($file);
-        exit;
+            //输入文件标签
+            Header("Content-type:application/octet-stream ");
+            Header("Accept-Ranges:bytes ");
+            Header("Accept-Length:   " . filesize($filePath));
+            Header("Content-Disposition:   attachment;   filename= " . $fileName);
+
+            //   输出文件内容
+            echo fread($file, filesize($filePath));
+            fclose($file);
+            exit;
+        }
     }
 
 

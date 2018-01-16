@@ -8,10 +8,10 @@
 
 namespace app\admin\controller;
 use app\admin\model\DivideModel;
-use app\admin\model\HunningtuModel;
-use app\admin\model\KaiwaModel;
-use app\admin\model\ProjectModel;
-use app\admin\model\ZhihuModel;
+use app\quality\model\HunningtuModel;
+use app\quality\model\KaiwaModel;
+use app\quality\model\ProjectModel;
+use app\quality\model\ZhihuModel;
 use think\Db;
 
 use think\Loader;

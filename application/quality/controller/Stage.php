@@ -6,10 +6,10 @@
  * Time: 19:02
  */
 
-namespace app\admin\controller;
+namespace app\quality\controller;
 
-
-use app\admin\model\ProjectStageModel;
+use app\admin\controller\Base;
+use app\quality\model\ProjectStageModel;
 
 class Stage extends Base
 {
@@ -31,17 +31,20 @@ class Stage extends Base
         $param = $attachment->getOne($id);
         $filePath = $param['path'];
         $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1); ;
-        $file = fopen($filePath, "r"); //   打开文件
-        //输入文件标签
-        Header("Content-type:application/octet-stream ");
-        Header("Accept-Ranges:bytes ");
-        Header("Accept-Length:   " . filesize($filePath));
-        Header("Content-Disposition:   attachment;   filename= " . $fileName);
+        if(file_exists($filePath)) {
+            $file = fopen($filePath, "r"); //   打开文件
 
-        //   输出文件内容
-        echo fread($file, filesize($filePath));
-        fclose($file);
-        exit;
+            //输入文件标签
+            Header("Content-type:application/octet-stream ");
+            Header("Accept-Ranges:bytes ");
+            Header("Accept-Length:   " . filesize($filePath));
+            Header("Content-Disposition:   attachment;   filename= " . $fileName);
+
+            //   输出文件内容
+            echo fread($file, filesize($filePath));
+            fclose($file);
+            exit;
+        }
     }
 
     public function stageDel()

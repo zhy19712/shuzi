@@ -6,8 +6,9 @@
  * Time: 9:33
  */
 
-namespace app\admin\controller;
-use app\admin\model\ConstructionModel;
+namespace app\quality\controller;
+use app\admin\controller\Base;
+use app\quality\model\ConstructionModel;
 
 
 class Construction extends Base

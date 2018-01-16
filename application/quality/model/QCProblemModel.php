@@ -1,21 +1,21 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: zhuangyf
- * Date: 2018/1/8
- * Time: 21:34
+ * User: waterforest
+ * Date: 2018/1/4
+ * Time: 1:01
  */
 
-namespace app\admin\model;
+namespace app\quality\model;
 
 
 use think\Model;
 
-class ProcedureListModel extends Model
+class QCProblemModel extends Model
 {
-    protected $name = 'procedure_list';
+    protected $name = 'qc_problem';
 
-    public function insertProcedureList($param)
+    public function insertQc($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -29,7 +29,7 @@ class ProcedureListModel extends Model
         }
     }
 
-    public function editProcedureList($param)
+    public function editQc($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -43,7 +43,7 @@ class ProcedureListModel extends Model
         }
     }
 
-    public function delProcedureList($id)
+    public function delQc($id)
     {
         try{
             $this->where('id', $id)->delete();

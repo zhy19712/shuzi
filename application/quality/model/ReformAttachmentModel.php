@@ -1,21 +1,21 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: waterforest
- * Date: 2018/1/4
- * Time: 0:51
+ * User: zhuangyf
+ * Date: 2018/1/9
+ * Time: 20:06
  */
 
-namespace app\admin\model;
+namespace app\quality\model;
 
 
 use think\Model;
 
-class QCMemberModel extends Model
+class ReformAttachmentModel extends Model
 {
-    protected $name = 'qc_member';
+    protected $name = 'reform_attachment';
 
-    public function insertQc($param)
+    public function insertAttachment($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -29,7 +29,7 @@ class QCMemberModel extends Model
         }
     }
 
-    public function editQc($param)
+    public function editAttachment($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -43,7 +43,7 @@ class QCMemberModel extends Model
         }
     }
 
-    public function delQc($id)
+    public function delAttachment($id)
     {
         try{
             $this->where('id', $id)->delete();

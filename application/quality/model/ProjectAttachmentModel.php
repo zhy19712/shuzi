@@ -1,21 +1,23 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: zhuangyf
- * Date: 2018/1/8
- * Time: 21:52
+ * User: admin
+ * Date: 2017/12/28
+ * Time: 14:35
  */
 
-namespace app\admin\model;
+namespace app\quality\model;
 
 
 use think\Model;
 
-class ProcedureListSublistModel extends Model
+class ProjectAttachmentModel extends Model
 {
-    protected $name = 'procedure_list_sublist';
-
-    public function insertProcedureListSublist($param)
+    protected $name = 'project_attachment';
+    /**
+     * 插入
+     */
+    public function insertAttachment($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -29,31 +31,41 @@ class ProcedureListSublistModel extends Model
         }
     }
 
-    public function editProcedureListSublist($param)
+    /**
+     * 编辑信息
+     */
+    public function editAttachment($param)
     {
         try{
-            $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
+            $result =  $this->allowField(true)->save($param, ['uid' => $param['uid']]);
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
-                return ['code' => 1, 'data' => '', 'msg' => '编辑成功'];
+                return ['code' => 1, 'data' => '', 'msg' => '文件编辑成功'];
             }
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
 
-    public function delProcedureListSublist($id)
-    {
-        try{
-            $this->where('id', $id)->delete();
-            return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
 
-        }catch( PDOException $e){
-            return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
-        }
+    /**
+     * [删除附件]
+     * @return [type] [description]
+     */
+    public function delAttachment($id)
+    {
+        $this->where('id', $id)->delete();
+        return ['code' => 1, 'data' => '', 'msg' => '删除附件成功'];
     }
 
+
+
+
+    /**
+     * 根据id获取信息
+     * @param $uid
+     */
     public function getOne($id)
     {
         return $this->where('id', $id)->find();

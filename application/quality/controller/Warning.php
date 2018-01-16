@@ -6,7 +6,8 @@
  * Time: 9:10
  */
 
-namespace app\admin\controller;
+namespace app\quality\controller;
+use app\admin\controller\Base;
 use app\admin\model\ProjectModel;
 
 class Warning extends Base

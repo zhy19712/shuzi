@@ -6,46 +6,32 @@
  * Time: 9:34
  */
 
-namespace app\admin\controller;
+namespace app\quality\controller;
 
-
-use app\admin\model\ProcedureAttachmentModel;
-use app\admin\model\ProcedureListModel;
-use app\admin\model\ProcedureListSublistModel;
-use app\admin\model\ProcedureModel;
+use app\admin\controller\Base;
+use app\quality\model\PrototypeAttachmentModel;
+use app\quality\model\PrototypeListModel;
+use app\quality\model\PrototypeModel;
 use app\admin\model\UserModel;
 use app\admin\model\UserType;
 
-class Procedure extends Base
+class Prototype extends Base
 {
     public function index()
     {
-        $procedure = new ProcedureModel();
+        $prototype = new PrototypeModel();
         if(request()->isAjax()){
             $param = input('post.');
-            $data = $procedure->getOne($param['id']);
+            $data = $prototype->getOne($param['id']);
             return json(['data' => $data]);
         }
         return $this->fetch();
     }
-//
-//    public function procedureEdit()
-//    {
-//        $procedure = new ProcedureModel();
-//        if(request()->isAjax()){
-//           if(!empty($param['id']))
-//            {
-//                $flag = $procedure->editProcedure($param);
-//                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-//            }
-//
-//        }
-//    }
 
-    public function procedureDownload()
+    public function prototypeDownload()
     {
         $id = input('param.id');
-        $attachment = new ProcedureModel();
+        $attachment = new PrototypeModel();
         $param = $attachment->getOne($id);
         $filePath = $param['path'];
         $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1); ;
@@ -62,9 +48,9 @@ class Procedure extends Base
         exit;
     }
 
-    public function procedureDel()
+    public function prototypeDel()
     {
-        $attachment = new ProcedureModel();
+        $attachment = new PrototypeModel();
         if(request()->isAjax()) {
             $param = input('post.');
             $data = $attachment->getOne($param['id']);
@@ -72,14 +58,14 @@ class Procedure extends Base
             if(file_exists($path)){
                 unlink($path); //删除文件
             }
-            $flag = $attachment->delProcedure($param['id']);
+            $flag = $attachment->delPrototype($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
 
-    public function procedureEditDel()
+    public function prototypeEditDel()
     {
-        $attachment = new ProcedureModel();
+        $attachment = new PrototypeModel();
         if(request()->isAjax()) {
             $param = input('post.');
             $data = $attachment->getOne($param['id']);
@@ -92,9 +78,9 @@ class Procedure extends Base
     }
 
     //编辑，没有替换附件时保存上传附件信息
-    public function editProcedureNoUpload()
+    public function editPrototypeNoUpload()
     {
-        $attachment = new ProcedureModel();
+        $attachment = new PrototypeModel();
 
         $param = input('post.');
         if(request()->isAjax()){
@@ -106,49 +92,49 @@ class Procedure extends Base
                 'season' =>  $param['season'],
                 'name' =>  $param['uname'],
             ];
-            $flag = $attachment->editProcedure($data);
+            $flag = $attachment->editPrototype($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
 
 
-    public function procedureListEdit()
+    public function prototypeListEdit()
     {
-        $procedure_list = new ProcedureListModel();
+        $prototype = new PrototypeListModel();
         if(request()->isAjax()){
             $param = input('post.');
-            $data = $procedure_list->getOne($param['id']);
+            $data = $prototype->getOne($param['id']);
             return json(['data' => $data]);
         }
         return $this->fetch();
     }
 
-    public function procedureListAdd()
+    public function prototypeListAdd()
     {
-        $procedure_list = new ProcedureListModel();
+        $prototype = new PrototypeListModel();
         if(request()->isAjax()){
             $param = input('post.');
-            $param['date'] = date("Y-m-d H:i:s");
+            $param['date'] = date('Y-m-d');
             if(empty($param['id']))
             {
-                $flag = $procedure_list->insertProcedureList($param);
+                $flag = $prototype->insertPrototypeList($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
             else if(!empty($param['id']))
             {
-                $flag = $procedure_list->editProcedureList($param);
+                $flag = $prototype->editPrototypeList($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
 
         }
     }
 
-    public function procedureListDel()
+    public function prototypeListDel()
     {
-        $procedure_list = new ProcedureListModel();
+        $prototype = new PrototypeListModel();
         if(request()->isAjax()){
             $param = input('post.');
-            $flag = $procedure_list->delProcedureList($param['id']);
+            $flag = $prototype->delPrototypeList($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -163,51 +149,9 @@ class Procedure extends Base
         return json($nodeStr);
     }
 
-    public function procedureListSublistEdit()
+    public function prototypeAttachmentEditDel()
     {
-        $procedure_list_sublist = new ProcedureListSublistModel();
-        if(request()->isAjax()){
-            $param = input('post.');
-            $data = $procedure_list_sublist->getOne($param['id']);
-            return json(['data' => $data]);
-        }
-        return $this->fetch();
-    }
-
-    public function procedureListSublistAdd()
-    {
-        $procedure_list_sublist = new ProcedureListSublistModel();
-        if(request()->isAjax()){
-            $param = input('post.');
-            if(empty($param['id']))
-            {
-                $param['date'] = date("Y-m-d H:i:s");
-                $flag = $procedure_list_sublist->insertProcedureListSublist($param);
-                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-            }
-            else if(!empty($param['id']))
-            {
-                $flag = $procedure_list_sublist->editProcedureListSublist($param);
-                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-            }
-
-        }
-    }
-
-    public function procedureListSublistDel()
-    {
-        $procedure_list_sublist = new ProcedureListSublistModel();
-        if(request()->isAjax()){
-            $param = input('post.');
-            $flag = $procedure_list_sublist->delProcedureListSublist($param['id']);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        }
-    }
-
-
-    public function procedureAttachmentEditDel()
-    {
-        $attachment = new ProcedureAttachmentModel();
+        $attachment = new PrototypeAttachmentModel();
         if(request()->isAjax()) {
             $param = input('post.');
             $data = $attachment->getOne($param['id']);
@@ -220,9 +164,9 @@ class Procedure extends Base
     }
 
     //编辑，没有替换附件时保存上传附件信息
-    public function editProcedureAttachmentNoUpload()
+    public function editPrototypeAttachmentNoUpload()
     {
-        $attachment = new ProcedureAttachmentModel();
+        $attachment = new PrototypeAttachmentModel();
 
         $param = input('post.');
         if(request()->isAjax()){
@@ -239,10 +183,42 @@ class Procedure extends Base
         }
     }
 
+    public function attachmentEdit()
+    {
+        $attachment = new PrototypeAttachmentModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $data = $attachment->getOne($param['id']);
+            return json(['data' => $data]);
+        }
+    }
+
+    public function attachmentDownload()
+    {
+        $id = input('param.id');
+        $attachment = new PrototypeAttachmentModel();
+        $param = $attachment->getOne($id);
+        $filePath = $param['path'];
+        $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1); ;
+        if(file_exists($filePath)) {
+            $file = fopen($filePath, "r"); //   打开文件
+
+            //输入文件标签
+            Header("Content-type:application/octet-stream ");
+            Header("Accept-Ranges:bytes ");
+            Header("Accept-Length:   " . filesize($filePath));
+            Header("Content-Disposition:   attachment;   filename= " . $fileName);
+
+            //   输出文件内容
+            echo fread($file, filesize($filePath));
+            fclose($file);
+            exit;
+        }
+    }
 
     public function attachmentDel()
     {
-        $attachment = new ProcedureAttachmentModel();
+        $attachment = new PrototypeAttachmentModel();
         if(request()->isAjax()) {
             $param = input('post.');
             $data = $attachment->getOne($param['id']);
@@ -255,41 +231,10 @@ class Procedure extends Base
         }
     }
 
-
-    public function attachmentDownload()
-    {
-        $id = input('param.id');
-        $attachment = new ProcedureAttachmentModel();
-        $param = $attachment->getOne($id);
-        $filePath = $param['path'];
-        $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1); ;
-        $file = fopen($filePath, "r"); //   打开文件
-        //输入文件标签
-        Header("Content-type:application/octet-stream ");
-        Header("Accept-Ranges:bytes ");
-        Header("Accept-Length:   " . filesize($filePath));
-        Header("Content-Disposition:   attachment;   filename= " . $fileName);
-
-        //   输出文件内容
-        echo fread($file, filesize($filePath));
-        fclose($file);
-        exit;
-    }
-
-    public function attachmentEdit()
-    {
-        $attachment = new ProcedureAttachmentModel();
-        if(request()->isAjax()) {
-            $param = input('post.');
-            $data = $attachment->getOne($param['id']);
-            return json(['data' => $data]);
-        }
-    }
-
     //检查按钮，将不符合的条目退回到实施表中
     public function sendBack()
     {
-        $check = new ProcedureAttachmentModel();
+        $check = new PrototypeAttachmentModel();
         if(request()->isAjax()) {
             $param = input('post.');
             $data = $check ->getOne($param['id']);

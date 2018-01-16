@@ -1,21 +1,21 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: zhuangyf
- * Date: 2018/1/9
- * Time: 19:03
+ * User: waterforest
+ * Date: 2018/1/4
+ * Time: 0:51
  */
 
-namespace app\admin\model;
+namespace app\quality\model;
 
 
 use think\Model;
 
-class ProjectStageModel extends Model
+class QCMemberModel extends Model
 {
-    protected $name = 'project_stage';
+    protected $name = 'qc_member';
 
-    public function insertStage($param)
+    public function insertQc($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -29,7 +29,7 @@ class ProjectStageModel extends Model
         }
     }
 
-    public function editStage($param)
+    public function editQc($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -43,7 +43,7 @@ class ProjectStageModel extends Model
         }
     }
 
-    public function delStage($id)
+    public function delQc($id)
     {
         try{
             $this->where('id', $id)->delete();

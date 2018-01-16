@@ -6,14 +6,14 @@
  * Time: 1:01
  */
 
-namespace app\admin\model;
+namespace app\quality\model;
 
 
 use think\Model;
 
-class QCProblemModel extends Model
+class QCStrategyModel extends Model
 {
-    protected $name = 'qc_problem';
+    protected $name = 'qc_strategy';
 
     public function insertQc($param)
     {

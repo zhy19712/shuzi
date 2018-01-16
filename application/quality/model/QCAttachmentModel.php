@@ -1,19 +1,19 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: waterforest
- * Date: 2018/1/7
- * Time: 0:12
+ * User: admin
+ * Date: 2018/1/3
+ * Time: 12:58
  */
 
-namespace app\admin\model;
+namespace app\quality\model;
 
 
 use think\Model;
 
-class PrototypeAttachmentModel extends Model
+class QCAttachmentModel extends Model
 {
-    protected $name = 'prototype_attachment';
+    protected $name = 'qc_attachment';
 
     public function getOne($id)
     {
@@ -27,7 +27,7 @@ class PrototypeAttachmentModel extends Model
             if(false === $result){
                 return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
             }else{
-                return ['code' => 1, 'data' => '', 'msg' => 'success'];
+                return ['code' => 1, 'data' => '', 'msg' => '添加成功'];
             }
         }catch( PDOException $e){
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
@@ -41,7 +41,7 @@ class PrototypeAttachmentModel extends Model
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
-                return ['code' => 1, 'data' => '', 'msg' => 'success'];
+                return ['code' => 1, 'data' => '', 'msg' => '编辑成功'];
             }
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];

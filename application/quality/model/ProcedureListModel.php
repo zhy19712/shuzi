@@ -2,20 +2,20 @@
 /**
  * Created by PhpStorm.
  * User: zhuangyf
- * Date: 2018/1/9
- * Time: 20:05
+ * Date: 2018/1/8
+ * Time: 21:34
  */
 
-namespace app\admin\model;
+namespace app\quality\model;
 
 
 use think\Model;
 
-class ReformModel extends Model
+class ProcedureListModel extends Model
 {
-    protected $name = 'reform';
+    protected $name = 'procedure_list';
 
-    public function insertReform($param)
+    public function insertProcedureList($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -29,7 +29,7 @@ class ReformModel extends Model
         }
     }
 
-    public function editReform($param)
+    public function editProcedureList($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -43,7 +43,7 @@ class ReformModel extends Model
         }
     }
 
-    public function delReform($id)
+    public function delProcedureList($id)
     {
         try{
             $this->where('id', $id)->delete();

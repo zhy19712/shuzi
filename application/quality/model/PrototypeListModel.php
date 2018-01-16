@@ -1,26 +1,21 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: admin
- * Date: 2017/12/29
- * Time: 10:14
+ * User: zhuangyf
+ * Date: 2018/1/9
+ * Time: 13:24
  */
 
-namespace app\admin\model;
+namespace app\quality\model;
 
 
 use think\Model;
 
-class ConstructionModel extends Model
+class PrototypeListModel extends Model
 {
+    protected $name = 'prototype_list';
 
-    protected $name = 'video';
-
-    /**
-     * 插入
-     * @param $param
-     */
-    public function insertVideo($param)
+    public function insertPrototypeList($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -34,15 +29,10 @@ class ConstructionModel extends Model
         }
     }
 
-
-    /**
-     * 编辑信息
-     * @param $param
-     */
-    public function editVideo($param)
+    public function editPrototypeList($param)
     {
         try{
-            $result =  $this->allowField('name')->save($param, ['id' => $param['id']]);
+            $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
@@ -53,32 +43,19 @@ class ConstructionModel extends Model
         }
     }
 
-
-    /**
-     * [getAllMenu 获取全部信息]
-     */
-    public function getAll()
+    public function delPrototypeList($id)
     {
-        return $this->order('id asc')->select();
+        try{
+            $this->where('id', $id)->delete();
+            return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
+
+        }catch( PDOException $e){
+            return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
+        }
     }
 
-    /**
-     * 根据id获取信息
-     * @param $id
-     */
     public function getOne($id)
     {
         return $this->where('id', $id)->find();
     }
-
-    /**
-     * [删除]
-     * @return [type] [description]
-     */
-    public function delVideo($id)
-    {
-        $this->where('id', $id)->delete();
-        return ['code' => 1, 'data' => '', 'msg' => '删除视频成功'];
-    }
-
 }

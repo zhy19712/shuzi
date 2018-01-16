@@ -1,21 +1,21 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: zhuangyf
- * Date: 2018/1/9
- * Time: 13:24
+ * User: admin
+ * Date: 2018/1/3
+ * Time: 10:45
  */
 
-namespace app\admin\model;
+namespace app\quality\model;
 
 
 use think\Model;
 
-class PrototypeListModel extends Model
+class QCModel extends Model
 {
-    protected $name = 'prototype_list';
+    protected $name = 'qc_group';
 
-    public function insertPrototypeList($param)
+    public function insertQc($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -29,7 +29,7 @@ class PrototypeListModel extends Model
         }
     }
 
-    public function editPrototypeList($param)
+    public function editQc($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -43,7 +43,7 @@ class PrototypeListModel extends Model
         }
     }
 
-    public function delPrototypeList($id)
+    public function delQc($id)
     {
         try{
             $this->where('id', $id)->delete();
@@ -58,4 +58,5 @@ class PrototypeListModel extends Model
     {
         return $this->where('id', $id)->find();
     }
+
 }

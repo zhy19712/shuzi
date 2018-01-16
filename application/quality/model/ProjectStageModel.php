@@ -3,19 +3,19 @@
  * Created by PhpStorm.
  * User: zhuangyf
  * Date: 2018/1/9
- * Time: 20:06
+ * Time: 19:03
  */
 
-namespace app\admin\model;
+namespace app\quality\model;
 
 
 use think\Model;
 
-class ReformAttachmentModel extends Model
+class ProjectStageModel extends Model
 {
-    protected $name = 'reform_attachment';
+    protected $name = 'project_stage';
 
-    public function insertAttachment($param)
+    public function insertStage($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -29,7 +29,7 @@ class ReformAttachmentModel extends Model
         }
     }
 
-    public function editAttachment($param)
+    public function editStage($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -43,7 +43,7 @@ class ReformAttachmentModel extends Model
         }
     }
 
-    public function delAttachment($id)
+    public function delStage($id)
     {
         try{
             $this->where('id', $id)->delete();
