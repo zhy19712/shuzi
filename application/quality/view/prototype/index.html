@@ -638,7 +638,7 @@
             uploader.on( 'uploadSuccess', function( file,data, response ) {
                 console.log(file)
                 console.log(data)
-                layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
+                layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
                 table_refresh();
                 uploader = null;
                 $("#file_upload").empty();
@@ -680,10 +680,9 @@
             });
 
             // 文件上传失败，显示上传出错。
-            uploader.on( 'uploadError', function( file ) {
+            uploader.on( 'uploadError', function( file ,data) {
                 layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
                 $("#file_per").empty();
-                uploader = null;
                 $("#file_upload").empty();
             });
         }
@@ -736,7 +735,12 @@
             data: {id:id},
             datatype: "json",
             success: function (res) {
-                $("#"+id).remove();
+                console.log(res)
+                if(res.code === 1){
+                    $("#"+id).remove();
+                }else {
+                    layer.msg(res.msg);
+                }
             }
         })
     }
@@ -877,13 +881,19 @@
         var str = "";
         str += ""
             + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-            + "<form name=download"+ id +" action='./prototypeDownload' method='get' target=downloadFrame"+ id +">"
+            + "<form id=download"+ id +" action='./prototypeDownload' method='get' target=downloadFrame"+ id +">"
             + "<span class='file_name' style='color: #000;'>"+str+"</span>"
             + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
             + "<button type='submit' class=btn" + id +"></button>"
             + "</form>"
         $("#form_container").append(str);
-        $("#form_container").find(".btn" + id).click();
+//        $("#form_container").find(".btn" + id).click();
+        $('#download'+ id).ajaxSubmit({
+            success: function (res) {
+                console.log(res);
+                layer.msg(res.msg);
+            }
+        });
     }
     var standard_table = $('#standard_table').DataTable( {
         "processing": true,
@@ -1019,11 +1029,11 @@
                     datatype: "json",
                     success: function (res) {
                         if(res.code === 1){
-                            layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
+                            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                             standard_table.ajax.url("__SCRIPT__/prototype.php").load();
                             $("#standard_modal").modal('hide');
                         }else {
-                            layer.msg("提交失败",{icon:1,time:1500,shade: 0.1});
+                            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         }
                     }
                 })
@@ -1057,15 +1067,7 @@
     function sdetail(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         cid3 = id;
-        check_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=mbjc").load();
-        check_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bzhgysfp").load();
-        implement_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
-        standard_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
-        standard_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
-        standard_table3.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=smyxzl1").load();
-        summarize_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=chhzb").load();
-        summarize_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=abc").load();
-        $("#container").css("display","block");
+
         $.ajax({
             url: "./prototypeListEdit",
             type: "post",
@@ -1073,16 +1075,26 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                $("#reason").val(res.data.reason);
+//                if(res.code === 1){
+                    check_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=mbjc").load();
+                    check_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bzhgysfp").load();
+                    implement_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
+                    standard_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
+                    standard_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
+                    standard_table3.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=smyxzl1").load();
+                    summarize_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=chhzb").load();
+                    summarize_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=abc").load();
+                    $("#container").css("display","block");
+                    $("#reason").val(res.data.reason);
+//                }else {
+//                    layer.msg(res.msg);
+//                }
+
             }
         })
     }
     function sedit(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $("#id2").val(id);
-        $("#ss_modal h5").text("编辑");
-        zTreeObj.reAsyncChildNodes(null, "refresh");
-        $("#ss_modal").modal("show");
         $.ajax({
             url: "./prototypeListEdit",
             type: "post",
@@ -1090,9 +1102,17 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                $("#ppart").val(res.data.part);
-                $("#pcontent").val(res.data.content);
-                $("#powner").val(res.data.owner);
+                if(res.code === 1){
+                    $("#id2").val(id);
+                    $("#ss_modal h5").text("编辑");
+                    zTreeObj.reAsyncChildNodes(null, "refresh");
+                    $("#ss_modal").modal("show");
+                    $("#ppart").val(res.data.part);
+                    $("#pcontent").val(res.data.content);
+                    $("#powner").val(res.data.owner);
+                }else {
+                    layer.msg(res.msg);
+                }
             }
         })
     }
@@ -1209,7 +1229,11 @@
             data: {id:id},
             datatype: "json",
             success: function (res) {
-                $("#"+id).remove();
+                if(res.code === 1){
+                    $("#"+id).remove();
+                }else {
+                    layer.msg(res.msg);
+                }
             }
         })
     }
@@ -1256,114 +1280,21 @@
         var str = "";
         str += ""
             + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-            + "<form name=download"+ id +" action='./attachmentDownload' method='get' target=downloadFrame"+ id +">"
+            + "<form id=download"+ id +" action='./attachmentDownload' method='get' target=downloadFrame"+ id +">"
             + "<span class='file_name' style='color: #000;'>"+str+"</span>"
             + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
             + "<button type='submit' class=btn" + id +"></button>"
             + "</form>"
         $("#form_container").append(str);
-        $("#form_container").find(".btn" + id).click();
+        $('#download'+ id).ajaxSubmit({
+            success: function (res) {
+                console.log(res);
+                layer.msg(res.msg);
+            }
+        });
     }
     function fedit(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $("#id4").val(id);
-        $("#file_list").empty();
-        $("#fname h5").text("编辑");
-        if(!uploader){
-            uploader = WebUploader.create({
-                auto: false,// 选完文件后，是否自动上传。
-                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadPrototypeAttachment')}",// 文件接收服务端。
-                chunked: false,
-                fileSizeLimit: 1000 *1024 *1024,
-                fileNumLimit: 1,
-                formData: {"uid":"","table_name":"","group_id":"","remark":""},
-                duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                pick: {
-                    multiple: false,
-                    id: "#file_upload",
-                    innerHTML: "上传文件"
-                }
-            });
-
-            uploader.on( 'fileQueued', function( file ) {
-                file_name4 = file.name;
-                console.log($("#id4").val());
-                $("#file_per").append('<div id="' + file.id + '" class="item">' +
-                    '</div>');
-                $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
-                    '<span class="info">' + file.name + '</span>&nbsp' +
-                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                    '</div>' );
-            });
-            $("#file_list").on("click", ".webuploadDelbtn", function () {
-                var $ele = $(this);
-                var id = $ele.parent().attr("class");
-                var file = uploader.getFile(id);
-                uploader.removeFile(file,true);
-            });
-            uploader.on('fileDequeued', function (file) {
-                $(file.id).remove();
-                $('.'+file.id).remove();
-                console.log("remove");
-            });
-            uploader.on("uploadStart",function () {
-                uploader.options.formData.uid = $("#id4").val();
-                uploader.options.formData.table_name = mytablename;
-                uploader.options.formData.group_id = cid3;
-                uploader.options.formData.remark = $("#fremark").val();
-            });
-            uploader.on('beforeFileQueued', function (file) {
-                if($("#file_list").html()){
-                    alert("请先删除文件");
-                    return false;
-                }else {
-                    return true;
-                }
-            });
-            // 文件上传过程中创建进度条实时显示。
-            uploader.on('uploadProgress', function (file, percentage) {
-                var $li = $('#' + file.id),
-                    $percent = $li.find('.progress .progress-bar');
-                // 避免重复创建
-                if (!$percent.length) {
-                    $percent = $('<div class="progress progress-striped active">' +
-                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                        '</div>' +
-                        '</div>').appendTo($li).find('.progress-bar');
-                }
-                $li.find('p.state').text('上传中');
-                $percent.css('width', percentage * 100 + '%');
-            });
-            uploader.on('beforeFileQueued', function (file) {
-                if($("#file_list").html()){
-                    alert("请先删除文件");
-                    return false;
-                }else {
-                    return true;
-                }
-            });
-            // 文件上传成功
-            uploader.on( 'uploadSuccess', function( file,data, response ) {
-                console.log(file)
-                console.log(data)
-                layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
-                table_refresh();
-                uploader = null;
-                $("#file_upload").empty();
-                $("#fname").modal('hide');
-                $("#file_per").empty();
-            });
-
-            // 文件上传失败，显示上传出错。
-            uploader.on( 'uploadError', function( file ) {
-                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                $("#file_per").empty();
-                uploader = null;
-                $("#file_upload").empty();
-            });
-        }
-        $("#fname").modal("show");
         $.ajax({
             url: "./attachmentEdit",
             type: "post",
@@ -1371,13 +1302,114 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                $("#fremark").val(res.data.remark);
-                file_name3 = res.data.name;
-                file_name4 = res.data.name;
-                $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
-                    '<span class="info">' + res.data.name + '</span>&nbsp' +
-                    '<span onclick="fdelatt(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                    '</div>' );
+                if(res.code === 1){
+                    $("#id4").val(id);
+                    $("#file_list").empty();
+                    $("#fname h5").text("编辑");
+                    if(!uploader){
+                        uploader = WebUploader.create({
+                            auto: false,// 选完文件后，是否自动上传。
+                            swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                            server: "{:url('Upload/uploadPrototypeAttachment')}",// 文件接收服务端。
+                            chunked: false,
+                            fileSizeLimit: 1000 *1024 *1024,
+                            fileNumLimit: 1,
+                            formData: {"uid":"","table_name":"","group_id":"","remark":""},
+                            duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                            pick: {
+                                multiple: false,
+                                id: "#file_upload",
+                                innerHTML: "上传文件"
+                            }
+                        });
+
+                        uploader.on( 'fileQueued', function( file ) {
+                            file_name4 = file.name;
+                            console.log($("#id4").val());
+                            $("#file_per").append('<div id="' + file.id + '" class="item">' +
+                                '</div>');
+                            $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                                '<span class="info">' + file.name + '</span>&nbsp' +
+                                '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                                '</div>' );
+                        });
+                        $("#file_list").on("click", ".webuploadDelbtn", function () {
+                            var $ele = $(this);
+                            var id = $ele.parent().attr("class");
+                            var file = uploader.getFile(id);
+                            uploader.removeFile(file,true);
+                        });
+                        uploader.on('fileDequeued', function (file) {
+                            $(file.id).remove();
+                            $('.'+file.id).remove();
+                            console.log("remove");
+                        });
+                        uploader.on("uploadStart",function () {
+                            uploader.options.formData.uid = $("#id4").val();
+                            uploader.options.formData.table_name = mytablename;
+                            uploader.options.formData.group_id = cid3;
+                            uploader.options.formData.remark = $("#fremark").val();
+                        });
+                        uploader.on('beforeFileQueued', function (file) {
+                            if($("#file_list").html()){
+                                alert("请先删除文件");
+                                return false;
+                            }else {
+                                return true;
+                            }
+                        });
+                        // 文件上传过程中创建进度条实时显示。
+                        uploader.on('uploadProgress', function (file, percentage) {
+                            var $li = $('#' + file.id),
+                                $percent = $li.find('.progress .progress-bar');
+                            // 避免重复创建
+                            if (!$percent.length) {
+                                $percent = $('<div class="progress progress-striped active">' +
+                                    '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                                    '</div>' +
+                                    '</div>').appendTo($li).find('.progress-bar');
+                            }
+                            $li.find('p.state').text('上传中');
+                            $percent.css('width', percentage * 100 + '%');
+                        });
+                        uploader.on('beforeFileQueued', function (file) {
+                            if($("#file_list").html()){
+                                alert("请先删除文件");
+                                return false;
+                            }else {
+                                return true;
+                            }
+                        });
+                        // 文件上传成功
+                        uploader.on( 'uploadSuccess', function( file,data, response ) {
+                            console.log(file)
+                            console.log(data)
+                            layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                            table_refresh();
+                            uploader = null;
+                            $("#file_upload").empty();
+                            $("#fname").modal('hide');
+                            $("#file_per").empty();
+                        });
+
+                        // 文件上传失败，显示上传出错。
+                        uploader.on( 'uploadError', function( file ) {
+                            layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                            $("#file_per").empty();
+                            $("#file_upload").empty();
+                        });
+                    }
+                    $("#fname").modal("show");
+                    $("#fremark").val(res.data.remark);
+                    file_name3 = res.data.name;
+                    file_name4 = res.data.name;
+                    $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                        '<span class="info">' + res.data.name + '</span>&nbsp' +
+                        '<span onclick="fdelatt(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                        '</div>' );
+                }else {
+                    layer.msg(res.msg)
+                }
             }
         })
     }
@@ -1417,11 +1449,11 @@
                         datatype: "json",
                         success: function (res) {
                             if(res.code === 1){
-                                layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
+                                layer.msg(res.msg,{time:1500,shade: 0.1});
                                 table_refresh();
                                 $("#fname").modal('hide');
                             }else {
-                                layer.msg("提交失败",{icon:1,time:1500,shade: 0.1});
+                                layer.msg(res.msg,{time:1500,shade: 0.1});
                             }
                         }
                     })
@@ -1714,7 +1746,7 @@
             success: function (data) {
                 if(data.code==1){
                     $("#ss_modal").modal('hide');
-                    layer.msg("保存成功");
+                    layer.msg(data.msg);
                     ss_table.ajax.url("__SCRIPT__/prototype_list.php?group_id=" + cid).load();
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
@@ -1733,7 +1765,7 @@
             dataType: "json",
             success: function (res) {
                 if(res.code==1){
-                    layer.msg("保存成功");
+                    layer.msg(data.msg);
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;

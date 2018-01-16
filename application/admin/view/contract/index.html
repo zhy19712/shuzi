@@ -345,7 +345,7 @@ $(function(){
         console.log(data);
         if(data.code==1){
             $("#myModal").modal('hide');
-            layer.msg("保存成功");
+            layer.msg(data.msg);
             admin_table.ajax.url("__SCRIPT__/hetong_table.php").load();
         }else{
             layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});

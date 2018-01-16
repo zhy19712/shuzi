@@ -686,7 +686,7 @@ function edit(that) {
                     dataType: "json",
                     success: function (res) {
                         if(res.code == 1){
-                            layer.msg("删除成功",{time:1500,shade: 0.1});
+                            layer.msg(res.msg,{time:1500,shade: 0.1});
                             zTreeObj.reAsyncChildNodes(null, "refresh");
                         }
                     }
@@ -811,7 +811,7 @@ function edit(that) {
             $("#level4").modal('hide');
             zTreeObj.reAsyncChildNodes(null, "refresh");
             $("#mytable1_wrapper").css("display","none");
-            layer.msg("保存成功");
+            layer.msg(data.msg);
         }else{
             layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
             return false;
@@ -821,7 +821,7 @@ function edit(that) {
         console.log(data);
         if(data.code==1){
             $("#myModal").modal('hide');
-            layer.msg("保存成功");
+            layer.msg(data.msg);
             admin_table.ajax.url("__SCRIPT__/project_table.php?pid=" + mytree_node.id).load();
         }else{
             layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
