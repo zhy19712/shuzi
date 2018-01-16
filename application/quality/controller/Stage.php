@@ -19,7 +19,7 @@ class Stage extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $data = $stage->getOne($param['id']);
-            return json(['data' => $data]);
+            return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
