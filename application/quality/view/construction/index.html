@@ -306,10 +306,14 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                if($(".playTip").css("display") === "none"){
-                    $(".playTip").click();
+                if(res.code === 1){
+                    if($(".playTip").css("display") === "none"){
+                        $(".playTip").click();
+                    }
+                    $("#myvideo").attr("src",res.url);
+                }else {
+                    layer.msg(res.msg);
                 }
-                $("#myvideo").attr("src",res.url);
             }
         })
     }

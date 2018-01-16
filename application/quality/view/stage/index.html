@@ -173,17 +173,21 @@
             uploader.on( 'uploadSuccess', function( file,data, response ) {
                 console.log(file)
                 console.log(data)
-                layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
-                uploader = null;
-                $("#file_upload").empty();
-                $("#fname").modal('hide');
-                $("#file_per").empty();
-                if(parent === "table1"){
-                    table1.ajax.url("__SCRIPT__/project_stage.php?table_name=jlys").load();
-                }else if(parent === "table2"){
-                    table2.ajax.url("__SCRIPT__/project_stage.php?table_name=xsys").load();
-                }else if(parent === "table3"){
-                    table3.ajax.url("__SCRIPT__/project_stage.php?table_name=jzqdys").load();
+                if(data.code === 1){
+                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    uploader = null;
+                    $("#file_upload").empty();
+                    $("#fname").modal('hide');
+                    $("#file_per").empty();
+                    if(parent === "table1"){
+                        table1.ajax.url("__SCRIPT__/project_stage.php?table_name=jlys").load();
+                    }else if(parent === "table2"){
+                        table2.ajax.url("__SCRIPT__/project_stage.php?table_name=xsys").load();
+                    }else if(parent === "table3"){
+                        table3.ajax.url("__SCRIPT__/project_stage.php?table_name=jzqdys").load();
+                    }
+                }else {
+                    layer.msg(data.msg);
                 }
             });
 
@@ -231,13 +235,18 @@
         var str = "";
         str += ""
             + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-            + "<form name=download"+ id +" action='./stageDownload' method='get' target=downloadFrame"+ id +">"
+            + "<form id=download"+ id +" action='./stageDownload' method='get' target=downloadFrame"+ id +">"
             + "<span class='file_name' style='color: #000;'>"+str+"</span>"
             + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
             + "<button type='submit' class=btn" + id +"></button>"
             + "</form>"
         $("#form_container").append(str);
-        $("#form_container").find(".btn" + id).click();
+        $('#download'+ id).ajaxSubmit({
+            success: function (res) {
+                console.log(res);
+                layer.msg(res.msg);
+            }
+        });
     }
     var table1 = $('#table1').DataTable( {
         "processing": true,

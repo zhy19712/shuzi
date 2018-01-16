@@ -571,9 +571,13 @@
     uploaderimg.on( 'uploadSuccess', function( file,data, response ) {
         console.log(file)
         console.log(data)
-        layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
-        path1 = data.path.substr(1);
-        $("#img_container img").attr('src',path1);
+        if(data.code === 1){
+            layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+            path1 = data.path.substr(1);
+            $("#img_container img").attr('src',path1);
+        }else {
+            layer.msg(data.msg);
+        }
     });
     uploaderimg.on("uploadStart",function () {
         uploaderimg.options.formData.uid = cid;
@@ -608,9 +612,13 @@
     uploaderimg2.on( 'uploadSuccess', function( file,data, response ) {
         console.log(file)
         console.log(data)
-        layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
-        path2 = data.path.substr(1);
-        $("#img_container2 img").attr('src',path2);
+        if(data.code === 1){
+            layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
+            path2 = data.path.substr(1);
+            $("#img_container2 img").attr('src',path2);
+        }else {
+            layer.msg(data.msg);
+        }
     });
     uploaderimg2.on("uploadStart",function () {
         uploaderimg2.options.formData.uid = cid;
@@ -729,42 +737,46 @@
             uploader.on( 'uploadSuccess', function( file,data, response ) {
                 console.log(file)
                 console.log(data)
-                layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
-                table_refresh();
-                uploader = null;
-                $("#file_upload").empty();
-                $("#fname").modal('hide');
-                $("#file_per").empty();
+                if(data.code === 1){
+                    layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
+                    table_refresh();
+                    uploader = null;
+                    $("#file_upload").empty();
+                    $("#fname").modal('hide');
+                    $("#file_per").empty();
 
-                if(mytablename === "jc"){
-                    $.ajax({
-                        url: "./prototypeListAdd",
-                        type: "post",
-                        data: {id:cid3,status:"检查"},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                        }
-                    })
+                    if(mytablename === "jc"){
+                        $.ajax({
+                            url: "./prototypeListAdd",
+                            type: "post",
+                            data: {id:cid3,status:"检查"},
+                            dataType: "json",
+                            success: function (res) {
+                                console.log(res);
+                            }
+                        })
+                    }
+                    if(mytablename === "chhzb"){
+                        $.ajax({
+                            url: "./prototypeListAdd",
+                            type: "post",
+                            data: {id:cid3,status:"完成"},
+                            dataType: "json",
+                            success: function (res) {
+                                console.log(res);
+                            }
+                        })
+                    }
+                }else {
+                    layer.msg(data.msg);
                 }
-                if(mytablename === "chhzb"){
-                    $.ajax({
-                        url: "./prototypeListAdd",
-                        type: "post",
-                        data: {id:cid3,status:"完成"},
-                        dataType: "json",
-                        success: function (res) {
-                            console.log(res);
-                        }
-                    })
-                }
+
             });
 
             // 文件上传失败，显示上传出错。
             uploader.on( 'uploadError', function( file ) {
                 layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
                 $("#file_per").empty();
-                uploader = null;
                 $("#file_upload").empty();
             });
         }
@@ -802,9 +814,7 @@
     //标准工艺
     function edit(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $("#id1").val(id);
-        $("#standard_modal h5").text("编辑");
-        $("#standard_modal").modal("show");
+
         $.ajax({
             url: "./index",
             type: "post",
@@ -812,9 +822,17 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                $("#sname").val(res.data.name);
-                $("#scate").val(res.data.cate);
-                $("#sdate_check").val(res.data.date_check);
+                if(res.code === 1){
+                    $("#id1").val(id);
+                    $("#standard_modal h5").text("编辑");
+                    $("#standard_modal").modal("show");
+                    $("#sname").val(res.data.name);
+                    $("#scate").val(res.data.cate);
+                    $("#sdate_check").val(res.data.date_check);
+                }else {
+                    layer.msg(res.msg);
+                }
+
             }
         })
     }
@@ -849,37 +867,41 @@
                 dataType: "json",
                 success: function (res) {
                     console.log(res);
-                    if(cate === "质量缺陷"){
-                        $("#sdescription").val(res.data.description);
-                        $("#smethod").val(res.data.method);
-                        $("#sdate_reform_design").val(res.data.date_reform_design);
-                        $("#sowner1").val(res.data.owner1);
-                        $("#sowner2").val(res.data.owner2);
-                        $("#sdate_reform_actual").val(res.data.date_reform_actual);
-                        $("#sreform_image_description").val(res.data.reform_image_description);
-                        $("#sdate_unqualified").val(res.data.date_unqualified);
-                        $("#sunqualified_image_description").val(res.data.unqualified_image_description);
-                        if(res.data.reform_image_path){
-                            path1 = res.data.reform_image_path.substr(1);
-                            $("#img_container img").attr('src',path1);
+                    if(res.code === 1){
+                        if(cate === "质量缺陷"){
+                            $("#sdescription").val(res.data.description);
+                            $("#smethod").val(res.data.method);
+                            $("#sdate_reform_design").val(res.data.date_reform_design);
+                            $("#sowner1").val(res.data.owner1);
+                            $("#sowner2").val(res.data.owner2);
+                            $("#sdate_reform_actual").val(res.data.date_reform_actual);
+                            $("#sreform_image_description").val(res.data.reform_image_description);
+                            $("#sdate_unqualified").val(res.data.date_unqualified);
+                            $("#sunqualified_image_description").val(res.data.unqualified_image_description);
+                            if(res.data.reform_image_path){
+                                path1 = res.data.reform_image_path.substr(1);
+                                $("#img_container img").attr('src',path1);
+                            }
+                            if(res.data.unqualified_image_path){
+                                path2 = res.data.unqualified_image_path.substr(1);
+                                $("#img_container2 img").attr('src',path2);
+                            }
+                            if(res.data.qualified === "不合格"){
+                                $("#hg").css("display","none");
+                                $("#bhg").css("display","block");
+                                $("#unq").val("不合格");
+                            }
+                            check_table2.ajax.url("__SCRIPT__/reform_attachment.php?group_id=" + cid + "&table_name=bzhgysfp").load();
+                            implement_table1.ajax.url("__SCRIPT__/reform_attachment.php?group_id=" + cid + "&table_name=ss").load();
+                            standard_table2.ajax.url("__SCRIPT__/reform_attachment.php?group_id=" + cid + "&table_name=bhg").load();
+                            $("#container").css("display","block");
+                        }else {
+                            $("#saccident_description").val(res.data.accident_description);
+                            fj_table.ajax.url("__SCRIPT__/reform_attachment.php?group_id=" + cid + "&table_name=fj").load();
+                            $("#container2").css("display","block");
                         }
-                        if(res.data.unqualified_image_path){
-                            path2 = res.data.unqualified_image_path.substr(1);
-                            $("#img_container2 img").attr('src',path2);
-                        }
-                        if(res.data.qualified === "不合格"){
-                            $("#hg").css("display","none");
-                            $("#bhg").css("display","block");
-                            $("#unq").val("不合格");
-                        }
-                        check_table2.ajax.url("__SCRIPT__/reform_attachment.php?group_id=" + cid + "&table_name=bzhgysfp").load();
-                        implement_table1.ajax.url("__SCRIPT__/reform_attachment.php?group_id=" + cid + "&table_name=ss").load();
-                        standard_table2.ajax.url("__SCRIPT__/reform_attachment.php?group_id=" + cid + "&table_name=bhg").load();
-                        $("#container").css("display","block");
                     }else {
-                        $("#saccident_description").val(res.data.accident_description);
-                        fj_table.ajax.url("__SCRIPT__/reform_attachment.php?group_id=" + cid + "&table_name=fj").load();
-                        $("#container2").css("display","block");
+                        layer.msg(res.msg);
                     }
                 }
             });
@@ -954,7 +976,11 @@
             data: {id:id},
             datatype: "json",
             success: function (res) {
-                $("#"+id).remove();
+                if(res.code === 1){
+                    $("#"+id).remove();
+                }else {
+                    layer.msg(res.msg);
+                }
             }
         })
     }
@@ -993,13 +1019,18 @@
         var str = "";
         str += ""
             + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-            + "<form name=download"+ id +" action='./attachmentDownload' method='get' target=downloadFrame"+ id +">"
+            + "<form id=download"+ id +" action='./attachmentDownload' method='get' target=downloadFrame"+ id +">"
             + "<span class='file_name' style='color: #000;'>"+str+"</span>"
             + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
             + "<button type='submit' class=btn" + id +"></button>"
             + "</form>"
         $("#form_container").append(str);
-        $("#form_container").find(".btn" + id).click();
+        $('#download'+ id).ajaxSubmit({
+            success: function (res) {
+                console.log(res);
+                layer.msg(res.msg);
+            }
+        });
     }
     $("#fname .btn-primary").click(function () {
         if($("#file_list").html()){
@@ -1014,11 +1045,11 @@
                         datatype: "json",
                         success: function (res) {
                             if(res.code === 1){
-                                layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
+                                layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                                 table_refresh();
                                 $("#fname").modal('hide');
                             }else {
-                                layer.msg("提交失败",{icon:1,time:1500,shade: 0.1});
+                                layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                             }
                         }
                     })
@@ -1171,7 +1202,7 @@
             success: function (data) {
                 if(data.code==1){
                     $("#standard_modal").modal('hide');
-                    layer.msg("保存成功");
+                    layer.msg(data.msg);
                     standard_table.ajax.url("__SCRIPT__/reform.php").load();
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
@@ -1187,7 +1218,7 @@
             success: function (data) {
                 if(data.code==1){
                     $("#ss_modal").modal('hide');
-                    layer.msg("保存成功");
+                    layer.msg(data.msg);
                     ss_table.ajax.url("__SCRIPT__/prototype_list.php?group_id=" + cid).load();
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
@@ -1206,7 +1237,7 @@
             dataType: "json",
             success: function (res) {
                 if(res.code==1){
-                    layer.msg("保存成功");
+                    layer.msg(res.msg);
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;
@@ -1222,7 +1253,7 @@
             dataType: "json",
             success: function (res) {
                 if(res.code==1){
-                    layer.msg("保存成功");
+                    layer.msg(res.msg);
                 }else{
                     layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;
@@ -1239,9 +1270,9 @@
                 dataType: "json",
                 success: function (res) {
                     if(res.code==1){
-                        layer.msg("保存成功");
+                        layer.msg(res.msg);
                     }else{
-                        layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                        layer.msg(res.msg, {icon: 5,time:1500,shade: 0.1});
                         return false;
                     }
                 }
@@ -1254,9 +1285,9 @@
                 dataType: "json",
                 success: function (res) {
                     if(res.code==1){
-                        layer.msg("保存成功");
+                        layer.msg(res.msg);
                     }else{
-                        layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                        layer.msg(res.msg, {icon: 5,time:1500,shade: 0.1});
                         return false;
                     }
                 }
@@ -1272,9 +1303,9 @@
             dataType: "json",
             success: function (res) {
                 if(res.code==1){
-                    layer.msg("保存成功");
+                    layer.msg(res.msg);
                 }else{
-                    layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                    layer.msg(res.msg, {icon: 5,time:1500,shade: 0.1});
                     return false;
                 }
             }

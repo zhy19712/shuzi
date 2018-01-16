@@ -895,16 +895,6 @@
     var mytree_node;
     function zedit(that) {
         var uid = mytree_node.uid;
-        var kind = $(that).val();
-        if(kind == "查看"){
-            $("#myModal .btn-primary").css("display","none");
-        }else if(kind == "编辑"){
-            $("#myModal .btn-primary").css("display","inline-block");
-        }
-        $("#myModal h5").text("编辑");
-        $("#uid4").val(uid);
-        $("#cate4").val("锚杆");
-        var cate = encodeURI(encodeURI("锚杆"));
         console.log(uid);
         $.ajax({
             url: "./fetchData",
@@ -913,7 +903,17 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                if(res.msg == "success"){
+                if(res.code == 1){
+                    var kind = $(that).val();
+                    if(kind == "查看"){
+                        $("#myModal .btn-primary").css("display","none");
+                    }else if(kind == "编辑"){
+                        $("#myModal .btn-primary").css("display","inline-block");
+                    }
+                    $("#myModal h5").text("编辑");
+                    $("#uid4").val(uid);
+                    $("#cate4").val("锚杆");
+                    var cate = encodeURI(encodeURI("锚杆"));
                     var data = res.maoganData;
                     $("#standard_m").val(data.standard);
                     $("#quantity_self_m").val(data.quantity_self);
@@ -960,8 +960,10 @@
                     $("#mortar_min_inspection_m").val(data.mortar_min_inspection);
                     $("#mortar_ave_inspection_m").val(data.mortar_ave_inspection);
                     $("#mortar_pass_inspection_m").val(data.mortar_pass_inspection);
+                    $("#myModal").modal('show');
+                }else {
+                    layer.msg(res.msg);
                 }
-                $("#myModal").modal('show');
             }
         })
     }
@@ -1056,13 +1058,18 @@
         var str = "";
         str += ""
             + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-            + "<form name=download"+ id +" action='./attachmentDownload' method='get' target=downloadFrame"+ id +">"
+            + "<form id=download"+ id +" action='./attachmentDownload' method='get' target=downloadFrame"+ id +">"
             + "<span class='file_name' style='color: #000;'>"+str+"</span>"
             + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
             + "<button type='submit' class=btn" + id +"></button>"
             + "</form>"
         $("#form_container").append(str);
-        $("#form_container").find(".btn" + id).click();
+        $('#download'+ id).ajaxSubmit({
+            success: function (res) {
+                console.log(res);
+                layer.msg(res.msg);
+            }
+        });
     }
     var admin_table = $('#admin_table').DataTable( {
         "processing": true,
@@ -1126,42 +1133,46 @@
     // 文件上传成功
     uploader.on( 'uploadSuccess', function( file,data, response ) {
         console.log(file);
-        var filename = file.name;
-        var id_level_1 = "";
-        var id_level_2 = "";
-        var id_level_3 = "";
-        var id_level_4 = "";
-        var id_level_5 = "";
-        $.each(idlist,function (i,n) {
-            if(i == 0){
-                id_level_1 = n;
-            }else if(i == 1){
-                id_level_2 = n;
-            }else if(i == 2){
-                id_level_3 = n;
-            }else if(i == 3){
-                id_level_4 = n;
-            }else if(i == 4){
-                id_level_5 = n;
-            }
-        });
-        var path = './uploads/acceptance/' + (data._raw).replace(/\\/g,"\/");
-        $.ajax({
-            url: "./saveAttachmentInfo",
-            type: "post",
-            data: {id_level_1:id_level_1,id_level_2:id_level_2,id_level_3:id_level_3,id_level_4:id_level_4,id_level_5:id_level_5,path:path,filename:filename},
-            dataType: "json",
-            success: function (res) {
-                console.log(res);
-                 if(res.msg === "success"){
-                     layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                     $("#mylist").empty();
-                     admin_table.ajax.url("__SCRIPT__/project_attachment_table.php").load();
-                 }else {
-                     layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                 }
-            }
-        })
+        if(data.code === 1){
+            var filename = file.name;
+            var id_level_1 = "";
+            var id_level_2 = "";
+            var id_level_3 = "";
+            var id_level_4 = "";
+            var id_level_5 = "";
+            $.each(idlist,function (i,n) {
+                if(i == 0){
+                    id_level_1 = n;
+                }else if(i == 1){
+                    id_level_2 = n;
+                }else if(i == 2){
+                    id_level_3 = n;
+                }else if(i == 3){
+                    id_level_4 = n;
+                }else if(i == 4){
+                    id_level_5 = n;
+                }
+            });
+            var path = './uploads/acceptance/' + (data._raw).replace(/\\/g,"\/");
+            $.ajax({
+                url: "./saveAttachmentInfo",
+                type: "post",
+                data: {id_level_1:id_level_1,id_level_2:id_level_2,id_level_3:id_level_3,id_level_4:id_level_4,id_level_5:id_level_5,path:path,filename:filename},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                    if(res.code === 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        $("#mylist").empty();
+                        admin_table.ajax.url("__SCRIPT__/project_attachment_table.php").load();
+                    }else {
+                        layer.msg(res.msg,{icon:2,time:1500,shade: 0.1});
+                    }
+                }
+            })
+        }else {
+            layer.msg(data.msg);
+        }
     });
 
     // 文件上传失败，显示上传出错。
@@ -1171,14 +1182,7 @@
     //编辑用户
     function edit(that) {
         var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
-        var kind = $(that).val();
-        if(kind == "查看"){
-            $("#myModal .btn-primary").css("display","none");
-        }else if(kind == "编辑"){
-            $("#myModal .btn-primary").css("display","inline-block");
-        }
-        $("#myModal h5").text("编辑单元工程");
-        $("#id").val(uid);
+
         $.ajax({
             url: "./projectEdit",
             type: "post",
@@ -1186,7 +1190,15 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                if(res.msg == "success"){
+                if(res.code == 1){
+                    var kind = $(that).val();
+                    if(kind == "查看"){
+                        $("#myModal .btn-primary").css("display","none");
+                    }else if(kind == "编辑"){
+                        $("#myModal .btn-primary").css("display","inline-block");
+                    }
+                    $("#myModal h5").text("编辑单元工程");
+                    $("#id").val(uid);
                     var data = res.data;
                     $("#project_name").val(data.project_name);
                     $("#new1").val(data.project_sn);
@@ -1222,7 +1234,11 @@
             data: {id:id,accident:val},
             dataType: "json",
             success: function (res) {
-                $("#accident").text(res.level);
+                if(res.code === 1){
+                    $("#accident").text(res.level);
+                }else{
+                    layer.msg(res.msg);
+                }
             }
         })
     }
@@ -1244,7 +1260,12 @@
             data: {id:id,accident:val},
             dataType: "json",
             success: function (res) {
-                $("#accdient2").text(res.level);
+                if(res.code === 1){
+                    $("#accdient2").text(res.level);
+                }else{
+                    layer.msg(res.msg);
+                }
+
             }
         })
     }
@@ -1260,7 +1281,11 @@
             data: {id:mytree_node.id,score_design:val1,score_actual:val2,score:result},
             dataType: "json",
             success: function (res) {
-                $("#accdient2").text(res.level);
+                if(res.code === 1){
+                    $("#accdient2").text(res.level);
+                }else{
+                    layer.msg(res.msg);
+                }
             }
         })
     }
@@ -1287,7 +1312,7 @@
                 dataType: "json",
                 success: function (res) {
                     console.log(res);
-                    if(res.msg == "success"){
+                    if(res.code == 1){
                         var data = res.projectData;
                         $("#input1").val(data.name);
                         $("#input2").val(data.sn + data.post_sn);
@@ -1420,7 +1445,8 @@
                                 $("#edit3").val("");
                             }
                         }
-
+                    }else {
+                        layer.msg(res.msg);
                     }
                 }
             });
@@ -1444,84 +1470,88 @@
                 data: {id:treeNode.id},
                 dataType: "json",
                 success: function (res) {
-                    $("#level3 tbody").empty();
-                    console.log(res);
-                    var len = res.column3.length;
-                    $.each(res.column3,function (i,n) {
-                        if(i < len - 2){
-                            if(i === 0){
+                    if(res.code === 1){
+                        $("#level3 tbody").empty();
+                        console.log(res);
+                        var len = res.column3.length;
+                        $.each(res.column3,function (i,n) {
+                            if(i < len - 2){
+                                if(i === 0){
+                                    var str = "";
+                                    str += "<tr>"
+                                        +  "<td>"+ (i+1) +"</td>"
+                                        +  "<td>"+ res.column1[i] +"</td>"
+                                        +  "<td>"+ res.column2[i] +"</td>"
+                                        +  "<td>"+ res.column3[i] +"</td>"
+                                        +  "<td>"+ res.column4[i] +"</td>"
+                                        +  "<td>"+ res.column5[i] +"</td>"
+                                        +  "<td id='accident' rowspan="+ (len+1) +">"+ res.level +"</td>"
+                                        +  "</tr>"
+                                }else {
+                                    var str = "";
+                                    str += "<tr>"
+                                        +  "<td>"+ (i+1) +"</td>"
+                                        +  "<td>"+ res.column1[i] +"</td>"
+                                        +  "<td>"+ res.column2[i] +"</td>"
+                                        +  "<td>"+ res.column3[i] +"</td>"
+                                        +  "<td>"+ res.column4[i] +"</td>"
+                                        +  "<td>"+ res.column5[i] +"</td>"
+                                        +  "</tr>"
+                                }
+                                $("#level3 tbody").append(str);
+                            }else if(i === len - 2){
                                 var str = "";
-                                str += "<tr>"
-                                    +  "<td>"+ (i+1) +"</td>"
-                                    +  "<td>"+ res.column1[i] +"</td>"
+                                str += ""
+                                    +  "<tr>"
+                                    +  "<td colspan=\"2\">合计</td>"
                                     +  "<td>"+ res.column2[i] +"</td>"
                                     +  "<td>"+ res.column3[i] +"</td>"
                                     +  "<td>"+ res.column4[i] +"</td>"
                                     +  "<td>"+ res.column5[i] +"</td>"
-                                    +  "<td id='accident' rowspan="+ (len+1) +">"+ res.level +"</td>"
                                     +  "</tr>"
-                            }else {
+                                $("#level3 tbody").append(str);
+                            }else if(i === len - 1){
                                 var str = "";
-                                str += "<tr>"
-                                    +  "<td>"+ (i+1) +"</td>"
-                                    +  "<td>"+ res.column1[i] +"</td>"
+                                str += ""
+                                    +  "<tr>"
+                                    +  "<td colspan=\"2\">主要单元工程、重要隐藏工程及关键部位单元工程</td>"
                                     +  "<td>"+ res.column2[i] +"</td>"
                                     +  "<td>"+ res.column3[i] +"</td>"
                                     +  "<td>"+ res.column4[i] +"</td>"
                                     +  "<td>"+ res.column5[i] +"</td>"
                                     +  "</tr>"
+                                $("#level3 tbody").append(str);
                             }
-                            $("#level3 tbody").append(str);
-                        }else if(i === len - 2){
-                            var str = "";
-                            str += ""
-                                +  "<tr>"
-                                +  "<td colspan=\"2\">合计</td>"
-                                +  "<td>"+ res.column2[i] +"</td>"
-                                +  "<td>"+ res.column3[i] +"</td>"
-                                +  "<td>"+ res.column4[i] +"</td>"
-                                +  "<td>"+ res.column5[i] +"</td>"
-                                +  "</tr>"
-                            $("#level3 tbody").append(str);
-                        }else if(i === len - 1){
-                            var str = "";
-                            str += ""
-                                +  "<tr>"
-                                +  "<td colspan=\"2\">主要单元工程、重要隐藏工程及关键部位单元工程</td>"
-                                +  "<td>"+ res.column2[i] +"</td>"
-                                +  "<td>"+ res.column3[i] +"</td>"
-                                +  "<td>"+ res.column4[i] +"</td>"
-                                +  "<td>"+ res.column5[i] +"</td>"
-                                +  "</tr>"
-                            $("#level3 tbody").append(str);
-                        }
-                    })
-                    var str1 = "";
+                        })
+                        var str1 = "";
                         str1 += "<tr>"
-                             +  "<td colspan=\"6\">"
-                             +  "<span>是否发生质量事故</span>"
-                             +  "<select onchange='change1(this)' id=\"sel1\" value=''>"
-                             +  "<option value=\"是\">是</option>"
-                             +  "<option value=\"否\">否</option>"
-                             +  "</select>"
-                             +  "</td>"
-                             +  "</tr>"
-                    $("#level3 tbody").append(str1);
-                    var str2 = "";
-                    str2 += "<tr>"
-                        +  "<td colspan=\"2\" style=\"background-color: #bae2f3;font-weight: 700;\">主要分部工程</td>"
-                        +  "<td colspan=\"5\">"
-                        +  "<select onchange='change2(this)' id=\"sel2\" value=''>"
-                        +  "<option value=\"是\">是</option>"
-                        +  "<option value=\"否\">否</option>"
-                        +  "</select>"
-                        +  "</td>"
-                        +  "</tr>"
+                            +  "<td colspan=\"6\">"
+                            +  "<span>是否发生质量事故</span>"
+                            +  "<select onchange='change1(this)' id=\"sel1\" value=''>"
+                            +  "<option value=\"是\">是</option>"
+                            +  "<option value=\"否\">否</option>"
+                            +  "</select>"
+                            +  "</td>"
+                            +  "</tr>"
+                        $("#level3 tbody").append(str1);
+                        var str2 = "";
+                        str2 += "<tr>"
+                            +  "<td colspan=\"2\" style=\"background-color: #bae2f3;font-weight: 700;\">主要分部工程</td>"
+                            +  "<td colspan=\"5\">"
+                            +  "<select onchange='change2(this)' id=\"sel2\" value=''>"
+                            +  "<option value=\"是\">是</option>"
+                            +  "<option value=\"否\">否</option>"
+                            +  "</select>"
+                            +  "</td>"
+                            +  "</tr>"
 
-                    $("#level3 tbody").append(str2);
+                        $("#level3 tbody").append(str2);
 
-                    $("#sel1").val(res.accident);
-                    $("#sel2").val(res.primary);
+                        $("#sel1").val(res.accident);
+                        $("#sel2").val(res.primary);
+                    }else {
+                        layer.msg(res.msg);
+                    }
                 }
             });
             //获取路径
@@ -1532,9 +1562,13 @@
                 dataType: "json",
                 success: function (res) {
                     console.log(res)
-                    idlist = res.idList;
-                    if(res.msg === "success"){
-                        $("#path").text("当前路径:" + res.path)
+                    if(res.code === 1){
+                        idlist = res.idList;
+                        if(res.msg === "success"){
+                            $("#path").text("当前路径:" + res.path)
+                        }
+                    }else {
+                        layer.msg(res.msg);
                     }
                 }
             });
@@ -1546,100 +1580,104 @@
                 data: {id:treeNode.id},
                 dataType: "json",
                 success: function (res) {
-                    $("#level2 tbody").empty();
-                    console.log(res);
-                    var str = "";
-                    str += ""
-                        +  "<tr>"
-                        +  "<td></td>"
-                        +  "<td class='style1'>分部个数</td>"
-                        +  "<td class='style1'>合格个数</td>"
-                        +  "<td class='style1'>优良个数</td>"
-                        +  "<td class='style1'>优良率</td>"
-                        +  "</tr>"
-                    $("#level2 tbody").append(str);
-                    $.each(res.column1,function (i,n) {
-                        var txt = "合计";
-                        if(i === 1){
-                            txt = "主要分部工程"
-                        }
+                    if(res.code === 1){
+                        $("#level2 tbody").empty();
+                        console.log(res);
                         var str = "";
                         str += ""
                             +  "<tr>"
-                            +  "<td>"+ txt +"</td>"
-                            +  "<td>"+ res.column1[i] +"</td>"
-                            +  "<td>"+ res.column2[i] +"</td>"
-                            +  "<td>"+ res.column3[i] +"</td>"
-                            +  "<td>"+ res.column4[i] +"</td>"
+                            +  "<td></td>"
+                            +  "<td class='style1'>分部个数</td>"
+                            +  "<td class='style1'>合格个数</td>"
+                            +  "<td class='style1'>优良个数</td>"
+                            +  "<td class='style1'>优良率</td>"
                             +  "</tr>"
                         $("#level2 tbody").append(str);
-                    });
-                    var str1 = "";
-                    str1 += "<tr>"
-                        +  "<td colspan=\"5\">"
-                        +  "<span>是否发生质量事故</span>"
-                        +  "<select onchange='change3(this)' id=\"sel3\" value=''>"
-                        +  "<option value=\"是\">是</option>"
-                        +  "<option value=\"否\">否</option>"
-                        +  "</select>"
-                        +  "</td>"
-                        +  "</tr>"
-                    $("#level2 tbody").append(str1);
-
-                    var lstr = "";
-                    lstr += "<tr>"
-                         +  "<td colspan='2'>工程外观质量</td>"
-                         +  "<td colspan='3'>"
-                         +  "<div class='grade' id='g1'>"
-                         +  "应得<input type='number'>分"
-                         +  "</div>"
-                         +  "<div class='grade' id='g2'>"
-                         +  "实得<input type='number'>分"
-                         +  "</div>"
-                         +  "<button style='line-height: 16px;' onclick='count(this)'>开始计算</button>"
-                         +  "<div class='grade' id='g3'>"
-                         +  "得分率<input type='' readonly='readonly'>"
-                         +  "</div>"
-                         +  "</td>"
-                         +  "</tr>"
-
-                    $("#level2 tbody").append(lstr);
-
-                    var len = res.name.length;
-
-                    var str3 = "";
-                    str3 += ""
-                        +  "<tr>"
-                        +  "<td class='style1'>项次</td>"
-                        +  "<td class='style1'>分部工程名称</td>"
-                        +  "<td class='style1'>质量等级</td>"
-                        +  "<td class='style1' colspan='2'>单位工程质量等级</td>"
-                        +  "</tr>"
-                    $("#level2 tbody").append(str3);
-
-                    $.each(res.name,function (i,n) {
-                        if(i === 0){
+                        $.each(res.column1,function (i,n) {
+                            var txt = "合计";
+                            if(i === 1){
+                                txt = "主要分部工程"
+                            }
                             var str = "";
-                            str += "<tr>"
-                                +  "<td>"+ (i+1) +"</td>"
-                                +  "<td>"+ res.name[i] +"</td>"
-                                +  "<td>"+ res.quality[i] +"</td>"
-                                +  "<td id='accdient2' colspan='2' rowspan="+ len +">"+ res.level +"</td>"
+                            str += ""
+                                +  "<tr>"
+                                +  "<td>"+ txt +"</td>"
+                                +  "<td>"+ res.column1[i] +"</td>"
+                                +  "<td>"+ res.column2[i] +"</td>"
+                                +  "<td>"+ res.column3[i] +"</td>"
+                                +  "<td>"+ res.column4[i] +"</td>"
                                 +  "</tr>"
-                        }else {
-                            var str = "";
-                            str += "<tr>"
-                                +  "<td>"+ (i+1) +"</td>"
-                                +  "<td>"+ res.name[i] +"</td>"
-                                +  "<td>"+ res.quality[i] +"</td>"
-                                +  "</tr>"
-                        }
-                        $("#level2 tbody").append(str);
-                    })
-                $(".grade:first-child input").val(res.score[0]);
-                $(".grade:nth-child(2) input").val(res.score[1]);
-                $(".grade:nth-child(4) input").val(res.score[2]);
-                $("#sel3").val(res.accident);
+                            $("#level2 tbody").append(str);
+                        });
+                        var str1 = "";
+                        str1 += "<tr>"
+                            +  "<td colspan=\"5\">"
+                            +  "<span>是否发生质量事故</span>"
+                            +  "<select onchange='change3(this)' id=\"sel3\" value=''>"
+                            +  "<option value=\"是\">是</option>"
+                            +  "<option value=\"否\">否</option>"
+                            +  "</select>"
+                            +  "</td>"
+                            +  "</tr>"
+                        $("#level2 tbody").append(str1);
+
+                        var lstr = "";
+                        lstr += "<tr>"
+                            +  "<td colspan='2'>工程外观质量</td>"
+                            +  "<td colspan='3'>"
+                            +  "<div class='grade' id='g1'>"
+                            +  "应得<input type='number'>分"
+                            +  "</div>"
+                            +  "<div class='grade' id='g2'>"
+                            +  "实得<input type='number'>分"
+                            +  "</div>"
+                            +  "<button style='line-height: 16px;' onclick='count(this)'>开始计算</button>"
+                            +  "<div class='grade' id='g3'>"
+                            +  "得分率<input type='' readonly='readonly'>"
+                            +  "</div>"
+                            +  "</td>"
+                            +  "</tr>"
+
+                        $("#level2 tbody").append(lstr);
+
+                        var len = res.name.length;
+
+                        var str3 = "";
+                        str3 += ""
+                            +  "<tr>"
+                            +  "<td class='style1'>项次</td>"
+                            +  "<td class='style1'>分部工程名称</td>"
+                            +  "<td class='style1'>质量等级</td>"
+                            +  "<td class='style1' colspan='2'>单位工程质量等级</td>"
+                            +  "</tr>"
+                        $("#level2 tbody").append(str3);
+
+                        $.each(res.name,function (i,n) {
+                            if(i === 0){
+                                var str = "";
+                                str += "<tr>"
+                                    +  "<td>"+ (i+1) +"</td>"
+                                    +  "<td>"+ res.name[i] +"</td>"
+                                    +  "<td>"+ res.quality[i] +"</td>"
+                                    +  "<td id='accdient2' colspan='2' rowspan="+ len +">"+ res.level +"</td>"
+                                    +  "</tr>"
+                            }else {
+                                var str = "";
+                                str += "<tr>"
+                                    +  "<td>"+ (i+1) +"</td>"
+                                    +  "<td>"+ res.name[i] +"</td>"
+                                    +  "<td>"+ res.quality[i] +"</td>"
+                                    +  "</tr>"
+                            }
+                            $("#level2 tbody").append(str);
+                        })
+                        $(".grade:first-child input").val(res.score[0]);
+                        $(".grade:nth-child(2) input").val(res.score[1]);
+                        $(".grade:nth-child(4) input").val(res.score[2]);
+                        $("#sel3").val(res.accident);
+                    }else {
+                        layer.msg(res.msg);
+                    }
                 }
             });
             //获取路径
@@ -1650,9 +1688,13 @@
                 dataType: "json",
                 success: function (res) {
                     console.log(res)
-                    idlist = res.idList;
-                    if(res.msg === "success"){
-                        $("#path").text("当前路径:" + res.path)
+                    if(res.code === 1){
+                        idlist = res.idList;
+                        if(res.msg === "success"){
+                            $("#path").text("当前路径:" + res.path)
+                        }
+                    }else {
+                        layer.msg(res.msg);
                     }
                 }
             });
@@ -1666,9 +1708,13 @@
                 dataType: "json",
                 success: function (res) {
                     console.log(res)
-                    idlist = res.idList;
-                    if(res.msg === "success"){
-                        $("#path").text("当前路径:" + res.path)
+                    if(res.code === 1){
+                        idlist = res.idList;
+                        if(res.msg === "success"){
+                            $("#path").text("当前路径:" + res.path)
+                        }
+                    }else {
+                        layer.msg(res.msg);
                     }
                 }
             });

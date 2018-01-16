@@ -153,18 +153,23 @@
              dataType: "json",
              success: function (res) {
                  console.log(res);
-                 $("#name").text(res.data.name);
-                 $("#sn").text(res.data.sn + res.data.post_sn);
-                 $("#zhuanghaoqi").text("起:" + res.data.zhuanghaoqi);
-                 $("#zhuanghaozhi").text("止:" + res.data.zhuanghaozhi);
-                 $("#gaochengqi").text("起:" + res.data.gaochengqi);
-                 $("#gaochengzhi").text("止:" + res.data.gaochengzhi);
-                 $("#wangong_date").text(res.data.wangong_date);
-                 $("#currentDate").text(res.data.currentDate);
-                 $("#cate").text(res.data.cate);
-                 $("#limit").text(res.data.limit);
-                 $("#exceed").text(res.data.exceed);
-                 $("#myModal").modal();
+                 if(res.code === 1){
+                     $("#name").text(res.data.name);
+                     $("#sn").text(res.data.sn + res.data.post_sn);
+                     $("#zhuanghaoqi").text("起:" + res.data.zhuanghaoqi);
+                     $("#zhuanghaozhi").text("止:" + res.data.zhuanghaozhi);
+                     $("#gaochengqi").text("起:" + res.data.gaochengqi);
+                     $("#gaochengzhi").text("止:" + res.data.gaochengzhi);
+                     $("#wangong_date").text(res.data.wangong_date);
+                     $("#currentDate").text(res.data.currentDate);
+                     $("#cate").text(res.data.cate);
+                     $("#limit").text(res.data.limit);
+                     $("#exceed").text(res.data.exceed);
+                     $("#myModal").modal();
+                 }else {
+                     layer.msg(res.msg);
+                 }
+
              }
          })
      }
