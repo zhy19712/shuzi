@@ -126,6 +126,18 @@ class Upload extends Base
 
 
     public function uploadPrototypeAttachment(){
+
+        $auth = new \com\Auth();
+        $module     = strtolower(request()->module());
+        $controller = strtolower(request()->controller());
+        $action     = strtolower(request()->action());
+        $url        = $module."/".$controller."/".$action;
+        if(session('uid')!=1){
+                if(!$auth->check($url,session('uid'))){
+                    return json(['msg'=> '抱歉，您没有操作权限']);
+                }
+        }
+
         $prototype = new PrototypeAttachmentModel();
         $id = request()->param('uid');
         $table_name = request()->param('table_name');
