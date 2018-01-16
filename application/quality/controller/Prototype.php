@@ -23,7 +23,7 @@ class Prototype extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $data = $prototype->getOne($param['id']);
-            return json(['data' => $data]);
+            return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
@@ -73,7 +73,7 @@ class Prototype extends Base
             if(file_exists($path)){
                 unlink($path); //删除文件
             }
-            return json([ 'msg' => 'success']);
+            return json([ 'code' => 1, 'msg' => '删除成功']);
         }
     }
 
@@ -104,7 +104,7 @@ class Prototype extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $data = $prototype->getOne($param['id']);
-            return json(['data' => $data]);
+            return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
@@ -159,7 +159,7 @@ class Prototype extends Base
             if(file_exists($path)){
                 unlink($path); //删除文件
             }
-            return json([ 'msg' => 'success']);
+            return json([ 'code' => 1, 'msg' => 'success']);
         }
     }
 
@@ -189,7 +189,7 @@ class Prototype extends Base
         if(request()->isAjax()) {
             $param = input('post.');
             $data = $attachment->getOne($param['id']);
-            return json(['data' => $data]);
+            return json(['code'=> 1, 'data' => $data]);
         }
     }
 
