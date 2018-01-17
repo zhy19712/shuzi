@@ -486,5 +486,12 @@ class Acceptance extends Base
         }
     }
 
+    public function jj(){
+        if(request()->isAjax()){
+            $param = input('get.');
+            return json(['res' => $param['uname']]);
+        }
+    }
+
 
 }
