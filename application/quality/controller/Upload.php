@@ -4,6 +4,7 @@ namespace app\quality\controller;
 use app\admin\controller\Base;
 use app\quality\model\ProcedureAttachmentModel;
 use app\quality\model\ProcedureModel;
+use app\quality\model\ProjectAttachmentModel;
 use app\quality\model\ProjectStageModel;
 use app\quality\model\PrototypeAttachmentModel;
 use app\quality\model\PrototypeModel;
@@ -19,10 +20,24 @@ class Upload extends Base
 {
     //文件上传
     public function uploadfile(){
+        $attachment = new ProjectAttachmentModel();
+        $name = request()->param('uname');
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/acceptance');
         if($info){
-            echo $info->getSaveName();
+            $temp = $info->getSaveName();
+            $path = './uploads/qc/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            $data = [
+                'owner' => session('username'),
+                'date' => date("Y-m-d H:i:s"),
+                'dept' => session('dept'),
+                'path' => $path,
+                'name' => $name,
+                'filename' => $filename
+            ];
+            $flag = $attachment->insertAttachment($data);
+            return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
         }else{
             echo $file->getError();
         }
