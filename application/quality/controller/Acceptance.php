@@ -231,6 +231,9 @@ class Acceptance extends Base
     //附件下载
     public function attachmentDownload()
     {
+        if(request()->isAjax()){
+            return json(['code' => 1]);
+        }
         $id = input('param.id');
         $attachment = new ProjectAttachmentModel();
         $param = $attachment->getOne($id);

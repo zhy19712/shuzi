@@ -43,6 +43,9 @@ class Procedure extends Base
 
     public function procedureDownload()
     {
+        if(request()->isAjax()){
+            return json(['code' => 1]);
+        }
         $id = input('param.id');
         $attachment = new ProcedureModel();
         $param = $attachment->getOne($id);
@@ -260,6 +263,9 @@ class Procedure extends Base
 
     public function attachmentDownload()
     {
+        if(request()->isAjax()){
+            return json(['code' => 1]);
+        }
         $id = input('param.id');
         $attachment = new ProcedureAttachmentModel();
         $param = $attachment->getOne($id);

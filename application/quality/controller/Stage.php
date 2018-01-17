@@ -26,6 +26,9 @@ class Stage extends Base
 
     public function stageDownload()
     {
+        if(request()->isAjax()){
+            return json(['code' => 1]);
+        }
         $id = input('param.id');
         $attachment = new ProjectStageModel();
         $param = $attachment->getOne($id);

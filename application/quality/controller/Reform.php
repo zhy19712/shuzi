@@ -56,6 +56,9 @@ class Reform extends Base
 
     public function attachmentDownload()
     {
+        if(request()->isAjax()){
+            return json(['code' => 1]);
+        }
         $id = input('param.id');
         $attachment = new ReformAttachmentModel();
         $param = $attachment->getOne($id);
