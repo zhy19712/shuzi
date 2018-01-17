@@ -353,7 +353,6 @@
                 "targets": [3],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='play(this)' value='查看'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
@@ -375,81 +374,82 @@
     $("div.ipt").html('<input type="hidden" id="data_photo" name="portrait" >');
     $("div#upload").html('<div>上传文件</div>');
     $("div#mylist").html('<div></div>');
+    $.ajax({
+        url: "/quality/upload/uploadVideo",
+        success: function (res) {
+            console.log(res);
+            if(res.code != 1){
+                $("#upload").css("display","none");
+            }else {
+                var idlist;
+                //上传图片,初始化WebUploader
+                var $list = $("#list");
+                var flie_count = 0;
+                var uploader = WebUploader.create({
 
-    var idlist;
-    //上传图片,初始化WebUploader
-    var $list = $("#list");
-    var flie_count = 0;
-    var uploader = WebUploader.create({
+                    auto: true,// 选完文件后，是否自动上传。
+                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                    server: "{:url('Upload/uploadVideo')}",// 文件接收服务端。
+                    chunked: false,
+                    fileSizeLimit: 1000 *1024 *1024,
+                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                    pick: '#upload',// 选择文件的按钮。可选。
+                    accept: {
+                        title: 'mp4',
+                        extensions: 'mp4',
+                        mimeTypes: '.mp4'
+                    }
 
-        auto: true,// 选完文件后，是否自动上传。
-        swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-        server: "{:url('Upload/uploadVideo')}",// 文件接收服务端。
-        chunked: false,
-        fileSizeLimit: 1000 *1024 *1024,
-        duplicate :true,// 重复上传图片，true为可重复false为不可重复
-        pick: '#upload',// 选择文件的按钮。可选。
-        accept: {
-            title: 'mp4',
-            extensions: 'mp4',
-            mimeTypes: '.mp4'
-        }
+                });
+                // 当有文件被添加进队列的时候
+                uploader.on( 'fileQueued', function( file ) {
+                    $("#mylist").html( '<div id="' + file.id + '" class="item">' +
+                        '<h4 class="info">' + file.name + '</h4>' +
+                        '<p class="state">正在上传...</p>' +
+                        '</div>' );
+                    $list.append('<div id="' + file.id + '" class="item">' +
+                        '</div>');
+                });
+                // 文件上传过程中创建进度条实时显示。
+                uploader.on('uploadProgress', function (file, percentage) {
+                    var $li = $('#' + file.id),
+                        $percent = $li.find('.progress .progress-bar');
+                    // 避免重复创建
+                    if (!$percent.length) {
+                        $percent = $('<div class="progress progress-striped active">' +
+                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                            '</div>' +
+                            '</div>').appendTo($li).find('.progress-bar');
+                    }
+                    $li.find('p.state').text('上传中');
+                    $percent.css('width', percentage * 100 + '%');
+                });
 
-    });
+                // 文件上传成功
+                uploader.on( 'uploadSuccess', function( file,data, response ) {
+                    console.log(file);
+                    if(data.code === 1){
+                        layer.msg(data.msg);
+                        $("#mylist").empty();
+                        $("#list").empty();
+                        layer.close(index);
+                    }else {
+                        layer.msg("抱歉，您没有此权限");
+                        $("#mylist").empty();
+                        $("#list").empty();
+                    }
+                });
 
-
-    uploader.on('beforeFileQueued', function (file) {
-        $.ajax({
-            url: "./uploadVideo",
-            type: "post",
-            success: function (res) {
-                console.log(res)
-                if(res.code != 1){
-                    layer.msg(res.msg);
-                    return false;
-                }else {
-                    // 文件上传过程中创建进度条实时显示。
-                    uploader.on('uploadProgress', function (file, percentage) {
-                        var $li = $('#' + file.id),
-                            $percent = $li.find('.progress .progress-bar');
-                        // 避免重复创建
-                        if (!$percent.length) {
-                            $percent = $('<div class="progress progress-striped active">' +
-                                '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                                '</div>' +
-                                '</div>').appendTo($li).find('.progress-bar');
-                        }
-                        $li.find('p.state').text('上传中');
-                        $percent.css('width', percentage * 100 + '%');
-                    });
-
-                    // 文件上传成功
-                    uploader.on( 'uploadSuccess', function( file,data, response ) {
-                        console.log(file);
-                        if(data.code === 1){
-                            layer.msg(data.msg);
-                            $("#mylist").empty();
-                            $("#list").empty();
-                            layer.close(index);
-                        }else {
-                            layer.msg("抱歉，您没有此权限");
-                            $("#mylist").empty();
-                            $("#list").empty();
-                        }
-                    });
-                }
+                // 文件上传失败，显示上传出错。
+                uploader.on( 'uploadError', function( file ) {
+                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                    $("#mylist").empty();
+                    $("#list").empty();
+                });
             }
-        })
-    });
+        }
+    })
 
-
-
-    // 文件上传失败，显示上传出错。
-    uploader.on( 'uploadError', function( file ) {
-        layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-        $("#mylist").empty();
-        $("#list").empty();
-    });
 
 
 
