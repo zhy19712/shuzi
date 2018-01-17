@@ -1136,7 +1136,7 @@
     uploader.on( 'uploadSuccess', function( file,data, response ) {
         console.log(file);
         if(data.code === 1){
-            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + mytree_node.name).load();
+            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + encodeURI(encodeURI(mytree_node.name))).load();
             layer.msg(data.msg);
         }else {
             layer.msg("抱歉，您没有此权限");
@@ -1679,7 +1679,7 @@
                 }
             });
         }
-        admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + treeNode.name).load();
+        admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + encodeURI(encodeURI(treeNode.name))).load();
     };
     var setting = {
         async: {
