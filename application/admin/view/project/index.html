@@ -868,6 +868,7 @@ function edit(that) {
         uploader.on( 'fileQueued', function( file ) {
             $("#file_per").append('<div id="' + file.id + '" class="item">' +
                 '</div>');
+        });
         // 文件上传过程中创建进度条实时显示。
         uploader.on('uploadProgress', function (file, percentage) {
             var $li = $('#' + file.id),
@@ -898,6 +899,7 @@ function edit(that) {
             }else {
                 layer.msg(data.msg);
             }
+
         });
 
         // 文件上传失败，显示上传出错。
