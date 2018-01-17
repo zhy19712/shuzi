@@ -355,6 +355,9 @@ class Upload extends Base
 
     //视频上传V
     public function uploadVideo(){
+        if(request()->isAjax()){
+            return json(['code' => 1]);
+        }
         $video = new ConstructionModel();
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/video');
