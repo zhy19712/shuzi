@@ -897,7 +897,11 @@ function edit(that) {
                 $("#file_per").empty();
                 $("#file_upload input").val("");
             }else {
-                layer.msg(data.msg);
+                layer.confirm(data.info, {btn:'关闭',icon: 3, title:'提示'}, function(index){
+                    layer.close(index);
+                });
+                $("#file_per").empty();
+                $("#file_upload input").val("");
             }
 
         });
