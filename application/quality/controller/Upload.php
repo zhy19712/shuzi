@@ -363,7 +363,7 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/video');
         if($info){
             $temp = $info->getSaveName();
-            $path = './uploads/Reform/Attachment/' . str_replace("\\","/",$temp);
+            $path = './uploads/video/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             $data = [
                 'date' => date("Y-m-d H:i:s"),

@@ -45,7 +45,7 @@ class Construction extends Base
         if(request()->isAjax()){
             $data = $video->getOne($param['id']);
 
-            return json(['url' => substr($data['path'],1)]);
+            return json(['code' => 1, 'url' => substr($data['path'],1)]);
 
         }
     }

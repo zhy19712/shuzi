@@ -92,7 +92,13 @@ class Procedure extends Base
             if(file_exists($path)){
                 unlink($path); //删除文件
             }
-            return json([ 'code' => 1, 'msg' => 'success']);
+            $newData = [
+                'id' => $data['id'],
+                'filename' => NULL,
+                'path' => NULL
+            ];
+            $flag = $attachment->editProcedure($newData);
+            return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
         }
     }
 
@@ -220,7 +226,13 @@ class Procedure extends Base
             if(file_exists($path)){
                 unlink($path); //删除文件
             }
-            return json([ 'code' => 1, 'msg' => 'success']);
+            $newData = [
+                'id' => $data['id'],
+                'name' => NULL,
+                'path' => NULL
+            ];
+            $flag = $attachment->editAttachment($newData);
+            return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
         }
     }
 
