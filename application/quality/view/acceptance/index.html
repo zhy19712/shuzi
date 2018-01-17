@@ -1123,9 +1123,13 @@
         server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
         chunked: true,
         fileSizeLimit: 1000 *1024 *1024,
+        formData: {"uname":""},
         duplicate :true,// 重复上传图片，true为可重复false为不可重复
         pick: '#upload',// 选择文件的按钮。可选。
 
+    });
+    standard_uploader.on("uploadStart",function () {
+        standard_uploader.options.formData.uname = mytree_node.name;
     });
     uploader.on( 'fileQueued', function( file ) {
         $("#mylist").html( '<div id="' + file.id + '" class="item">' +
@@ -1138,42 +1142,7 @@
     uploader.on( 'uploadSuccess', function( file,data, response ) {
         console.log(file);
         if(data.code === 1){
-            var filename = file.name;
-            var id_level_1 = "";
-            var id_level_2 = "";
-            var id_level_3 = "";
-            var id_level_4 = "";
-            var id_level_5 = "";
-            $.each(idlist,function (i,n) {
-                if(i == 0){
-                    id_level_1 = n;
-                }else if(i == 1){
-                    id_level_2 = n;
-                }else if(i == 2){
-                    id_level_3 = n;
-                }else if(i == 3){
-                    id_level_4 = n;
-                }else if(i == 4){
-                    id_level_5 = n;
-                }
-            });
-            var path = './uploads/acceptance/' + (data._raw).replace(/\\/g,"\/");
-            $.ajax({
-                url: "./saveAttachmentInfo",
-                type: "post",
-                data: {id_level_1:id_level_1,id_level_2:id_level_2,id_level_3:id_level_3,id_level_4:id_level_4,id_level_5:id_level_5,path:path,filename:filename},
-                dataType: "json",
-                success: function (res) {
-                    console.log(res);
-                    if(res.code === 1){
-                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        $("#mylist").empty();
-                        admin_table.ajax.url("__SCRIPT__/project_attachment_table.php").load();
-                    }else {
-                        layer.msg(res.msg,{icon:2,time:1500,shade: 0.1});
-                    }
-                }
-            })
+            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + mytree_node.name).load();
         }else {
             layer.msg("抱歉，您没有此权限");
         }
@@ -1715,7 +1684,7 @@
                 }
             });
         }
-        admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?name=" + treeNode.name).load();
+        admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + treeNode.name).load();
     };
     var setting = {
         async: {
