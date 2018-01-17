@@ -887,7 +887,6 @@ function edit(that) {
         uploader.on( 'uploadSuccess', function( file,data ) {
             console.log(file)
             console.log(data)
-            if(data.code === 1){
                 zTreeObj.reAsyncChildNodes(null, "refresh");
 //            layer.msg(file.name + data.info,{icon:1,time:1500,shade: 0.1});
                 var msg = file.name + data.info;
@@ -896,13 +895,6 @@ function edit(that) {
                 });
                 $("#file_per").empty();
                 $("#file_upload input").val("");
-            }else {
-                layer.confirm(data.info, {btn:'关闭',icon: 3, title:'提示'}, function(index){
-                    layer.close(index);
-                });
-                $("#file_per").empty();
-                $("#file_upload input").val("");
-            }
 
         });
 
