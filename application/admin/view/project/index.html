@@ -868,23 +868,6 @@ function edit(that) {
         uploader.on( 'fileQueued', function( file ) {
             $("#file_per").append('<div id="' + file.id + '" class="item">' +
                 '</div>');
-//            $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
-//                '<span class="info">' + file.name + '</span>&nbsp' +
-//                '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-//                '</div>' );
-//            $("#btn_upload").css("display","block");
-        });
-//        $("#file_list").on("click", ".webuploadDelbtn", function () {
-//            var $ele = $(this);
-//            var id = $ele.parent().attr("class");
-//            var file = uploader.getFile(id);
-//            uploader.removeFile(file,true);
-//        });
-//        uploader.on('fileDequeued', function (file) {
-//            $(file.id).remove();
-//            $('.'+file.id).remove();
-//            console.log("remove");
-//        });
         // 文件上传过程中创建进度条实时显示。
         uploader.on('uploadProgress', function (file, percentage) {
             var $li = $('#' + file.id),
@@ -903,14 +886,18 @@ function edit(that) {
         uploader.on( 'uploadSuccess', function( file,data ) {
             console.log(file)
             console.log(data)
-            zTreeObj.reAsyncChildNodes(null, "refresh");
+            if(data.code === 1){
+                zTreeObj.reAsyncChildNodes(null, "refresh");
 //            layer.msg(file.name + data.info,{icon:1,time:1500,shade: 0.1});
-            var msg = file.name + data.info;
-            layer.confirm(msg, {btn:'关闭',icon: 3, title:'提示'}, function(index){
-                layer.close(index);
-            });
-            $("#file_per").empty();
-            $("#file_upload input").val("");
+                var msg = file.name + data.info;
+                layer.confirm(msg, {btn:'关闭',icon: 3, title:'提示'}, function(index){
+                    layer.close(index);
+                });
+                $("#file_per").empty();
+                $("#file_upload input").val("");
+            }else {
+                layer.msg(data.msg);
+            }
         });
 
         // 文件上传失败，显示上传出错。
