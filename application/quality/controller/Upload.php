@@ -26,7 +26,7 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/acceptance');
         if($info){
             $temp = $info->getSaveName();
-            $path = './uploads/qc/' . str_replace("\\","/",$temp);
+            $path = './uploads/acceptance/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             $data = [
                 'owner' => session('username'),
