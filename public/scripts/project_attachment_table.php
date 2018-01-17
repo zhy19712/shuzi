@@ -58,9 +58,19 @@ $sql_details = array(
 
 require( 'ssp.class.php' );
 
-echo json_encode(
-    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
-);
+if(!empty($_GET["uname"]))
+{
+    $name = $_GET["uname"];
+
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "name = '$name'" )
+    );
+}
+else {
+    echo json_encode(
+        SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns)
+    );
+}
 
 
 
