@@ -52,19 +52,19 @@ class Acceptance extends Base
             if($p==="开挖")
             {
                 $kaiwaData = $kaiwa->getOne($param['uid']);
-                return json(['projectData' => $projectData, 'kaiwaData' => $kaiwaData,'msg' => "success"]);
+                return json(['projectData' => $projectData, 'kaiwaData' => $kaiwaData,'code' => 1]);
             }else if($p=='支护')
             {
                 $zhihuData = $zhihu->getOne($param['uid']);
-                return json(['projectData' => $projectData, 'zhihuData' => $zhihuData,'msg' => "success"]);
+                return json(['projectData' => $projectData, 'zhihuData' => $zhihuData,'code' => 1]);
             }else if($p=='混凝土')
             {
                 $hunningtuData = $hunningtu->getOne($param['uid']);
-                return json(['projectData' => $projectData, 'hunningtuData' => $hunningtuData,'msg' => "success"]);
+                return json(['projectData' => $projectData, 'hunningtuData' => $hunningtuData,'code' => 1]);
             }else if($p=='锚杆')
             {
                 $maoganData = $maogan->getOne($param['uid']);
-                return json([ 'maoganData' => $maoganData,'msg' => "success"]);
+                return json([ 'maoganData' => $maoganData,'code' => 1]);
             }
 
         }
@@ -179,7 +179,7 @@ class Acceptance extends Base
                 $id = $data['pid'];
                 $data = array();
             }
-            return json(['path' => substr($path, 0, -2), 'idList' => $parent, 'msg' => "success"]);
+            return json(['code' => 1, 'path' => substr($path, 0, -2), 'idList' => $parent]);
         }
     }
 
@@ -373,7 +373,7 @@ class Acceptance extends Base
                 $level4->editNode($param);
 
 
-            return json(['column1' => $level4_name, 'column2' => $num, 'column3' => $qualified_num, 'column4' => $good_num, 'column5' => $good_rate, 'primary' => $primary, 'accident' => $accident, 'level' => $level]);
+            return json(['code' => 1, 'column1' => $level4_name, 'column2' => $num, 'column3' => $qualified_num, 'column4' => $good_num, 'column5' => $good_rate, 'primary' => $primary, 'accident' => $accident, 'level' => $level]);
 
         }
     }
@@ -469,7 +469,7 @@ class Acceptance extends Base
                 $level3->editNode($param);
 
 
-            return json(['column1' => $num, 'column2' => $qualified_num, 'column3' => $good_num, 'column4' => $good_rate, 'accident' => $accident, 'score' => $score, 'name' => $level3_name, 'quality' => $level3_quality, 'level' => $level]);
+            return json(['code' => 1, 'column1' => $num, 'column2' => $qualified_num, 'column3' => $good_num, 'column4' => $good_rate, 'accident' => $accident, 'score' => $score, 'name' => $level3_name, 'quality' => $level3_quality, 'level' => $level]);
 
         }
     }

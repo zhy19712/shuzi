@@ -78,8 +78,8 @@ class Prototype extends Base
             }
             $newData = [
                 'id' => $data['id'],
-                'filename' => NULL,
-                'path' => NULL
+                'filename' => null,
+                'path' => null
             ];
             $flag = $attachment->editPrototype($newData);
             return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
@@ -170,8 +170,8 @@ class Prototype extends Base
             }
             $newData = [
                 'id' => $data['id'],
-                'name' => NULL,
-                'path' => NULL
+                'name' => null,
+                'path' => null
             ];
             $flag = $attachment->editAttachment($newData);
             return json(['code' => $flag['code'], 'msg' => $flag['msg']]);

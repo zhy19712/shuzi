@@ -94,8 +94,8 @@ class Procedure extends Base
             }
             $newData = [
                 'id' => $data['id'],
-                'filename' => NULL,
-                'path' => NULL
+                'filename' => null,
+                'path' => null
             ];
             $flag = $attachment->editProcedure($newData);
             return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
@@ -228,8 +228,8 @@ class Procedure extends Base
             }
             $newData = [
                 'id' => $data['id'],
-                'name' => NULL,
-                'path' => NULL
+                'name' => null,
+                'path' => null
             ];
             $flag = $attachment->editAttachment($newData);
             return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
