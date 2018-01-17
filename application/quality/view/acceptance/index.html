@@ -1462,9 +1462,7 @@
                 dataType: "json",
                 success: function (res) {
                     idlist = res.idList;
-                    if(res.msg === "success"){
-                        $("#path").text("当前路径:" + res.path)
-                    }
+                    $("#path").text("当前路径:" + res.path)
                 }
             })
         }else if(treeNode.level == 2){
@@ -1568,9 +1566,7 @@
                     console.log(res)
                     if(res.code === 1){
                         idlist = res.idList;
-                        if(res.msg === "success"){
-                            $("#path").text("当前路径:" + res.path)
-                        }
+                        $("#path").text("当前路径:" + res.path);
                     }else {
                         layer.msg(res.msg);
                     }
@@ -1694,9 +1690,7 @@
                     console.log(res)
                     if(res.code === 1){
                         idlist = res.idList;
-                        if(res.msg === "success"){
-                            $("#path").text("当前路径:" + res.path)
-                        }
+                        $("#path").text("当前路径:" + res.path);
                     }else {
                         layer.msg(res.msg);
                     }
@@ -1714,9 +1708,7 @@
                     console.log(res)
                     if(res.code === 1){
                         idlist = res.idList;
-                        if(res.msg === "success"){
-                            $("#path").text("当前路径:" + res.path)
-                        }
+                        $("#path").text("当前路径:" + res.path)
                     }else {
                         layer.msg(res.msg);
                     }
