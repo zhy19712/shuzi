@@ -30,6 +30,9 @@ class Prototype extends Base
 
     public function prototypeDownload()
     {
+        if(request()->isAjax()){
+            return json(['code' => 1]);
+        }
         $id = input('param.id');
         $attachment = new PrototypeModel();
         $param = $attachment->getOne($id);
@@ -195,6 +198,9 @@ class Prototype extends Base
 
     public function attachmentDownload()
     {
+        if(request()->isAjax()){
+            return json(['code' => 1]);
+        }
         $id = input('param.id');
         $attachment = new PrototypeAttachmentModel();
         $param = $attachment->getOne($id);

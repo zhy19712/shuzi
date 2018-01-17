@@ -247,6 +247,9 @@ class Qc extends Base
 
     public function attachmentDownload()
     {
+        if(request()->isAjax()){
+            return json(['code' => 1]);
+        }
         $id = input('param.id');
         $attachment = new QCAttachmentModel();
         $param = $attachment->getOne($id);
