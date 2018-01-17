@@ -235,7 +235,7 @@ class project extends Base
                 }
             }
             if($sn_index == -1 || $name_index == -1 || $primary_index == -1){
-                $json_data['status'] = 0;
+                $json_data['code'] = 0;
                 $json_data['info'] = '首页的格式不对 - 01 (缺少[编号][单位工程名称][是否主控项目])';
                 return json($json_data);
             }
@@ -308,7 +308,7 @@ class project extends Base
                         }
                         // 如果pid不存在说明这里的第一个单元格的值为空或者不正确
                         if(!empty($page_v[0]) && !in_array($page_v[0],$second_id_array)){
-                            $json_data['status'] = 0;
+                            $json_data['code'] = 0;
                             $json_data['info'] = '编号有误 -02 不存在的上级编号'.$page_v[0].'请检查第'.($i+1).'页第'.($pk+1).'行的首个单元格的编号';
                             return json($json_data);
                         }
@@ -377,11 +377,11 @@ class project extends Base
             }
             // 批量插入单元工程节点
             $success = Db::name('project_divide')->insertAll($four_new_data);
-            $json_data['status'] = 1;
+            $json_data['code'] = 1;
             $json_data['info'] = '导入成功';
             return json($json_data);
         }else{
-            $json_data['status'] = 0;
+            $json_data['code'] = 0;
             $json_data['info'] = $file->getError();
             return json($json_data);
         }
