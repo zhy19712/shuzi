@@ -857,10 +857,12 @@
                 $("#season").val(res.data.season);
                 file_name1 = res.data.filename;
                 file_name2 = res.data.filename;
-                $("#standard_list").append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
-                    '<span class="info">' + res.data.filename + '</span>&nbsp' +
-                    '<span onclick="delatt(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                    '</div>' );
+                if(res.data.path){
+                    $("#standard_list").append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                        '<span class="info">' + res.data.filename + '</span>&nbsp' +
+                        '<span onclick="delatt(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                        '</div>' );
+                }
             }
         })
     }
@@ -1428,10 +1430,12 @@
                     $("#fremark").val(res.data.remark);
                     file_name3 = res.data.name;
                     file_name4 = res.data.name;
-                    $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
-                        '<span class="info">' + res.data.name + '</span>&nbsp' +
-                        '<span onclick="fdelatt(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                        '</div>' );
+                    if(res.data.path){
+                        $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                            '<span class="info">' + res.data.name + '</span>&nbsp' +
+                            '<span onclick="fdelatt(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '</div>' );
+                    }
                 }else {
                     layer.msg(res.msg)
                 }
