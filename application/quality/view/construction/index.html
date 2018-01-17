@@ -423,39 +423,8 @@
     // 文件上传成功
     uploader.on( 'uploadSuccess', function( file,data, response ) {
         console.log(file);
-        var filename;
-        var path = './uploads/video/' + (data._raw).replace(/\\/g,"\/");
-        layer.prompt({
-            formType: 2,
-            title: '请输入标题',
-            area: ['200px', '50px'],
-            btn:['确认','取消'],
-        }, function(value, index, elem){
-            filename = value;
-            console.log(filename,path);
-            $.ajax({
-                url: "./saveVideoInfo",
-                type: "post",
-                data: {path:path,name:filename},
-                dataType: "json",
-                success: function (res) {
-                    console.log(res);
-                    if(res.msg === "添加成功"){
-                        layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-                        $("#mylist").empty();
-                        $("#list").empty();
-                        admin_table.ajax.url("__SCRIPT__/video_table.php").load();
-                    }else {
-                        layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                        $("#mylist").empty();
-                        $("#list").empty();
-                    }
-                }
-            })
-            layer.close(index);
-        });
-
-
+        layer.msg(data.msg);
+        layer.close(index);
     });
 
     // 文件上传失败，显示上传出错。

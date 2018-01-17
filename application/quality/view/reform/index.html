@@ -576,7 +576,7 @@
             path1 = data.path.substr(1);
             $("#img_container img").attr('src',path1);
         }else {
-            layer.msg(data.msg);
+            layer.msg("抱歉，您没有此权限");
         }
     });
     uploaderimg.on("uploadStart",function () {
@@ -617,7 +617,7 @@
             path2 = data.path.substr(1);
             $("#img_container2 img").attr('src',path2);
         }else {
-            layer.msg(data.msg);
+            layer.msg("抱歉，您没有此权限");
         }
     });
     uploaderimg2.on("uploadStart",function () {
@@ -768,7 +768,7 @@
                         })
                     }
                 }else {
-                    layer.msg(data.msg);
+                    layer.msg("抱歉，您没有此权限");
                 }
 
             });
@@ -1026,10 +1026,12 @@
             + "</form>"
         $("#form_container").append(str);
         $('#download'+ id).ajaxSubmit({
-            success: function (res) {
-                console.log(res);
-                layer.msg(res.msg);
-            }
+//            success: function (res) {
+////                console.log(res);
+//                if(res.code){
+//                    layer.msg(res.msg);
+//                }
+//            }
         });
     }
     $("#fname .btn-primary").click(function () {

@@ -679,7 +679,7 @@
                         })
                     }
                 }else {
-                    layer.msg(data.msg);
+                    layer.msg("抱歉，您没有此权限");
                 }
 
             });
@@ -832,7 +832,7 @@
                     $("#standard_modal").modal('hide');
                     $("#standard_per").empty();
                 }else {
-                    layer.msg(data.msg);
+                    layer.msg("抱歉，您没有此权限");
                 }
 
             });
@@ -1021,7 +1021,7 @@
                     $("#standard_modal").modal('hide');
                     $("#standard_per").empty();
                 }else {
-                    layer.msg(data.msg);
+                    layer.msg("抱歉，您没有此权限");
                 }
             });
 
@@ -1398,12 +1398,16 @@
                         uploader.on( 'uploadSuccess', function( file,data, response ) {
                             console.log(file)
                             console.log(data)
-                            layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
-                            table_refresh();
-                            uploader = null;
-                            $("#file_upload").empty();
-                            $("#fname").modal('hide');
-                            $("#file_per").empty();
+                            if(data.code === 1){
+                                layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                                table_refresh();
+                                uploader = null;
+                                $("#file_upload").empty();
+                                $("#fname").modal('hide');
+                                $("#file_per").empty();
+                            }else {
+                                layer.msg("抱歉，您没有此权限");
+                            }
                         });
 
                         // 文件上传失败，显示上传出错。
