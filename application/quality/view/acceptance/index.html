@@ -1128,8 +1128,8 @@
         pick: '#upload',// 选择文件的按钮。可选。
 
     });
-    standard_uploader.on("uploadStart",function () {
-        standard_uploader.options.formData.uname = mytree_node.name;
+    uploader.on("uploadStart",function () {
+        uploader.options.formData.uname = mytree_node.name;
     });
     uploader.on( 'fileQueued', function( file ) {
         $("#mylist").html( '<div id="' + file.id + '" class="item">' +
