@@ -43,7 +43,6 @@ class ArticleCateModel extends Model
 
     /**
      * [editMenu 编辑分类]
-     * @author [田建龙] [864491238@qq.com]
      */
     public function editCate($param)
     {

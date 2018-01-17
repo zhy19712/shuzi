@@ -9,6 +9,7 @@ use app\quality\model\PrototypeAttachmentModel;
 use app\quality\model\PrototypeModel;
 use app\quality\model\ReformAttachmentModel;
 use app\quality\model\ReformModel;
+use app\quality\model\ConstructionModel;
 use think\Controller;
 use think\File;
 use think\Request;
@@ -18,7 +19,6 @@ class Upload extends Base
 {
     //文件上传
     public function uploadfile(){
-        uploadAccess();
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/acceptance');
         if($info){
@@ -29,7 +29,6 @@ class Upload extends Base
     }
 
     public function uploadQC(){
-        uploadAccess();
         $qc = new QCAttachmentModel();
         $id = request()->param('uid');
         $table_name = request()->param('table_name');
@@ -81,7 +80,6 @@ class Upload extends Base
     }
 
     public function uploadPrototype(){
-        uploadAccess();
         $prototype = new PrototypeModel();
         $id = request()->param('uid');
         $name = request()->param('uname');
@@ -129,7 +127,6 @@ class Upload extends Base
 
 
     public function uploadPrototypeAttachment(){
-        uploadAccess();
         $prototype = new PrototypeAttachmentModel();
         $id = request()->param('uid');
         $table_name = request()->param('table_name');
@@ -177,7 +174,6 @@ class Upload extends Base
 
     //标准工艺文件上传
     public function uploadProcedure(){
-        uploadAccess();
         $procedure = new ProcedureModel();
         $id = request()->param('uid');
         $name = request()->param('uname');
@@ -223,7 +219,6 @@ class Upload extends Base
 
     //标准工艺附件
     public function uploadProcedureAttachment(){
-        uploadAccess();
         $procedure = new ProcedureAttachmentModel();
         $id = request()->param('uid');
         $table_name = request()->param('table_name');
@@ -270,7 +265,6 @@ class Upload extends Base
     }
 
     public function uploadProjectStage(){
-        uploadAccess();
         $stage = new ProjectStageModel();
         $id = request()->param('uid');
         $file = request()->file('file');
@@ -301,7 +295,6 @@ class Upload extends Base
 
     public function uploadReform()
     {
-        uploadAccess();
         $reform = new ReformModel();
         $file = request()->file('file');
         $id = request()->param('uid');
@@ -332,7 +325,6 @@ class Upload extends Base
 
     public function uploadReformAttachment()
     {
-        uploadAccess();
         $attachment = new ReformAttachmentModel();
         $id = request()->param('uid');
         $table_name = request()->param('table_name');
@@ -363,11 +355,20 @@ class Upload extends Base
 
     //视频上传V
     public function uploadVideo(){
-        uploadAccess();
+        $video = new ConstructionModel();
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/video');
         if($info){
-            echo $info->getSaveName();
+            $temp = $info->getSaveName();
+            $path = './uploads/Reform/Attachment/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            $data = [
+                'date' => date("Y-m-d H:i:s"),
+                'path' => $path,
+                'name' => $filename
+            ];
+            $flag = $video->insertVideo($data);
+            return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
         }else{
             echo $file->getError();
         }
