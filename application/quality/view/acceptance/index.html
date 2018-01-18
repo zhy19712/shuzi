@@ -24,6 +24,7 @@
         border-bottom: none;
         margin-right: 20px;
         border-radius: 5px 5px 0 0;
+        margin-top: -5px;
     }
     #upload{
         float: right;
@@ -253,12 +254,12 @@
     }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
-<div id="mycontent" style="width: 20%;height: 100%;display: inline-block;margin: 0 10px;background-color:#fff;overflow: scroll;">
+<div id="mycontent" style="width: 20%;height: 98%;display: inline-block;margin: 0 10px;background-color:#fff;overflow: scroll;">
     <div style="text-align: center;background-color:#1ab394;line-height: 30px;color: #fff;">工程划分</div>
     <div id="tree_container" class="ztree"></div>
     <p style="display: none;"></p>
 </div>
-<div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 78%;vertical-align: top;padding: 0;">
+<div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 78%;vertical-align: top;padding: 0;margin-top: 20px;">
     <div class="ibox float-e-margins">
         <div class="ibox-content">
             <div class="row">
@@ -877,6 +878,7 @@
 <script src="__JS__/jquery.jedate.js"></script>
 
 <script type="text/javascript">
+    //日期插件
     $("#evaluated_date").jeDate({
         format: "YYYY-MM-DD"
     });
@@ -1680,13 +1682,6 @@
             });
         }
         admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + encodeURI(encodeURI(treeNode.name))).load();
-        $.ajax({
-            url: "./__SCRIPT__/project_attachment_table.php",
-            data: {uname:encodeURI(encodeURI(treeNode.name))},
-            success: function (ress) {
-                console.log(res);
-            }
-        })
     };
     var setting = {
         async: {
@@ -1961,18 +1956,6 @@
         }
     }
 
-
-    //IOS开关样式配置
-    var elem = document.querySelector('.js-switch');
-    var switchery = new Switchery(elem, {
-        color: '#1AB394'
-    });
-    var config = {
-        '.chosen-select': {},
-    }
-    for (var selector in config) {
-        $(selector).chosen(config[selector]);
-    }
 </script>
 </body>
 </html>
