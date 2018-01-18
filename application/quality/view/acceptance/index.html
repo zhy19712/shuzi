@@ -259,7 +259,7 @@
     <div id="tree_container" class="ztree"></div>
     <p style="display: none;"></p>
 </div>
-<div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 78%;vertical-align: top;padding: 0;margin-top: 20px;">
+<div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 78%;vertical-align: top;padding: 0;">
     <div class="ibox float-e-margins">
         <div class="ibox-content">
             <div class="row">
@@ -1138,7 +1138,7 @@
     uploader.on( 'uploadSuccess', function( file,data, response ) {
         console.log(file);
         if(data.code === 1){
-            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + encodeURI(encodeURI(mytree_node.name))).load();
+            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + encodeURIComponent(mytree_node.name)).load();
             layer.msg(data.msg);
         }else {
             layer.msg("抱歉，您没有此权限");
@@ -1681,7 +1681,17 @@
                 }
             });
         }
-        admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + encodeURI(encodeURI(treeNode.name))).load();
+        admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + encodeURIComponent(treeNode.name)).load();
+        // console.log(treeNode.name)
+        // var kk = treeNode.name;
+        // $.ajax({
+        //     url: "__SCRIPT__/project_attachment_table.php",
+        //     data: {uname:123},
+        //     dataType: "json",
+        //     success: function (res) {
+        //         console.log(res);
+        //     }
+        // })
     };
     var setting = {
         async: {
