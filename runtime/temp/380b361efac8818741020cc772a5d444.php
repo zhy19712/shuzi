@@ -1,3 +1,4 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:84:"D:\phpStudy\WWW\shuzi\public/../application/quality\view\construction\videoplay.html";i:1516334627;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,7 +11,7 @@
     <script src="__JS__/dist/plyr.js"></script>
     <style>
         body{background-color: #262626}
-        .m{ margin-left: auto; margin-right: auto; width: 640px; margin-top: 100px; }
+        .m{ margin-left: auto; margin-right: auto; width: 1280px; margin-top: 100px; }
 
     </style>
 </head>
@@ -18,7 +19,7 @@
 <body>
 <div class="m">
     <video controls>
-        <source src="__VIDEO__/123.mp4" type="video/mp4">
+        <source id="video" src="" type="video/mp4">
     </video>
 </div>
 <script>plyr.setup();</script>
@@ -29,6 +30,7 @@
     var arr = url.match(reg);
     var kind = arr[0].substring(1).split("=")[1];
 //    kind = decodeURI(decodeURI(kind));
+    $("#video").attr("src",kind);
     console.log(kind);
 </script>
 </body>
