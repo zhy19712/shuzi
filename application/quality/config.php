@@ -6,6 +6,7 @@ return [
         '__CSS__' => '/static/admin/css',
         '__JS__'  => '/static/admin/js',
         '__IMG__' => '/static/admin/images',
+        '__VIDEO__' => '/static/admin/video',
         '__PHOTO__' => '/uploads/face',
         '__SCRIPT__' => '/scripts',
     ),
