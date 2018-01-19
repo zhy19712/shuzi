@@ -91,4 +91,9 @@ class Construction extends Base
         }
     }
 
+    public function videoPlay()
+    {
+        return $this->fetch();
+    }
+
 }
