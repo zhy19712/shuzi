@@ -66,9 +66,9 @@ class ConstructionModel extends Model
      * 根据id获取信息
      * @param $id
      */
-    public function getOne($id)
+    public function getPathArr($idarr)
     {
-        return $this->where('id', $id)->find();
+        return $this->whereIn('id', $idarr)->column('id','path');
     }
 
     /**
