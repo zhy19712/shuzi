@@ -95,14 +95,15 @@ class Construction extends Base
     {
         $param = input('post.');
         if(request()->isAjax()) {
-            $id = $param['id'];
+            $idarr = explode(',',$param['id_arr']);
             $video = new ConstructionModel();
-            $data = $video->getOne($id);
-            $path = $data['path'];
-            if(file_exists($path)){
-                unlink($path); //删除文件
+            $data = $video->getPathArr($idarr);
+            foreach ($data as $k=>$v){
+                if(file_exists($v)){
+                    unlink($v); //删除文件
+                }
             }
-            $flag = $video->delVideo($id);
+            $flag = $video->delVideo($idarr);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
