@@ -147,7 +147,7 @@
 <script type="text/javascript">
     function getVideo(page) {
         $.ajax({
-            url: "./index",
+            url: "{:url('construction/index')}",
             type: "post",
             data: {page:page},
             dataType: "json",
