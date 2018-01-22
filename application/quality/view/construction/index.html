@@ -64,6 +64,7 @@
                             <video controls>
                                 <source src="__VIDEO__/123.mp4" type="video/mp4">
                             </video>
+                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
                             <div class="mask"></div>
                         </div>
                     </div>
@@ -73,6 +74,7 @@
                             <video controls>
                                 <source src="__VIDEO__/other.mp4" type="video/mp4">
                             </video>
+                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
                             <div class="mask"></div>
                         </div>
                     </div>
@@ -82,6 +84,7 @@
                             <video controls>
                                 <source src="__VIDEO__/123.mp4" type="video/mp4">
                             </video>
+                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
                             <div class="mask"></div>
                         </div>
                     </div>
@@ -91,6 +94,7 @@
                             <video controls>
                                 <source src="__VIDEO__/岩锚梁施工工法-1213_x264.mp4" type="video/mp4">
                             </video>
+                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
                             <div class="mask"></div>
                         </div>
                     </div>
@@ -100,6 +104,7 @@
                             <video controls>
                                 <source src="__VIDEO__/岩锚梁施工工法-1213_x264.mp4" type="video/mp4">
                             </video>
+                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
                             <div class="mask"></div>
                         </div>
                     </div>
@@ -138,6 +143,18 @@
 <script src="__JS__/dist/plyr.js"></script>
 
 <script type="text/javascript">
+    function getVideo(page) {
+        $.ajax({
+            url: "",
+            type: "post",
+            data: {page:page},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+            }
+        })
+    }
+    getVideo(1);
     $(".vcontainer input").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
 
     plyr.setup({

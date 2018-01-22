@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:80:"D:\phpStudy\WWW\shuzi\public/../application/quality\view\construction\index.html";i:1516344216;s:75:"D:\phpStudy\WWW\shuzi\public/../application/quality\view\public\header.html";i:1516331301;s:75:"D:\phpStudy\WWW\shuzi\public/../application/quality\view\public\footer.html";i:1516331301;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:80:"D:\phpStudy\WWW\shuzi\public/../application/quality\view\construction\index.html";i:1516581848;s:75:"D:\phpStudy\WWW\shuzi\public/../application/quality\view\public\header.html";i:1516331301;s:75:"D:\phpStudy\WWW\shuzi\public/../application/quality\view\public\footer.html";i:1516331301;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -97,6 +97,7 @@
                             <video controls>
                                 <source src="__VIDEO__/123.mp4" type="video/mp4">
                             </video>
+                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
                             <div class="mask"></div>
                         </div>
                     </div>
@@ -106,6 +107,7 @@
                             <video controls>
                                 <source src="__VIDEO__/other.mp4" type="video/mp4">
                             </video>
+                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
                             <div class="mask"></div>
                         </div>
                     </div>
@@ -115,6 +117,7 @@
                             <video controls>
                                 <source src="__VIDEO__/123.mp4" type="video/mp4">
                             </video>
+                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
                             <div class="mask"></div>
                         </div>
                     </div>
@@ -124,6 +127,7 @@
                             <video controls>
                                 <source src="__VIDEO__/岩锚梁施工工法-1213_x264.mp4" type="video/mp4">
                             </video>
+                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
                             <div class="mask"></div>
                         </div>
                     </div>
@@ -133,6 +137,7 @@
                             <video controls>
                                 <source src="__VIDEO__/岩锚梁施工工法-1213_x264.mp4" type="video/mp4">
                             </video>
+                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
                             <div class="mask"></div>
                         </div>
                     </div>
