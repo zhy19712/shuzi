@@ -169,14 +169,14 @@
         id_arr = id_arr.toString();
         console.log(id_arr);
         $.ajax({
-            url: "",
+            url: "./videoDel",
             type: "post",
             data: {id_arr:id_arr},
             dataType: "json",
             success: function (res) {
                 if(res.code === 1){
                     layer.msg("删除成功");
-                    location.reload();
+                    getVideo(1,serachVal);
                 }
             }
         })
@@ -193,7 +193,6 @@
         server: "{:url('Upload/uploadVideo')}",// 文件接收服务端。
         chunked: false,
         fileSizeLimit: 1000 *1024 *1024,
-        fileNumLimit: 1,
         duplicate :true,// 重复上传图片，true为可重复false为不可重复
         pick: {
             multiple: false,
@@ -231,7 +230,7 @@
         if(data.code === 1){
             layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
             $("#file_per").empty();
-            location.reload();
+            getVideo(1,"");
         }else {
             layer.msg("抱歉，您没有此权限");
         }
