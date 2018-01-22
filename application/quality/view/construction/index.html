@@ -164,7 +164,20 @@
             console.log(i,n);
             id_arr.push($(n).val());
         })
+        id_arr = JSON.stringify(id_arr);
         console.log(id_arr);
+        $.ajax({
+            url: "",
+            type: "post",
+            data: {id_arr:id_arr},
+            dataType: "json",
+            success: function (res) {
+                if(res.code === 1){
+                    layer.msg("删除成功");
+                    location.reload();
+                }
+            }
+        })
     })
 
     function search() {
@@ -217,7 +230,6 @@
             layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
             $("#file_per").empty();
             location.reload();
-
         }else {
             layer.msg("抱歉，您没有此权限");
         }
