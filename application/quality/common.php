@@ -1,6 +1,12 @@
 <?php
 use think\Db;
 
+//获取后缀名
+function get_extension($file)
+{
+    substr(strrchr($file, '.'), 1);
+}
+
 function ppt_to_pdf($path) {
     $srcfilename = 'D:/phpStudy/WWW/shuzi/public' . substr($path, 1);
     $destfilename = 'D:/phpStudy/WWW/shuzi/public/uploads/temp/' . basename($path);
