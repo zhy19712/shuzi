@@ -16,6 +16,21 @@ class Construction extends Base
 {
     public function index()
     {
+        if(request()->isAjax()){
+            $map = [];
+            $param = input('post.');
+            $nowPage = $param['page'] ? $param['page']:1;
+            $searchName = $param['searchName'];
+            if($searchName && $searchName!==""){
+                $map['name'] = ['like',"%" . $searchName . "%"];
+            }
+            $limits = 6;// 每页显示总条数
+            $count = Db::name('video')->count();
+            $allpage = intval(ceil($count / $limits)); // 总页数
+            $article = new ConstructionModel();
+            $lists = $article->getVideoByWhere($map, $nowPage, $limits);
+            return json(['num' => $count,'allpage'=> $allpage, 'list' => $lists]);
+        }
         return $this->fetch();
     }
 
@@ -95,20 +110,6 @@ class Construction extends Base
     public function videoPlay()
     {
         return $this->fetch();
-    }
-
-    public function videoList(){
-        $param = input('post.');
-        if(request()->isAjax()){
-            $nowPage = $param['page'] ? $param['page']:1;
-            $limits = 6;// 每页显示总条数
-            $count = Db::name('video')->count();
-            $allpage = intval(ceil($count / $limits)); // 总页数
-            $article = new ConstructionModel();
-            $map = [];
-            $lists = $article->getVideoByWhere($map, $nowPage, $limits);
-            return json(['num' => $count,'allpage'=> $allpage, 'list' => $lists]);
-        }
     }
 
 }

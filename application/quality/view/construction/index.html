@@ -82,7 +82,7 @@
     var serachVal = "";
     function getVideo(page,searchName) {
         $.ajax({
-            url: "./videoList",
+            url: "./index",
             type: "post",
             data: {page:page,searchName:searchName},
             dataType: "json",
@@ -169,7 +169,7 @@
 
     function search() {
         serachVal = $("#key").val();
-        console.log(val);
+        // console.log(val);
         getVideo(1,serachVal);
     }
     var uploader = WebUploader.create({

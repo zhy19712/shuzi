@@ -82,7 +82,7 @@ class ConstructionModel extends Model
     }
 
     /**
-     * 根据搜索条件获取用户列表信息
+     * 根据搜索条件获取列表信息
      */
     public function getVideoByWhere($map, $Nowpage, $limits)
     {
