@@ -4,7 +4,7 @@ use think\Db;
 //获取后缀名
 function get_extension($file)
 {
-    substr(strrchr($file, '.'), 1);
+    return substr(strrchr($file, '.'), 1);
 }
 
 function ppt_to_pdf($path) {
@@ -72,7 +72,7 @@ function doc_to_pdf($path) {
         $word->ActiveDocument->final = false;
         $word->ActiveDocument->Saved = true;
         $word->ActiveDocument->ExportAsFixedFormat(
-            $destfilename,
+            $destfilename . '.pdf',
             17,                         // wdExportFormatPDF
             false,                      // open file after export
             0,                          // wdExportOptimizeForPrint

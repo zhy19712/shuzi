@@ -89,7 +89,28 @@ class Procedure extends Base
             $param = input('post.');
             $data = $attachment->getOne($param['id']);
             $path = $data['path'];
-            return json(['code'=>1, 'path' =>substr($path,1)]);
+            $extension = get_extension(substr($path,1));
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if($extension == 'doc' || $extension == 'docx' || $extension == 'txt'){
+                doc_to_pdf($path);
+            }else if($extension == 'xls' || $extension == 'xlsx'){
+                excel_to_pdf($path);
+            }else if($extension == 'ppt' || 'pptx'){
+                ppt_to_pdf($path);
+            }else if($extension == 'pdf'){
+                $resutl = copy($path, $pdf_path);
+                if($resutl){
+                    return json(['code' => 1, 'path' => substr($pdf_path,1)]);
+                }
+            }else{
+                return json(['code' => 0, 'path' => $pdf_path, 'msg' => '不支持的文件类型']);
+            }
+
+            if(file_exists($pdf_path)){
+                return json(['code' => 1, 'path' => substr($pdf_path,1)]);
+            }else{
+                return json(['code' => 0, 'path' => substr($pdf_path,1), 'msg' => '文件预览失败']);
+            }
         }
     }
 
@@ -280,6 +301,38 @@ class Procedure extends Base
             }
             $flag = $attachment->delAttachment($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    public function attachmentPreview()
+    {
+        $attachment = new ProcedureAttachmentModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $data = $attachment->getOne($param['id']);
+            $path = $data['path'];
+            $extension = get_extension(substr($path,1));
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if($extension == 'doc' || $extension == 'docx' || $extension == 'txt'){
+                doc_to_pdf($path);
+            }else if($extension == 'xls' || $extension == 'xlsx'){
+                excel_to_pdf($path);
+            }else if($extension == 'ppt' || 'pptx'){
+                ppt_to_pdf($path);
+            }else if($extension == 'pdf'){
+                $resutl = copy($path, $pdf_path);
+                if($resutl){
+                    return json(['code' => 1, 'path' => substr($pdf_path,1)]);
+                }
+            }else{
+                return json(['code' => 0, 'path' => $pdf_path, 'msg' => '不支持的文件类型']);
+            }
+
+            if(file_exists($pdf_path)){
+                return json(['code' => 1, 'path' => substr($pdf_path,1)]);
+            }else{
+                return json(['code' => 0, 'path' => substr($pdf_path,1), 'msg' => '文件预览失败']);
+            }
         }
     }
 
