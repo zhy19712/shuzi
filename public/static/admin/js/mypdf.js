@@ -8,7 +8,7 @@ function showPdf(that) {
             if(res.code === 1){
                 var container = document.getElementById("pdf_container");
                 container.style.display = "block";
-                var url = res.path.substr(1);
+                var url = res.path;
                 PDFJS.workerSrc = 'pdf.worker.js';
                 PDFJS.getDocument(url).then(function getPdfHelloWorld(pdf) {
                     pdf.getPage(1).then(function getPageHelloWorld(page) {
