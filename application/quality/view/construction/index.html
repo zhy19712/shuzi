@@ -177,7 +177,7 @@
                 success: function (res) {
                     if(res.code === 1){
                         layer.msg("删除成功");
-                        location.reload();
+                        getVideo(1,serachVal);
                     }
                 }
             })
@@ -235,7 +235,7 @@
         if(data.code === 1){
             layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
             $("#file_per").empty();
-            location.reload();
+            getVideo(1,"");
         }else {
             layer.msg("抱歉，您没有此权限");
         }
