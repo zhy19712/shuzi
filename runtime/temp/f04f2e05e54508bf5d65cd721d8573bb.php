@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:80:"D:\phpStudy\WWW\shuzi\public/../application/quality\view\construction\index.html";i:1516581848;s:75:"D:\phpStudy\WWW\shuzi\public/../application/quality\view\public\header.html";i:1516331301;s:75:"D:\phpStudy\WWW\shuzi\public/../application/quality\view\public\footer.html";i:1516331301;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:80:"D:\phpStudy\WWW\shuzi\public/../application/quality\view\construction\index.html";i:1516581999;s:75:"D:\phpStudy\WWW\shuzi\public/../application/quality\view\public\header.html";i:1516331301;s:75:"D:\phpStudy\WWW\shuzi\public/../application/quality\view\public\footer.html";i:1516331301;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -190,6 +190,18 @@
 <script src="__JS__/dist/plyr.js"></script>
 
 <script type="text/javascript">
+    function getVideo(page) {
+        $.ajax({
+            url: "",
+            type: "post",
+            data: {page:page},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+            }
+        })
+    }
+    getVideo(1);
     $(".vcontainer input").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
 
     plyr.setup({
