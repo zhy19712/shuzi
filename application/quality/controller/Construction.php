@@ -101,7 +101,7 @@ class Construction extends Base
         $param = input('post.');
         if(request()->isAjax()){
             $nowPage = $param['page'] ? $param['page']:1;
-            $limits = 12;// 每页显示总条数
+            $limits = 6;// 每页显示总条数
             $count = Db::name('video')->count();
             $allpage = intval(ceil($count / $limits)); // 总页数
             $article = new ConstructionModel();

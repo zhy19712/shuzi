@@ -9,8 +9,8 @@
 <style>
     .vcontainer{
         display: inline-block;
-        width: 20%;
-        margin: 5px 2%;
+        width: 31%;
+        margin: 5px 1%;
         position: relative;
     }
     .vcontainer input{
@@ -39,6 +39,9 @@
         top: 50% !important;
         display: none;
     }
+    .plyr--audio{
+        display: none;
+    }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -60,78 +63,10 @@
                     </form>
                 </div>
                 <div id="mywrapper">
-                    <div class="vcontainer">
-                        <input type="checkbox" name='status'/>
-                        <div class="container">
-                            <video controls>
-                                <source src="__VIDEO__/123.mp4" type="video/mp4">
-                            </video>
-                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
-                            <div class="mask"></div>
-                        </div>
-                    </div>
-                    <div class="vcontainer">
-                        <input type="checkbox" name='status'/>
-                        <div class="container">
-                            <video controls>
-                                <source src="__VIDEO__/other.mp4" type="video/mp4">
-                            </video>
-                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
-                            <div class="mask"></div>
-                        </div>
-                    </div>
-                    <div class="vcontainer">
-                        <input type="checkbox" name='status'/>
-                        <div class="container">
-                            <video controls>
-                                <source src="__VIDEO__/123.mp4" type="video/mp4">
-                            </video>
-                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
-                            <div class="mask"></div>
-                        </div>
-                    </div>
-                    <div class="vcontainer">
-                        <input type="checkbox" name='status'/>
-                        <div class="container">
-                            <video controls>
-                                <source src="__VIDEO__/岩锚梁施工工法-1213_x264.mp4" type="video/mp4">
-                            </video>
-                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
-                            <div class="mask"></div>
-                        </div>
-                    </div>
-                    <div class="vcontainer">
-                        <input type="checkbox" name='status'/>
-                        <div class="container">
-                            <video controls>
-                                <source src="__VIDEO__/岩锚梁施工工法-1213_x264.mp4" type="video/mp4">
-                            </video>
-                            <p style="text-align: center;line-height: 30px;">video视频名称</p>
-                            <div class="mask"></div>
-                        </div>
-                    </div>
                 </div>
                 <div id="footer">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-lg pull-right" style="margin-right: 30px;">
-                            <li>
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
-                            </li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
                 </div>
+                <div id="allpage"></div>
             </div>
         </div>
     </div>
@@ -145,6 +80,8 @@
 <script src="__JS__/dist/plyr.js"></script>
 
 <script type="text/javascript">
+    var x = 0;
+
     function getVideo(page) {
         $.ajax({
             url: "./videoList",
@@ -153,24 +90,60 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
+                if(res.list.length > 0){
+                    $("#mywrapper").empty();
+                    $.each(res.list,function (i,n) {
+                        var path = n.path.substr(1);
+                        var index = n.name.lastIndexOf(".");
+                        var name = n.name.substring(0,index);
+                        var str = "";
+                        str += ""
+                            +  "<div class='vcontainer'>"
+                            +  "<input type='checkbox' name='status'/>"
+                            +  "<span class='vid'style='display: none;'>"+ n.id +"</span>"
+                            +  "<div class='container'>"
+                            +  "<video controls>"
+                            +  "<source src="+ path +" type='video/mp4'>"
+                            +  "</video>"
+                            +  "<p style='text-align: center;line-height: 30px;'>"+ name +"</p>"
+                            +  "<div class='mask' onclick='play(this)'></div>"
+                            +  "</div>"
+                            +  "</div>"
+                        $("#mywrapper").append(str);
+                    })
+                    $(".vcontainer input").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
+                    edit();
+                    plyr.setup({
+                        controls: ["duration"]
+                    });
+                    laypage({
+                        cont: $('#footer'),//容器。值支持id名、原生dom对象，jquery对象,
+                        pages: res.allpage,//总页数
+                        skip: false,//是否开启跳页
+                        skin: '#1AB5B7',//分页组件颜色
+                        curr: page || 1,
+                        groups: 3,//连续显示分页数
+                        jump: function(obj, first){
+                            if(!first){
+                                console.log(obj)
+                                getVideo(obj.curr);
+                            }
+                            $('#allpage').html('第'+ obj.curr +'页，共'+ obj.pages +'页，共' + res.num + '个视频');
+                        }
+                    });
+                }
             }
         })
     }
     getVideo(1);
-    $(".vcontainer input").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
 
-    plyr.setup({
-        controls: ["duration"]
-    });
-    $(".mask").click(function () {
-        var url = $(this).parent(".container").find("source").attr("src");
+    function play(that) {
+        var url = $(that).parent(".container").find("source").attr("src");
         console.log(url);
         url = encodeURIComponent(url);
         window.open("./videoplay.html?url=" + url,"_blank");
-    })
-    var x = 0;
-    $("#edit").click(function () {
-        x += 1;
+    }
+    function edit() {
         if(x%2 === 0){
             $("#del").attr("disabled",true);
             $(".icheckbox_square-green").css("display","none");
@@ -178,12 +151,24 @@
             $("#del").attr("disabled",false);
             $(".icheckbox_square-green").css("display","block");
         }
+    }
+    $("#edit").click(function () {
+        x += 1;
+        edit();
     })
     $("#del").click(function () {
+        var id_arr = [];
         $("#content input[type='checkbox']:checked").each(function (i,n) {
             console.log(i,n);
+            id_arr.push($(n).siblings(".vid").text());
         })
+        console.log(id_arr);
     })
+
+    function search() {
+        var val = $("#key").val();
+
+    }
     var uploader = WebUploader.create({
         auto: true,// 选完文件后，是否自动上传。
         swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
@@ -228,6 +213,8 @@
         if(data.code === 1){
             layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
             $("#file_per").empty();
+            location.reload();
+
         }else {
             layer.msg("抱歉，您没有此权限");
         }
