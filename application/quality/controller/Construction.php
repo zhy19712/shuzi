@@ -25,7 +25,7 @@ class Construction extends Base
                 $map['name'] = ['like',"%" . $searchName . "%"];
             }
             $limits = 6;// 每页显示总条数
-            $count = Db::name('video')->count();
+            $count = Db::name('video')->where($map)->count();
             $allpage = intval(ceil($count / $limits)); // 总页数
             $article = new ConstructionModel();
             $lists = $article->getVideoByWhere($map, $nowPage, $limits);
@@ -95,14 +95,15 @@ class Construction extends Base
     {
         $param = input('post.');
         if(request()->isAjax()) {
-            $id = $param['id'];
+            $idarr = explode(',',$param['id_arr']);
             $video = new ConstructionModel();
-            $data = $video->getOne($id);
-            $path = $data['path'];
-            if(file_exists($path)){
-                unlink($path); //删除文件
+            $data = $video->getPathArr($idarr);
+            foreach ($data as $k=>$v){
+                if(file_exists($v)){
+                    unlink($v); //删除文件
+                }
             }
-            $flag = $video->delVideo($id);
+            $flag = $video->delVideo($idarr);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }

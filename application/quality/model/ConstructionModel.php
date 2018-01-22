@@ -68,7 +68,12 @@ class ConstructionModel extends Model
      */
     public function getOne($id)
     {
-        return $this->where('id', $id)->find();
+        return $this->where('id', $id)->column('path');
+    }
+
+    public function getPathArr($idarr)
+    {
+        return $this->whereIn('id', $idarr)->column('path');
     }
 
     /**
@@ -77,10 +82,9 @@ class ConstructionModel extends Model
      */
     public function delVideo($id)
     {
-        $this->where('id', $id)->delete();
+        $this->whereIn('id', $id)->delete();
         return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
     }
-
     /**
      * 根据搜索条件获取列表信息
      */
