@@ -1,10 +1,10 @@
-{include file="public/header" /}
 <link rel="stylesheet" type="text/css" href="/static/admin/webupload/webuploader.css">
 <link rel="stylesheet" type="text/css" href="/static/admin/webupload/style.css">
 <link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
 <link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="/static/admin/css/jedate.css">
 <link rel="stylesheet" href="/static/admin/css/iconfont.css">
+{include file="public/header" /}
 <style>
     #container form{
         display: none;
@@ -251,6 +251,24 @@
     .style1{
         background-color: #bae2f3;
         font-weight: 700;
+    }
+    .lightbox{
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        height: 100%;
+        width: 100%;
+        z-index: 7;
+        opacity: 0.3;
+        display: block;
+        background-color: rgb(0, 0, 0);
+    }
+    .pop{
+        position: absolute;
+        left: 50%;
+        width: 894px;
+        margin-left: -447px;
+        z-index: 9;
     }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
