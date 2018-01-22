@@ -107,7 +107,7 @@ class Construction extends Base
             $article = new ConstructionModel();
             $map = [];
             $lists = $article->getVideoByWhere($map, $nowPage, $limits);
-            return json(['num' => $count, 'list' => $lists]);
+            return json(['num' => $count,'allpage'=> $allpage, 'list' => $lists]);
         }
     }
 
