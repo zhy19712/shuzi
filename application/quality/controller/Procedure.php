@@ -89,23 +89,7 @@ class Procedure extends Base
             $param = input('post.');
             $data = $attachment->getOne($param['id']);
             $path = $data['path'];
-            $extension = get_extension($path);
-            $pdf_path = '/uploads/temp/' . basename($path) . '.pdf';
-            if($extension == 'doc' || $extension == 'docx' || $extension == 'txt'){
-                doc_to_pdf($path);
-            }else if($extension == 'xls' || $extension == 'xlsx'){
-                excel_to_pdf($path);
-            }else if($extension == 'ppt' || 'pptx'){
-                ppt_to_pdf($path);
-            }else{
-                return json(['code' => 0, 'path' => $pdf_path, 'msg' => '不支持的文件类型']);
-            }
-
-            if(file_exists($pdf_path)){
-                return json(['code' => 1, 'path' => $pdf_path]);
-            }else{
-                return json(['code' => 0, 'path' => $pdf_path, 'msg' => '文件预览失败']);
-            }
+            return json(['code'=>1, 'path' =>substr($path,1)]);
         }
     }
 
