@@ -53,14 +53,12 @@
                     <div id="upload" style="display: inline-block;vertical-align: middle;">上传视频文件</div>
                     <button id="edit" class="btn btn-primary">编辑</button>
                     <button id="del" class="btn btn-danger" disabled="disabled">删除</button>
-                    <form name="construction_list_sea" class="form-search" method="post" action="{:url('index')}">
-                        <div class="input-group col-md-3 col-sm-6 col-xs-6" style="margin-top:0px;positon:relative;top: -38px;left: 254px;">
-                            <input id="key" name="key" type="text" class="form-control" placeholder="请输入字段名" />
-                            <span class="input-group-btn">
-                               <button class="btn btn-info btn-search">查找</button>
-                            </span>
-                        </div>
-                    </form>
+                    <div class="input-group col-md-3 col-sm-6 col-xs-6" style="margin-top:0px;positon:relative;top: -38px;left: 254px;">
+                        <input id="key" name="key" type="text" class="form-control" placeholder="请输入字段名" />
+                        <span class="input-group-btn">
+                           <button class="btn btn-info btn-search" onclick="search()">查找</button>
+                        </span>
+                    </div>
                 </div>
                 <div id="mywrapper">
                 </div>
@@ -81,12 +79,12 @@
 
 <script type="text/javascript">
     var x = 0;
-
-    function getVideo(page) {
+    var serachVal = "";
+    function getVideo(page,searchName) {
         $.ajax({
             url: "./videoList",
             type: "post",
-            data: {page:page},
+            data: {page:page,searchName:searchName},
             dataType: "json",
             success: function (res) {
                 console.log(res);
@@ -99,8 +97,8 @@
                         var str = "";
                         str += ""
                             +  "<div class='vcontainer'>"
-                            +  "<input type='checkbox' name='status'/>"
-                            +  "<span class='vid'style='display: none;'>"+ n.id +"</span>"
+                            +  "<input type='checkbox' name='status'value=\""+ n.id +"\"/>"
+//                            +  "<span class='vid'style='display: none;'>"+ n.id +"</span>"
                             +  "<div class='container'>"
                             +  "<video controls>"
                             +  "<source src="+ path +" type='video/mp4'>"
@@ -126,7 +124,7 @@
                         jump: function(obj, first){
                             if(!first){
                                 console.log(obj)
-                                getVideo(obj.curr);
+                                getVideo(obj.curr,serachVal);
                             }
                             $('#allpage').html('第'+ obj.curr +'页，共'+ obj.pages +'页，共' + res.num + '个视频');
                         }
@@ -135,7 +133,7 @@
             }
         })
     }
-    getVideo(1);
+    getVideo(1,"");
 
     function play(that) {
         var url = $(that).parent(".container").find("source").attr("src");
@@ -160,14 +158,15 @@
         var id_arr = [];
         $("#content input[type='checkbox']:checked").each(function (i,n) {
             console.log(i,n);
-            id_arr.push($(n).siblings(".vid").text());
+            id_arr.push($(n).val());
         })
         console.log(id_arr);
     })
 
     function search() {
-        var val = $("#key").val();
-
+        serachVal = $("#key").val();
+        console.log(val);
+        getVideo(1,serachVal);
     }
     var uploader = WebUploader.create({
         auto: true,// 选完文件后，是否自动上传。
