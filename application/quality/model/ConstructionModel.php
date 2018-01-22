@@ -81,4 +81,12 @@ class ConstructionModel extends Model
         return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
     }
 
+    /**
+     * 根据搜索条件获取用户列表信息
+     */
+    public function getVideoByWhere($map, $Nowpage, $limits)
+    {
+        return $this->field('think_video.*')->where($map)->page($Nowpage, $limits)->order('id desc')->select();
+    }
+
 }

@@ -22,7 +22,7 @@ class Construction extends Base
             $map['search_name'] = ['like',"%" . $search_name . "%"];
         }
         $Nowpage = input('get.page') ? input('get.page'):1;
-        $limits = config('list_rows');// 获取总条数
+        $limits = 12;// 获取总条数
         $count = Db::name('video')->where($map)->count();//计算总页面
         $allpage = intval(ceil($count / $limits));
         $article = new ConstructionModel();
