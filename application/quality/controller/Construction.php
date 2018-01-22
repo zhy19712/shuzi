@@ -16,24 +16,6 @@ class Construction extends Base
 {
     public function index()
     {
-        $search_name = input('key');
-        $map = [];
-        if($search_name && $search_name!==""){
-            $map['search_name'] = ['like',"%" . $search_name . "%"];
-        }
-        $Nowpage = input('get.page') ? input('get.page'):1;
-        $limits = 12;// 获取总条数
-        $count = Db::name('video')->where($map)->count();//计算总页面
-        $allpage = intval(ceil($count / $limits));
-        $article = new ConstructionModel();
-        $lists = $article->getVideoByWhere($map, $Nowpage, $limits);
-        $this->assign('Nowpage', $Nowpage); //当前页
-        $this->assign('allpage', $allpage); //总页数
-        $this->assign('count', $count);
-        $this->assign('val', $search_name);
-        if(input('get.page')){
-            return json($lists);
-        }
         return $this->fetch();
     }
 
@@ -113,6 +95,20 @@ class Construction extends Base
     public function videoPlay()
     {
         return $this->fetch();
+    }
+
+    public function videoList(){
+        $param = input('post.');
+        if(request()->isAjax()){
+            $nowPage = $param['page'] ? $param['page']:1;
+            $limits = 12;// 每页显示总条数
+            $count = Db::name('video')->count();
+            $allpage = intval(ceil($count / $limits)); // 总页数
+            $article = new ConstructionModel();
+            $map = [];
+            $lists = $article->getVideoByWhere($map, $nowPage, $limits);
+            return json(['allpage' => $allpage, 'list' => $lists]);
+        }
     }
 
 }

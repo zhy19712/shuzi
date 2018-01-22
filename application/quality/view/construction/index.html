@@ -52,7 +52,7 @@
                     <button id="del" class="btn btn-danger" disabled="disabled">删除</button>
                     <form name="construction_list_sea" class="form-search" method="post" action="{:url('index')}">
                         <div class="input-group col-md-3 col-sm-6 col-xs-6" style="margin-top:0px;positon:relative;top: -38px;left: 254px;">
-                            <input id="key" name="key" value="{$val}" type="text" class="form-control" placeholder="请输入字段名" />
+                            <input id="key" name="key" type="text" class="form-control" placeholder="请输入字段名" />
                             <span class="input-group-btn">
                                <button class="btn btn-info btn-search">查找</button>
                             </span>
@@ -147,7 +147,7 @@
 <script type="text/javascript">
     function getVideo(page) {
         $.ajax({
-            url: "./index",
+            url: "./videoList",
             type: "post",
             data: {page:page},
             dataType: "json",
