@@ -118,6 +118,9 @@
                         layer.msg("没有相关内容");
                     }
                 }
+                if(res.allpage === 0){
+                    res.allpage += 1
+                }
                 laypage({
                     cont: $('#footer'),//容器。值支持id名、原生dom对象，jquery对象,
                     pages: res.allpage,//总页数
@@ -163,7 +166,7 @@
             console.log(i,n);
             id_arr.push($(n).val());
         })
-        id_arr = JSON.stringify(id_arr);
+        id_arr = id_arr.toString();
         console.log(id_arr);
         $.ajax({
             url: "",
