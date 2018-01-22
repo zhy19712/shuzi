@@ -25,7 +25,7 @@ class Construction extends Base
                 $map['name'] = ['like',"%" . $searchName . "%"];
             }
             $limits = 6;// 每页显示总条数
-            $count = Db::name('video')->count();
+            $count = Db::name('video')->where($map)->count();
             $allpage = intval(ceil($count / $limits)); // 总页数
             $article = new ConstructionModel();
             $lists = $article->getVideoByWhere($map, $nowPage, $limits);
