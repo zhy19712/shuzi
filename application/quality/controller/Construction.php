@@ -9,12 +9,31 @@
 namespace app\quality\controller;
 use app\admin\controller\Base;
 use app\quality\model\ConstructionModel;
+use think\Db;
 
 
 class Construction extends Base
 {
     public function index()
     {
+        $search_name = input('key');
+        $map = [];
+        if($search_name && $search_name!==""){
+            $map['search_name'] = ['like',"%" . $search_name . "%"];
+        }
+        $Nowpage = input('get.page') ? input('get.page'):1;
+        $limits = config('list_rows');// 获取总条数
+        $count = Db::name('video')->where($map)->count();//计算总页面
+        $allpage = intval(ceil($count / $limits));
+        $article = new ConstructionModel();
+        $lists = $article->getVideoByWhere($map, $Nowpage, $limits);
+        $this->assign('Nowpage', $Nowpage); //当前页
+        $this->assign('allpage', $allpage); //总页数
+        $this->assign('count', $count);
+        $this->assign('val', $search_name);
+        if(input('get.page')){
+            return json($lists);
+        }
         return $this->fetch();
     }
 
