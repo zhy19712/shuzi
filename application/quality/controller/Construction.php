@@ -102,8 +102,8 @@ class Construction extends Base
                 if(file_exists($v)){
                     unlink($v); //删除文件
                 }
-                $flag = $video->delVideo($k);
             }
+            $flag = $video->delVideo($idarr);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
