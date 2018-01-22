@@ -166,20 +166,25 @@
             console.log(i,n);
             id_arr.push($(n).val());
         })
-        id_arr = id_arr.toString();
-        console.log(id_arr);
-        $.ajax({
-            url: "./videoDel",
-            type: "post",
-            data: {id_arr:id_arr},
-            dataType: "json",
-            success: function (res) {
-                if(res.code === 1){
-                    layer.msg("删除成功");
-                    getVideo(1,serachVal);
+        if(id_arr.length>0){
+            id_arr = id_arr.toString();
+            console.log(id_arr);
+            $.ajax({
+                url: "./videoDel",
+                type: "post",
+                data: {id_arr:id_arr},
+                dataType: "json",
+                success: function (res) {
+                    if(res.code === 1){
+                        layer.msg("删除成功");
+                        location.reload();
+                    }
                 }
-            }
-        })
+            })
+        }else {
+            layer.msg("请选择要删除的视频");
+        }
+
     })
 
     function search() {
@@ -230,7 +235,7 @@
         if(data.code === 1){
             layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
             $("#file_per").empty();
-            getVideo(1,"");
+            location.reload();
         }else {
             layer.msg("抱歉，您没有此权限");
         }
