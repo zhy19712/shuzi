@@ -643,11 +643,19 @@
     </div>
 </div>
 
+<div id="pdf_container" style="display: none;">
+    <div class="lightbox"></div>
+    <div id="pop" class="pop">
+        <canvas id="the-canvas"></canvas>
+    </div>
+</div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 <script src="__JS__/jquery.ztree.all.js"></script>
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/jquery.jedate.js"></script>
+<script src="__JS__/jquery.pdf.js"></script>
+<script src="__JS__/jquery.mypdf.js"></script>
 <script>
     var uploader,standard_uploader;
     var ss_table;
@@ -1048,6 +1056,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showPdf(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1339,7 +1348,7 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-                if(rec.code === 1){
+                if(res.code === 1){
                     cid3 = id;
                     check_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=wjzl").load();
                     check_table4.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=smyx").load();
