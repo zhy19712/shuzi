@@ -54,7 +54,7 @@
                     <button id="edit" class="btn btn-primary">编辑</button>
                     <button id="del" class="btn btn-danger" disabled="disabled">删除</button>
                     <div class="input-group col-md-3 col-sm-6 col-xs-6" style="margin-top:0px;positon:relative;top: -38px;left: 254px;">
-                        <input id="key" name="key" type="text" class="form-control" placeholder="请输入字段名" />
+                        <input id="key" name="key" type="text" class="form-control" placeholder="请输入视频名称" />
                         <span class="input-group-btn">
                            <button class="btn btn-info btn-search" onclick="search()">查找</button>
                         </span>
@@ -88,8 +88,8 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
+                $("#mywrapper").empty();
                 if(res.list.length > 0){
-                    $("#mywrapper").empty();
                     $.each(res.list,function (i,n) {
                         var path = n.path.substr(1);
                         var index = n.name.lastIndexOf(".");
@@ -98,7 +98,6 @@
                         str += ""
                             +  "<div class='vcontainer'>"
                             +  "<input type='checkbox' name='status'value=\""+ n.id +"\"/>"
-//                            +  "<span class='vid'style='display: none;'>"+ n.id +"</span>"
                             +  "<div class='container'>"
                             +  "<video controls>"
                             +  "<source src="+ path +" type='video/mp4'>"
@@ -114,26 +113,29 @@
                     plyr.setup({
                         controls: ["duration"]
                     });
-                    laypage({
-                        cont: $('#footer'),//容器。值支持id名、原生dom对象，jquery对象,
-                        pages: res.allpage,//总页数
-                        skip: false,//是否开启跳页
-                        skin: '#1AB5B7',//分页组件颜色
-                        curr: page || 1,
-                        groups: 3,//连续显示分页数
-                        jump: function(obj, first){
-                            if(!first){
-                                console.log(obj)
-                                getVideo(obj.curr,serachVal);
-                            }
-                            $('#allpage').html('第'+ obj.curr +'页，共'+ obj.pages +'页，共' + res.num + '个视频');
-                        }
-                    });
                 }else {
                     if(searchName){
                         layer.msg("没有相关内容");
                     }
                 }
+                if(res.allpage === 0){
+                    res.allpage += 1
+                }
+                laypage({
+                    cont: $('#footer'),//容器。值支持id名、原生dom对象，jquery对象,
+                    pages: res.allpage,//总页数
+                    skip: false,//是否开启跳页
+                    skin: '#1AB5B7',//分页组件颜色
+                    curr: page || 1,
+                    groups: 3,//连续显示分页数
+                    jump: function(obj, first){
+                        if(!first){
+                            console.log(obj)
+                            getVideo(obj.curr,serachVal);
+                        }
+                        $('#allpage').html('第'+ obj.curr +'页，共'+ obj.pages +'页，共' + res.num + '个视频');
+                    }
+                });
             }
         })
     }
@@ -164,7 +166,7 @@
             console.log(i,n);
             id_arr.push($(n).val());
         })
-        id_arr = JSON.stringify(id_arr);
+        id_arr = id_arr.toString();
         console.log(id_arr);
         $.ajax({
             url: "",
