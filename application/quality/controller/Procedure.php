@@ -90,7 +90,7 @@ class Procedure extends Base
             $data = $attachment->getOne($param['id']);
             $path = $data['path'];
             $extension = get_extension($path);
-            $pdf_path = 'D:/phpStudy/WWW/shuzi/public/uploads/temp/' . basename($path) . '.pdf';
+            $pdf_path = '/uploads/temp/' . basename($path) . '.pdf';
             if($extension == 'doc' || $extension == 'docx' || $extension == 'txt'){
                 doc_to_pdf($path);
             }else if($extension == 'xls' || $extension == 'xlsx'){
