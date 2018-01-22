@@ -129,6 +129,8 @@
                             $('#allpage').html('第'+ obj.curr +'页，共'+ obj.pages +'页，共' + res.num + '个视频');
                         }
                     });
+                }else {
+                    layer.msg("没有相关内容");
                 }
             }
         })
