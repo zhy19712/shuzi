@@ -130,7 +130,9 @@
                         }
                     });
                 }else {
-                    layer.msg("没有相关内容");
+                    if(searchName){
+                        layer.msg("没有相关内容");
+                    }
                 }
             }
         })
