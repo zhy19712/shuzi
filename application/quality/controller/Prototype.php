@@ -353,4 +353,26 @@ class Prototype extends Base
         }
 
     }
+
+    public function nextStep()
+    {
+        if(request()->isAjax()) {
+            $prototypeList =  new PrototypeListModel();
+            $param = input('post.');
+            $id = $param['id'];
+            $step_new = $param['step'];
+            $data_old = $prototypeList->getOne($id);
+            $step_old = $data_old['step'];
+            if($step_new < $step_old){
+                $step_new = $step_old;
+            }
+            $data_new = [
+              'id' => $id,
+              'step' => $step_new
+            ];
+            $flag = $prototypeList->editPrototypeList($data_new);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+
+        }
+    }
 }
