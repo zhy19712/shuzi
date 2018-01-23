@@ -63,7 +63,7 @@
         width: 100%;
         height: 100%;
         position: absolute;
-        top: -5px;
+        top: 10px;
         left: 0;
         background-color: #fff;
     }
@@ -217,7 +217,7 @@
                     <div id="check">
                         <div style="height: 50px;">
                             <div id="list9"></div>
-                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>目标检查</p>
+                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>策划与准备</p>
                             <div id="upload9">上传文件</div>
                         </div>
                         <div id="check_table_wrapper1">
@@ -348,7 +348,7 @@
                     <div id="summarize">
                         <div style="height: 50px;">
                             <div id="list14"></div>
-                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>策划和准备</p>
+                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>推广与宣传</p>
                             <div id="upload14">上传文件</div>
                         </div>
                         <div id="summarize_table_wrapper1">
@@ -543,6 +543,25 @@
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/jquery.jedate.js"></script>
 <script>
+    function showPdf(id,url) {
+        $.ajax({
+            url: url,
+            type: "post",
+            data: {id:id},
+            success: function (res) {
+                console.log(res);
+                if(res.code === 1){
+                    var path = res.path;
+                    window.open("__JS__/web/viewer.html?file=" + path,"_blank");
+                }else {
+                    layer.msg(res.msg);
+                }
+            }
+        })
+    }
+</script>
+<script>
+
     var uploader,standard_uploader;
     var ss_table;
     var cid,cid3;
@@ -910,6 +929,10 @@
             }
         })
     }
+    function showpdf1(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        showPdf(id,"./prototypePreview");
+    }
     var standard_table = $('#standard_table').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -925,6 +948,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1465,6 +1489,10 @@
             layer.close(index);
         })
     }
+    function showpdf2(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        showPdf(id,"./attachmentPreview");
+    }
     $("#fname .btn-primary").click(function () {
         if($("#file_list").html()){
             if(!$("#id4").val()){
@@ -1510,6 +1538,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf2(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1544,6 +1573,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf2(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1578,6 +1608,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf2(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1612,6 +1643,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf2(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     html += "<input type='button' class='btn btn-warning btn-outline btn-xs' style='margin-left: 5px;' onclick='unqua(this)' value='不合格'/>" ;
                     return html;
@@ -1647,6 +1679,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf2(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1681,6 +1714,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf2(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1715,6 +1749,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf2(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1749,6 +1784,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='fdownload(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='fedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf2(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='fdel(this)' value='删除'/>" ;
                     return html;
                 }
