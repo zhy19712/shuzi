@@ -5,7 +5,9 @@ use app\admin\controller\Base;
 use app\quality\model\ProcedureAttachmentModel;
 use app\quality\model\ProcedureModel;
 use app\quality\model\ProjectAttachmentModel;
-use app\quality\model\ProjectStageModel;
+use app\quality\model\StageModel1;
+use app\quality\model\StageModel2;
+use app\quality\model\StageModel3;
 use app\quality\model\PrototypeAttachmentModel;
 use app\quality\model\PrototypeModel;
 use app\quality\model\ReformAttachmentModel;
@@ -280,8 +282,8 @@ class Upload extends Base
     }
 
     public function uploadProjectStage(){
-        $stage = new ProjectStageModel();
         $id = request()->param('uid');
+        $table_name = request()->param('table_name');
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/ProjectStage');
         if($info){
@@ -298,6 +300,13 @@ class Upload extends Base
                     'status' => '已上传',
                     'filename' => $filename
                 ];
+                if($table_name == 'jlys'){
+                    $stage = new StageModel1();
+                }else if($table_name == 'xsys'){
+                    $stage = new StageModel2();
+                }else{
+                    $stage = new StageModel3();
+                }
                 $flag = $stage->editStage($data);
                 return json(['code' => $flag['code'], 'path' => $path, 'msg' => $flag['msg']]);
             }else{
