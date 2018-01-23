@@ -106,6 +106,13 @@
     function upload(that) {
         var cid = $(that).parent("td").parent("tr").children("td:first-child").text();
         var parent = $(that).parents("table").attr("id");
+        if(parent === "table1"){
+            tablename = "jlys"
+        }else if(parent === "table2"){
+            tablename = "xsys"
+        }else if(parent === "table3"){
+            tablename = "jzqdys"
+        }
         $("#file_list").empty();
         $("#fname").modal('show');
         if(!uploader){
@@ -116,7 +123,7 @@
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"uid":""},
+                formData: {"uid":"","table_name":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -146,6 +153,7 @@
             });
             uploader.on("uploadStart",function () {
                 uploader.options.formData.uid = cid;
+                uploader.options.formData.table_name = tablename;
             });
             uploader.on('beforeFileQueued', function (file) {
                 if($("#file_list").html()){
@@ -205,10 +213,17 @@
     function del(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         var parent = $(that).parent("td").parent("tr").parent("tbody").parent("table").attr("id");
+        if(parent === "table1"){
+            tablename = "jlys"
+        }else if(parent === "table2"){
+            tablename = "xsys"
+        }else if(parent === "table3"){
+            tablename = "jzqdys"
+        }
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
                 url: "./stageDel",
-                data: {'id' : id},
+                data: {'id' : id,table_name:tablename},
                 type: "post",
                 dataType: "json",
                 success: function (res) {
@@ -238,12 +253,21 @@
                 }else {
                     $("#form_container").empty();
                     var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+                    var parent = $(that).parents("table").attr("id");
+                    if(parent === "table1"){
+                        tablename = "jlys"
+                    }else if(parent === "table2"){
+                        tablename = "xsys"
+                    }else if(parent === "table3"){
+                        tablename = "jzqdys"
+                    }
                     var str = "";
                     str += ""
                         + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
                         + "<form name=download"+ id +" action='./stageDownload' method='get' target=downloadFrame"+ id +">"
                         + "<span class='file_name' style='color: #000;'>"+str+"</span>"
                         + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+                        + "<input style='display: none;' name='table_name' value="+ tablename +">"
                         + "<button type='submit' class=btn" + id +"></button>"
                         + "</form>"
                     $("#form_container").append(str);
