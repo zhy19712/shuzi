@@ -7,6 +7,7 @@ function get_extension($file)
     return substr(strrchr($file, '.'), 1);
 }
 
+//调用MS office DCOM 将文件转换为pdf， 使用pdf.js预览， 要求服务器安装MS office 较高版本，Linux环境下需改用LebreOffice或openOffice
 function ppt_to_pdf($path) {
     $srcfilename = 'D:/phpStudy/WWW/shuzi/public' . substr($path, 1);
     $destfilename = 'D:/phpStudy/WWW/shuzi/public/uploads/temp/' . basename($path);
