@@ -714,6 +714,8 @@ function edit(that) {
         if(treeNode.level == 3){
             $("#mytable1_wrapper").css("display","block");
             admin_table.ajax.url("__SCRIPT__/project_table.php?pid=" + groupid).load();
+        }else {
+            $("#mytable1_wrapper").css("display","none");
         }
 
         //获取路径
