@@ -97,24 +97,6 @@
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script>
-    function showPdf(id,url) {
-        $.ajax({
-            url: url,
-            type: "post",
-            data: {id:id},
-            success: function (res) {
-                console.log(res);
-                if(res.code === 1){
-                    var path = res.path;
-                    window.open("__JS__/web/viewer.html?file=" + path,"_blank");
-                }else {
-                    layer.msg(res.msg);
-                }
-            }
-        })
-    }
-</script>
-<script>
     $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
@@ -270,15 +252,11 @@
             }
         })
     }
-    function showpdf1(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        showPdf(id,"./attachmentPreview");
-    }
     var table1 = $('#table1').DataTable( {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/project_stage.php?table_name=jlys",
+            "url": "__SCRIPT__/project_stage1.php?table_name=jlys",
             "async": false
         },
         "dom": 'f',
@@ -290,7 +268,6 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='upload(this)' value='上传'/>" ;
-                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
@@ -314,7 +291,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/project_stage.php?table_name=xsys",
+            "url": "__SCRIPT__/project_stage2.php?table_name=xsys",
             "async": false
         },
         "dom": 'f',
@@ -349,7 +326,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/project_stage.php?table_name=jzqdys",
+            "url": "__SCRIPT__/project_stage3.php?table_name=jzqdys",
             "async": false
         },
         "dom": 'f',
