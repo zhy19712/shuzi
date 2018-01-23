@@ -57,8 +57,12 @@ class Stage extends Base
             $param = input('post.');
             $data = $attachment->getOne($param['id']);
             $path = $data['path'];
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
             if(file_exists($path)){
                 unlink($path); //删除文件
+            }
+            if(file_exists($pdf_path)){
+                unlink($pdf_path); //删除生成的预览pdf
             }
             $new_data = [
                 'id' => $param['id'],
@@ -72,6 +76,38 @@ class Stage extends Base
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
+
+    public function attachmentPreview()
+    {
+        $attachment = new ProjectStageModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $code = 1;
+            $msg = '预览成功';
+            $data = $attachment->getOne($param['id']);
+            $path = $data['path'];
+            $extension = strtolower(get_extension(substr($path,1)));
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(!file_exists($pdf_path)){
+                if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
+                    doc_to_pdf($path);
+                }else if($extension === 'xls' || $extension === 'xlsx'){
+                    excel_to_pdf($path);
+                }else if($extension === 'ppt' || $extension === 'pptx'){
+                    ppt_to_pdf($path);
+                }else if($extension === 'pdf'){
+                    $pdf_path = $path;
+                }else{
+                    $code = 0;
+                    $msg = '不支持的文件格式';
+                }
+                return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
+            }else{
+                return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
+            }
+        }
+    }
+
 
 //    public function stageEditDel()
 //    {
