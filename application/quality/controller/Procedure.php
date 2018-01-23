@@ -106,7 +106,7 @@ class Procedure extends Base
                 return json(['code' => 1, 'path' => substr($pdf_path,1)]);
             }
             else{
-                return json(['code' => 0, 'msg' => '文件预览失败']);
+                return json(['code' => 1,  'path' => substr($pdf_path,1)]);
             }
         }
     }
