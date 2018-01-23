@@ -21,7 +21,7 @@
  */
 
 // DB table to use
-$table = 'think_project_stage';
+$table = 'think_project_stage1';
 
 // Table's primary key
 $primaryKey = 'id';
