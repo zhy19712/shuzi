@@ -159,6 +159,9 @@
     #ssgy{
         display: none;
     }
+    #content{
+        height: 100%;
+    }
     #standard_wrapper,#ssgy,.mydiv{
         height: 100% !important;
     }
@@ -214,6 +217,7 @@
                 <div class="exp">
                     <span>推广与宣传</span>
                 </div>
+                <button class="btn btn-success pull-right" id="complete">完成</button>
             </div>
             <div id="flow_content">
                 <div id="step7">
@@ -1126,11 +1130,10 @@
     })
 
     //sstable
-    var zTreeObj;
+    var zTreeObj,step,step_index;
     function sdetail(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         cid3 = id;
-
         $.ajax({
             url: "./prototypeListEdit",
             type: "post",
@@ -1149,6 +1152,7 @@
                     summarize_table2.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=abc").load();
                     $("#container").css("display","block");
                     $("#reason").val(res.data.reason);
+                    step = res.data.step;
                 }else {
                     layer.msg(res.msg);
                 }
@@ -1271,15 +1275,47 @@
         }
     };
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
-
+    //完成
+    $("#complete").click(function () {
+        if(step_index === step){
+            $.ajax({
+                url: "./nextStep",
+                type: "post",
+                data: {id:id3,step: step + 1},
+                success: function (res) {
+                    layer.msg(res.msg);
+                }
+            })
+        }
+    })
 
     //流程tab
     $(".exp>span").click(function () {
-        var index = $(this).parent("div").index();
-        $(".exp>span").css("color","#000");
-        $(this).css("color","#ff9933");
-        console.log(index)
-        $("#flow_content>div").css("display","none").eq(index).css("display","block");
+        $.ajax({
+            url: "./prototypeListEdit",
+            type: "post",
+            data: {id:id3},
+            dataType: "json",
+            success: function (res) {
+                step = res.data.step;
+                var index = $(this).parent("div").index();
+                step_index = index + 1;
+                if(step_index > step){
+                    if(step === 1){
+                        var msg = "策划与准备未完成"
+                    }else if(step === 2){
+                        var msg = "实施未完成"
+                    }else if(step === 3){
+                        var msg = "检查未完成"
+                    }
+                    layer.msg(msg);
+                    return;
+                }
+                $(".exp>span").css("color","#000");
+                $(this).css("color","#ff9933");
+                $("#flow_content>div").css("display","none").eq(index).css("display","block");
+            }
+        })
     })
 
     //文件删除

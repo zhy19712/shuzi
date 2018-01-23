@@ -97,12 +97,40 @@
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script>
+    function showpdf1(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var parent = $(that).parent("td").parent("tr").parent("tbody").parent("table").attr("id");
+        if(parent === "table1"){
+            tablename = "jlys"
+        }else if(parent === "table2"){
+            tablename = "xsys"
+        }else if(parent === "table3"){
+            tablename = "jzqdys"
+        }
+        showPdf(id,"./attachmentPreview");
+    }
     $('#myTab a').click(function (e) {
         e.preventDefault();
         $(this).tab('show');
         console.log($(this).text());
     });
     var uploader,tablename;
+    function showPdf(id,url) {
+        $.ajax({
+            url: url,
+            type: "post",
+            data: {id:id,table_name:tablename},
+            success: function (res) {
+                console.log(res);
+                if(res.code === 1){
+                    var path = res.path;
+                    window.open("__JS__/web/viewer.html?file=" + path,"_blank");
+                }else {
+                    layer.msg(res.msg);
+                }
+            }
+        })
+    }
     function upload(that) {
         var cid = $(that).parent("td").parent("tr").children("td:first-child").text();
         var parent = $(that).parents("table").attr("id");
@@ -188,11 +216,11 @@
                     $("#fname").modal('hide');
                     $("#file_per").empty();
                     if(parent === "table1"){
-                        table1.ajax.url("__SCRIPT__/project_stage.php?table_name=jlys").load();
+                        table1.ajax.url("__SCRIPT__/project_stage1.php?table_name=jlys").load();
                     }else if(parent === "table2"){
-                        table2.ajax.url("__SCRIPT__/project_stage.php?table_name=xsys").load();
+                        table2.ajax.url("__SCRIPT__/project_stage2.php?table_name=xsys").load();
                     }else if(parent === "table3"){
-                        table3.ajax.url("__SCRIPT__/project_stage.php?table_name=jzqdys").load();
+                        table3.ajax.url("__SCRIPT__/project_stage3.php?table_name=jzqdys").load();
                     }
                 }else {
                     layer.msg("抱歉，您没有此权限");
@@ -230,11 +258,11 @@
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         if(parent === "table1"){
-                            table1.ajax.url("__SCRIPT__/project_stage.php?table_name=jlys").load();
+                            table1.ajax.url("__SCRIPT__/project_stage1.php?table_name=jlys").load();
                         }else if(parent === "table2"){
-                            table2.ajax.url("__SCRIPT__/project_stage.php?table_name=xsys").load();
+                            table2.ajax.url("__SCRIPT__/project_stage2.php?table_name=xsys").load();
                         }else if(parent === "table3"){
-                            table3.ajax.url("__SCRIPT__/project_stage.php?table_name=jzqdys").load();
+                            table3.ajax.url("__SCRIPT__/project_stage3.php?table_name=jzqdys").load();
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
@@ -292,6 +320,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='upload(this)' value='上传'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
@@ -327,6 +356,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='upload(this)' value='上传'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
@@ -362,6 +392,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='upload(this)' value='上传'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }

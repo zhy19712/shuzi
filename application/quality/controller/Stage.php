@@ -38,7 +38,7 @@ class Stage extends Base
         if(request()->isAjax()){
             return json(['code' => 1]);
         }
-        $param = input('post.');
+        $param = input('get.');
         $id = $param['id'];
         if($param['table_name'] == 'jlys'){
             $stage = new StageModel1();
