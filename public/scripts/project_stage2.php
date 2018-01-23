@@ -21,7 +21,7 @@
  */
 
 // DB table to use
-$table = 'think_project_stage';
+$table = 'think_project_stage2';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -39,7 +39,6 @@ $sql_details = array(
  */
 
 require( 'ssp.class.php' );
-
 
 if(!empty($_GET["table_name"]))
 {

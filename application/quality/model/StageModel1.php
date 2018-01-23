@@ -1,9 +1,9 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: zhuangyf
- * Date: 2018/1/9
- * Time: 19:03
+ * User: admin
+ * Date: 2018/1/23
+ * Time: 14:08
  */
 
 namespace app\quality\model;
@@ -11,9 +11,9 @@ namespace app\quality\model;
 
 use think\Model;
 
-class ProjectStageModel extends Model
+class StageModel1 extends Model
 {
-    protected $name = 'project_stage';
+    protected $name = 'project_stage1';
 
     public function insertStage($param)
     {
