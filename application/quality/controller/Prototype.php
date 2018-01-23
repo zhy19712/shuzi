@@ -41,6 +41,7 @@ class Prototype extends Base
         $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1); ;
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
+        $fileName = iconv("utf-8","gb2312",$fileName);
         Header("Content-type:application/octet-stream ");
         Header("Accept-Ranges:bytes ");
         Header("Accept-Length:   " . filesize($filePath));
@@ -258,6 +259,7 @@ class Prototype extends Base
             $file = fopen($filePath, "r"); //   打开文件
 
             //输入文件标签
+            $fileName = iconv("utf-8","gb2312",$fileName);
             Header("Content-type:application/octet-stream ");
             Header("Accept-Ranges:bytes ");
             Header("Accept-Length:   " . filesize($filePath));
