@@ -452,20 +452,6 @@
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
-            },
-            {
-                "searchable": true,
-                "orderable": true,
-                "targets": [2],
-                "render" :  function ( data, type, row ) {
-                    return  data + row[3];
-                }
-            },
-            {
-                "searchable": false,
-                "orderable": false,
-                "visible": false,
-                "targets": [3]
             }
         ],
         "language": {
