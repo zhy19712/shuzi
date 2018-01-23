@@ -1278,17 +1278,20 @@
     //完成
     $("#complete").click(function () {
         console.log(step_index,step)
-        if(step_index === step){
+//        if(step < 4){
             var mystep = step + 1
-            $.ajax({
-                url: "./nextStep",
-                type: "post",
-                data: {id:cid3,step:mystep},
-                success: function (res) {
-                    layer.msg(res.msg);
-                }
-            })
-        }
+//        }else {
+//            var mystep = step;
+//        }
+
+        $.ajax({
+            url: "./nextStep",
+            type: "post",
+            data: {id:cid3,step:mystep},
+            success: function (res) {
+                layer.msg(res.msg);
+            }
+        })
     })
 
     //流程tab
