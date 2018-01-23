@@ -1130,7 +1130,7 @@
     })
 
     //sstable
-    var zTreeObj,step,step_index;
+    var zTreeObj,step,step_index = 1;
     function sdetail(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         cid3 = id;
@@ -1277,11 +1277,13 @@
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
     //完成
     $("#complete").click(function () {
+        console.log(step_index,step)
         if(step_index === step){
+            var mystep = step + 1
             $.ajax({
                 url: "./nextStep",
                 type: "post",
-                data: {id:id3,step: step + 1},
+                data: {id:cid3,step:mystep},
                 success: function (res) {
                     layer.msg(res.msg);
                 }
@@ -1291,14 +1293,17 @@
 
     //流程tab
     $(".exp>span").click(function () {
+        var $this = $(this);
         $.ajax({
             url: "./prototypeListEdit",
             type: "post",
-            data: {id:id3},
+            data: {id:cid3},
             dataType: "json",
             success: function (res) {
                 step = res.data.step;
-                var index = $(this).parent("div").index();
+                console.log(step);
+                var index = $this.parent("div").index();
+                console.log(index);
                 step_index = index + 1;
                 if(step_index > step){
                     if(step === 1){
@@ -1309,11 +1314,11 @@
                         var msg = "检查未完成"
                     }
                     layer.msg(msg);
-                    return;
+                }else {
+                    $(".exp>span").css("color","#000");
+                    $this.css("color","#ff9933");
+                    $("#flow_content>div").css("display","none").eq(index).css("display","block");
                 }
-                $(".exp>span").css("color","#000");
-                $(this).css("color","#ff9933");
-                $("#flow_content>div").css("display","none").eq(index).css("display","block");
             }
         })
     })
