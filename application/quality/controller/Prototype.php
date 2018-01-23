@@ -73,7 +73,7 @@ class Prototype extends Base
 
     public function prototypePreview()
     {
-        $attachment = new ProjectModel();
+        $attachment = new PrototypeModel();
         if(request()->isAjax()) {
             $param = input('post.');
             $code = 1;
