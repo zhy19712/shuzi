@@ -1091,7 +1091,11 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + encodeURIComponent(mytree_node.name)).load();
+                        if(mytree_node.id){
+                            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.id + "&pid=" + mytree_node.pId).load();
+                        }else {
+                            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.uid + "&pid=" + mytree_node.pId).load();
+                        }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -1172,20 +1176,29 @@
         server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
         chunked: true,
         fileSizeLimit: 1000 *1024 *1024,
-        formData: {"uname":""},
+        formData: {"uid":"","pid":""},
         duplicate :true,// 重复上传图片，true为可重复false为不可重复
         pick: '#upload',// 选择文件的按钮。可选。
 
     });
     uploader.on("uploadStart",function () {
-        uploader.options.formData.uname = mytree_node.name;
+        if(mytree_node.id){
+            uploader.options.formData.uid = mytree_node.id;
+        }else {
+            uploader.options.formData.uid = mytree_node.uid;
+        }
+        uploader.options.formData.pid = mytree_node.pId;
     });
 
     // 文件上传成功
     uploader.on( 'uploadSuccess', function( file,data, response ) {
         console.log(file);
         if(data.code === 1){
-            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + encodeURIComponent(mytree_node.name)).load();
+            if(mytree_node.id){
+                admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.id + "&pid=" + mytree_node.pId).load();
+            }else {
+                admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.uid + "&pid=" + mytree_node.pId).load();
+            }
             layer.msg(data.msg);
         }else {
             layer.msg("抱歉，您没有此权限");
@@ -1728,7 +1741,11 @@
                 }
             });
         }
-        admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + encodeURIComponent(treeNode.name)).load();
+        if(mytree_node.id){
+            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.id + "&pid=" + mytree_node.pId).load();
+        }else {
+            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.uid + "&pid=" + mytree_node.pId).load();
+        }
         // console.log(treeNode.name)
         // var kk = treeNode.name;
         // $.ajax({
