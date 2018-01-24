@@ -75,4 +75,15 @@ class HunningtuModel extends Model
         $where['quality_level'] = '优良';
         return $this->where($where)->count();
     }
+
+    public function delHunningtuByUid($uid){
+        $has = $this->where('uid',$uid)->value('id');
+        if($has){
+            $bol = $this->where('uid',$uid)->delete();
+            if($bol < 1){
+                return ['code' => 1, 'data' => '', 'msg' => '混凝土删除失败'];
+            }
+        }
+        return ['code' => 1, 'data' => '', 'msg' => '混凝土删除成功'];
+    }
 }

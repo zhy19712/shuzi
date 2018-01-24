@@ -75,4 +75,30 @@ class ZhihuModel extends Model
         $where['quality_level'] = '优良';
         return $this->where($where)->count();
     }
+
+    /**
+     * 删除支护
+     * 关联删除与支护有联系的project_zhihu_maogan数据信息
+     * @param $uid
+     * @return array
+     */
+    public function delZhihuByUid($uid){
+        $id = $this->where('uid', $uid)->value('id');
+        $maogan = new MaoganModel();
+        $has = $maogan->getOne($id);
+        if($has){
+            // 包含maogan执行删除
+            $delChild = $maogan->where('uid',$id)->delete();
+            if($delChild < 1){
+                return ['code' => 0, 'data' => '', 'msg' => '锚杆删除失败'];
+            }
+        }
+        if($id){
+            $bol = $this->where('uid',$uid)->delete();
+            if($bol < 1){
+                return ['code' => 0, 'data' => '', 'msg' => '支护删除失败'];
+            }
+        }
+        return ['code' => 1, 'data' => '', 'msg' => '支护删除成功'];
+    }
 }

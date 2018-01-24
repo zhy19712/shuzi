@@ -542,7 +542,7 @@ function edit(that) {
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        admin_table.ajax.url("__SCRIPT__/project_table.php").load();
+                        admin_table.ajax.url("__SCRIPT__/project_table.php?pid=" + groupid).load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -669,7 +669,7 @@ function edit(that) {
 //树结构删除节点
     $("#operate>i:nth-child(3)").click(function () {
         if(mytree_node){
-            layer.confirm("警告！删除"+ mytree_node.name +"节点将会删除它的所有子节点！确认删除?", {icon: 3, title:'提示'}, function(index){
+            layer.confirm("警告！删除"+ mytree_node.name +"节点将会删除它的所有子节点以及节点包含的单元工程！确认删除?", {icon: 3, title:'提示'}, function(index){
                 var id = mytree_node.id;
                 $.ajax({
                     url: "nodeDel",
@@ -677,10 +677,11 @@ function edit(that) {
                     data: {id:id},
                     dataType: "json",
                     success: function (res) {
-                        if(res.code == 1){
-                            layer.msg(res.msg,{time:1500,shade: 0.1});
-                            zTreeObj.reAsyncChildNodes(null, "refresh");
+                        if(mytree_node.level === 3){
+                            admin_table.ajax.url("__SCRIPT__/project_table.php").load();
                         }
+                        layer.msg(res.msg,{time:1500,shade: 0.1});
+                        zTreeObj.reAsyncChildNodes(null, "refresh");
                     }
                 })
                 layer.close(index);

@@ -7,8 +7,8 @@
  */
 
 namespace app\admin\model;
+use app\quality\model\ProjectAttachmentModel;
 use think\Model;
-use think\Db;
 
 class ProjectModel extends Model
 {
@@ -54,12 +54,41 @@ class ProjectModel extends Model
 
     /**
      * [del_article 单元工程验收批次删除]
+     * 关联删除其他表中与此条project有联系的数据记录和文件
+     * project_attachment
+     * project_hunningtu
+     * project_kaiwa
+     * project_zhihu
+     * project_zhihu_maogan
      * @return [type] [description]
      */
     public function delProject($id)
     {
-        $this->where('id', $id)->delete();
-        return ['code' => 1, 'data' => '', 'msg' => '工程信息删除成功'];
+        $flag = [];
+        $data = $this->where('id',$id)->find();
+        if($data['cate'] == '开挖'){
+            $kaiwa = new KaiwaModel();
+            $flag = $kaiwa->delKaiwaBuUid($id);
+        }else if($data['cate'] == '支护'){
+            $zhihu = new ZhihuModel();
+            $flag = $zhihu->delZhihuByUid($id);
+        }else if($data['cate'] == '混凝土'){
+            $hunningtu = new HunningtuModel();
+            $flag = $hunningtu->delHunningtuByUid($id);
+        }
+        if($flag['code'] == 1){
+            $attchment = new ProjectAttachmentModel();
+            $attFlag = $attchment->delAttachmentByPidUid($data['id'],$data['pid']);
+            if($attFlag['code'] == 1){
+                $bol = $this->where('id', $id)->delete();
+                if($bol){
+                    return ['code' => 1, 'data' => '', 'msg' => '工程信息删除成功'];
+                }
+                return ['code' => 1, 'data' => '', 'msg' => '工程信息删除失败'];
+            }
+            return ['code' => 1, 'data' => '', 'msg' => $attFlag['msg']];
+        }
+        return ['code' => 0, 'data' => '', 'msg' => $flag['msg']];
     }
 
 
@@ -125,6 +154,24 @@ class ProjectModel extends Model
         }
 
         return $str;
+    }
+
+    /**
+     * 根据pid删除project
+     */
+    public function delProjectByPid($pid){
+        $flag = [];
+        $idArr = $this->whereIn('pid',$pid)->column('id');
+        if(count($idArr) == 0){
+            return ['code' => 1, 'data' => '', 'msg' => '不包含project'];
+        }
+        foreach($idArr as $k=>$v){
+            $flag = $this->delProject($v);
+            if($flag['code'] == 0){
+                break;
+            }
+        }
+        return ['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']];
     }
 
 }
