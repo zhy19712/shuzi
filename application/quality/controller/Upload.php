@@ -23,7 +23,8 @@ class Upload extends Base
     //文件上传
     public function uploadfile(){
         $attachment = new ProjectAttachmentModel();
-        $name = request()->param('uname');
+        $uid = request()->param('uid');
+        $pid = request()->param('pid');
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/acceptance');
         if($info){
@@ -35,7 +36,8 @@ class Upload extends Base
                 'date' => date("Y-m-d H:i:s"),
                 'dept' => session('dept'),
                 'path' => $path,
-                'name' => $name,
+                'uid' => $uid,
+                'pid' => $pid,
                 'filename' => $filename
             ];
             $flag = $attachment->insertAttachment($data);
