@@ -481,7 +481,7 @@ $("div.mybtn").click(function () {
                 dataType: "json",
                 success: function (res) {
                     if(res.msg == "success"){
-                        $("#new1").val(res.data.sn + res.data.post_sn + "-");
+                        $("#new1").val(res.data.sn + "-");
                     }
                 }
             });
@@ -578,7 +578,7 @@ function edit(that) {
                    success: function (res) {
                        console.log(res);
                        if(res.msg == "success"){
-                           $("#new3").val(res.data.sn + "-");
+                           $("#new3").val(res.data.sn + res.data.post_sn + "-");
                        }
                    }
                });
@@ -596,7 +596,7 @@ function edit(that) {
                    success: function (res) {
                        console.log(res);
                        if(res.msg == "success"){
-                           $("#new5").val(res.data.sn + "-");
+                           $("#new5").val(res.data.sn + res.data.post_sn + "-");
                        }
                    }
                });
