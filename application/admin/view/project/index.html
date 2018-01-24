@@ -678,6 +678,9 @@ function edit(that) {
                     dataType: "json",
                     success: function (res) {
                         if(res.code == 1){
+                            if(mytree_node.level === 3){
+                                admin_table.ajax.url("__SCRIPT__/project_table.php?pid=" + groupid).load();
+                            }
                             layer.msg(res.msg,{time:1500,shade: 0.1});
                             zTreeObj.reAsyncChildNodes(null, "refresh");
                         }
