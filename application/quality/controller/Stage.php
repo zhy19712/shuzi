@@ -10,14 +10,23 @@ namespace app\quality\controller;
 
 use app\admin\controller\Base;
 use app\quality\model\ProjectStageModel;
+use app\quality\model\StageModel1;
+use app\quality\model\StageModel2;
+use app\quality\model\StageModel3;
 
 class Stage extends Base
 {
     public function index()
     {
-        $stage = new ProjectStageModel();
         if(request()->isAjax()){
             $param = input('post.');
+            if($param['table_name'] == 'jlys'){
+                $stage = new StageModel1();
+            }else if($param['table_name'] == 'xsys'){
+                $stage = new StageModel2();
+            }else{
+                $stage = new StageModel3();
+            }
             $data = $stage->getOne($param['id']);
             return json(['code'=> 1, 'data' => $data]);
         }
@@ -29,15 +38,23 @@ class Stage extends Base
         if(request()->isAjax()){
             return json(['code' => 1]);
         }
-        $id = input('param.id');
-        $attachment = new ProjectStageModel();
-        $param = $attachment->getOne($id);
-        $filePath = $param['path'];
-        $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1); ;
+        $param = input('get.');
+        $id = $param['id'];
+        if($param['table_name'] == 'jlys'){
+            $stage = new StageModel1();
+        }else if($param['table_name'] == 'xsys'){
+            $stage = new StageModel2();
+        }else{
+            $stage = new StageModel3();
+        }
+        $data = $stage->getOne($id);
+        $filePath = $data['path'];
+        $fileName = $data['name'] . '.' . substr(strrchr($filePath, '.'), 1); ;
         if(file_exists($filePath)) {
             $file = fopen($filePath, "r"); //   打开文件
 
             //输入文件标签
+            $fileName = iconv("utf-8","gb2312",$fileName);
             Header("Content-type:application/octet-stream ");
             Header("Accept-Ranges:bytes ");
             Header("Accept-Length:   " . filesize($filePath));
@@ -52,10 +69,16 @@ class Stage extends Base
 
     public function stageDel()
     {
-        $attachment = new ProjectStageModel();
         if(request()->isAjax()) {
             $param = input('post.');
-            $data = $attachment->getOne($param['id']);
+            if($param['table_name'] == 'jlys'){
+                $stage = new StageModel1();
+            }else if($param['table_name'] == 'xsys'){
+                $stage = new StageModel2();
+            }else{
+                $stage = new StageModel3();
+            }
+            $data = $stage->getOne($param['id']);
             $path = $data['path'];
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
             if(file_exists($path)){
@@ -72,19 +95,25 @@ class Stage extends Base
                 'status' => '',
                 'filename' => ''
             ];
-            $flag = $attachment->editStage($new_data);
+            $flag = $stage->editStage($new_data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
 
     public function attachmentPreview()
     {
-        $attachment = new ProjectStageModel();
         if(request()->isAjax()) {
             $param = input('post.');
+            if($param['table_name'] == 'jlys'){
+                $stage = new StageModel1();
+            }else if($param['table_name'] == 'xsys'){
+                $stage = new StageModel2();
+            }else{
+                $stage = new StageModel3();
+            }
+            $data = $stage->getOne($param['id']);
             $code = 1;
             $msg = '预览成功';
-            $data = $attachment->getOne($param['id']);
             $path = $data['path'];
             $extension = strtolower(get_extension(substr($path,1)));
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';

@@ -1,4 +1,5 @@
-﻿<?php
+
+<?php
 
 
 /*
@@ -20,26 +21,10 @@
  */
 
 // DB table to use
-$table = 'think_project';
+$table = 'think_project_stage3';
 
 // Table's primary key
 $primaryKey = 'id';
-
-// Array of database columns which should be read and sent back to DataTables.
-// The `db` parameter represents the column name in the database, while the `dt`
-// parameter represents the DataTables column identifier. In this case simple
-// indexes
-$columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
-    array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'name',  'dt' => 1 ),
-    array( 'db' => 'sn',  'dt' => 2 ),
-    array( 'db' => 'zhuanghaoqi',  'dt' => 3 ),
-    array( 'db' => 'zhuanghaozhi',  'dt' => 4 ),
-    array( 'db' => 'gaochengqi',  'dt' => 5 ),
-    array( 'db' => 'gaochengzhi',  'dt' => 6 ),
-    array( 'db' => 'primary',  'dt' => 7 )
-);
-
 // SQL server connection information数据库连接信息
 $sql_details = array(
     'user' => 'root',
@@ -48,12 +33,6 @@ $sql_details = array(
     'host' => '127.0.0.1'
 );
 
-
-
-
-// $_GET = "SELECT * FROM people WHERE 'uid' = '105625886366281950'";
-
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * If you just want to use the basic configuration for DataTables with PHP
  * server-side, there is no need to edit below this line.
@@ -61,11 +40,18 @@ $sql_details = array(
 
 require( 'ssp.class.php' );
 
-if(!empty($_GET["pid"]))
+if(!empty($_GET["table_name"]))
 {
-    $pid = $_GET["pid"];
+    $table_name = $_GET["table_name"];
+    $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
+        array( 'db' => 'id',  'dt' => 0 ),
+        array( 'db' => 'name',  'dt' => 1 ),
+        array( 'db' => 'owner',  'dt' => 2 ),
+        array( 'db' => 'date',  'dt' => 3 ),
+        array( 'db' => 'status',  'dt' => 4 )
+    );
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "pid = '$pid'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "table_name = '$table_name'" )
     );
 }
 else{
@@ -73,6 +59,9 @@ else{
         SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns)
     );
 }
+
+
+
 
 
 

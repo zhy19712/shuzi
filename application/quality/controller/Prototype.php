@@ -41,6 +41,7 @@ class Prototype extends Base
         $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1); ;
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
+        $fileName = iconv("utf-8","gb2312",$fileName);
         Header("Content-type:application/octet-stream ");
         Header("Accept-Ranges:bytes ");
         Header("Accept-Length:   " . filesize($filePath));
@@ -73,7 +74,7 @@ class Prototype extends Base
 
     public function prototypePreview()
     {
-        $attachment = new ProjectModel();
+        $attachment = new PrototypeModel();
         if(request()->isAjax()) {
             $param = input('post.');
             $code = 1;
@@ -258,6 +259,7 @@ class Prototype extends Base
             $file = fopen($filePath, "r"); //   打开文件
 
             //输入文件标签
+            $fileName = iconv("utf-8","gb2312",$fileName);
             Header("Content-type:application/octet-stream ");
             Header("Accept-Ranges:bytes ");
             Header("Accept-Length:   " . filesize($filePath));
@@ -352,5 +354,27 @@ class Prototype extends Base
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
 
+    }
+
+    public function nextStep()
+    {
+        if(request()->isAjax()) {
+            $prototypeList =  new PrototypeListModel();
+            $param = input('post.');
+            $id = $param['id'];
+            $step_new = $param['step'];
+            $data_old = $prototypeList->getOne($id);
+            $step_old = $data_old['step'];
+            if($step_new < $step_old){
+                $step_new = $step_old;
+            }
+            $data_new = [
+              'id' => $id,
+              'step' => $step_new
+            ];
+            $flag = $prototypeList->editPrototypeList($data_new);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+
+        }
     }
 }

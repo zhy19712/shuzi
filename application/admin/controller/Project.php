@@ -39,6 +39,7 @@ class project extends Base
         $zhihu = new ZhihuModel();
         $hunningtu = new HunningtuModel();
         $param = input('post.');
+        $param['sn'] = $param['sn'] . $param['post_sn'];
         if(request()->isAjax()){
             $day1 = $param['wangong_date'];
             $day2 = date("Y-m-d");
@@ -95,6 +96,8 @@ class project extends Base
 
             $param = input('post.');
             $data = $project->getOneProject($param['id']);
+            $post_length = strlen($data['post_sn']);
+            $data['sn'] = substr($data['sn'],0, -$post_length);
             return json(['data' => $data, 'msg' => "success"]);
         }
     }
@@ -119,6 +122,7 @@ class project extends Base
     {
         $node = new DivideModel();
         $param = input('post.');
+        $param['sn'] = $param['sn'] . $param['post_sn'];
         if(request()->isAjax()){
 
             if(empty($param['id']))
@@ -149,6 +153,14 @@ class project extends Base
 
             $param = input('post.');
             $data = $node->getOneNode($param['id']);
+            if(substr( $data['sn'],-4) == '-XXX' || substr( $data['sn'],-4) == '-xxx'){
+                $data['sn'] = substr($data['sn'],0,-4);
+            }
+            $post_length = strlen($data['post_sn']);
+            if($post_length > 0){
+                $data['sn'] = substr($data['sn'],0, -$post_length-1);
+            }
+
             return json(['data' => $data, 'msg' => "success"]);
         }
     }

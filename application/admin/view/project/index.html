@@ -90,7 +90,6 @@
                                 <th>ID</th>
                                 <th>单元工程名称</th>
                                 <th>单元工程编号</th>
-                                <th></th>
                                 <th>桩号(起)</th>
                                 <th>桩号(止)</th>
                                 <th>高程(起)</th>
@@ -445,27 +444,13 @@
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [9],
+                "targets": [8],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
-            },
-            {
-                "searchable": true,
-                "orderable": true,
-                "targets": [2],
-                "render" :  function ( data, type, row ) {
-                    return  data + row[3];
-                }
-            },
-            {
-                "searchable": false,
-                "orderable": false,
-                "visible": false,
-                "targets": [3]
             }
         ],
         "language": {
@@ -486,6 +471,7 @@ $("div.mybtn").click(function () {
         if(mytree_node.level == 3){
             $("#myModal input").val("");
             $("#myModal h5").text("新增单元工程");
+            $("#myModal .btn-primary").css("display","inline-block");
             var id = mytree_node.id;
             $("#pid").val(id);
             $.ajax({
@@ -495,7 +481,7 @@ $("div.mybtn").click(function () {
                 dataType: "json",
                 success: function (res) {
                     if(res.msg == "success"){
-                        $("#new1").val(res.data.sn + res.data.post_sn + "-");
+                        $("#new1").val(res.data.sn + "-");
                     }
                 }
             });
@@ -592,7 +578,7 @@ function edit(that) {
                    success: function (res) {
                        console.log(res);
                        if(res.msg == "success"){
-                           $("#new3").val(res.data.sn + "-");
+                           $("#new3").val(res.data.sn + "-" + res.data.post_sn + "-");
                        }
                    }
                });
@@ -610,7 +596,7 @@ function edit(that) {
                    success: function (res) {
                        console.log(res);
                        if(res.msg == "success"){
-                           $("#new5").val(res.data.sn + res.data.post_sn + "-");
+                           $("#new5").val(res.data.sn + "-" + res.data.post_sn + "-");
                        }
                    }
                });
@@ -714,6 +700,8 @@ function edit(that) {
         if(treeNode.level == 3){
             $("#mytable1_wrapper").css("display","block");
             admin_table.ajax.url("__SCRIPT__/project_table.php?pid=" + groupid).load();
+        }else {
+            $("#mytable1_wrapper").css("display","none");
         }
 
         //获取路径

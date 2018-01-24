@@ -24,7 +24,6 @@
         border-bottom: none;
         margin-right: 20px;
         border-radius: 5px 5px 0 0;
-        margin-top: -5px;
     }
     #upload{
         float: right;
@@ -902,7 +901,24 @@
 <script src="__JS__/jquery.jedate.js"></script>
 <script src="__JS__/jquery.pdf.js"></script>
 <script src="__JS__/jquery.mypdf.js"></script>
-
+<script>
+    function showPdf(id,url) {
+        $.ajax({
+            url: url,
+            type: "post",
+            data: {id:id},
+            success: function (res) {
+                console.log(res);
+                if(res.code === 1){
+                    var path = res.path;
+                    window.open("__JS__/web/viewer.html?file=" + path,"_blank");
+                }else {
+                    layer.msg(res.msg);
+                }
+            }
+        })
+    }
+</script>
 <script type="text/javascript">
     //日期插件
     $("#evaluated_date").jeDate({
@@ -1015,7 +1031,10 @@
             layer.close(index);
         })
     }
-
+    function showpdf1(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        showPdf(id,"./attachmentPreview");
+    }
 
     var zhihu_table = $('#zhihu_table').DataTable( {
         "processing": true,
@@ -1032,6 +1051,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='查看'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='zdel(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1071,7 +1091,11 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        admin_table.ajax.url("__SCRIPT__/project_attachment_table.php").load();
+                        if(mytree_node.id){
+                            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.id + "&pid=" + mytree_node.pId).load();
+                        }else {
+                            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.uid + "&pid=" + mytree_node.pId).load();
+                        }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -1119,6 +1143,7 @@
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
@@ -1151,20 +1176,29 @@
         server: "{:url('Upload/uploadfile')}",// 文件接收服务端。
         chunked: true,
         fileSizeLimit: 1000 *1024 *1024,
-        formData: {"uname":""},
+        formData: {"uid":"","pid":""},
         duplicate :true,// 重复上传图片，true为可重复false为不可重复
         pick: '#upload',// 选择文件的按钮。可选。
 
     });
     uploader.on("uploadStart",function () {
-        uploader.options.formData.uname = mytree_node.name;
+        if(mytree_node.id){
+            uploader.options.formData.uid = mytree_node.id;
+        }else {
+            uploader.options.formData.uid = mytree_node.uid;
+        }
+        uploader.options.formData.pid = mytree_node.pId;
     });
 
     // 文件上传成功
     uploader.on( 'uploadSuccess', function( file,data, response ) {
         console.log(file);
         if(data.code === 1){
-            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + encodeURIComponent(mytree_node.name)).load();
+            if(mytree_node.id){
+                admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.id + "&pid=" + mytree_node.pId).load();
+            }else {
+                admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.uid + "&pid=" + mytree_node.pId).load();
+            }
             layer.msg(data.msg);
         }else {
             layer.msg("抱歉，您没有此权限");
@@ -1707,7 +1741,11 @@
                 }
             });
         }
-        admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?uname=" + encodeURIComponent(treeNode.name)).load();
+        if(mytree_node.id){
+            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.id + "&pid=" + mytree_node.pId).load();
+        }else {
+            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.uid + "&pid=" + mytree_node.pId).load();
+        }
         // console.log(treeNode.name)
         // var kk = treeNode.name;
         // $.ajax({
