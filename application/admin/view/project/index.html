@@ -482,7 +482,7 @@ $("div.mybtn").click(function () {
                 dataType: "json",
                 success: function (res) {
                     if(res.msg == "success"){
-                        $("#new1").val(res.data.sn + "-");
+                        $("#new1").val(res.data.sn + res.data.post_sn + "-");
                     }
                 }
             });
