@@ -472,6 +472,7 @@ $("div.mybtn").click(function () {
         if(mytree_node.level == 3){
             $("#myModal input").val("");
             $("#myModal h5").text("新增单元工程");
+            $("#myModal .btn-primary").css("display","inline-block");
             var id = mytree_node.id;
             $("#pid").val(id);
             $.ajax({
