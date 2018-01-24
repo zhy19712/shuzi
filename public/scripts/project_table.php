@@ -33,12 +33,11 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
     array( 'db' => 'id',  'dt' => 0 ),
     array( 'db' => 'name',  'dt' => 1 ),
     array( 'db' => 'sn',  'dt' => 2 ),
-    array( 'db' => 'post_sn',  'dt' => 3 ),
-    array( 'db' => 'zhuanghaoqi',  'dt' => 4 ),
-    array( 'db' => 'zhuanghaozhi',  'dt' => 5 ),
-    array( 'db' => 'gaochengqi',  'dt' => 6 ),
-    array( 'db' => 'gaochengzhi',  'dt' => 7 ),
-    array( 'db' => 'primary',  'dt' => 8 )
+    array( 'db' => 'zhuanghaoqi',  'dt' => 3 ),
+    array( 'db' => 'zhuanghaozhi',  'dt' => 4 ),
+    array( 'db' => 'gaochengqi',  'dt' => 5 ),
+    array( 'db' => 'gaochengzhi',  'dt' => 6 ),
+    array( 'db' => 'primary',  'dt' => 7 )
 );
 
 // SQL server connection information数据库连接信息

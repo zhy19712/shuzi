@@ -39,6 +39,7 @@ class project extends Base
         $zhihu = new ZhihuModel();
         $hunningtu = new HunningtuModel();
         $param = input('post.');
+        $param['sn'] = $param['sn'] . $param['post_sn'];
         if(request()->isAjax()){
             $day1 = $param['wangong_date'];
             $day2 = date("Y-m-d");
@@ -95,6 +96,8 @@ class project extends Base
 
             $param = input('post.');
             $data = $project->getOneProject($param['id']);
+            $post_length = strlen($data['post_sn']);
+            $data['sn'] = substr($data['sn'],0, -$post_length);
             return json(['data' => $data, 'msg' => "success"]);
         }
     }
