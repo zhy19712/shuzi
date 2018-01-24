@@ -12,6 +12,7 @@ use app\admin\model\HunningtuModel;
 use app\admin\model\KaiwaModel;
 use app\admin\model\ProjectModel;
 use app\admin\model\ZhihuModel;
+use app\quality\model\ProjectAttachmentModel;
 use think\Db;
 
 use think\Loader;
@@ -173,7 +174,6 @@ class project extends Base
     public function nodeDel()
     {
         $id = input('param.id');
-        halt($id);
         $node = new DivideModel();
         $project = new ProjectModel();
         $childList = $node->cateTree($id);
@@ -185,6 +185,15 @@ class project extends Base
                 return json(['code' => $bol['code'], 'data' => $bol['data'], 'msg' => $bol['msg']]);
             }
         }
+        // 根据这个节点查询是否包含attachment,包含就删除返回true,不包含也返回true
+        $nodeData = $node->getOnebyID($id);
+        $attachment = new ProjectAttachmentModel();
+        $attFlag = $attachment->delAttachmentByPidUid($id,$nodeData['pid']);
+        if($attFlag['code'] == 0){
+            return json(['code' => $attFlag['code'], 'data' => $attFlag['data'], 'msg' => $attFlag['msg']]);
+        }
+
+        // 循环删除该节点的所有子节点
         foreach ($childList as $child){
             $node->delNode($child['id']);
         }
@@ -266,19 +275,29 @@ class project extends Base
                 // 1,插入根节点
                 $root_pid = Db::name('project_divide')->insertGetId($first_data); // 插入根节点
             }else{
+                /**
+                 * (危险操作) ==》文件已经上传并被使用过，这时如果重复导入excel那么之前关联的数据都会丢失!!!
+                 * 虑到删除节点的影响，此处不允许重复上传
+                 * (如果非要重复上传，除非此文件没被使用过，或者同意删除所有关联数据，然后联系管理员)
+                 * (如果重复上传过于频繁，可以考虑新增对比和修改的操作)
+                 */
+                // 目前的解决方法是阻止重复上传
+                return json(['code'=>0,'info'=>'文件已经上传过，不允许重复上传。
+                如果非要重复上传，除非此文件没被使用过，或者同意删除所有关联的单元工程数据，请联系管理员']);
+
                 // 获取二级子类 三级子类 四级子类
-                $second_subclass = $three_subclass = $four_subclass = [];
-                $second_subclass = Db::name('project_divide')->where('pid',$root_pid)->column('id');
-                if(!empty($second_subclass)){ // 为空验证避免误删一级节点
-                    $three_subclass = Db::name('project_divide')->whereIn('pid',$second_subclass)->column('id');
-                    if(!empty($three_subclass)){
-                        $four_subclass = Db::name('project_divide')->whereIn('pid',$three_subclass)->column('id');
-                    }
-                }
-                // 删除所有子类
-                $success = Db::name('project_divide')->delete($four_subclass);
-                $success = Db::name('project_divide')->delete($three_subclass);
-                $success = Db::name('project_divide')->delete($second_subclass);
+//                $second_subclass = $three_subclass = $four_subclass = [];
+//                $second_subclass = Db::name('project_divide')->where('pid',$root_pid)->column('id');
+//                if(!empty($second_subclass)){ // 为空验证避免误删一级节点
+//                    $three_subclass = Db::name('project_divide')->whereIn('pid',$second_subclass)->column('id');
+//                    if(!empty($three_subclass)){
+//                        $four_subclass = Db::name('project_divide')->whereIn('pid',$three_subclass)->column('id');
+//                    }
+//                }
+//                // 删除所有子类
+//                $success = Db::name('project_divide')->delete($four_subclass);
+//                $success = Db::name('project_divide')->delete($three_subclass);
+//                $success = Db::name('project_divide')->delete($second_subclass);
             }
             /**
              * 2,批量插入二级节点

@@ -83,12 +83,13 @@ class ZhihuModel extends Model
      * @return array
      */
     public function delZhihuByUid($uid){
-        $idArr = $this->where('uid', $uid)->column('id');
+        $id = $this->where('uid', $uid)->value('id');
         $maogan = new MaoganModel();
-        $has = $maogan->getOne($idArr[0]);
-        $delChild = true;
+        $has = $maogan->getOne($id);
+        $delChild = true; // 子类删除结果
         if($has){
-            $delChild = $maogan->whereIn('uid',$idArr)->delete();
+            // 包含maogan执行删除
+            $delChild = $maogan->where('uid',$id)->delete();
         }
         if($delChild){
             $bol = $this->where('uid',$uid)->delete();
