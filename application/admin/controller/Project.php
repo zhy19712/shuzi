@@ -149,6 +149,9 @@ class project extends Base
 
             $param = input('post.');
             $data = $node->getOneNode($param['id']);
+            if(substr( $data['sn'],-4) == '-XXX' || substr( $data['sn'],-4) == '-xxx'){
+                $data['sn'] = substr($data['sn'],0,-4);
+            }
             return json(['data' => $data, 'msg' => "success"]);
         }
     }
