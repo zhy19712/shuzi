@@ -155,15 +155,24 @@ class project extends Base
 
     /**
      * [projectDel 节点删除]
+     * 关联删除第四级节点下的所有project
      * @return [type] [description]
      */
     public function nodeDel()
     {
         $id = input('param.id');
+        halt($id);
         $node = new DivideModel();
         $project = new ProjectModel();
-
         $childList = $node->cateTree($id);
+        // 没有子节点 要么单纯的么有子节点，要么就是第四级节点
+        // 根据这个节点查询是否包含project,包含就删除返回true,不包含也返回true
+        if(count($childList) == 0){
+            $bol = $project->delProjectByPid($id);
+            if($bol['code'] == 0){
+                return json(['code' => $bol['code'], 'data' => $bol['data'], 'msg' => $bol['msg']]);
+            }
+        }
         foreach ($childList as $child){
             $node->delNode($child['id']);
         }

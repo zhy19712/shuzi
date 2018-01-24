@@ -7,6 +7,7 @@
  */
 
 namespace app\admin\model;
+use app\quality\model\QCAttachmentModel;
 use think\Model;
 use think\Db;
 
@@ -54,12 +55,36 @@ class ProjectModel extends Model
 
     /**
      * [del_article 单元工程验收批次删除]
+     * 关联删除其他表中与此条project有联系的数据记录和文件
+     * project_attachment
+     * project_hunningtu
+     * project_kaiwa
+     * project_zhihu
+     * project_zhihu_maogan
      * @return [type] [description]
      */
     public function delProject($id)
     {
-        $this->where('id', $id)->delete();
-        return ['code' => 1, 'data' => '', 'msg' => '工程信息删除成功'];
+        $flag = [];
+        $cate = $this->where('id',$id)->value('cate');
+        if($cate == '开挖'){
+            $kaiwa = new KaiwaModel();
+            $flag = $kaiwa->delKaiwaBuUid($id);
+        }else if($cate == '支护'){
+            $zhihu = new ZhihuModel();
+            $flag = $zhihu->delZhihuByUid($id);
+        }else if($cate == '混凝土'){
+            $hunningtu = new HunningtuModel();
+            $flag = $hunningtu->delHunningtuByUid($id);
+        }
+        if($flag['code'] == 1){
+            // 是否包含attchment数据信息
+            $bol = '';
+
+            $this->where('id', $id)->delete();
+            return ['code' => 1, 'data' => '', 'msg' => '工程信息删除成功'];
+        }
+        return ['code' => 0, 'data' => '', 'msg' => $flag['msg']];
     }
 
 
@@ -125,6 +150,26 @@ class ProjectModel extends Model
         }
 
         return $str;
+    }
+
+    /**
+     * 根据pid删除project
+     * @param $pid
+     * @return \think\response\Json
+     */
+    public function delProjectByPid($pid){
+        $flag = [];
+        $idArr = $this->whereIn('pid',$pid)->column('id');
+        if(count($idArr) == 0){
+            return json(['code' => 1, 'data' => '', 'msg' => '不包含project']);
+        }
+        foreach($idArr as $k=>$v){
+            $flag = $this->delProject($v);
+            if($flag['code'] == 0){
+                break;
+            }
+        }
+        return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
 
 }

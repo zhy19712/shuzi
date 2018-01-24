@@ -77,4 +77,12 @@ class KaiwaModel extends Model
         return $this->where($where)->count();
     }
 
+    public function delKaiwaBuUid($uid){
+        $bol = $this->where('uid',$uid)->delete();
+        if($bol){
+            return ['code' => 1, 'data' => '', 'msg' => '开挖删除成功'];
+        }
+        return ['code' => 0, 'data' => '', 'msg' => '开挖删除失败'];
+    }
+
 }
