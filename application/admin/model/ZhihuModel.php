@@ -86,18 +86,19 @@ class ZhihuModel extends Model
         $id = $this->where('uid', $uid)->value('id');
         $maogan = new MaoganModel();
         $has = $maogan->getOne($id);
-        $delChild = true; // 子类删除结果
         if($has){
             // 包含maogan执行删除
             $delChild = $maogan->where('uid',$id)->delete();
-        }
-        if($delChild){
-            $bol = $this->where('uid',$uid)->delete();
-            if($bol){
-                return ['code' => 1, 'data' => '', 'msg' => '支护删除成功'];
+            if($delChild < 1){
+                return ['code' => 0, 'data' => '', 'msg' => '锚杆删除失败'];
             }
-            return ['code' => 0, 'data' => '', 'msg' => '支护删除失败'];
         }
-        return ['code' => 0, 'data' => '', 'msg' => '锚杆删除失败'];
+        if($id){
+            $bol = $this->where('uid',$uid)->delete();
+            if($bol < 1){
+                return ['code' => 0, 'data' => '', 'msg' => '支护删除失败'];
+            }
+        }
+        return ['code' => 1, 'data' => '', 'msg' => '支护删除成功'];
     }
 }
