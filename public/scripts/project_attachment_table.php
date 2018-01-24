@@ -58,10 +58,10 @@ $sql_details = array(
 
 require( 'ssp.class.php' );
 
-if(!empty($_GET['uid'])&&!empty($_GET['pid']))
+if(!empty($_GET['id'])&&!empty($_GET['pid']))
 {
     $pid = $_GET['pid'];
-    $uid = $_GET['uid'];
+    $uid = $_GET['id'];
 
     echo json_encode(
         SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "uid = '$uid' and pid = '$pid'" )
