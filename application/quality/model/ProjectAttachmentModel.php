@@ -70,4 +70,24 @@ class ProjectAttachmentModel extends Model
     {
         return $this->where('id', $id)->find();
     }
+
+    /**
+     * 根据pid和uid删除attachment
+     * 此关联数据不是必须的，如果不存在也返回true
+     * @param $pid
+     * @param $uid
+     * @return array
+     */
+    public function delAttachmentByPidUid($pid,$uid){
+        // 是否包含attachment数据信息
+        $has = $this->where(['pid'=>$pid,'uid'=>$uid])->value('id');
+        // 包含执行删除
+        if($has){
+            $bol = $this->where(['pid'=>$pid,'uid'=>$uid])->delete();
+            if($bol < 1){
+                return ['code' => 0, 'data' => '', 'msg' => 'attachment删除失败'];
+            }
+        }
+        return ['code' => 1, 'data' => '', 'msg' => 'attachment删除成功'];
+    }
 }
