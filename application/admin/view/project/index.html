@@ -542,7 +542,7 @@ function edit(that) {
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        admin_table.ajax.url("__SCRIPT__/project_table.php").load();
+                        admin_table.ajax.url("__SCRIPT__/project_table.php?pid=" + groupid).load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
