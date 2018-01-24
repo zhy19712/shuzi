@@ -578,7 +578,7 @@ function edit(that) {
                    success: function (res) {
                        console.log(res);
                        if(res.msg == "success"){
-                           $("#new3").val(res.data.sn + res.data.post_sn + "-");
+                           $("#new3").val(res.data.sn + "-" + res.data.post_sn + "-");
                        }
                    }
                });
@@ -596,7 +596,7 @@ function edit(that) {
                    success: function (res) {
                        console.log(res);
                        if(res.msg == "success"){
-                           $("#new5").val(res.data.sn + res.data.post_sn + "-");
+                           $("#new5").val(res.data.sn + "-" + res.data.post_sn + "-");
                        }
                    }
                });
