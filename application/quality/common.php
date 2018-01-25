@@ -117,6 +117,7 @@ function uploadAccess()
 //验收预警，计算超期天数
 function acceptanceWarning()
 {
+    sleep(1);
     $projects = Db::name('project')->order('id asc')->select();
     foreach($projects as $project){
         if(empty($project['pingding_date'])){
