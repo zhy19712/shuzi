@@ -46,6 +46,13 @@ class ProcedureListSublistModel extends Model
     public function delProcedureListSublist($id)
     {
         try{
+            // 关联删除think_procedure_attachment
+            $att = new ProcedureAttachmentModel();
+            $bol = $att->delProceAttByGroupId($id);
+            if($bol['code'] == 0){
+                return $bol;
+            }
+
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
 
@@ -57,5 +64,18 @@ class ProcedureListSublistModel extends Model
     public function getOne($id)
     {
         return $this->where('id', $id)->find();
+    }
+
+    public function delProceSubByGroupId($groupId){
+        $idArr = $this->where('group_id',$groupId)->column('id');
+        if(count($idArr) > 0){
+            foreach ($idArr as $k=>$v) {
+                $bol = $this->delProcedureListSublist($v);
+                if($bol['code'] == 0){
+                    return $bol;
+                }
+            }
+        }
+        return ['code' => 1, 'data' => '', 'msg' => 'Sublist删除成功'];
     }
 }

@@ -73,6 +73,18 @@ class Procedure extends Base
         $attachment = new ProcedureModel();
         if(request()->isAjax()) {
             $param = input('post.');
+            /**
+             * 关联删除
+             * think_procedure_list
+             * think_procedure_list_sublist
+             * think_procedure_attachment
+             */
+            $proList = new ProcedureListModel();
+            $bol = $proList->delProceListByGroupId($param['id']);
+            if($bol['code'] == 0){
+                return json($bol);
+            }
+
             $data = $attachment->getOne($param['id']);
             $path = $data['path'];
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
@@ -298,15 +310,6 @@ class Procedure extends Base
         $attachment = new ProcedureAttachmentModel();
         if(request()->isAjax()) {
             $param = input('post.');
-            $data = $attachment->getOne($param['id']);
-            $path = $data['path'];
-            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-            if(file_exists($path)){
-                unlink($path); //删除文件
-            }
-            if(file_exists($pdf_path)){
-                unlink($pdf_path); //删除生成的预览pdf
-            }
             $flag = $attachment->delAttachment($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
