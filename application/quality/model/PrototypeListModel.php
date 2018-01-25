@@ -46,6 +46,12 @@ class PrototypeListModel extends Model
     public function delPrototypeList($id)
     {
         try{
+            // 关联删除attachment
+            $attachment = new PrototypeAttachmentModel();
+            $bol = $attachment->delProAttByGroupId($id);
+            if($bol['code'] == 0){
+                return $bol;
+            }
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
 
@@ -57,5 +63,18 @@ class PrototypeListModel extends Model
     public function getOne($id)
     {
         return $this->where('id', $id)->find();
+    }
+
+    public function delProListByGroupId($groupId){
+        $idArr = $this->where('group_id',$groupId)->column('id');
+        if(count($idArr) > 0){
+            foreach($idArr as $k=>$v){
+                $bol = $this->delPrototypeList($v);
+                if($bol['code'] == 0){
+                    return $bol;
+                }
+            }
+        }
+        return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
     }
 }
