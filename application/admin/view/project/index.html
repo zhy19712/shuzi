@@ -578,7 +578,11 @@ function edit(that) {
                    success: function (res) {
                        console.log(res);
                        if(res.msg == "success"){
-                           $("#new3").val(res.data.sn + "-" + res.data.post_sn + "-");
+                           if(res.data.post_sn){
+                               $("#new3").val(res.data.sn + "-" + res.data.post_sn + "-");
+                           }else {
+                               $("#new3").val(res.data.sn + "-");
+                           }
                        }
                    }
                });
@@ -596,7 +600,11 @@ function edit(that) {
                    success: function (res) {
                        console.log(res);
                        if(res.msg == "success"){
-                           $("#new5").val(res.data.sn + "-" + res.data.post_sn + "-");
+                           if(res.data.post_sn){
+                               $("#new5").val(res.data.sn + "-" + res.data.post_sn + "-");
+                           }else {
+                               $("#new5").val(res.data.sn + "-");
+                           }
                        }
                    }
                });
@@ -626,7 +634,11 @@ function edit(that) {
                             $("#pid2").val(mytree_node.pId);
                             $("#id2").val(mytree_node.id);
                             $("#project_name2").val(data.name);
-                            $("#project_sn2").val(data.sn);
+                            if(data.post_sn){
+                                $("#project_sn2").val(data.sn + "-" + data.post_sn + "-");
+                            }else {
+                                $("#project_sn2").val(data.sn + "-");
+                            }
                             $("#main_project2").val(data.primary);
                             $("#level2 h5").text('编辑');
                             $("#level2").modal('show');
@@ -638,6 +650,11 @@ function edit(that) {
                                 $("#new3").val(data.sn);
                             }else {
                                 $("#new3").val(data.sn + "-");
+                            }
+                            if(data.post_sn){
+                                $("#new4").val(data.sn + "-" + data.post_sn + "-");
+                            }else {
+                                $("#new4").val(data.sn + "-");
                             }
                             $("#new4").val(data.post_sn);
                             $("#project_name3").val(data.name);
