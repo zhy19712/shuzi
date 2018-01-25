@@ -24,7 +24,7 @@
         border-right: 1px solid #000;
     }
     #info2 td{
-        width: 20%;
+        width: 16%;
     }
     .style{
         background-color: #bae2f3;
@@ -92,6 +92,7 @@
                             <td class="style">类别</td>
                             <td class="style">限定日期</td>
                             <td class="style">超期(天)</td>
+                            <td class="style">验收日期</td>
                         </tr>
                         <tr>
                             <td id="wangong_date"></td>
@@ -99,6 +100,7 @@
                             <td id="cate"></td>
                             <td id="limit"></td>
                             <td id="exceed"></td>
+                            <td id="pingding_date"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -166,6 +168,7 @@
                      $("#cate").text(res.data.cate);
                      $("#limit").text(res.data.limit);
                      $("#exceed").text(res.data.exceed);
+                     $("#pingding_date").text(res.data.pingding_date);
                      $("#myModal").modal();
                  }else {
                      layer.msg(res.msg);
