@@ -46,7 +46,6 @@ class project extends Base
             {
 
                 $flag = $project->insertProject($param);
-                acceptanceWarning();//刷新验收预警
                 $data = [
                     'uid' => $project->getLastInsID()
                 ];
@@ -57,7 +56,7 @@ class project extends Base
                 }else if( $param['cate'] == '混凝土'){
                     $hunningtu->insertHunningtu($data);
                 }
-
+                acceptanceWarning();//刷新验收预警
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
             else if(!empty($param['id']))
