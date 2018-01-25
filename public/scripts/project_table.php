@@ -70,7 +70,7 @@ if(!empty($_GET["pid"]))
 }
 else{
     echo json_encode(
-        SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns)
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "pid = 'empty'" )
     );
 }
 
