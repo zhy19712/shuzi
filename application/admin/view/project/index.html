@@ -680,6 +680,7 @@ function edit(that) {
                         if(mytree_node.level === 3){
                             admin_table.ajax.url("__SCRIPT__/project_table.php").load();
                         }
+                        mytree_node = "";
                         layer.msg(res.msg,{time:1500,shade: 0.1});
                         zTreeObj.reAsyncChildNodes(null, "refresh");
                     }
@@ -805,6 +806,7 @@ function edit(that) {
             $("#level3").modal('hide');
             $("#level4").modal('hide');
             zTreeObj.reAsyncChildNodes(null, "refresh");
+            mytree_node = "";
             $("#mytable1_wrapper").css("display","none");
             layer.msg(data.msg);
         }else{
@@ -883,6 +885,7 @@ function edit(that) {
             console.log(file)
             console.log(data)
                 zTreeObj.reAsyncChildNodes(null, "refresh");
+                mytree_node = "";
 //            layer.msg(file.name + data.info,{icon:1,time:1500,shade: 0.1});
                 var msg = file.name + data.info;
                 layer.confirm(msg, {btn:'关闭',icon: 3, title:'提示'}, function(index){
