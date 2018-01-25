@@ -162,12 +162,16 @@
         display: none;
     }
     #standard_wrapper,#ssgy,.mydiv{
-        height: 100% !important;
+        height: 98% !important;
+        margin: 1% 0;
     }
 </style>
 <body class="gray-bg animated fadeInRight" style="background-color:#fff;">
 <div id="content">
     <div id="standard_wrapper">
+        <div style="height: 50px;">
+            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>标准工艺实施计划列表</p>
+        </div>
         <table id="standard_table" width="100%" class="table table-striped table-bordered">
             <thead>
             <tr>
@@ -183,6 +187,9 @@
         </table>
     </div>
     <div id="ssgy">
+        <div style="height: 50px;">
+            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>标准工艺列表原型设计列表</p>
+        </div>
         <table id="ss_table" width="100%" class="table table-striped table-bordered">
             <thead>
             <tr>
@@ -1004,6 +1011,8 @@
                             layer.msg("提交成功",{icon:1,time:1500,shade: 0.1});
                             standard_uploader = null;
                             standard_table.ajax.url("__SCRIPT__/procedure.php").load();
+                            ss_table.ajax.url("__SCRIPT__/prototype_list.php").load();
+                            cid = "";
                             $("#standard_modal").modal('hide');
                             $("#standard_per").empty();
                         });
@@ -1045,6 +1054,8 @@
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         standard_table.ajax.url("__SCRIPT__/procedure.php").load();
+                        ss_table.ajax.url("__SCRIPT__/prototype_list.php").load();
+                        cid = "";
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -1194,6 +1205,8 @@
                 layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
                 standard_uploader = null;
                 standard_table.ajax.url("__SCRIPT__/procedure.php").load();
+                ss_table.ajax.url("__SCRIPT__/prototype_list.php").load();
+                cid = "";
                 $("#standard_modal").modal('hide');
                 $("#standard_per").empty();
             });
@@ -1218,6 +1231,8 @@
                         if(res.code === 1){
                             layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                             standard_table.ajax.url("__SCRIPT__/procedure.php").load();
+                            ss_table.ajax.url("__SCRIPT__/prototype_list.php").load();
+                            cid = "";
                             $("#standard_modal").modal('hide');
                         }else {
                             layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
@@ -1338,6 +1353,10 @@
         }
     } );
     $("#ssgy .mybtn").click(function () {
+        if(!cid){
+            layer.msg("请选择标准工艺实施计划");
+            return;
+        }
         $("#ss_modal input").val("");
         $("#ss_modal textarea").val("");
         zTreeObj.reAsyncChildNodes(null, "refresh");
