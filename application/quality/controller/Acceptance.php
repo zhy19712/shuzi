@@ -91,6 +91,7 @@ class Acceptance extends Base
                     'pingding_date' => $param['evaluated_date']
                 ];
                 $project->editProject($projectData);
+                acceptanceWarning();//启动时刷新验收预警
             }
             if(empty($param['edit'])&&$param['cate']=='开挖')
             {

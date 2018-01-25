@@ -33,6 +33,8 @@ class Warning extends Base
             $data['currentDate'] = $currentDate;
             return json(['code'=> 1, 'data' => $data]);
         }
+
+
         return $this->fetch();
     }
 }

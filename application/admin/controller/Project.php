@@ -42,26 +42,11 @@ class project extends Base
         $param = input('post.');
         $param['sn'] = $param['sn'] . $param['post_sn'];
         if(request()->isAjax()){
-            $day1 = $param['wangong_date'];
-            $day2 = date("Y-m-d");
-            $diff = diffBetweenTwoDays($day1, $day2);
-            if($param['cate'] == '开挖'){
-                $limit = 7;
-            }else if( $param['cate'] == '支护'){
-                $limit = 28;
-            }else if( $param['cate'] == '混凝土'){
-                $limit = 28;
-            }
-
-            $param['exceed'] =$diff - $limit;
-            if($param['exceed']>0){
-                $param['status'] = '预警中';
-            }
-
             if(empty($param['id']))
             {
 
                 $flag = $project->insertProject($param);
+                acceptanceWarning();//刷新验收预警
                 $data = [
                     'uid' => $project->getLastInsID()
                 ];
@@ -78,6 +63,7 @@ class project extends Base
             else if(!empty($param['id']))
             {
                 $flag = $project->editProject($param);
+                acceptanceWarning();//刷新验收预警
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
 
