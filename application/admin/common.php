@@ -2,6 +2,38 @@
 use think\Db;
 
 
+//验收预警，计算超期天数
+function acceptanceWarning()
+{
+    $projects = Db::name('project')->order('id asc')->select();
+    foreach($projects as $project){
+        if(empty($project['pingding_date'])){
+            $day1 = $project['wangong_date'];
+            $day2 = date("Y-m-d");
+            $diff = diffBetweenTwoDays($day1, $day2);
+            if($project['cate'] == '开挖'){
+                $limit = 7;
+            }else if( $project['cate'] == '支护'){
+                $limit = 28;
+            }else if( $project['cate'] == '混凝土'){
+                $limit = 28;
+            }
+            $status['exceed'] =$diff - $limit;
+            if($status['exceed']>0){
+                $status['status'] = '预警中';
+            }else{
+                $status['status'] = '';
+            }
+            Db::name('project')->where('id=' . $project['id'])->update($status);
+        }else{
+            if($project['exceed'] > 0){
+                $status['status'] = '已处理';
+                Db::name('project')->where('id=' . $project['id'])->update($status);
+            }
+        }
+    }
+}
+
 /**
  * 求两个日期之间相差的天数
  * (针对1970年1月1日之后，求之前可以采用泰勒公式)

@@ -9,6 +9,7 @@ class Index extends Base
 {
     public function index()
     {
+        acceptanceWarning();//启动时刷新验收预警
         return $this->fetch('/index');
     }
 
@@ -19,11 +20,11 @@ class Index extends Base
      */
     public function indexPage()
     {
-         //今日新增会员
-        $today = strtotime(date('Y-m-d 00:00:00'));//今天开始日期     
-        $map['create_time'] = array('egt', $today);
-        $member = Db::name('member')->where($map)->count();
-        $this->assign('member', $member);
+//         //今日新增会员
+//        $today = strtotime(date('Y-m-d 00:00:00'));//今天开始日期
+//        $map['create_time'] = array('egt', $today);
+//        $member = Db::name('member')->where($map)->count();
+//        $this->assign('member', $member);
 
         $info = array(
             'web_server' => $_SERVER['SERVER_SOFTWARE'],
