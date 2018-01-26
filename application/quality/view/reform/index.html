@@ -48,8 +48,7 @@
         margin-bottom: 5px;
     }
     #content{
-        width: 96%;
-        margin: 10px auto;
+        margin: 0 auto;
         position: relative;
     }
     .mybtn{
@@ -176,9 +175,6 @@
     #tab_con>div:nth-child(2){
         display: none;
     }
-    .ibox-content>div{
-        margin-top: 20px;
-    }
     .ibox-content label{
         text-align: right;
     }
@@ -193,58 +189,190 @@
         display: none;
     }
 </style>
-<body class="gray-bg animated fadeInRight" style="background-color:#fff;">
-<div id="content">
-    <div id="standard_wrapper">
-        <div style="height: 50px;">
-            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>质量问题列表</p>
-        </div>
-        <table id="standard_table" width="100%" class="table table-striped table-bordered">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>内容描述</th>
-                <th>类别</th>
-                <th>监理责任人</th>
-                <th>检查时间</th>
-                <th>状态</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-        </table>
-    </div>
-    <div id="container">
-        <button class="btn btn-primary" id="back">返回</button>
-        <div class="tab-pane" id="profile">
-            <div id="flow">
-                <div class="exp">
-                    <span>质量缺陷描述</span>
-                    <img src="__IMG__/arr.png" alt="">
-                </div>
-                <div class="exp">
-                    <span>整改处理措施</span>
-                    <img src="__IMG__/arr.png" alt="">
-                </div>
-                <div class="exp">
-                    <span>检查</span>
-                </div>
-            </div>
-            <div id="flow_content">
-                <div id="step7">
-                    <div id="check">
+<body class="animated fadeInRight" style="background-color:#fff; text-align: center">
+<div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 96%;vertical-align: top;padding: 0;">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <div class="row">
+                <div id="content">
+                    <div id="standard_wrapper">
                         <div style="height: 50px;">
-                            <div id="list9"></div>
-                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>质量缺陷描述</p>
-                            <div id="mysave1">保存</div>
+                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>质量问题列表</p>
                         </div>
-                        <textarea name="description" id="sdescription" style="width: 100%;min-height: 100px;"></textarea>
+                        <table id="standard_table" width="100%" class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>内容描述</th>
+                                <th>类别</th>
+                                <th>监理责任人</th>
+                                <th>检查时间</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div id="container">
+                        <button class="btn btn-primary" id="back">返回</button>
+                        <div class="tab-pane" id="profile">
+                            <div id="flow">
+                                <div class="exp">
+                                    <span>质量缺陷描述</span>
+                                    <img src="__IMG__/arr.png" alt="">
+                                </div>
+                                <div class="exp">
+                                    <span>整改处理措施</span>
+                                    <img src="__IMG__/arr.png" alt="">
+                                </div>
+                                <div class="exp">
+                                    <span>检查</span>
+                                </div>
+                            </div>
+                            <div id="flow_content">
+                                <div id="step7">
+                                    <div id="check">
+                                        <div style="height: 50px;">
+                                            <div id="list9"></div>
+                                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>质量缺陷描述</p>
+                                            <div id="mysave1">保存</div>
+                                        </div>
+                                        <textarea name="description" id="sdescription" style="width: 100%;min-height: 100px;"></textarea>
+                                        <div style="height: 50px;">
+                                            <div id="list10"></div>
+                                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>附件</p>
+                                            <div id="upload10">上传文件</div>
+                                        </div>
+                                        <div id="check_table_wrapper2">
+                                            <table id="check_table2" width="100%" class="table table-striped table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>名称</th>
+                                                    <th>上传人</th>
+                                                    <th>上传时间</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="step8">
+                                    <div id="implement">
+                                        <div style="height: 50px;">
+                                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>整改处理措施</p>
+                                            <div id="mysave2">保存</div>
+                                        </div>
+                                        <textarea name="method" id="smethod" style="min-height: 100px;width: 100%;"></textarea>
+                                        <div id="info">
+                                            <div class="top">
+                                                <p class="myp1">要求整改、处理时间</p>
+                                                <input type="text" name="date_reform_design" id="sdate_reform_design" class="myinput">
+                                            </div>
+                                            <div class="bottom">
+                                                <p class="myp1">监理负责人</p>
+                                                <input type="text" name="owner1" id="sowner1" class="myinput">
+                                                <p class="myp1" style="border-left: 1px solid #000;">标段负责人</p>
+                                                <input type="text" name="owner2" id="sowner2" class="myinput">
+                                            </div>
+                                        </div>
+                                        <div style="height: 50px;">
+                                            <div id="list7"></div>
+                                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>备注</p>
+                                            <div id="upload7">上传文件</div>
+                                        </div>
+                                        <div id="implement_table_wrapper1">
+                                            <table id="implement_table1" width="100%" class="table table-striped table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>名称</th>
+                                                    <th>上传人</th>
+                                                    <th>上传时间</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="step9">
+                                    <div id="standard">
+                                        <div style="height: 50px;">
+                                            <div id="list12"></div>
+                                            <p id="title" class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>检查</p>
+                                        </div>
+                                        <div>
+                                            <select name="unq" id="unq" class="form-control" style="width: 100px;display: inline-block;">
+                                                <option value="合格">合格</option>
+                                                <option value="不合格">不合格</option>
+                                            </select>
+                                            <div id="mysave3" style="display: inline-block;right: 10px;">保存</div>
+                                        </div>
+                                        <div id="hg">
+                                            <div style="border: 1px solid #000;margin: 20px 0;">
+                                                <p class="myp1">实际整改、处理时间</p>
+                                                <input type="text" name="date_reform_actual" id="sdate_reform_actual" class="myinput">
+                                            </div>
+                                            <div id="uploadimg"></div>
+                                            <div id="img_container" style="height: 300px;">
+                                                <img src="" alt="" style="display: block;margin: 0 auto;max-height: 300px;">
+                                            </div>
+                                            <textarea name="reform_image_description" id="sreform_image_description" style="width: 100%;min-height: 100px;"></textarea>
+                                            <div style="height: 50px;">
+                                                <div id="list13"></div>
+                                                <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>附件资料</p>
+                                                <div id="upload13">上传文件</div>
+                                            </div>
+                                            <div id="standard_table_wrapper2">
+                                                <table id="standard_table2" width="100%" class="table table-striped table-bordered">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>名称</th>
+                                                        <th>上传人</th>
+                                                        <th>上传时间</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div id="bhg">
+                                            <div style="border: 1px solid #000;margin: 20px 0;">
+                                                <p class="myp1">检查-不合格时间</p>
+                                                <input type="text" name="date_unqualified" id="sdate_unqualified" class="myinput">
+                                            </div>
+                                            <div id="uploadimg2"></div>
+                                            <div id="img_container2" style="height: 300px;">
+                                                <img src="" alt="" style="display: block;margin: 0 auto;max-height: 300px;">
+                                            </div>
+                                            <div style="height: 50px;">
+                                                <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>不合格情况描述</p>
+                                            </div>
+                                            <textarea name="unqualified_image_description" id="sunqualified_image_description" style="width: 100%;min-height: 100px;"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="container2">
+                        <button class="btn btn-primary" id="back2">返回</button>
                         <div style="height: 50px;">
-                            <div id="list10"></div>
+                            <div></div>
+                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>质量事故描述</p>
+                            <div id="mysave4">保存</div>
+                        </div>
+                        <textarea name="accident_description" id="saccident_description" style="width: 100%;min-height: 100px;"></textarea>
+                        <div style="height: 50px;">
+                            <div id="list15"></div>
                             <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>附件</p>
-                            <div id="upload10">上传文件</div>
+                            <div id="upload15">上传文件</div>
                         </div>
-                        <div id="check_table_wrapper2">
-                            <table id="check_table2" width="100%" class="table table-striped table-bordered">
+                        <div id="fj_wrapper">
+                            <table id="fj_table" width="100%" class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
@@ -255,137 +383,15 @@
                                 </tr>
                                 </thead>
                             </table>
-                        </div>
-                    </div>
-                </div>
-                <div id="step8">
-                    <div id="implement">
-                        <div style="height: 50px;">
-                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>整改处理措施</p>
-                            <div id="mysave2">保存</div>
-                        </div>
-                        <textarea name="method" id="smethod" style="min-height: 100px;width: 100%;"></textarea>
-                        <div id="info">
-                            <div class="top">
-                                <p class="myp1">要求整改、处理时间</p>
-                                <input type="text" name="date_reform_design" id="sdate_reform_design" class="myinput">
-                            </div>
-                            <div class="bottom">
-                                <p class="myp1">监理负责人</p>
-                                <input type="text" name="owner1" id="sowner1" class="myinput">
-                                <p class="myp1" style="border-left: 1px solid #000;">标段负责人</p>
-                                <input type="text" name="owner2" id="sowner2" class="myinput">
-                            </div>
-                        </div>
-                        <div style="height: 50px;">
-                            <div id="list7"></div>
-                            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>备注</p>
-                            <div id="upload7">上传文件</div>
-                        </div>
-                        <div id="implement_table_wrapper1">
-                            <table id="implement_table1" width="100%" class="table table-striped table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>名称</th>
-                                    <th>上传人</th>
-                                    <th>上传时间</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div id="step9">
-                    <div id="standard">
-                        <div style="height: 50px;">
-                            <div id="list12"></div>
-                            <p id="title" class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>检查</p>
-                        </div>
-                        <div>
-                            <select name="unq" id="unq" class="form-control" style="width: 100px;display: inline-block;">
-                                <option value="合格">合格</option>
-                                <option value="不合格">不合格</option>
-                            </select>
-                            <div id="mysave3" style="display: inline-block;right: 10px;">保存</div>
-                        </div>
-                        <div id="hg">
-                            <div style="border: 1px solid #000;margin: 20px 0;">
-                                <p class="myp1">实际整改、处理时间</p>
-                                <input type="text" name="date_reform_actual" id="sdate_reform_actual" class="myinput">
-                            </div>
-                            <div id="uploadimg"></div>
-                            <div id="img_container" style="height: 300px;">
-                                <img src="" alt="" style="display: block;margin: 0 auto;max-height: 300px;">
-                            </div>
-                            <textarea name="reform_image_description" id="sreform_image_description" style="width: 100%;min-height: 100px;"></textarea>
-                            <div style="height: 50px;">
-                                <div id="list13"></div>
-                                <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>附件资料</p>
-                                <div id="upload13">上传文件</div>
-                            </div>
-                            <div id="standard_table_wrapper2">
-                                <table id="standard_table2" width="100%" class="table table-striped table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>名称</th>
-                                        <th>上传人</th>
-                                        <th>上传时间</th>
-                                        <th>操作</th>
-                                    </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                        <div id="bhg">
-                            <div style="border: 1px solid #000;margin: 20px 0;">
-                                <p class="myp1">检查-不合格时间</p>
-                                <input type="text" name="date_unqualified" id="sdate_unqualified" class="myinput">
-                            </div>
-                            <div id="uploadimg2"></div>
-                            <div id="img_container2" style="height: 300px;">
-                                <img src="" alt="" style="display: block;margin: 0 auto;max-height: 300px;">
-                            </div>
-                            <div style="height: 50px;">
-                                <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>不合格情况描述</p>
-                            </div>
-                            <textarea name="unqualified_image_description" id="sunqualified_image_description" style="width: 100%;min-height: 100px;"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div id="container2">
-        <button class="btn btn-primary" id="back2">返回</button>
-        <div style="height: 50px;">
-            <div></div>
-            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>质量事故描述</p>
-            <div id="mysave4">保存</div>
-        </div>
-        <textarea name="accident_description" id="saccident_description" style="width: 100%;min-height: 100px;"></textarea>
-        <div style="height: 50px;">
-            <div id="list15"></div>
-            <p class='myp' style='line-height:30px;font-weight: 700;text-align: center;'>附件</p>
-            <div id="upload15">上传文件</div>
-        </div>
-        <div id="fj_wrapper">
-            <table id="fj_table" width="100%" class="table table-striped table-bordered">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>名称</th>
-                    <th>上传人</th>
-                    <th>上传时间</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-            </table>
         </div>
     </div>
 </div>
+
+
 <div id="form_container" style="display: none;"></div>
 
 <div id="standard_modal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
