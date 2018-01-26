@@ -173,7 +173,7 @@ class project extends Base
         // 根据这个节点查询是否包含attachment,包含就删除返回true,不包含也返回true
         $nodeData = $node->getOnebyID($id);
         $attachment = new ProjectAttachmentModel();
-        $attFlag = $attachment->delAttachmentByPidUid($id,$nodeData['pid']);
+        $attFlag = $attachment->delAttachmentByPidUid($nodeData['pid'],$id);
         if($attFlag['code'] == 0){
             return json(['code' => $attFlag['code'], 'data' => $attFlag['data'], 'msg' => $attFlag['msg']]);
         }
