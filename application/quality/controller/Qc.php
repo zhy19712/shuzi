@@ -52,7 +52,36 @@ class Qc extends Base
         $qc = new QCModel();
         if(request()->isAjax()){
             $param = input('post.');
-            $flag = $qc->delQc($param['id']);
+            $id = $param['id'];
+            /**
+             * 关联删除
+             * think_qc_member
+             * think_qc_attachment
+             * think_qc_problem
+             * think_qc_strategy
+             */
+            $qcMember = new QCMemberModel();
+            $member = $qcMember->delMemberByGroupId($id);
+            if($member['code'] == 0){
+                return json($member);
+            }
+            $qcAtt = new QCAttachmentModel();
+            $att = $qcAtt->delAttachmentByGroupId($id);
+            if($att['code'] == 0){
+                return json($att);
+            }
+            $qcProblem = new QCProblemModel();
+            $problem = $qcProblem->delProblemByGroupId($id);
+            if($problem['code'] == 0){
+                return json($problem);
+            }
+            $qcStrategy = new QCStrategyModel();
+            $strategy = $qcStrategy->delStrategyByGroupId($id);
+            if($strategy['code'] == 0){
+                return json($strategy);
+            }
+
+            $flag = $qc->delQc($id);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -277,15 +306,6 @@ class Qc extends Base
         $qc = new QCAttachmentModel();
         if(request()->isAjax()) {
             $param = input('post.');
-            $data = $qc->getOne($param['id']);
-            $path = $data['path'];
-            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-            if(file_exists($path)){
-                unlink($path); //删除文件
-            }
-            if(file_exists($pdf_path)){
-                unlink($pdf_path); //删除生成的预览pdf
-            }
             $flag = $qc->delAttachment($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }

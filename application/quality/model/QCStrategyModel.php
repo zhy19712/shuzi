@@ -58,4 +58,15 @@ class QCStrategyModel extends Model
     {
         return $this->where('id', $id)->find();
     }
+
+    public function delStrategyByGroupId($groupId){
+        $has = $this->where('group_id',$groupId)->value('id');
+        if($has){
+            $bol = $this->whereIn('group_id',$groupId)->delete();
+            if($bol < 1){
+                return ['code' => 0, 'data' => '', 'msg' => 'Strategy删除失败'];
+            }
+        }
+        return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
+    }
 }
