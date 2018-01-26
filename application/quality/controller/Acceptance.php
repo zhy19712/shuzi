@@ -218,11 +218,6 @@ class Acceptance extends Base
         if(request()->isAjax()) {
             $id = $param['id'];
             $attachment = new ProjectAttachmentModel();
-            $data = $attachment->getOne($id);
-            $path = $data['path'];
-            if(file_exists($path)){
-                unlink($path); //删除文件
-            }
             $flag = $attachment->delAttachment($id);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }

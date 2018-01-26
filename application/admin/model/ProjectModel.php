@@ -78,7 +78,7 @@ class ProjectModel extends Model
         }
         if($flag['code'] == 1){
             $attchment = new ProjectAttachmentModel();
-            $attFlag = $attchment->delAttachmentByPidUid($data['id'],$data['pid']);
+            $attFlag = $attchment->delAttachmentByPidUid($data['pid'],$data['id']);
             if($attFlag['code'] == 1){
                 $bol = $this->where('id', $id)->delete();
                 if($bol){
