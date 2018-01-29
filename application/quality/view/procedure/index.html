@@ -458,7 +458,7 @@
 
 <div id="form_container" style="display: none;"></div>
 
-<div id="standard_modal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+<div id="standard_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
     <div class="row">
         <div class="col-sm-12" style="background-color:#fff;">
             <div class="ibox float-e-margins">
@@ -508,7 +508,7 @@
     </div>
 </div>
 
-<div id="ss_modal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+<div id="ss_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
     <div class="row">
         <div class="col-sm-12" style="background-color:#fff;">
             <div class="ibox float-e-margins">
@@ -575,7 +575,7 @@
     </div>
 </div>
 
-<div id="pro_modal" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+<div id="pro_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
     <div class="row">
         <div class="col-sm-12" style="background-color:#fff;">
             <div class="ibox float-e-margins">
@@ -636,7 +636,7 @@
 </div>
 
 
-<div id="fname" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
+<div id="fname" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;">
     <div class="row">
         <div class="col-sm-12" style="background-color:#fff;">
             <div class="ibox float-e-margins">
@@ -696,6 +696,7 @@
 <!--<script src="__JS__/viewer.js"></script>-->
 <!--<script src="__JS__/pdf.js"></script>-->
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.288/pdf.min.js" type="text/javascript"></script>-->
+</body>
 <script type="text/javascript">
     $("#standard_wrapper").slimScroll({
         height: "50%"
@@ -1772,9 +1773,9 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                            implement_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
-                            standard_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
-                            standard_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
+                        implement_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
+                        standard_table1.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
+                        standard_table2.ajax.url("__SCRIPT__/procedure_attachment.php?group_id=" + cid3 + "&table_name=bhg").load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -2184,5 +2185,4 @@
         })
     })
 </script>
-</body>
 </html>
