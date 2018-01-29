@@ -28,7 +28,13 @@ class Responsibility extends Base
         $responsibility = new ResponsibilityModel();
         $param = $responsibility->getOne($id);
         $filePath = $param['path'];
-        $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1); ;
+        $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1);
+
+        // 判断是否有文件
+        if(!is_file($fileName)){
+            return json(['code' => 0,'data' => '','msg' => '文件不存在']);
+        }
+
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         $fileName = iconv("utf-8","gb2312",$fileName);
