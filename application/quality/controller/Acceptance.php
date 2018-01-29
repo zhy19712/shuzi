@@ -184,29 +184,29 @@ class Acceptance extends Base
         }
     }
 
-    //保存上传附件信息
-    public function saveAttachmentInfo()
-    {
-        $attachment = new ProjectAttachmentModel();
-
-        $param = input('post.');
-        if(request()->isAjax()){
-            $data = [
-                'id_level_1' => $param['id_level_1'],
-                'id_level_2' => $param['id_level_2'],
-                'id_level_3' => $param['id_level_3'],
-                'id_level_4' => $param['id_level_4'],
-                'id_level_5' => $param['id_level_5'],
-                'owner' => session('username'),
-                'date' => date("Y-m-d H:i:s"),
-                'department' => session('dept'),
-                'path' => $param['path'],
-                'filename' => $param['filename']
-            ];
-            $flag = $attachment->insertAttachment($data);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        }
-    }
+//    //保存上传附件信息
+//    public function saveAttachmentInfo()
+//    {
+//        $attachment = new ProjectAttachmentModel();
+//
+//        $param = input('post.');
+//        if(request()->isAjax()){
+//            $data = [
+//                'id_level_1' => $param['id_level_1'],
+//                'id_level_2' => $param['id_level_2'],
+//                'id_level_3' => $param['id_level_3'],
+//                'id_level_4' => $param['id_level_4'],
+//                'id_level_5' => $param['id_level_5'],
+//                'owner' => session('username'),
+//                'date' => date("Y-m-d H:i:s"),
+//                'department' => session('dept'),
+//                'path' => $param['path'],
+//                'filename' => $param['filename']
+//            ];
+//            $flag = $attachment->insertAttachment($data);
+//            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+//        }
+//    }
 
 
     /**
