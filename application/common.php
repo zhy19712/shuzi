@@ -240,3 +240,36 @@ function random_str($length){
  
     return $str;
 }
+
+/**
+ * 整理功能树方法
+ * @param $param
+ * @return array
+ */
+function prepareMenu($param)
+{
+    $parent = []; //父类
+    $child = [];  //子类
+
+    foreach($param as $key=>$vo){
+
+        if($vo['pid'] == 0){
+            $vo['href'] = '#';
+            $parent[] = $vo;
+        }else{
+            $vo['href'] = url($vo['name']); //跳转地址
+            $child[] = $vo;
+        }
+    }
+
+    foreach($parent as $key=>$vo){
+        foreach($child as $k=>$v){
+
+            if($v['pid'] == $vo['id']){
+                $parent[$key]['child'][] = $v;
+            }
+        }
+    }
+    unset($child);
+    return $parent;
+}
