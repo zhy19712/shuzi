@@ -116,12 +116,12 @@
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script>
-    var uploader,tablename;
+    //预览
     function showPdf(id,url) {
         $.ajax({
             url: url,
             type: "post",
-            data: {id:id,table_name:tablename},
+            data: {id:id},
             success: function (res) {
                 console.log(res);
                 if(res.code === 1){
@@ -133,53 +133,19 @@
             }
         })
     }
-    function showpdf1(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        var parent = $(that).parent("td").parent("tr").parent("tbody").parent("table").attr("id");
-        if(parent === "table1"){
-            tablename = "jlys"
-        }else if(parent === "table2"){
-            tablename = "xsys"
-        }else if(parent === "table3"){
-            tablename = "jzqdys"
-        }
-        showPdf(id,"./attachmentPreview");
-    }
-    $('#myTab a').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-        console.log($(this).text());
-    });
-
-    var uploader1;
-    $("#fname1 .btn-primary").click(function () {
-        uploader1.upload();
-    })
-    function del(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        var parent = $(that).parent("td").parent("tr").parent("tbody").parent("table").attr("id");
-        if(parent === "table1"){
-            tablename = "jlys"
-        }else if(parent === "table2"){
-            tablename = "xsys"
-        }else if(parent === "table3"){
-            tablename = "jzqdys"
-        }
+    //删除
+    function del(id,url) {
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
-                url: "./stageDel",
-                data: {'id' : id,table_name:tablename},
+                url: url,
+                data: {'id' : id},
                 type: "post",
                 dataType: "json",
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        if(parent === "table1"){
-                            table1.ajax.url("__SCRIPT__/project_stage1.php?table_name=jlys").load();
-                        }else if(parent === "table2"){
-                            table2.ajax.url("__SCRIPT__/project_stage2.php?table_name=xsys").load();
-                        }else if(parent === "table3"){
-                            table3.ajax.url("__SCRIPT__/project_stage3.php?table_name=jzqdys").load();
+                        if(url === "./responsibilityDel"){
+                            table1.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php").load();
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
@@ -189,30 +155,21 @@
             layer.close(index);
         })
     }
-    function download(that) {
+    //下载
+    function download(id,url) {
         $.ajax({
-            url: "./stageDownload",
+            url: url,
             success: function (res) {
                 if(res.code != 1){
                     layer.msg(res.msg)
                 }else {
                     $("#form_container").empty();
-                    var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-                    var parent = $(that).parents("table").attr("id");
-                    if(parent === "table1"){
-                        tablename = "jlys"
-                    }else if(parent === "table2"){
-                        tablename = "xsys"
-                    }else if(parent === "table3"){
-                        tablename = "jzqdys"
-                    }
                     var str = "";
                     str += ""
                         + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-                        + "<form name=download"+ id +" action='./stageDownload' method='get' target=downloadFrame"+ id +">"
+                        + "<form name=download"+ id +" action="+ url +" method='get' target=downloadFrame"+ id +">"
                         + "<span class='file_name' style='color: #000;'>"+str+"</span>"
                         + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
-                        + "<input style='display: none;' name='table_name' value="+ tablename +">"
                         + "<button type='submit' class=btn" + id +"></button>"
                         + "</form>"
                     $("#form_container").append(str);
@@ -220,6 +177,27 @@
                 }
             }
         })
+    }
+    //bootstrap,tab切换
+    $('#myTab a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+        console.log($(this).text());
+    });
+
+    //table1
+    var uploader1;
+    function showpdf1(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        showPdf(id,"./responsibilityPreview");
+    }
+    function del1(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        del(id,"./responsibilityDel");
+    }
+    function download1(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        download(id,"./responsibilityDownload");
     }
     var table1 = $('#table1').DataTable( {
         "processing": true,
@@ -234,9 +212,9 @@
                 "orderable": false,
                 "targets": [5],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download1(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del1(this)' value='删除'/>" ;
                     return html;
                 }
             }
@@ -343,6 +321,9 @@
 //                $("#file_upload").empty();
             });
         }
+    })
+    $("#fname1 .btn-primary").click(function () {
+        uploader1.upload();
     })
 //    var table2 = $('#table2').DataTable( {
 //        "processing": true,
