@@ -17,7 +17,7 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/responsibility');
         if($info){
             $temp = $info->getSaveName();
-            $path = './uploads/acceptance/' . str_replace("\\","/",$temp);
+            $path = './uploads/safety/responsibility/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             $data = [
                 'name' => $name,
@@ -44,7 +44,7 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/anual');
         if($info){
             $temp = $info->getSaveName();
-            $path = './uploads/acceptance/' . str_replace("\\","/",$temp);
+            $path = './uploads/safety/anual/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             $data = [
                 'name' => $name,
@@ -69,7 +69,7 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/general');
         if($info){
             $temp = $info->getSaveName();
-            $path = './uploads/acceptance/' . str_replace("\\","/",$temp);
+            $path = './uploads/safety/general/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             $data = [
                 'name' => $name,
