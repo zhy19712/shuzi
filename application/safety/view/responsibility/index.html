@@ -8,6 +8,17 @@
         margin: 0 auto;
         padding-top: 10px;
     }
+    .mybtn{
+        float: left;
+        margin-right: 20px;
+    }
+    #home{
+        padding-top: 20px;
+    }
+    #file_upload1>div:nth-child(2){
+        width: 100% !important;
+        height: 100% !important;
+    }
 </style>
 <body class="gray-bg animated fadeInRight">
 <div id="container">
@@ -86,9 +97,9 @@
                     <div class="col-lg-12 col-xs-12">
                         <label class="col-xs-3 control-label" id="file" style="text-align: right;line-height: 44px;">文件：</label>
                         <div class="myblock col-xs-8 input-group">
-                            <div id="file_per" style="display: inline-block;vertical-align: middle;"></div>
-                            <div id="file_upload" style="display: inline-block;vertical-align: middle;"></div>
-                            <div id="file_list" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_upload1" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_list1" style="display: inline-block;vertical-align: middle;"></div>
                         </div>
                     </div>
                     <div class="col-xs-12" style="text-align: center;">
@@ -139,112 +150,91 @@
         $(this).tab('show');
         console.log($(this).text());
     });
-    function upload(that) {
-        var cid = $(that).parent("td").parent("tr").children("td:first-child").text();
-        var parent = $(that).parents("table").attr("id");
-        if(parent === "table1"){
-            tablename = "jlys"
-        }else if(parent === "table2"){
-            tablename = "xsys"
-        }else if(parent === "table3"){
-            tablename = "jzqdys"
+
+    var uploader1 = WebUploader.create({
+        auto: false,// 选完文件后，是否自动上传。
+        swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+        server: "{:url('Upload/uploadResponsibility')}",// 文件接收服务端。
+        chunked: false,
+        fileSizeLimit: 1000 *1024 *1024,
+        fileNumLimit: 1,
+        formData: {"remark":""},
+        duplicate :true,// 重复上传图片，true为可重复false为不可重复
+        pick: {
+            multiple: false,
+            id: "#file_upload1",
+            innerHTML: "上传文件"
         }
-        $("#file_list").empty();
-        $("#fname").modal('show');
-        if(!uploader){
-            uploader = WebUploader.create({
-                auto: false,// 选完文件后，是否自动上传。
-                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadProjectStage')}",// 文件接收服务端。
-                chunked: false,
-                fileSizeLimit: 1000 *1024 *1024,
-                fileNumLimit: 1,
-                formData: {"uid":"","table_name":""},
-                duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                pick: {
-                    multiple: false,
-                    id: "#file_upload",
-                    innerHTML: "上传文件"
-                }
-            });
+    });
 
-            uploader.on( 'fileQueued', function( file ) {
-                $("#file_per").append('<div id="' + file.id + '" class="item">' +
-                    '</div>');
-                $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
-                    '<span class="info">' + file.name + '</span>&nbsp' +
-                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                    '</div>' );
-            });
-            $("#file_list").on("click", ".webuploadDelbtn", function () {
-                var $ele = $(this);
-                var id = $ele.parent().attr("class");
-                var file = uploader.getFile(id);
-                uploader.removeFile(file,true);
-            });
-            uploader.on('fileDequeued', function (file) {
-                $(file.id).remove();
-                $('.'+file.id).remove();
-                console.log("remove");
-            });
-            uploader.on("uploadStart",function () {
-                uploader.options.formData.uid = cid;
-                uploader.options.formData.table_name = tablename;
-            });
-            uploader.on('beforeFileQueued', function (file) {
-                if($("#file_list").html()){
-                    alert("只能上传一个文件,请先删除文件");
-                    return false;
-                }else {
-                    return true;
-                }
-            });
-            // 文件上传过程中创建进度条实时显示。
-            uploader.on('uploadProgress', function (file, percentage) {
-                var $li = $('#' + file.id),
-                    $percent = $li.find('.progress .progress-bar');
-                // 避免重复创建
-                if (!$percent.length) {
-                    $percent = $('<div class="progress progress-striped active">' +
-                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                        '</div>' +
-                        '</div>').appendTo($li).find('.progress-bar');
-                }
-                $li.find('p.state').text('上传中');
-                $percent.css('width', percentage * 100 + '%');
-            });
-            // 文件上传成功
-            uploader.on( 'uploadSuccess', function( file,data, response ) {
-                console.log(file)
-                console.log(data)
-                if(data.code === 1){
-                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
-                    uploader = null;
-                    $("#file_upload").empty();
-                    $("#fname").modal('hide');
-                    $("#file_per").empty();
-                    if(parent === "table1"){
-                        table1.ajax.url("__SCRIPT__/project_stage1.php?table_name=jlys").load();
-                    }else if(parent === "table2"){
-                        table2.ajax.url("__SCRIPT__/project_stage2.php?table_name=xsys").load();
-                    }else if(parent === "table3"){
-                        table3.ajax.url("__SCRIPT__/project_stage3.php?table_name=jzqdys").load();
-                    }
-                }else {
-                    layer.msg("抱歉，您没有此权限");
-                }
-            });
+    uploader1.on( 'fileQueued', function( file ) {
+        $("#file_per1").append('<div id="' + file.id + '" class="item">' +
+            '</div>');
+        $("#file_list1").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+            '<span class="info">' + file.name + '</span>&nbsp' +
+            '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+            '</div>' );
+    });
+    $("#file_list1").on("click", ".webuploadDelbtn", function () {
+        var $ele = $(this);
+        var id = $ele.parent().attr("class");
+        var file = uploader1.getFile(id);
+        uploader1.removeFile(file,true);
+    });
+    uploader1.on('fileDequeued', function (file) {
+        $(file.id).remove();
+        $('.'+file.id).remove();
+        console.log("remove");
+    });
+    uploader1.on("uploadStart",function () {
+        uploader1.options.formData.remark = $("#remark1").val();
+    });
+    uploader1.on('beforeFileQueued', function (file) {
+        if($("#file_list1").html()){
+            alert("只能上传一个文件,请先删除文件");
+            return false;
+        }else {
+            return true;
+        }
+    });
+    // 文件上传过程中创建进度条实时显示。
+    uploader1.on('uploadProgress', function (file, percentage) {
+        var $li = $('#' + file.id),
+            $percent = $li.find('.progress .progress-bar');
+        // 避免重复创建
+        if (!$percent.length) {
+            $percent = $('<div class="progress progress-striped active">' +
+                '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                '</div>' +
+                '</div>').appendTo($li).find('.progress-bar');
+        }
+        $li.find('p.state').text('上传中');
+        $percent.css('width', percentage * 100 + '%');
+    });
+    // 文件上传成功
+    uploader1.on( 'uploadSuccess', function( file,data, response ) {
+        console.log(file)
+        console.log(data)
+        if(data.code === 1){
+            layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+            $("#file_upload").empty();
+            $("#file_per").empty();
+            $("#file_upload").empty();
+            $("#fname").modal('hide');
+            table1.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php").load();
+        }else {
+            layer.msg("抱歉，您没有此权限");
+        }
+    });
 
-            // 文件上传失败，显示上传出错。
-            uploader.on( 'uploadError', function( file ) {
-                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+    // 文件上传失败，显示上传出错。
+    uploader1.on( 'uploadError', function( file ) {
+        layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
 //                $("#file_per").empty();
 //                $("#file_upload").empty();
-            });
-        }
-    }
-    $("#fname .btn-primary").click(function () {
-        uploader.upload();
+    });
+    $("#fname1 .btn-primary").click(function () {
+        uploader1.upload();
     })
     function del(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
@@ -316,8 +306,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/safety_responsibility_agreemnet.php",
-            "async": false
+            "url": "__SCRIPT__/safety_responsibility_agreemnet.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
@@ -347,7 +336,7 @@
         }
     } );
     $("div.mybtn").html('<div>新增</div>');
-    $("#table1 .mybtn").click(function () {
+    $("#table1_wrapper .mybtn").click(function () {
         $("#fname1").modal('show');
     })
 //    var table2 = $('#table2').DataTable( {
