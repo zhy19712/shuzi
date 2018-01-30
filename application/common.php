@@ -258,7 +258,7 @@ function prepareMenu($param)
             $vo['href'] = '#';
             $parent[] = $vo;
         }else if($vo['name'] == '##'){
-            $vo['href'] = '##';
+            $vo['href'] = '#';
             $child[] = $vo;
         }
         else{
@@ -284,7 +284,6 @@ function prepareMenu($param)
             }
         }
     }
-    unset($child);
-    unset($grandchild);
+
     return $parent;
 }
