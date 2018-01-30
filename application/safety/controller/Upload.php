@@ -21,6 +21,7 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
+                    'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
@@ -34,6 +35,7 @@ class Upload extends Base
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
+                    'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
@@ -62,6 +64,7 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
+                    'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
@@ -76,6 +79,7 @@ class Upload extends Base
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
+                    'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
@@ -94,9 +98,8 @@ class Upload extends Base
     public function uploadResponsibility(){
         $responsibility = new ResponsibilityModel();
         $id = request()->param('rid');
-        $name = request()->param('rname');
+        $username = request()->param('rname');
         $dept = request()->param('dept');
-        $remark = request()->param('remark');
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/responsibility');
         if($info){
@@ -105,30 +108,52 @@ class Upload extends Base
             $filename = $file->getInfo('name');
             if(empty($id))
             {
-                $data = [
-                    'name' => $name,
-                    'filename' => $filename,
-                    'owner' => session('username'),
-                    'date' => date("Y-m-d H:i:s"),
-                    'dept' => $dept,
-                    'path' => $path,
-                    'remark' => $remark
-                ];
+                if(empty($username)){
+                    $data = [
+                        'name' => $filename,
+                        'filename' => $filename,
+                        'owner' => session('username'),
+                        'date' => date("Y-m-d H:i:s"),
+                        'dept' => $dept,
+                        'path' => $path
+                    ];
+                }else{
+                    $data = [
+                        'name' => $filename,
+                        'filename' => $filename,
+                        'username' => $username,
+                        'owner' => session('username'),
+                        'date' => date("Y-m-d H:i:s"),
+                        'path' => $path
+                    ];
+                }
+
                 $flag = $responsibility->insertResponsibility($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $responsibility->getOne($id);
                 unlink($data_older['path']);
-                $data = [
-                    'id' => $id,
-                    'name' => $name,
-                    'filename' => $filename,
-                    'owner' => session('username'),
-                    'date' => date("Y-m-d H:i:s"),
-                    'dept' => $dept,
-                    'path' => $path,
-                    'remark' => $remark
-                ];
+                if(empty($username)){
+                    $data = [
+                        'id' => $id,
+                        'name' => $filename,
+                        'filename' => $filename,
+                        'owner' => session('username'),
+                        'date' => date("Y-m-d H:i:s"),
+                        'dept' => $dept,
+                        'path' => $path
+                    ];
+                }else{
+                    $data = [
+                        'id' => $id,
+                        'name' => $filename,
+                        'filename' => $filename,
+                        'username' => $username,
+                        'owner' => session('username'),
+                        'date' => date("Y-m-d H:i:s"),
+                        'path' => $path
+                    ];
+                }
                 $flag = $responsibility->insertResponsibility($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }

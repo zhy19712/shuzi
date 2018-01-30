@@ -50,7 +50,7 @@ class Responsibility extends Base
         $anual = new SafetyGoalAnualModel();
         $param = $anual->getOne($id);
         $filePath = $param['path'];
-        $fileName = '.' . substr(strrchr($filePath, '.'), 1);
+        $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1);
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         $fileName = iconv("utf-8","gb2312",$fileName);
@@ -150,7 +150,7 @@ class Responsibility extends Base
         $general = new SafetyGoalGeneralModel();
         $param = $general->getOne($id);
         $filePath = $param['path'];
-        $fileName = '.' . substr(strrchr($filePath, '.'), 1);
+        $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1);
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         $fileName = iconv("utf-8","gb2312",$fileName);
@@ -231,14 +231,17 @@ class Responsibility extends Base
         $responsibility = new ResponsibilityModel();
         $param = input('post.');
         if(request()->isAjax()){
-            $data = [
-                'id' => $param['rid'],
-                'name' => $param['name'],
-                'owner' => session('username'),
-                'date' => date("Y-m-d H:i:s"),
-                'dept' =>$param['dept'],
-                'remark' => $param['remark']
-            ];
+            if(empty($param['rname'])){
+                $data = [
+                    'id' => $param['rid'],
+                    'dept' =>$param['dept']
+                ];
+            }else{
+                $data = [
+                    'id' => $param['rid'],
+                    'username' => $param['rname'],
+                ];
+            }
             $flag = $responsibility->editResponsibility($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
@@ -253,7 +256,7 @@ class Responsibility extends Base
         $responsibility = new ResponsibilityModel();
         $param = $responsibility->getOne($id);
         $filePath = $param['path'];
-        $fileName = '.' . substr(strrchr($filePath, '.'), 1);
+        $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1);
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         $fileName = iconv("utf-8","gb2312",$fileName);
