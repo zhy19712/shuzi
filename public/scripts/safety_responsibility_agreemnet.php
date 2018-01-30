@@ -59,9 +59,18 @@ $sql_details = array(
 
 require( 'ssp.class.php' );
 
-echo json_encode(
-    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
-);
+$tablename = $_GET["tablename"];
+if($tablename == 'department')
+{
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "dept is not null" )
+    );
+}
+else{
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null, "dept is null" )
+    );
+}
 
 
 
