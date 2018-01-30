@@ -132,8 +132,7 @@ class Responsibility extends Base
         $param = input('post.');
         if(request()->isAjax()){
             $data = [
-                'id' => $param['id'],
-                'name' => $param['name'],
+                'id' => $param['gid'],
                 'owner' => session('username'),
                 'date' => date("Y-m-d H:i:s"),
                 'year' => $param['year'],
