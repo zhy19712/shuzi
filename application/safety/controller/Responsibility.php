@@ -233,7 +233,7 @@ class Responsibility extends Base
         if(request()->isAjax()){
             $data = [
                 'id' => $param['rid'],
-                'name' => $param['name'],
+                'username' => $param['rname'],
                 'owner' => session('username'),
                 'date' => date("Y-m-d H:i:s"),
                 'dept' =>$param['dept'],
