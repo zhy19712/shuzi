@@ -26,24 +26,44 @@
                     </div>
                 </li>
                 {if !empty($menu)}
-                    {foreach name="menu" item="vo"}
-                    <li class="menu">
-                        <a href="{$vo.href}">
-                            <i class="{$vo.css}"></i>
-                            <span class="nav-label">{$vo.title} </span>
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level">
-                            {if !empty($vo['child'])}
-                                {foreach name="$vo['child']" item="v"}
+                {foreach name="menu" item="vo"}
+                <li class="menu">
+                    <a href="{$vo.href}">
+                        <i class="{$vo.css}"></i>
+                        <span class="nav-label">{$vo.title} </span>
+                        <span class="fa arrow"></span>
+                    </a>
+                    <ul class="nav nav-second-level">
+                        {if !empty($vo['child'])}
+                        {foreach name="$vo['child']" item="v"}
+                        {if empty($v['grandchild'])}
+                        <li>
+                            <a class="J_menuItem" href="{$v.href}">{$v.title}</a>
+                        </li>
+                        {else}
+
+                        <li class="menu">
+                            <a href="{$v.href}">
+
+                                <span class="nav-label">{$v.title} </span>
+                                <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-third-level">
+                                {if !empty($v['grandchild'])}
+                                {foreach name="$v['grandchild']" item="vv"}
                                 <li>
-                                    <a class="J_menuItem" href="{$v.href}">{$v.title}</a>
+                                    <a class="J_menuItem" href="{$vv.href}">{$vv.title}</a>
                                 </li>
                                 {/foreach}
-                            {/if}
-                        </ul>
-                    </li>
-                    {/foreach}
+                                {/if}
+                            </ul>
+                        </li>
+                        {/if}
+                        {/foreach}
+                        {/if}
+                    </ul>
+                </li>
+                {/foreach}
                 {/if}
             </ul>
         </div>
@@ -55,7 +75,7 @@
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
                     <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">
-                        <i class="fa fa-bars"></i> 
+                        <i class="fa fa-bars"></i>
                     </a>
                     <div class="alert alert-danger alert-dismissable" style="padding: 3px; padding-right: 30px; margin-left: 80px; margin-top: 15px;">
                         <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
@@ -195,7 +215,7 @@
         </div>
     </div>
     <!--右侧边栏结束-->
-  
+
 </div>
 {include file="public/footer" /}
 <script src="__JS__/plugins/metisMenu/jquery.metisMenu.js"></script>
@@ -205,30 +225,30 @@
 <script src="__JS__/plugins/pace/pace.min.js"></script>
 <script>
 
-//退出登录
-$(document).ready(function(){
-    $("#logout").click(function(){
-        layer.confirm('你确定要退出吗？', {icon: 3}, function(index){
-            layer.close(index);
-            window.location.href="{:url('admin/login/loginOut')}";
+    //退出登录
+    $(document).ready(function(){
+        $("#logout").click(function(){
+            layer.confirm('你确定要退出吗？', {icon: 3}, function(index){
+                layer.close(index);
+                window.location.href="{:url('admin/login/loginOut')}";
+            });
         });
     });
-});
 
-//清除缓存
-$(function(){
-    $("#cache").click(function(){
-        layer.confirm('你确定要清除缓存吗？', {icon: 3, title:'提示'}, function(index){                   
-            $.getJSON("{:url('admin/index/clear')}",function(res){
-                if(res.code == 1){
-                    layer.msg(res.msg,{icon:1,time:2000,shade: 0.1});
-                }else{
-                    layer.msg(res.msg,{icon:0,time:2000,shade: 0.1});
-                }
-            });
-            layer.close(index);
-        })
-    });
+    //清除缓存
+    $(function(){
+        $("#cache").click(function(){
+            layer.confirm('你确定要清除缓存吗？', {icon: 3, title:'提示'}, function(index){
+                $.getJSON("{:url('admin/index/clear')}",function(res){
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:2000,shade: 0.1});
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:2000,shade: 0.1});
+                    }
+                });
+                layer.close(index);
+            })
+        });
 
 //鼠标进入，离开伸缩
 //    $("body").addClass("mini-navbar");
@@ -237,7 +257,7 @@ $(function(){
 //    },function () {
 //        $("body").removeClass("mini-navbar");
 //    })
-});
+    });
 </script>
 
 
@@ -245,7 +265,7 @@ $(function(){
 
 <script type="text/javascript">
     $('#weather').leoweather({format:'，{时段}好！<span id="colock">现在时间是：<strong>{年}年{月}月{日}日 星期{周} {时}:{分}:{秒}</strong></span> '});
- //   $('#weather').leoweather({format:'，{时段}好！<span id="colock">现在时间是：<strong>{年}年{月}月{日}日 星期{周} {时}:{分}:{秒}</strong>，</span> <b>{城市}天气</b> {天气} {夜间气温}℃ ~ {白天气温}℃'});
+    //   $('#weather').leoweather({format:'，{时段}好！<span id="colock">现在时间是：<strong>{年}年{月}月{日}日 星期{周} {时}:{分}:{秒}</strong>，</span> <b>{城市}天气</b> {天气} {夜间气温}℃ ~ {白天气温}℃'});
 </script>
 
 </body>

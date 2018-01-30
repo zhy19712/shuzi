@@ -1,6 +1,7 @@
 <?php
 
 namespace app\admin\controller;
+use app\admin\model\Node;
 use app\admin\model\UserModel;
 use app\admin\model\UserType;
 use think\Db;
@@ -158,6 +159,15 @@ class User extends Base
             //    );
             }
         }
+
+    }
+    public function test(){
+        $node = new Node();
+        $node->getMenu(session('rule'));
+        $aa = 1234;
+        $result = Db::name('auth_rule')->order('sort')->select();
+        $menu = prepareMenu($result);
+        return json(['data' => $menu]);
 
     }
 
