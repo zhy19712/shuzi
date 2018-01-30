@@ -95,7 +95,6 @@
                         <th>所属部门</th>
                         <th>上传时间</th>
                         <th>上传人</th>
-                        <th>状态</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -435,6 +434,7 @@
                     $("#remark1").val(res.data.remark);
                     aname1 = res.data.name;
                     aname2 = res.data.name;
+                    uploader1 = null;
                     upload1();
                     if(res.data.path){
                         $("#file_list1").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
@@ -659,6 +659,7 @@
                     $("#remark2").val(res.data.remark);
                     bname1 = res.data.name;
                     bname2 = res.data.name;
+                    uploader2 = null;
                     upload2();
                     if(res.data.path){
                         $("#file_list2").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
@@ -894,6 +895,7 @@
                     $("#personal").val(res.data.username);
                     cname1 = res.data.name;
                     cname2 = res.data.name;
+                    uploader3 = null;
                     upload3();
                     if(tablename == "department"){
                         $("#person").css("display","none");
@@ -927,7 +929,7 @@
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [6],
+                "targets": [5],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download3(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit3(this)' value='编辑'/>" ;
@@ -980,7 +982,7 @@
                     $.ajax({
                         url: "./responsibilityEdit",
                         type: "post",
-                        data: {rid:$("#rid").val(),remark:$("#remark3").val(),rname:$("#person").val(),dept:$("#department").val()},
+                        data: {rid:$("#rid").val(),remark:$("#remark3").val(),rname:$("#personal").val(),dept:$("#department").val()},
                         datatype: "json",
                         success: function (res) {
                             if(res.code === 1){
