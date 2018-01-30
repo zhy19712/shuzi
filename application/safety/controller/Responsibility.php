@@ -13,7 +13,7 @@ use app\admin\controller\Base;
 use app\safety\model\ResponsibilityModel;
 use app\safety\model\SafetyGoalAnualModel;
 use app\safety\model\SafetyGoalGeneralModel;
-
+//目标
 class Responsibility extends Base
 {
     public function index()
