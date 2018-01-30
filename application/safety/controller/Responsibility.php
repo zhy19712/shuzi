@@ -50,7 +50,7 @@ class Responsibility extends Base
         $anual = new SafetyGoalAnualModel();
         $param = $anual->getOne($id);
         $filePath = $param['path'];
-        $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1);
+        $fileName = '.' . substr(strrchr($filePath, '.'), 1);
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         $fileName = iconv("utf-8","gb2312",$fileName);
@@ -150,7 +150,7 @@ class Responsibility extends Base
         $general = new SafetyGoalGeneralModel();
         $param = $general->getOne($id);
         $filePath = $param['path'];
-        $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1);
+        $fileName = '.' . substr(strrchr($filePath, '.'), 1);
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         $fileName = iconv("utf-8","gb2312",$fileName);
@@ -253,7 +253,7 @@ class Responsibility extends Base
         $responsibility = new ResponsibilityModel();
         $param = $responsibility->getOne($id);
         $filePath = $param['path'];
-        $fileName = $param['name'] . '.' . substr(strrchr($filePath, '.'), 1);
+        $fileName = '.' . substr(strrchr($filePath, '.'), 1);
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         $fileName = iconv("utf-8","gb2312",$fileName);
