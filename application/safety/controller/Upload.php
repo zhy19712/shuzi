@@ -94,7 +94,7 @@ class Upload extends Base
     public function uploadResponsibility(){
         $responsibility = new ResponsibilityModel();
         $id = request()->param('rid');
-        $name = request()->param('name');
+        $name = request()->param('rname');
         $dept = request()->param('dept');
         $remark = request()->param('remark');
         $file = request()->file('file');
