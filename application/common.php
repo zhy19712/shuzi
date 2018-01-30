@@ -250,26 +250,41 @@ function prepareMenu($param)
 {
     $parent = []; //父类
     $child = [];  //子类
+    $grandchild = [];
 
     foreach($param as $key=>$vo){
 
-        if($vo['pid'] == 0){
+        if($vo['name'] == '#'){
             $vo['href'] = '#';
             $parent[] = $vo;
-        }else{
-            $vo['href'] = url($vo['name']); //跳转地址
+        }else if($vo['name'] == '##'){
+            $vo['href'] = '##';
             $child[] = $vo;
+        }
+        else{
+            $vo['href'] = url($vo['name']); //跳转地址
+            $grandchild[] = $vo;
         }
     }
 
     foreach($parent as $key=>$vo){
         foreach($child as $k=>$v){
-
             if($v['pid'] == $vo['id']){
                 $parent[$key]['child'][] = $v;
+                foreach($grandchild as $kk=>$vv){
+                    if($vv['pid'] == $v['id']){
+                        $parent[$key]['child'][$k]['grandchild'][] = $vv;
+                    }
+                }
+            }
+        }
+        foreach($grandchild as $kk=>$vv){
+            if($vv['pid'] == $vo['id']){
+                $parent[$key]['child'][] = $vv;
             }
         }
     }
     unset($child);
+    unset($grandchild);
     return $parent;
 }
