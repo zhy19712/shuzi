@@ -32,9 +32,10 @@ $primaryKey = 'id';
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
     array( 'db' => 'name',  'dt' => 1 ),
-    array( 'db' => 'owner',  'dt' => 2 ),
-    array( 'db' => 'date',  'dt' => 3 ),
-    array( 'db' => 'remark',  'dt' => 4 )
+    array( 'db' => 'dept',  'dt' => 2 ),
+    array( 'db' => 'owner',  'dt' => 3 ),
+    array( 'db' => 'date',  'dt' => 4 ),
+    array( 'db' => 'remark',  'dt' => 5 )
 );
 
 // SQL server connection information数据库连接信息
@@ -58,9 +59,18 @@ $sql_details = array(
 
 require( 'ssp.class.php' );
 
-echo json_encode(
-    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
-);
+$tablename = $_GET["tablename"];
+if($tablename == 'department')
+{
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "dept is not null" )
+    );
+}
+else{
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null, "dept is null" )
+    );
+}
 
 
 
