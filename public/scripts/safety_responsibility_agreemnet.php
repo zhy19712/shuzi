@@ -24,13 +24,31 @@ $table = 'think_safety_responsibility_agreemnet';
 
 // Table's primary key
 $primaryKey = 'id';
-
+$tablename = $_GET["tablename"];
 // Array of database columns which should be read and sent back to DataTables.
 // The `db` parameter represents the column name in the database, while the `dt`
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
-
-
+if($tablename == 'department') // 部门
+{
+    $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
+        array( 'db' => 'id',  'dt' => 0 ),
+        array( 'db' => 'name',  'dt' => 1 ),
+        array( 'db' => 'dept',  'dt' => 2 ),
+        array( 'db' => 'owner',  'dt' => 3 ),
+        array( 'db' => 'date',  'dt' => 4 ),
+        array( 'db' => 'remark',  'dt' => 5 )
+    );
+}else{
+    $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
+        array( 'db' => 'id',  'dt' => 0 ),
+        array( 'db' => 'name',  'dt' => 1 ),
+        array( 'db' => 'username',  'dt' => 2 ),
+        array( 'db' => 'owner',  'dt' => 3 ),
+        array( 'db' => 'date',  'dt' => 4 ),
+        array( 'db' => 'remark',  'dt' => 5 )
+    );
+}
 
 // SQL server connection information数据库连接信息
 $sql_details = array(
@@ -53,34 +71,15 @@ $sql_details = array(
 
 require( 'ssp.class.php' );
 
-$tablename = $_GET["tablename"];
-if($tablename == 'department')
+if($tablename == 'department') // 部门
 {
-    $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
-        array( 'db' => 'id',  'dt' => 0 ),
-        array( 'db' => 'name',  'dt' => 1 ),
-        array( 'db' => 'dept',  'dt' => 2 ),
-        array( 'db' => 'owner',  'dt' => 3 ),
-        array( 'db' => 'date',  'dt' => 4 ),
-        array( 'db' => 'remark',  'dt' => 5 )
-    );
-
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "dept != ''" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "dept is not null" )
     );
 }
 else{
-    $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
-        array( 'db' => 'id',  'dt' => 0 ),
-        array( 'db' => 'name',  'dt' => 1 ),
-        array( 'db' => 'username',  'dt' => 2 ),
-        array( 'db' => 'owner',  'dt' => 3 ),
-        array( 'db' => 'date',  'dt' => 4 ),
-        array( 'db' => 'remark',  'dt' => 5 )
-    );
-
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null, "username != ''" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null, "dept is null" )
     );
 }
 
