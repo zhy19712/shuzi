@@ -92,8 +92,9 @@
                     <tr>
                         <th>ID</th>
                         <th>文件名称</th>
-                        <th>上传人</th>
+                        <th>所属部门</th>
                         <th>上传时间</th>
+                        <th>上传人</th>
                         <th>状态</th>
                         <th>操作</th>
                     </tr>
@@ -182,12 +183,7 @@
                     <h5></h5>
                 </div>
                 <div class="ibox-content">
-                    <div class="col-lg-12 col-xs-12">
-                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">上传时间：</label>
-                        <div class="myblock col-xs-8 input-group">
-                            <input id="year3" type="text" class="form-control" name="year" >
-                        </div>
-                    </div>
+                    <input id="rid" type="text" class="form-control" value="" style="display: none;">
                     <div class="col-lg-12 col-xs-12" id="dept">
                         <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">部门：</label>
                         <div class="myblock col-xs-8 input-group">
@@ -229,9 +225,6 @@
     //日期插件
     $("#year2").jeDate({
         format: "YYYY-MM"
-    });
-    $("#year3").jeDate({
-        format: "YYYY-MM-DD"
     });
     //预览
     function showPdf(id,url) {
@@ -733,7 +726,7 @@
                         success: function (res) {
                             if(res.code === 1){
                                 layer.msg(res.msg);
-                                table2.ajax.url("__SCRIPT__/safety_goal_general.php?name=depe").load();
+                                table2.ajax.url("__SCRIPT__/safety_goal_general.php").load();
                                 $("#fname2").modal('hide');
                             }else {
                                 layer.msg(res.msg);
@@ -751,19 +744,19 @@
 
 
     //责任书
-    var tablename;                 //表格区分
+    var tablename = "department";                 //表格区分
     var cname1,cname2;           //用于区分 编辑时是否修改了文件
-    //总体目标-初始化upload
+    //责任书-初始化upload
     function upload3() {
         if(!uploader3){
             uploader3 = WebUploader.create({
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadSafeyGoalGeneral')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadResponsibility')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"remark":"","gid":"","year":""},
+                formData: {"remark":"","rid":"","dept":"","rname":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -793,9 +786,10 @@
                 console.log("remove");
             });
             uploader3.on("uploadStart",function () {
-                uploader3.options.formData.gid = $("#gid").val();
-                uploader3.options.formData.year = $("#year2").val();
-                uploader3.options.formData.remark = $("#remark2").val();
+                uploader3.options.formData.rid = $("#rid").val();
+                uploader3.options.formData.dept = $("#department").val();
+                uploader3.options.formData.rname = $("#personal").val();
+                uploader3.options.formData.remark = $("#remark3").val();
             });
             uploader3.on('beforeFileQueued', function (file) {
                 if($("#file_list3").html()){
@@ -830,7 +824,11 @@
                     $("#file_list3").empty();
                     $("#fname3").modal('hide');
                     uploader3 = null;
-                    table3.ajax.url("__SCRIPT__/safety_goal_general.php").load();
+                    if(tablename == "department"){
+                        table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=department").load();
+                    }else {
+                        table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=personal").load();
+                    }
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -844,100 +842,160 @@
         }
     }
 
-    //年度目标-预览
+    //责任书-预览
     function showpdf3(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        showPdf(id,"./generalPreview");
+        showPdf(id,"./responsibilityPreview");
     }
 
-    //年度目标-删除
+    //责任书-删除
     function del3(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        del(id,"./generalDel");
+        del(id,"./responsibilityDel");
     }
 
-    //年度目标-下载
+    //责任书-下载
     function download3(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        download(id,"./generalDownload");
+        download(id,"./responsibilityDownload");
     }
 
-    //年度目标-编辑-删除文件
+    //责任书-编辑-删除文件
     function fdelatt3(that) {
         var id = $(that).parent("div").attr("id");
         $("#"+id).remove();
     }
 
-    //年度目标-编辑
+    //责任书-编辑
     function edit3(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         $.ajax({
-            url: "./postGeneral",
+            url: "./postResponsibility",
             type: "post",
             data: {id:id},
             dataType: "json",
             success: function (res) {
                 console.log(res);
                 if(res.code === 1){
-                    $("#gid").val(res.data.id);
-                    $("#year2").val(res.data.year);
-                    $("#remark2").val(res.data.remark);
-                    bname1 = res.data.name;
-                    bname2 = res.data.name;
-                    upload2();
+                    $("#rid").val(res.data.id);
+                    $("#department").val(res.data.dept);
+                    $("#personal").val(res.data.username);
+                    cname1 = res.data.name;
+                    cname2 = res.data.name;
+                    upload3();
                     if(res.data.path){
-                        $("#file_list2").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                        $("#file_list3").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
                             '<span class="info">' + res.data.name + '</span>&nbsp' +
-                            '<span onclick="fdelatt2(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '<span onclick="fdelatt3(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
                             '</div>' );
                     }
-                    $("#fname2").modal('show');
+                    $("#fname3").modal('show');
                 }
             }
         })
     }
-//    var table3 = $('#table3').DataTable( {
-//        "processing": true,
-//        "serverSide": true,
-//        "ajax": {
-//            "url": "__SCRIPT__/project_stage3.php?tablename=jzqdys",
-//            "async": false
-//        },
-//        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
-//        "columnDefs": [
-//            {
-//                "searchable": false,
-//                "orderable": false,
-//                "targets": [5],
-//                "render" :  function(data,type,row) {
-//                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
-//                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='upload(this)' value='上传'/>" ;
-//                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
-//                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
-//                    return html;
-//                }
-//            }
-//        ],
-//        "language": {
-//            "lengthMenu": "每页_MENU_ 条记录",
-//            "zeroRecords": "没有找到记录",
-//            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-//            "infoEmpty": "无记录",
-//            "search": "搜索：",
-//            "infoFiltered": "(从 _MAX_ 条记录过滤)",
-//            "paginate": {
-//                "previous": "上一页",
-//                "next": "下一页"
-//            }
-//        }
-//    } );
+
+    //责任书-表格
+    var table3 = $('#table3').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/safety_responsibility_agreemnet.php?tablename=department",
+            "async": false
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [6],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download3(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit3(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf3(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del3(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
     $("div.mybtn").html('<div>新增</div>');
+
+    //责任书-新增
+    $("#table3_wrapper .mybtn").click(function () {
+        $("#fname3 input").val("");
+        $("#fname3 select").val("");
+        $("#file_list3").empty();
+        if(tablename == "department"){
+            $("#fname3 select").val("安全组");
+            $("#person").css("display","none");
+            $("#dept").css("display","block");
+        }else {
+            $("#person").css("display","block");
+            $("#dept").css("display","none");
+        }
+        $("#fname3").modal('show');
+        upload3();
+    })
+
+    //责任书-提交
+    $("#fname3 .btn-primary").click(function () {
+        if($("#file_list3").html()){
+            if(!$("#rid").val()){
+                uploader3.upload();
+            }else {
+                if(cname1 === cname2){
+                    $.ajax({
+                        url: "./responsibilityEdit",
+                        type: "post",
+                        data: {rid:$("#rid").val(),remark:$("#remark3").val(),rname:$("#person").val(),dept:$("#department").val()},
+                        datatype: "json",
+                        success: function (res) {
+                            if(res.code === 1){
+                                layer.msg(res.msg);
+                                if(tablename == "department"){
+                                    table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=department").load();
+                                }else {
+                                    table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=personal").load();
+                                }
+                                $("#fname3").modal('hide');
+                            }else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    })
+                }else {
+                    uploader3.upload();
+                }
+            }
+        }else {
+            alert("请选择上传文件");
+        }
+    })
+
+    //责任书-tab切换
     $("#tab_li>div").click(function () {
         var index = $(this).index();
-        if(index === 1){
-            tablename = "department"
+        if(index === 0){
+            tablename = "department";
+            $("#table3 thead tr th:nth-child(3)").text("所属部门");
+            table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=department").load();
         }else {
-            tablename = "personal"
+            tablename = "personal";
+            $("#table3 thead tr th:nth-child(3)").text("人员姓名");
+            table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=personal").load();
         }
         $("#tab_li>div").css("background-color","#fff").eq(index).css("background-color","#bae2f3");
     })
