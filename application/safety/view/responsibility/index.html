@@ -112,6 +112,7 @@
                     <h5></h5>
                 </div>
                 <div class="ibox-content">
+                    <input id="aid" type="text" class="form-control" value="" >
                     <div class="col-lg-12 col-xs-12">
                         <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">备注：</label>
                         <div class="myblock col-xs-8 input-group">
@@ -258,8 +259,8 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        if(url === "./responsibilityDel"){
-                            table1.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php").load();
+                        if(url === "./anualDel"){
+                            table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
@@ -300,80 +301,21 @@
     });
 
     //table1
-    var uploader1,upload2,upload3;
+    var uploader1,upload2,upload3;          //初始化三个upload按钮
     //总体目标
-    function showpdf2(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        showPdf(id,"./responsibilityPreview");
-    }
-    function del2(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        del(id,"./responsibilityDel");
-    }
-    function download2(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        download(id,"./responsibilityDownload");
-    }
-    //总体目标-编辑
-    function edit1(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $.ajax({
-            url: "./index",
-            type: "post",
-            data: {id:id},
-            dataType: "json",
-            success: function (res) {
-                console.log(res);
-            }
-        })
-    }
-    var table1 = $('#table1').DataTable( {
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": "__SCRIPT__/safety_responsibility_agreemnet.php"
-        },
-        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
-        "columnDefs": [
-            {
-                "searchable": false,
-                "orderable": false,
-                "targets": [5],
-                "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download1(this)' value='下载'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit1(this)' value='编辑'/>" ;
-                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del1(this)' value='删除'/>" ;
-                    return html;
-                }
-            }
-        ],
-        "language": {
-            "lengthMenu": "每页_MENU_ 条记录",
-            "zeroRecords": "没有找到记录",
-            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-            "infoEmpty": "无记录",
-            "search": "搜索：",
-            "infoFiltered": "(从 _MAX_ 条记录过滤)",
-            "paginate": {
-                "previous": "上一页",
-                "next": "下一页"
-            }
-        }
-    } );
-    $("div.mybtn").html('<div>新增</div>');
-    $("#table1_wrapper .mybtn").click(function () {
-        $("#fname1 input").val("");
-        $("#fname1").modal('show');
+    var aname1,aname2;           //用于区分 编辑时是否修改了文件
+
+    //总体目标-初始化upload
+    function upload1() {
         if(!uploader1){
             uploader1 = WebUploader.create({
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadResponsibility')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadSafeyGoalAnual')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"remark":""},
+                formData: {"remark":"","aid":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -383,6 +325,7 @@
             });
 
             uploader1.on( 'fileQueued', function( file ) {
+                aname2 = file.name;
                 $("#file_per1").append('<div id="' + file.id + '" class="item">' +
                     '</div>');
                 $("#file_list1").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
@@ -402,6 +345,7 @@
                 console.log("remove");
             });
             uploader1.on("uploadStart",function () {
+                uploader1.options.formData.aid = $("#aid").val();
                 uploader1.options.formData.remark = $("#remark1").val();
             });
             uploader1.on('beforeFileQueued', function (file) {
@@ -437,7 +381,7 @@
                     $("#file_list1").empty();
                     $("#fname1").modal('hide');
                     uploader1 = null;
-                    table1.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php").load();
+                    table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -450,21 +394,153 @@
 //                $("#file_upload").empty();
             });
         }
-    })
-    $("#fname1 .btn-primary").click(function () {
-        uploader1.upload();
+    }
+
+    //总体目标-预览
+    function showpdf1(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        showPdf(id,"./anualPreview");
+    }
+
+    //总体目标-删除
+    function del1(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        del(id,"./anualDel");
+    }
+
+    //总体目标-下载
+    function download1(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        download(id,"./anualDownload");
+    }
+
+    //总体目标-编辑-删除文件
+    function fdelatt(that) {
+        var id = $(that).parent("div").attr("id");
+        $("#"+id).remove();
+    }
+
+    //总体目标-编辑
+    function edit1(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $.ajax({
+            url: "./index",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.code === 1){
+                    $("#aid").val(res.data.id);
+                    $("#remark1").val(res.data.remark);
+                    aname1 = res.data.name;
+                    aname2 = res.data.name;
+                    upload1();
+                    if(res.data.path){
+                        $("#file_list1").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                            '<span class="info">' + res.data.name + '</span>&nbsp' +
+                            '<span onclick="fdelatt(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '</div>' );
+                    }
+                    $("#fname1").modal('show');
+                }
+            }
+        })
+    }
+
+    //总体目标-表格
+    var table1 = $('#table1').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/safety_goal_anual.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [5],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download1(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit1(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del1(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
+    $("div.mybtn").html('<div>新增</div>');
+
+    //总体目标-新增
+    $("#table1_wrapper .mybtn").click(function () {
+        $("#fname1 input").val("");
+        $("#file_list1").empty();
+        $("#fname1").modal('show');
+        upload1();
     })
 
+    //总体目标-提交
+    $("#fname1 .btn-primary").click(function () {
+        if($("#file_list1").html()){
+            if(!$("#aid").val()){
+                uploader1.upload();
+            }else {
+                if(aname1 === aname2){
+                    $.ajax({
+                        url: "./anualEdit",
+                        type: "post",
+                        data: {aid:$("#aid").val(),remark:$("#remark1").val()},
+                        datatype: "json",
+                        success: function (res) {
+                            if(res.code === 1){
+                                layer.msg(res.msg);
+                                table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
+                                $("#fname1").modal('hide');
+                            }else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    })
+                }else {
+                    uploader1.upload();
+                }
+            }
+        }else {
+            alert("请选择上传文件");
+        }
+    })
+
+
+
     //年度目标
-    function showpdf1(that) {
+    //年度目标-预览
+    function showpdf2(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        showPdf(id,"./anualPreview");
+    }
+    function showpdf2(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         showPdf(id,"./responsibilityPreview");
     }
-    function del1(that) {
+    function del2(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         del(id,"./responsibilityDel");
     }
-    function download1(that) {
+    function download2(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         download(id,"./responsibilityDownload");
     }

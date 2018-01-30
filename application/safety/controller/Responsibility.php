@@ -33,7 +33,7 @@ class Responsibility extends Base
         $param = input('post.');
         if(request()->isAjax()){
             $data = [
-                'id' => $param['id'],
+                'id' => $param['aid'],
                 'remark' => $param['remark']
             ];
             $flag = $anual->editSafetyGoalAnual($data);
