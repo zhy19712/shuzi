@@ -523,7 +523,15 @@
             alert("请选择上传文件");
         }
     })
+
+
+
     //年度目标
+    //年度目标-预览
+    function showpdf2(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        showPdf(id,"./anualPreview");
+    }
     function showpdf2(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         showPdf(id,"./responsibilityPreview");
