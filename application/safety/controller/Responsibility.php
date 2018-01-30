@@ -236,8 +236,7 @@ class Responsibility extends Base
                 'username' => $param['rname'],
                 'owner' => session('username'),
                 'date' => date("Y-m-d H:i:s"),
-                'dept' =>$param['dept'],
-                'remark' => $param['remark']
+                'dept' =>$param['dept']
             ];
             $flag = $responsibility->editResponsibility($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);

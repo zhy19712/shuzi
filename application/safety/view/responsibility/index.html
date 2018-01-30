@@ -187,7 +187,7 @@
                     <div class="col-lg-12 col-xs-12" id="dept">
                         <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">部门：</label>
                         <div class="myblock col-xs-8 input-group">
-                            <select name="department" id="department" class="form-control" >
+                            <select name="department" id="department" class="form-control" value="安全组">
                                 <option value="安全组">安全组</option>
                                 <option value="质量组">质量组</option>
                             </select>
@@ -255,6 +255,14 @@
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         if(url === "./anualDel"){
                             table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
+                        }else if(url === "./generalDel"){
+                            table2.ajax.url("__SCRIPT__/safety_goal_general.php").load();
+                        }else if(url === "./responsibilityDel"){
+                            if(tablename == "department"){
+                                table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=department").load();
+                            }else {
+                                table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=personal").load();
+                            }
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
@@ -374,7 +382,6 @@
                     $("#file_per1").empty();
                     $("#file_list1").empty();
                     $("#fname1").modal('hide');
-                    uploader1 = null;
                     table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
@@ -480,6 +487,7 @@
 
     //总体目标-新增
     $("#table1_wrapper .mybtn").click(function () {
+        uploader1 = null;
         $("#fname1 input").val("");
         $("#file_list1").empty();
         $("#fname1").modal('show');
@@ -597,7 +605,6 @@
                     $("#file_per2").empty();
                     $("#file_list2").empty();
                     $("#fname2").modal('hide');
-                    uploader2 = null;
                     table2.ajax.url("__SCRIPT__/safety_goal_general.php").load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
@@ -705,6 +712,7 @@
 
     //年度目标-新增
     $("#table2_wrapper .mybtn").click(function () {
+        uploader2 = null;
         $("#fname2 input").val("");
         $("#file_list2").empty();
         $("#fname2").modal('show');
@@ -787,7 +795,11 @@
             });
             uploader3.on("uploadStart",function () {
                 uploader3.options.formData.rid = $("#rid").val();
-                uploader3.options.formData.dept = $("#department").val();
+                if($("#department").val()){
+                    uploader3.options.formData.dept = $("#department").val();
+                }else {
+                    uploader3.options.formData.dept = "";
+                }
                 uploader3.options.formData.rname = $("#personal").val();
                 uploader3.options.formData.remark = $("#remark3").val();
             });
@@ -823,7 +835,6 @@
                     $("#file_per3").empty();
                     $("#file_list3").empty();
                     $("#fname3").modal('hide');
-                    uploader3 = null;
                     if(tablename == "department"){
                         table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=department").load();
                     }else {
@@ -878,11 +889,19 @@
                 console.log(res);
                 if(res.code === 1){
                     $("#rid").val(res.data.id);
+                    console.log(res.data.dept);
                     $("#department").val(res.data.dept);
                     $("#personal").val(res.data.username);
                     cname1 = res.data.name;
                     cname2 = res.data.name;
                     upload3();
+                    if(tablename == "department"){
+                        $("#person").css("display","none");
+                        $("#dept").css("display","block");
+                    }else {
+                        $("#person").css("display","block");
+                        $("#dept").css("display","none");
+                    }
                     if(res.data.path){
                         $("#file_list3").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
                             '<span class="info">' + res.data.name + '</span>&nbsp' +
@@ -935,6 +954,7 @@
 
     //责任书-新增
     $("#table3_wrapper .mybtn").click(function () {
+        uploader3 = null;
         $("#fname3 input").val("");
         $("#fname3 select").val("");
         $("#file_list3").empty();

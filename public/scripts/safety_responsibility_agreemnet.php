@@ -29,14 +29,8 @@ $primaryKey = 'id';
 // The `db` parameter represents the column name in the database, while the `dt`
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
-$columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
-    array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'name',  'dt' => 1 ),
-    array( 'db' => 'dept',  'dt' => 2 ),
-    array( 'db' => 'owner',  'dt' => 3 ),
-    array( 'db' => 'date',  'dt' => 4 ),
-    array( 'db' => 'remark',  'dt' => 5 )
-);
+
+
 
 // SQL server connection information数据库连接信息
 $sql_details = array(
@@ -62,13 +56,31 @@ require( 'ssp.class.php' );
 $tablename = $_GET["tablename"];
 if($tablename == 'department')
 {
+    $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
+        array( 'db' => 'id',  'dt' => 0 ),
+        array( 'db' => 'name',  'dt' => 1 ),
+        array( 'db' => 'dept',  'dt' => 2 ),
+        array( 'db' => 'owner',  'dt' => 3 ),
+        array( 'db' => 'date',  'dt' => 4 ),
+        array( 'db' => 'remark',  'dt' => 5 )
+    );
+
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "dept is not null" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "dept != ''" )
     );
 }
 else{
+    $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
+        array( 'db' => 'id',  'dt' => 0 ),
+        array( 'db' => 'name',  'dt' => 1 ),
+        array( 'db' => 'username',  'dt' => 2 ),
+        array( 'db' => 'owner',  'dt' => 3 ),
+        array( 'db' => 'date',  'dt' => 4 ),
+        array( 'db' => 'remark',  'dt' => 5 )
+    );
+
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null, "dept is null" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null, "username != ''" )
     );
 }
 
