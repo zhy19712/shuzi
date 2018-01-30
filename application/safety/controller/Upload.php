@@ -21,6 +21,7 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
+                    'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
@@ -34,6 +35,7 @@ class Upload extends Base
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
+                    'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
@@ -62,6 +64,7 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
+                    'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
@@ -76,6 +79,7 @@ class Upload extends Base
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
+                    'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
@@ -94,7 +98,7 @@ class Upload extends Base
     public function uploadResponsibility(){
         $responsibility = new ResponsibilityModel();
         $id = request()->param('rid');
-        $name = request()->param('rname');
+        $username = request()->param('rname');
         $dept = request()->param('dept');
         $remark = request()->param('remark');
         $file = request()->file('file');
@@ -106,8 +110,9 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
-                    'name' => $name,
+                    'name' => $filename,
                     'filename' => $filename,
+                    'username' => $username,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
                     'dept' => $dept,
@@ -121,8 +126,9 @@ class Upload extends Base
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
-                    'name' => $name,
+                    'name' => $filename,
                     'filename' => $filename,
+                    'username' => $username,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
                     'dept' => $dept,
