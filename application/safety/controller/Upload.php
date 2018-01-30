@@ -100,7 +100,6 @@ class Upload extends Base
         $id = request()->param('rid');
         $username = request()->param('rname');
         $dept = request()->param('dept');
-        $remark = request()->param('remark');
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/responsibility');
         if($info){
@@ -116,8 +115,7 @@ class Upload extends Base
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
                     'dept' => $dept,
-                    'path' => $path,
-                    'remark' => $remark
+                    'path' => $path
                 ];
                 $flag = $responsibility->insertResponsibility($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
@@ -132,8 +130,7 @@ class Upload extends Base
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
                     'dept' => $dept,
-                    'path' => $path,
-                    'remark' => $remark
+                    'path' => $path
                 ];
                 $flag = $responsibility->insertResponsibility($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
