@@ -31,7 +31,7 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'name',  'dt' => 1 ),
+    array( 'db' => 'filename',  'dt' => 1 ),
     array( 'db' => 'owner',  'dt' => 2 ),
     array( 'db' => 'date',  'dt' => 3 ),
     array( 'db' => 'remark',  'dt' => 4 )

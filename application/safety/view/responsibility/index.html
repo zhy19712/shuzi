@@ -183,6 +183,7 @@
                     <h5></h5>
                 </div>
                 <div class="ibox-content">
+                    <input id="rid" type="text" class="form-control" value="" style="display: none;">
                     <div class="col-lg-12 col-xs-12" id="dept">
                         <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">部门：</label>
                         <div class="myblock col-xs-8 input-group">
@@ -725,7 +726,7 @@
                         success: function (res) {
                             if(res.code === 1){
                                 layer.msg(res.msg);
-                                table2.ajax.url("__SCRIPT__/safety_goal_general.php?name=depe").load();
+                                table2.ajax.url("__SCRIPT__/safety_goal_general.php").load();
                                 $("#fname2").modal('hide');
                             }else {
                                 layer.msg(res.msg);
@@ -844,19 +845,19 @@
     //责任书-预览
     function showpdf3(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        showPdf(id,"./generalPreview");
+        showPdf(id,"./responsibilityPreview");
     }
 
     //责任书-删除
     function del3(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        del(id,"./generalDel");
+        del(id,"./responsibilityDel");
     }
 
     //责任书-下载
     function download3(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        download(id,"./generalDownload");
+        download(id,"./responsibilityDownload");
     }
 
     //责任书-编辑-删除文件
@@ -869,30 +870,32 @@
     function edit3(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         $.ajax({
-            url: "./postGeneral",
+            url: "./postResponsibility",
             type: "post",
             data: {id:id},
             dataType: "json",
             success: function (res) {
                 console.log(res);
                 if(res.code === 1){
-                    $("#gid").val(res.data.id);
-                    $("#year2").val(res.data.year);
-                    $("#remark2").val(res.data.remark);
-                    bname1 = res.data.name;
-                    bname2 = res.data.name;
-                    upload2();
+                    $("#rid").val(res.data.id);
+                    $("#department").val(res.data.dept);
+                    $("#personal").val(res.data.username);
+                    cname1 = res.data.name;
+                    cname2 = res.data.name;
+                    upload3();
                     if(res.data.path){
-                        $("#file_list2").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                        $("#file_list3").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
                             '<span class="info">' + res.data.name + '</span>&nbsp' +
-                            '<span onclick="fdelatt2(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '<span onclick="fdelatt3(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
                             '</div>' );
                     }
-                    $("#fname2").modal('show');
+                    $("#fname3").modal('show');
                 }
             }
         })
     }
+
+    //责任书-表格
     var table3 = $('#table3').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -933,8 +936,10 @@
     //责任书-新增
     $("#table3_wrapper .mybtn").click(function () {
         $("#fname3 input").val("");
+        $("#fname3 select").val("");
         $("#file_list3").empty();
         if(tablename == "department"){
+            $("#fname3 select").val("安全组");
             $("#person").css("display","none");
             $("#dept").css("display","block");
         }else {
@@ -943,6 +948,41 @@
         }
         $("#fname3").modal('show');
         upload3();
+    })
+
+    //责任书-提交
+    $("#fname3 .btn-primary").click(function () {
+        if($("#file_list3").html()){
+            if(!$("#rid").val()){
+                uploader3.upload();
+            }else {
+                if(cname1 === cname2){
+                    $.ajax({
+                        url: "./responsibilityEdit",
+                        type: "post",
+                        data: {rid:$("#rid").val(),remark:$("#remark3").val(),rname:$("#person").val(),dept:$("#department").val()},
+                        datatype: "json",
+                        success: function (res) {
+                            if(res.code === 1){
+                                layer.msg(res.msg);
+                                if(tablename == "department"){
+                                    table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=department").load();
+                                }else {
+                                    table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=personal").load();
+                                }
+                                $("#fname3").modal('hide');
+                            }else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    })
+                }else {
+                    uploader3.upload();
+                }
+            }
+        }else {
+            alert("请选择上传文件");
+        }
     })
 
     //责任书-tab切换
