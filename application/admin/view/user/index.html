@@ -492,16 +492,16 @@ function myuser_state(that) {
     var zTreeObj;
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
-        // console.log(treeNode);
-        $.ajax({
-            url:"./test",    //请求的url地址
-            dataType:"json",   //返回格式为json
-            async:true,//请求是否异步，默认为异步，这也是ajax重要特性
-            type:"GET",   //请求方式
-            success:function(req){
-                console.log(req);
-            }
-        });
+        console.log(treeNode);
+        // $.ajax({
+        //     url:"./test",    //请求的url地址
+        //     dataType:"json",   //返回格式为json
+        //     async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+        //     type:"GET",   //请求方式
+        //     success:function(req){
+        //         console.log(req);
+        //     }
+        // });
         mytree_node = treeNode;
         $("#groupname").val(treeNode.name);
         $("#mycontent>p").text(treeNode.name);

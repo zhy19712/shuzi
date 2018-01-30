@@ -119,56 +119,55 @@ class User extends Base
     }
 
 
-    function adminTable()
-    {
-
-        if(request()->isAjax()) {
-            $param = input('get.');
-            $table = 'think_admin';
-            $primaryKey = 'id';
-            $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
-                array('db' => 'id', 'dt' => 0),
-                array('db' => 'username', 'dt' => 1),
-                array('db' => 'portrait', 'dt' => 2),
-                array('db' => 'dept', 'dt' => 3),
-                array('db' => 'mobile', 'dt' => 4),
-                array('db' => 'position', 'dt' => 5),
-                array('db' => 'real_name', 'dt' => 6),
-                array('db' => 'status', 'dt' => 7)
-            );
-// SQL server connection information数据库连接信息
-            $sql_details = array(
-                'user' => 'root',
-                'pass' => 'admin',
-                'db' => 'shuzi',
-                'host' => '127.0.0.1'
-            );
-
-            require("ssp.class.php");
-
-
-
-            if (!empty($param['groupid'])) {
-                $groupid = $param['groupid'];
-                echo json_encode(
-                    SSP::complex($_GET, $sql_details, $table, $primaryKey, $columns, null, "groupid = '$groupid'")
-                );
-            } else {
-             //   echo json_encode(
-            //         SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns)
-            //    );
-            }
-        }
-
-    }
-    public function test(){
-        $node = new Node();
-        $node->getMenu(session('rule'));
-        $aa = 1234;
-        $result = Db::name('auth_rule')->order('sort')->select();
-        $menu = prepareMenu($result);
-        return json(['data' => $menu]);
-
-    }
+//    function adminTable()
+//    {
+//
+//        if(request()->isAjax()) {
+//            $param = input('get.');
+//            $table = 'think_admin';
+//            $primaryKey = 'id';
+//            $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
+//                array('db' => 'id', 'dt' => 0),
+//                array('db' => 'username', 'dt' => 1),
+//                array('db' => 'portrait', 'dt' => 2),
+//                array('db' => 'dept', 'dt' => 3),
+//                array('db' => 'mobile', 'dt' => 4),
+//                array('db' => 'position', 'dt' => 5),
+//                array('db' => 'real_name', 'dt' => 6),
+//                array('db' => 'status', 'dt' => 7)
+//            );
+//// SQL server connection information数据库连接信息
+//            $sql_details = array(
+//                'user' => 'root',
+//                'pass' => 'admin',
+//                'db' => 'shuzi',
+//                'host' => '127.0.0.1'
+//            );
+//
+//            require("ssp.class.php");
+//
+//
+//
+//            if (!empty($param['groupid'])) {
+//                $groupid = $param['groupid'];
+//                echo json_encode(
+//                    SSP::complex($_GET, $sql_details, $table, $primaryKey, $columns, null, "groupid = '$groupid'")
+//                );
+//            } else {
+//             //   echo json_encode(
+//            //         SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns)
+//            //    );
+//            }
+//        }
+//    }
+//    public function test(){
+//        $node = new Node();
+//        $node->getMenu(session('rule'));
+//        $aa = 1234;
+//        $result = Db::name('auth_rule')->order('sort')->select();
+//        $menu = prepareMenu($result);
+//        return json(['data' => $menu]);
+//
+//    }
 
 }
