@@ -11,7 +11,6 @@ class Upload extends Base
     public function uploadSafeyGoalAnual(){
         $anual = new SafetyGoalAnualModel();
         $id = request()->param('aid');
-        $name = request()->param('name');
         $remark = request()->param('remark');
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/anual');
@@ -22,7 +21,6 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
-                    'name' => $name,
                     'filename' => $filename,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
@@ -36,7 +34,6 @@ class Upload extends Base
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
-                    'name' => $name,
                     'filename' => $filename,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
@@ -54,7 +51,6 @@ class Upload extends Base
     public function uploadSafeyGoalGeneral(){
         $general = new SafetyGoalGeneralModel();
         $id = request()->param('gid');
-        $name = request()->param('name');
         $year = request()->param('year');
         $remark = request()->param('remark');
         $file = request()->file('file');
@@ -66,7 +62,6 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
-                    'name' => $name,
                     'filename' => $filename,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
@@ -81,7 +76,6 @@ class Upload extends Base
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
-                    'name' => $name,
                     'filename' => $filename,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),

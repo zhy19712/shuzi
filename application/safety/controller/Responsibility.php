@@ -34,9 +34,6 @@ class Responsibility extends Base
         if(request()->isAjax()){
             $data = [
                 'id' => $param['id'],
-                'name' => $param['name'],
-                'owner' => session('username'),
-                'date' => date("Y-m-d H:i:s"),
                 'remark' => $param['remark']
             ];
             $flag = $anual->editSafetyGoalAnual($data);
@@ -135,10 +132,7 @@ class Responsibility extends Base
         $param = input('post.');
         if(request()->isAjax()){
             $data = [
-                'id' => $param['id'],
-                'name' => $param['name'],
-                'owner' => session('username'),
-                'date' => date("Y-m-d H:i:s"),
+                'id' => $param['gid'],
                 'year' => $param['year'],
                 'remark' => $param['remark']
             ];
@@ -238,7 +232,7 @@ class Responsibility extends Base
         $param = input('post.');
         if(request()->isAjax()){
             $data = [
-                'id' => $param['id'],
+                'id' => $param['rid'],
                 'name' => $param['name'],
                 'owner' => session('username'),
                 'date' => date("Y-m-d H:i:s"),
