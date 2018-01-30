@@ -1,5 +1,13 @@
 <?php
-//配置文件
-return [
 
+return [
+    //模板参数替换
+    'view_replace_str' => array(
+        '__CSS__' => '/static/admin/css',
+        '__JS__'  => '/static/admin/js',
+        '__IMG__' => '/static/admin/images',
+        '__VIDEO__' => '/static/admin/video',
+        '__PHOTO__' => '/uploads/face',
+        '__SCRIPT__' => '/scripts',
+    ),
 ];
