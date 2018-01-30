@@ -231,13 +231,17 @@ class Responsibility extends Base
         $responsibility = new ResponsibilityModel();
         $param = input('post.');
         if(request()->isAjax()){
-            $data = [
-                'id' => $param['rid'],
-                'username' => $param['rname'],
-                'owner' => session('username'),
-                'date' => date("Y-m-d H:i:s"),
-                'dept' =>$param['dept']
-            ];
+            if(empty($param['rname'])){
+                $data = [
+                    'id' => $param['rid'],
+                    'dept' =>$param['dept']
+                ];
+            }else{
+                $data = [
+                    'id' => $param['rid'],
+                    'username' => $param['rname'],
+                ];
+            }
             $flag = $responsibility->editResponsibility($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
