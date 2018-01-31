@@ -30,13 +30,13 @@ $primaryKey = 'id';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
-    array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'name',  'dt' => 1 ),
-    array( 'db' => 'revision',  'dt' => 2 ),
-    array( 'db' => 'replace_revision',  'dt' => 3 ),
-    array( 'db' => 'replace_time',  'dt' => 4 ),
-    array( 'db' => 'owner',  'dt' => 5 ),
-    array( 'db' => 'type',  'dt' => 6 )
+    array( 'db' => 'id',  'dt' => 1 ),
+    array( 'db' => 'name',  'dt' => 2 ),
+    array( 'db' => 'revision',  'dt' => 3 ),
+    array( 'db' => 'replace_revision',  'dt' => 4 ),
+    array( 'db' => 'replace_time',  'dt' => 5 ),
+    array( 'db' => 'owner',  'dt' => 6 ),
+    array( 'db' => 'type',  'dt' => 7 )
 );
 
 // SQL server connection information数据库连接信息

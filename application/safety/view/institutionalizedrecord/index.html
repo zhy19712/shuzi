@@ -28,48 +28,48 @@
 {include file="public/footer" /}
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script>
-//    var admin_table = $('#admin_table').DataTable( {
-//        "processing": true,
-//        "serverSide": true,
-//        "ajax": {
-//            "url": "__SCRIPT__/project_table.php"
-//        },
-//        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
-//        "columnDefs": [
-//            {
-//                "searchable": false,
-//                "orderable": false,
-//                "targets": [0],
-//                "render" :  function(data,type,row) {
-//                    var html = "<input type='checkbox'";
-//                    return html;
-//                }
-//            },
-//            {
-//                "searchable": false,
-//                "orderable": false,
-//                "targets": [8],
-//                "render" :  function(data,type,row) {
-//                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='下载'/>";
-//                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
-//                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
-//                    return html;
-//                }
-//            }
-//        ],
-//        "language": {
-//            "lengthMenu": "每页_MENU_ 条记录",
-//            "zeroRecords": "没有找到记录",
-//            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-//            "infoEmpty": "无记录",
-//            "search": "搜索：",
-//            "infoFiltered": "(从 _MAX_ 条记录过滤)",
-//            "paginate": {
-//                "previous": "上一页",
-//                "next": "下一页"
-//            }
-//        }
-//    } );
+    var admin_table = $('#admin_table').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/safety_institutionalizedrecord.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "columnDefs": [
+            {
+                "searchable": true,
+                "orderable": true,
+                "targets": [0],
+                "render" :  function() {
+                    var str = "<input type='checkbox'>";
+                    return str;
+                }
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [8],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
 $("div.mybtn").html('<div>新增</div>');
 </script>
 </body>
