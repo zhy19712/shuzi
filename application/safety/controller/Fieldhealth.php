@@ -2,16 +2,16 @@
 /**
  * Created by PhpStorm.
  * User: admin
- * Date: 2018/1/29
- * Time: 9:29
+ * Date: 2018/1/30
+ * Time: 15:20
  */
 
-namespace app\archive\controller;
+namespace app\safety\controller;
 
 
 use app\admin\controller\Base;
 
-class Incoming extends Base
+class Fieldhealth extends Base
 {
     public function index()
     {
