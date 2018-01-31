@@ -38,9 +38,6 @@
         color: #000;
         cursor: pointer;
     }
-    #mytable1_wrapper{
-        display: none;
-    }
     .webuploader-pick{
         position: absolute;
         left: 0;
@@ -115,13 +112,13 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/project_table.php"
+            "url": "__SCRIPT__/safety_education.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "columnDefs": [
             {
-                "searchable": false,
-                "orderable": false,
+                "searchable": true,
+                "orderable": true,
                 "targets": [0],
                 "render" :  function(data,type,row) {
                     var html = "<input type='checkbox'/>";

@@ -5,6 +5,7 @@
         float: left;
         margin-right: 30px;
     }
+
 </style>
 <body class="animated fadeInRight" style="background-color:#fff; text-align: center">
 <p style="line-height: 30px;font-weight: 700;">修订记录</p>
@@ -34,7 +35,7 @@
         "ajax": {
             "url": "__SCRIPT__/safety_institutionalizedrecord.php"
         },
-        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"mysel">frtip',
         "columnDefs": [
             {
                 "searchable": true,
@@ -71,6 +72,7 @@
         }
     } );
 $("div.mybtn").html('<div>新增</div>');
+
 </script>
 </body>
 </html>
