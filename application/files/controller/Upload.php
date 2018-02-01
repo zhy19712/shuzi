@@ -25,7 +25,7 @@ class Upload extends Base
                 'address' => request()->param('address'),
                 'user' => request()->param('user'),
                 'deed' => request()->param('deed'),
-                'backgroud' => request()->param('backgroud'),
+                'background' => request()->param('background'),
                 'photographer' => request()->param('photographer'),
             ];
             $flag = $attachment->insertFileshuma($data);
