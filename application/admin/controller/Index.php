@@ -74,14 +74,14 @@ class Index extends Base
         }
     }
 
-//    public function test(){
-//        $node = new Node();
-//        $node->getMenu(session('rule'));
-//        $aa = 1234;
-//        $result = Db::name('auth_rule')->order('sort')->select();
-//        $menu = prepareMenu($result);
-//        return json(['data' => $menu]);
-//
-//    }
+    public function test(){
+        $node = new Node();
+        $node->getMenu(session('rule'));
+        $aa = 1234;
+        $result = Db::name('auth_rule')->order('sort')->select();
+        $menu = prepareMenu($result);
+        return json(['data' => $menu]);
+
+    }
 
 }

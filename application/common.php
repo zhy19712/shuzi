@@ -268,16 +268,19 @@ function prepareMenu($param)
     }
 
     foreach($parent as $key=>$vo){
+        $i = 0;
         foreach($child as $k=>$v){
             if($v['pid'] == $vo['id']){
                 $parent[$key]['child'][] = $v;
                 foreach($grandchild as $kk=>$vv){
                     if($vv['pid'] == $v['id']){
-                        $parent[$key]['child'][0]['grandchild'][] = $vv;
+                        $parent[$key]['child'][$i]['grandchild'][] = $vv;
                     }
                 }
+                $i++;
             }
         }
+
         foreach($grandchild as $kk=>$vv){
             if($vv['pid'] == $vo['id']){
                 $parent[$key]['child'][] = $vv;
