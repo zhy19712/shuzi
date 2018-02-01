@@ -1,6 +1,7 @@
 <?php
 
 namespace app\admin\controller;
+use app\admin\model\Node;
 use think\Config;
 use think\Loader;
 use think\Db;
@@ -72,5 +73,15 @@ class Index extends Base
             return json(['code' => 0, 'msg' => '清除缓存失败']);
         }
     }
+
+//    public function test(){
+//        $node = new Node();
+//        $node->getMenu(session('rule'));
+//        $aa = 1234;
+//        $result = Db::name('auth_rule')->order('sort')->select();
+//        $menu = prepareMenu($result);
+//        return json(['data' => $menu]);
+//
+//    }
 
 }
