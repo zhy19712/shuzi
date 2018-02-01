@@ -107,13 +107,4 @@ return [
     'pages'    => '10',//分页数 
     'salt'     => 'wZPb~yxvA!ir38&Z',//加密串
 
-    //模板参数替换
-    'view_replace_str' => array(
-        '__CSS__' => '/static/admin/css',
-        '__JS__'  => '/static/admin/js',
-        '__IMG__' => '/static/admin/images',
-        '__PHOTO__' => '/uploads/face',
-        '__SCRIPT__' => '/scripts',
-    ),
-
 ];
