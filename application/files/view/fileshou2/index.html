@@ -116,39 +116,39 @@
 <script type="text/javascript">
 
 
-    //    var admin_table = $('#admin_table').DataTable( {
-    //        "processing": true,
-    //        "serverSide": true,
-    //        "ajax": {
-    //            "url": "__SCRIPT__/safety_education.php"
-    //        },
-    //        "dom": '<"mybtn btn btn-outline btn-primary"><"mybtn2 btn btn-outline btn-primary"><"myl"l><"mysel">frtip',
-    //        "columnDefs": [
-    //            {
-    //                "searchable": false,
-    //                "orderable": false,
-    //                "targets": [10],
-    //                "render" :  function(data,type,row) {
-    //                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='下载'/>";
-    //                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
-    //                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
-    //                    return html;
-    //                }
-    //            }
-    //        ],
-    //        "language": {
-    //            "lengthMenu": "每页_MENU_ 条记录",
-    //            "zeroRecords": "没有找到记录",
-    //            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-    //            "infoEmpty": "无记录",
-    //            "search": "搜索：",
-    //            "infoFiltered": "(从 _MAX_ 条记录过滤)",
-    //            "paginate": {
-    //                "previous": "上一页",
-    //                "next": "下一页"
-    //            }
-    //        }
-    //    } );
+        var admin_table = $('#admin_table').DataTable( {
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "__SCRIPT__/fileshou1.php"
+            },
+            "dom": '<"mybtn btn btn-outline btn-primary"><"mybtn2 btn btn-outline btn-primary"><"myl"l><"mysel">frtip',
+            "columnDefs": [
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": [10],
+                    "render" :  function(data,type,row) {
+                        var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='下载'/>";
+                        html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
+                        html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                        return html;
+                    }
+                }
+            ],
+            "language": {
+                "lengthMenu": "每页_MENU_ 条记录",
+                "zeroRecords": "没有找到记录",
+                "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                "infoEmpty": "无记录",
+                "search": "搜索：",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "paginate": {
+                    "previous": "上一页",
+                    "next": "下一页"
+                }
+            }
+        } );
     $("div.mybtn").html('<div>新增</div>');
     $("div.mybtn2").html('<div>补传文件</div>');
     $("div.mysel").html('<span>年度:</span><select><option value="2017">2017</option><option value="2018">2018</option></select>');
