@@ -280,7 +280,6 @@ function prepareMenu($param)
                 $i++;
             }
         }
-
         foreach($grandchild as $kk=>$vv){
             if($vv['pid'] == $vo['id']){
                 $parent[$key]['child'][] = $vv;
