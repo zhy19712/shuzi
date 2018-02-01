@@ -20,7 +20,7 @@
  */
 
 // DB table to use
-$table = 'think_education';
+$table = 'think_educationpeople';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -31,13 +31,15 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 1 ),
-    array( 'db' => 'content',  'dt' => 2 ),
-    array( 'db' => 'time',  'dt' => 3 ),
-    array( 'db' => 'address',  'dt' => 4 ),
-    array( 'db' => 'user',  'dt' => 5 ),
-    array( 'db' => 'personnel',  'dt' => 6 ),
-    array( 'db' => 'num',  'dt' => 7 ),
-    array( 'db' => 'remark',  'dt' => 8 )
+    array( 'db' => 'name',  'dt' => 2 ),
+    array( 'db' => 'jop_type',  'dt' => 3 ),
+    array( 'db' => 'certificates_type',  'dt' => 4 ),
+    array( 'db' => 'certificates_no',  'dt' => 5 ),
+    array( 'db' => 'effective_date',  'dt' => 6 ),
+    array( 'db' => 'expiration_date',  'dt' => 7 ),
+    array( 'db' => 'train_methods',  'dt' => 8 ),
+    array( 'db' => 'train_time',  'dt' => 9 ),
+    array( 'db' => 'remark',  'dt' => 10 )
 );
 
 // SQL server connection information数据库连接信息
