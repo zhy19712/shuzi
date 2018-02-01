@@ -79,6 +79,12 @@
         height: 38px;
         background-color: #00b7ee;
     }
+    #img_show img{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    }
 </style>
 <body style="text-align: center;">
 <div id="mycontent" style="width: 20%;height: 98%;display: inline-block;margin: 0 10px;background-color:#fff;overflow-x: scroll;padding-top: 20px;padding-right:10px;border-right: 1px solid #ccc;">
@@ -173,6 +179,19 @@
     </div>
 </div>
 
+<div id="img_show" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row" style="height: 90%;">
+        <div class="col-sm-12" style="height: 100%;">
+            <div class="ibox float-e-margins" style="height: 100%;">
+                <div class="ibox-content" style="height: 100%;">
+                    <img src="" alt="" style="max-height: 85%;">
+                    <a class="btn btn-danger" data-dismiss="modal" style="position: absolute;bottom: 10px;left: 50%;margin-left: -30px;"><i class="fa fa-close"></i> 返回</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 
@@ -200,6 +219,11 @@
                     multiple: false,
                     id: "#file_upload1",
                     innerHTML: "上传文件"
+                },
+                accept: {
+                    title: 'Images',
+                    extensions: 'gif,jpg,jpeg,bmp,png',
+                    mimeTypes: 'image/jpg,image/jpeg,image/png'
                 }
             });
 
@@ -261,8 +285,8 @@
                     $("#file_upload1").empty();
                     $("#file_per1").empty();
                     $("#file_list1").empty();
-                    $("#fname1").modal('hide');
-                    table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
+                    $("#mymodal").modal('hide');
+                    admin_table.ajax.url("__SCRIPT__/fileshuma.php").load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -274,6 +298,20 @@
                 $("#file_per1").empty();
             });
         }
+    }
+    function detail(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $.ajax({
+            url: "./index",
+            type: "post",
+            data: {id:id},
+            success: function (res) {
+                console.log(res);
+                var path = res.data.path.substr(1);
+                $("#img_show img").attr('src',path);
+                $("#img_show").modal('show');
+            }
+        })
     }
         var admin_table = $('#admin_table').DataTable( {
             "processing": true,
@@ -288,8 +326,9 @@
                     "orderable": false,
                     "targets": [7],
                     "render" :  function(data,type,row) {
-                        var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='下载'/>";
+                        var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='detail(this)' value='查看'/>";
                         html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
+                        html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='下载'/>" ;
                         html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                         return html;
                     }
@@ -316,6 +355,9 @@
         upload();
         console.log(123);
         $("#mymodal").modal('show');
+    })
+    $("#mymodal .btn-primary").click(function () {
+        uploader1.upload();
     })
     //组织结构
     var zTreeObj;
