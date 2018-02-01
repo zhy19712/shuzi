@@ -32,8 +32,8 @@ $primaryKey = 'id';
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
     array( 'db' => 'number',  'dt' => 1 ),
-    array( 'db' => 'time',  'dt' => 2 ),
-    array( 'db' => 'address',  'dt' => 3 ),
+    array( 'db' => 'theme',  'dt' => 2 ),
+    array( 'db' => 'time',  'dt' => 3 ),
     array( 'db' => 'compere',  'dt' => 4 ),
     array( 'db' => 'collator',  'dt' => 5 ),
     array( 'db' => 'auditor',  'dt' => 6 ),
