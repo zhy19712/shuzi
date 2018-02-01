@@ -35,7 +35,7 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
     array( 'db' => 'address',  'dt' => 2 ),
     array( 'db' => 'user',  'dt' => 3 ),
     array( 'db' => 'deed',  'dt' => 4 ),
-    array( 'db' => 'backgroud',  'dt' => 5 ),
+    array( 'db' => 'background',  'dt' => 5 ),
     array( 'db' => 'photographer',  'dt' => 6 )
 );
 

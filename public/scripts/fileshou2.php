@@ -20,7 +20,7 @@
  */
 
 // DB table to use
-$table = 'think_fileshou3';
+$table = 'think_fileshou2';
 
 // Table's primary key
 $primaryKey = 'id';
