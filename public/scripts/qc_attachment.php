@@ -1,6 +1,6 @@
 <?php
 
-
+include('conn.php');
 /*
  * DataTables example server-side processing script.
  *
@@ -24,15 +24,7 @@ $table = 'think_qc_attachment';
 
 // Table's primary key
 $primaryKey = 'id';
-
-// SQL server connection information数据库连接信息
-$sql_details = array(
-    'user' => 'root',
-    'pass' => 'admin',
-    'db'   => 'shuzi',
-    'host' => '127.0.0.1'
-);
-
+ 
 
 
 

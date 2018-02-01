@@ -1,6 +1,6 @@
 ﻿<?php
 
-
+include('conn.php');
 /*
  * DataTables example server-side processing script.
  *
@@ -42,14 +42,7 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
     array( 'db' => 'remark',  'dt' => 9 )
 );
 
-// SQL server connection information数据库连接信息
-$sql_details = array(
-    'user' => 'root',
-    'pass' => 'admin',
-    'db'   => 'shuzi',
-    'host' => '127.0.0.1'
-);
-
+ 
 
 
 
