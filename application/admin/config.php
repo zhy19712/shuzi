@@ -7,6 +7,6 @@ return [
         '__JS__'  => '/static/admin/js',
         '__IMG__' => '/static/admin/images',
         '__PHOTO__' => '/uploads/face',
-        '__SCRIPT__' => '/scripts',
+        '__SCRIPT__' => '/datatables/admin',
     ),
 ];

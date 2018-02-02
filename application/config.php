@@ -105,6 +105,6 @@ return [
     'verify_type' => '0',   //验证码类型：0拖动滑块验证， 1数字验证码
     'auth_key' => 'JUD6FCtZsqrmVXc2apev4TRn3O8gAhxbSlH9wfPN', //默认数据加密KEY
     'pages'    => '10',//分页数 
-    'salt'     => 'wZPb~yxvA!ir38&Z',//加密串 
+    'salt'     => 'wZPb~yxvA!ir38&Z',//加密串
 
 ];

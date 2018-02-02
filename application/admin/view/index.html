@@ -22,7 +22,7 @@
                             <li><a href="{:url('admin/login/loginOut')}">安全退出</a></li>
                         </ul>
                     </div>
-                    <div class="logo-element">数字
+                    <div class="logo-element">金寨
                     </div>
                 </li>
                 {if !empty($menu)}
@@ -226,6 +226,16 @@
 
     //退出登录
     $(document).ready(function(){
+        // $.ajax({
+        //     url:"./test",    //请求的url地址
+        //     dataType:"json",   //返回格式为json
+        //     async:true,//请求是否异步，默认为异步，这也是ajax重要特性
+        //     type:"GET",   //请求方式
+        //     success:function(req){
+        //         console.log(req);
+        //     }
+        // });
+
         $("#logout").click(function(){
             layer.confirm('你确定要退出吗？', {icon: 3}, function(index){
                 layer.close(index);
