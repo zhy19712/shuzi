@@ -5,6 +5,7 @@ use app\admin\controller\Base;
 use app\safety\model\ResponsibilityModel;
 use app\safety\model\SafetyGoalAnualModel;
 use app\safety\model\SafetyGoalGeneralModel;
+use app\safety\model\StatutestdiModel;
 
 class Upload extends Base
 {
@@ -156,6 +157,69 @@ class Upload extends Base
                 }
                 $flag = $responsibility->insertResponsibility($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /**
+     * 新增或修改
+     * 上传法规标准识别文件
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function uploadSdi(){
+        $sdi = new StatutestdiModel();
+        $sdi_number = request()->param('sdi_number');
+        $sdi_name = request()->param('sdi_name');
+        $go_date = request()->param('go_date');
+        $standard = request()->param('standard');
+        $evaluation = request()->param('evaluation');
+        $sid_user = request()->param('sid_user');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/statutesdi');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/statutesdi/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'sdi_number' => $sdi_number,
+                    'sdi_name' => $sdi_name,
+                    'go_date' => $go_date,
+                    'standard' => $standard,
+                    'evaluation' => $evaluation,
+                    'sid_user' => $sid_user,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'sdi_date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $sdi->insertSdi($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $sdi->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'sdi_number' => $sdi_number,
+                    'sdi_name' => $sdi_name,
+                    'go_date' => $go_date,
+                    'standard' => $standard,
+                    'evaluation' => $evaluation,
+                    'sid_user' => $sid_user,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'sdi_date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $sdi->editSdi($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{
             echo $file->getError();
