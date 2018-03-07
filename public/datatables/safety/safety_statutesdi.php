@@ -19,7 +19,7 @@ include('../conn.php');
  * Easy set variables
  */
 
-// DB table to use
+// DB table to use 法规标准识别
 $table = 'think_safety_statutesdi';
 
 // Table's primary key
