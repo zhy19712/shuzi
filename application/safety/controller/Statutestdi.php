@@ -29,7 +29,7 @@ class Statutestdi extends Base
             $sdi = new StatutestdiModel();
             $param = input('post.');
             $data = [
-                'id' => $param['aid'],
+                'id' => $param['id'],
                 'sdi_number' => $param['sdi_number'],
                 'sdi_name' => $param['sdi_name'],
                 'go_date' => $param['go_date'],

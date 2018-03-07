@@ -20,7 +20,7 @@ include('../conn.php');
  */
 
 // DB table to use 法规标准识别
-$table = 'think_safety_statutesdi';
+$table = 'think_safety_rules';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -32,13 +32,13 @@ $primaryKey = 'id';
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
     array( 'db' => 'number',  'dt' => 1 ),
-    array( 'db' => 'sdi_name',  'dt' => 2 ),
+    array( 'db' => 'rul_name',  'dt' => 2 ),
     array( 'db' => 'go_date',  'dt' => 3 ),
     array( 'db' => 'standard',  'dt' => 4 ),
     array( 'db' => 'evaluation',  'dt' => 5 ),
-    array( 'db' => 'sid_user',  'dt' => 6 ),
-    array( 'db' => 'sdi_date',  'dt' => 7 ),
-    array( 'db' => 'remark',  'dt' => 8 )
+    array( 'db' => 'rul_user',  'dt' => 6 ),
+    array( 'db' => 'rul_date',  'dt' => 7 ),
+    array( 'db' => 'remark',  'dt' => 8)
 );
 
 

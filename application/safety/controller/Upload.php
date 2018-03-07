@@ -3,6 +3,7 @@
 namespace app\safety\controller;
 use app\admin\controller\Base;
 use app\safety\model\ResponsibilityModel;
+use app\safety\model\RulesregulationsModel;
 use app\safety\model\SafetyGoalAnualModel;
 use app\safety\model\SafetyGoalGeneralModel;
 use app\safety\model\StatutestdiModel;
@@ -164,14 +165,13 @@ class Upload extends Base
     }
 
     /**
-     * 新增或修改
-     * 上传法规标准识别文件
+     * 法规标准识别 -- 新增或修改
      * @return \think\response\Json
      * @author hutao
      */
     public function uploadSdi(){
         $sdi = new StatutestdiModel();
-        $sdi_number = request()->param('sdi_number');
+        $number = request()->param('number');
         $sdi_name = request()->param('sdi_name');
         $go_date = request()->param('go_date');
         $standard = request()->param('standard');
@@ -187,7 +187,7 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
-                    'sdi_number' => $sdi_number,
+                    'number' => $number,
                     'sdi_name' => $sdi_name,
                     'go_date' => $go_date,
                     'standard' => $standard,
@@ -206,7 +206,7 @@ class Upload extends Base
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
-                    'sdi_number' => $sdi_number,
+                    'number' => $number,
                     'sdi_name' => $sdi_name,
                     'go_date' => $go_date,
                     'standard' => $standard,
@@ -219,6 +219,68 @@ class Upload extends Base
                     'remark' => $remark
                 ];
                 $flag = $sdi->editSdi($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /**
+     * 规章制度 -- 新增或修改
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function uploadRules(){
+        $rules = new RulesregulationsModel();
+        $number = request()->param('number');
+        $rul_name = request()->param('rul_name');
+        $go_date = request()->param('go_date');
+        $standard = request()->param('standard');
+        $evaluation = request()->param('evaluation');
+        $rul_user = request()->param('rul_user');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/rules');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/rules/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'number' => $number,
+                    'rul_name' => $rul_name,
+                    'go_date' => $go_date,
+                    'standard' => $standard,
+                    'evaluation' => $evaluation,
+                    'rul_user' => $rul_user,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'rul_date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $rules->insertRulation($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $rules->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'number' => $number,
+                    'rul_name' => $rul_name,
+                    'go_date' => $go_date,
+                    'standard' => $standard,
+                    'evaluation' => $evaluation,
+                    'rul_user' => $rul_user,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'rul_date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $rules->editRulation($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{
