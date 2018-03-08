@@ -19,7 +19,7 @@ class Statutestdi extends Base
     {
         if(request()->isAjax()){
             $node = new SafetySdiNodeModel();
-            $nodeStr = $node->getNodeInfo();
+            $nodeStr = $node->getNodeInfo(1);
             return json($nodeStr);
         }
         return $this ->fetch();
