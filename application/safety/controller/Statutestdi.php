@@ -5,7 +5,6 @@
  * Date: 2018/3/7
  * Time: 10:53
  */
-//法规标准识别
 namespace app\safety\controller;
 
 use app\admin\controller\Base;
@@ -13,7 +12,7 @@ use app\admin\model\UserModel;
 use app\admin\model\UserType;
 use app\safety\model\SafetySdiNodeModel;
 use app\safety\model\StatutestdiModel;
-
+//法规标准识别
 class Statutestdi extends Base
 {
     public  function  index()
@@ -23,7 +22,7 @@ class Statutestdi extends Base
             $nodeStr = $node->getNodeInfo();
             return json($nodeStr);
         }
-        return $this ->fetch('index22');
+        return $this ->fetch();
     }
 
     /**
