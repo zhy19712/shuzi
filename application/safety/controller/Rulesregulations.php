@@ -11,6 +11,7 @@ use app\admin\controller\Base;
 use app\admin\model\UserModel;
 use app\admin\model\UserType;
 use app\safety\model\RulesregulationsModel;
+use app\safety\model\SafetySdiNodeModel;
 
 // 规章制度
 class Rulesregulations extends Base
