@@ -52,7 +52,19 @@
     <h2>修编记录</h2>
     <div class="table-info">
         <table id="tableItem" class="table table-striped" cellspacing="0"  width="100%">
-
+            <thead>
+            <tr>
+                <th>全选</th>
+                <th>序号</th>
+                <th>文件名称</th>
+                <th>原有版本号</th>
+                <th>替换版本号</th>
+                <th>替换时间</th>
+                <th>上传人</th>
+                <th>类别</th>
+                <th>操作</th>
+            </tr>
+            </thead>
         </table>
     </div>
 </div>
@@ -68,76 +80,23 @@
 <script src="__JS__/mypdf.js"></script>
 <script>
     //表格
-    var dataSet = [
-        ["全选","01","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","02","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","03","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","04","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","05","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","06","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","07","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","08","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","09","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","10","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","11","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","12","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","13","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","14","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","15","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","16","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","17","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","18","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","19","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","20","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","21","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","22","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","23","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-        ["全选","24","xxx制度","BCC/JZ-2017-07","BCC/JZ-2018-07","2018年7月25日","admin","监理部规章制度",""],
-
-    ];
-    var columns = [
-        {
-            title:"全选",
-        },
-        {
-            title:"序号",
-        },
-        {
-            title:"文件名称",
-        },
-        {
-            title:"原有版本号",
-        },
-        {
-            title:"替换版本号",
-        },
-        {
-            title:"替换时间",
-        },
-        {
-            title:"上传人",
-        },
-        {
-            title:"类别",
-        },
-        {
-            title:"操作",
-        }
-    ]
     $('#tableItem').DataTable({
-        data:dataSet,
-        columns:columns,
-        columnDefs:[
+        processing: true,
+        serverSide: true,
+        ajax: {
+            "url": "__SCRIPT__/safety_statutesdi.php"
+        },
+        dom: '<"mybtn1 btn btn-outline btn-primary"><"myl"l>frtip',
+        columnDefs: [
             {
-                targets: 8,
-                render: function (data, type, row, meta) {
-                    return '<a class="btn btn-success btn-xs" href="#" onclick=delFromID(' + row.id + ') >查询</a>' +
-                           '<a class="btn btn-danger btn-xs" href="#" onclick=delFromID(\' + row.id + \') >删除</a>';
-                }
-            },
-            {
+                "searchable": false,
                 "orderable": false,
-                "targets": 8
+                "targets": [2],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='查看'/>";
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='zdel(this)' value='删除'/>" ;
+                    return html;
+                }
             }
         ],
         language: {
