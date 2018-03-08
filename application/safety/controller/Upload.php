@@ -3,7 +3,6 @@
 namespace app\safety\controller;
 use app\admin\controller\Base;
 use app\safety\model\ResponsibilityModel;
-use app\safety\model\RevisionrecordModel;
 use app\safety\model\RulesregulationsModel;
 use app\safety\model\SafetyGoalAnualModel;
 use app\safety\model\SafetyGoalGeneralModel;
@@ -289,9 +288,11 @@ class Upload extends Base
             echo $file->getError();
         }
     }
-    /*
-         * 设置机构文件上传
-         */
+
+    /**
+     * 设置机构文件上传
+     * @return \think\response\Json
+     */
     public function uploadResponsibilityinstyGroup(){
         $group = new ResponsibilityinstyGroupModel();
         $id = request()->param('aid');
