@@ -9,12 +9,18 @@
 namespace app\safety\controller;
 
 use app\admin\controller\Base;
+use app\safety\model\SafetySdiNodeModel;
 use app\safety\model\StatutestdiModel;
 
 class Statutestdi extends Base
 {
     public  function  index()
     {
+        if(request()->isAjax()){
+            $node = new SafetySdiNodeModel();
+            $nodeStr = $node->getNodeInfo();
+            return json($nodeStr);
+        }
         return $this ->fetch();
     }
 
