@@ -5,7 +5,7 @@
  * Date: 2018/3/7
  * Time: 10:00
  */
-//安全生产文明建设
+//安全文化建设
 namespace app\safety\controller;
 
 use app\admin\controller\Base;

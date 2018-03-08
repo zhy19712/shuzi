@@ -164,9 +164,9 @@ class Upload extends Base
         }
     }
 
-     /*
+    /*
      * 设置机构文件上传
-     */
+    */
     public function uploadResponsibilityinstyGroup(){
         $group = new ResponsibilityinstyGroupModel();
         $id = request()->param('aid');
@@ -250,6 +250,50 @@ class Upload extends Base
                     'remark' => $remark
                 ];
                 $flag = $culture->editSafetyResponsibilityculture($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+    /*
+     *安全生产信息化建设文件上传
+    */
+    public function uploadSafetyResponsibilityinfo(){
+        $responsibilityinfo = new SafetyResponsibilityinfoModel();
+        $id = request()->param('aid');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/responsibilityinfo');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/responsibilityinfo/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $responsibilityinfo->insertSafetyResponsibilityinfo($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $responsibilityinfo->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $responsibilityinfo->editSafetyResponsibilityinfo($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{
