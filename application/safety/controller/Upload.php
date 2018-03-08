@@ -6,7 +6,9 @@ use app\safety\model\ResponsibilityModel;
 use app\safety\model\RulesregulationsModel;
 use app\safety\model\SafetyGoalAnualModel;
 use app\safety\model\SafetyGoalGeneralModel;
-use app\safety\model\StatutestdiModel;
+use app\safety\model\ResponsibilityinstyGroupModel;
+use app\safety\model\SafetyResponsibilitycultureModel;
+use app\safety\model\SafetyResponsibilityinfoModel;
 
 class Upload extends Base
 {
@@ -287,4 +289,142 @@ class Upload extends Base
             echo $file->getError();
         }
     }
+
+    /*
+     * 设置机构文件上传
+    */
+    public function uploadResponsibilityinstyGroup(){
+        $group = new ResponsibilityinstyGroupModel();
+        $id = request()->param('aid');
+        $remark = request()->param('remark');
+        $version = request()->param('version');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/group');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/group/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+//                    'name' => $filename,
+                    'filename' => $filename,
+                    'uploadname' => session('username'),
+                    'uploadtime' => date("Y-m-d H:i:s"),
+                    'version'=>$version,
+                    'remarks' => $remark,
+                    'path' => $path
+                ];
+                $flag = $group->insertResponsibilityinstyGroup($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $group->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+//                    'name' => $filename,
+                    'filename' => $filename,
+                    'uploadname' => session('username'),
+                    'uploadtime' => date("Y-m-d H:i:s"),
+                    'version'=>$version,
+                    'remarks' => $remark,
+                    'path' => $path
+                ];
+                $flag = $group->editResponsibilityinstyGroup($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /*
+     *安全生产文明建设文件上传
+    */
+    public function uploadSafetyResponsibilityculture(){
+        $culture = new SafetyResponsibilitycultureModel();
+        $id = request()->param('aid');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/culture');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/culture/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $culture->insertSafetyResponsibilityculture($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $culture->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $culture->editSafetyResponsibilityculture($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+    /*
+     *安全生产信息化建设文件上传
+    */
+    public function uploadSafetyResponsibilityinfo(){
+        $responsibilityinfo = new SafetyResponsibilityinfoModel();
+        $id = request()->param('aid');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/responsibilityinfo');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/responsibilityinfo/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $responsibilityinfo->insertSafetyResponsibilityinfo($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $responsibilityinfo->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $responsibilityinfo->editSafetyResponsibilityinfo($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
 }
