@@ -8,6 +8,7 @@ use app\safety\model\SafetyGoalAnualModel;
 use app\safety\model\SafetyGoalGeneralModel;
 use app\safety\model\ResponsibilityinstyGroupModel;
 use app\safety\model\SafetyResponsibilitycultureModel;
+use app\safety\model\SafetyResponsibilityinfoModel;
 
 class Upload extends Base
 {
@@ -289,12 +290,9 @@ class Upload extends Base
         }
     }
 
-    /**
     /*
      * 设置机构文件上传
     */
-     * @return \think\response\Json
-     */
     public function uploadResponsibilityinstyGroup(){
         $group = new ResponsibilityinstyGroupModel();
         $id = request()->param('aid');
