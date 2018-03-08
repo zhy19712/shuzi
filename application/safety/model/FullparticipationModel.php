@@ -32,7 +32,7 @@ class FullparticipationModel extends Model
     /*
      * 编辑安全生产责任制文件
     */
-    public function editSafetyResponsibilityculture($param)
+    public function editFullparticipation($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -44,5 +44,25 @@ class FullparticipationModel extends Model
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
+    }
+    /*
+     * 删除安全生产责任制文件
+    */
+    public function delFullparticipation($id)
+    {
+        try{
+            $this->where('id', $id)->delete();
+            return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
+
+        }catch( PDOException $e){
+            return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
+        }
+    }
+    /*
+     * 获取一条安全文化建设文件
+    */
+    public function getOne($id)
+    {
+        return $this->where('id', $id)->find();
     }
 }
