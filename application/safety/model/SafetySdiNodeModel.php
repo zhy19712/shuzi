@@ -66,4 +66,12 @@ class SafetySdiNodeModel extends Model
         return "[" . substr($str, 0, -1) . "]";
     }
 
+    /**
+     * 根据id获取节点
+     */
+    public function getOneNode($id)
+    {
+        return $this->where('id', $id)->find();
+    }
+
 }
