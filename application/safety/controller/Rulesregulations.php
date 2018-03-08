@@ -173,7 +173,7 @@ class Rulesregulations extends Base
             {
                 $data = $node->getOneNode($id);
                 array_unshift($parent, $data['id']);
-                $path = $data['name'] . ">>" . $path;
+                $path = $data['pname'] . ">>" . $path;
                 $id = $data['pid'];
             }
             return json(['path' => substr($path, 0 , -2), 'idList' => $parent, 'msg' => "success", 'code'=>1]);
