@@ -183,10 +183,11 @@
 
     <script src="__JS__/jquery.ztree.all.js"></script>
     <script src="__JS__/jquery.dataTables.min.js"></script>
-    <script src="__JS__/dataTables.buttons.min.js"></script>
+    <script src="__JS__/plugins/dataTables/dataTables.buttons.min.js"></script>
     <script src="__JS__/jquery.jedate.js"></script>
     <script src="__JS__/pdf.js"></script>
     <script src="__JS__/mypdf.js"></script>
+
     <script>
         //左侧菜单
         var node = [
@@ -251,86 +252,39 @@
 
 
         //右侧表格
-        var dataSet = [
-            ["1","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["2","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["3","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["4","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["5","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["6","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["7","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["8","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["9","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["10","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["11","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["12","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["13","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["14","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["15","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["16","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"],
-            ["17","666","规范","2014年12月1日","适用","admin","2017年12月12日","无","修改"]
-        ];
-        var columns = [
-            {
-                title:"序号",
-            },
-            {
-                title:"标准号",
-            },
-            {
-                title:"名称",
-            },
-            {
-                title:"施行日期",
-            },
-            {
-                title:"适用性评价",
-            },
-            {
-                title:"识别人",
-            },
-            {
-                title:"上传日期",
-            },
-            {
-                title:"备注",
-            },
-            {
-                title:"操作",
-            }
-        ]
-       $('#tableItem').DataTable({
-            data:dataSet,
-            columns:columns,
-            columnDefs:[
-                {
-                    targets: 8,
-                    render: function (data, type, row, meta) {
-                        return '<a class="btn btn-success btn-xs" href="#" onclick=delFromID(' + row.id + ') >查询</a>' +
-                                '<a class="btn btn-primary btn-xs" href="#" onclick=delFromID(' + row.id + ') >下载</a>' +
-                                '<a class="btn btn-info btn-xs" href="#" onclick=delFromID(\' + row.id + \') >编辑</a>'+
-                                '<a class="btn btn-danger btn-xs" href="#" onclick=delFromID(\' + row.id + \') >删除</a>';
-                    }
-                },
-                {
-                    "orderable": false,
-                    "targets": 8
-                }
-            ],
-            language: {
-                "lengthMenu": "每页 _MENU_ 条记录",
-                "zeroRecords": "没有找到记录",
-                "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
-                "infoEmpty": "无记录",
-                "infoFiltered": "(从 _MAX_ 条记录过滤)",
-                "search":"搜索",
-                "paginate": {
-                    "first": "第一页",
-                    "last": "最后一页",
-                    "previous": "上一页",
-                    "next": "下一页"
-                }
-            },
+       $('#tableItem').DataTable( {
+           "processing": true,
+           "serverSide": true,
+           "ajax": {
+               "url": "__SCRIPT__/safety_statutesdi.php"
+           },
+           "dom": '<"mybtn1 btn btn-outline btn-primary"><"myl"l>frtip',
+           "columnDefs": [
+               {
+                   "searchable": false,
+                   "orderable": false,
+                   "targets": [2],
+                   "render" :  function(data,type,row) {
+                       var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='查看'/>";
+                       html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
+                       html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
+                       html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='zdel(this)' value='删除'/>" ;
+                       return html;
+                   }
+               }
+           ],
+           "language": {
+               "lengthMenu": "每页_MENU_ 条记录",
+               "zeroRecords": "没有找到记录",
+               "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+               "infoEmpty": "无记录",
+               "search": "搜索：",
+               "infoFiltered": "(从 _MAX_ 条记录过滤)",
+               "paginate": {
+                   "previous": "上一页",
+                   "next": "下一页"
+               }
+           },
            dom: 'Bfrtip',
            buttons: [
                {
@@ -338,7 +292,7 @@
                    className: 'btn btn-primary btn-xs upload',
                }
            ],
-       });
+       } );
 
 
         //上传弹层
