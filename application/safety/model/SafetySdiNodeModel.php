@@ -54,16 +54,24 @@ class SafetySdiNodeModel extends Model
         }
     }
 
-    public function getNodeInfo()
+    public function getNodeInfo($id)
     {
         // 1法规标准识别2规章制度
-        $result = $this->field('id,pname,pid')->where('ptype',1)->select();
+        $result = $this->field('id,pname,pid')->where('ptype',$id)->select();
         $str = "";
         foreach($result as $key=>$vo){
             $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "name":"' . $vo['pname'].'"';
             $str .= '},';
         }
         return "[" . substr($str, 0, -1) . "]";
+    }
+
+    /**
+     * 根据id获取节点
+     */
+    public function getOneNode($id)
+    {
+        return $this->where('id', $id)->find();
     }
 
 }

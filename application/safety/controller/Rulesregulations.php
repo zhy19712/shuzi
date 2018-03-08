@@ -20,7 +20,7 @@ class Rulesregulations extends Base
     {
         if(request()->isAjax()){
             $node = new SafetySdiNodeModel();
-            $nodeStr = $node->getNodeInfo();
+            $nodeStr = $node->getNodeInfo(2);
             return json($nodeStr);
         }
         return $this ->fetch();
@@ -121,7 +121,7 @@ class Rulesregulations extends Base
     }
 
     /**
-     * 下载
+     * 预览
      * @return \think\response\Json
      * @author hutao
      */
@@ -153,6 +153,30 @@ class Rulesregulations extends Base
             }else{
                 return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
             }
+        }
+    }
+
+    /**
+     * 获取路径
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getParents()
+    {
+        $node = new SafetySdiNodeModel();
+        $parent = array();
+        $path = "";
+        if(request()->isAjax()){
+            $param = input('post.');
+            $id = $param['id'];
+            while($id>0)
+            {
+                $data = $node->getOneNode($id);
+                array_unshift($parent, $data['id']);
+                $path = $data['pname'] . ">>" . $path;
+                $id = $data['pid'];
+            }
+            return json(['path' => substr($path, 0 , -2), 'idList' => $parent, 'msg' => "success", 'code'=>1]);
         }
     }
 }
