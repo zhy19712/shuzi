@@ -9,6 +9,8 @@
 namespace app\safety\controller;
 
 use app\admin\controller\Base;
+use app\admin\model\UserModel;
+use app\admin\model\UserType;
 use app\safety\model\SafetySdiNodeModel;
 use app\safety\model\StatutestdiModel;
 
@@ -22,6 +24,23 @@ class Statutestdi extends Base
             return json($nodeStr);
         }
         return $this ->fetch();
+    }
+
+    /**
+     *  从组织机构及用户树中选择负责人
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getSiduser()
+    {
+        if(request()->isAjax()){
+            $node1 = new UserType();
+            $node2 = new UserModel();
+            $nodeStr1 = $node1->getNodeInfo_1();
+            $nodeStr2 = $node2->getNodeInfo_2();
+            $nodeStr = "[" . substr($nodeStr1 . $nodeStr2, 0, -1) . "]";
+            return json($nodeStr);
+        }
     }
 
     /**
