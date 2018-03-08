@@ -15,6 +15,11 @@ class Rulesregulations extends Base
 {
     public function index()
     {
+        if(request()->isAjax()){
+            $node = new SafetySdiNodeModel();
+            $nodeStr = $node->getNodeInfo();
+            return json($nodeStr);
+        }
         return $this ->fetch();
     }
 
