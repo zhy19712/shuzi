@@ -264,7 +264,6 @@
             data: {id:id},
             dataType: "json",
             success: function (res) {
-                // console.log(res);
                 if(res.code === 1){
                     $("#aid").val(res.data.id);
                     $("#remark").val(res.data.remark);
