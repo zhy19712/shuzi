@@ -199,7 +199,7 @@
                     return true;
                 }
             });
-            // 文件上传过程中创建进度条实时显示。
+            // 文件上传过程中创建进度条实时显示
             uploader.on('uploadProgress', function (file, percentage) {
                 var $li = $('#' + file.id),
                     $percent = $li.find('.progress .progress-bar');
