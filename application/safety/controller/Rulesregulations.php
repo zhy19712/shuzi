@@ -179,4 +179,26 @@ class Rulesregulations extends Base
             return json(['path' => substr($path, 0 , -2), 'idList' => $parent, 'msg' => "success", 'code'=>1]);
         }
     }
+
+    /**
+     * 添加节点
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function nodeAdd()
+    {
+        if(request()->isAjax()){
+            $param = input('post.');
+            $node = new SafetySdiNodeModel();
+            $param['ptype'] = 2; // 1 法规标准识别 2 规章制度
+            if(empty($param['id'])){
+                $param['pid'] = 0;
+                $flag = $node->insertSdinode($param);
+            }else if(!empty($param['id'])){
+                $flag = $node->insertSdinode($param);
+            }
+        }
+        return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+    }
+
 }
