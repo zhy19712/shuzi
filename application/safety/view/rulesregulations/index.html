@@ -36,24 +36,11 @@
     #myModal input,#myModal select,#myModal textarea{
         background-color: transparent;
     }
-    #operate{
-        font-size: 0;
-        border: 1px solid #ccc;
-    }
-    #operate i {
-        display: inline-block;
-        width: 25%;
-        font-size: 16px;
-        line-height: 30px;
-        text-align: center;
-        color: #000;
-        cursor: pointer;
-    }
     .webuploader-pick{
         position: absolute;
         left: 0;
         top: 0;
-        width: 100%;
+        width: 100px;
         height: 100%;
         background-color: transparent;
     }
@@ -92,140 +79,144 @@
     #file_upload1>div:nth-child(2){
         width: 100% !important;
         height: 100% !important;
+        position: absolute;
+        left: 0 !important;
+        top: -15px !important;
+
     }
 </style>
 <body>
-<div id="mycontent" style="width: 20%;height: 98%;display: inline-block;margin: 0 10px;background-color:#fff;overflow-x: scroll;padding-top: 20px;padding-right:10px;border-right: 1px solid #ccc;">
-    <div style="text-align: center;background-color:#1ab394;line-height: 30px;color: #fff;">法律标准分类</div>
-    <div id="file_per"></div>
-    <div id="file_list"></div>
-    <div id="options">
-        <i class="iconfont icon-tianjiajiahaowubiankuang"></i>
-        <i class="iconfont icon-bianji"></i>
-        <i class="iconfont icon-shanchu"></i>
-        <!--<i class="iconfont icon-daoru" id="file_upload"></i>-->
+    <div id="mycontent" style="width: 20%;height: 98%;display: inline-block;margin: 0 10px;background-color:#fff;overflow-x: scroll;padding-top: 20px;padding-right:10px;border-right: 1px solid #ccc;">
+        <div style="text-align: center;background-color:#1ab394;line-height: 30px;color: #fff;">法律标准分类</div>
+        <div id="file_per"></div>
+        <div id="file_list"></div>
+        <div id="options">
+            <i class="iconfont icon-tianjiajiahaowubiankuang"></i>
+            <i class="iconfont icon-bianji"></i>
+            <i class="iconfont icon-shanchu"></i>
+            <!--<i class="iconfont icon-daoru" id="file_upload"></i>-->
+        </div>
+        <div id="tree_container" class="ztree"></div>
+        <p style="display: none;"></p>
     </div>
-    <div id="tree_container" class="ztree"></div>
-    <p style="display: none;"></p>
-</div>
-<div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 78%;vertical-align: top;padding: 0;margin-top: 20px;">
-    <div class="ibox float-e-margins">
-        <div class="ibox-content">
-            <div class="row">
-                <div id="path">当前路径:制度化管理>规章制度><span id="pathVal"></span></div>
-                <div id="mytable1_wrapper">
-                    <table id="admin_table" width="100%" class="table table-striped table-bordered">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>标准号</th>
-                            <th>名称</th>
-                            <th>施行日期</th>
-                            <th>适用性评价</th>
-                            <th>识别人</th>
-                            <th>上传时间</th>
-                            <th>备注</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                    </table>
+    <div class="wrapper wrapper-content animated fadeInRight" style="display: inline-block;width: 78%;vertical-align: top;padding: 0;margin-top: 20px;">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="row">
+                    <div id="path">当前路径:</div>
+                    <div id="mytable1_wrapper">
+                        <table id="admin_table" width="100%" class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>标准号</th>
+                                <th>名称</th>
+                                <th>施行日期</th>
+                                <th>适用性评价</th>
+                                <th>识别人</th>
+                                <th>上传时间</th>
+                                <th>备注</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div id="formDown" style="display: none"></div>
-<div id="addRules_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
-    <div class="row">
-        <div class="col-sm-12" style="background-color:#fff;">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5></h5>
-                </div>
-                <input type="text" name="uid" id="id1" style="display: none;" value="">
-                <div class="ibox-content">
-                    <!--新增用户信息开始-->
-                    <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post" action="{:url('uploadRules')}">
-                        <input type="text" name="id" id="rulesid" style="display: none;">
-                        <input type="text" name="group_id" id="pgroup_id" style="display: none;">
-                        <div class="form-group">
-                            <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-2 col-sm-2 control-label">标准号：</label>
-                                <div class="myblock col-xs-10 col-sm-10 input-group">
-                                    <input id="standardNumr" type="text" class="form-control" name="standardNumr" >
+    <div id="formDown" style="display: none"></div>
+    <div id="addRules_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+        <div class="row">
+            <div class="col-sm-12" style="background-color:#fff;">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5></h5>
+                    </div>
+                    <input type="text" name="uid" id="id1" style="display: none;" value="">
+                    <div class="ibox-content">
+                        <!--新增用户信息开始-->
+                        <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post" action="{:url('uploadRules')}">
+                            <input type="text" name="id" id="rulesid" style="display: none;">
+                            <input type="text" name="group_id" id="pgroup_id" style="display: none;">
+                            <div class="form-group">
+                                <div class="col-lg-12 col-xs-12">
+                                    <label class="col-xs-2 col-sm-2 control-label">标准号：</label>
+                                    <div class="myblock col-xs-10 col-sm-10 input-group">
+                                        <input id="standardNumr" type="text" class="form-control" name="standardNumr" >
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">施行日期：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input id="dataImple" type="text" class="form-control" name="dataImple" >
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">施行日期：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="dataImple" type="text" class="form-control" name="dataImple" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">替代标准：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="alternativeStandard" type="text" class="form-control" name="alternativeStandard" >
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">替代标准：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input id="alternativeStandard" type="text" class="form-control" name="alternativeStandard" >
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">适用性评价：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <select name="appEvaluation" id="appEvaluation" class="form-control" >
+                                            <option value="适用">适用</option>
+                                            <option value="过期">过期</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">识别人：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="recogner" type="text" class="form-control" name="recogner" >
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">适用性评价：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <select name="appEvaluation" id="appEvaluation" class="form-control" >
-                                        <option value="适用">适用</option>
-                                        <option value="过期">过期</option>
-                                    </select>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-12 col-xs-12">
+                                    <label class="col-xs-6 col-sm-2 control-label">名称：</label>
+                                    <div class="myblock col-xs-6 col-sm-10 input-group">
+                                        <!--<input id="addName" type="text" class="form-control" name="addName" >-->
+                                        <!--<span id="picker">上传</span>-->
+                                        <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
+                                        <div id="file_upload1" style="display: inline-block;vertical-align: middle;"></div>
+                                        <div id="file_list1" style="display: inline-block;vertical-align: middle;"></div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">识别人：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input id="recogner" type="text" class="form-control" name="recogner" >
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-12 col-xs-12">
+                                    <label class="col-xs-2 col-sm-2 control-label">备注：</label>
+                                    <div class="myblock col-xs-10 col-sm-10 input-group">
+                                        <textarea name="rulesDesc" id="rulesDesc" style="width: 100%;min-height: 100px;"></textarea>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-6 col-sm-2 control-label">名称：</label>
-                                <div class="myblock col-xs-6 col-sm-10 input-group">
-                                    <!--<input id="addName" type="text" class="form-control" name="addName" >-->
-                                    <!--<span id="picker">上传</span>-->
-                                    <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
-                                    <div id="file_upload1" style="display: inline-block;vertical-align: middle;"></div>
-                                    <div id="file_list1" style="display: inline-block;vertical-align: middle;"></div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-xs-12 col-lg-12"  style="text-align: center;margin-top: 10px">
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                    <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
                                 </div>
                             </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-2 col-sm-2 control-label">备注：</label>
-                                <div class="myblock col-xs-10 col-sm-10 input-group">
-                                    <textarea name="rulesDesc" id="rulesDesc" style="width: 100%;min-height: 100px;"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-xs-12 col-lg-12"  style="text-align: center;margin-top: 10px">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
-                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
-                            </div>
-                        </div>
-                    </form>
-                    <!--新增用户信息结束-->
+                        </form>
+                        <!--新增用户信息结束-->
 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 
@@ -274,18 +265,19 @@
 
     //组织结构树
     var zTreeObj;
+    var mytree_node;
     //树结构添加节点
     $("#options>i:first-child").click(function () {
-        if(mytree_nodes){
-            if(mytree_nodes.level == 0){
+        if(mytree_node){
+            if(mytree_node.level == 0){
                 $("#level2 input").val("");
-                $("#pid2").val(mytree_nodes.id);
+                $("#pid2").val(mytree_node.id);
                 $("#level2 h5").text('添加');
                 $("#level2").modal('show');
-            }else if(mytree_nodes.level == 1){
+            }else if(mytree_node.level == 1){
                 $("#level3 input").val("");
-                $("#pid3").val(mytree_nodes.id);
-                var id = mytree_nodes.id;
+                $("#pid3").val(mytree_node.id);
+                var id = mytree_node.id;
                 $.ajax({
                     url: "nodeEdit",
                     type: "post",
@@ -304,10 +296,10 @@
                 });
                 $("#level3 h5").text('添加');
                 $("#level3").modal('show');
-            }else if(mytree_nodes.level == 2){
+            }else if(mytree_node.level == 2){
                 $("#level4 input").val("");
-                $("#pid4").val(mytree_nodes.id);
-                var id = mytree_nodes.id;
+                $("#pid4").val(mytree_node.id);
+                var id = mytree_node.id;
                 $.ajax({
                     url: "nodeEdit",
                     type: "post",
@@ -451,42 +443,32 @@
                 }
             }
         })
-
-
     };
-    //    var setting = {
-    //        async: {
-    //            enable : true,
-    //            autoParam: ["pId"],
-    //            type : "post",
-    //            url : "./index",
-    //            dataType :"json"
-    //        },
-    //        data:{
-    //            keep: {
-    //                leaf : true,
-    //                parent : true
-    //            },
-    //            simpleData : {
-    //                enable:true,
-    //                idkey: "id",
-    //                pIdKey: "pId"
-    //            }
-    //        },
-    //        callback: {
-    //            onClick: zTreeOnClick
-    //        }
-    //    };
-    var mytree_nodes = [
-        {name: "国家电网公司"},
-        {name: "国网新源控股有限公司"},
-        {name: "安徽金寨抽水蓄能有限公司"},
-        {name: "北京咨询金寨监理部"},
-    ];
     var setting = {
+        async: {
+            enable : true,
+            autoParam: ["pId"],
+            type : "post",
+            url : "./index",
+            dataType :"json"
+        },
+        data:{
+            keep: {
+                leaf : true,
+                parent : true
+            },
+            simpleData : {
+                enable:true,
+                idkey: "id",
+                pIdKey: "pId"
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick
+        }
     };
-    zTreeObj = $.fn.zTree.init($("#tree_container"), setting,mytree_nodes);
 
+    zTreeObj = $.fn.zTree.init($("#tree_container"), setting,mytree_node);
 
     //点击时间插件
     $("#dataImple").jeDate({
@@ -568,7 +550,7 @@
                 aname2 = file.name;
                 $("#file_per1").append('<div id="' + file.id + '" class="item">' +
                     '</div>');
-                $("#file_list1").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                $("#file_list1").append('<div style="display: inline-block;vertical-align: middle;width: 100%;height: 100%;" class="' + file.id + '" class="item">' +
                     '<span class="info">' + file.name + '</span>&nbsp' +
                     '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
                     '</div>' );
