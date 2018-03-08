@@ -3,20 +3,21 @@
  * Created by PhpStorm.
  * User: admin
  * Date: 2018/3/8
- * Time: 11:19
+ * Time: 15:53
  */
-//安全生产文明建设
+//全员参与->安全生产责任制
 namespace app\safety\model;
 use think\exception\PDOException;
 use think\Model;
-class SafetyResponsibilitycultureModel extends Model
+class FullparticipationModel extends Model
 {
-    protected $name = 'safety_responsibilityculture';
+    protected $name = 'safety_fullparticipation';
+
     /*
-     * 添加新的安全文化建设文件
-     */
-    public function insertSafetyResponsibilityculture($param)
-        {
+     * 添加新的安全生产责任制文件
+    */
+    public function insertFullparticipation($param)
+    {
         try{
             $result = $this->allowField(true)->save($param);
             if(false === $result){
@@ -29,8 +30,8 @@ class SafetyResponsibilitycultureModel extends Model
         }
     }
     /*
-     * 编辑安全文化建设文件
-     */
+     * 编辑安全生产责任制文件
+    */
     public function editSafetyResponsibilityculture($param)
     {
         try{
@@ -43,25 +44,5 @@ class SafetyResponsibilitycultureModel extends Model
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
-    }
-    /*
-    * 删除安全文化建设文件
-    */
-    public function delSafetyResponsibilityculture($id)
-    {
-        try{
-            $this->where('id', $id)->delete();
-            return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
-
-        }catch( PDOException $e){
-            return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
-        }
-    }
-    /*
-    * 获取一条安全文化建设文件
-    */
-    public function getOne($id)
-    {
-        return $this->where('id', $id)->find();
     }
 }
