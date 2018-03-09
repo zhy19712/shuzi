@@ -252,9 +252,11 @@
             },
             callback: {
                 onClick: zTreeOnClick,
-                beforeRemove:beforeRemove
+                beforeRemove:beforeRemove,
+                beforeRename: beforeRename
             }
         };
+        zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null).expandAll(true);
         //添加节点
         var newCount = 1;
         function addHoverDom(treeId, treeNode) {
@@ -277,7 +279,7 @@
                     dataType:'JSON',
                     type:'POST',
                     data:{
-                        id:newNode[0].id,
+                        pid:treeNode.id,
                         pname:newNode[0].name
                     },
                     success:function(){
@@ -294,7 +296,31 @@
         function removeHoverDom(treeId, treeNode) {
             $("#addBtn_"+treeNode.tId).unbind().remove();
         };
-        zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null).expandAll(true);
+
+        //编辑节点
+        function beforeRename(treeId, treeNode, newName, isCancel) {
+            if (newName.length == 0) {
+                layer.msg("节点名称不能为空.");
+                return false;
+            }
+            layer.confirm('确定要编辑该节点？', {
+                btn: ['确定','取消']
+            }, function(){
+                $.ajax({
+                    url:'{:url("Statutestdi/nodeAdd")}',
+                    dataType:'JSON',
+                    type:'POST',
+                    data:{
+                        id:treeNode.id,
+                        pname:treeNode.name
+                    },
+                    success:function(){
+
+                    }
+                });
+                layer.msg('编辑成功！', {icon: 1});
+            });
+        }
 
         //删除节点
         function beforeRemove(treeId, treeNode){
