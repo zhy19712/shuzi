@@ -32,9 +32,10 @@ $primaryKey = 'id';
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
     array( 'db' => 'filename',  'dt' => 1 ),
-    array( 'db' => 'owner',  'dt' => 2 ),
-    array( 'db' => 'date',  'dt' => 3 ),
-    array( 'db' => 'remark',  'dt' => 4 )
+    array( 'db' => 'checktime',  'dt' => 2 ),
+    array( 'db' => 'owner',  'dt' => 3 ),
+    array( 'db' => 'date',  'dt' => 4 ),
+    array( 'db' => 'remark',  'dt' => 5 )
 );
 
 
@@ -52,10 +53,22 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
 
 require( '../ssp.class.php' );
 
-echo json_encode(
-    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
-);
+//echo json_encode(
+//    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
+//);
 
+if(!empty($_GET["selfid"]))
+{
+    $selfid = $_GET["selfid"];
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid'" )
+    );
+}
+else{
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = 'empty'" )
+    );
+}
 
 
 

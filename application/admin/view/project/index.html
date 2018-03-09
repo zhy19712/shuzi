@@ -884,11 +884,9 @@ function edit(that) {
         });
         // 文件上传成功
         uploader.on( 'uploadSuccess', function( file,data ) {
-            console.log(file)
-            console.log(data)
                 zTreeObj.reAsyncChildNodes(null, "refresh");
                 mytree_node = "";
-//            layer.msg(file.name + data.info,{icon:1,time:1500,shade: 0.1});
+//              layer.msg(file.name + data.info,{icon:1,time:1500,shade: 0.1});
                 var msg = file.name + data.info;
                 layer.confirm(msg, {btn:'关闭',icon: 3, title:'提示'}, function(index){
                     layer.close(index);

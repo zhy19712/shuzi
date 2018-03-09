@@ -40,9 +40,14 @@ class Education extends Base
         }
     }
 
-    public function eudDel()
+    public function eduDel()
     {
-
+        if(request()->isAjax()){
+            $param = input('post.');
+            $edu = new EducationModel();
+            $flag = $edu->delEdu($param['id']);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
     }
 
     public function eduDownload()
