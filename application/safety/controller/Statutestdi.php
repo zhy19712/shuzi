@@ -82,7 +82,8 @@ class Statutestdi extends Base
         $sdi = new StatutestdiModel();
         $param = $sdi->getOne($id);
         $filePath = $param['path'];
-        $fileName = $param['sdi_name'];
+//        $fileName = $param['sdi_name'];
+        $fileName = $param['sdi_name'] . '.' . substr(strrchr($filePath, '.'), 1); ;
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         $fileName = iconv("utf-8","gb2312",$fileName);

@@ -191,6 +191,10 @@ class Upload extends Base
             $temp = $info->getSaveName();
             $path = './uploads/safety/statutesdi/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
+            if($sdi_name == '等待上传'){
+                $houzhui = substr(strrchr($filename, '.'), 1);
+                $sdi_name = basename($filename,".".$houzhui); // 取不带后缀的文件名
+            }
             if(empty($id))
             {
                 $data = [
