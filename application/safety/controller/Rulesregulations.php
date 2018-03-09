@@ -27,6 +27,21 @@ class Rulesregulations extends Base
     }
 
     /**
+     * 获取一条数据
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getRules()
+    {
+        if(request()->isAjax()){
+            $param = input('post.');
+            $rules = new RulesregulationsModel();
+            $data = $rules->getOne($param['id']);
+            return json($data);
+        }
+    }
+
+    /**
      *  从组织机构及用户树中选择负责人
      * @return \think\response\Json
      * @author hutao
