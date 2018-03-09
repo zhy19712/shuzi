@@ -24,6 +24,8 @@ class Responsibilityinsty extends Base
             $node = new ResponsibilityinstyModel();
             $nodeStr = $node->getNodeInfo();
             return json($nodeStr);
+//            return ($nodeStr);
+
         }
         else
             return $this->fetch();

@@ -36,7 +36,8 @@ class Fullparticipation extends Base
         if(request()->isAjax()){
             $data = [
                 'id' => $param['aid'],
-                'remark' => $param['remark']
+                'remark' => $param['remark'],
+                'version' => $param['version']
             ];
             $flag = $fullpart->editFullparticipation($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
