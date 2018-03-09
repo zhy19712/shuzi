@@ -37,7 +37,7 @@ class EquipmentModel extends Model
         $str .= '},';
         $str .= '{ "id": "' . '11' . '", "pId":"' . '1' . '", "name":"' . '设备设施建设'.'"';
         $str .= '},';
-        foreach($result as $key=>$vo){
+        foreach((array)$result as $key=>$vo){
 
             if($i > $count){
                 break;
@@ -54,7 +54,7 @@ class EquipmentModel extends Model
         $str .= '{ "id": "' . '121' . '", "pId":"' . '12' . '", "name":"' . '临建设施验收'.'"';
         $str .= '},';
 
-        foreach($result as $key=>$vo){
+        foreach((array)$result as $key=>$vo){
 
             if($j > $count){
                 break;
@@ -68,7 +68,7 @@ class EquipmentModel extends Model
         $str .= '{ "id": "' . '122' . '", "pId":"' . '12' . '", "name":"' . '进场设备验收'.'"';
         $str .= '},';
 
-        foreach($result as $key=>$vo){
+        foreach((array)$result as $key=>$vo){
 
             if($k > $count){
                 break;
@@ -82,7 +82,7 @@ class EquipmentModel extends Model
         $str .= '{ "id": "' . '123' . '", "pId":"' . '12' . '", "name":"' . '自制设备验收'.'"';
         $str .= '},';
 
-        foreach($result as $key=>$vo){
+        foreach((array)$result as $key=>$vo){
 
             if($l > $count){
                 break;
@@ -96,7 +96,7 @@ class EquipmentModel extends Model
         $str .= '{ "id": "' . '124' . '", "pId":"' . '12' . '", "name":"' . '脚手架验收'.'"';
         $str .= '},';
 
-        foreach($result as $key=>$vo){
+        foreach((array)$result as $key=>$vo){
 
             if($m > $count){
                 break;
@@ -113,7 +113,7 @@ class EquipmentModel extends Model
         $str .= '{ "id": "' . '131' . '", "pId":"' . '13' . '", "name":"' . '特种设备'.'"';
         $str .= '},';
 
-        foreach($result as $key=>$vo){
+        foreach((array)$result as $key=>$vo){
 
             if($n > $count){
                 break;
@@ -127,7 +127,7 @@ class EquipmentModel extends Model
         $str .= '{ "id": "' . '132' . '", "pId":"' . '13' . '", "name":"' . '交通车辆'.'"';
         $str .= '},';
 
-        foreach($result as $key=>$vo){
+        foreach((array)$result as $key=>$vo){
 
             if($o > $count){
                 break;
@@ -141,7 +141,7 @@ class EquipmentModel extends Model
         $str .= '{ "id": "' . '133' . '", "pId":"' . '13' . '", "name":"' . '安全工器具'.'"';
         $str .= '},';
 
-        foreach($result as $key=>$vo){
+        foreach((array)$result as $key=>$vo){
 
             if($p > $count){
                 break;
@@ -153,12 +153,16 @@ class EquipmentModel extends Model
         }
 
         $str .= '{ "id": "' . '2' . '", "pId":"' . '0' . '", "name":"' . '内部设备设施管理'.'"';
+        $str .= '},';
 
         $str .= '{ "id": "' . '21' . '", "pId":"' . '2' . '", "name":"' . '车辆管理'.'"';
+        $str .= '},';
 
         $str .= '{ "id": "' . '22' . '", "pId":"' . '2' . '", "name":"' . '设备管理'.'"';
+        $str .= '},';
 
         $str .= '{ "id": "' . '23' . '", "pId":"' . '2' . '", "name":"' . '安全工器具管理'.'"';
+        $str .= '},';
 
         return "[" . substr($str, 0, -1) . "]";
     }
