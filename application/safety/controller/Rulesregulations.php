@@ -12,7 +12,6 @@ use app\admin\model\UserModel;
 use app\admin\model\UserType;
 use app\safety\model\RulesregulationsModel;
 use app\safety\model\SafetySdiNodeModel;
-use app\safety\model\StatutestdiModel;
 
 // 规章制度
 class Rulesregulations extends Base
@@ -64,7 +63,7 @@ class Rulesregulations extends Base
                 'rul_user' => $param['rul_user'],
                 'remark' => $param['remark']
             ];
-            $flag = $rules->editRulation($data);
+            $flag = $rules->editRules($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -116,7 +115,7 @@ class Rulesregulations extends Base
             if(file_exists($pdf_path)){
                 unlink($pdf_path); // 删除生成的预览pdf
             }
-            $flag = $rules->delRulation($param['id']);
+            $flag = $rules->delRules($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
