@@ -471,7 +471,7 @@
             onClick: zTreeOnClick
         }
     };
-    zTreeObj = $.fn.zTree.init($("#tree_container"), setting,mytree_node);
+    zTreeObj = $.fn.zTree.init($("#tree_container"), setting, mytree_node);
 
 
     //点击时间插件
@@ -525,11 +525,11 @@
             uploader1.on("uploadStart",function () {
                 console.log(groupid)
                 uploader1.options.formData.id = $("#rulesid").val();//id
-                uploader1.options.formData.groud_id = groupid;//group_id
+                uploader1.options.formData.group_id = groupid;//group_id
                 uploader1.options.formData.number = $("#standardNumr").val();//标准号
-                uploader1.options.formData.rul_name = $("#file_list1 .info").val();//名称
+                uploader1.options.formData.rul_name = $("#file_list1 .info").text();//名称
                 uploader1.options.formData.go_date = $("#dataImple").val();//施行日期alternativeStandard
-                uploader1.options.formData.standard = $("#alternativeStandard").val();//替代标准
+//                uploader1.options.formData.standard = $("#alternativeStandard").val();//替代标准
                 uploader1.options.formData.evaluation = $("#appEvaluation").val();//适用性评价
                 uploader1.options.formData.rul_user = $("#recogner").val();//识别人
                 uploader1.options.formData.remark = $("#rulesDesc").val()//备注
@@ -566,7 +566,7 @@
                     $("#file_per1").empty();
                     $("#file_list1").empty();
                     $("#addRules_modal").modal('hide');
-                    $("#mytable1_wrapper").css("display","block");
+                    $(".wrapper").css("display","block");
                     admin_table.ajax.url("__SCRIPT__/safety_rules.php").load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
@@ -632,10 +632,11 @@
         //http://localhost:81/static/admin/js/web/viewer.html?file=/uploads/temp/9f6feec0d40ac402373846180d903346.docx.pdf
     //新增的保存
     $("#addRules_modal .btn-primary").click(function () {
+        console.log($("#file_list1 .info").text())
         if($("#file_list1").html()){
             if(!$("#id1").val()){
                 uploader1.upload();
-                $("#mytable1_wrapper").css("display","block");
+                $(".wrapper").css("display","block");
                 console.log("新增")
             }else {
                 console.log("编辑")
