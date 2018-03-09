@@ -238,7 +238,7 @@
             },
             edit:{
                 enable: true,
-                showRemoveBtn :true,
+                showRemoveBtn :showRemoveBtn,
                 showRenameBtn :true,
                 removeTitle :"删除",
                 renameTitle :"修改",
@@ -266,7 +266,6 @@
         };
         zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null).expandAll(true);
         //添加节点
-        var newCount = 1;
         function addHoverDom(treeId, treeNode) {
             var sObj = $("#" + treeNode.tId + "_span"); //获取节点信息
             if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
@@ -280,17 +279,19 @@
                 var zTree = $.fn.zTree.getZTreeObj("tree_container");
                 //将新节点添加到数据库中
                 var name='新节点';
-                var newNode = zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:name + (newCount++)});
                 $.ajax({
                     url:'{:url("Statutestdi/nodeAdd")}',
                     dataType:'JSON',
                     type:'POST',
                     data:{
                         pid:treeNode.id,
-                        pname:newNode[0].name
+                        pname:name
                     },
                     success:function(data){
                         $('input[type="hidden"][name="treeId"]').val(data.data);
+                        var id = $('input[type="hidden"][name="treeId"]').val();
+                        zTree.addNodes(treeNode, {id:id,pId:treeNode.id, name:name});
+                        console.log(treeNode);
                     }
                 });
                 //var newID = newNode[0].id;
@@ -352,6 +353,11 @@
             });
         }
 
+        //禁止删除父节点
+        function showRemoveBtn(treeId, treeNode) {
+            return !treeNode.isParent;
+        }
+
         //删除节点
         function beforeRemove(treeId, treeNode){
             layer.confirm('确定要删除该节点？', {
@@ -371,14 +377,16 @@
                         for (var i=0, l=nodes.length; i < l; i++) {
                             zTree.removeNode(nodes[i]);
                         }
+                        layer.msg('删除成功！', {icon: 1});
                     }
-                });
-                layer.msg('删除成功！', {icon: 1});
+
+            });
             });
         }
 
         //点击获取节点名称
         function zTreeOnClick(event, treeId, treeNode) {
+            console.log(treeNode);
             mytree_node = treeNode;
             $("#groupname").val(treeNode.name);
             $("#mycontent>p").text(treeNode.name);
