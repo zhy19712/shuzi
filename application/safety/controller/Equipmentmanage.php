@@ -36,7 +36,7 @@ class Equipmentmanage extends Base
         if(request()->isAjax()){
             $equipment= new EquipmentCheckAcceptModel();
             $param = input('post.');
-            $data = $equipment->getOne($param);
+            $data = $equipment->getOne($param['id']);
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
