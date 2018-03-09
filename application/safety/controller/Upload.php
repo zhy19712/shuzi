@@ -175,6 +175,7 @@ class Upload extends Base
      */
     public function uploadSdi(){
         $sdi = new StatutestdiModel();
+        $group_id = request()->param('group_id');
         $number = request()->param('number');
         $sdi_name = request()->param('sdi_name');
         $go_date = request()->param('go_date');
@@ -191,6 +192,7 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
+                    'group_id' => $group_id,
                     'number' => $number,
                     'sdi_name' => $sdi_name,
                     'go_date' => $go_date,
@@ -210,6 +212,7 @@ class Upload extends Base
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
+                    'group_id' => $group_id,
                     'number' => $number,
                     'sdi_name' => $sdi_name,
                     'go_date' => $go_date,
@@ -237,6 +240,7 @@ class Upload extends Base
      */
     public function uploadRules(){
         $rules = new RulesregulationsModel();
+        $group_id = request()->param('group_id');
         $number = request()->param('number');
         $rul_name = request()->param('rul_name');
         $go_date = request()->param('go_date');
@@ -253,6 +257,7 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
+                    'group_id' => $group_id,
                     'number' => $number,
                     'rul_name' => $rul_name,
                     'go_date' => $go_date,
@@ -265,13 +270,14 @@ class Upload extends Base
                     'path' => $path,
                     'remark' => $remark
                 ];
-                $flag = $rules->insertRulation($data);
+                $flag = $rules->insertRules($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $rules->getOne($id);
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
+                    'group_id' => $group_id,
                     'number' => $number,
                     'rul_name' => $rul_name,
                     'go_date' => $go_date,
@@ -284,7 +290,7 @@ class Upload extends Base
                     'path' => $path,
                     'remark' => $remark
                 ];
-                $flag = $rules->editRulation($data);
+                $flag = $rules->editRules($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{

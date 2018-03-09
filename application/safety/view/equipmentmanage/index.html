@@ -1,10 +1,573 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+{include file="public/header" /}
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/admin/webupload/webuploader.css">
+<link rel="stylesheet" type="text/css" href="/static/admin/webupload/style.css">
+<link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
+<link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="/static/admin/css/jedate.css">
+<link rel="stylesheet" href="/static/admin/css/iconfont.css">
+<style>
+    .clearfix:after{
+        content: '';
+        height: 0px;
+        overflow: hidden;
+        clear: both;
+        display: block;
+    }
+    #box{
+        width: 100%;
+        height: 821px;
+        border: 1px solid black;
+    }
+    #top{
+        text-align: center;
+        height:40px;
+        line-height: 40px;
+        font-weight: bolder;
+    }
+    #right{
+        width: 100%;
+        border: 1px solid black;
+        height:821px;
+        float: right;
+    }
+    .mybtn{
+        float: left;
+        margin-top: 5px;
+        margin-left: 20px;
+    }
+    #example_filter{
+        float: right;
+        margin-right: 20px;
+    }
+</style>
 <body>
+<div id="box" class="clearfix">
 
+    <div id="right">
+        <div id="top">
+           安全生产责任制
+        </div>
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <!--<div class="mybtn"></div>-->
+            <thead>
+            <tr>
+                <th>文件名</th>
+                <th>上传人</th>
+                <th>上传时间</th>
+                <th>版本</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Tiger Nixon</td>
+                <td>System Architect</td>
+                <td>Edinburgh</td>
+                <td>61</td>
+                <td>2011/04/25</td>
+                <td>
+
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>
+
+                </td>
+
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>
+
+                </td>
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>
+
+                </td>
+            </tr>
+            <tr>
+                <td>Garrett Winters</td>
+                <td>Accountant</td>
+                <td>Tokyo</td>
+                <td>63</td>
+                <td>2011/07/25</td>
+                <td>
+
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="form_container" style="display: none;"></div>
+<div id="fname1" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5></h5>
+                </div>
+                <div class="ibox-content">
+                    <input id="aid" type="text" class="form-control" value="" style="display: none;">
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">文件名称：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="remark1" type="text" class="form-control" name="remark" >
+                        </div>
+                    </div>
+                    <input id="aid" type="text" class="form-control" value="" style="display: none;">
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">备注：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="remark1" type="text" class="form-control" name="remark" >
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xs-12">
+
+                        <label class="col-xs-3 control-label" id="file" style="text-align: right;line-height: 44px;">文件：</label>
+
+                        <div class="myblock col-xs-8 input-group">
+                            <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_upload1" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_list1" style="display: inline-block;vertical-align: middle;"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="text-align: center;">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{include file="public/footer" /}
+<script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
+<script src="__JS__/jquery.ztree.all.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script>
+<script src="__JS__/jquery.jedate.js"></script>
+<script>
+    // $(document).ready(function(){
+        $("#year2").jeDate({
+            format: "YYYY-MM"
+        });
+        function showPdf(id,url) {
+            $.ajax({
+                url: url,
+                type: "post",
+                data: {id:id},
+                success: function (res) {
+                    if(res.code === 1){
+                        var path = res.path;
+                        window.open("__JS__/web/viewer.html?file=" + path,"_blank");
+                    }else {
+                        layer.msg(res.msg);
+                    }
+                }
+            })
+        };
+
+        function del(id,url) {
+
+            layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+                $.ajax({
+                    url: url,
+                    data: {'id' : id},
+                    type: "post",
+                    dataType: "json",
+                    success: function (res) {
+                        if(res.code == 1){
+                            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                            if(url === "./anualDel"){
+                                table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
+                            }else if(url === "./generalDel"){
+                                table2.ajax.url("__SCRIPT__/safety_goal_general.php").load();
+                            }else if(url === "./responsibilityDel"){
+                                if(tablename == "department"){
+                                    table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=department").load();
+                                }else {
+                                    table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=personal").load();
+                                }
+                            }
+                        }else{
+                            layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                        }
+                    }
+                })
+                layer.close(index);
+            })
+        }
+        function download(id,url) {
+            $.ajax({
+                url: url,
+                success: function (res) {
+                    if(res.code != 1){
+                        layer.msg(res.msg)
+                    }else {
+                        $("#form_container").empty();
+                        var str = "";
+                        str += ""
+                            + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+                            + "<form name=download"+ id +" action="+ url +" method='get' target=downloadFrame"+ id +">"
+                            + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+                            + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+                            + "<button type='submit' class=btn" + id +"></button>"
+                            + "</form>"
+                        $("#form_container").append(str);
+                        $("#form_container").find(".btn" + id).click();
+                    }
+                }
+            })
+        };
+        var uploader1,uploader2,uploader3;          //初始化三个upload按钮
+        //总体目标
+        var aname1,aname2;           //用于区分 编辑时是否修改了文件
+        function upload1() {
+            if(!uploader1){
+                uploader1 = WebUploader.create({
+                    auto: false,// 选完文件后，是否自动上传。
+                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                    server: "{:url('Upload/uploadSafeyGoalAnual')}",// 文件接收服务端。
+                    chunked: false,
+                    fileSizeLimit: 1000 *1024 *1024,
+                    fileNumLimit: 1,
+                    formData: {"remark":"","aid":""},
+                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                    pick: {
+                        multiple: false,
+                        id: "#file_upload1",
+                        innerHTML: "上传文件"
+                    }
+                });
+
+                uploader1.on( 'fileQueued', function( file ) {
+                    aname2 = file.name;
+                    $("#file_per1").append('<div id="' + file.id + '" class="item">' +
+                        '</div>');
+                    $("#file_list1").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                        '<span class="info">' + file.name + '</span>&nbsp' +
+                        '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                        '</div>' );
+                });
+                $("#file_list1").on("click", ".webuploadDelbtn", function () {
+                    var $ele = $(this);
+                    var id = $ele.parent().attr("class");
+                    var file = uploader1.getFile(id);
+                    uploader1.removeFile(file,true);
+                });
+                uploader1.on('fileDequeued', function (file) {
+                    $(file.id).remove();
+                    $('.'+file.id).remove();
+                    console.log("remove");
+                });
+                uploader1.on("uploadStart",function () {
+                    uploader1.options.formData.aid = $("#aid").val();
+                    uploader1.options.formData.remark = $("#remark1").val();
+                });
+                uploader1.on('beforeFileQueued', function (file) {
+                    if($("#file_list1").html()){
+                        alert("只能上传一个文件,请先删除文件");
+                        return false;
+                    }else {
+                        return true;
+                    }
+                });
+                // 文件上传过程中创建进度条实时显示。
+                uploader1.on('uploadProgress', function (file, percentage) {
+                    var $li = $('#' + file.id),
+                        $percent = $li.find('.progress .progress-bar');
+                    // 避免重复创建
+                    if (!$percent.length) {
+                        $percent = $('<div class="progress progress-striped active">' +
+                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                            '</div>' +
+                            '</div>').appendTo($li).find('.progress-bar');
+                    }
+                    $li.find('p.state').text('上传中');
+                    $percent.css('width', percentage * 100 + '%');
+                });
+                // 文件上传成功
+                uploader1.on( 'uploadSuccess', function( file,data, response ) {
+                    console.log(file)
+                    console.log(data)
+                    if(data.code === 1){
+                        layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                        $("#file_upload1").empty();
+                        $("#file_per1").empty();
+                        $("#file_list1").empty();
+                        $("#fname1").modal('hide');
+                        table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
+                    }else {
+                        layer.msg("抱歉，您没有此权限");
+                    }
+                });
+
+                // 文件上传失败，显示上传出错。
+                uploader1.on( 'uploadError', function( file ) {
+                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                    $("#file_per1").empty();
+                });
+            }
+        }
+
+        //总体目标-预览
+        function showpdf1(that) {
+            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            showPdf(id,"./anualPreview");
+        }
+
+        //总体目标-删除
+        function del1(that) {
+            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            del(id,"./anualDel");
+        }
+
+        //总体目标-下载
+        function download1(that) {
+            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            download(id,"./anualDownload");
+        }
+
+        //总体目标-编辑-删除文件
+        function fdelatt1(that) {
+            var id = $(that).parent("div").attr("id");
+            $("#"+id).remove();
+        }
+
+        //总体目标-编辑
+        function edit1(that) {
+            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            $.ajax({
+                url: "./index",
+                type: "post",
+                data: {id:id},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                    if(res.code === 1){
+                        $("#aid").val(res.data.id);
+                        $("#remark1").val(res.data.remark);
+                        aname1 = res.data.name;
+                        aname2 = res.data.name;
+                        uploader1 = null;
+                        upload1();
+                        if(res.data.path){
+                            $("#file_list1").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                                '<span class="info">' + res.data.name + '</span>&nbsp' +
+                                '<span onclick="fdelatt1(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                                '</div>' );
+                        }
+                        $("#fname1").modal('show');
+                    }
+                }
+            })
+        };
+
+        table = $('#example').DataTable({
+            // "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+
+            "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+            // ajax : {
+            //     url : "queryPagePapers",
+            //     dataSrc : "data",
+            //     data : function(d) {
+            //         var searchContent = $(
+            //             '#searchContent').val();
+            //         d.extra_search = searchContent;
+            //     }},
+
+            // "paging":   false,
+            // "ordering": false,
+            // "info":     false,
+            bLengthChange: false,
+            "columnDefs": [
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": [5],
+                    "render" :  function(data,type,row) {
+                        var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download1(this)' value='下载'/>";
+                        html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit1(this)' value='编辑'/>" ;
+                        html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
+                        html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del1(this)' value='删除'/>" ;
+                        return html;
+                    }
+                }
+            ],
+            "language":{
+                "lengthMenu": "每页_MENU_ 条记录",
+                "zeroRecords": "没有找到记录",
+                "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                "infoEmpty": "无记录",
+                "search": "搜索：",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "paginate":{
+                    "previous": "上一页",
+                    "next": "下一页"
+                }
+            }
+
+        });
+
+        $("div.mybtn").html('<div>上传</div>');
+
+        //总体目标-新增
+        $("#example_wrapper .mybtn").click(function () {
+            uploader1 = null;
+            $("#fname1 input").val("");
+            $("#file_list1").empty();
+            $("#fname1").modal('show');
+            upload1();
+        });
+        $("#fname1 .btn-primary").click(function () {
+            if($("#file_list1").html()){
+                if(!$("#aid").val()){
+                    uploader1.upload();
+                }else {
+                    if(aname1 === aname2){
+                        $.ajax({
+                            url: "./anualEdit",
+                            type: "post",
+                            data: {aid:$("#aid").val(),remark:$("#remark1").val()},
+                            datatype: "json",
+                            success: function (res) {
+                                if(res.code === 1){
+                                    layer.msg(res.msg);
+                                    table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
+                                    $("#fname1").modal('hide');
+                                }else {
+                                    layer.msg(res.msg);
+                                }
+                            }
+                        })
+                    }else {
+                        uploader1.upload();
+                    }
+                }
+            }else {
+                alert("请选择上传文件");
+            }
+        })
+
+
+    // });
+</script>
 </body>
 </html>

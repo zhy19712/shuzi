@@ -143,6 +143,17 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="col-lg-12 col-xs-12">
+                                    <label class="col-xs-6 col-sm-3 control-label">识别人：</label>
+                                    <div class="myblock col-xs-6 col-sm-9 input-group">
+                                        <input id="pdivision" type="text" class="form-control" name="division" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 col-xs-12 col-lg-offset-3 col-xs-offset-0">
+                                    <ul id="siduserZtree" class="ztree"></ul>
+                                </div>
+                            </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-lg-6 col-xs-12">
@@ -167,12 +178,6 @@
                                             <option value="0">适用</option>
                                             <option value="-1">过期</option>
                                         </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-xs-12">
-                                    <label class="col-xs-6 col-sm-4 control-label">识别人：</label>
-                                    <div class="myblock col-xs-6 input-group">
-                                        <input id="pdivision" type="text" class="form-control" name="division" >
                                     </div>
                                 </div>
                             </div>
@@ -211,17 +216,16 @@
     <script src="__JS__/mypdf.js"></script>
 
     <script>
+
         //左侧菜单
-        var node = [
-            {name:"法律法规"},
-            {name: "标准规范", children: [
-                {name: "国家标准"},
-                {name: "安监行业标准"},
-                {name: "水利水电行业标准"},
-                {name: "建筑行业标准"}
-             ]}
-        ]
         var setting = {
+            async: {
+                enable : true,
+                autoParam: ["pId"],
+                type : "post",
+                url : "./index",
+                dataType :"json"
+            },
             view:{
                 addHoverDom: addHoverDom,
                 removeHoverDom: removeHoverDom,
@@ -240,17 +244,19 @@
                 }
             },
             data:{
-                keep: {
-                    leaf : true,
-                    parent : true
-                },
                 simpleData : {
                     enable:true,
                     idkey: "id",
                     pIdKey: "pId"
                 }
+            },
+            callback: {
+                onClick: zTreeOnClick,
+                beforeRemove:beforeRemove
             }
         };
+        //添加节点
+        var newCount = 1;
         function addHoverDom(treeId, treeNode) {
             var sObj = $("#" + treeNode.tId + "_span"); //获取节点信息
             if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
@@ -263,19 +269,88 @@
             if (btn) btn.bind("click", function(){
                 var zTree = $.fn.zTree.getZTreeObj("tree_container");
                 //将新节点添加到数据库中
-                var name='NewNode';
-                $.post('./index.php?r=data/addtree&pid='+treeNode.id+'&name='+name,function (data) {
-                    var newID = data; //获取新添加的节点Id
-                    zTree.addNodes(treeNode, {id:newID, pId:treeNode.id, name:name}); //页面上添加节点
-                    var node = zTree.getNodeByParam("id", newID, null); //根据新的id找到新添加的节点
-                    zTree.selectNode(node); //让新添加的节点处于选中状态
+                var name='新节点';
+                var newNode = zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:name + (newCount++)});
+                console.log(newNode);
+                $.ajax({
+                    url:'{:url("Statutestdi/nodeAdd")}',
+                    dataType:'JSON',
+                    type:'POST',
+                    data:{
+                        id:newNode[0].id,
+                        pname:newNode[0].name
+                    },
+                    success:function(){
+
+                    }
                 });
+                //var newID = newNode[0].id;
+                //var node = zTree.getNodeByParam("id", newID, treeNode.pId); //根据新的id找到新添加的节点
+                //zTree.selectNode(node); //让新添加的节点处于选中状态
+                return false;
+
             });
         };
         function removeHoverDom(treeId, treeNode) {
             $("#addBtn_"+treeNode.tId).unbind().remove();
         };
-        zTreeObj = $.fn.zTree.init($("#tree_container"), setting,node).expandAll(true);
+        zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null).expandAll(true);
+
+        //删除节点
+        function beforeRemove(treeId, treeNode){
+            layer.confirm('确定要删除该节点？', {
+                btn: ['确定','取消']
+            }, function(){
+                console.log(treeNode);
+                $.ajax({
+                    url:'{:url("Statutestdi/nodeDel")}',
+                    dataType:'JSON',
+                    type:'POST',
+                    data:{
+                        id:treeNode.id,
+                        pname:treeNode.name
+                    },
+                    success:function(){
+                        var zTree = $.fn.zTree.getZTreeObj("tree_container");
+                        var nodes = zTree.getSelectedNodes();
+                        for (var i=0, l=nodes.length; i < l; i++) {
+                            zTree.removeNode(nodes[i]);
+                        }
+                    }
+                });
+                layer.msg('删除成功！', {icon: 1});
+            });
+        }
+
+        //点击获取节点名称
+        function zTreeOnClick(event, treeId, treeNode) {
+            mytree_node = treeNode;
+            $("#groupname").val(treeNode.name);
+            $("#mycontent>p").text(treeNode.name);
+            $("#groupid").val(treeNode.id);
+            groupid = treeNode.id;
+            if(treeNode.level == 3){
+                $("#mytable1_wrapper").css("display","block");
+                tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php?pid=" + groupid).load();
+            }else {
+                $("#mytable1_wrapper").css("display","none");
+            }
+
+            //获取路径
+            $.ajax({
+                url: "./getParents",
+                type: "post",
+                data: {id:groupid},
+                dataType: "json",
+                success: function (res) {
+                    if(res.msg === "success"){
+                        $("#path").text("当前路径:" + res.path)
+                    }
+                }
+            })
+
+
+        };
 
 
         //右侧表格
@@ -290,7 +365,7 @@
                {
                    "searchable": false,
                    "orderable": false,
-                   "targets": [2],
+                   "targets": [8],
                    "render" :  function(data,type,row) {
                        var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='查看'/>";
                        html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
@@ -365,8 +440,9 @@
                 $list.val('等待上传...');
             });
 
-            uploader.on( 'uploadSuccess', function( file ) {
+            uploader.on( 'uploadSuccess', function( file ,res) {
                 $list.val(file.name+'已上传成功');
+                complete(res);
             });
 
             uploader.on( 'uploadError', function( file ) {
@@ -395,6 +471,43 @@
             }
         });
 
+        //从组织机构及用户树中选择负责人
+        function getSiduser(event, treeId, treeNode) {
+            $('#pdivision').val(treeNode.name);
+        };
+        //组织机构及用户树
+        function siduserZtree() {
+            var setting = {
+                async: {
+                    enable : true,
+                    autoParam: ["pId"],
+                    type : "post",
+                    url : "{:url('Statutestdi/getSiduser')}",
+                    dataType :"json"
+                },
+                data:{
+                    keep: {
+                        leaf : true,
+                        parent : true
+                    },
+                    simpleData : {
+                        enable:true,
+                        idkey: "id",
+                        pIdKey: "pId"
+                    }
+                },
+                callback: {
+                    onClick: getSiduser
+                }
+            };
+            zTreeObj = $.fn.zTree.init($("#siduserZtree"), setting,null);
+        }
+
+        $('#pdivision').focus(function(){
+            siduserZtree();
+        })
+
+        //非空判断
         function isEmpty(element,msg) {
             if(!$("#"+element).val()){
                 $("#"+element).focus().css('border-color','red');
@@ -414,7 +527,7 @@
             }
         });
 
-        //提交表单
+        //上传保存
         $('#save').click(function(){
             //非空判断
             isEmpty('pdivision','识别人不能为空');
@@ -442,7 +555,6 @@
                 $.ajax({
                     url: "{:url('Upload/uploadSdi')}",
                     type: "post",
-                    success: complete,
                     dataType: 'json',
                     data:{
                         number:number,  //标准号
@@ -451,26 +563,21 @@
                         evaluation:evaluation,//适用性评价
                         sid_user:sid_user,//识别人
                     },
-                    success:function(data){
-                        if(data.code===1){
-                            layer.msg(data.msg);
-                            tableItem.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
-                            $("#addRules_modal").modal('hide');
-                        }else{
-                            layer.msg(data.msg);
-                        }
-                    }
+                    success: complete
                 });
-                function complete(data){
-                    if(data.code==1){
-                        layer.msg("保存成功");
-                    }else{
-                        layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
-                        return false;
-                    }
-                }
             }
         });
+        //数据返回
+        function complete(data){
+            if(data.code==1){
+                layer.msg(data.msg);
+                tableItem.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
+                $("#addRules_modal").modal('hide');
+            }else{
+                layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                return false;
+            }
+        }
     </script>
 </body>
 </html>
