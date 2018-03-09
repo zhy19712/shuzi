@@ -437,6 +437,9 @@ class Upload extends Base
     /*
      *安全生产责任制文件上传
     */
+
+
+
     public function uploadFullparticipation(){
         $fullpart = new FullparticipationModel();
         $id = request()->param('aid');
