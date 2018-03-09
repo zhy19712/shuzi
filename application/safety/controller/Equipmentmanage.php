@@ -9,14 +9,20 @@
 namespace app\safety\controller;
 
 use app\admin\controller\Base;
-
+use app\safety\model\EquipmentModel;
 class Equipmentmanage extends Base
 {
     /*
-     * 获取一条安全生产责任制信息
+     * 设备设施管理页面左边的树状结构
     */
     public function index()
     {
-        return $this->fetch();
+        if(request()->isAjax()){
+            $node = new EquipmentModel();
+            $nodeStr = $node->getNodeInfo();
+            return json($nodeStr);
+        }
+        else
+            return $this->fetch();
     }
 }
