@@ -265,7 +265,7 @@ class Upload extends Base
                     'path' => $path,
                     'remark' => $remark
                 ];
-                $flag = $rules->insertRulation($data);
+                $flag = $rules->insertRules($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $rules->getOne($id);
@@ -284,7 +284,7 @@ class Upload extends Base
                     'path' => $path,
                     'remark' => $remark
                 ];
-                $flag = $rules->editRulation($data);
+                $flag = $rules->editRules($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{
