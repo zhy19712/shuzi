@@ -82,6 +82,7 @@
     <div id="mycontent" class="mycontent">
         <h2>法律标准分类</h2>
         <ul id="tree_container" class="ztree"></ul>
+        <input type="hidden" name="treeId">
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="ibox float-e-margins">
@@ -284,8 +285,8 @@
                         pid:treeNode.id,
                         pname:newNode[0].name
                     },
-                    success:function(){
-
+                    success:function(data){
+                        $('input[type="hidden"][name="treeId"]').val(data.data);
                     }
                 });
                 //var newID = newNode[0].id;
@@ -301,7 +302,6 @@
 
         //编辑节点
         function beforeRename(treeId, treeNode, newName, isCancel) {
-            console.log(newName);
             if (newName.length == 0) {
                 layer.msg("节点名称不能为空.");
                 return false;
@@ -309,7 +309,8 @@
             layer.confirm('确定要编辑该节点？', {
                 btn: ['确定','取消']
             }, function(){
-                var id;
+                var id=$('input[type="hidden"][name="treeId"]').val();
+
                 $.ajax({
                     url:'{:url("Statutestdi/nodeAdd")}',
                     dataType:'JSON',
@@ -318,8 +319,7 @@
                         id:id,
                         pname:newName
                     },
-                    success:function(data){
-                        id = data;
+                    success:function(){
                     }
                 });
                 layer.msg('编辑成功！', {icon: 1});
