@@ -11,6 +11,7 @@ use app\safety\model\SafetyResponsibilitycultureModel;
 use app\safety\model\SafetyResponsibilityinfoModel;
 use app\safety\model\StatutestdiModel;
 use app\safety\model\FullparticipationModel;
+use app\safety\model\EquipmentCheckAcceptModel;
 
 class Upload extends Base
 {
@@ -475,6 +476,57 @@ class Upload extends Base
                     'remark' => $remark
                 ];
                 $flag = $fullpart->editFullparticipation($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /*
+     *设备设施管理文件上传
+    */
+    public function uploadEquipmentCheckAccept(){
+        $equipment = new EquipmentCheckAcceptModel();
+        $id = request()->param('aid');
+//        $version = request()->param('version');
+        $selfid = request()->param('selfid');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/equipmentCheckAccept');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/equipmentCheckAccept/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'selfid' => $selfid,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+//                    'version' => $version,
+                    'remark' => $remark
+                ];
+                $flag = $equipment->insertEquipmentCheckAccept($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $equipment->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'selfid' => $selfid,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+//                    'version' => $version,
+                    'remark' => $remark
+                ];
+                $flag = $equipment->editEquipmentCheckAccept($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{
