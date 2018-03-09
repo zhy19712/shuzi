@@ -54,6 +54,7 @@ class Statutestdi extends Base
             $param = input('post.');
             $data = [
                 'id' => $param['id'],
+                'group_id' => $param['group_id'],
                 'sdi_number' => $param['sdi_number'],
                 'sdi_name' => $param['sdi_name'],
                 'go_date' => $param['go_date'],

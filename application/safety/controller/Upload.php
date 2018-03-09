@@ -175,6 +175,7 @@ class Upload extends Base
      */
     public function uploadSdi(){
         $sdi = new StatutestdiModel();
+        $group_id = request()->param('group_id');
         $number = request()->param('number');
         $sdi_name = request()->param('sdi_name');
         $go_date = request()->param('go_date');
@@ -191,6 +192,7 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
+                    'group_id' => $group_id,
                     'number' => $number,
                     'sdi_name' => $sdi_name,
                     'go_date' => $go_date,
@@ -210,6 +212,7 @@ class Upload extends Base
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
+                    'group_id' => $group_id,
                     'number' => $number,
                     'sdi_name' => $sdi_name,
                     'go_date' => $go_date,
