@@ -139,7 +139,7 @@
                     <input type="text" name="uid" id="id1" style="display: none;" value="">
                     <div class="ibox-content">
                         <!--新增用户信息开始-->
-                        <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post" action="{:url('uploadRules')}">
+                        <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
                             <input type="text" name="id" id="rulesid" style="display: none;">
                             <input type="text" name="group_id" id="pgroup_id" style="display: none;">
                             <div class="form-group">
@@ -265,6 +265,7 @@
         }
     } );
     $("div.mybtn").html('<div>新增</div>');
+
 
     //组织结构树
     var zTreeObj;
@@ -434,7 +435,6 @@
         }else {
             $("#mytable1_wrapper").css("display","none");
         }
-
         //获取路径
         $.ajax({
             url: "./getParents",
@@ -471,15 +471,114 @@
             onClick: zTreeOnClick
         }
     };
-
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,mytree_node);
+
 
     //点击时间插件
     $("#dataImple").jeDate({
         format: "YYYY-MM-DD"
     });
-    var uploader;
+
+
+    //上传插件
+//    var uploader;
     var aname1,aname2;   //用于区分 编辑时是否修改了文件
+    var uploader1;
+    function upload1() {
+        if(!uploader1){
+            uploader1 = WebUploader.create({
+                auto: false,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('Upload/uploadRules')}",// 文件接收服务端。
+                chunked: false,
+                fileSizeLimit: 1000 *1024 *1024,
+                fileNumLimit: 1,
+//                formData: {"remark":"","aid":""},
+                duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: false,
+                    id: "#file_upload1",
+                    innerHTML: "上传文件"
+                }
+            });
+            //点击新增出现--上传文件
+            uploader1.on( 'fileQueued', function( file ) {
+                aname2 = file.name;
+                $("#file_per1").append('<div id="' + file.id + '" class="item">' +
+                    '</div>');
+                $("#file_list1").append('<div style="display: inline-block;vertical-align: middle;width: 100%;height: 100%;" class="' + file.id + '" class="item">' +
+                    '<span class="info" style="padding-left: 10px;">' + file.name + '</span>&nbsp' +
+                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;padding-left: 5px;">删除</span>' +
+                    '</div>' );
+            });
+            $("#file_list1").on("click", ".webuploadDelbtn", function () {
+                var $ele = $(this);
+                var id = $ele.parent().attr("class");
+                var file = uploader1.getFile(id);
+                uploader1.removeFile(file,true);
+            });
+            uploader1.on('fileDequeued', function (file) {
+                $(file.id).remove();
+                $('.'+file.id).remove();
+                console.log("remove");
+            });
+            uploader1.on("uploadStart",function () {
+                console.log(groupid)
+                uploader1.options.formData.id = $("#rulesid").val();//id
+                uploader1.options.formData.groud_id = groupid;//group_id
+                uploader1.options.formData.number = $("#standardNumr").val();//标准号
+                uploader1.options.formData.rul_name = $("#file_list1 .info").val();//名称
+                uploader1.options.formData.go_date = $("#dataImple").val();//施行日期alternativeStandard
+                uploader1.options.formData.standard = $("#alternativeStandard").val();//替代标准
+                uploader1.options.formData.evaluation = $("#appEvaluation").val();//适用性评价
+                uploader1.options.formData.rul_user = $("#recogner").val();//识别人
+                uploader1.options.formData.remark = $("#rulesDesc").val()//备注
+            });
+            uploader1.on('beforeFileQueued', function (file) {
+                if($("#file_list1").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
+            // 文件上传过程中创建进度条实时显示。
+            uploader1.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            uploader1.on( 'uploadSuccess', function( file,data, response ) {
+                console.log(file)
+                console.log(data)
+                if(data.code === 1){
+                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    $("#file_upload1").empty();
+                    $("#file_per1").empty();
+                    $("#file_list1").empty();
+                    $("#addRules_modal").modal('hide');
+                    $("#mytable1_wrapper").css("display","block");
+                    admin_table.ajax.url("__SCRIPT__/safety_rules.php").load();
+                }else {
+                    layer.msg("抱歉，您没有此权限");
+                }
+            });
+            // 文件上传失败，显示上传出错。
+            uploader1.on( 'uploadError', function( file ) {
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                $("#file_per1").empty();
+            });
+        }
+    }
     //点击新增按钮
     $(".mybtn").click(function () {
         uploader1 = null;
@@ -531,166 +630,100 @@
         //新增中的保存
         //总体目标-初始化upload
         //http://localhost:81/static/admin/js/web/viewer.html?file=/uploads/temp/9f6feec0d40ac402373846180d903346.docx.pdf
-    var uploader1;
-    function upload1() {
-        if(!uploader1){
-            uploader1 = WebUploader.create({
-                auto: false,// 选完文件后，是否自动上传。
-                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadRules')}",// 文件接收服务端。
-                chunked: false,
-                fileSizeLimit: 1000 *1024 *1024,
-                fileNumLimit: 1,
-                formData: {"remark":"","aid":""},
-                duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                pick: {
-                    multiple: false,
-                    id: "#file_upload1",
-                    innerHTML: "上传文件"
-                }
-            });
-            //点击新增出现--上传文件
-            uploader1.on( 'fileQueued', function( file ) {
-                aname2 = file.name;
-                $("#file_per1").append('<div id="' + file.id + '" class="item">' +
-                    '</div>');
-                $("#file_list1").append('<div style="display: inline-block;vertical-align: middle;width: 100%;height: 100%;" class="' + file.id + '" class="item">' +
-                    '<span class="info" style="padding-left: 10px;">' + file.name + '</span>&nbsp' +
-                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;padding-left: 5px;">删除</span>' +
-                    '</div>' );
-            });
-            $("#file_list1").on("click", ".webuploadDelbtn", function () {
-                var $ele = $(this);
-                var id = $ele.parent().attr("class");
-                var file = uploader1.getFile(id);
-                uploader1.removeFile(file,true);
-            });
-            uploader1.on('fileDequeued', function (file) {
-                $(file.id).remove();
-                $('.'+file.id).remove();
-                console.log("remove");
-            });
-            uploader1.on("uploadStart",function () {
-                uploader1.options.formData.id = $("#rulesid").val();//id
-                uploader1.options.formData.number = $("#standardNumr").val();//标准号
-                uploader1.options.formData.rul_name = $("#addName").val();//名称
-                uploader1.options.formData.go_date = $("#dataImple").val();//施行日期alternativeStandard
-                uploader1.options.formData.standard = $("#alternativeStandard").val();//替代标准
-                uploader1.options.formData.evaluation = $("#appEvaluation").val();//适用性评价
-                uploader1.options.formData.rul_user = $("#recogner").val();//识别人
-                uploader1.options.formData.remark = $("#rulesDesc").val()//备注
-            });
-            uploader1.on('beforeFileQueued', function (file) {
-                if($("#file_list1").html()){
-                    alert("只能上传一个文件,请先删除文件");
-                    return false;
-                }else {
-                    return true;
-                }
-            });
-            // 文件上传过程中创建进度条实时显示。
-            uploader1.on('uploadProgress', function (file, percentage) {
-                var $li = $('#' + file.id),
-                    $percent = $li.find('.progress .progress-bar');
-                // 避免重复创建
-                if (!$percent.length) {
-                    $percent = $('<div class="progress progress-striped active">' +
-                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                        '</div>' +
-                        '</div>').appendTo($li).find('.progress-bar');
-                }
-                $li.find('p.state').text('上传中');
-                $percent.css('width', percentage * 100 + '%');
-            });
-            // 文件上传成功
-            uploader1.on( 'uploadSuccess', function( file,data, response ) {
-                console.log(file)
-                console.log(data)
-                if(data.code === 1){
-                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
-                    $("#file_upload1").empty();
-                    $("#file_per1").empty();
-                    $("#file_list1").empty();
-                    $("#fname1").modal('hide');
-                    table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
-                }else {
-                    layer.msg("抱歉，您没有此权限");
-                }
-            });
-            // 文件上传失败，显示上传出错。
-            uploader1.on( 'uploadError', function( file ) {
-                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                $("#file_per1").empty();
-            });
-        }
-    }
-
     //新增的保存
     $("#addRules_modal .btn-primary").click(function () {
-        console.log($("#addName").val())
-        if(aname2 != null){
-            $.ajax({
-                url: "./uploadRules",
-                type: "post",
-                data: {
-                    id:$("#rulesid").val(),//id
-                    number:$("#standardNumr").val(),//标准号
-                    rul_name:$("#addName").val(),//名称
-                    go_date:$("#dataImple").val(),//施行日期alternativeStandard
-                    standard:$("#alternativeStandard").val(),//替代标准
-                    evaluation:$("#appEvaluation").val(),//适用性评价
-                    rul_user:$("#recogner").val(),//识别人
-                    remark:$("#rulesDesc").val()//备注
-                },
-                datatype: "json",
-                success: function (res) {
-                    console.log(res)
-                    if(res.code === 1){
-                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        admin_table.ajax.url("__SCRIPT__/safety_rules.php").load();
-//                        ss_table.ajax.url("__SCRIPT__/prototype_list.php").load();
-                        cid = "";
-                        $("#addRules_modal").modal('hide');
-                    }else {
-                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                    }
-                }
-            })
-
-//            if(file_name1 === file_name2){
-//                $.ajax({
-//                    url: "./uploadRules",
-//                    type: "post",
-//                    data: {
-//                        id:$("#rulesid").val(),//id
-//                        number:$("#standardNumr").val(),//标准号
-//                        rul_name:$("#addName").val(),//名称
-//                        go_date:$("#dataImple").val(),//施行日期alternativeStandard
-//                        standard:$("#alternativeStandard").val(),//替代标准
-//                        evaluation:$("#appEvaluation").val(),//适用性评价
-//                        rul_user:$("#recogner").val(),//识别人
-//                        remark:$("#rulesDesc").val()//备注
-//                    },
-//                    datatype: "json",
-//                    success: function (res) {
-//                        if(res.code === 1){
-//                            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-//                            standard_table.ajax.url("__SCRIPT__/rules.php").load();
-//                            ss_table.ajax.url("__SCRIPT__/prototype_list.php").load();
-//                            cid = "";
-//                            $("#addRules_modal").modal('hide');
-//                        }else {
-//                            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+        if($("#file_list1").html()){
+            if(!$("#id1").val()){
+                uploader1.upload();
+                $("#mytable1_wrapper").css("display","block");
+                console.log("新增")
+            }else {
+                console.log("编辑")
+//                alert(111111111)
+//                if(aname1 === aname2){
+//                    $.ajax({
+//                        url: "./anualEdit",
+//                        type: "post",
+//                        data: {aid:$("#aid").val(),remark:$("#remark1").val()},
+//                        datatype: "json",
+//                        success: function (res) {
+//                            if(res.code === 1){
+//                                layer.msg(res.msg);
+//                                table1.ajax.url("__SCRIPT__/safety_rules.php").load();
+//                                $("#fname1").modal('hide');
+//                            }else {
+//                                layer.msg(res.msg);
+//                            }
 //                        }
-//                    }
-//                })
-//            }else {
-//                standard_uploader.upload();
-//            }
+//                    })
+//                }else {
+//                    uploader1.upload();
+//                }
+            }
         }else {
             alert("请选择上传文件");
         }
-
+//        if(aname2 != null){
+//            $.ajax({
+//                url: "./uploadRules",
+//                type: "post",
+//                data: {
+//                    id:$("#rulesid").val(),//id
+//                    number:$("#standardNumr").val(),//标准号
+//                    rul_name:$("#addName").val(),//名称
+//                    go_date:$("#dataImple").val(),//施行日期alternativeStandard
+//                    standard:$("#alternativeStandard").val(),//替代标准
+//                    evaluation:$("#appEvaluation").val(),//适用性评价
+//                    rul_user:$("#recogner").val(),//识别人
+//                    remark:$("#rulesDesc").val()//备注
+//                },
+//                datatype: "json",
+//                success: function (res) {
+//                    console.log(res)
+//                    if(res.code === 1){
+//                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+//                        admin_table.ajax.url("__SCRIPT__/safety_rules.php").load();
+//                        cid = "";
+//                        $("#addRules_modal").modal('hide');
+//                    }else {
+//                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+//                    }
+//                }
+//            })
+//
+////            if(file_name1 === file_name2){
+////                $.ajax({
+////                    url: "./uploadRules",
+////                    type: "post",
+////                    data: {
+////                        id:$("#rulesid").val(),//id
+////                        number:$("#standardNumr").val(),//标准号
+////                        rul_name:$("#addName").val(),//名称
+////                        go_date:$("#dataImple").val(),//施行日期alternativeStandard
+////                        standard:$("#alternativeStandard").val(),//替代标准
+////                        evaluation:$("#appEvaluation").val(),//适用性评价
+////                        rul_user:$("#recogner").val(),//识别人
+////                        remark:$("#rulesDesc").val()//备注
+////                    },
+////                    datatype: "json",
+////                    success: function (res) {
+////                        if(res.code === 1){
+////                            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+////                            standard_table.ajax.url("__SCRIPT__/rules.php").load();
+////                            ss_table.ajax.url("__SCRIPT__/prototype_list.php").load();
+////                            cid = "";
+////                            $("#addRules_modal").modal('hide');
+////                        }else {
+////                            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+////                        }
+////                    }
+////                })
+////            }else {
+////                standard_uploader.upload();
+////            }
+//        }else {
+//            alert("请选择上传文件");
+//        }
     })
     //新增中的返回
     $("#addRules_modal .btn-danger").click(function () {
