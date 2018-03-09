@@ -78,6 +78,7 @@
         table.dataTable thead th, table.dataTable tfoot th{
             font-weight: normal;
         }
+
     </style>
 
     <div id="mycontent" class="mycontent">
@@ -85,6 +86,7 @@
         <ul id="tree_container" class="ztree"></ul>
         <input type="hidden" name="treeId">
         <input type="hidden" name="currentDragId">
+        <input type="hidden" name="groupId">
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="ibox float-e-margins">
@@ -153,7 +155,6 @@
                                     <label class="col-xs-6 col-sm-3 control-label">识别人：</label>
                                     <div class="myblock col-xs-6 col-sm-9 input-group">
                                         <input id="pdivision" type="text" class="form-control" name="division">
-                                        <i class="fa user-circle"></i>
                                     </div>
                                 </div>
                                 <div class="col-lg-9 col-xs-12 col-lg-offset-3 col-xs-offset-0">
@@ -388,11 +389,9 @@
         function zTreeOnClick(event, treeId, treeNode) {
             console.log(treeNode);
             mytree_node = treeNode;
-            $("#groupname").val(treeNode.name);
-            $("#mycontent>p").text(treeNode.name);
-            $("#groupid").val(treeNode.id);
             groupid = treeNode.id;
-            if(treeNode.level == 3){
+            $('input[type="hidden"][name="groupId"]').val(groupid);
+            if(treeNode.level){
                 $("#mytable1_wrapper").css("display","block");
                 tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php?pid=" + groupid).load();
             }else {
@@ -430,10 +429,10 @@
                    "orderable": false,
                    "targets": [8],
                    "render" :  function(data,type,row) {
-                       var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='查看'/>";
+                       var html = "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
+                       html += "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
                        html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
-                       html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
-                       html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='zdel(this)' value='删除'/>" ;
+                       html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                        return html;
                    }
                }
@@ -486,6 +485,7 @@
                     innerHTML: "上传"
                 },
                 formData:{
+                    group_id:'',
                     number:'',
                     go_date:'',
                     standard:'',
@@ -512,12 +512,30 @@
                 $list.val('上传出错');
             });
 
+            // 文件上传过程中创建进度条实时显示。
+            uploader.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+
             uploader.on("uploadStart",function () {
+                uploader.options.formData.group_id = $('input[type="hidden"][name="groupId"]').val();
                 uploader.options.formData.number = $("#standardNumr").val();
+                uploader.options.formData.sdi_name = $("#addName").val();
                 uploader.options.formData.go_date = $("#dataImple").val();
                 uploader.options.formData.standard = $("#alternativeStandard").val();
                 uploader.options.formData.evaluation = $("#psex").val();
                 uploader.options.formData.sid_user = $("#pdivision").val();
+                uploader.options.formData.remark = $("#rulesDesc").text();
             });
         });
         //关闭模态框销毁WebUploader
@@ -530,7 +548,7 @@
             if($(this).find('option:selected').val()==-1){
                 $("#alternativeStandard").attr('readonly',false);
             }else{
-                $("#alternativeStandard").attr('readonly',true);
+                $("#alternativeStandard").attr('readonly',true).val(' ');
             }
         });
 
@@ -634,12 +652,34 @@
         function complete(data){
             if(data.code==1){
                 layer.msg(data.msg);
-                tableItem.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
+                tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php").load();
                 $("#addRules_modal").modal('hide');
             }else{
                 layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                 return false;
             }
+        }
+
+        //删除数据
+        function del(that){
+            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+                $.ajax({
+                    url: "{:url('Statutestdi/sdiDel')}",
+                    data: {'id' : id},
+                    type: "get",
+                    dataType: "json",
+                    success: function (res) {
+                        if(res.code == 1){
+                            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                            zhihu_table.ajax.url("__SCRIPT__/safety_statutesdi.php").load();
+                        }else{
+                            layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                        }
+                    }
+                })
+                layer.close(index);
+            })
         }
     </script>
 </body>
