@@ -3,20 +3,21 @@
  * Created by PhpStorm.
  * User: admin
  * Date: 2018/3/8
- * Time: 11:19
+ * Time: 15:53
  */
-//安全生产文明建设
+//全员参与->安全生产责任制
 namespace app\safety\model;
 use think\exception\PDOException;
 use think\Model;
-class SafetyResponsibilitycultureModel extends Model
+class FullparticipationModel extends Model
 {
-    protected $name = 'safety_responsibilityculture';
+    protected $name = 'safety_fullparticipation';
+
     /*
-     * 添加新的安全文化建设文件
-     */
-    public function insertSafetyResponsibilityculture($param)
-        {
+     * 添加新的安全生产责任制文件
+    */
+    public function insertFullparticipation($param)
+    {
         try{
             $result = $this->allowField(true)->save($param);
             if(false === $result){
@@ -29,9 +30,9 @@ class SafetyResponsibilitycultureModel extends Model
         }
     }
     /*
-     * 编辑安全文化建设文件
-     */
-    public function editSafetyResponsibilityculture($param)
+     * 编辑安全生产责任制文件
+    */
+    public function editFullparticipation($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -45,9 +46,9 @@ class SafetyResponsibilitycultureModel extends Model
         }
     }
     /*
-    * 删除安全文化建设文件
+     * 删除安全生产责任制文件
     */
-    public function delSafetyResponsibilityculture($id)
+    public function delFullparticipation($id)
     {
         try{
             $this->where('id', $id)->delete();
@@ -58,7 +59,7 @@ class SafetyResponsibilitycultureModel extends Model
         }
     }
     /*
-    * 获取一条安全文化建设文件
+     * 获取一条安全文化建设文件
     */
     public function getOne($id)
     {

@@ -9,6 +9,8 @@ use app\safety\model\SafetyGoalGeneralModel;
 use app\safety\model\ResponsibilityinstyGroupModel;
 use app\safety\model\SafetyResponsibilitycultureModel;
 use app\safety\model\SafetyResponsibilityinfoModel;
+use app\safety\model\StatutestdiModel;
+use app\safety\model\FullparticipationModel;
 
 class Upload extends Base
 {
@@ -263,7 +265,7 @@ class Upload extends Base
                     'path' => $path,
                     'remark' => $remark
                 ];
-                $flag = $rules->insertRulation($data);
+                $flag = $rules->insertRules($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $rules->getOne($id);
@@ -282,7 +284,7 @@ class Upload extends Base
                     'path' => $path,
                     'remark' => $remark
                 ];
-                $flag = $rules->editRulation($data);
+                $flag = $rules->editRules($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{
@@ -420,6 +422,53 @@ class Upload extends Base
                     'remark' => $remark
                 ];
                 $flag = $responsibilityinfo->editSafetyResponsibilityinfo($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+    /*
+     *安全生产责任制文件上传
+    */
+    public function uploadFullparticipation(){
+        $fullpart = new FullparticipationModel();
+        $id = request()->param('aid');
+        $version = request()->param('version');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/fullparticipation');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/fullparticipation/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'version' => $version,
+                    'remark' => $remark
+                ];
+                $flag = $fullpart->insertFullparticipation($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $fullpart->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'version' => $version,
+                    'remark' => $remark
+                ];
+                $flag = $fullpart->editFullparticipation($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{

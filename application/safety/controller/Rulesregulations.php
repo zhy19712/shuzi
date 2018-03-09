@@ -8,7 +8,10 @@
 namespace app\safety\controller;
 
 use app\admin\controller\Base;
+use app\admin\model\UserModel;
+use app\admin\model\UserType;
 use app\safety\model\RulesregulationsModel;
+use app\safety\model\SafetySdiNodeModel;
 
 // 规章制度
 class Rulesregulations extends Base
@@ -17,10 +20,27 @@ class Rulesregulations extends Base
     {
         if(request()->isAjax()){
             $node = new SafetySdiNodeModel();
-            $nodeStr = $node->getNodeInfo();
+            $nodeStr = $node->getNodeInfo(2);
             return json($nodeStr);
         }
         return $this ->fetch();
+    }
+
+    /**
+     *  从组织机构及用户树中选择负责人
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getRuluser()
+    {
+        if(request()->isAjax()){
+            $node1 = new UserType();
+            $node2 = new UserModel();
+            $nodeStr1 = $node1->getNodeInfo_1();
+            $nodeStr2 = $node2->getNodeInfo_2();
+            $nodeStr = "[" . substr($nodeStr1 . $nodeStr2, 0, -1) . "]";
+            return json($nodeStr);
+        }
     }
 
     /**
@@ -43,7 +63,7 @@ class Rulesregulations extends Base
                 'rul_user' => $param['rul_user'],
                 'remark' => $param['remark']
             ];
-            $flag = $rules->editRulation($data);
+            $flag = $rules->editRules($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -95,13 +115,13 @@ class Rulesregulations extends Base
             if(file_exists($pdf_path)){
                 unlink($pdf_path); // 删除生成的预览pdf
             }
-            $flag = $rules->delRulation($param['id']);
+            $flag = $rules->delRules($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
 
     /**
-     * 下载
+     * 预览
      * @return \think\response\Json
      * @author hutao
      */
@@ -135,4 +155,80 @@ class Rulesregulations extends Base
             }
         }
     }
+
+    /**
+     * 获取路径
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getParents()
+    {
+        $node = new SafetySdiNodeModel();
+        $parent = array();
+        $path = "";
+        if(request()->isAjax()){
+            $param = input('post.');
+            $id = $param['id'];
+            while($id>0)
+            {
+                $data = $node->getOneNode($id);
+                array_unshift($parent, $data['id']);
+                $path = $data['pname'] . ">>" . $path;
+                $id = $data['pid'];
+            }
+            return json(['path' => substr($path, 0 , -2), 'idList' => $parent, 'msg' => "success", 'code'=>1]);
+        }
+    }
+
+    /**
+     * 添加节点
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function nodeAdd()
+    {
+        if(request()->isAjax()){
+            $param = input('post.');
+            $node = new SafetySdiNodeModel();
+            $param['ptype'] = 2; // 1 法规标准识别 2 规章制度
+            if(empty($param['id'])){
+                $flag = $node->insertSdinode($param);
+            }else if(!empty($param['id'])){
+                $flag = $node->editSdinode($param);
+            }
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    /**
+     * 删除节点
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function nodeDel()
+    {
+        if(request()->isAjax()){
+            $id = input('post.id');
+            $node = new SafetySdiNodeModel();
+            /**
+             * 删除节点时，先判断该节点下是否包含子节点
+             * 1，删除子节点下的所有文件
+             * 2，删除子节点下
+             * 3，删除该节点下的所有文件
+             * 4，删除该节点
+             */
+            $idarr = $node->hasSubclass($id);
+            if(count($idarr) > 0){
+                foreach($idarr as $v){
+                    $flag = $node->delSdinode($v,2); // 1 法规标准识别 2 规章制度
+                    if($flag['code'] != 1){
+                        return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+                    }
+                }
+            }
+            $flag = $node->delSdinode($id,2);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
 }
