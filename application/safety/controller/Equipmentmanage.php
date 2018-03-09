@@ -51,7 +51,8 @@ class Equipmentmanage extends Base
         $param = input('post.');
         if(request()->isAjax()){
             $data = [
-                'id' => $param['aid'],
+                'id' => $param['id'],
+                'checktime' => $param['checktime'],
                 'remark' => $param['remark']
             ];
             $flag = $equipment->editEquipmentCheckAccept($data);
