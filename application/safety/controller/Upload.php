@@ -2,6 +2,7 @@
 
 namespace app\safety\controller;
 use app\admin\controller\Base;
+use app\safety\model\EducationModel;
 use app\safety\model\ResponsibilityModel;
 use app\safety\model\RulesregulationsModel;
 use app\safety\model\SafetyGoalAnualModel;
@@ -478,6 +479,38 @@ class Upload extends Base
                 $flag = $fullpart->editFullparticipation($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /**
+     * 专题教育培训 文件上传
+     * @author hutao
+     */
+    public function uploadEdu(){
+        /**
+         * group_id   所属分类编号
+        edu_time 培训时间
+        lecturer 讲课人
+        address 培训地址
+        trainee 培训人员
+        num 培训人数
+        remark 备注
+        content 培训内容
+        material_name 培训材料手动输入名
+        ma_filename 培训材料原文件名
+        ma_path 培训材料文件路径
+        record_name 培训记录手动输入名
+        re_filename 培训记录原文件名
+        re_path 培训记录文件路径
+        owner 上传人
+        edu_date 上传时间
+         */
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/education');
+        if($info){
+            echo $info->getSaveName();
         }else{
             echo $file->getError();
         }
