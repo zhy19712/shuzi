@@ -44,9 +44,26 @@ class SafetySdiNodeModel extends Model
         }
     }
 
-    public function delSdinode($id)
+    public function delSdinode($id,$ptype)
     {
         try{
+            // 1 法规标准识别 2 规章制度
+            // 删除节点时，先删除该节点下的所有文件
+            if($ptype == 1){
+                $sdi = new StatutestdiModel();
+                $bol = $sdi->delSdiByGroupId($id);
+                if($bol['code'] != 1){
+                    return $bol;
+                }
+            }else{
+                $rules = new RulesregulationsModel();
+                $bol = $rules->delRulesByGroupId($id);
+                if($bol['code'] != 1){
+                    return $bol;
+                }
+            }
+
+
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
         }catch( PDOException $e){
@@ -72,6 +89,28 @@ class SafetySdiNodeModel extends Model
     public function getOneNode($id)
     {
         return $this->where('id', $id)->find();
+    }
+
+    //递归获取当前节点的所有子节点
+    public function hasSubclass($id)
+    {
+        $res=$this->select();
+        if($res){
+            $result=$this->sort($res, $id);
+            return $result;
+        }
+    }
+
+    public function sort($data,$id,$level=0){
+        static $arr=array();
+        foreach ($data as $key=>$value){
+            if($value['pid'] == $id){
+                $value["level"]=$level;
+                $arr[]=$value;
+                $this->sort($data,$value['id'],$level+1);
+            }
+        }
+        return $arr;
     }
 
 }

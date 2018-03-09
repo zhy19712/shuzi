@@ -12,6 +12,7 @@ use app\admin\model\UserModel;
 use app\admin\model\UserType;
 use app\safety\model\RulesregulationsModel;
 use app\safety\model\SafetySdiNodeModel;
+use app\safety\model\StatutestdiModel;
 
 // 规章制度
 class Rulesregulations extends Base
@@ -192,13 +193,43 @@ class Rulesregulations extends Base
             $node = new SafetySdiNodeModel();
             $param['ptype'] = 2; // 1 法规标准识别 2 规章制度
             if(empty($param['id'])){
-                $param['pid'] = 0;
                 $flag = $node->insertSdinode($param);
             }else if(!empty($param['id'])){
-                $flag = $node->insertSdinode($param);
+                $flag = $node->editSdinode($param);
             }
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
-        return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+    }
+
+    /**
+     * 删除节点
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function nodeDel()
+    {
+        if(request()->isAjax()){
+            $id = input('post.id');
+            $node = new SafetySdiNodeModel();
+            /**
+             * 删除节点时，先判断该节点下是否包含子节点
+             * 1，删除子节点下的所有文件
+             * 2，删除子节点下
+             * 3，删除该节点下的所有文件
+             * 4，删除该节点
+             */
+            $idarr = $node->hasSubclass($id);
+            if(count($idarr) > 0){
+                foreach($idarr as $v){
+                    $flag = $node->delSdinode($v,2); // 1 法规标准识别 2 规章制度
+                    if($flag['code'] != 1){
+                        return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+                    }
+                }
+            }
+            $flag = $node->delSdinode($id,2);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
     }
 
 }
