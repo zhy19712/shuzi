@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="/static/admin/css/jedate.css">
 <link rel="stylesheet" href="/static/admin/css/iconfont.css">
 <link rel="stylesheet" href="/static/admin/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/admin/css/font-awesome.min.css">
 {include file="public/header" /}
 <body>
     <style>
@@ -83,6 +84,7 @@
         <h2>法律标准分类</h2>
         <ul id="tree_container" class="ztree"></ul>
         <input type="hidden" name="treeId">
+        <input type="hidden" name="currentDragId">
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="ibox float-e-margins">
@@ -150,7 +152,8 @@
                                 <div class="col-lg-12 col-xs-12">
                                     <label class="col-xs-6 col-sm-3 control-label">识别人：</label>
                                     <div class="myblock col-xs-6 col-sm-9 input-group">
-                                        <input id="pdivision" type="text" class="form-control" name="division" >
+                                        <input id="pdivision" type="text" class="form-control" name="division">
+                                        <i class="fa user-circle"></i>
                                     </div>
                                 </div>
                                 <div class="col-lg-9 col-xs-12 col-lg-offset-3 col-xs-offset-0">
@@ -235,7 +238,7 @@
             },
             edit:{
                 enable: true,
-                showRemoveBtn :true,
+                showRemoveBtn :showRemoveBtn,
                 showRenameBtn :true,
                 removeTitle :"删除",
                 renameTitle :"修改",
@@ -255,14 +258,14 @@
             },
             callback: {
                 onClick: zTreeOnClick,
-                beforeRemove:beforeRemove,
+                beforeRemove: beforeRemove,
                 beforeRename: beforeRename,
-                beforeDrag: beforeDrag
+                beforeDrag: beforeDrag,
+                beforeDrop: beforeDrop
             }
         };
         zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null).expandAll(true);
         //添加节点
-        var newCount = 1;
         function addHoverDom(treeId, treeNode) {
             var sObj = $("#" + treeNode.tId + "_span"); //获取节点信息
             if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
@@ -276,18 +279,19 @@
                 var zTree = $.fn.zTree.getZTreeObj("tree_container");
                 //将新节点添加到数据库中
                 var name='新节点';
-                var newNode = zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:name + (newCount++)});
-                console.log(newNode);
                 $.ajax({
                     url:'{:url("Statutestdi/nodeAdd")}',
                     dataType:'JSON',
                     type:'POST',
                     data:{
                         pid:treeNode.id,
-                        pname:newNode[0].name
+                        pname:name
                     },
                     success:function(data){
                         $('input[type="hidden"][name="treeId"]').val(data.data);
+                        var id = $('input[type="hidden"][name="treeId"]').val();
+                        zTree.addNodes(treeNode, {id:id,pId:treeNode.id, name:name});
+                        console.log(treeNode);
                     }
                 });
                 //var newID = newNode[0].id;
@@ -327,10 +331,14 @@
             });
         }
 
-        //拖拽节点
+        //获取被拖拽节点id
         function beforeDrag(treeId, treeNodes) {
-            var id = treeNodes[0].id;
-            var pid = treeNodes[0].pId;
+            $('input[type="hidden"][name="currentDragId"]').val(treeNodes[0].id);
+        }
+        //拖拽节点
+        function beforeDrop(treeId, treeNodes, targetNode, moveType, isCopy) {
+            var id = $('input[type="hidden"][name="currentDragId"]').val();
+            var pid = targetNode.id;
             $.ajax({
                 url:'{:url("Statutestdi/nodeAdd")}',
                 dataType:'JSON',
@@ -342,8 +350,12 @@
                 success:function(){
                     layer.msg('移动成功！', {icon: 1});
                 }
+            });
+        }
 
-        });
+        //禁止删除父节点
+        function showRemoveBtn(treeId, treeNode) {
+            return !treeNode.isParent;
         }
 
         //删除节点
@@ -365,9 +377,10 @@
                         for (var i=0, l=nodes.length; i < l; i++) {
                             zTree.removeNode(nodes[i]);
                         }
+                        layer.msg('删除成功！', {icon: 1});
                     }
-                });
-                layer.msg('删除成功！', {icon: 1});
+
+            });
             });
         }
 
