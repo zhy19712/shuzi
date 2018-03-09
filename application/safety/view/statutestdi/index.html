@@ -17,11 +17,13 @@
             border-right: 1px solid #ccc;
         }
         .mycontent h2{
+            padding: 10px 0;
+            margin: 0;
+            text-align: center;
             font-size: 16px;
             border-bottom: 1px solid #ccc;
-            margin: 0;
-            padding: 10px 0;
-            text-align: center;
+            background: #19aa8d;
+            color: #FFF;
         }
         .ztree li span.button.add {
             margin-left:2px;
@@ -299,6 +301,7 @@
 
         //编辑节点
         function beforeRename(treeId, treeNode, newName, isCancel) {
+            console.log(newName);
             if (newName.length == 0) {
                 layer.msg("节点名称不能为空.");
                 return false;
@@ -306,16 +309,17 @@
             layer.confirm('确定要编辑该节点？', {
                 btn: ['确定','取消']
             }, function(){
+                var id;
                 $.ajax({
                     url:'{:url("Statutestdi/nodeAdd")}',
                     dataType:'JSON',
                     type:'POST',
                     data:{
-                        id:treeNode.id,
-                        pname:treeNode.name
+                        id:id,
+                        pname:newName
                     },
-                    success:function(){
-
+                    success:function(data){
+                        id = data;
                     }
                 });
                 layer.msg('编辑成功！', {icon: 1});
