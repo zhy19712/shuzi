@@ -55,6 +55,7 @@ class Rulesregulations extends Base
             $param = input('post.');
             $data = [
                 'id' => $param['id'],
+                'group_id' =>  $param['group_id'],
                 'number' => $param['number'],
                 'rul_name' => $param['rul_name'],
                 'go_date' => $param['go_date'],
