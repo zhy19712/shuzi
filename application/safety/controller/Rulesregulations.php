@@ -94,7 +94,7 @@ class Rulesregulations extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $id = input('param.id');
+        $id = input('post.id');
         $rules = new RulesregulationsModel();
         $param = $rules->getOne($id);
         $filePath = $param['path'];

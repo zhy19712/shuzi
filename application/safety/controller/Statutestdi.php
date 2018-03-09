@@ -78,7 +78,7 @@ class Statutestdi extends Base
         if(request()->isAjax()){
             return json(['code' => 1]);
         }
-        $id = input('param.id');
+        $id = input('post.id');
         $sdi = new StatutestdiModel();
         $param = $sdi->getOne($id);
         $filePath = $param['path'];
