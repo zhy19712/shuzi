@@ -146,11 +146,12 @@
                             <div class="form-group">
                                 <div class="col-lg-12 col-xs-12">
                                     <label class="col-xs-6 col-sm-3 control-label">识别人：</label>
-                                    <div class="myblock col-xs-6 input-group">
+                                    <div class="myblock col-xs-6 col-sm-9 input-group">
                                         <input id="pdivision" type="text" class="form-control" name="division" >
-                                        <i class="getSiduser">点我</i>
-                                        <ul id="siduserZtree" class="ztree"></ul>
                                     </div>
+                                </div>
+                                <div class="col-lg-9 col-xs-12 col-lg-offset-3 col-xs-offset-0">
+                                    <ul id="siduserZtree" class="ztree"></ul>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -243,10 +244,6 @@
                 }
             },
             data:{
-                keep: {
-                    leaf : true,
-                    parent : true
-                },
                 simpleData : {
                     enable:true,
                     idkey: "id",
@@ -254,10 +251,12 @@
                 }
             },
             callback: {
-                onClick: zTreeOnClick
+                onClick: zTreeOnClick,
+                beforeRemove:beforeRemove
             }
         };
-        //显示操作图表按钮
+        //添加节点
+        var newCount = 1;
         function addHoverDom(treeId, treeNode) {
             var sObj = $("#" + treeNode.tId + "_span"); //获取节点信息
             if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
@@ -270,13 +269,26 @@
             if (btn) btn.bind("click", function(){
                 var zTree = $.fn.zTree.getZTreeObj("tree_container");
                 //将新节点添加到数据库中
-                var name='NewNode';
-                $.post('./index.php?r=data/addtree&pid='+treeNode.id+'&name='+name,function (data) {
-                    var newID = data; //获取新添加的节点Id
-                    zTree.addNodes(treeNode, {id:newID, pId:treeNode.id, name:name}); //页面上添加节点
-                    var node = zTree.getNodeByParam("id", newID, null); //根据新的id找到新添加的节点
-                    zTree.selectNode(node); //让新添加的节点处于选中状态
+                var name='新节点';
+                var newNode = zTree.addNodes(treeNode, {id:(100 + newCount), pId:treeNode.id, name:name + (newCount++)});
+                console.log(newNode);
+                $.ajax({
+                    url:'{:url("Statutestdi/nodeAdd")}',
+                    dataType:'JSON',
+                    type:'POST',
+                    data:{
+                        id:newNode[0].id,
+                        pname:newNode[0].name
+                    },
+                    success:function(){
+
+                    }
                 });
+                //var newID = newNode[0].id;
+                //var node = zTree.getNodeByParam("id", newID, treeNode.pId); //根据新的id找到新添加的节点
+                //zTree.selectNode(node); //让新添加的节点处于选中状态
+                return false;
+
             });
         };
         function removeHoverDom(treeId, treeNode) {
@@ -284,9 +296,34 @@
         };
         zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null).expandAll(true);
 
+        //删除节点
+        function beforeRemove(treeId, treeNode){
+            layer.confirm('确定要删除该节点？', {
+                btn: ['确定','取消']
+            }, function(){
+                console.log(treeNode);
+                $.ajax({
+                    url:'{:url("Statutestdi/nodeDel")}',
+                    dataType:'JSON',
+                    type:'POST',
+                    data:{
+                        id:treeNode.id,
+                        pname:treeNode.name
+                    },
+                    success:function(){
+                        var zTree = $.fn.zTree.getZTreeObj("tree_container");
+                        var nodes = zTree.getSelectedNodes();
+                        for (var i=0, l=nodes.length; i < l; i++) {
+                            zTree.removeNode(nodes[i]);
+                        }
+                    }
+                });
+                layer.msg('删除成功！', {icon: 1});
+            });
+        }
+
         //点击获取节点名称
         function zTreeOnClick(event, treeId, treeNode) {
-            console.log(treeNode);
             mytree_node = treeNode;
             $("#groupname").val(treeNode.name);
             $("#mycontent>p").text(treeNode.name);
@@ -466,10 +503,11 @@
             zTreeObj = $.fn.zTree.init($("#siduserZtree"), setting,null);
         }
 
-        $('.getSiduser').click(function(){
+        $('#pdivision').focus(function(){
             siduserZtree();
         })
 
+        //非空判断
         function isEmpty(element,msg) {
             if(!$("#"+element).val()){
                 $("#"+element).focus().css('border-color','red');
