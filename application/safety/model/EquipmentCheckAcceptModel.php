@@ -67,16 +67,8 @@ class EquipmentCheckAcceptModel extends Model
     */
     public function getOne($id)
     {
-//        if(is_array($param)){
-//            $where = array(
-//                'id' => $param['id'],
-//                'selfid' => $param['selfid']
-//            );
-//
-//            return $this->where($where)->find();
-//        }else{
-            return $this->where('id', $id)->find();
-//        }
+
+        return $this->where('id', $id)->find();
 
     }
 
