@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 include('../conn.php');
 /*
@@ -19,8 +19,8 @@ include('../conn.php');
  * Easy set variables
  */
 
-// DB table to use 法规标准识别
-$table = 'think_safety_rules';
+// DB table to use
+$table = 'think_safety_accept_equipment';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -31,13 +31,10 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'number',  'dt' => 1 ),
-    array( 'db' => 'rul_name',  'dt' => 2 ),
-    array( 'db' => 'go_date',  'dt' => 3 ),
-    array( 'db' => 'evaluation',  'dt' => 4 ),
-    array( 'db' => 'rul_user',  'dt' => 5 ),
-    array( 'db' => 'rul_date',  'dt' => 6 ),
-    array( 'db' => 'remark',  'dt' => 7)
+    array( 'db' => 'filename',  'dt' => 1 ),
+    array( 'db' => 'owner',  'dt' => 2 ),
+    array( 'db' => 'date',  'dt' => 3 ),
+    array( 'db' => 'remark',  'dt' => 4 )
 );
 
 
@@ -59,19 +56,18 @@ require( '../ssp.class.php' );
 //    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
 //);
 
-if(!empty($_GET["pid"]))
+if(!empty($_GET["selfid"]))
 {
-    $pid = $_GET["pid"];
+    $selfid = $_GET["selfid"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid'" )
     );
 }
 else{
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = 'empty'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = 'empty'" )
     );
 }
-
 
 
 

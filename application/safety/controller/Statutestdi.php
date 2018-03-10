@@ -78,11 +78,12 @@ class Statutestdi extends Base
         if(request()->isAjax()){
             return json(['code' => 1]);
         }
-        $id = input('param.id');
+        $id = input('post.id');
         $sdi = new StatutestdiModel();
         $param = $sdi->getOne($id);
         $filePath = $param['path'];
-        $fileName = $param['sdi_name'];
+//        $fileName = $param['sdi_name'];
+        $fileName = $param['sdi_name'] . '.' . substr(strrchr($filePath, '.'), 1); ;
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         $fileName = iconv("utf-8","gb2312",$fileName);
@@ -105,7 +106,7 @@ class Statutestdi extends Base
     {
         if(request()->isAjax()) {
             $sdi = new StatutestdiModel();
-            $param = input('post.');
+            $param = input('param.');
             $data = $sdi->getOne($param['id']);
             $path = $data['path'];
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';

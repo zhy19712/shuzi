@@ -2,6 +2,7 @@
 
 namespace app\safety\controller;
 use app\admin\controller\Base;
+use app\safety\model\EducationModel;
 use app\safety\model\ResponsibilityModel;
 use app\safety\model\RulesregulationsModel;
 use app\safety\model\SafetyGoalAnualModel;
@@ -11,6 +12,7 @@ use app\safety\model\SafetyResponsibilitycultureModel;
 use app\safety\model\SafetyResponsibilityinfoModel;
 use app\safety\model\StatutestdiModel;
 use app\safety\model\FullparticipationModel;
+use app\safety\model\EquipmentCheckAcceptModel;
 
 class Upload extends Base
 {
@@ -189,6 +191,10 @@ class Upload extends Base
             $temp = $info->getSaveName();
             $path = './uploads/safety/statutesdi/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
+            if($sdi_name == '等待上传'){
+                $houzhui = substr(strrchr($filename, '.'), 1);
+                $sdi_name = basename($filename,".".$houzhui); // 取不带后缀的文件名
+            }
             if(empty($id))
             {
                 $data = [
@@ -478,6 +484,89 @@ class Upload extends Base
                     'remark' => $remark
                 ];
                 $flag = $fullpart->editFullparticipation($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /**
+     * 专题教育培训 文件上传
+     * @author hutao
+     */
+    public function uploadEdu(){
+        /**
+         * group_id   所属分类编号
+        edu_time 培训时间
+        lecturer 讲课人
+        address 培训地址
+        trainee 培训人员
+        num 培训人数
+        remark 备注
+        content 培训内容
+        material_name 培训材料手动输入名
+        ma_filename 培训材料原文件名
+        ma_path 培训材料文件路径
+        record_name 培训记录手动输入名
+        re_filename 培训记录原文件名
+        re_path 培训记录文件路径
+        owner 上传人
+        edu_date 上传时间
+         */
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/education');
+        if($info){
+            echo $info->getSaveName();
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /*
+     *设备设施管理文件上传
+    */
+    public function uploadEquipmentCheckAccept(){
+        $equipment = new EquipmentCheckAcceptModel();
+        $id = request()->param('aid');
+//        $version = request()->param('version');
+        $selfid = request()->param('selfid');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/equipmentCheckAccept');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/equipmentCheckAccept/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'selfid' => $selfid,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+//                    'version' => $version,
+                    'remark' => $remark
+                ];
+                $flag = $equipment->insertEquipmentCheckAccept($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $equipment->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'selfid' => $selfid,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+//                    'version' => $version,
+                    'remark' => $remark
+                ];
+                $flag = $equipment->editEquipmentCheckAccept($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{
