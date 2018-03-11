@@ -44,9 +44,7 @@
             font-weight: 700;
             border-bottom: 1px solid #ccc;
         }
-        .dataTables_wrapper .dataTables_filter{
-            float: left;
-        }
+
         .dt-buttons{
             float: right;
             margin-top: 5px;
@@ -63,6 +61,17 @@
         .btn-upload .webuploader-pick{
             padding: 7px 15px;
             border-radius:0;
+        }
+        #upload{
+            float: right;
+            margin-right: 20px;
+            width: 88px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            color: #fff;
+            cursor: pointer;
+            background: #00b7ee;
         }
         #tableItem .btn{
             margin-right: 2px;
@@ -422,7 +431,7 @@
            ajax: {
                "url": "__SCRIPT__/safety_statutesdi.php"
            },
-           dom: '<"mybtn1 btn btn-outline btn-primary"><"myl"l>frtip',
+           dom: '<"mybtn">lf<"ipt"><"#upload"><"#mylist">rtip',
            columnDefs: [
                {
                    "searchable": false,
@@ -448,20 +457,13 @@
                    "previous": "上一页",
                    "next": "下一页"
                }
-           },
-           dom: 'Bfrtip',
-           buttons: [
-               {
-                   text: '上传',
-                   className: 'btn btn-primary btn-xs upload',
-               }
-           ],
-       } );
-
+           }
+       });
+        $("div#upload").html('<div>上传文件</div>');
 
         //上传弹层
         $(function(){
-            $('.upload').on('click',function(){
+            $('#upload').on('click',function(){
                 $('#addRules_modal').modal('show');
             });
             $('#dataImple').jeDate();
@@ -650,9 +652,11 @@
         });
         //数据返回
         function complete(data){
+            var groupid = $('input[type="hidden"][name="groupId"]').val();
+            console.log(data);
             if(data.code==1){
                 layer.msg(data.msg);
-                tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php").load();
+                tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php?pid=" + groupid).load();
                 $("#addRules_modal").modal('hide');
             }else{
                 layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
