@@ -139,6 +139,8 @@
                         <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
                             <input type="hidden" name="id" id="sid">
                             <input type="hidden" name="group_id" id="pgroup_id">
+                            <input type="hidden" name="oldFileName" id="oldFileName">
+                            <input type="hidden" name="newFileName" id="newFileName">
                             <div class="form-group">
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">标准号：</label>
@@ -502,6 +504,7 @@
             var $list = $('#addName');
 
             uploader.on( 'fileQueued', function( file ) {
+                $('#newFileName').val(file.name);
                 $list.val('等待上传...');
             });
 
@@ -625,29 +628,40 @@
             }
 
             //获取表单数据
-            var number = $('#standardNumr').val();
+            var id = $('#sid').val();
+            var group_id = $('input[type="hidden"][name="groupId"]').val();
+            var sdi_name = $('#addName').val();
+            var sdi_number = $('#standardNumr').val();
             var go_date = $('#dataImple').val();
             var standard = $('#alternativeStandard').val();
             var evaluation = $('#psex').val();
             var sid_user = $('#pdivision').val();
+            var remark = $('#rulesDesc').val();
+            var oldFileName = $('#oldFileName').val();
+            var newFileNmae = $('#newFileName').val();
             //表单提交
-            if(!$('#sid').val()){
-                //上传文件
-                uploader.upload();
-            }else{
+            if(!newFileNmae||newFileNmae===oldFileName){
+                //修改
                 $.ajax({
-                    url: "{:url('Upload/uploadSdi')}",
+                    url: "{:url('Statutestdi/sdiEdit')}",
                     type: "post",
                     dataType: 'json',
                     data:{
-                        number:number,  //标准号
+                        id:id,
+                        group_id:group_id,
+                        sdi_name:sdi_name,
+                        sdi_number:sdi_number,  //标准号
                         go_date:go_date,//执行日期
                         standard:standard,//替代标准
                         evaluation:evaluation,//适用性评价
                         sid_user:sid_user,//识别人
+                        remark:remark
                     },
                     success: complete
                 });
+            }else{
+                //上传文件
+                uploader.upload();
             }
         });
         //数据返回
@@ -676,13 +690,86 @@
                     success: function (res) {
                         if(res.code == 1){
                             layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                            zhihu_table.ajax.url("__SCRIPT__/safety_statutesdi.php").load();
+                            tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php").load();
                         }else{
                             layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                         }
                     }
                 })
                 layer.close(index);
+            })
+        }
+
+        //预览
+        function showPdf(id,url) {
+            $.ajax({
+                url: url,
+                type: "post",
+                data: {id:id},
+                success: function (res) {
+                    console.log(res);
+                    if(res.code === 1){
+                        var path = res.path;
+                        window.open("__JS__/web/viewer.html?file=" + path,"_blank");
+                    }else {
+                        layer.msg(res.msg);
+                    }
+                }
+            })
+        }
+
+        function showpdf1(that) {
+            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            showPdf(id,"{:url('Statutestdi/anualPreview')}");
+        }
+
+        //文件下载
+        function download(that) {
+            $.ajax({
+                url: "{:url('Statutestdi/sdiDownload')}",
+                success: function (res) {
+                    if(res.code != 1){
+                        layer.msg(res.msg);
+                    }else {
+                        $("#form_container").empty();
+                        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+                        var str = "";
+                        str += ""
+                            + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+                            + "<form id=download"+ id +" action='{:url('Statutestdi/sdiDownload')}' method='get' target=downloadFrame"+ id +">"
+                            + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+                            + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+                            + "<button type='submit' class=btn" + id +"></button>"
+                            + "</form>"
+                        $("#form_container").append(str);
+                        $("#form_container").find(".btn" + id).click();
+                    }
+                }
+            })
+        }
+
+        //编辑
+        function zedit(that) {
+            $('#addRules_modal').modal('show');
+            var id = $(that).parents('tr').find('.sorting_1').text();
+            $('#sid').val(id);
+            $.ajax({
+                url: "{:url('Statutestdi/getOne')}",
+                type: "get",
+                dataType: "json",
+                data:{
+                    id:id
+                },
+                success: function (res) {
+                    $('#oldFileName').val(res.filename);
+                    $('#standardNumr').val(res.number);
+                    $('#dataImple').val(res.go_date);
+                    $('#alternativeStandard').val(res.standard);
+                    $('#psex').val(res.evaluation);
+                    $('#pdivision').val(res.sid_user);
+                    $('#addName').val(res.sdi_name);
+                    $('#rulesDesc').val(res.remark);
+                }
             })
         }
     </script>

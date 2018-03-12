@@ -93,11 +93,9 @@ class Revisionrecord extends Base
             return json(['code'=>1]);
         }
         $idArr = input('param.idarr');
-        $idArr = [1,2,3];
-        $name = range('a', 'z').range(0, 9).range('A', 'Z'); // 随机生成导出的文件名
+        $name = '修编记录'.date('Y-m-d H:i:s'); // 导出的文件名
         $record = new RevisionrecordModel();
         $list = $record->getList($idArr);
-        halt($list);
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
