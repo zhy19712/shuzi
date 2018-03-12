@@ -7,10 +7,9 @@
  */
 //机构和职责三级分类上传文件增删改查
 namespace app\safety\model;
-
-
 use think\exception\PDOException;
 use think\Model;
+
 class ResponsibilityinstyGroupModel extends Model
 {
     protected $name = 'safety_responsibilityinsty_group';
@@ -43,7 +42,6 @@ class ResponsibilityinstyGroupModel extends Model
     /*
     *对上传的文件进行编辑
     */
-
     public function editResponsibilityinstyGroup($param)
     {
         try{
@@ -61,7 +59,6 @@ class ResponsibilityinstyGroupModel extends Model
      /*
      *对上传的文件进行删除
      */
-
     public function delResponsibilityinstyGroup($id)
     {
         try{
