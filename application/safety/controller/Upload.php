@@ -482,6 +482,9 @@ class Upload extends Base
      *安全生产责任制文件上传
      * @return \think\response\Json
     */
+
+
+
     public function uploadFullparticipation(){
         /**
          * id 安全生产责任制文件上传id
