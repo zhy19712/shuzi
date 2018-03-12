@@ -47,6 +47,15 @@ class EducationModel extends Model
     public function delEdu($id)
     {
         try{
+            $data = $this->getOne($id);
+            $path = $data['path'];
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
+            if(file_exists($pdf_path)){
+                unlink($pdf_path); //删除生成的预览pdf
+            }
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
         }catch( PDOException $e){
@@ -57,5 +66,14 @@ class EducationModel extends Model
     public function getOne($id)
     {
         return $this->where('id', $id)->find();
+    }
+
+    public  function getList($idArr)
+    {
+        $data = [];
+        foreach($idArr as $v){
+            $data[] = $this->getOne($v);
+        }
+        return $data;
     }
 }

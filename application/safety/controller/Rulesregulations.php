@@ -94,7 +94,7 @@ class Rulesregulations extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $id = input('post.id');
+        $id = input('param.id');
         $rules = new RulesregulationsModel();
         $param = $rules->getOne($id);
         $filePath = $param['path'];
@@ -244,6 +244,16 @@ class Rulesregulations extends Base
             }
             $flag = $node->delSdinode($id,2);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    public function getOneNode()
+    {
+        if(request()->isAjax()){
+            $id = input('post.id');
+            $node = new SafetySdiNodeModel();
+            $data = $node->getOneNode($id);
+            return json($data);
         }
     }
 
