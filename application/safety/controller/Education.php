@@ -11,6 +11,7 @@ namespace app\safety\controller;
 // 专题教育培训
 use app\admin\controller\Base;
 use app\safety\model\EducationModel;
+use think\Db;
 use think\Loader;
 
 class Education extends Base
@@ -67,8 +68,19 @@ class Education extends Base
         }
     }
 
+    /**
+     * 导入
+     * @return array|\think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @author hutao
+     */
     public function importExcel()
     {
+        $group_id = input('param.group_id');
+        if(empty($group_id)){
+            return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
+        }
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/education');
         if($info){
@@ -79,7 +91,49 @@ class Education extends Base
             $objReader = \PHPExcel_IOFactory::createReader('Excel5');
             $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');  //加载文件内容,编码utf-8
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
-            halt($excel_array);
+            // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
+            $content_index = $edu_time_index = $address_index = $lecturer_index = $trainee_index = $num_index = -1;
+            foreach ($excel_array[0] as $k=>$v){
+                $str = preg_replace('/[ ]/', '', $v);
+                if ($str == '培训内容'){
+                    $content_index = $k;
+                }else if ($str == '培训时间'){
+                    $edu_time_index = $k;
+                }else if ($str == '培训地点'){
+                    $address_index = $k;
+                }else if($str == '培训人'){
+                    $lecturer_index = $k;
+                }else if($str == '培训人员'){
+                    $trainee_index = $k;
+                }else if($str == '培训人数'){
+                    $num_index = $k;
+                }
+            }
+            if($content_index == -1 || $edu_time_index == -1 || $address_index == -1 || $lecturer_index == -1 || $trainee_index == -1 || $num_index == -1){
+                $json_data['code'] = 0;
+                $json_data['info'] = '文件内容格式不对';
+                return json($json_data);
+            }
+            $insertData = [];
+            foreach($excel_array as $k=>$v){
+                if($k > 0){
+                    $insertData[$k]['content'] = $v[$content_index];
+                    $insertData[$k]['edu_time'] = $v[$edu_time_index];
+                    $insertData[$k]['address'] = $v[$address_index];
+                    $insertData[$k]['lecturer'] = $v[$lecturer_index];
+                    $insertData[$k]['trainee'] = $v[$trainee_index];
+                    $insertData[$k]['num'] = $v[$num_index];
+                    // 年度
+                    $insertData[$k]['years'] = date('Y-m-d H:i:s');
+                    $insertData[$k]['group_id'] = $group_id;
+                }
+            }
+            $success = Db::name('safety_education')->insertAll($insertData);
+            if($success !== false){
+                return  json(['code' => 1,'data' => '','msg' => '导入成功']);
+            }else{
+                return json(['code' => -1,'data' => '','msg' => '导入失败']);
+            }
         }
     }
 
@@ -148,6 +202,11 @@ class Education extends Base
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003
         $objWriter->save('php://output');
         exit;
+    }
+
+    public function getHistory()
+    {
+
     }
 
 }
