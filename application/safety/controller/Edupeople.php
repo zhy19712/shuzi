@@ -8,14 +8,15 @@
 
 namespace app\safety\controller;
 
-// 专题教育培训
+// 人员教育培训
 use app\admin\controller\Base;
 use app\admin\model\ContractModel;
 use app\safety\model\EducationModel;
+use app\safety\model\EdupeopleModel;
 use think\Db;
 use think\Loader;
 
-class Education extends Base
+class Edupeople extends Base
 {
     /**
      * 预览获取一条数据  或者  编辑获取一条数据
@@ -26,7 +27,7 @@ class Education extends Base
     {
         if(request()->isAjax()){
             $param = input('post.');
-            $edu = new EducationModel();
+            $edu = new EdupeopleModel();
             $data = $edu->getOne($param['id']);
             return json($data);
         }
@@ -41,11 +42,9 @@ class Education extends Base
     public function eduAdd()
     {
         if(request()->isAjax()){
-            $edu = new EducationModel();
+            $edu = new EdupeopleModel();
             $param = input('post.');
             if(empty($param['id'])){
-                $param['owner'] = session('username');
-                $param['edu_date'] = date("Y-m-d H:i:s");
                 $flag = $edu->insertEdu($param);
             }else{
                 $flag = $edu->editEdu($param);
@@ -63,7 +62,7 @@ class Education extends Base
     {
         if(request()->isAjax()){
             $param = input('param.');
-            $edu = new EducationModel();
+            $edu = new EdupeopleModel();
             $flag = $edu->delEdu($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
@@ -83,34 +82,43 @@ class Education extends Base
             return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
         }
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/education');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/edupeople');
         if($info){
             // 调用插件PHPExcel把excel文件导入数据库
             Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
             $exclePath = $info->getSaveName();  //获取文件名
-            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/education' . DS . $exclePath;   //上传文件的地址
+            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/edupeople' . DS . $exclePath;   //上传文件的地址
             $objReader = \PHPExcel_IOFactory::createReader('Excel5');
             $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');  //加载文件内容,编码utf-8
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
             // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
-            $content_index = $edu_time_index = $address_index = $lecturer_index = $trainee_index = $num_index = -1;
+            $edu_name_index = $job_index = $certificate_name_index = $certificate_number_index = $availability_date_index = $vld_index = $training_mode_index = -1;
+            $training_time_index = $remark_index = -1;
             foreach ($excel_array[0] as $k=>$v){
                 $str = preg_replace('/[ ]/', '', $v);
-                if ($str == '培训内容'){
-                    $content_index = $k;
-                }else if ($str == '培训时间'){
-                    $edu_time_index = $k;
-                }else if ($str == '培训地点'){
-                    $address_index = $k;
-                }else if($str == '培训人'){
-                    $lecturer_index = $k;
-                }else if($str == '培训人员'){
-                    $trainee_index = $k;
-                }else if($str == '培训人数'){
-                    $num_index = $k;
+                if ($str == '名称'){
+                    $edu_name_index = $k;
+                }else if ($str == '职务'){
+                    $job_index = $k;
+                }else if ($str == '证书名称'){
+                    $certificate_name_index = $k;
+                }else if($str == '证书编号'){
+                    $certificate_number_index = $k;
+                }else if($str == '生效日期'){
+                    $availability_date_index = $k;
+                }else if($str == '有效期至'){
+                    $vld_index = $k;
+                }else if($str == '培训方式'){
+                    $training_mode_index = $k;
+                }else if($str == '培训时间'){
+                    $training_time_index = $k;
+                }else if($str == '备注'){
+                    $remark_index = $k;
                 }
             }
-            if($content_index == -1 || $edu_time_index == -1 || $address_index == -1 || $lecturer_index == -1 || $trainee_index == -1 || $num_index == -1){
+            if($edu_name_index == -1 || $job_index == -1 || $certificate_name_index == -1||
+                $certificate_number_index == -1 || $availability_date_index == -1 || $vld_index == -1 ||
+                $training_mode_index == -1 || $training_time_index == -1 || $remark_index == -1){
                 $json_data['code'] = 0;
                 $json_data['info'] = '文件内容格式不对';
                 return json($json_data);
@@ -118,18 +126,21 @@ class Education extends Base
             $insertData = [];
             foreach($excel_array as $k=>$v){
                 if($k > 0){
-                    $insertData[$k]['content'] = $v[$content_index];
-                    $insertData[$k]['edu_time'] = $v[$edu_time_index];
-                    $insertData[$k]['address'] = $v[$address_index];
-                    $insertData[$k]['lecturer'] = $v[$lecturer_index];
-                    $insertData[$k]['trainee'] = $v[$trainee_index];
-                    $insertData[$k]['num'] = $v[$num_index];
+                    $insertData[$k]['edu_name'] = $v[$edu_name_index];
+                    $insertData[$k]['job'] = $v[$job_index];
+                    $insertData[$k]['certificate_name'] = $v[$certificate_name_index];
+                    $insertData[$k]['certificate_number'] = $v[$certificate_number_index];
+                    $insertData[$k]['availability_date'] = $v[$availability_date_index];
+                    $insertData[$k]['vld'] = $v[$vld_index];
+                    $insertData[$k]['training_mode'] = $v[$training_mode_index];
+                    $insertData[$k]['training_time'] = $v[$training_time_index];
+                    $insertData[$k]['remark'] = $v[$remark_index];
                     // 年度
                     $insertData[$k]['years'] = date('Y-m-d H:i:s');
                     $insertData[$k]['group_id'] = $group_id;
                 }
             }
-            $success = Db::name('safety_education')->insertAll($insertData);
+            $success = Db::name('safety_edupeople')->insertAll($insertData);
             if($success !== false){
                 return  json(['code' => 1,'data' => '','msg' => '导入成功']);
             }else{
@@ -152,7 +163,7 @@ class Education extends Base
             return json(['code'=>1]);
         }
         $idArr = input('param.idarr');
-        $name = '专题教育培训'.date('Y-m-d H:i:s'); // 导出的文件名
+        $name = '人员教育培训'.date('Y-m-d H:i:s'); // 导出的文件名
         $edu = new EducationModel();
         $list = $edu->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
@@ -172,12 +183,15 @@ class Education extends Base
         // 设置表格第一行显示内容
         $objPHPExcel->getActiveSheet()
             ->setCellValue('A1', '序号')
-            ->setCellValue('B1', '培训内容')
-            ->setCellValue('C1', '培训时间')
-            ->setCellValue('D1', '培训地点')
-            ->setCellValue('E1', '培训人')
-            ->setCellValue('F1', '培训人员')
-            ->setCellValue('G1', '培训人数');
+            ->setCellValue('B1', '姓名')
+            ->setCellValue('C1', '职务')
+            ->setCellValue('D1', '证书名称')
+            ->setCellValue('E1', '证书编号')
+            ->setCellValue('F1', '生效日期')
+            ->setCellValue('G1', '有效期至')
+            ->setCellValue('H1', '培训方式')
+            ->setCellValue('I1', '培训时间')
+            ->setCellValue('J1', '备注');
         $key = 1;
         /*以下就是对处理Excel里的数据，横着取数据*/
         foreach($list as $v){
@@ -186,12 +200,15 @@ class Education extends Base
             $objPHPExcel->getActiveSheet()
                 //Excel的第A列，name是你查出数组的键值字段，下面以此类推
                 ->setCellValue('A'.$key, $v['id'])
-                ->setCellValue('B'.$key, $v['content'])
-                ->setCellValue('C'.$key, $v['edu_time'])
-                ->setCellValue('D'.$key, $v['address'])
-                ->setCellValue('E'.$key, $v['lecturer'])
-                ->setCellValue('F'.$key, $v['trainee'])
-                ->setCellValue('G'.$key, $v['num']);
+                ->setCellValue('B'.$key, $v['edu_name'])
+                ->setCellValue('C'.$key, $v['job'])
+                ->setCellValue('D'.$key, $v['certificate_name'])
+                ->setCellValue('E'.$key, $v['certificate_number'])
+                ->setCellValue('F'.$key, $v['availability_date'])
+                ->setCellValue('G'.$key, $v['vld'])
+                ->setCellValue('H'.$key, $v['training_mode'])
+                ->setCellValue('I'.$key, $v['training_time'])
+                ->setCellValue('J'.$key, $v['remark']);
         }
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
@@ -213,7 +230,7 @@ class Education extends Base
     public function getHistory()
     {
         if(request()->isAjax()){
-            $edu = new EducationModel();
+            $edu = new EdupeopleModel();
             $years = $edu->getYears();
             return json($years);
         }
