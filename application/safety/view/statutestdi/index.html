@@ -62,22 +62,34 @@
             padding: 7px 15px;
             border-radius:0;
         }
-        #upload{
+        #import,#export,#seach,#view,#upload{
             float: right;
-            margin-right: 20px;
-            width: 88px;
-            height: 30px;
-            text-align: center;
-            line-height: 30px;
-            color: #fff;
-            cursor: pointer;
+            display: inline-block;
+            margin: 10px 5px 10px;
+        }
+        #import,#export,#upload{
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: 1px solid #00b7ee;
             background: #00b7ee;
+            color: #FFF;
+            cursor: pointer;
+        }
+        #upload{
+            float: none;
         }
         #tableItem .btn{
             margin-right: 2px;
         }
+        .dataTables_wrapper .dataTables_length{
+            margin-top: 15px;
+        }
+        .dataTables_wrapper .dataTables_filter{
+            margin-top: 10px;
+        }
         .dataTables_wrapper .dataTables_filter input{
             margin: 0;
+            padding: 6px 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
@@ -87,7 +99,9 @@
         table.dataTable thead th, table.dataTable tfoot th{
             font-weight: normal;
         }
-
+        #rulesDesc{
+            border: 1px solid #e5e6e7;
+        }
     </style>
 
     <div id="mycontent" class="mycontent">
@@ -111,6 +125,7 @@
                                         <th>标准号</th>
                                         <th>名称</th>
                                         <th>施行日期</th>
+                                        <th>替代标准</th>
                                         <th>适用性评价</th>
                                         <th>识别人</th>
                                         <th>上传日期</th>
@@ -396,9 +411,10 @@
             });
         }
 
-        //点击获取节点名称
+        //点击节点
         function zTreeOnClick(event, treeId, treeNode) {
             console.log(treeNode);
+            $('#tableItem_wrapper').css("visibility","visible");
             mytree_node = treeNode;
             groupid = treeNode.id;
             $('input[type="hidden"][name="groupId"]').val(groupid);
@@ -433,12 +449,12 @@
            ajax: {
                "url": "__SCRIPT__/safety_statutesdi.php"
            },
-           dom: '<"mybtn">lf<"ipt"><"#upload"><"#mylist">rtip',
+           dom: 'lf<"#view"><"#seach"><"#export"><"#import"><"#upload">rtip',
            columnDefs: [
                {
                    "searchable": false,
                    "orderable": false,
-                   "targets": [8],
+                   "targets": [9],
                    "render" :  function(data,type,row) {
                        var html = "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
                        html += "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
@@ -462,11 +478,28 @@
            }
        });
         $("div#upload").html('<div>上传文件</div>');
+        var selectDom = '<select name="" id="" style="height: 32px">' +
+                            '<option value="">2018</option>'+
+                            '<option value="">2015-2017</option>'+
+                            '<option value="">2013-2015</option>'+
+                        '</select>';
+        var dataViewDom = '<select name="" id="" style="height: 32px">' +
+                            '<option value="">按时间查看</option>'+
+                            '<option value="">2015-2017</option>'+
+                            '<option value="">2013-2015</option>'+
+                        '</select>';
+        $("div#seach").html('年度：'+selectDom);
+        $('div#import').html('导入');
+        $('div#export').html('导出');
+        $('div#view').html(dataViewDom);
+
+        $('#tableItem_wrapper').css("visibility","hidden");
 
         //上传弹层
         $(function(){
             $('#upload').on('click',function(){
                 $('#addRules_modal').modal('show');
+
             });
             $('#dataImple').jeDate();
         })
@@ -546,6 +579,11 @@
         //关闭模态框销毁WebUploader
         $('#addRules_modal').on('hide.bs.modal', function () {
             uploader.destroy();
+            $(':input','#memberAdd')
+                .not(':button, :submit, :reset, :hidden')
+                .val('')
+                .removeAttr('checked')
+                .removeAttr('selected');
         });
 
         //根据适用性评价设置替换标准是否只读
