@@ -55,6 +55,7 @@
                             <tr>
                                 <th>序号</th>
                                 <th>文件名称</th>
+                                <th>时间</th>
                                 <th>上传人</th>
                                 <th>上传时间</th>
                                 <th>备注</th>
@@ -177,7 +178,7 @@
         }
         //判断是否拉数据
         var groupid = sNodes[0].pId //父节点的id
-        if (!sNodes[0].children && groupid !== 1 && groupid !== 12 && groupid !== 1){
+            if (!sNodes[0].children && groupid !== 1 && groupid !== 12 && groupid !== 13){
             switch (Number(groupid)){
                 case 11 :
                     table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid=" + selfid).load();
@@ -301,8 +302,8 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+res.data.selfid).load();
-                        table2.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+res.data.selfid).load();
+                        table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
+                        table2.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -350,7 +351,7 @@
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"remark":"","aid":"","year":"","selfid":""},
+                formData: {"remark":"","aid":"","checktime":"","selfid":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -382,7 +383,7 @@
             uploader1.on("uploadStart",function () {
                 uploader1.options.formData.aid = $("#aid").val();
                 uploader1.options.formData.remark = $("#remark1").val();
-                uploader1.options.formData.year = $("#year1").val();
+                uploader1.options.formData.checktime = $("#year1").val();
                 uploader1.options.formData.selfid = selfid;
             });
             uploader1.on('beforeFileQueued', function (file) {
@@ -461,7 +462,7 @@
                 if(res.code === 1){
                     $("#aid").val(res.data.id);
                     $("#remark1").val(res.data.remark);
-                    $("#year1").val(res.data.date);
+                    $("#year1").val(res.data.checktime);
                     aname1 = res.data.remark;
                     aname2 = res.data.name;
                     aname3 = res.data.checktime;
@@ -491,7 +492,7 @@
             if(!$("#aid").val()){
                 uploader1.upload();
             }else {
-                if(aname1 !== $("#remark1").val() || aname2 !== $(".info1").html() || aname3 !== $(".info1").val() ){
+                if(aname1 !== $("#remark1").val() || aname2 !== $(".info1").html() || aname3 !== $("#year1").val() ){
                     $.ajax({
                         url: "./equipmentEdit",
                         type: "post",
@@ -570,16 +571,15 @@
             "url": "__SCRIPT__/safety_equipmentmanage.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
-        "column":[
-            {
-                data:""
-            }
-        ],
         "columnDefs":[ //设置列定义初始化属性
+            {
+                "targets":[2],
+                "visible": false
+            },
             {
                 "searchable":false,  //禁止搜索
                 "orderable":false,   //禁止排序
-                "targets":[5],         //指定第六列
+                "targets":[6],         //指定第六列
                 "render": function (data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download2(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit2(this)' value='编辑'/>" ;
@@ -730,7 +730,7 @@
                     if(res.data.path){
                         $("#file_list2").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
                             '<span class="info2">' + res.data.name + '</span>&nbsp' +
-                            '<span onclick="fdelatt1(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '<span onclick="fdelatt2(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
                             '</div>' );
                     }
                     $("#fname2").modal('show');
@@ -755,7 +755,7 @@
                     $.ajax({
                         url: "./equipmentEdit",
                         type: "post",
-                        data: {id:$("#bid").val(),remark:$("#remark2").val()},
+                        data: {id:$("#bid").val(),remark:$("#remark2").val(),checktime:""},
                         datatype: "json",
                         success: function (res) {
                             if(res.code === 1){

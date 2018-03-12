@@ -33,12 +33,12 @@
         height:821px;
         float: right;
     }
-    .mybtn{
+    #table1_wrapper .mybtn{
         float: left;
-        margin-top: 5px;
+        margin-bottom: 8px;
         margin-left: 20px;
     }
-    #example_filter{
+    #table1_wrapper #table1_filter{
         float: right;
         margin-right: 20px;
     }
@@ -60,176 +60,27 @@
             <!--&lt;!&ndash;<span>上传</span>&ndash;&gt;-->
             <!--</div>-->
         </div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="home">
+                <div id="table1_wrapper">
+                    <table id="table1" width="100%" class="table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>文件名称</th>
+                            <th>上传人</th>
+                            <th>上传时间</th>
+                            <th>版本</th>
+                            <th>备注</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
 
+                    </table>
+                </div>
+            </div>
+        </div>
 
-        <table id="example" class="display" cellspacing="0" width="100%">
-            <!--<div class="mybtn"></div>-->
-            <thead>
-            <tr>
-                <th>文件名</th>
-                <th>上传人</th>
-                <th>上传时间</th>
-                <th>版本</th>
-                <th>备注</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Tiger Nixon</td>
-                <td>System Architect</td>
-                <td>Edinburgh</td>
-                <td>61</td>
-                <td>2011/04/25</td>
-                <td>
-
-            </tr>
-            <tr>
-                <td>Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>
-
-                </td>
-
-            </tr>
-            <tr>
-                <td>Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>
-
-                </td>
-
-            </tr>
-            <tr>
-                <td>Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>
-
-                </td>
-
-            </tr>
-            <tr>
-                <td>Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>
-
-                </td>
-
-            </tr>
-            <tr>
-                <td>Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>
-
-                </td>
-
-            </tr>
-            <tr>
-                <td>Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>
-
-                </td>
-
-            </tr>
-            <tr>
-                <td>Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>
-
-                </td>
-
-            </tr>
-            <tr>
-                <td>Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>
-
-                </td>
-
-            </tr>
-            <tr>
-                <td>Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>
-
-                </td>
-
-            </tr>
-            <tr>
-                <td>Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>
-
-                </td>
-
-            </tr>
-            <tr>
-                <td>Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>
-
-                </td>
-
-            </tr>
-            <tr>
-                <td>Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>
-
-                </td>
-
-
-            </tr>
-            <tr>
-                <td>Garrett Winters</td>
-                <td>Accountant</td>
-                <td>Tokyo</td>
-                <td>63</td>
-                <td>2011/07/25</td>
-                <td>
-
-                </td>
-
-            </tr>
-            </tbody>
-        </table>
     </div>
 </div>
 <div id="form_container" style="display: none;"></div>
@@ -240,24 +91,13 @@
                 <div class="ibox-title">
                     <h5></h5>
                 </div>
+
+
                 <div class="ibox-content">
-                    <input id="aid" type="text" class="form-control" value="" style="display: none;">
-                    <div class="col-lg-12 col-xs-12">
-                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">文件名称：</label>
-                        <div class="myblock col-xs-8 input-group">
-                            <input id="remark1" type="text" class="form-control" name="remark" >
-                        </div>
-                    </div>
-                    <input id="aid" type="text" class="form-control" value="" style="display: none;">
-                    <div class="col-lg-12 col-xs-12">
-                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">备注：</label>
-                        <div class="myblock col-xs-8 input-group">
-                            <input id="remark1" type="text" class="form-control" name="remark" >
-                        </div>
-                    </div>
+
                     <div class="col-lg-12 col-xs-12">
 
-                        <label class="col-xs-3 control-label" id="file" style="text-align: right;line-height: 44px;">文件：</label>
+                        <label class="col-xs-3 control-label" id="file" style="text-align: right;line-height: 44px;">文件名称：</label>
 
                         <div class="myblock col-xs-8 input-group">
                             <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
@@ -265,12 +105,39 @@
                             <div id="file_list1" style="display: inline-block;vertical-align: middle;"></div>
                         </div>
                     </div>
+
+                    <input id="ai" type="text" class="form-control" value="" style="display: none;">
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">版本：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="version1" type="text" class="form-control" name="version" >
+                        </div>
+                    </div>
+
+
+                    <input id="aid" type="text" class="form-control" value="" style="display: none;">
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">备注：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="remark1" type="text" class="form-control" name="remark" >
+                        </div>
+                    </div>
+
+
+
+
                     <div class="col-xs-12" style="text-align: center;">
                         <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
                         <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
                     </div>
                 </div>
+
+
+
+
             </div>
+
+
         </div>
     </div>
 </div>
@@ -280,9 +147,9 @@
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/jquery.jedate.js"></script>
 <script>
-    $("#year2").jeDate({
-        format: "YYYY-MM"
-    });
+    // $("#year2").jeDate({
+    //     format: "YYYY-MM"
+    // });
     function showPdf(id,url) {
         $.ajax({
             url: url,
@@ -310,22 +177,15 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        if(url === "./anualDel"){
-                            table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
-                        }else if(url === "./generalDel"){
-                            table2.ajax.url("__SCRIPT__/safety_goal_general.php").load();
-                        }else if(url === "./responsibilityDel"){
-                            if(tablename == "department"){
-                                table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=department").load();
-                            }else {
-                                table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=personal").load();
-                            }
+                        if(url === "./fullpartDel"){
+                            table1.ajax.url("__SCRIPT__/safety_fullparticipation.php").load();
+
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
                 }
-            })
+            });
             layer.close(index);
         })
     }
@@ -351,19 +211,52 @@
             }
         })
     };
-    var uploader1,uploader2,uploader3;          //初始化三个upload按钮
+    //总体目标-编辑
+    function edit1(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $.ajax({
+            url: "./index",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.code === 1){
+                    $("#aid").val(res.data.id);
+                    $("#ai").val(res.data.id);
+                    $("#remark1").val(res.data.remark);
+                    $("#version1").val(res.data.version);
+                    aname1 = res.data.name;
+                    aname2 = res.data.name;
+                    aname3 = res.data.name;
+                    uploader1 = null;
+                    upload1();
+                    if(res.data.path){
+                        $("#file_list1").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                            '<span class="info">' + res.data.name + '</span>&nbsp' +
+                            '<span onclick="fdelatt1(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '</div>' );
+                    }
+                    $("#fname1").modal('show');
+                }
+            }
+        })
+    };
+
+
+    var uploader1;
     //总体目标
-    var aname1,aname2;           //用于区分 编辑时是否修改了文件
+    var aname1,aname2,aname3;           //用于区分 编辑时是否修改了文件
     function upload1() {
         if(!uploader1){
             uploader1 = WebUploader.create({
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadSafeyGoalAnual')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadFullparticipation')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"remark":"","aid":""},
+                formData: {"remark":"","aid":"","version":"","ai":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -375,6 +268,8 @@
             uploader1.on( 'fileQueued', function( file ) {
                 aname2 = file.name;
                 $("#file_per1").append('<div id="' + file.id + '" class="item">' +
+                    '</div>');
+                $("#file_per2").append('<div id="' + file.id + '" class="item">' +
                     '</div>');
                 $("#file_list1").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
                     '<span class="info">' + file.name + '</span>&nbsp' +
@@ -393,8 +288,14 @@
                 console.log("remove");
             });
             uploader1.on("uploadStart",function () {
+                uploader1.options.formData.ai = $("#ai").val();
+                uploader1.options.formData.version= $("#version1").val();
+            });
+            uploader1.on("uploadStart",function () {
                 uploader1.options.formData.aid = $("#aid").val();
+                uploader1.options.formData.ai = $("#ai").val();
                 uploader1.options.formData.remark = $("#remark1").val();
+                uploader1.options.formData.version = $("#version1").val();
             });
             uploader1.on('beforeFileQueued', function (file) {
                 if($("#file_list1").html()){
@@ -428,7 +329,7 @@
                     $("#file_per1").empty();
                     $("#file_list1").empty();
                     $("#fname1").modal('hide');
-                    table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
+                    table1.ajax.url("__SCRIPT__/safety_fullparticipation.php").load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -442,22 +343,25 @@
         }
     }
 
+
+
+
     //总体目标-预览
     function showpdf1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        showPdf(id,"./anualPreview");
+        showPdf(id,"./fullpartDownload");
     }
 
     //总体目标-删除
     function del1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        del(id,"./anualDel");
+        del(id,"./fullpartDel");
     }
 
     //总体目标-下载
     function download1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        download(id,"./anualDownload");
+        download(id,"./fullpartDownload");
     }
 
     //总体目标-编辑-删除文件
@@ -466,57 +370,21 @@
         $("#"+id).remove();
     }
 
-    //总体目标-编辑
-    function edit1(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $.ajax({
-            url: "./index",
-            type: "post",
-            data: {id:id},
-            dataType: "json",
-            success: function (res) {
-                console.log(res);
-                if(res.code === 1){
-                    $("#aid").val(res.data.id);
-                    $("#remark1").val(res.data.remark);
-                    aname1 = res.data.name;
-                    aname2 = res.data.name;
-                    uploader1 = null;
-                    upload1();
-                    if(res.data.path){
-                        $("#file_list1").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
-                            '<span class="info">' + res.data.name + '</span>&nbsp' +
-                            '<span onclick="fdelatt1(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                            '</div>' );
-                    }
-                    $("#fname1").modal('show');
-                }
-            }
-        })
-    };
 
-    table = $('#example').DataTable({
-        // "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
 
+    var table1 = $('#table1').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/safety_fullparticipation.php"
+        },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
-        // ajax : {
-        //     url : "queryPagePapers",
-        //     dataSrc : "data",
-        //     data : function(d) {
-        //         var searchContent = $(
-        //             '#searchContent').val();
-        //         d.extra_search = searchContent;
-        //     }},
-
-        // "paging":   false,
-        // "ordering": false,
-        // "info":     false,
-        bLengthChange: false,
+        "bLengthChange": false,
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [5],
+                "targets": [6],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download1(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit1(this)' value='编辑'/>" ;
@@ -544,10 +412,11 @@
     $("div.mybtn").html('<div>上传</div>');
 
     //总体目标-新增
-    $("#example_wrapper .mybtn").click(function () {
+    $("#table1_wrapper .mybtn").click(function () {
         uploader1 = null;
         $("#fname1 input").val("");
         $("#file_list1").empty();
+        // $("#file_list2").empty();
         $("#fname1").modal('show');
         upload1();
     });
@@ -558,14 +427,14 @@
             }else {
                 if(aname1 === aname2){
                     $.ajax({
-                        url: "./anualEdit",
+                        url: "./fullpartEdit",
                         type: "post",
-                        data: {aid:$("#aid").val(),remark:$("#remark1").val()},
+                        data: {aid:$("#aid").val(),remark:$("#remark1").val(),version:$("#version1").val(),ai:$("#ai").val()},
                         datatype: "json",
                         success: function (res) {
                             if(res.code === 1){
                                 layer.msg(res.msg);
-                                table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
+                                table1.ajax.url("__SCRIPT__/safety_fullparticipation.php").load();
                                 $("#fname1").modal('hide');
                             }else {
                                 layer.msg(res.msg);

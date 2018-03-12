@@ -191,7 +191,7 @@ class Upload extends Base
             $temp = $info->getSaveName();
             $path = './uploads/safety/statutesdi/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
-            if($sdi_name == '等待上传'){
+            if($sdi_name == '等待上传...'){
                 $houzhui = substr(strrchr($filename, '.'), 1);
                 $sdi_name = basename($filename,".".$houzhui); // 取不带后缀的文件名
             }
@@ -306,10 +306,24 @@ class Upload extends Base
 
     /*
      * 设置机构文件上传
+     * @return \think\response\Json
     */
     public function uploadResponsibilityinstyGroup(){
+        /**
+         * id 设置机构文件上传id
+         * selfid 标记的节点id
+         * name 文件名
+         * filename 上传文件名
+         * owner 上传人
+         * date 上传时间
+         * version 版本
+         * remark 备注
+         * path 文件路径
+
+         */
         $group = new ResponsibilityinstyGroupModel();
         $id = request()->param('aid');
+        $selfid = request()->param('selfid');
         $remark = request()->param('remark');
         $version = request()->param('version');
         $file = request()->file('file');
@@ -321,12 +335,13 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
-//                    'name' => $filename,
+                    'selfid' => $selfid,
+                    'name' => $filename,
                     'filename' => $filename,
-                    'uploadname' => session('username'),
-                    'uploadtime' => date("Y-m-d H:i:s"),
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
                     'version'=>$version,
-                    'remarks' => $remark,
+                    'remark' => $remark,
                     'path' => $path
                 ];
                 $flag = $group->insertResponsibilityinstyGroup($data);
@@ -336,12 +351,13 @@ class Upload extends Base
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
-//                    'name' => $filename,
+                    'selfid' => $selfid,
+                    'name' => $filename,
                     'filename' => $filename,
-                    'uploadname' => session('username'),
-                    'uploadtime' => date("Y-m-d H:i:s"),
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
                     'version'=>$version,
-                    'remarks' => $remark,
+                    'remark' => $remark,
                     'path' => $path
                 ];
                 $flag = $group->editResponsibilityinstyGroup($data);
@@ -353,9 +369,20 @@ class Upload extends Base
     }
 
     /*
-     *安全生产文明建设文件上传
+     * 安全生产文明建设文件上传
+     * @return \think\response\Json
     */
     public function uploadSafetyResponsibilityculture(){
+        /**
+         * id 安全生产文明建设文件上传id
+         * name 文件名
+         * filename 上传文件名
+         * owner 上传人
+         * date 上传时间
+         * remark 备注
+         * path 文件路径
+
+         */
         $culture = new SafetyResponsibilitycultureModel();
         $id = request()->param('aid');
         $remark = request()->param('remark');
@@ -398,8 +425,19 @@ class Upload extends Base
     }
     /*
      *安全生产信息化建设文件上传
+     * @return \think\response\Json
     */
     public function uploadSafetyResponsibilityinfo(){
+        /**
+         * id 安全生产信息化建设文件上传id
+         * name 文件名
+         * filename 上传文件名
+         * owner 上传人
+         * date 上传时间
+         * remark 备注
+         * path 文件路径
+
+         */
         $responsibilityinfo = new SafetyResponsibilityinfoModel();
         $id = request()->param('aid');
         $remark = request()->param('remark');
@@ -442,8 +480,23 @@ class Upload extends Base
     }
     /*
      *安全生产责任制文件上传
+     * @return \think\response\Json
     */
+
+
+
     public function uploadFullparticipation(){
+        /**
+         * id 安全生产责任制文件上传id
+         * name 文件名
+         * filename 上传文件名
+         * owner 上传人
+         * date 上传时间
+         * remark 备注
+         * path 文件路径
+         * version 版本
+
+         */
         $fullpart = new FullparticipationModel();
         $id = request()->param('aid');
         $version = request()->param('version');
@@ -522,14 +575,29 @@ class Upload extends Base
 
     /*
      *设备设施管理文件上传
+     * @return \think\response\Json
     */
     public function uploadEquipmentCheckAccept(){
+        /**
+         * id 安全生产责任制文件上传id
+         * selfid 标记的节点id
+         * name 文件名
+         * filename 上传文件名
+         * checktime 验收时间
+         * owner 上传人
+         * date 上传时间
+         * remark 备注
+         * path 文件路径
+         * version 版本
+
+         */
         $equipment = new EquipmentCheckAcceptModel();
         $id = request()->param('aid');
 //        $version = request()->param('version');
         $selfid = request()->param('selfid');
         $remark = request()->param('remark');
         $file = request()->file('file');
+        $checktime = request()->param('checktime');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/equipmentCheckAccept');
         if($info){
             $temp = $info->getSaveName();
@@ -541,6 +609,7 @@ class Upload extends Base
                     'selfid' => $selfid,
                     'name' => $filename,
                     'filename' => $filename,
+                    'checktime' => $checktime,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
                     'path' => $path,
@@ -557,6 +626,7 @@ class Upload extends Base
                     'selfid' => $selfid,
                     'name' => $filename,
                     'filename' => $filename,
+                    'checktime' => $checktime,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
                     'path' => $path,

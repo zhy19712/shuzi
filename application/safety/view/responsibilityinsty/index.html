@@ -14,11 +14,11 @@
       clear: both;
       display: block;
    }
- #box{
+   #box{
     width: 100%;
     height: 821px;
     border: 1px solid black;
- }
+    }
    #left{
       width: 20%;
       border: 1px solid black;
@@ -32,7 +32,7 @@
      text-align: center;
       line-height: 40px;
    }
-   #top{
+   #path{
       margin:0px auto;
       border-bottom:1px solid black;
       height:40px;
@@ -58,93 +58,23 @@
    <div id="box" class="clearfix">
       <div id="left">
          <p id="p">机构和设置</p>
-           <div>
+         <div id="mycontent" style="width: 100%;height: 93%;display: inline-block;background-color:#fff;overflow-x: scroll;padding-right:0px;border-right: 1px solid #ccc;">
+            <!--<div id="file_per"></div>-->
+            <!--<div id="file_list"></div>-->
+            <div id="tree_container" class="ztree"></div>
+            <p style="display: none;"></p>
+         </div>
 
-           </div>
-
-            <div class="ee">
-               <p class="ww">安全生产领导小组</p>
-               <div class="aa" style="display: none;">
-                  <p>监理部</p>
-                  <p>c1标</p>
-                  <p>c2标</p>
-               </div>
-            </div>
-         <div class="ee">
-            <p class="ww">安全生产监督体系</p>
-            <div class="aa" style="display: none;">
-               <p>监理部</p>
-               <p>c1标</p>
-               <p>c2标</p>
-            </div>
-         </div>
-         <div class="ee">
-            <p class="ww">安全生产保证体系</p>
-            <div class="aa" style="display: none;">
-               <p>监理部</p>
-               <p>c1标</p>
-               <p>c2标</p>
-            </div>
-         </div>
-         <div class="ee">
-            <p class="ww">安全生产委员会</p>
-            <div class="aa" style="display: none;">
-               <p>监理部</p>
-               <p>c1标</p>
-               <p>c2标</p>
-            </div>
-         </div>
-         <div class="ee">
-            <p class="ww">反违章领导小组</p>
-            <div class="aa" style="display: none;">
-               <p>监理部</p>
-               <p>c1标</p>
-               <p>c2标</p>
-            </div>
-         </div>
-         <div class="ee">
-            <p class="ww">消防领导小组</p>
-            <div class="aa" style="display: none;">
-               <p>监理部</p>
-               <p>c1标</p>
-               <p>c2标</p>
-            </div>
-         </div>
-         <div class="ee">
-            <p class="ww">职业健康领导小组</p>
-            <div class="aa" style="display: none;">
-               <p>监理部</p>
-               <p>c1标</p>
-               <p>c2标</p>
-            </div>
-         </div>
-         <div class="ee">
-            <p class="ww">应急管理领导小组</p>
-            <div class="aa" style="display: none;">
-               <p>监理部</p>
-               <p>c1标</p>
-               <p>c2标</p>
-            </div>
-         </div>
       </div>
       <div id="right">
-         <div id="top">
-          当前路径
-         </div>
-         <div id="center" class="clearfix">
-                <!--<div id="input">-->
-                   <!--<input type="text" placeholder="请输入搜索内容">-->
-                   <!--<span>搜索</span>-->
-                <!--</div>-->
-              <!--<div id="file">-->
-               <!--<input type="file">-->
-               <!--&lt;!&ndash;<span>上传</span>&ndash;&gt;-->
-              <!--</div>-->
-         </div>
+         <!--<div id="top">-->
+          <!--当前路径-->
+         <!--</div>-->
+         <div id="path">当前路径:</div>
+
 
 
          <table id="example" class="display" cellspacing="0" width="100%">
-            <!--<div class="mybtn"></div>-->
             <thead>
             <tr>
                <th>文件名</th>
@@ -156,37 +86,6 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-               <td>Tiger Nixon</td>
-               <td>System Architect</td>
-               <td>Edinburgh</td>
-               <td>61</td>
-               <td>2011/04/25</td>
-               <td>
-
-            </tr>
-            <tr>
-               <td>Garrett Winters</td>
-               <td>Accountant</td>
-               <td>Tokyo</td>
-               <td>63</td>
-               <td>2011/07/25</td>
-               <td>
-
-               </td>
-
-            </tr>
-            <tr>
-               <td>Garrett Winters</td>
-               <td>Accountant</td>
-               <td>Tokyo</td>
-               <td>63</td>
-               <td>2011/07/25</td>
-               <td>
-
-               </td>
-
-            </tr>
             <tr>
                <td>Garrett Winters</td>
                <td>Accountant</td>
@@ -360,7 +259,168 @@
    <script src="__JS__/jquery.ztree.all.js"></script>
    <script src="__JS__/jquery.dataTables.min.js"></script>
    <script src="__JS__/jquery.jedate.js"></script>
+   <script type="text/javascript">
+       //
+       var curMenu = null, zTree_Menu = null;
+       //组织结构
+       var zTreeObj;
+       var selfid;
+
+       //点击获取节点名称
+       // function zTreeOnClick(event, treeId, treeNode) {
+       //     // alert("aa");
+       //     console.log(treeNode);
+       //
+       //     mytree_node = treeNode;
+       //     $("#groupname").val(treeNode.name);
+       //     $("#mycontent>p").text(treeNode.name);
+       //     $("#groupid").val(treeNode.id);
+       //     groupid = treeNode.id;
+       //     if(treeNode.level == 3){
+       //         $("#mytable1_wrapper").css("display","block");
+       //         admin_table.ajax.url("__SCRIPT__/project_table.php?pid=" + groupid).load();
+       //     }else {
+       //         $("#mytable1_wrapper").css("display","none");
+       //     }
+       //
+       //     // 获取路径
+       //     $.ajax({
+       //         url: "../../admin/project/getParents",
+       //         type: "post",
+       //         data: {id:groupid},
+       //         dataType: "json",
+       //         success: function (res) {
+       //             if(res.msg === "success"){
+       //                 $("#path").text("当前路径:" + res.path)
+       //             }
+       //         }
+       //     })
+       // };
+       //点击获取路径
+       function onClick(e, treeId, node) {
+           // $("#mytable2_wrapper").css("display","none");
+           $("#mytable1_wrapper").css("display","none");
+           // $("#mytable2_wrapper").css("display","none");
+           $("#path").text("");
+           var sNodes = zTreeObj.getSelectedNodes();//选中节点
+           // alert(sNodes.getPath());
+           selfid=zTreeObj.getSelectedNodes()[0].id;
+           var path = sNodes[0].name; //选中节点的名字
+           // var path=sNode[0].name;
+           node = sNodes[0].getParentNode();//获取父节点
+
+           //判断是否还有父节点
+           if (node) {
+               //判断是否还有父节点
+               while (node){
+                   path = node.name + ">>" + path;
+                   node = node.getParentNode();
+               }
+           }else{
+               $("#path").text(sNodes[0].name);
+           }
+           // 判断是否拉数据
+           var groupid = sNodes[0].pId; //父节点的id
+           if (!sNodes[0].children && groupid !== 1){
+                 switch (Number(groupid)){
+                     case  11:{
+                         table1.ajax.url("__SCRIPT__/safety_fullparticipation.php?selfid="+selfid).load();
+                         $("#mytable1_wrapper").css("display","block");
+                         break;
+
+                     }
+                 }
+               $("#path").text("当前路径:"+path)
+           }
+
+       };
+       // function onclick(e,treeId,node){
+       //     $("#path").text("");
+       //     var sNodes = zTreeObj.getSelectedNodes();//选中节点
+       //     // var treeObj = $.fn.zTree.getZTreeObj("tree");
+       //     // var sNodes = treeObj.getSelectedNodes();
+       //     if (sNodes.length > 0) {
+       //         var node = sNodes[0].getPath();
+       //        console.log(node)
+       //     }
+       // }
+       //配置信息
+       var setting = {
+           view: {
+               showLine: true, //设置 zTree 是否显示节点之间的连线。
+               selectedMulti: false, //设置是否允许同时选中多个节点。
+               dblClickExpand: true //双击节点时，是否自动展开父节点的标识。
+           },
+           async: {
+               enable : true,
+               autoParam: ["pId"],
+               type : "post",
+               url : "./index",
+               dataType :"json"
+           },
+           data:{
+               keep: {
+                   leaf : true,
+                   parent : true
+               },
+               simpleData : {
+                   enable:true,
+                   idkey: "id",
+                   pIdKey: "pId",
+                   rootPId:0
+               }
+           },
+           callback: {
+               // beforeClick: this.beforeClick,
+               onClick: this.onClick,
+
+
+           },
+       };
+       function beforeClick(treeId, node) {
+           alert("aa")
+           if (node.isParent) {
+               if (node.level === 0) {
+                   var pNode = curMenu;
+                   while (pNode && pNode.level !==0) {
+                       pNode = pNode.getParentNode();
+                   }
+                   if (pNode !== node) {
+                       var a = $("#" + pNode.tId + "_a");
+                       a.removeClass("cur");
+                       zTree_Menu.expandNode(pNode, false);
+                   }
+                   a = $("#" + node.tId + "_a");
+                   a.addClass("cur");
+
+                   var isOpen = false;
+                   for (var i=0,l=node.children.length; i<l; i++) {
+                       if(node.children[i].open) {
+                           isOpen = true;
+                           break;
+                       }
+                   }
+                   if (isOpen) {
+                       zTree_Menu.expandNode(node, true);
+                       curMenu = node;
+                   } else {
+                       zTree_Menu.expandNode(node.children[0].isParent?node.children[0]:node, true);
+                       curMenu = node.children[0];
+                   }
+               } else {
+                   zTree_Menu.expandNode(node);
+               }
+           }
+           return !node.isParent;
+       }
+       //初始化
+       zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
+       zTree_Menu = $.fn.zTree.getZTreeObj("tree_container");
+       curMenu = zTree_Menu.getNodes();//获取 zTree 的全部节点数据
+
+   </script>
 <script>
+
     $("#year2").jeDate({
         format: "YYYY-MM"
     });
@@ -550,6 +610,7 @@
     //总体目标-编辑
     function edit1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        // alert(id);
         $.ajax({
             url: "./index",
             type: "post",

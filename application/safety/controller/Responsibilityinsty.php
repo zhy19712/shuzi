@@ -15,27 +15,40 @@ use app\safety\model\ResponsibilityinstyGroupModel;
 class Responsibilityinsty extends Base
 {
 
-    /**
+    /*
      * [index 设置机构中左边的分类节点]
-     */
+    */
     public function index()
     {
         if(request()->isAjax()){
             $node = new ResponsibilityinstyModel();
             $nodeStr = $node->getNodeInfo();
             return json($nodeStr);
-//            return ($nodeStr);
 
         }
         else
             return $this->fetch();
     }
 
+    /*
+     * [getindex 获取一条设置机构文件上传信息]
+    */
+    public function getindex()
+    {
+        if(request()->isAjax()){
+            $insty= new ResponsibilityinstyGroupModel();
+            $param = input('post.');
+            $data = $insty->getOne($param['id']);
+            return json(['code'=> 1, 'data' => $data]);
+        }
+        return $this->fetch();
+    }
+
      /**
-     * [ResponsibilityinstyPreview 设置机构中的文件预览]
+     * [responsibilityinstyPreview 设置机构中的文件预览]
      */
 
-    public function ResponsibilityinstyPreview()
+    public function responsibilityinstyPreview()
     {
         $group = new ResponsibilityinstyGroupModel();
         if(request()->isAjax()) {
@@ -67,9 +80,9 @@ class Responsibilityinsty extends Base
     }
 
     /**
-     * [ResponsibilityinstyEdit 设置机构中的文件编辑]
+     * [responsibilityinstyEdit 设置机构中的文件编辑]
      */
-    public function ResponsibilityinstyEdit()
+    public function responsibilityinstyEdit()
     {
         $group = new ResponsibilityinstyGroupModel();
         $param = input('post.');
@@ -85,20 +98,20 @@ class Responsibilityinsty extends Base
     }
 
     /**
-     * [ResponsibilityinstyDel 单元工程验收批次删除]
+     * [responsibilityinstyDel 设置机构中的文件删除]
      */
-    public function ResponsibilityinstyDel()
+    public function responsibilityinstyDel()
     {
         $id = input('param.id');
-        $insty = new ResponsibilityinstyGroupModel();
-        $flag = $insty->delResponsibilityinsty($id);
+        $group = new ResponsibilityinstyGroupModel();
+        $flag = $group->delResponsibilityinstyGroup($id);
         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
     }
 
     /**
-     * [ResponsibilityinstyDel 单元工程验收批次删除]
+     * [responsibilityinstyDownload 下载一条设置机构中的上传文件]
      */
-    public function ResponsibilityinstyDownload()
+    public function responsibilityinstyDownload()
     {
         if(request()->isAjax()){
             return json(['code' => 1]);
