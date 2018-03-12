@@ -76,4 +76,9 @@ class EducationModel extends Model
         }
         return $data;
     }
+
+    public function getYears()
+    {
+        return $this->group('years')->column('years');
+    }
 }
