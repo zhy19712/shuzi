@@ -43,6 +43,19 @@ class Statutestdi extends Base
     }
 
     /**
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getOne()
+    {
+        if(request()->isAjax()){
+            $sdi = new StatutestdiModel();
+            $data = $sdi->getOne(input('param.id'));
+            return json($data);
+        }
+    }
+
+    /**
      * 修改
      * @return \think\response\Json
      * @author hutao
@@ -83,7 +96,7 @@ class Statutestdi extends Base
         $param = $sdi->getOne($id);
         $filePath = $param['path'];
 //        $fileName = $param['sdi_name'];
-        $fileName = $param['sdi_name'] . '.' . substr(strrchr($filePath, '.'), 1); ;
+        $fileName = $param['sdi_name'] . '.' . substr(strrchr($filePath, '.'), 1);
         $file = fopen($filePath, "r"); //   打开文件
         //输入文件标签
         $fileName = iconv("utf-8","gb2312",$fileName);

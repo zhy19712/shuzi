@@ -94,11 +94,11 @@ class Rulesregulations extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $id = input('post.id');
+        $id = input('param.id');
         $rules = new RulesregulationsModel();
         $param = $rules->getOne($id);
         $filePath = $param['path'];
-        $fileName = $param['rul_name'];
+        $fileName = $param['rul_name'] . '.' . substr(strrchr($filePath, '.'), 1);
         $file = fopen($filePath, "r"); // 打开文件
         // 输入文件标签
         $fileName = iconv("utf-8","gb2312",$fileName);
@@ -244,6 +244,16 @@ class Rulesregulations extends Base
             }
             $flag = $node->delSdinode($id,2);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    public function getOneNode()
+    {
+        if(request()->isAjax()){
+            $id = input('post.id');
+            $node = new SafetySdiNodeModel();
+            $data = $node->getOneNode($id);
+            return json($data);
         }
     }
 
