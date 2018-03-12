@@ -212,4 +212,18 @@ class Revisionrecord extends Base
             }
         }
     }
+
+    /**
+     * 查看历史版本
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getHistory()
+    {
+        if(request()->isAjax()){
+            $edu = new RevisionrecordModel();
+            $years = $edu->getYears();
+            return json($years);
+        }
+    }
 }
