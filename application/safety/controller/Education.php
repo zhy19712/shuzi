@@ -10,6 +10,7 @@ namespace app\safety\controller;
 
 // 专题教育培训
 use app\admin\controller\Base;
+use app\admin\model\ContractModel;
 use app\safety\model\EducationModel;
 use think\Db;
 use think\Loader;
@@ -215,6 +216,20 @@ class Education extends Base
             $edu = new EducationModel();
             $years = $edu->getYears();
             return json($years);
+        }
+    }
+
+    /**
+     * 获取标段
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getSegment()
+    {
+        if(request()->isAjax()){
+            $con = new ContractModel();
+            $data = $con->getBiaoduanName();
+            return json($data);
         }
     }
 
