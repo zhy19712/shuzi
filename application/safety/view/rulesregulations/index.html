@@ -293,7 +293,7 @@
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [8],
+                "targets": [9],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='downloadFile(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='preview(this)' value='预览'/>" ;
@@ -787,8 +787,17 @@
         console.log($("#file_list1 .info").text())
         if($("#file_list1").html()){
             if(!$("#id1").val()){
-                uploader1.upload();
-                console.log("新增")
+                if($("#appEvaluation").val() == '过期'){
+                    if($("#alternativeStandard").val() != ''){
+                        uploader1.upload();
+                        console.log("新增")
+                    }else {
+                        alert('请填写替代标准')
+                    }
+                }else if($("#appEvaluation").val() != '过期'){
+                    uploader1.upload();
+
+                }
             }else {
                 console.log("编辑")
                 console.log($("#file_list1 .info .infoText").text())
@@ -1087,9 +1096,9 @@
     $("#appEvaluation").click(function () {
         console.log($("#appEvaluation").val())
         if($("#appEvaluation").val() == '过期'){
-            $("#alternativeStandard").attr("readOnly",true);
-        }else if($("#appEvaluation").val() == '适用'){
             $("#alternativeStandard").attr("readOnly",false);
+        }else if($("#appEvaluation").val() == '适用'){
+            $("#alternativeStandard").attr("readOnly",true);
         }
     });
 </script>
