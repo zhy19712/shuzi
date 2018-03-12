@@ -43,6 +43,19 @@ class Statutestdi extends Base
     }
 
     /**
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getOne()
+    {
+        if(request()->isAjax()){
+            $sdi = new StatutestdiModel();
+            $data = $sdi->getOne(input('param.id'));
+            return json($data);
+        }
+    }
+
+    /**
      * 修改
      * @return \think\response\Json
      * @author hutao
