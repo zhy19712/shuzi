@@ -282,12 +282,12 @@ class Rulesregulations extends Base
             return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
         }
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/statutestdi');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/rules');
         if($info){
             // 调用插件PHPExcel把excel文件导入数据库
             Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
             $exclePath = $info->getSaveName();  //获取文件名
-            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/statutestdi' . DS . $exclePath;   //上传文件的地址
+            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/rules' . DS . $exclePath;   //上传文件的地址
             $objReader = \PHPExcel_IOFactory::createReader('Excel5');
             $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');  //加载文件内容,编码utf-8
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
