@@ -178,7 +178,7 @@
         }
         //判断是否拉数据
         var groupid = sNodes[0].pId //父节点的id
-        if (!sNodes[0].children && groupid !== 1 && groupid !== 12 && groupid !== 1){
+            if (!sNodes[0].children && groupid !== 1 && groupid !== 12 && groupid !== 13){
             switch (Number(groupid)){
                 case 11 :
                     table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid=" + selfid).load();

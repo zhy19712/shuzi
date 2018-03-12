@@ -267,38 +267,40 @@
        var selfid;
 
        //点击获取节点名称
-       function zTreeOnClick(event, treeId, treeNode) {
-           // alert("aa");
-           console.log(treeNode);
-
-           mytree_node = treeNode;
-           $("#groupname").val(treeNode.name);
-           $("#mycontent>p").text(treeNode.name);
-           $("#groupid").val(treeNode.id);
-           groupid = treeNode.id;
-           if(treeNode.level == 3){
-               $("#mytable1_wrapper").css("display","block");
-               admin_table.ajax.url("__SCRIPT__/project_table.php?pid=" + groupid).load();
-           }else {
-               $("#mytable1_wrapper").css("display","none");
-           }
-
-           // 获取路径
-           $.ajax({
-               url: "../../admin/project/getParents",
-               type: "post",
-               data: {id:groupid},
-               dataType: "json",
-               success: function (res) {
-                   if(res.msg === "success"){
-                       $("#path").text("当前路径:" + res.path)
-                   }
-               }
-           })
-       };
+       // function zTreeOnClick(event, treeId, treeNode) {
+       //     // alert("aa");
+       //     console.log(treeNode);
+       //
+       //     mytree_node = treeNode;
+       //     $("#groupname").val(treeNode.name);
+       //     $("#mycontent>p").text(treeNode.name);
+       //     $("#groupid").val(treeNode.id);
+       //     groupid = treeNode.id;
+       //     if(treeNode.level == 3){
+       //         $("#mytable1_wrapper").css("display","block");
+       //         admin_table.ajax.url("__SCRIPT__/project_table.php?pid=" + groupid).load();
+       //     }else {
+       //         $("#mytable1_wrapper").css("display","none");
+       //     }
+       //
+       //     // 获取路径
+       //     $.ajax({
+       //         url: "../../admin/project/getParents",
+       //         type: "post",
+       //         data: {id:groupid},
+       //         dataType: "json",
+       //         success: function (res) {
+       //             if(res.msg === "success"){
+       //                 $("#path").text("当前路径:" + res.path)
+       //             }
+       //         }
+       //     })
+       // };
        //点击获取路径
        function onClick(e, treeId, node) {
+           // $("#mytable2_wrapper").css("display","none");
            $("#mytable1_wrapper").css("display","none");
+           // $("#mytable2_wrapper").css("display","none");
            $("#path").text("");
            var sNodes = zTreeObj.getSelectedNodes();//选中节点
            // alert(sNodes.getPath());
@@ -318,12 +320,19 @@
                $("#path").text(sNodes[0].name);
            }
            // 判断是否拉数据
-           var groupid = sNodes[0].pId
-           if (!sNodes[0].children && groupid !== 1 && groupid !== 12 && groupid !== 1){
-               console.log(sNodes[0].pId);
-               $("#mytable1_wrapper").css("display","block");
+           var groupid = sNodes[0].pId; //父节点的id
+           if (!sNodes[0].children && groupid !== 1){
+                 switch (Number(groupid)){
+                     case  11:{
+                         table1.ajax.url("__SCRIPT__/safety_fullparticipation.php?selfid="+selfid).load();
+                         $("#mytable1_wrapper").css("display","block");
+                         break;
+
+                     }
+                 }
+               $("#path").text("当前路径:"+path)
            }
-           $("#path").text("当前路径:"+path)
+
        };
        // function onclick(e,treeId,node){
        //     $("#path").text("");
@@ -368,30 +377,6 @@
 
            },
        };
-       // var treeNodes = [
-       //     { id:1, pId:0, name:"相关方设备设施管理", open:true},
-       //     { id:11, pId:1, name:"设备设施建设"},
-       //     { id:111, pId:11, name:"c1"},
-       //     { id:112, pId:11, name:"c2"},
-       //     { id:12, pId:1, name:"设备设施验收"},
-       //     { id:121, pId:12, name:"临建设备验收"},
-       //     { id:1211, pId:121, name:"c1"},
-       //     { id:1212, pId:121, name:"c2"},
-       //     { id:122, pId:12, name:"进场设备验收"},
-       //     { id:1221, pId:122, name:"c1"},
-       //     { id:1222, pId:122, name:"c2"},
-       //     { id:123, pId:12, name:"进场设备验收"},
-       //     { id:1231, pId:123, name:"c1"},
-       //     { id:1232, pId:123, name:"c2"},
-       //     { id:124, pId:12, name:"自制设备验收"},
-       //     { id:1241, pId:124, name:"c1"},
-       //     { id:1242, pId:124, name:"c2"},
-       //     { id:2, pId:0, name:"内部设备设施管理"},
-       //     { id:21, pId:2, name:"车辆管理"},
-       //     { id:22, pId:2, name:"设备管理"},
-       //     { id:23, pId:2, name:"安全工器具管理"},
-       // ];
-       //点击前
        function beforeClick(treeId, node) {
            alert("aa")
            if (node.isParent) {
