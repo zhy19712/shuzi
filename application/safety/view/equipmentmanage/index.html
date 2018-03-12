@@ -23,7 +23,7 @@
         float: left;
         margin-right: 20px;
     }
-    .selectyear1,selectyear2{
+    .selectyear1,.selectyear2{
         float: left;
         margin-left: 20px;
         margin-top: 5px;
@@ -794,7 +794,7 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table.ajax.url("__SCRIPT__/safety_equipmentmanage.php?year="+obj.date.YYYY+"selfid="+selfid).load();
+            table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
             console.log(obj.date.YYYY);
         }
     });
@@ -1031,7 +1031,7 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table.ajax.url("__SCRIPT__/safety_equipmentmanage.php?year="+obj.date.YYYY+"selfid="+selfid).load();
+            table2.ajax.url("__SCRIPT__/safety_equipmentmanage.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
             console.log(obj.date.YYYY);
         }
     });
