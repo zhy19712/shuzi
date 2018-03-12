@@ -1,0 +1,779 @@
+<link rel="stylesheet" type="text/css" href="/static/admin/webupload/webuploader.css">
+<link rel="stylesheet" type="text/css" href="/static/admin/webupload/style.css">
+<link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
+<link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="/static/admin/css/jedate.css">
+<link rel="stylesheet" href="/static/admin/css/iconfont.css">
+<link rel="stylesheet" href="/static/admin/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/admin/css/font-awesome.min.css">
+{include file="public/header" /}
+<body>
+    <style>
+        .mycontent{
+            width: 20%;
+            height: 98%;
+            display: inline-block;
+            background-color: #fff;
+            overflow-x: scroll;
+            border-right: 1px solid #ccc;
+        }
+        .mycontent h2{
+            padding: 10px 0;
+            margin: 0;
+            text-align: center;
+            font-size: 16px;
+            border-bottom: 1px solid #ccc;
+            background: #19aa8d;
+            color: #FFF;
+        }
+        .ztree li span.button.add {
+            margin-left:2px;
+            margin-right: -1px;
+            background-position:-144px 0;
+            vertical-align:top;
+            *vertical-align:middle;
+        }
+        .wrapper {
+            display: inline-block;
+            width: 78%;
+            vertical-align: top;
+            padding: 0;
+        }
+        .ibox-content h2.title{
+            margin: 0;
+            padding-bottom: 15px;
+            text-align: center;
+            font-size: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        #import,#export,#seach,#exportExcel,#add{
+            float: right;
+            display: inline-block;
+            margin: 10px 5px 10px;
+        }
+        #import,#export,#exportExcel,#add{
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: 1px solid #00b7ee;
+            background: #00b7ee;
+            color: #FFF;
+            cursor: pointer;
+        }
+        #add{
+            float: none;
+        }
+        #tableItem .btn{
+            margin-right: 2px;
+        }
+        .dataTables_wrapper .dataTables_length{
+            margin-top: 15px;
+        }
+        .dataTables_wrapper .dataTables_filter{
+            margin-top: 10px;
+        }
+        .dataTables_wrapper .dataTables_filter input{
+            margin: 0;
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .dataTables_wrapper .dataTables_filter label{
+            font-weight: normal;
+        }
+        table.dataTable thead th, table.dataTable tfoot th{
+            font-weight: normal;
+        }
+        #manageTableItem_wrapper,#practTableItem_wrapper,#foreignTableItem_wrapper,.title{
+            visibility: hidden;
+        }
+        #material,#record{
+            padding: 0;
+        }
+        .webuploader-pick{
+            padding: 6px 12px;
+        }
+        #rulesDesc{
+            border: 1px solid #e5e6e7;
+        }
+    </style>
+    <div id="mycontent" class="mycontent">
+        <h2>人员教育培训</h2>
+        <ul id="tree_container" class="ztree"></ul>
+        <input type="hidden" name="treeId">
+        <input type="hidden" name="currentDragId">
+        <input type="hidden" name="groupId">
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="row">
+                    <h2 class="title">主要负责人和安全管理人员</h2>
+                    <div id="table_info">
+                        <div id="level">
+                            <table id="manageTableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+                                <thead>
+                                <tr>
+                                    <th>全选</th>
+                                    <th>序号</th>
+                                    <th>姓名</th>
+                                    <th>职务</th>
+                                    <th>证书名称</th>
+                                    <th>证书编号</th>
+                                    <th>生效日期</th>
+                                    <th>有效期至</th>
+                                    <th>培训方式</th>
+                                    <th>培训时间</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                            </table>
+                            <table id="practTableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+                                <thead>
+                                <tr>
+                                    <th>全选</th>
+                                    <th>序号</th>
+                                    <th>姓名</th>
+                                    <th>性别</th>
+                                    <th>身份证号</th>
+                                    <th>职务/工种</th>
+                                    <th>持证情况</th>
+                                    <th>联系方式</th>
+                                    <th>进场时间</th>
+                                    <th>培训内容</th>
+                                    <th>培训时间</th>
+                                    <th>考试成绩</th>
+                                    <th>退场时间</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                            </table>
+                            <table id="foreignTableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
+                                <thead>
+                                <tr>
+                                    <th>全选</th>
+                                    <th>序号</th>
+                                    <th>姓名</th>
+                                    <th>性别</th>
+                                    <th>身份证号</th>
+                                    <th>家庭住址</th>
+                                    <th>进场原因</th>
+                                    <th>进场时间</th>
+                                    <th>培训内容</th>
+                                    <th>培训时间</th>
+                                    <th>紧急联系人</th>
+                                    <th>联系电话</th>
+                                    <th>离场时间</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--负责人/管理人新增弹层-->
+    <div id="manage_addRules_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+        <div class="row">
+            <div class="col-sm-12" style="background-color:#fff;">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5></h5>
+                    </div>
+                    <input type="text" name="uid" id="id1" style="display: none;" value="">
+                    <div class="ibox-content">
+                        <!--新增用户信息开始-->
+                        <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
+                            <input type="hidden" name="id" id="sid">
+                            <input type="hidden" name="group_id" id="pgroup_id">
+                            <input type="hidden" name="oldFileName" id="oldFileName">
+                            <input type="hidden" name="newFileName" id="newFileName">
+
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">姓名：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="name" type="text" class="form-control" name="name" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">职务：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="duties" type="text" class="form-control" name="duties">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">证书名称：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="certificateName" type="text" class="form-control" name="certificateName" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">证书编号：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="certificateCode" type="text" class="form-control" name="certificateCode">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">生效日期：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="effectiveDate" type="text" class="form-control effectiveDate" name="effectiveDate">
+                                        <span class="input-group-addon effectiveDate">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">有效期至：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="validTillDate" type="text" class="form-control validTillDate" name="validTillDate">
+                                        <span class="input-group-addon validTillDate">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">培训方式：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <select name="trainMode" class="form-control" id="trainMode">
+                                            <option value="0">送培</option>
+                                            <option value="1">自培</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">培训时间：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="trainTimeDate" type="text" class="form-control trainTimeDate" name="trainTimeDate">
+                                        <span class="input-group-addon trainTimeDate">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-12 col-xs-12">
+                                    <label class="col-xs-2 col-sm-2 control-label">备注：</label>
+                                    <div class="myblock col-xs-8 col-sm-8 input-group">
+                                        <textarea name="rulesDesc" id="rulesDesc" style="width: 100%;min-height: 100px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-xs-12 col-lg-12"  style="text-align: center;margin-top: 10px">
+                                    <button class="btn btn-primary" type="button" id="save"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                    <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                                </div>
+                            </div>
+                        </form>
+                        <!--新增用户信息结束-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--从业人员新增弹层-->
+    <div id="pract_addRules_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+        <div class="row">
+            <div class="col-sm-12" style="background-color:#fff;">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5></h5>
+                    </div>
+                    <input type="text" name="uid" id="id1" style="display: none;" value="">
+                    <div class="ibox-content">
+                        <!--新增用户信息开始-->
+                        <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
+                            <input type="hidden" name="id" id="sid">
+                            <input type="hidden" name="group_id" id="pgroup_id">
+                            <input type="hidden" name="oldFileName" id="oldFileName">
+                            <input type="hidden" name="newFileName" id="newFileName">
+
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">姓名：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="name" type="text" class="form-control" name="name" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">性别：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <select name="sex" class="form-control" id="sex">
+                                            <option value="0">男</option>
+                                            <option value="1">女</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">身份证号：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="idcode" type="text" class="form-control" name="idcode" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">职务/工种：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="worktype" type="text" class="form-control" name="worktype">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">持证情况：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="iscertificate" type="text" class="form-control" name="iscertificate" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">联系方式：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="contact" type="text" class="form-control" name="contact">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">进场时间：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="approachDate" type="text" class="form-control approachDate" name="approachDate">
+                                        <span class="input-group-addon approachDate">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">退场时间：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="exitDate" type="text" class="form-control exitDate" name="exitDate">
+                                        <span class="input-group-addon exitDate">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">培训时间：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="practTrainTimeDate" type="text" class="form-control practTrainTimeDate" name="practTrainTimeDate">
+                                        <span class="input-group-addon practTrainTimeDate">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">考试成绩：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="achievement" type="text" class="form-control" name="achievement">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-12 col-xs-12">
+                                    <label class="col-xs-2 col-sm-2 control-label">备注：</label>
+                                    <div class="myblock col-xs-8 col-sm-8 input-group">
+                                        <textarea name="rulesDesc" id="rulesDesc" style="width: 100%;min-height: 100px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-xs-12 col-lg-12"  style="text-align: center;margin-top: 10px">
+                                    <button class="btn btn-primary" type="button" id="save"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                    <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                                </div>
+                            </div>
+                        </form>
+                        <!--新增用户信息结束-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--外来人员新增弹层-->
+    <div id="foreign_addRules_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+        <div class="row">
+            <div class="col-sm-12" style="background-color:#fff;">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5></h5>
+                    </div>
+                    <input type="text" name="uid" id="id1" style="display: none;" value="">
+                    <div class="ibox-content">
+                        <!--新增用户信息开始-->
+                        <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
+                            <input type="hidden" name="id" id="sid">
+                            <input type="hidden" name="group_id" id="pgroup_id">
+                            <input type="hidden" name="oldFileName" id="oldFileName">
+                            <input type="hidden" name="newFileName" id="newFileName">
+
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">姓名：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="name" type="text" class="form-control" name="name" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">性别：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <select name="sex" class="form-control" id="sex">
+                                            <option value="0">男</option>
+                                            <option value="1">女</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">身份证号：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="idcode" type="text" class="form-control" name="idcode" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">家庭住址：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="address" type="text" class="form-control" name="address">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">进场原因：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="reason" type="text" class="form-control" name="reason" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">进场时间：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="foreignApproachDate" type="text" class="form-control foreignApproachDate" name="foreignApproachDate">
+                                        <span class="input-group-addon foreignApproachDate">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">培训内容：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="content" type="text" class="form-control" name="content" >
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">培训时间：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="foreignTrainTimeDate" type="text" class="form-control foreignTrainTimeDate" name="foreignTrainTimeDate">
+                                        <span class="input-group-addon foreignTrainTimeDate">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">紧急联系人：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="emergencyContact" type="text" class="form-control" name="emergencyContact">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">联系电话：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="contactNumber" type="text" class="form-control" name="contactNumber">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">离场时间：</label>
+                                    <div class="myblock col-xs-6 input-group">
+                                        <input id="departureDate" type="text" class="form-control departureDate" name="departureDate">
+                                        <span class="input-group-addon departureDate">
+                                            <i class="fa fa-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-2 col-sm-4 control-label">备注：</label>
+                                    <div class="myblock col-xs-8 input-group">
+                                        <textarea name="rulesDesc" id="rulesDesc" style="width: 100%;min-height: 100px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-xs-12 col-lg-12"  style="text-align: center;margin-top: 10px">
+                                    <button class="btn btn-primary" type="button" id="save"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                    <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                                </div>
+                            </div>
+                        </form>
+                        <!--新增用户信息结束-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {include file="public/footer" /}
+    <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
+
+    <script src="__JS__/jquery.ztree.all.js"></script>
+    <script src="__JS__/jquery.dataTables.min.js"></script>
+    <script src="__JS__/plugins/dataTables/dataTables.buttons.min.js"></script>
+    <script src="__JS__/jquery.jedate.js"></script>
+    <script src="__JS__/pdf.js"></script>
+    <script src="__JS__/mypdf.js"></script>
+
+    <script>
+        $('.effectiveDate').jeDate();
+        $('.validTillDate').jeDate();
+        $('.trainTimeDate').jeDate();
+
+        $('.approachDate').jeDate();
+        $('.exitDate').jeDate();
+        $('.practTrainTimeDate').jeDate();
+
+        $('.foreignApproachDate').jeDate();
+        $('.foreignTrainTimeDate').jeDate();
+        $('.departureDate').jeDate();
+
+        //左侧菜单
+        var setting = {
+            /*async: {
+                enable : true,
+                autoParam: ["pId"],
+                type : "post",
+                url : "./index",
+                dataType :"json"
+            },*/
+            view:{
+                /*addHoverDom: addHoverDom,
+                removeHoverDom: removeHoverDom,*/
+            },
+            edit:{
+                enable: true,
+                /*showRemoveBtn :showRemoveBtn,*/
+                showRenameBtn :true,
+                removeTitle :"删除",
+                renameTitle :"修改",
+                drag:{
+                    isMove:true,
+                    prev:true,
+                    next:true,
+                    inner:true
+                }
+            },
+            data:{
+                simpleData : {
+                    enable:true,
+                    idkey: "id",
+                    pIdKey: "pId"
+                }
+            },
+            callback: {
+                onClick: zTreeOnClick,
+                /*beforeRemove: beforeRemove,
+                beforeRename: beforeRename,
+                beforeDrag: beforeDrag,
+                beforeDrop: beforeDrop*/
+            }
+        };
+        var node = [
+            {name: "主要负责人和安全管理人员", children: [
+                {name: "监理部"},
+                {name: "C1标"},
+                {name: "C2标"},
+            ]},
+            {name: "从业人员", children: [
+                {name: "监理部"},
+                {name: "C1标"},
+                {name: "C2标"},
+            ]},
+            {name: "外来人员"}
+        ]
+        zTreeObj = $.fn.zTree.init($("#tree_container"), setting,node).expandAll(true);
+
+        /**
+         *  右侧表格
+         **/
+
+        //管理人员
+        var manageTableItem = $('#manageTableItem').DataTable( {
+            processing: true,
+            serverSide: true,
+            ajax: {
+                "url": "__SCRIPT__/safety_statutesdi.php"
+            },
+            dom: 'lf<"#exportExcel"><"#export"><"#import"><"#add">rtip',
+            columnDefs: [
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": [11],
+                    "render" :  function(data,type,row) {
+                        var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
+                        html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                        return html;
+                    }
+                }
+            ],
+            language: {
+                "lengthMenu": "每页_MENU_ 条记录",
+                "zeroRecords": "没有找到记录",
+                "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                "infoEmpty": "无记录",
+                "search": "搜索：",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "paginate": {
+                    "previous": "上一页",
+                    "next": "下一页"
+                }
+            }
+        });
+
+        //从业人员
+        var practTableItem = $('#practTableItem').DataTable( {
+            processing: true,
+            serverSide: true,
+            ajax: {
+                "url": "__SCRIPT__/safety_statutesdi.php"
+            },
+            dom: 'lf<"#exportExcel"><"#export"><"#import"><"#add">rtip',
+            columnDefs: [
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": [11],
+                    "render" :  function(data,type,row) {
+                        var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
+                        html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                        return html;
+                    }
+                }
+            ],
+            language: {
+                "lengthMenu": "每页_MENU_ 条记录",
+                "zeroRecords": "没有找到记录",
+                "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                "infoEmpty": "无记录",
+                "search": "搜索：",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "paginate": {
+                    "previous": "上一页",
+                    "next": "下一页"
+                }
+            }
+        });
+
+        //外来人员
+        var foreignTableItem = $('#foreignTableItem').DataTable( {
+            processing: true,
+            serverSide: true,
+            ajax: {
+                "url": "__SCRIPT__/safety_statutesdi.php"
+            },
+            dom: 'lf<"#exportExcel"><"#export"><"#add">rtip',
+            columnDefs: [
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": [11],
+                    "render" :  function(data,type,row) {
+                        var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
+                        html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                        return html;
+                    }
+                }
+            ],
+            language: {
+                "lengthMenu": "每页_MENU_ 条记录",
+                "zeroRecords": "没有找到记录",
+                "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+                "infoEmpty": "无记录",
+                "search": "搜索：",
+                "infoFiltered": "(从 _MAX_ 条记录过滤)",
+                "paginate": {
+                    "previous": "上一页",
+                    "next": "下一页"
+                }
+            }
+        });
+        $("div#add").html('新增');
+        $('div#export').html('导出');
+        $('div#exportExcel').html('导出Excel模板');
+
+
+        //点击节点
+        function zTreeOnClick(event, treeId, treeNode) {
+            console.log(treeNode);
+            $('#manageTableItem_wrapper').css("visibility","visible");
+            mytree_node = treeNode;
+            groupid = treeNode.id;
+            $('input[type="hidden"][name="groupId"]').val(groupid);
+            if(treeNode.level){
+                $("#mytable1_wrapper").css("display","block");
+                //tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php?pid=" + groupid).load();
+            }else {
+                $("#mytable1_wrapper").css("display","none");
+            }
+
+            //获取路径
+            $.ajax({
+                url: "./getParents",
+                type: "post",
+                data: {id:groupid},
+                dataType: "json",
+                success: function (res) {
+                    if(res.msg === "success"){
+                        $("#path").text("当前路径:" + res.path)
+                    }
+                }
+            })
+
+
+        };
+
+        //新增
+        $('#add').click(function () {
+            $('#foreign_addRules_modal').modal('show');
+        });
+
+    </script>
+</body>
+</html>
