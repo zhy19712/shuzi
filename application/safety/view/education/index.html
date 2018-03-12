@@ -53,11 +53,8 @@
         width: 100%;
         height: 100%;
     }
-    #dataImple,#alternativeStandard,#appEvaluation,#recogner{
+    #education_modal input{
         width: 125%;
-    }
-    #addName{
-        width: 60%;
     }
     #options{
         font-size: 0;
@@ -83,16 +80,16 @@
     #mytable1_wrapper{
         display: block;
     }
-    .panrpos{
-        position: relative;
-    }
-    .pos{
-        width: 223px;
-        height: 106px;
-        position: absolute;
-        left: 0px;
-        top: 34px
-    }
+    /*.panrpos{*/
+        /*position: relative;*/
+    /*}*/
+    /*.pos{*/
+        /*width: 223px;*/
+        /*height: 106px;*/
+        /*position: absolute;*/
+        /*left: 0px;*/
+        /*top: 34px*/
+    /*}*/
     #excel{
         width: 431px;
         height: 33px;
@@ -189,61 +186,64 @@
                         <input type="text" name="id" id="rulesid" style="display: none;">
                         <input type="text" name="group_id" id="pgroup_id" style="display: none;">
                         <div class="form-group">
-                            <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-2 col-sm-2 control-label">标准号：</label>
-                                <div class="myblock col-xs-10 col-sm-10 input-group">
-                                    <input id="standardNumr" type="text" class="form-control" name="standardNumr" >
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">培训人：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="trainer" type="text" class="form-control" name="trainer" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">培训时间：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="trainingTime" type="text" class="form-control" name="trainingTime" >
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">施行日期：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">培训人员：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="dataImple" type="text" class="form-control" name="dataImple" >
+                                    <input id="trainers" type="text" class="form-control" name="trainers" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">替代标准：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">培训地点：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="alternativeStandard" type="text" class="form-control" name="alternativeStandard" >
+                                    <input id="trainingPlace" type="text" class="form-control" name="trainingPlace" >
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">适用性评价：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">培训人数：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="appEvaluation" id="appEvaluation" class="form-control" >
-                                        <option value="适用">适用</option>
-                                        <option value="过期">过期</option>
-                                    </select>
+                                    <input id="numTraining" type="text" class="form-control" name="numTraining" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">识别人：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">培训内容：</label>
                                 <div class="myblock col-xs-6 input-group panrpos" >
-                                    <input id="recogner" type="text" class="form-control" name="recogner" >
-                                    <div class="pos">
-                                        <div id="tree_recogner" class="ztree"></div>
-                                        <p id="pRecogner" style="display: none;"></p>
-                                    </div>
+                                    <input id="trainerCon" type="text" class="form-control" name="trainerCon" >
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-6 col-sm-2 control-label">名称：</label>
+                                <label class="col-xs-6 col-sm-2 control-label">培训材料：</label>
                                 <div class="myblock col-xs-6 col-sm-10 input-group">
-                                    <!--<input id="addName" type="text" class="form-control" name="addName" >-->
-                                    <!--<span id="picker">上传</span>-->
                                     <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
                                     <div id="file_upload1" style="display: inline-block;vertical-align: middle;"></div>
                                     <div id="file_list1" style="display: inline-block;vertical-align: middle;"></div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-6 col-sm-2 control-label">培训记录：</label>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -363,6 +363,22 @@
     var setting = {
     };
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,nodes);
+
+    //点击时间插件
+    $("#dataImple").jeDate({
+        format: "YYYY-MM-DD"
+    });
+
+    //点击新增出现modal
+    $(".mybtn").click(function () {
+//        uploader1 = null;
+        $("#education_modal input").val("");
+//        $("#file_list1").empty();
+//        $("#rulesDesc").empty();
+        $("#education_modal h5").text("新增");
+        $("#education_modal").modal('show');
+//        upload1();
+    });
 </script>
 </body>
 </html>
