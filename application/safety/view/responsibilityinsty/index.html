@@ -56,6 +56,9 @@
     #rili{
         float: right;
     }
+   #table1_wrapper .mybtn{
+      margin-bottom: 3px;
+   }
 </style>
 <body>
    <div id="box" class="clearfix">
@@ -194,7 +197,7 @@
            }
            // 判断是否拉数据
            var groupid = sNodes[0].pId; //父节点的id
-           if (!sNodes[0].children && groupid !== 1&&groupid!==12){
+           if (!sNodes[0].children && groupid !== 1){
                  switch (Number(groupid)){
                      case 11:{
                          table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
@@ -508,9 +511,6 @@
             "url": "__SCRIPT__/safety_responsibilityinsty_table.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
-        // "dom": '<"mybtn btn btn-outline btn-primary"><"myl"r>frtip',
-
-        // "dom": '<"toolbar">frtip',
         "bLengthChange": false,
         "columnDefs": [
             {
@@ -542,7 +542,7 @@
     });
 
     $("div.mybtn").html('<div>上传</div>');
-    $("div.toolbar").html('<b style="color:red">自定义文字、图片等等</b>');
+    // $("div.toolbar").html('<b style="color:red">自定义文字、图片等等</b>');
 
     //总体目标-上传
     $("#table1_wrapper .mybtn").click(function () {
