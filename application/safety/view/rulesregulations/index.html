@@ -128,6 +128,7 @@
                                 <th>名称</th>
                                 <th>施行日期</th>
                                 <th>适用性评价</th>
+                                <th>替代标准</th>
                                 <th>识别人</th>
                                 <th>上传时间</th>
                                 <th>备注</th>
@@ -206,8 +207,6 @@
                                 <div class="col-lg-12 col-xs-12">
                                     <label class="col-xs-6 col-sm-2 control-label">名称：</label>
                                     <div class="myblock col-xs-6 col-sm-10 input-group">
-                                        <!--<input id="addName" type="text" class="form-control" name="addName" >-->
-                                        <!--<span id="picker">上传</span>-->
                                         <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
                                         <div id="file_upload1" style="display: inline-block;vertical-align: middle;"></div>
                                         <div id="file_list1" style="display: inline-block;vertical-align: middle;"></div>
@@ -327,10 +326,7 @@
     var mytree_node1;
     //树结构添加节点
     $("#options>i:first-child").click(function () {
-
         console.log(mytree_node)
-
-//        console.log(mytree_node.level)
         if(mytree_node){
             if(mytree_node.level == 0){
                 $("#level2 input").val("");
@@ -409,64 +405,68 @@
     $("#options>i:nth-child(2)").click(function () {
         if(mytree_node){
             var id = mytree_node.id;
+            console.log(id)
             $.ajax({
-                url: "nodeEdit",
+                url: "getOneNode",
                 type: "post",
                 data: {id:id},
                 dataType: "json",
                 success: function (res) {
                     console.log(res);
-                    if(res.msg == "success"){
-                        var data = res.data;
+                    console.log(mytree_node);
+//                    if(res.msg == "编辑成功"){
+//                        var data = res.data;
                         console.log(mytree_node.id);
-                        if(mytree_node.level == 1){
-                            $("#level2 input").val("");
-                            $("#treePid").val(mytree_node.pId);
-                            $("#id2").val(mytree_node.id);
-                            $("#project_name2").val(data.name);
-                            if(data.post_sn){
-                                $("#project_sn2").val(data.sn + "-" + data.post_sn + "-");
-                            }else {
-                                $("#project_sn2").val(data.sn + "-");
-                            }
-                            $("#main_project2").val(data.primary);
-                            $("#level2 h5").text('编辑');
-                            $("#level2").modal('show');
-                        }else if(mytree_node.level == 2){
-                            $("#level3 input").val("");
-                            $("#pid3").val(mytree_node.pId);
-                            $("#id3").val(mytree_node.id);
-                            if(data.sn.substr(-1,1) == "-"){
-                                $("#new3").val(data.sn);
-                            }else {
-                                $("#new3").val(data.sn + "-");
-                            }
-                            if(data.post_sn){
-                                $("#new4").val(data.sn + "-" + data.post_sn + "-");
-                            }else {
-                                $("#new4").val(data.sn + "-");
-                            }
-                            $("#new4").val(data.post_sn);
-                            $("#project_name3").val(data.name);
-                            $("#main_project3").val(data.primary);
-                            $("#level3 h5").text('编辑');
-                            $("#level3").modal('show');
-                        }else if(mytree_node.level == 3){
-                            $("#level2 input").val("");
-                            $("#pid4").val(mytree_node.pId);
-                            $("#id4").val(mytree_node.id);
-                            if(data.sn.substr(-1,1) == "-"){
-                                $("#new5").val(data.sn);
-                            }else {
-                                $("#new5").val(data.sn + "-");
-                            }
-                            $("#new6").val(data.post_sn);
-                            $("#project_name4").val(data.name);
-                            $("#main_project4").val(data.primary);
-                            $("#level4 h5").text('编辑');
-                            $("#level4").modal('show');
-                        }
+                    if(mytree_node.level == 0) {
+                        $("#level2 input").val("");
+                        $("#treePid").val(mytree_node.pId);
+                        $("#id2").val(mytree_node.id);
+                        $("#companyName").val(res.pname);
+                        $("#level2 h5").text('编辑');
+                        $("#level2").modal('show');
+                    }else if(mytree_node.level == 1) {
+                        $("#level2 input").val("");
+                        $("#treePid").val(mytree_node.pId);
+                        $("#id2").val(mytree_node.id);
+                        $("#companyName").val(res.pname);
+                        $("#level2 h5").text('编辑');
+                        $("#level2").modal('show');
                     }
+//                        }else if(mytree_node.level == 2){
+//                            $("#level3 input").val("");
+//                            $("#pid3").val(mytree_node.pId);
+//                            $("#id3").val(mytree_node.id);
+//                            if(data.sn.substr(-1,1) == "-"){
+//                                $("#new3").val(data.sn);
+//                            }else {
+//                                $("#new3").val(data.sn + "-");
+//                            }
+//                            if(data.post_sn){
+//                                $("#new4").val(data.sn + "-" + data.post_sn + "-");
+//                            }else {
+//                                $("#new4").val(data.sn + "-");
+//                            }
+//                            $("#new4").val(data.post_sn);
+//                            $("#project_name3").val(data.name);
+//                            $("#main_project3").val(data.primary);
+//                            $("#level3 h5").text('编辑');
+//                            $("#level3").modal('show');
+//                        }else if(mytree_node.level == 3){
+//                            $("#level2 input").val("");
+//                            $("#pid4").val(mytree_node.pId);
+//                            $("#id4").val(mytree_node.id);
+//                            if(data.sn.substr(-1,1) == "-"){
+//                                $("#new5").val(data.sn);
+//                            }else {
+//                                $("#new5").val(data.sn + "-");
+//                            }
+//                            $("#new6").val(data.post_sn);
+//                            $("#project_name4").val(data.name);
+//                            $("#main_project4").val(data.primary);
+//                            $("#level4 h5").text('编辑');
+//                            $("#level4").modal('show');
+//                        }
+//                    }
                 }
             })
         }else {
@@ -592,7 +592,7 @@
     zTreeRecogner = $.fn.zTree.init($("#tree_recogner"), setting1, mytree_node1);
 
 
-    //保存节点按钮
+    //保存tree节点按钮
     $("#level2 .btn-primary").click(function () {
         if(!$("#companyName").val()){
             layer.msg('请输入名称',{icon:2,time:1500,shade: 0.1}, function(index){
@@ -679,8 +679,8 @@
                 uploader1.options.formData.group_id = groupid;//group_id
                 uploader1.options.formData.number = $("#standardNumr").val();//标准号
                 uploader1.options.formData.rul_name = $("#file_list1 .info .infoText").val();//名称
-                uploader1.options.formData.go_date = $("#dataImple").val();//施行日期alternativeStandard
-//                uploader1.options.formData.standard = $("#alternativeStandard").val();//替代标准
+                uploader1.options.formData.go_date = $("#dataImple").val();//施行日期
+                uploader1.options.formData.standard = $("#alternativeStandard").val();//替代标准
                 uploader1.options.formData.evaluation = $("#appEvaluation").val();//适用性评价
                 uploader1.options.formData.rul_user = $("#recogner").val();//识别人
                 uploader1.options.formData.remark = $("#rulesDesc").val()//备注
@@ -1083,7 +1083,15 @@
             layer.close(index);
         })
     }
-
+    //点击评价标准置灰
+    $("#appEvaluation").click(function () {
+        console.log($("#appEvaluation").val())
+        if($("#appEvaluation").val() == '过期'){
+            $("#alternativeStandard").attr("readOnly",true);
+        }else if($("#appEvaluation").val() == '适用'){
+            $("#alternativeStandard").attr("readOnly",false);
+        }
+    });
 </script>
 </body>
 </html>
