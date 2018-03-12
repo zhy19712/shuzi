@@ -12,10 +12,16 @@ use app\admin\model\UserModel;
 use app\admin\model\UserType;
 use app\safety\model\RulesregulationsModel;
 use app\safety\model\SafetySdiNodeModel;
-
+use think\Db;
+use think\Loader;
 // 规章制度
 class Rulesregulations extends Base
 {
+    /**
+     * 初始化左侧树节点
+     * @return mixed|\think\response\Json
+     * @author hutao
+     */
     public function index()
     {
         if(request()->isAjax()){
@@ -27,7 +33,7 @@ class Rulesregulations extends Base
     }
 
     /**
-     * 获取一条数据
+     * 获取一条编辑的数据
      * @return \think\response\Json
      * @author hutao
      */
@@ -59,7 +65,7 @@ class Rulesregulations extends Base
     }
 
     /**
-     * 修改
+     * 无文件上传时的修改
      * @return \think\response\Json
      * @author hutao
      */
@@ -197,7 +203,7 @@ class Rulesregulations extends Base
     }
 
     /**
-     * 添加节点
+     * 添加或者编辑节点
      * @return \think\response\Json
      * @author hutao
      */
@@ -247,6 +253,11 @@ class Rulesregulations extends Base
         }
     }
 
+    /**
+     * 获取一条节点信息
+     * @return \think\response\Json
+     * @author hutao
+     */
     public function getOneNode()
     {
         if(request()->isAjax()){
@@ -254,6 +265,169 @@ class Rulesregulations extends Base
             $node = new SafetySdiNodeModel();
             $data = $node->getOneNode($id);
             return json($data);
+        }
+    }
+
+    /**
+     * 导入
+     * @return \think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @author hutao
+     */
+    public function importExcel()
+    {
+        $group_id = input('param.group_id');
+        if(empty($group_id)){
+            return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
+        }
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/statutestdi');
+        if($info){
+            // 调用插件PHPExcel把excel文件导入数据库
+            Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+            $exclePath = $info->getSaveName();  //获取文件名
+            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/statutestdi' . DS . $exclePath;   //上传文件的地址
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');  //加载文件内容,编码utf-8
+            $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
+            // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
+            $number_index = $rul_name_index = $go_date_index = $standard_index = $evaluation_index = $rul_user_index = $rul_date_index =  $remark_index = -1;
+            foreach ($excel_array[0] as $k=>$v){
+                $str = preg_replace('/[ ]/', '', $v);
+                if ($str == '标准号'){
+                    $number_index = $k;
+                }else if ($str == '名称'){
+                    $rul_name_index = $k;
+                }else if ($str == '施行日期'){
+                    $go_date_index = $k;
+                }else if($str == '替代标准'){
+                    $standard_index = $k;
+                }else if($str == '适用性评价'){
+                    $evaluation_index = $k;
+                }else if($str == '识别人'){
+                    $rul_user_index = $k;
+                }else if($str == '上传时间'){
+                    $rul_date_index = $k;
+                }else if($str == '备注'){
+                    $remark_index = $k;
+                }
+            }
+            if($number_index == -1 || $rul_name_index == -1
+                || $go_date_index == -1 || $standard_index == -1 ||
+                $evaluation_index == -1 || $rul_user_index == -1 ||
+                $rul_date_index == -1 || $remark_index == -1){
+                $json_data['code'] = 0;
+                $json_data['info'] = '文件内容格式不对';
+                return json($json_data);
+            }
+            $insertData = [];
+            foreach($excel_array as $k=>$v){
+                if($k > 0){
+                    $insertData[$k]['number'] = $v[$number_index];
+                    $insertData[$k]['rul_name'] = $v[$rul_name_index];
+                    $insertData[$k]['go_date'] = $v[$go_date_index];
+                    $insertData[$k]['standard'] = $v[$standard_index];
+                    $insertData[$k]['evaluation'] = $v[$evaluation_index];
+                    $insertData[$k]['rul_user'] = $v[$rul_user_index];
+                    $insertData[$k]['rul_date'] = $v[$rul_date_index];
+                    $insertData[$k]['remark'] = $v[$remark_index];
+                    // 年度
+                    $insertData[$k]['years'] = date('Y-m-d H:i:s');
+                    $insertData[$k]['group_id'] = $group_id;
+                }
+            }
+            $success = Db::name('safety_rules')->insertAll($insertData);
+            if($success !== false){
+                return  json(['code' => 1,'data' => '','msg' => '导入成功']);
+            }else{
+                return json(['code' => -1,'data' => '','msg' => '导入失败']);
+            }
+        }
+    }
+
+    /**
+     * 批量导出
+     * @return \think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     * @author hutao
+     */
+    public function exportExcel()
+    {
+        if(request()->isAjax()){
+            return json(['code'=>1]);
+        }
+        $idArr = input('param.idarr');
+        $name = '规章制度'.date('Y-m-d H:i:s'); // 导出的文件名
+        $sdi = new RulesregulationsModel();
+        $list = $sdi->getList($idArr);
+        header("Content-type:text/html;charset=utf-8");
+        Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+        //实例化
+        $objPHPExcel = new \PHPExcel();
+        /*右键属性所显示的信息*/
+        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
+        ->setLastModifiedBy("zxf")  //最后一次保存者
+        ->setTitle('数据EXCEL导出')  //标题
+        ->setSubject('数据EXCEL导出') //主题
+        ->setDescription('导出数据')  //描述
+        ->setKeywords("excel")   //标记
+        ->setCategory("result file");  //类别
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        // 设置表格第一行显示内容
+        $objPHPExcel->getActiveSheet()
+            ->setCellValue('A1', '序号')
+            ->setCellValue('B1', '标准号')
+            ->setCellValue('C1', '名称')
+            ->setCellValue('D1', '施行日期')
+            ->setCellValue('E1', '替代标准')
+            ->setCellValue('F1', '适用性评价')
+            ->setCellValue('G1', '识别人')
+            ->setCellValue('H1', '上传日期')
+            ->setCellValue('I1', '备注');
+        $key = 1;
+        /*以下就是对处理Excel里的数据，横着取数据*/
+        foreach($list as $v){
+            //设置循环从第二行开始
+            $key++;
+            $objPHPExcel->getActiveSheet()
+                //Excel的第A列，name是你查出数组的键值字段，下面以此类推
+                ->setCellValue('A'.$key, $v['id'])
+                ->setCellValue('B'.$key, $v['number'])
+                ->setCellValue('C'.$key, $v['rul_name'])
+                ->setCellValue('D'.$key, $v['go_date'])
+                ->setCellValue('E'.$key, $v['standard'])
+                ->setCellValue('F'.$key, $v['evaluation'])
+                ->setCellValue('G'.$key, $v['rul_user'])
+                ->setCellValue('H'.$key, $v['rul_date'])
+                ->setCellValue('I'.$key, $v['remark']);
+        }
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        ob_end_clean();  //清除缓冲区,避免乱码
+        header('Content-Type: application/vnd.ms-excel'); //文件类型
+        header('Content-Disposition: attachment;filename="'.$name.'.xls"'); //文件名
+        header('Cache-Control: max-age=0');
+        header('Content-Type: text/html; charset=utf-8'); //编码
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003
+        $objWriter->save('php://output');
+        exit;
+    }
+
+    /**
+     * 查看历史版本
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getHistory()
+    {
+        if(request()->isAjax()){
+            $edu = new RulesregulationsModel();
+            $years = $edu->getYears();
+            return json($years);
         }
     }
 

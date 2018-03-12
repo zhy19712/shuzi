@@ -84,5 +84,18 @@ class RulesregulationsModel extends Model
         return ['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']];
     }
 
+    public function getList($idArr)
+    {
+        $data = [];
+        foreach($idArr as $v){
+            $data[] = $this->getOne($v);
+        }
+        return $data;
+    }
+
+    public function getYears()
+    {
+        return $this->group('years')->column('years');
+    }
 
 }
