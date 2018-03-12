@@ -56,6 +56,9 @@
     #rili{
         float: right;
     }
+   #table1_wrapper .mybtn{
+      margin-bottom: 3px;
+   }
 </style>
 <body>
    <div id="box" class="clearfix">
@@ -194,28 +197,14 @@
            }
            // 判断是否拉数据
            var groupid = sNodes[0].pId; //父节点的id
-           if (!sNodes[0].children && groupid !== 1&&groupid!==12){
-                 switch (Number(groupid)){
-                     case 11:{
-                         table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
-                         $("#mytable1_wrapper").css("display","block");
-                         break;
-                     }
-                 }
+           if (!sNodes[0].children && groupid !== 1){
+               table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
+               $("#mytable1_wrapper").css("display","block");
                $("#path").text("当前路径:"+path)
            }
 
        };
-       // function onclick(e,treeId,node){
-       //     $("#path").text("");
-       //     var sNodes = zTreeObj.getSelectedNodes();//选中节点
-       //     // var treeObj = $.fn.zTree.getZTreeObj("tree");
-       //     // var sNodes = treeObj.getSelectedNodes();
-       //     if (sNodes.length > 0) {
-       //         var node = sNodes[0].getPath();
-       //        console.log(node)
-       //     }
-       // }
+
        //配置信息
        var setting = {
            view: {
@@ -249,42 +238,6 @@
 
            },
        };
-       // function beforeClick(treeId, node) {
-       //     alert("aa")
-       //     if (node.isParent) {
-       //         if (node.level === 0) {
-       //             var pNode = curMenu;
-       //             while (pNode && pNode.level !==0) {
-       //                 pNode = pNode.getParentNode();
-       //             }
-       //             if (pNode !== node) {
-       //                 var a = $("#" + pNode.tId + "_a");
-       //                 a.removeClass("cur");
-       //                 zTree_Menu.expandNode(pNode, false);
-       //             }
-       //             a = $("#" + node.tId + "_a");
-       //             a.addClass("cur");
-       //
-       //             var isOpen = false;
-       //             for (var i=0,l=node.children.length; i<l; i++) {
-       //                 if(node.children[i].open) {
-       //                     isOpen = true;
-       //                     break;
-       //                 }
-       //             }
-       //             if (isOpen) {
-       //                 zTree_Menu.expandNode(node, true);
-       //                 curMenu = node;
-       //             } else {
-       //                 zTree_Menu.expandNode(node.children[0].isParent?node.children[0]:node, true);
-       //                 curMenu = node.children[0];
-       //             }
-       //         } else {
-       //             zTree_Menu.expandNode(node);
-       //         }
-       //     }
-       //     return !node.isParent;
-       // }
        //初始化
        zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
        zTree_Menu = $.fn.zTree.getZTreeObj("tree_container");
@@ -368,7 +321,7 @@
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"remark":"","aid":""},
+                formData: {"remark":"","aid":"","version":"","ai":"","selfid":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -400,6 +353,8 @@
             uploader1.on("uploadStart",function () {
                 uploader1.options.formData.aid = $("#aid").val();
                 uploader1.options.formData.remark = $("#remark1").val();
+                uploader1.options.formData.version = $("#version1").val();
+                uploader1.options.formData.selfid =selfid;
             });
             uploader1.on('beforeFileQueued', function (file) {
                 if($("#file_list1").html()){
@@ -433,7 +388,8 @@
                     $("#file_per1").empty();
                     $("#file_list1").empty();
                     $("#fname1").modal('hide');
-                    table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?self="+selfid).load();
+                    console.log(selfid)
+                    table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -485,6 +441,7 @@
                 if(res.code === 1){
                     $("#aid").val(res.data.id);
                     $("#remark1").val(res.data.remark);
+                    $("#version1").val(res.data.version);
                     aname1 = res.data.name;
                     aname2 = res.data.name;
                     uploader1 = null;
@@ -508,15 +465,12 @@
             "url": "__SCRIPT__/safety_responsibilityinsty_table.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
-        // "dom": '<"mybtn btn btn-outline btn-primary"><"myl"r>frtip',
-
-        // "dom": '<"toolbar">frtip',
         "bLengthChange": false,
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [5],
+                "targets": [6],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download1(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit1(this)' value='编辑'/>" ;
@@ -542,7 +496,7 @@
     });
 
     $("div.mybtn").html('<div>上传</div>');
-    $("div.toolbar").html('<b style="color:red">自定义文字、图片等等</b>');
+    // $("div.toolbar").html('<b style="color:red">自定义文字、图片等等</b>');
 
     //总体目标-上传
     $("#table1_wrapper .mybtn").click(function () {

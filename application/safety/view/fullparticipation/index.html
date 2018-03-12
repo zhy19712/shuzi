@@ -42,6 +42,7 @@
         float: right;
         margin-right: 20px;
     }
+
 </style>
 <body>
 <div id="box" class="clearfix">
@@ -51,19 +52,14 @@
            安全生产责任制
         </div>
         <div id="center" class="clearfix">
-            <!--<div id="input">-->
-            <!--<input type="text" placeholder="请输入搜索内容">-->
-            <!--<span>搜索</span>-->
-            <!--</div>-->
-            <!--<div id="file">-->
-            <!--<input type="file">-->
-            <!--&lt;!&ndash;<span>上传</span>&ndash;&gt;-->
-            <!--</div>-->
         </div>
         <div class="tab-content">
             <div class="tab-pane active" id="home">
                 <div id="table1_wrapper">
                     <!--<div>搜索<input type="select" id="aa"></div>-->
+                    <div class="myblock col-xs-8 input-group">
+                        <input id="year1" type="text" class="form-control" name="year" >
+                    </div>
                     <table id="table1" width="100%" class="table table-striped table-bordered">
                         <thead>
                         <tr>
@@ -148,9 +144,7 @@
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/jquery.jedate.js"></script>
 <script>
-    // $("#year2").jeDate({
-    //     format: "YYYY-MM"
-    // });
+
     function showPdf(id,url) {
         $.ajax({
             url: url,
@@ -166,18 +160,7 @@
             }
         })
     };
-    // $("#aa").click(function(){
-    //     $.ajax({
-    //         url:__SCRIPT__/safety_fullparticipation.php,
-    //          dataType:"json",
-    //          data:{"year":year},
-    //          type:post,
-    //          success:function(res){
-    //              alert("aa")
-    //         }
-    //
-    //     })
-    // })
+
     function del(id,url) {
 
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
@@ -458,7 +441,7 @@
                 }
             }
         }else {
-            alert("请选择上传ww文件");
+            alert("请选择上传文件");
         }
     })
 </script>

@@ -3,7 +3,7 @@
 return [
     
     'type'           => 'mysql',	     // 数据库类型   
-    'hostname'       => '127.0.0.1',     // 服务器地址
+    'hostname'       => 'localhost',     // 服务器地址
     'database'       => 'shuzi',    // 数据库名
     'username'       => 'root',	         // 用户名  
     'password'       => 'admin',	         // 密码

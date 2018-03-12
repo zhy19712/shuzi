@@ -12,11 +12,11 @@ namespace app\safety\model;
 use think\exception\PDOException;
 use think\Model;
 
-class RevisionrecordModel extends Model
+class EdupeopleModel extends Model
 {
-    protected $name = 'safety_record';
+    protected $name = 'safety_edupeople';
 
-    public function insertRecord($param)
+    public function insertEdu($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -30,7 +30,7 @@ class RevisionrecordModel extends Model
         }
     }
 
-    public function editRecord($param)
+    public function editEdu($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -44,9 +44,18 @@ class RevisionrecordModel extends Model
         }
     }
 
-    public function delRecord($id)
+    public function delEdu($id)
     {
         try{
+            $data = $this->getOne($id);
+            $path = $data['path'];
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
+            if(file_exists($pdf_path)){
+                unlink($pdf_path); //删除生成的预览pdf
+            }
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
         }catch( PDOException $e){
@@ -59,18 +68,17 @@ class RevisionrecordModel extends Model
         return $this->where('id', $id)->find();
     }
 
-    public function getList($idArr)
+    public  function getList($idArr)
     {
-        $list = [];
-        foreach ($idArr as $v){
-            $list[] = $this->find($v);
+        $data = [];
+        foreach($idArr as $v){
+            $data[] = $this->getOne($v);
         }
-        return $list;
+        return $data;
     }
 
     public function getYears()
     {
         return $this->group('years')->column('years');
     }
-
 }

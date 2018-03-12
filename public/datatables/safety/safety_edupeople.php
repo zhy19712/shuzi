@@ -20,7 +20,7 @@ include('../conn.php');
  */
 
 // DB table to use 法规标准识别
-$table = 'think_safety_record';
+$table = 'think_safety_edupeople';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -31,12 +31,15 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'record_name',  'dt' => 1 ),
-    array( 'db' => 'original_number',  'dt' => 2 ),
-    array( 'db' => 'replace_number',  'dt' => 3 ),
-    array( 'db' => 'replace_time',  'dt' => 4 ),
-    array( 'db' => 'owner',  'dt' => 5 ),
-    array( 'db' => 'record_type',  'dt' => 6 )
+    array( 'db' => 'edu_name',  'dt' => 1 ),
+    array( 'db' => 'job',  'dt' => 2 ),
+    array( 'db' => 'certificate_name',  'dt' => 3 ),
+    array( 'db' => 'certificate_number',  'dt' => 4 ),
+    array( 'db' => 'availability_date',  'dt' => 5 ),
+    array( 'db' => 'vld',  'dt' => 6 ),
+    array( 'db' => 'training_mode',  'dt' => 7 ),
+    array( 'db' => 'training_time',  'dt' => 8 ),
+    array( 'db' => 'remark',  'dt' => 9)
 );
 
 
@@ -58,16 +61,16 @@ require( '../ssp.class.php' );
 //    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
 //);
 
-if(!empty($_GET["years"]))
+if(!empty($_GET["pid"]))
 {
-    $years = $_GET["years"];
+    $pid = $_GET["pid"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "years = '$years'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
     );
 }
 else{
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "years = 'empty'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = 'empty'" )
     );
 }
 
