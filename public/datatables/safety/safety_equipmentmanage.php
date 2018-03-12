@@ -62,7 +62,7 @@ if(!empty($_GET["year"]) && !empty($_GET["selfid"]))
     $selfid = $_GET["selfid"];
     $year = $_GET["year"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and date like % '$year' %" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and date like %'$year'% " )
     );
 }
 else if(empty($_GET["year"]) && !empty($_GET["selfid"]))
