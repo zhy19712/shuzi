@@ -63,9 +63,16 @@ require( '../ssp.class.php' );
 if(!empty($_GET["pid"]))
 {
     $pid = $_GET["pid"];
-    echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
-    );
+    $years = $_GET["years"];
+    if(!empty($years)){
+        echo json_encode(
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid' and years = '$years'" )
+        );
+    }else{
+        echo json_encode(
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
+        );
+    }
 }
 else{
     echo json_encode(

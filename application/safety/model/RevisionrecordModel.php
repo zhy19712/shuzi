@@ -68,4 +68,9 @@ class RevisionrecordModel extends Model
         return $list;
     }
 
+    public function getYears()
+    {
+        return $this->group('years')->column('years');
+    }
+
 }

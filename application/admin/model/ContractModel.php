@@ -75,7 +75,10 @@ class ContractModel extends Model
         return $this->where('id', $id)->find();
     }
 
-
+    public function getBiaoduanName()
+    {
+        $this->group('biaoduan_name')->column('id','biaoduan_name');
+    }
 
 
 
