@@ -53,6 +53,9 @@
       float: right;
       margin-right: 20px;
    }
+    #rili{
+        float: right;
+    }
 </style>
 <body>
    <div id="box" class="clearfix">
@@ -75,6 +78,7 @@
          <div class="tab-content">
             <div class="tab-pane active" id="home">
                <div id="table1_wrapper">
+
                   <table id="table1" width="100%" class="table table-striped table-bordered">
                      <thead>
                      <tr>
@@ -164,36 +168,7 @@
        var zTreeObj;
        var selfid;
 
-       //点击获取节点名称
-       // function zTreeOnClick(event, treeId, treeNode) {
-       //     // alert("aa");
-       //     console.log(treeNode);
-       //
-       //     mytree_node = treeNode;
-       //     $("#groupname").val(treeNode.name);
-       //     $("#mycontent>p").text(treeNode.name);
-       //     $("#groupid").val(treeNode.id);
-       //     groupid = treeNode.id;
-       //     if(treeNode.level == 3){
-       //         $("#mytable1_wrapper").css("display","block");
-       //         admin_table.ajax.url("__SCRIPT__/project_table.php?pid=" + groupid).load();
-       //     }else {
-       //         $("#mytable1_wrapper").css("display","none");
-       //     }
-       //
-       //     // 获取路径
-       //     $.ajax({
-       //         url: "../../admin/project/getParents",
-       //         type: "post",
-       //         data: {id:groupid},
-       //         dataType: "json",
-       //         success: function (res) {
-       //             if(res.msg === "success"){
-       //                 $("#path").text("当前路径:" + res.path)
-       //             }
-       //         }
-       //     })
-       // };
+
        //点击获取路径
        function onClick(e, treeId, node) {
            // $("#mytable2_wrapper").css("display","none");
@@ -219,10 +194,10 @@
            }
            // 判断是否拉数据
            var groupid = sNodes[0].pId; //父节点的id
-           if (!sNodes[0].children && groupid !== 1){
+           if (!sNodes[0].children && groupid !== 1&&groupid!==12){
                  switch (Number(groupid)){
-                     case  11:{
-                         table1.ajax.url("__SCRIPT__/safety_fullparticipation.php?selfid="+selfid).load();
+                     case 11:{
+                         table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
                          $("#mytable1_wrapper").css("display","block");
                          break;
                      }
@@ -349,7 +324,7 @@
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         if(url === "./responsibilityinstyDel"){
-                            table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php").load();
+                            table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
@@ -458,7 +433,7 @@
                     $("#file_per1").empty();
                     $("#file_list1").empty();
                     $("#fname1").modal('hide');
-                    table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php").load();
+                    table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?self="+selfid).load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -533,6 +508,9 @@
             "url": "__SCRIPT__/safety_responsibilityinsty_table.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        // "dom": '<"mybtn btn btn-outline btn-primary"><"myl"r>frtip',
+
+        // "dom": '<"toolbar">frtip',
         "bLengthChange": false,
         "columnDefs": [
             {
@@ -564,6 +542,7 @@
     });
 
     $("div.mybtn").html('<div>上传</div>');
+    $("div.toolbar").html('<b style="color:red">自定义文字、图片等等</b>');
 
     //总体目标-上传
     $("#table1_wrapper .mybtn").click(function () {
@@ -588,7 +567,7 @@
                         success: function (res) {
                             if(res.code === 1){
                                 layer.msg(res.msg);
-                                table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php").load();
+                                table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
                                 $("#fname1").modal('hide');
                             }else {
                                 layer.msg(res.msg);
@@ -600,7 +579,7 @@
                 }
             }
         }else {
-            alert("请选择上传ww文件");
+            alert("请选择上传文件");
         }
     })
 </script>
