@@ -72,144 +72,26 @@
          <!--</div>-->
          <div id="path">当前路径:</div>
 
+         <div class="tab-content">
+            <div class="tab-pane active" id="home">
+               <div id="table1_wrapper">
+                  <table id="table1" width="100%" class="table table-striped table-bordered">
+                     <thead>
+                     <tr>
+                        <th>ID</th>
+                        <th>文件名称</th>
+                        <th>上传人</th>
+                        <th>上传时间</th>
+                        <th>版本</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                     </tr>
+                     </thead>
 
-
-         <table id="example" class="display" cellspacing="0" width="100%">
-            <thead>
-            <tr>
-               <th>文件名</th>
-               <th>上传人</th>
-               <th>上传时间</th>
-               <th>版本</th>
-               <th>备注</th>
-               <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-               <td>Garrett Winters</td>
-               <td>Accountant</td>
-               <td>Tokyo</td>
-               <td>63</td>
-               <td>2011/07/25</td>
-               <td>
-
-               </td>
-
-            </tr>
-            <tr>
-               <td>Garrett Winters</td>
-               <td>Accountant</td>
-               <td>Tokyo</td>
-               <td>63</td>
-               <td>2011/07/25</td>
-               <td>
-
-               </td>
-
-            </tr>
-            <tr>
-               <td>Garrett Winters</td>
-               <td>Accountant</td>
-               <td>Tokyo</td>
-               <td>63</td>
-               <td>2011/07/25</td>
-               <td>
-
-               </td>
-
-            </tr>
-            <tr>
-               <td>Garrett Winters</td>
-               <td>Accountant</td>
-               <td>Tokyo</td>
-               <td>63</td>
-               <td>2011/07/25</td>
-               <td>
-
-               </td>
-
-            </tr>
-            <tr>
-               <td>Garrett Winters</td>
-               <td>Accountant</td>
-               <td>Tokyo</td>
-               <td>63</td>
-               <td>2011/07/25</td>
-               <td>
-
-               </td>
-
-            </tr>
-            <tr>
-               <td>Garrett Winters</td>
-               <td>Accountant</td>
-               <td>Tokyo</td>
-               <td>63</td>
-               <td>2011/07/25</td>
-               <td>
-
-               </td>
-
-            </tr>
-            <tr>
-               <td>Garrett Winters</td>
-               <td>Accountant</td>
-               <td>Tokyo</td>
-               <td>63</td>
-               <td>2011/07/25</td>
-               <td>
-
-               </td>
-
-            </tr>
-            <tr>
-               <td>Garrett Winters</td>
-               <td>Accountant</td>
-               <td>Tokyo</td>
-               <td>63</td>
-               <td>2011/07/25</td>
-               <td>
-
-               </td>
-
-            </tr>
-            <tr>
-               <td>Garrett Winters</td>
-               <td>Accountant</td>
-               <td>Tokyo</td>
-               <td>63</td>
-               <td>2011/07/25</td>
-               <td>
-
-               </td>
-
-            </tr>
-            <tr>
-               <td>Garrett Winters</td>
-               <td>Accountant</td>
-               <td>Tokyo</td>
-               <td>63</td>
-               <td>2011/07/25</td>
-               <td>
-
-               </td>
-
-
-            </tr>
-            <tr>
-               <td>Garrett Winters</td>
-               <td>Accountant</td>
-               <td>Tokyo</td>
-               <td>63</td>
-               <td>2011/07/25</td>
-               <td>
-
-               </td>
-
-            </tr>
-            </tbody>
-         </table>
+                  </table>
+               </div>
+            </div>
+         </div>
       </div>
    </div>
    <div id="form_container" style="display: none;"></div>
@@ -220,24 +102,13 @@
                <div class="ibox-title">
                   <h5></h5>
                </div>
+
+
                <div class="ibox-content">
-                  <input id="aid" type="text" class="form-control" value="" style="display: none;">
-                  <div class="col-lg-12 col-xs-12">
-                     <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">文件名称：</label>
-                     <div class="myblock col-xs-8 input-group">
-                        <input id="remark1" type="text" class="form-control" name="remark" >
-                     </div>
-                  </div>
-                  <input id="aid" type="text" class="form-control" value="" style="display: none;">
-                  <div class="col-lg-12 col-xs-12">
-                     <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">备注：</label>
-                     <div class="myblock col-xs-8 input-group">
-                        <input id="remark1" type="text" class="form-control" name="remark" >
-                     </div>
-                  </div>
+
                   <div class="col-lg-12 col-xs-12">
 
-                     <label class="col-xs-3 control-label" id="file" style="text-align: right;line-height: 44px;">文件：</label>
+                     <label class="col-xs-3 control-label" id="file" style="text-align: right;line-height: 44px;">文件名称：</label>
 
                      <div class="myblock col-xs-8 input-group">
                         <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
@@ -245,12 +116,39 @@
                         <div id="file_list1" style="display: inline-block;vertical-align: middle;"></div>
                      </div>
                   </div>
+
+                  <input id="ai" type="text" class="form-control" value="" style="display: none;">
+                  <div class="col-lg-12 col-xs-12">
+                     <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">版本：</label>
+                     <div class="myblock col-xs-8 input-group">
+                        <input id="version1" type="text" class="form-control" name="version" >
+                     </div>
+                  </div>
+
+
+                  <input id="aid" type="text" class="form-control" value="" style="display: none;">
+                  <div class="col-lg-12 col-xs-12">
+                     <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">备注：</label>
+                     <div class="myblock col-xs-8 input-group">
+                        <input id="remark1" type="text" class="form-control" name="remark" >
+                     </div>
+                  </div>
+
+
+
+
                   <div class="col-xs-12" style="text-align: center;">
                      <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
                      <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
                   </div>
                </div>
+
+
+
+
             </div>
+
+
          </div>
       </div>
    </div>
@@ -327,7 +225,6 @@
                          table1.ajax.url("__SCRIPT__/safety_fullparticipation.php?selfid="+selfid).load();
                          $("#mytable1_wrapper").css("display","block");
                          break;
-
                      }
                  }
                $("#path").text("当前路径:"+path)
@@ -377,42 +274,42 @@
 
            },
        };
-       function beforeClick(treeId, node) {
-           alert("aa")
-           if (node.isParent) {
-               if (node.level === 0) {
-                   var pNode = curMenu;
-                   while (pNode && pNode.level !==0) {
-                       pNode = pNode.getParentNode();
-                   }
-                   if (pNode !== node) {
-                       var a = $("#" + pNode.tId + "_a");
-                       a.removeClass("cur");
-                       zTree_Menu.expandNode(pNode, false);
-                   }
-                   a = $("#" + node.tId + "_a");
-                   a.addClass("cur");
-
-                   var isOpen = false;
-                   for (var i=0,l=node.children.length; i<l; i++) {
-                       if(node.children[i].open) {
-                           isOpen = true;
-                           break;
-                       }
-                   }
-                   if (isOpen) {
-                       zTree_Menu.expandNode(node, true);
-                       curMenu = node;
-                   } else {
-                       zTree_Menu.expandNode(node.children[0].isParent?node.children[0]:node, true);
-                       curMenu = node.children[0];
-                   }
-               } else {
-                   zTree_Menu.expandNode(node);
-               }
-           }
-           return !node.isParent;
-       }
+       // function beforeClick(treeId, node) {
+       //     alert("aa")
+       //     if (node.isParent) {
+       //         if (node.level === 0) {
+       //             var pNode = curMenu;
+       //             while (pNode && pNode.level !==0) {
+       //                 pNode = pNode.getParentNode();
+       //             }
+       //             if (pNode !== node) {
+       //                 var a = $("#" + pNode.tId + "_a");
+       //                 a.removeClass("cur");
+       //                 zTree_Menu.expandNode(pNode, false);
+       //             }
+       //             a = $("#" + node.tId + "_a");
+       //             a.addClass("cur");
+       //
+       //             var isOpen = false;
+       //             for (var i=0,l=node.children.length; i<l; i++) {
+       //                 if(node.children[i].open) {
+       //                     isOpen = true;
+       //                     break;
+       //                 }
+       //             }
+       //             if (isOpen) {
+       //                 zTree_Menu.expandNode(node, true);
+       //                 curMenu = node;
+       //             } else {
+       //                 zTree_Menu.expandNode(node.children[0].isParent?node.children[0]:node, true);
+       //                 curMenu = node.children[0];
+       //             }
+       //         } else {
+       //             zTree_Menu.expandNode(node);
+       //         }
+       //     }
+       //     return !node.isParent;
+       // }
        //初始化
        zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
        zTree_Menu = $.fn.zTree.getZTreeObj("tree_container");
@@ -451,16 +348,8 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        if(url === "./anualDel"){
-                            table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
-                        }else if(url === "./generalDel"){
-                            table2.ajax.url("__SCRIPT__/safety_goal_general.php").load();
-                        }else if(url === "./responsibilityDel"){
-                            if(tablename == "department"){
-                                table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=department").load();
-                            }else {
-                                table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=personal").load();
-                            }
+                        if(url === "./responsibilityinstyDel"){
+                            table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php").load();
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
@@ -492,7 +381,7 @@
             }
         })
     };
-    var uploader1,uploader2,uploader3;          //初始化三个upload按钮
+    var uploader1;          //初始化三个upload按钮
     //总体目标
     var aname1,aname2;           //用于区分 编辑时是否修改了文件
     function upload1() {
@@ -500,7 +389,7 @@
             uploader1 = WebUploader.create({
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadSafeyGoalAnual')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadResponsibilityinstyGroup')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
@@ -569,7 +458,7 @@
                     $("#file_per1").empty();
                     $("#file_list1").empty();
                     $("#fname1").modal('hide');
-                    table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
+                    table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php").load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -586,19 +475,19 @@
     //总体目标-预览
     function showpdf1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        showPdf(id,"./anualPreview");
+        showPdf(id,"./responsibilityinstyPreview");
     }
 
     //总体目标-删除
     function del1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        del(id,"./anualDel");
+        del(id,"./responsibilityinstyDel");
     }
 
     //总体目标-下载
     function download1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        download(id,"./anualDownload");
+        download(id,"./responsibilityinstyDownload");
     }
 
     //总体目标-编辑-删除文件
@@ -637,23 +526,14 @@
         })
     };
 
-    table = $('#example').DataTable({
-        // "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
-
+    var table1 = $('#table1').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/safety_responsibilityinsty_table.php"
+        },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
-        // ajax : {
-        //     url : "queryPagePapers",
-        //     dataSrc : "data",
-        //     data : function(d) {
-        //         var searchContent = $(
-        //             '#searchContent').val();
-        //         d.extra_search = searchContent;
-        //     }},
-
-        // "paging":   false,
-        // "ordering": false,
-        // "info":     false,
-        bLengthChange: false,
+        "bLengthChange": false,
         "columnDefs": [
             {
                 "searchable": false,
@@ -685,11 +565,12 @@
 
     $("div.mybtn").html('<div>上传</div>');
 
-    //总体目标-新增
-    $("#example_wrapper .mybtn").click(function () {
+    //总体目标-上传
+    $("#table1_wrapper .mybtn").click(function () {
         uploader1 = null;
         $("#fname1 input").val("");
         $("#file_list1").empty();
+        // $("#file_list2").empty();
         $("#fname1").modal('show');
         upload1();
     });
@@ -700,14 +581,14 @@
             }else {
                 if(aname1 === aname2){
                     $.ajax({
-                        url: "./anualEdit",
+                        url: "./responsibilityinstyEdit",
                         type: "post",
-                        data: {aid:$("#aid").val(),remark:$("#remark1").val()},
+                        data: {aid:$("#aid").val(),remark:$("#remark1").val(),version:$("#version1").val(),ai:$("#ai").val()},
                         datatype: "json",
                         success: function (res) {
                             if(res.code === 1){
                                 layer.msg(res.msg);
-                                table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
+                                table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php").load();
                                 $("#fname1").modal('hide');
                             }else {
                                 layer.msg(res.msg);
@@ -719,7 +600,7 @@
                 }
             }
         }else {
-            alert("请选择上传文件");
+            alert("请选择上传ww文件");
         }
     })
 </script>
