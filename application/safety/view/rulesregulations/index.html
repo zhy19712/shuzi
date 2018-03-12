@@ -97,6 +97,33 @@
         left: 0px;
         top: 34px
     }
+    #excel{
+        width: 797px;
+        height: 33px;
+        /*border: 1px solid red;*/
+        position: absolute;
+        right: 6px;
+        top: 50px;
+    }
+    #excel button{
+        margin-left: 15px;
+        width: 60px;
+        height: 27px;
+        border-radius: 24px;
+        border: none;
+        background: orange;
+        color: white;
+    }
+    #excel select{
+        margin-left: 10px;
+        width: 100px;
+    }
+    #year_excel{
+        margin-right: 370px;
+    }
+    .float_left{
+        margin-right: 400px;
+    }
 </style>
 <body>
     <!--表头框架-->
@@ -122,6 +149,19 @@
                     <div id="mytable1_wrapper">
                         <table id="admin_table" width="100%" class="table table-striped table-bordered">
                             <thead>
+                            <div id="excel">
+                                <span>年度：</span>
+                                <select id="year_excel">
+                                    <option value="一年">一年</option>
+                                    <option value="两年">两年</option>
+                                </select>
+                                <button>导入</button>
+                                <button>导出</button>
+                                <select name="down_excel" id="down_excel">
+                                    <option value="查看历史版本">查看历史版本</option>
+                                    <option value="两年">两年</option>
+                                </select>
+                            </div>
                             <tr>
                                 <th>ID</th>
                                 <th>标准号</th>
@@ -288,12 +328,12 @@
         "ajax": {
             "url": "__SCRIPT__/safety_rules.php"
         },
-        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"float_left"f>tip',
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [8],
+                "targets": [9],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='downloadFile(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='preview(this)' value='预览'/>" ;
@@ -787,8 +827,17 @@
         console.log($("#file_list1 .info").text())
         if($("#file_list1").html()){
             if(!$("#id1").val()){
-                uploader1.upload();
-                console.log("新增")
+                if($("#appEvaluation").val() == '过期'){
+                    if($("#alternativeStandard").val() != ''){
+                        uploader1.upload();
+                        console.log("新增")
+                    }else {
+                        alert('请填写替代标准')
+                    }
+                }else if($("#appEvaluation").val() != '过期'){
+                    uploader1.upload();
+
+                }
             }else {
                 console.log("编辑")
                 console.log($("#file_list1 .info .infoText").text())
@@ -1087,9 +1136,9 @@
     $("#appEvaluation").click(function () {
         console.log($("#appEvaluation").val())
         if($("#appEvaluation").val() == '过期'){
-            $("#alternativeStandard").attr("readOnly",true);
-        }else if($("#appEvaluation").val() == '适用'){
             $("#alternativeStandard").attr("readOnly",false);
+        }else if($("#appEvaluation").val() == '适用'){
+            $("#alternativeStandard").attr("readOnly",true);
         }
     });
 </script>

@@ -10,6 +10,7 @@ namespace app\safety\controller;
 
 use app\admin\controller\Base;
 use app\safety\model\RevisionrecordModel;
+use think\Db;
 use think\Loader;
 //修编记录
 class Revisionrecord extends Base
@@ -144,5 +145,85 @@ class Revisionrecord extends Base
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003
         $objWriter->save('php://output');
         exit;
+    }
+
+    /**
+     * 导入
+     * @return \think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @author hutao
+     */
+    public function importExcel()
+    {
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/record');
+        if($info){
+            // 调用插件PHPExcel把excel文件导入数据库
+            Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+            $exclePath = $info->getSaveName();  //获取文件名
+            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/record' . DS . $exclePath;   //上传文件的地址
+            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+            $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');  //加载文件内容,编码utf-8
+            $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
+            // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
+            $record_name_index = $original_number_index =  $replace_number_index = $replace_time_index = $owner_index = $record_type_index =-1;
+            foreach ($excel_array[0] as $k=>$v){
+                $str = preg_replace('/[ ]/', '', $v);
+                if ($str == '文件名称'){
+                    $record_name_index = $k;
+                }else if ($str == '原有版本号'){
+                    $original_number_index = $k;
+                }else if ($str == '替换版本号'){
+                    $replace_number_index = $k;
+                }else if($str == '替换时间'){
+                    $replace_time_index = $k;
+                }else if($str == '上传人'){
+                    $owner_index = $k;
+                }else if($str == '类别'){
+                    $record_type_index = $k;
+                }
+            }
+            if($record_name_index == -1 || $original_number_index == -1
+                || $replace_number_index == -1 || $replace_time_index == -1 ||
+                $owner_index == -1 || $record_type_index == -1){
+                $json_data['code'] = 0;
+                $json_data['info'] = '文件内容格式不对';
+                return json($json_data);
+            }
+            $insertData = [];
+            foreach($excel_array as $k=>$v){
+                if($k > 0){
+                    $insertData[$k]['record_name'] = $v[$record_name_index];
+                    $insertData[$k]['original_number'] = $v[$original_number_index];
+                    $insertData[$k]['replace_number'] = $v[$replace_number_index];
+                    $insertData[$k]['replace_time'] = $v[$replace_time_index];
+                    $insertData[$k]['owner'] = $v[$owner_index];
+                    $insertData[$k]['record_type'] = $v[$record_type_index];
+                    // 年度
+                    $insertData[$k]['years'] = date('Y-m-d H:i:s');
+                }
+            }
+            $success = Db::name('safety_record')->insertAll($insertData);
+            if($success !== false){
+                return  json(['code' => 1,'data' => '','msg' => '导入成功']);
+            }else{
+                return json(['code' => -1,'data' => '','msg' => '导入失败']);
+            }
+        }
+    }
+
+    /**
+     * 查看历史版本
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getHistory()
+    {
+        if(request()->isAjax()){
+            $edu = new RevisionrecordModel();
+            $years = $edu->getYears();
+            return json($years);
+        }
     }
 }

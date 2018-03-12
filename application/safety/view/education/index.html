@@ -21,6 +21,7 @@
         line-height: 30px;
         font-weight: 700;
         border-bottom: 1px solid #000;
+        text-align: center;
     }
     .mybtn{
         margin-right: 30px;
@@ -52,11 +53,8 @@
         width: 100%;
         height: 100%;
     }
-    #dataImple,#alternativeStandard,#appEvaluation,#recogner{
+    #education_modal input{
         width: 125%;
-    }
-    #addName{
-        width: 60%;
     }
     #options{
         font-size: 0;
@@ -80,17 +78,44 @@
 
     }
     #mytable1_wrapper{
-        display: none;
+        display: block;
     }
-    .panrpos{
-        position: relative;
-    }
-    .pos{
-        width: 223px;
-        height: 106px;
+    /*.panrpos{*/
+        /*position: relative;*/
+    /*}*/
+    /*.pos{*/
+        /*width: 223px;*/
+        /*height: 106px;*/
+        /*position: absolute;*/
+        /*left: 0px;*/
+        /*top: 34px*/
+    /*}*/
+    #excel{
+        width: 431px;
+        height: 33px;
+        /*border: 1px solid red;*/
         position: absolute;
-        left: 0px;
-        top: 34px
+        right: 0px;
+        top: 50px;
+    }
+    #excel button{
+        margin-left: 15px;
+        width: 60px;
+        height: 27px;
+        border-radius: 24px;
+        border: none;
+        background: orange;
+        color: white;
+    }
+    #excel button:nth-of-type(3){
+        width:115px;
+    }
+    #excel select{
+        margin-left: 10px;
+        width: 100px;
+    }
+    .float_left{
+        margin-right: 576px;
     }
 </style>
 <body>
@@ -112,19 +137,28 @@
     <div class="ibox float-e-margins">
         <div class="ibox-content">
             <div class="row">
-                <div id="path">当前路径:</div>
+                <div id="path">当前路径</div>
                 <div id="mytable1_wrapper">
                     <table id="admin_table" width="100%" class="table table-striped table-bordered">
+                        <div id="excel">
+                            <button>导入</button>
+                            <button>导出</button>
+                            <button>导出excel模板</button>
+                            <select name="down_excel" id="down_excel">
+                                <option value="查看历史版本">查看历史版本</option>
+                                <option value="两年">两年</option>
+                            </select>
+                        </div>
                         <thead>
                         <tr>
+                            <th><input type="checkbox">全选</th>
                             <th>ID</th>
-                            <th>标准号</th>
-                            <th>名称</th>
-                            <th>施行日期</th>
-                            <th>适用性评价</th>
-                            <th>替代标准</th>
-                            <th>识别人</th>
-                            <th>上传时间</th>
+                            <th>培训内容</th>
+                            <th>培训时间</th>
+                            <th>培训地点</th>
+                            <th>培训人</th>
+                            <th>培训人员</th>
+                            <th>培训人数</th>
                             <th>备注</th>
                             <th>操作</th>
                         </tr>
@@ -138,7 +172,7 @@
 <!--下载的文件-->
 <div id="formDown" style="display: none"></div>
 <!--右边表格的新增与编辑-->
-<div id="addRules_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+<div id="education_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
     <div class="row">
         <div class="col-sm-12" style="background-color:#fff;">
             <div class="ibox float-e-margins">
@@ -152,61 +186,64 @@
                         <input type="text" name="id" id="rulesid" style="display: none;">
                         <input type="text" name="group_id" id="pgroup_id" style="display: none;">
                         <div class="form-group">
-                            <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-2 col-sm-2 control-label">标准号：</label>
-                                <div class="myblock col-xs-10 col-sm-10 input-group">
-                                    <input id="standardNumr" type="text" class="form-control" name="standardNumr" >
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">培训人：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="trainer" type="text" class="form-control" name="trainer" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">培训时间：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="trainingTime" type="text" class="form-control" name="trainingTime" >
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">施行日期：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">培训人员：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="dataImple" type="text" class="form-control" name="dataImple" >
+                                    <input id="trainers" type="text" class="form-control" name="trainers" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">替代标准：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">培训地点：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="alternativeStandard" type="text" class="form-control" name="alternativeStandard" >
+                                    <input id="trainingPlace" type="text" class="form-control" name="trainingPlace" >
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">适用性评价：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">培训人数：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="appEvaluation" id="appEvaluation" class="form-control" >
-                                        <option value="适用">适用</option>
-                                        <option value="过期">过期</option>
-                                    </select>
+                                    <input id="numTraining" type="text" class="form-control" name="numTraining" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">识别人：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">培训内容：</label>
                                 <div class="myblock col-xs-6 input-group panrpos" >
-                                    <input id="recogner" type="text" class="form-control" name="recogner" >
-                                    <div class="pos">
-                                        <div id="tree_recogner" class="ztree"></div>
-                                        <p id="pRecogner" style="display: none;"></p>
-                                    </div>
+                                    <input id="trainerCon" type="text" class="form-control" name="trainerCon" >
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-6 col-sm-2 control-label">名称：</label>
+                                <label class="col-xs-6 col-sm-2 control-label">培训材料：</label>
                                 <div class="myblock col-xs-6 col-sm-10 input-group">
-                                    <!--<input id="addName" type="text" class="form-control" name="addName" >-->
-                                    <!--<span id="picker">上传</span>-->
                                     <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
                                     <div id="file_upload1" style="display: inline-block;vertical-align: middle;"></div>
                                     <div id="file_list1" style="display: inline-block;vertical-align: middle;"></div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-6 col-sm-2 control-label">培训记录：</label>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -276,6 +313,72 @@
 <script src="__JS__/jquery.jedate.js"></script>
 
 <script type="text/javascript">
+    var admin_table = $('#admin_table').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "__SCRIPT__/safety_rules.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"float_left"f>tip',
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [9],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='downloadFile(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='preview(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
+    $("div.mybtn").html('<div>新增</div>');
+
+    //组织结构
+    var zTreeObj;
+    var nodes = [
+        {name: "监理单位", children: [
+            {name: "北京咨询金寨监理单位"}
+        ]},
+        {name: "施工单位", children: [
+            {name: "C1标 葛洲坝集团"},
+            {name: "C2标 中水六局"}
+        ]}
+    ];
+    var setting = {
+    };
+    zTreeObj = $.fn.zTree.init($("#tree_container"), setting,nodes);
+
+    //点击时间插件
+    $("#dataImple").jeDate({
+        format: "YYYY-MM-DD"
+    });
+
+    //点击新增出现modal
+    $(".mybtn").click(function () {
+//        uploader1 = null;
+        $("#education_modal input").val("");
+//        $("#file_list1").empty();
+//        $("#rulesDesc").empty();
+        $("#education_modal h5").text("新增");
+        $("#education_modal").modal('show');
+//        upload1();
+    });
 </script>
 </body>
 </html>
