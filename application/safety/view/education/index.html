@@ -6,16 +6,17 @@
 <link rel="stylesheet" href="/static/admin/css/jedate.css">
 <link rel="stylesheet" href="/static/admin/css/iconfont.css">
 <style>
-    #picker{
+    #pickerMaterials,#pickerMaterials{
         position: absolute;
-        right: 166px;
+        top: -7px;
+        right: 265px;
         width: 69px;
-        height: 34px;
+        height: 48px;
         text-align: center;
         color: #fff;
-        /*line-height: 34px;*/
+        /*line-height: 48px;*/
         cursor: pointer;
-        background-color: #00a2d4;
+        /*background-color: #00a2d4;*/
     }
     #path{
         line-height: 30px;
@@ -53,7 +54,7 @@
         width: 100%;
         height: 100%;
     }
-    #education_modal input{
+    #trainer,#trainingTime,#trainers,#trainingPlace,#trainerCon,#numTraining{
         width: 125%;
     }
     #options{
@@ -117,6 +118,12 @@
     .float_left{
         margin-right: 576px;
     }
+    #trainerMaterials{
+        width: 45%;
+    }
+    #trainerRecords{
+        width: 56%;
+    }
 </style>
 <body>
 <!--表头框架-->
@@ -179,11 +186,11 @@
                 <div class="ibox-title">
                     <h5></h5>
                 </div>
-                <input type="text" name="uid" id="id1" style="display: none;" value="">
+                <input type="text" name="uid" id="edId2" style="display: none;" value="">
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
-                    <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
-                        <input type="text" name="id" id="rulesid" style="display: none;">
+                    <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post" action="{:url('eduAdd')}">
+                        <input type="text" name="id" id="edId" style="display: none;">
                         <input type="text" name="group_id" id="pgroup_id" style="display: none;">
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
@@ -234,9 +241,10 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-6 col-sm-2 control-label">培训材料：</label>
                                 <div class="myblock col-xs-6 col-sm-10 input-group">
-                                    <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
-                                    <div id="file_upload1" style="display: inline-block;vertical-align: middle;"></div>
-                                    <div id="file_list1" style="display: inline-block;vertical-align: middle;"></div>
+                                    <input type="text" id="trainerMaterials" class="form-control" name="trainerMaterials">
+                                    <span class="input-group-btn">
+                                        <div class="btn btn-upload" id="pickerMaterials">上传</div>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -244,6 +252,12 @@
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-6 col-sm-2 control-label">培训记录：</label>
+                                <div class="myblock col-xs-6 col-sm-10 input-group">
+                                    <input type="text" id="trainerRecords" class="form-control" name="trainerRecords">
+                                    <span class="input-group-btn">
+                                        <div class="btn btn-upload" id="pickerRecords">上传</div>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -251,7 +265,7 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-2 col-sm-2 control-label">备注：</label>
                                 <div class="myblock col-xs-10 col-sm-10 input-group">
-                                    <textarea name="rulesDesc" id="rulesDesc" style="width: 100%;min-height: 100px;"></textarea>
+                                    <textarea name="edDesc" id="edDesc" style="width: 100%;min-height: 100px;"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -326,10 +340,10 @@
                 "orderable": false,
                 "targets": [9],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='downloadFile(this)' value='下载'/>";
-                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='preview(this)' value='预览'/>" ;
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edDownload(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='edPreview(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edEdit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='edDel(this)' value='删除'/>" ;
                     return html;
                 }
             }
@@ -365,20 +379,223 @@
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,nodes);
 
     //点击时间插件
-    $("#dataImple").jeDate({
+    $("#trainingTime").jeDate({
         format: "YYYY-MM-DD"
     });
 
     //点击新增出现modal
     $(".mybtn").click(function () {
-//        uploader1 = null;
         $("#education_modal input").val("");
-//        $("#file_list1").empty();
 //        $("#rulesDesc").empty();
         $("#education_modal h5").text("新增");
         $("#education_modal").modal('show');
-//        upload1();
     });
+
+    var uploader;
+    function uploaderPicker(moadlName,picker,listName) {
+        $('+moadlName+').on("shown.bs.modal",function(){
+            uploader = WebUploader.create({
+                auto: true,
+                // swf文件路径
+                swf:  '/static/admin/js/webupload/Uploader.swf',
+
+                // 文件接收服务端。
+                server: "{:url('Upload/uploadRules')}",
+
+                // 选择文件的按钮。可选。
+                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                pick: {
+                    multiple: false,
+                    id: picker,
+                    innerHTML: "上传"
+                },
+                // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+                resize: false
+
+            });
+            var $list = $('+listName+');
+            uploader.on( 'fileQueued', function( file ) {
+                $list.val('等待上传...');
+            });
+
+            uploader.on( 'uploadSuccess', function( file ) {
+                $list.val(file.name+'已上传成功');
+            });
+
+            uploader.on( 'uploadError', function( file ) {
+                $list.val('上传出错');
+            });
+        });
+        //关闭模态框销毁WebUploader
+        $('+moadlName+').on('hide.bs.modal', function () {
+            uploader.destroy();
+        });
+    }
+
+    //点击新增里面的上传
+    var uploaderMaterials;
+    //在点击弹出模态框的时候再初始化WebUploader，解决点击上传无反应问题
+    $("#education_modal").on("shown.bs.modal",function(){
+        uploaderMaterials = WebUploader.create({
+            auto: true,
+            // swf文件路径
+            swf:  '/static/admin/js/webupload/Uploader.swf',
+
+            // 文件接收服务端。
+            server: "{:url('Upload/uploadEdu')}",
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: {
+                multiple: false,
+                id: "#pickerMaterials",
+                innerHTML: "上传"
+            },
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false
+
+        });
+        var $list = $('#trainerMaterials');
+        uploaderMaterials.on( 'fileQueued', function( file ) {
+            $list.val('等待上传...');
+        });
+
+        uploaderMaterials.on( 'uploadSuccess', function( file ) {
+            $list.val(file.name+'已上传成功');
+        });
+
+        uploaderMaterials.on( 'uploadError', function( file ) {
+            $list.val('上传出错');
+        });
+    });
+    //关闭模态框销毁WebUploader
+    $('#education_modal').on('hide.bs.modal', function () {
+        uploaderMaterials.destroy();
+    });
+    var uploaderRecords;
+    //在点击弹出模态框的时候再初始化WebUploader，解决点击上传无反应问题
+    $("#education_modal").on("shown.bs.modal",function(){
+        uploaderRecords = WebUploader.create({
+            auto: true,
+            // swf文件路径
+            swf:  '/static/admin/js/webupload/Uploader.swf',
+
+            // 文件接收服务端。
+            server: "{:url('Upload/uploadEdu')}",
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: {
+                multiple: false,
+                id: "#pickerRecords",
+                innerHTML: "上传"
+            },
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false
+
+        });
+        var $list = $('#trainerRecords');
+        uploaderRecords.on( 'fileQueued', function( file ) {
+            $list.val('等待上传...');
+        });
+
+        uploaderRecords.on( 'uploadSuccess', function( file ) {
+            $list.val(file.name+'已上传成功');
+        });
+
+        uploaderRecords.on( 'uploadError', function( file ) {
+            $list.val('上传出错');
+        });
+    });
+    //关闭模态框销毁WebUploader
+    $('#education_modal').on('hide.bs.modal', function () {
+        uploaderRecords.destroy();
+    });
+
+    //新增中的保存
+    $("#education_modal .btn-primary").click(function () {
+        if($("#trainerRecords").val() && $("#trainerMaterials").val() != null){
+//            console.log($("#edId").val())
+//            if(!$("#edId").val()){
+//                layer.msg('请输入名称',{icon:2,time:1500,shade: 0.1}, function(index){
+//                    layer.close(index);
+//                });
+//                return false;
+//            }
+                console.log("新增")
+            $('#education_modal').ajaxForm({
+                success: complete1,
+                data:{
+                    id : $("#edId").val(),//id
+//                    group_id : groupid,//group_id
+                    group_id : 1,//group_id
+                    lecturer : $("#trainer").val(),//培训人
+                    edu_time : $("#trainingTime").val(),//培训时间
+                    trainee : $("#trainers").val(),//培训人员
+                    address : $("#trainingPlace").val(),//培训地点
+                    num : $("#numTraining").val(),//培训人数
+                    content : $("#trainerCon").val(),//培训内容
+                    material_name : $("#trainerMaterials").val(),//培训材料
+                    record_name : $("#trainerRecords").val(),//培训记录
+                    remark : $("#edDesc").val()//备注
+                },
+                dataType: 'json'
+            });
+//            else {
+//                console.log("编辑")
+//                if(aname1 === aname2){
+//                    $.ajax({
+//                        url: "./rulesEdit",
+//                        type: "post",
+//                        data: {
+//                            id : $("#rulesid").val(),//id
+//                            group_id : groupid,//group_id
+//                            number : $("#standardNumr").val(),//标准号
+//                            rul_name : $("#file_list1 .info .infoText").val(),//名称
+//                            go_date : $("#dataImple").val(),//施行日期
+//                            standard : $("#alternativeStandard").val(),//替代标准
+//                            evaluation : null,//适用性评价
+//                            rul_user : $("#recogner").val(),//识别人
+//                            remark : $("#rulesDesc").val()//备注
+//                        },
+//                        datatype: "json",
+//                        success: function (res) {
+//                            if(res.code === 1){
+//                                layer.msg(res.msg);
+//                                admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
+//                                $("#education_modal").modal('hide');
+//                            }else {
+//                                layer.msg(res.msg);
+//                            }
+//                        }
+//                    })
+//                }else {
+//                    uploader1.upload();
+//                }
+//            }
+        }else {
+            alert("请选择上传文件");
+        }
+    })
+
+    //新增中的返回
+    $("#education_modal .btn-danger").click(function () {
+        standard_uploader = null;
+    });
+
+    function complete1(data){
+        console.log(data);
+        if(data.code==1){
+            console.log(2222222222222222)
+            layer.msg(data.msg);
+//            admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+            admin_table.ajax.url("__SCRIPT__/safety_education.php").load();
+            $("#education_modal").modal('hide');
+        }else{
+            layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+            return false;
+        }
+    }
 </script>
 </body>
 </html>
