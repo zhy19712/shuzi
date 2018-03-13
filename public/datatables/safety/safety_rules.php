@@ -63,27 +63,50 @@ require( '../ssp.class.php' );
 $pid = isset($_GET["pid"]) ? $_GET["pid"] : ''; // 所属分组
 $years = isset($_GET["years"]) ? $_GET["years"] : ''; // 年度
 $times = isset($_GET["times"]) ? $_GET["times"] : ''; // 历史版本
-if(!empty($_GET["pid"]))
-{
-    if(!empty($years)){
+
+if(!empty($pid)){
+    if(!empty($years) && !empty($times)){
+        echo json_encode(
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$pid' and years = '$years' and improt_time = '$times'" )
+        );
+    }else if (!empty($years)){
         echo json_encode(
             SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid' and years = '$years'" )
         );
-    }else{
+    }else if (!empty($times)){
         echo json_encode(
-            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$pid' and improt_time = '$times'" )
         );
     }
-    $pid =2;
+}else{
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
+        SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
     );
 }
-else{
-    echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = 'empty'" )
-    );
-}
+
+
+
+//if(!empty($_GET["pid"]))
+//{
+//    if(!empty($years)){
+//        echo json_encode(
+//            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid' and years = '$years'" )
+//        );
+//    }else{
+//        echo json_encode(
+//            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
+//        );
+//    }
+//    $pid =2;
+//    echo json_encode(
+//        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
+//    );
+//}
+//else{
+//    echo json_encode(
+//        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = 'empty'" )
+//    );
+//}
 
 
 
