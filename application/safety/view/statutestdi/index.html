@@ -87,7 +87,7 @@
         .dataTables_wrapper .dataTables_filter{
             margin-top: 10px;
         }
-        .dataTables_wrapper .dataTables_filter input{
+        .dataTables_wrapper .dataTables_filter input,#years{
             margin: 0;
             padding: 6px 10px;
             border: 1px solid #ccc;
@@ -162,7 +162,7 @@
                         <!--新增用户信息开始-->
                         <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
                             <input type="hidden" name="id" id="sid">
-                            <input type="hidden" name="group_id" id="pgroup_id">
+                            <input type="hidden" name="group_id" id="group_id">
                             <input type="hidden" name="oldFileName" id="oldFileName">
                             <input type="hidden" name="newFileName" id="newFileName">
                             <div class="form-group">
@@ -448,6 +448,8 @@
                 }
             })
 
+            //构建按版本查询
+            viewHistoryVer(groupid);
 
         };
 
@@ -498,13 +500,9 @@
            }
        });
         $("div#upload").html('<div>上传文件</div>');
-        var selectDom = '<select name="" id="" style="height: 32px">' +
-                            '<option value="">2018</option>'+
-                            '<option value="">2015-2017</option>'+
-                            '<option value="">2013-2015</option>'+
-                        '</select>';
-        var dataViewDom = '<select name="" id="" style="height: 32px">' +
-                            '<option value="">按时间查看</option>'+
+        var selectDom = '<input type="text" id="years">';
+        var dataViewDom = '<select name="" id="history" style="height: 32px">' +
+                            '<option value="">按历史版本查看</option>'+
                             '<option value="">2015-2017</option>'+
                             '<option value="">2013-2015</option>'+
                         '</select>';
@@ -512,6 +510,8 @@
         $('div#import').html('导入');
         $('div#export').html('导出');
         $('div#view').html(dataViewDom);
+
+
 
         $('#tableItem_wrapper').css("visibility","hidden");
 
@@ -522,6 +522,7 @@
 
             });
             $('#dataImple').jeDate();
+
         })
         var uploader;
         //在点击弹出模态框的时候再初始化WebUploader，解决点击上传无反应问题
@@ -968,6 +969,57 @@
             });
 
 
+        });
+
+        //构建查看历史版本
+        function viewHistoryVer(groupid) {
+            var years = $('#years').val();
+            $.ajax({
+                url:'{:url("Statutestdi/getHistory")}',
+                dataType:'JSON',
+                type:'POST',
+                data:{
+                    group_id:groupid,
+                    years:years
+                },
+                success:function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        //筛选数据
+        function filterData() {
+            var years = $('#years').val();
+            var pid = $('#group_id').val();
+            var times = $('#history').find('option:selected').text();
+            $.ajax({
+                url:'__SCRIPT__/safety_statutesdi.php',
+                dataType:'JSON',
+                type:'POST',
+                data:{
+                    pid:groupid,
+                    years:years,
+                    times:times
+                },
+                success:function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        //按版本查看
+        $('#history').change(function(){
+            filterData();
+        });
+
+        //按年度查看
+        $('#years').jeDate({
+            isinitVal:true,
+            format:"YYYY",
+            okfun:function (obj) {
+                filterData();
+            }
         });
     </script>
 </body>
