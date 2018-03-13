@@ -358,14 +358,12 @@
             layer.confirm('确定要编辑该节点？', {
                 btn: ['确定','取消']
             }, function(){
-                var id=$('input[type="hidden"][name="treeId"]').val();
-
                 $.ajax({
                     url:'{:url("Statutestdi/nodeAdd")}',
                     dataType:'JSON',
                     type:'POST',
                     data:{
-                        id:id,
+                        id:treeNode.id,
                         pname:newName
                     },
                     success:function(){
@@ -778,7 +776,7 @@
         }
 
         function showpdf1(that) {
-            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
             showPdf(id,"{:url('Statutestdi/anualPreview')}");
         }
 
@@ -978,6 +976,9 @@
         //构建查看历史版本
         function viewHistoryVer(groupid) {
             var years = $('#years').val();
+            if(!years){
+                years = '暂无数据'
+            }
             $.ajax({
                 url:'{:url("Statutestdi/getHistory")}',
                 dataType:'JSON',
