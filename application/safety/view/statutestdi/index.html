@@ -894,14 +894,7 @@
         });
 
         importExcel.on("uploadStart",function () {
-            uploader.options.formData.group_id = $('input[type="hidden"][name="groupId"]').val();
-            uploader.options.formData.number = $("#standardNumr").val();
-            uploader.options.formData.sdi_name = $("#addName").val();
-            uploader.options.formData.go_date = $("#dataImple").val();
-            uploader.options.formData.standard = $("#alternativeStandard").val();
-            uploader.options.formData.evaluation = $("#psex").val();
-            uploader.options.formData.sid_user = $("#pdivision").val();
-            uploader.options.formData.remark = $("#rulesDesc").text();
+            importExcel.options.formData.group_id = $('input[type="hidden"][name="groupId"]').val();
         });
 
         //删除数组中的指定元素
