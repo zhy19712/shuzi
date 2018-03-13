@@ -60,7 +60,7 @@ require( '../ssp.class.php' );
 $group_id = isset($_GET["pid"]) ? $_GET["pid"] : ''; // 所属分组
 $years = isset($_GET["years"]) ? $_GET["years"] : ''; // 年度
 $times = isset($_GET["times"]) ? $_GET["times"] : '';// 历史版本
-if(!empty($pid))
+if(!empty($group_id))
 {
     if(!empty($years) && !empty($times)){
         echo json_encode(
