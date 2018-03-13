@@ -18,9 +18,6 @@
         padding: 10px 0;
         text-align: center;
     }
-    .dataTables_wrapper .dataTables_filter{
-        float: left;
-    }
     .dt-buttons{
         float: right;
         margin-top: 5px;
@@ -46,6 +43,29 @@
     table.dataTable.no-footer{
         border-top: 1px solid #ccc;
         border-bottom: 1px solid #ccc;
+    }
+    .export{
+        float: right;
+        margin: 10px 5px 10px;
+        font-size: 13px;
+    }
+    .dataTables_wrapper .dataTables_length{
+        margin-top: 15px;
+    }
+    .dataTables_wrapper .dataTables_filter{
+        margin-top: 10px;
+    }
+    .dataTables_wrapper .dataTables_filter input,#years{
+        margin: 0;
+        padding: 6px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .dataTables_wrapper .dataTables_filter label{
+        font-weight: normal;
+    }
+    table.dataTable thead th, table.dataTable tfoot th{
+        font-weight: normal;
     }
 </style>
 <div class="revised-record">
@@ -86,7 +106,7 @@
         ajax: {
             "url": "__SCRIPT__/safety_record.php"
         },
-        dom: '<"mybtn1 btn btn-outline btn-primary"><"myl"l>frtip',
+        dom: '<"myl"l>f<"export btn btn-outline btn-primary">rtip',
         columnDefs: [
             {
                 "searchable": false,
@@ -100,9 +120,8 @@
             },
             {
                 targets:0,
-                data: null,
-               // orderable: false,
-                defaultContent:"<input type ='checkbox' name='checkboxAll' class='icheckbox_minimal' value=''>",
+                //orderable: false,
+                defaultContent:"<input type ='checkbox' name='checkboxAll' class='icheckbox_minimal' value='' onclick='getSelectId(this)'>",
             }
         ],
         language: {
@@ -111,7 +130,7 @@
             "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
             "infoEmpty": "无记录",
             "infoFiltered": "(从 _MAX_ 条记录过滤)",
-            "search":"搜索",
+            "search":"搜索：",
             "paginate": {
                 "first": "第一页",
                 "last": "最后一页",
@@ -121,7 +140,7 @@
         }
     });
 
-    $('.mybtn1').html('导出');
+    $('.export').html('导出');
 
     //预览
     function showPdf(id,url) {
@@ -169,6 +188,69 @@
             layer.close(index);
         })
     }
+
+    //删除数组中的指定元素
+    Array.prototype.remove = function(val){
+        for (var i = 0; i < this.length; i++) {
+            if(this[i] === val){
+                this.splice(i,1);
+                break;
+            }
+        }
+        return this;
+    }
+
+    //数组去重
+    Array.prototype.removalArray = function(){
+        var newArr = [];
+        for (var i = 0; i < this.length; i++) {
+            if(newArr.indexOf(this[i]) == -1){  //indexOf 不兼容IE8及以下
+                newArr.push(this[i]);
+            }
+        }
+        return newArr;
+    }
+
+    //获取选中行ID
+    var idArr = [];
+    function getId(that) {
+        var isChecked = $(that).prop('checked');
+        var id = $(that).parents('tr').find('td:eq(1)').text();
+        if(isChecked){
+            idArr.push(id);
+            idArr.removalArray();
+        }else{
+            idArr.remove(id);
+            idArr.removalArray();
+        }
+    }
+
+    //单选
+    function getSelectId(that) {
+        getId(that);
+        console.log(idArr);
+    }
+
+    //导出
+    $('.export').click(function(){
+        /*var isChecked = $(this).attr('isChecked');
+        if(isChecked){
+            return;
+        }*/
+        $.ajax({
+            url: "{:url('Revisionrecord/recordDownload')}",
+            type: "post",
+            dataType: 'json',
+            data:{
+                id:idArr,
+            },
+            success: function (data) {
+                if(data.code==1){
+                    layer.msg('导出成功！');
+                }
+            }
+        });
+    });
 </script>
 </body>
 </html>
