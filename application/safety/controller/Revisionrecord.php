@@ -200,8 +200,8 @@ class Revisionrecord extends Base
                     $insertData[$k]['replace_time'] = $v[$replace_time_index];
                     $insertData[$k]['owner'] = $v[$owner_index];
                     $insertData[$k]['record_type'] = $v[$record_type_index];
-                    // 年度
-                    $insertData[$k]['years'] = date('Y-m-d H:i:s');
+                    $insertData[$k]['years'] = date('Y');
+                    $insertData[$k]['improt_time'] = date('Y-m-d H:i:s');
                 }
             }
             $success = Db::name('safety_record')->insertAll($insertData);

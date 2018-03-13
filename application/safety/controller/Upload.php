@@ -177,6 +177,7 @@ class Upload extends Base
      */
     public function uploadSdi(){
         $sdi = new StatutestdiModel();
+        $years = date('Y');
         $group_id = request()->param('group_id');
         $number = request()->param('number');
         $sdi_name = request()->param('sdi_name');
@@ -198,6 +199,7 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
+                    'years' => $years,
                     'group_id' => $group_id,
                     'number' => $number,
                     'sdi_name' => $sdi_name,
@@ -218,6 +220,7 @@ class Upload extends Base
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
+                    'years' => $years,
                     'group_id' => $group_id,
                     'number' => $number,
                     'sdi_name' => $sdi_name,
@@ -246,6 +249,7 @@ class Upload extends Base
      */
     public function uploadRules(){
         $rules = new RulesregulationsModel();
+        $years = date('Y');
         $group_id = request()->param('group_id');
         $number = request()->param('number');
         $rul_name = request()->param('rul_name');
@@ -263,6 +267,7 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
+                    'years' => $years,
                     'group_id' => $group_id,
                     'number' => $number,
                     'rul_name' => $rul_name,
@@ -283,6 +288,7 @@ class Upload extends Base
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
+                    'years' => $years,
                     'group_id' => $group_id,
                     'number' => $number,
                     'rul_name' => $rul_name,
