@@ -333,12 +333,12 @@
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"float_left"f>tip',
         "columnDefs": [
             {
-                "sClass": "text-center",
-                "data": "ID",
+//                "sClass": "text-center",
+                "orderable": false,
+                "targets": 0,
                 "render": function (data, type, full, meta) {
                     return '<input type="checkbox"  class="checkchild"  value="' + data + '" />';
-                },
-                "bSortable": false
+                }
             },
             {
                 "searchable": false,
@@ -436,7 +436,7 @@
     //点击新增出现modal
     $(".mybtn").click(function () {
         $("#education_modal input").val("");
-//        $("#rulesDesc").empty();
+        $("#rulesDesc").empty();
         $("#education_modal h5").text("新增");
         $("#education_modal").modal('show');
     });
@@ -645,7 +645,6 @@
             alert("请选择上传文件");
         }
     })
-
     //新增中的返回
     $("#education_modal .btn-danger").click(function () {
         standard_uploader = null;
@@ -686,6 +685,57 @@
             })
             layer.close(index);
         })
+    }
+    //专题培训-下载方法
+    function download(id,url) {
+        $.ajax({
+            url: url,
+            success: function (res) {
+                if(res.code != 1){
+                    layer.msg(res.msg)
+                }else {
+                    $("#formDown").empty();
+                    var str = "";
+                    str += ""
+                        + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+                        + "<form name=download"+ id +" action="+ url +" method='get' target=downloadFrame"+ id +">"
+                        + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+                        + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+                        + "<button type='submit' class=btn" + id +"></button>"
+                        + "</form>"
+                    $("#formDown").append(str);
+                    $("#formDown").find(".btn" + id).click();
+                }
+            }
+        })
+    }
+    //专题培训-点击下载
+    function edDownload(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        console.log(id)
+        download(id,"./rulesDownload");
+    }
+    //专题培训-预览方法
+    function showPdf(id,url) {
+        $.ajax({
+            url: url,
+            type: "post",
+            data: {id:id},
+            success: function (res) {
+                if(res.code === 1){
+                    var path = res.path;
+                    window.open("__JS__/web/viewer.html?file=" + path,"_blank");
+                }else {
+                    layer.msg(res.msg);
+                }
+            }
+        })
+    }
+    //专题培训-点击预览
+    function edPreview(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        console.log(id)
+        showPdf(id,"./rulesPreview");
     }
 
 </script>
