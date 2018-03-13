@@ -292,7 +292,7 @@ class Statutestdi extends Base
                     $evaluation_index = $k;
                 }else if($str == '识别人'){
                     $sid_user_index = $k;
-                }else if($str == '上传时间'){
+                }else if($str == '上传日期'){
                     $sdi_date_index = $k;
                 }else if($str == '备注'){
                     $remark_index = $k;
