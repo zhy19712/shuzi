@@ -30,15 +30,6 @@ class Revisionrecord extends Base
         if(request()->isAjax()){
             $record = new RevisionrecordModel();
             $param = input('post.');
-            $data = $record->getOne($param['id']);
-            $path = $data['path'];
-            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-            if(file_exists($path)){
-                unlink($path); // 删除文件
-            }
-            if(file_exists($pdf_path)){
-                unlink($pdf_path); // 删除生成的预览pdf
-            }
             $flag = $record->delRecord($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
