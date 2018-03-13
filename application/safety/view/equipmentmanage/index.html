@@ -16,19 +16,22 @@
     .ztree li a.level0 span {display: block; color: white; padding-top:3px; font-size:12px; font-weight: bold;word-spacing: 2px;}
     .ztree li a.level0 span.button {	float:right; margin-left: 10px; visibility: visible;display:none;}
     .ztree li span.button.switch.level0 {display:none;}
-    #mytable1_wrapper,#mytable2_wrapper,#mytable3_wrapper{
+    #mytable1_wrapper,#mytable2_wrapper,mytable3_wrapper{
         display: none;
     }
     .mybtn{
         float: left;
         margin-right: 20px;
     }
-    .selectyear1,.selectyear2{
+    .selectyear1,.selectyear2,.selectyear3{
         float: left;
         margin-left: 20px;
         margin-top: 5px;
         font-weight: 700;
         color: black;
+    }
+    .file-item{
+        float: left;
     }
 </style>
 <body class="gray-bg animated fadeInRight" style="background-color:#fff;">
@@ -233,6 +236,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">设备管理部门：</label>
@@ -317,15 +321,19 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">检测证书：</label>
-                                <div id="uploader-demo">
-                                    <!--用来存放item-->
-                                    <div id="fileList3" class="uploader-list"></div>
-                                    <div id="filePicker1">选择图片</div>
+                                <label class="col-xs-6 col-sm-4 col-sm-offset-2 col-xs-offset-0 control-label" id="file2" style="text-align: right;line-height: 44px;">检验文件：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <div id="file_per3" style="display: inline-block;vertical-align: middle;"></div>
+                                    <div id="file_upload3" style="display: inline-block;vertical-align: middle;"></div>
+                                    <div id="file_list3" style="display: inline-block;vertical-align: middle;"></div>
                                 </div>
-                                <div id="reason_container" style="height: 600px;">
-                                    <img src="" alt="" style="display: block;max-height: 600px;">
-                                </div>
+
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div id="img_container" class="col-xs-12 col-xs-12 col-sm-offset-2" style="height: 300px; margin-top: 20px;">
+
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -527,7 +535,7 @@
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
-
+                        table2.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -563,7 +571,7 @@
 
     var uploader1,uploader2;          //初始化upload按钮
 
-    var aname1,aname2,aname3;         //用于区分 编辑时是否修改了文件
+    var aname1,aname2,aname3,bname1,bname2;         //用于区分 编辑时是否修改了文件
 
     //设备设施建设-初始化
     function upload1() {
@@ -1014,7 +1022,7 @@
         }
     })
 
-    //设备设施建设-新增
+    //设备设施验收-新增
     $("div.mybtn").html("新增")
     $("#table2_wrapper .mybtn").click(function () {
         uploader2 = null;
@@ -1023,10 +1031,9 @@
         $("#fname2").modal('show');
         upload2();
     })
-    //设备设施建设-年度
+    //设备设施验收-年度
     var selectyear2 ='<input id="yeardu2" />';
     $("div.selectyear2").html("年度："+selectyear2)
-    //
     $("#yeardu2").jeDate({
         isinitVal:true,
         format:"YYYY年",
@@ -1063,7 +1070,7 @@
         //     "url": "__SCRIPT__/safety_equipmentmanage.php"
         // },
         "data":dataset,
-        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear3">frtip',
         "columnDefs":[ //设置列定义初始化属性
             {
                 "searchable":false,  //禁止搜索
@@ -1090,22 +1097,21 @@
             }
         }
     })
-
     //特种设备-初始化
     function upload3() {
-        if(!uploader3){
+        if(1){
             uploader3 = WebUploader.create({
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
                 server: "{:url('Upload/uploadEquipmentCheckAccept')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
-                fileNumLimit: 1,
+                fileNumLimit: 6,
                 formData: {"remark":"","bid":"","selfid":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
-                    multiple: false,
-                    id: "#filePicker1",
+                    multiple: true,
+                    id: "#file_upload3",
                     innerHTML: "上传图片"
                 },
                 // 只允许选择图片文件。
@@ -1117,17 +1123,29 @@
             });
 
             uploader3.on( 'fileQueued', function( file ) {
-                bname2 = file.name;
-                $("#file_per2").append('<div id="' + file.id + '" class="item">' +
-                    '</div>');
-                $("#file_list2").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
-                    '<span class="info2">' + file.name + '</span>&nbsp' +
-                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                    '</div>' );
+                var $li = $(
+                    '<div id="' + file.id + '" class="file-item thumbnail">' +
+                    '<img>' +
+                    '<div class="info3">' + file.name + '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
+                    '</div>'
+                    ),
+                    $img = $li.find('img');
+                    $li.mouseenter(function () {
+                        console.log($(this).attr("id"))
+                    })
+                $("#img_container").append( $li );
+                uploader3.makeThumb( file, function( error, src ) {
+                    if ( error ) {
+                        $img.replaceWith('<span>不能预览</span>');
+                        return;
+                    }
+                    $img.attr( 'src', src );
+                }, 100, 100 );
             });
-            $("#file_list3").on("click", ".webuploadDelbtn", function () {
+            $("#img_container").on("click", ".webuploadDelbtn", function () {
                 var $ele = $(this);
                 var id = $ele.parent().attr("class");
+                console.log($ele.parent())
                 var file = uploader3.getFile(id);
                 uploader3.removeFile(file,true);
             });
@@ -1138,16 +1156,8 @@
             });
             uploader3.on("uploadStart",function () {
                 uploader3.options.formData.aid = $("#bid").val();
-                uploader3.options.formData.remark = $("#remark2").val();
+                uploader3.options.formData.remark = $("#remark3").val();
                 uploader3.options.formData.selfid = selfid;
-            });
-            uploader3.on('beforeFileQueued', function (file) {
-                if($("#file_list2").html()){
-                    alert("只能上传一个文件,请先删除文件");
-                    return false;
-                }else {
-                    return true;
-                }
             });
             // 文件上传过程中创建进度条实时显示。
             uploader3.on('uploadProgress', function (file, percentage) {
@@ -1169,10 +1179,10 @@
                 // console.log(data)
                 if(data.code === 1){
                     layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
-                    $("#file_upload2").empty();
-                    $("#file_per2").empty();
-                    $("#file_list2").empty();
-                    $("#fname2").modal('hide');
+                    $("#file_upload3").empty();
+                    $("#file_per3").empty();
+                    $("#file_list3").empty();
+                    $("#fname3").modal('hide');
                     table3.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
@@ -1182,7 +1192,7 @@
             // 文件上传失败，显示上传出错。
             uploader3.on( 'uploadError', function( file ) {
                 layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                $("#file_per2").empty();
+                $("#file_per3").empty();
             });
         }
     }
@@ -1190,12 +1200,24 @@
     //特种设备-新增
     $("div.mybtn").html("新增")
     $("#table3_wrapper .mybtn").click(function () {
-        uploader1 = null;
-        $("#fname1 input").val("");
-        $("#file_list1").empty();
+        uploader3 = null;
+        $("#fname3 input").val("");
+        $("#file_list3").empty();
         $("#fname3").modal('show');
-        upload1();
+        upload3();
     })
+    //特种设备-年度
+    var selectyear3 ='<input id="yeardu3" />';
+    $("div.selectyear3").html("年度："+selectyear3)
+    $("#yeardu3").jeDate({
+        isinitVal:true,
+        format:"YYYY年",
+        okfun:function (obj) {
+            table2.ajax.url("__SCRIPT__/safety_equipmentmanage.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
+            console.log(obj.date.YYYY);
+        }
+    });
+    $("#yeardu3").val("");
 
     //图片展示
     $("#reason_container img").click(function () {
@@ -1211,7 +1233,7 @@
         }
         $("#img_show").modal('show');
     }
-
+    //是否大修
     $("#daxiu").change(function () {
         if($(this).val()==="否"){
             $("#daxiu_date").css("display","none")
