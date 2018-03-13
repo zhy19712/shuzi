@@ -1200,11 +1200,21 @@
         uploaderExcel = WebUploader.create({
             auto: false,// 选完文件后，是否自动上传。
             swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-            server: "{:url('Upload/uploadRules')}",// 文件接收服务端。
+            server: "{:url('Rulesregulations/importExcel')}",// 文件接收服务端。
             chunked: false,
             fileSizeLimit: 1000 *1024 *1024,
             fileNumLimit: 1,
-            formData: {"remark":"","aid":""},
+            formData: {
+                id : '',//id
+                group_id : '',//group_id
+                number : '',//标准号
+                rul_name : '',//名称
+                go_date : '',//施行日期
+                standard : '',//替代标准
+                evaluation : '',//适用性评价
+                rul_user : '',//识别人
+                remark : ''//备注
+            },
             duplicate :true,// 重复上传图片，true为可重复false为不可重复
 //            pick: {
 //                multiple: false,
@@ -1232,12 +1242,13 @@
         $.ajax({
             url: "./exportExcel",
             type: "post",
-            data: dataArr,
+            data: {
+                'id':dataArr
+            },
             dataType: "json",
             success: function (res) {
                 console.log(res);
                 if(res.code ==1){
-                    admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
                     layer.msg('导出成功！', {icon: 1});
                 }else{
                     alert("获取数据失败！")
@@ -1252,7 +1263,7 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            admin_table.ajax.url("__SCRIPT__/safety_rules.php?year="+obj.date.YYYY+"&pid=" + groupid).load();
+            admin_table.ajax.url("__SCRIPT__/safety_rules.php?years="+obj.date.YYYY+"&pid=" + groupid).load();
             console.log(groupid)
             console.log(obj.date.YYYY);
         }
