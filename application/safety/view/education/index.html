@@ -144,9 +144,9 @@
                 <div id="path">当前路径</div>
                 <div id="mytable1_wrapper">
                     <div id="excel">
-                        <button>导入</button>
-                        <button>导出</button>
-                        <button>导出excel模板</button>
+                        <button id="excelImport">导入</button>
+                        <button id="excelExport">导出</button>
+                        <button id="moldPlate">导出excel模板</button>
                         <select name="down_excel" id="down_excel">
                             <option value="查看历史版本">查看历史版本</option>
                             <option value="两年">两年</option>
@@ -371,62 +371,62 @@
     //组织结构
     var zTreeObj;
     var mytree_node;
-    //点击获取节点名称
-//    function zTreeOnClick(event, treeId, treeNode) {
-//        console.log(treeNode);
-//        mytree_node = treeNode;
-//        $("#groupname").val(treeNode.name);
-//        $("#mycontent>p").text(treeNode.name);
-//        $("#groupid").val(treeNode.id);
-//        groupid = treeNode.id;
-//        console.log(groupid)
-//        if(treeNode.level == 0){
-//            $("#mytable1_wrapper").css("display","block");
-//            admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
-//        }else {
-//            if(treeNode.level == 1){
-//                $("#mytable1_wrapper").css("display","block");
-//                admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
-//            }
-////            $("#mytable1_wrapper").css("display","none");
-//        }
-//        //获取路径
-//        $.ajax({
-//            url: "./getParents",
-//            type: "post",
-//            data: {id:groupid},
-//            dataType: "json",
-//            success: function (res) {
-//                if(res.msg === "success"){
-//                    $("#path").text("当前路径:" + res.path)
-//                }
-//            }
-//        })
-//    };
-//    var setting = {
-//        async: {
-//            enable : true,
-//            autoParam: ["pId"],
-//            type : "post",
-//            url : "./getSegment",
-//            dataType :"json"
-//        },
-//        data:{
-//            keep: {
-//                leaf : true,
-//                parent : true
-//            },
-//            simpleData : {
-//                enable:true,
-//                idkey: "id",
-//                pIdKey: "pId"
-//            }
-//        },
-//        callback: {
-//            onClick: zTreeOnClick
-//        }
-//    };
-//    zTreeObj = $.fn.zTree.init($("#tree_container"), setting, mytree_node);
+    点击获取节点名称
+    function zTreeOnClick(event, treeId, treeNode) {
+        console.log(treeNode);
+        mytree_node = treeNode;
+        $("#groupname").val(treeNode.name);
+        $("#mycontent>p").text(treeNode.name);
+        $("#groupid").val(treeNode.id);
+        groupid = treeNode.id;
+        console.log(groupid)
+        if(treeNode.level == 0){
+            $("#mytable1_wrapper").css("display","block");
+            admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+        }else {
+            if(treeNode.level == 1){
+                $("#mytable1_wrapper").css("display","block");
+                admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+            }
+//            $("#mytable1_wrapper").css("display","none");
+        }
+        //获取路径
+        $.ajax({
+            url: "./getParents",
+            type: "post",
+            data: {id:groupid},
+            dataType: "json",
+            success: function (res) {
+                if(res.msg === "success"){
+                    $("#path").text("当前路径:" + res.path)
+                }
+            }
+        })
+    };
+    var setting = {
+        async: {
+            enable : true,
+            autoParam: ["pId"],
+            type : "post",
+            url : "./getSegment",
+            dataType :"json"
+        },
+        data:{
+            keep: {
+                leaf : true,
+                parent : true
+            },
+            simpleData : {
+                enable:true,
+                idkey: "id",
+                pIdKey: "pId"
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick
+        }
+    };
+    zTreeObj = $.fn.zTree.init($("#tree_container"), setting, mytree_node);
 
     //点击时间插件
     $("#trainingTime").jeDate({
@@ -737,7 +737,18 @@
         console.log(id)
         showPdf(id,"./rulesPreview");
     }
-
+    //导入excelImport excelExport
+    $("#excelImport").click(function () {
+        alert(88999544564645645645645)
+    });
+    //导出excelExport
+    $("#excelExport").click(function () {
+        alert(88999)
+    });
+    //导出excel模版 moldPlate
+    $("#moldPlate").click(function () {
+        alert(88999999999999999)
+    });
 </script>
 </body>
 </html>

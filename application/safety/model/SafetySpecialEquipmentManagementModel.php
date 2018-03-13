@@ -66,11 +66,30 @@ class SafetySpecialEquipmentManagementModel extends Model
     /*
      * 获取一条特种设备管理文件
     */
+    /**
+     * @param $id
+     * @return array|false|\PDOStatement|string|Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function getOne($id)
     {
 
         return $this->where('id', $id)->find();
 
+    }
+
+    /*
+     * 特种设备批量导出的文件列表id
+    */
+    public function getList($idArr)
+    {
+        $data = [];
+        foreach($idArr as $v){
+            $data[] = $this->getOne($v);
+        }
+        return $data;
     }
 
     /*

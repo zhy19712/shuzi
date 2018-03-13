@@ -360,10 +360,11 @@ class Rulesregulations extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('param.idarr');
+        $idArr = input('post.');
+        $idArr2 = $idArr['id'];
         $name = '规章制度'.date('Y-m-d H:i:s'); // 导出的文件名
         $sdi = new RulesregulationsModel();
-        $list = $sdi->getList($idArr);
+        $list = $sdi->getList($idArr2);
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
