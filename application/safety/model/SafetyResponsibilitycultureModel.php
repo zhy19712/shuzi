@@ -60,6 +60,13 @@ class SafetyResponsibilitycultureModel extends Model
     /*
     * 获取一条安全文化建设文件
     */
+    /**
+     * @param $id
+     * @return array|false|\PDOStatement|string|Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function getOne($id)
     {
         return $this->where('id', $id)->find();

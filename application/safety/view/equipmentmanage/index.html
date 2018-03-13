@@ -16,7 +16,7 @@
     .ztree li a.level0 span {display: block; color: white; padding-top:3px; font-size:12px; font-weight: bold;word-spacing: 2px;}
     .ztree li a.level0 span.button {	float:right; margin-left: 10px; visibility: visible;display:none;}
     .ztree li span.button.switch.level0 {display:none;}
-    #mytable1_wrapper,#mytable2_wrapper,mytable3_wrapper{
+    #mytable1_wrapper,#mytable2_wrapper,#mytable3_wrapper{
         display: none;
     }
     .mybtn{
@@ -95,6 +95,7 @@
                                 <th>设备状态</th>
                                 <th>备注</th>
                                 <th>操作</th>
+                                <th>全选<input type="checkbox"/></th>
                             </tr>
                             </thead>
                         </table>
@@ -183,20 +184,19 @@
                     <h5>新增</h5>
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal" name="projectAdd" id="projectAdd" method="post" action="{:url('projectAdd')}">
-                        <input type="text" name="pid" id="pid"  value=""  style="display: none;">
-                        <input type="text" name="id" id="id"  value=""  style="display: none;">
+                    <input id="cid" type="text" class="form-control" value="" style="display: none;">
+                    <form class="form-horizontal" id="specialform" method="post" action="#" onsubmit="return false">
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">设备名称：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="equipment_name" type="text" class="form-control" name="equipment_name" required="required" placeholder="此处为必填项">
+                                    <input id="equip_name" type="text" class="form-control" name="equip_name" required="required" placeholder="此处为必填项">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">型号：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="xinhao" type="text" class="form-control" name="xinhao">
+                                    <input id="model" type="text" class="form-control" name="model">
                                 </div>
                             </div>
                         </div>
@@ -205,13 +205,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">设备编号：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="equipment_number" type="text" class="form-control" name="equipment_number">
+                                    <input id="equip_num" type="text" class="form-control" name="equip_num">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">制造单位：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="zhizao" type="text" class="form-control" name="zhizao">
+                                    <input id="manufactur_unit" type="text" class="form-control" name="manufactur_unit">
                                 </div>
                             </div>
                         </div>
@@ -220,13 +220,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">出厂日期（年/月）：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="chuchang_date" type="text" class="form-control" required="required" placeholder="此处为必填项" name="chuchang_date" placeholder="请选择日期"/>
+                                    <input id="date_production" type="text" class="form-control" required="required" placeholder="此处为必填项" name="date_production" placeholder="请选择日期"/>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">当前状态：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="primary" id="now_state" class="form-control" >
+                                    <select name="primary" id="current_state" class="form-control" >
                                         <option value="在用">在用</option>
                                         <option value="安装">安装</option>
                                         <option value="修理">修理</option>
@@ -241,7 +241,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">设备管理部门：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="primary" id="equipment_bumen" class="form-control" >
+                                    <select name="primary" id="equip_manage_department" class="form-control" >
                                         <option value="机电物质部">机电物质部</option>
                                         <option value="施工管理部">施工管理部</option>
                                         <option value="安全环保部">安全环保部</option>
@@ -251,7 +251,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">安全准用证挂牌时间：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="gupai_date" type="text" class="form-control"/>
+                                    <input id="safety_machinery_time" type="text" class="form-control"/>
                                 </div>
                             </div>
                         </div>
@@ -260,13 +260,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">安全检验合格证书编号：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="safety_number" type="text" class="form-control" name="safety_number" />
+                                    <input id="safety_inspection_num" type="text" class="form-control" name="safety_inspection_num" />
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">检验单位：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="jianyan" type="text" class="form-control" name="jianyan" />
+                                    <input id="inspection_unit" type="text" class="form-control" name="inspection_unit" />
                                 </div>
                             </div>
                         </div>
@@ -275,13 +275,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">安全检验合格证书有效截止日期：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="safety_date" type="text" class="form-control" required="required" placeholder="此处为必填项" name="safety_date" placeholder="请选择日期"/>
+                                    <input id="safety_inspecte_certificate_time" type="text" class="form-control" required="required" placeholder="此处为必填项" name="safety_inspecte_certificate_time" placeholder="请选择日期"/>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">设备是否经过大修：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="primary" id="daxiu" class="form-control" >
+                                    <select name="primary" id="equipmen_overhaul" class="form-control" >
                                         <option value="是">是</option>
                                         <option value="否">否</option>
                                     </select>
@@ -293,13 +293,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">大修日期：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="daxiu_date" type="text" class="form-control" />
+                                    <input id="date_overhaul" type="text" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">进场时间：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="jinchang_date" type="text" class="form-control" required="required" placeholder="此处为必填项" name="jinchang_date" placeholder="请选择日期"/>
+                                    <input id="entry_time" type="text" class="form-control" required="required" placeholder="此处为必填项" name="entry_time" placeholder="请选择日期"/>
                                 </div>
                             </div>
                         </div>
@@ -308,7 +308,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">设备状态：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="equipment_state" type="text" class="form-control" name="equipment_state" >
+                                    <input id="equip_state" type="text" class="form-control" readonly name="equip_state" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
@@ -321,18 +321,18 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 col-sm-offset-2 col-xs-offset-0 control-label" id="file2" style="text-align: right;line-height: 44px;">检验文件：</label>
+                                <label class="col-xs-6 col-sm-4 col-sm-offset-2 col-xs-offset-0 control-label" id="file3" style="text-align: right;line-height: 44px;">检验文件：</label>
                                 <div class="myblock col-xs-6 input-group">
                                     <div id="file_per3" style="display: inline-block;vertical-align: middle;"></div>
                                     <div id="file_upload3" style="display: inline-block;vertical-align: middle;"></div>
-                                    <div id="file_list3" style="display: inline-block;vertical-align: middle;"></div>
+                                    <!--<div id="file_list3" style="display: inline-block;vertical-align: middle;"></div>-->
                                 </div>
 
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <div id="img_container" class="col-xs-12 col-xs-12 col-sm-offset-2" style="height: 300px; margin-top: 20px;">
+                            <div id="file_list3" class="col-xs-12 col-xs-12 col-sm-offset-2" style="height: 150px; margin-top: 20px;">
 
                             </div>
                         </div>
@@ -404,7 +404,7 @@
                 case 131:
                 case 132:
                 case 133:
-                    // table3.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid=" + selfid).load();
+                    table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid=" + selfid).load();
                     $("#mytable3_wrapper").css("display","block");
                     break;
             }
@@ -490,22 +490,42 @@
     $("#year1").jeDate({
         format: "YYYY-MM-DD"
     });
-    $("#chuchang_date").jeDate({
+    $("#date_production").jeDate({
+        isinitVal:true,
         format: "YYYY-MM"
     });
-    $("#gupai_date").jeDate({
+    $("#safety_machinery_time").jeDate({
+        isinitVal:true,
         format: "YYYY-MM-DD"
     });
-    $("#safety_date").jeDate({
+    $("#safety_inspecte_certificate_time").jeDate({
+        isinitVal:true,
         format: "YYYY-MM-DD"
     });
-    $("#jinchang_date").jeDate({
+    $("#entry_time").jeDate({
+        isinitVal:true,
         format: "YYYY-MM-DD"
     });
-    $("#daxiu_date").jeDate({
+    $("#date_overhaul").jeDate({
+        isinitVal:true,
         format: "YYYY-MM-DD"
     });
-
+    //获取当前时间，格式YYYY-MM-DD
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+    }
     //预览
     function showPdf(id,url) {
         $.ajax({
@@ -536,6 +556,7 @@
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
                         table2.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
+                        table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid).load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -569,7 +590,7 @@
         })
     }
 
-    var uploader1,uploader2;          //初始化upload按钮
+    var uploader1,uploader2,uploader3;          //初始化upload按钮
 
     var aname1,aname2,aname3,bname1,bname2;         //用于区分 编辑时是否修改了文件
 
@@ -1042,34 +1063,18 @@
             console.log(obj.date.YYYY);
         }
     });
-    $("#yeardu1").val("");
+    $("#yeardu2").val("");
 
 
-    //特种设备假数据
-    dataset = [
-        ["1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1"]
-    ]
+
     //特种设备-表格
     var table3 = $("#table3").DataTable({
         "paging": false,
         "processing": true,//是否显示处理状态
-        // "serverSide":true,//是否开启服务器模式
-        // "ajax":{
-        //     "url": "__SCRIPT__/safety_equipmentmanage.php"
-        // },
-        "data":dataset,
+        "serverSide":true,//是否开启服务器模式
+        "ajax":{
+            "url": "__SCRIPT__/safety_special_equipment_management.php"
+        },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear3">frtip',
         "columnDefs":[ //设置列定义初始化属性
             {
@@ -1077,12 +1082,30 @@
                 "orderable":false,   //禁止排序
                 "targets":[12],         //指定第六列
                 "render": function (data,type,row) {
-                    var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit2(this)' value='编辑'/>" ;
-                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf2(this)' value='预览'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del2(this)' value='删除'/>" ;
+                    var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit3(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf3(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del3(this)' value='删除'/>" ;
                     return html;
                 }
+            },
+            {
+                "targets":[10],
+                "render":function (data,type,row) {
+                    var state = getNowFormatDate()<=row[12]?"正常":"异常";
+                    var html = "<div>"+state+"</div>";
+                    return  html;
+                }
+            },
+            {
+                "searchable":false,  //禁止搜索
+                "orderable":false,   //禁止排序
+                "targets":[13],
+                "render":function (data,type,row) {
+                    var html = "<input type='checkbox' />"
+                    return  html;
+                }
             }
+
         ],
         "language": {
             "lengthMenu": "每页_MENU_ 条记录",
@@ -1099,15 +1122,35 @@
     })
     //特种设备-初始化
     function upload3() {
-        if(1){
+        if(!uploader3){
             uploader3 = WebUploader.create({
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadEquipmentCheckAccept')}",// 文件接收服务端。
-                chunked: false,
+                server: "{:url('Upload/uploadSpecialequipmentmanagement')}",// 文件接收服务端。
+                chunked: false, //分片
+                comress:null, //图片不压缩
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 6,
-                formData: {"remark":"","bid":"","selfid":""},
+                formData: {
+                    "remark":"",
+                    "cid":"",
+                    "selfid":"",
+                    "equip_name":"",
+                    "model":"",
+                    "equip_num":"",
+                    "manufactur_unit":"",
+                    "date_production":"",
+                    "current_state":"",
+                    "equip_manage_department":"",
+                    "safety_machinery_time":"",
+                    "safety_inspection_num":"",
+                    "inspection_unit":"",
+                    "safety_inspecte_certificate_time":"",
+                    "equipmen_overhaul":"",
+                    "date_overhaul":"",
+                    "entry_time":"",
+                    "equip_state":""
+                },
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: true,
@@ -1123,6 +1166,7 @@
             });
 
             uploader3.on( 'fileQueued', function( file ) {
+                //创建图片节点 预览图片
                 var $li = $(
                     '<div id="' + file.id + '" class="file-item thumbnail">' +
                     '<img>' +
@@ -1130,10 +1174,7 @@
                     '</div>'
                     ),
                     $img = $li.find('img');
-                    $li.mouseenter(function () {
-                        console.log($(this).attr("id"))
-                    })
-                $("#img_container").append( $li );
+                $("#file_list3").append( $li );
                 uploader3.makeThumb( file, function( error, src ) {
                     if ( error ) {
                         $img.replaceWith('<span>不能预览</span>');
@@ -1142,22 +1183,36 @@
                     $img.attr( 'src', src );
                 }, 100, 100 );
             });
-            $("#img_container").on("click", ".webuploadDelbtn", function () {
+            //删除文件
+            $("#file_list3").on("click", ".webuploadDelbtn", function () {
                 var $ele = $(this);
-                var id = $ele.parent().attr("class");
-                console.log($ele.parent())
+                var id = $ele.parent().parent().attr("id");
                 var file = uploader3.getFile(id);
                 uploader3.removeFile(file,true);
             });
             uploader3.on('fileDequeued', function (file) {
                 $(file.id).remove();
-                $('.'+file.id).remove();
+                $('#'+file.id).remove();
                 console.log("remove");
             });
             uploader3.on("uploadStart",function () {
-                uploader3.options.formData.aid = $("#bid").val();
-                uploader3.options.formData.remark = $("#remark3").val();
+                uploader3.options.formData.aid = $("#cid").val();
                 uploader3.options.formData.selfid = selfid;
+                uploader3.options.formData.equip_name = $("#equip_name").val();
+                uploader3.options.formData.model = $("#model").val();
+                uploader3.options.formData.remark = $("#remark3").val();
+                uploader3.options.formData.manufactur_unit = $("#manufactur_unit").val();
+                uploader3.options.formData.date_production = $("#date_production").val();
+                uploader3.options.formData.current_state = $("#current_state").val();
+                uploader3.options.formData.equip_manage_department = $("#equip_manage_department").val();
+                uploader3.options.formData.safety_machinery_time = $("#safety_machinery_time").val();
+                uploader3.options.formData.safety_inspection_num = $("#safety_inspection_num").val();
+                uploader3.options.formData.inspection_unit = $("#inspection_unit").val();
+                uploader3.options.formData.safety_inspecte_certificate_time = $("#safety_inspecte_certificate_time").val();
+                uploader3.options.formData.equipmen_overhaul = $("#equipmen_overhaul").val();
+                uploader3.options.formData.date_overhaul = $("#date_overhaul").val();
+                uploader3.options.formData.entry_time = $("#entry_time").val();
+                uploader3.options.formData.equip_state = $("#equip_state").val();
             });
             // 文件上传过程中创建进度条实时显示。
             uploader3.on('uploadProgress', function (file, percentage) {
@@ -1183,7 +1238,7 @@
                     $("#file_per3").empty();
                     $("#file_list3").empty();
                     $("#fname3").modal('hide');
-                    table3.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
+                    table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid).load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -1200,6 +1255,7 @@
     //特种设备-新增
     $("div.mybtn").html("新增")
     $("#table3_wrapper .mybtn").click(function () {
+
         uploader3 = null;
         $("#fname3 input").val("");
         $("#file_list3").empty();
@@ -1213,35 +1269,159 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table2.ajax.url("__SCRIPT__/safety_equipmentmanage.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
+            table2.ajax.url("__SCRIPT__/safety_special_equipment_management.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
             console.log(obj.date.YYYY);
         }
     });
     $("#yeardu3").val("");
 
-    //图片展示
-    $("#reason_container img").click(function () {
-        imgshow(3);
-    })
-    function imgshow(n) {
-        if(n === 1){
-            $("#img_show img").attr('src',path1);
-        }else if(n === 2){
-            $("#img_show img").attr('src',path2);
-        }else if(n === 3){
-            $("#img_show img").attr('src',path3);
-        }
-        $("#img_show").modal('show');
-    }
     //是否大修
-    $("#daxiu").change(function () {
+    $("#equipmen_overhaul").change(function () {
         if($(this).val()==="否"){
-            $("#daxiu_date").css("display","none")
-            $("#daxiu_date").val("")
+            $("#date_overhaul").css("display","none")
+            $("#date_overhaul").val("")
         }else{
-            $("#daxiu_date").css("display","block")
+            $("#date_overhaul").css("display","block")
         }
     })
+    //特种设备-提交
+    $("#fname3 .btn-primary").click(function () {
+        $("#specialform").submit(function () {
+            if($("#file_list3").html()){
+                if(!$("#cid").val()){
+                    uploader3.upload();
+                }else {
+                    if(bname1 !== $("#remark3").val() || bname2 !== $(".info3").html()){
+                        $.ajax({
+                            url: "./equipmentEdit",
+                            type: "post",
+                            data: {
+                                id:$("#cid").val(),
+                                remark:$("#remark3").val(),
+                                equip_name:$("#equip_name").val(),
+                                model:$("#model").val(),
+                                equip_num:$("#equip_num").val(),
+                                manufactur_unit:$("#manufactur_unit").val(),
+                                date_production:$("#date_production").val(),
+                                current_state:$("#current_state").val(),
+                                equip_manage_department:$("#equip_manage_department").val(),
+                                safety_machinery_time:$("#safety_machinery_time").val(),
+                                safety_inspection_num:$("#safety_inspection_num").val(),
+                                inspection_unit:$("#inspection_unit").val(),
+                                safety_inspecte_certificate_time:$("#safety_inspecte_certificate_time").val(),
+                                equipmen_overhaul:$("#equipmen_overhaul").val(),
+                                date_overhaul:$("#date_overhaul").val(),
+                                entry_time:$("#entry_time").val(),
+                                equip_state:$("#equip_state").val()
+                            },
+                            datatype: "json",
+                            success: function (res) {
+                                if(res.code === 1){
+                                    layer.msg(res.msg);
+                                    table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid).load();
+                                    $("#fname3").modal('hide');
+                                }else {
+                                    layer.msg(res.msg);
+                                }
+                            }
+                        })
+                    }else {
+                        layer.msg("未发生更改");
+                        $("#fname3").modal('hide');
+                    }
+                }
+            }else {
+                alert("请选择上传文件");
+            }
+        })
+    })
+    //特种设备-删除
+    function del3(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        del(id,"../Specialequipmentmanagement/equipmentDel");
+    }
+    //特种设备-编辑
+    function edit3(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $.ajax({
+            url: "./edit",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.code === 1){
+                    $("#cid").val(res.data.id);
+                    $("#remark3").val(res.data.remark);
+                    $("#equip_name").val(res.data.equip_name);
+                    $("#model").val(res.data.model);
+                    $("#equip_num").val(res.data.equip_num);
+                    $("#manufactur_unit").val(res.data.manufactur_unit);
+                    $("#date_production").val(res.data.date_production);
+                    $("#current_state").val(res.data.current_state);
+                    $("#equip_manage_department").val(res.data.equip_manage_department);
+                    $("#safety_machinery_time").val(res.data.safety_machinery_time);
+                    $("#safety_inspection_num").val(res.data.safety_inspection_num);
+                    $("#inspection_unit").val(res.data.inspection_unit);
+                    $("#safety_inspecte_certificate_time").val(res.data.safety_inspecte_certificate_time);
+                    $("#equipmen_overhaul").val(res.data.equipmen_overhaul);
+                    $("#date_overhaul").val(res.data.date_overhaul);
+                    $("#entry_time").val(res.data.entry_time);
+                    $("#equip_state").val(res.data.equip_state);
+                    uploader3= null;
+                    upload3();
+                    if(res.data.path){
+                        $("#file_list3").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                            '<span class="info2">' + res.data.name + '</span>&nbsp' +
+                            '<span onclick="fdelatt3(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '</div>' );
+                    }
+                    $("#fname3").modal('show');
+                }
+            }
+        })
+    }
+    //特种设备-查看
+    function showpdf3(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $.ajax({
+            url: "../Specialequipmentmanagement/index",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                if(res.code === 1){
+                    $("#cid").val(res.data.id);
+                    $("#remark3").val(res.data.remark);
+                    $("#equip_name").val(res.data.equip_name);
+                    $("#model").val(res.data.model);
+                    $("#equip_num").val(res.data.equip_num);
+                    $("#manufactur_unit").val(res.data.manufactur_unit);
+                    $("#date_production").val(res.data.date_production);
+                    $("#current_state").val(res.data.current_state);
+                    $("#equip_manage_department").val(res.data.equip_manage_department);
+                    $("#safety_machinery_time").val(res.data.safety_machinery_time);
+                    $("#safety_inspection_num").val(res.data.safety_inspection_num);
+                    $("#inspection_unit").val(res.data.inspection_unit);
+                    $("#safety_inspecte_certificate_time").val(res.data.safety_inspecte_certificate_time);
+                    $("#equipmen_overhaul").val(res.data.equipmen_overhaul);
+                    $("#date_overhaul").val(res.data.date_overhaul);
+                    $("#entry_time").val(res.data.entry_time);
+                    $("#equip_state").val(res.data.equip_state);
+                    uploader3= null;
+                    upload3();
+                    if(res.data.path){
+                        $("#file_list3").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                            '<span class="info2">' + res.data.name + '</span>&nbsp' +
+                            '<span onclick="fdelatt3(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '</div>' );
+                    }
+                    $("#fname3 input").attr("readonly")
+                    $("#fname3").modal('show');
+                }
+            }
+        })
+    }
 </script>
 
 </body>
