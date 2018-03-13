@@ -95,7 +95,7 @@ class StatutestdiModel extends Model
 
     public function getYears()
     {
-        return $this->group('years')->column('years');
+        return $this->group('improt_time')->column('improt_time');
     }
 
 }
