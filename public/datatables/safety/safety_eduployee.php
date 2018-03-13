@@ -20,7 +20,7 @@ include('../conn.php');
  */
 
 // DB table to use 法规标准识别
-$table = 'think_safety_record';
+$table = 'think_safety_eduemployee';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -31,12 +31,18 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'record_name',  'dt' => 1 ),
-    array( 'db' => 'original_number',  'dt' => 2 ),
-    array( 'db' => 'replace_number',  'dt' => 3 ),
-    array( 'db' => 'replace_time',  'dt' => 4 ),
-    array( 'db' => 'owner',  'dt' => 5 ),
-    array( 'db' => 'record_type',  'dt' => 6 )
+    array( 'db' => 'edu_name',  'dt' => 1 ),
+    array( 'db' => 'sex',  'dt' => 2 ),
+    array( 'db' => 'id_on',  'dt' => 3 ),
+    array( 'db' => 'job',  'dt' => 4 ),
+    array( 'db' => 'situation',  'dt' => 5 ),
+    array( 'db' => 'iphone',  'dt' => 6 ),
+    array( 'db' => 'approach_time',  'dt' => 7 ),
+    array( 'db' => 'content',  'dt' => 8 ),
+    array( 'db' => 'edu_time',  'dt' => 9 ),
+    array( 'db' => 'exam_performance',  'dt' => 10 ),
+    array( 'db' => 'exit_time',  'dt' => 11 ),
+    array( 'db' => 'remark',  'dt' => 12)
 );
 
 
@@ -57,18 +63,17 @@ require( '../ssp.class.php' );
 //echo json_encode(
 //    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
 //);
-$years = isset($_GET["years"]) ? $_GET["years"] : ''; // 年度
-$times = isset($_GET["times"]) ? $_GET["times"] : ''; // 历史版本
 
-if(!empty($years))
+if(!empty($_GET["pid"]))
 {
+    $pid = $_GET["pid"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "years = '$years'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
     );
 }
 else{
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "years = 'empty'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = 'empty'" )
     );
 }
 
