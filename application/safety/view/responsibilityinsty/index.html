@@ -221,8 +221,9 @@
            if (!sNodes[0].children && groupid !== 1){
                table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
                $("#mytable1_wrapper").css("display","block");
-               $("#path").text("当前路径:"+path)
-           }
+
+           };
+           $("#path").text("当前路径:"+path)
 
        };
 
