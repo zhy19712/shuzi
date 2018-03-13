@@ -65,13 +65,17 @@ $years = isset($_GET["years"]) ? $_GET["years"] : ''; // 年度
 $times = isset($_GET["times"]) ? $_GET["times"] : '';// 历史版本
 if(!empty($pid))
 {
-    if(!empty($years)){
+    if(!empty($years) && !empty($times)){
+        echo json_encode(
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$pid' and years = '$years' and improt_time = '$times'" )
+        );
+    }else if (!empty($years)){
         echo json_encode(
             SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid' and years = '$years'" )
         );
-    }else{
+    }else if (!empty($times)){
         echo json_encode(
-            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$pid' and improt_time = '$times'" )
         );
     }
 }
