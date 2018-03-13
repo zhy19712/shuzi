@@ -784,8 +784,14 @@
 
         //文件下载
         function download(that) {
+            var id = $(that).parents('tr').find('td:eq(1)').text();
             $.ajax({
                 url: "{:url('Statutestdi/sdiDownload')}",
+                type: "post",
+                dataType: "json",
+                data:{
+                    id:id
+                },
                 success: function (res) {
                     if(res.code != 1){
                         layer.msg(res.msg);
@@ -810,11 +816,11 @@
         //编辑
         function zedit(that) {
             $('#addRules_modal').modal('show');
-            var id = $(that).parents('tr').find('.sorting_1').text();
+            var id = $(that).parents('tr').find('td:eq(1)').text();
             $('#sid').val(id);
             $.ajax({
                 url: "{:url('Statutestdi/getOne')}",
-                type: "get",
+                type: "post",
                 dataType: "json",
                 data:{
                     id:id
