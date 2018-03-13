@@ -335,7 +335,7 @@
         "columnDefs": [
             {
                 "searchable": false,
-                "targets": [0],
+                "targets": 0,
                 "render": function (data, type, full, meta) {
                     return '<input type="checkbox"  class="checkchild" onclick="getRadioId(this)" value="' + data + '" />';
                 }
@@ -1166,8 +1166,6 @@
         var id = $(that).parents('tr').find('td:eq(1)').text();
         if(isChecked){
             dataArr.push(id);
-        }else{
-            dataArr.remove(id);
         }
     }
 
@@ -1254,7 +1252,7 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            admin_table.ajax.url("__SCRIPT__/safety_rules.php?year="+obj.date.YYYY+"pid=" + groupid).load();
+            admin_table.ajax.url("__SCRIPT__/safety_rules.php?year="+obj.date.YYYY+"&pid=" + groupid).load();
             console.log(groupid)
             console.log(obj.date.YYYY);
         }
