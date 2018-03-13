@@ -9,6 +9,9 @@
 {include file="public/header" /}
 <body>
     <style>
+        #tableItem_wrapper{
+            visibility: hidden;
+        }
         .mycontent{
             width: 20%;
             height: 98%;
@@ -70,13 +73,14 @@
         #import,#export,#upload{
             padding: 6px 12px;
             border-radius: 4px;
-            border: 1px solid #00b7ee;
-            background: #00b7ee;
-            color: #FFF;
+            border: 1px solid #1ab394;
             cursor: pointer;
         }
         #upload{
             float: none;
+        }
+        #years{
+            width: 100px;
         }
         #tableItem .btn{
             margin-right: 2px;
@@ -87,7 +91,7 @@
         .dataTables_wrapper .dataTables_filter{
             margin-top: 10px;
         }
-        .dataTables_wrapper .dataTables_filter input{
+        .dataTables_wrapper .dataTables_filter input,#years{
             margin: 0;
             padding: 6px 10px;
             border: 1px solid #ccc;
@@ -104,9 +108,12 @@
         }
         .webuploader-pick{
             padding: 0;
+            background: none;
+            color: #1ab394;
         }
         .webuploader-pick-hover{
             background: none;
+            color: #FFF;
         }
     </style>
 
@@ -162,7 +169,7 @@
                         <!--新增用户信息开始-->
                         <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
                             <input type="hidden" name="id" id="sid">
-                            <input type="hidden" name="group_id" id="pgroup_id">
+                            <input type="hidden" name="group_id" id="group_id">
                             <input type="hidden" name="oldFileName" id="oldFileName">
                             <input type="hidden" name="newFileName" id="newFileName">
                             <div class="form-group">
@@ -448,6 +455,8 @@
                 }
             })
 
+            //构建按版本查询
+            viewHistoryVer(groupid);
 
         };
 
@@ -459,7 +468,7 @@
            ajax: {
                "url": "__SCRIPT__/safety_statutesdi.php"
            },
-           dom: 'lf<"#view"><"#seach"><"#export"><"#import"><"#upload">rtip',
+           dom: 'lf<"#view"><"#seach"><"#export.export btn-outline btn-primary"><"#import.import btn-outline btn-primary"><"#upload.upload btn-outline btn-primary">rtip',
            columnDefs: [
                {
                    searchable: false,
@@ -497,31 +506,23 @@
                }
            }
        });
+
+        var selectDom = '<input type="text" id="years">';
+
         $("div#upload").html('<div>上传文件</div>');
-        var selectDom = '<select name="" id="" style="height: 32px">' +
-                            '<option value="">2018</option>'+
-                            '<option value="">2015-2017</option>'+
-                            '<option value="">2013-2015</option>'+
-                        '</select>';
-        var dataViewDom = '<select name="" id="" style="height: 32px">' +
-                            '<option value="">按时间查看</option>'+
-                            '<option value="">2015-2017</option>'+
-                            '<option value="">2013-2015</option>'+
-                        '</select>';
         $("div#seach").html('年度：'+selectDom);
         $('div#import').html('导入');
         $('div#export').html('导出');
-        $('div#view').html(dataViewDom);
 
-        $('#tableItem_wrapper').css("visibility","hidden");
 
         //上传弹层
         $(function(){
-            $('#upload').on('click',function(){
+            $('.upload').on('click',function(){
                 $('#addRules_modal').modal('show');
 
             });
             $('#dataImple').jeDate();
+
         })
         var uploader;
         //在点击弹出模态框的时候再初始化WebUploader，解决点击上传无反应问题
@@ -738,7 +739,7 @@
 
         //删除数据
         function del(that){
-            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
             layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
                 $.ajax({
                     url: "{:url('Statutestdi/sdiDel')}",
@@ -854,11 +855,6 @@
             },
             formData:{
                 group_id:'',
-                number:'',
-                go_date:'',
-                standard:'',
-                evaluation:'',
-                sid_user:'',
             },
 
             // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
@@ -870,7 +866,6 @@
         importExcel.on( 'uploadSuccess', function( file ,res) {
             $list.val(file.name+'已上传成功');
             complete(res);
-            tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php?pid=" + groupid).load();
         });
 
         importExcel.on( 'uploadError', function( file ) {
@@ -893,14 +888,7 @@
         });
 
         importExcel.on("uploadStart",function () {
-            uploader.options.formData.group_id = $('input[type="hidden"][name="groupId"]').val();
-            uploader.options.formData.number = $("#standardNumr").val();
-            uploader.options.formData.sdi_name = $("#addName").val();
-            uploader.options.formData.go_date = $("#dataImple").val();
-            uploader.options.formData.standard = $("#alternativeStandard").val();
-            uploader.options.formData.evaluation = $("#psex").val();
-            uploader.options.formData.sid_user = $("#pdivision").val();
-            uploader.options.formData.remark = $("#rulesDesc").text();
+            importExcel.options.formData.group_id = $('input[type="hidden"][name="groupId"]').val();
         });
 
         //删除数组中的指定元素
@@ -914,6 +902,17 @@
             return this;
         }
 
+        //数组去重
+        Array.prototype.removalArray = function(){
+            var newArr = [];
+            for (var i = 0; i < this.length; i++) {
+                if(newArr.indexOf(this[i]) == -1){  //indexOf 不兼容IE8及以下
+                    newArr.push(this[i]);
+                }
+            }
+            return newArr;
+        }
+
         //获取选中行ID
         var idArr = [];
         function getId(that) {
@@ -921,11 +920,13 @@
             var id = $(that).parents('tr').find('td:eq(1)').text();
             if(isChecked){
                 idArr.push(id);
+                idArr.removalArray();
             }else{
                 idArr.remove(id);
+                idArr.removalArray();
             }
         }
-        
+
         //单选
         function getSelectId(that) {
             getId(that);
@@ -966,8 +967,62 @@
                     }
                 }
             });
+        });
 
+        //构建查看历史版本
+        function viewHistoryVer(groupid) {
+            var years = $('#years').val();
+            $.ajax({
+                url:'{:url("Statutestdi/getHistory")}',
+                dataType:'JSON',
+                type:'POST',
+                data:{
+                    group_id:groupid,
+                    years:years
+                },
+                success:function (data) {
+                    var dataViewDom = '<select name="" id="history" style="height: 32px">';
+                    for (var i=0;i<data.length;i++){
+                        dataViewDom += '<option value="">'+data[i]+'</option>';
+                    }
+                    dataViewDom += '</select>';
+                    $('div#view').html(dataViewDom);
+                }
+            });
+        }
 
+        //筛选数据
+        function filterData() {
+            var years = $('#years').val();
+            var pid = $('#group_id').val();
+            var times = $('#history').find('option:selected').text();
+            $.ajax({
+                url:'__SCRIPT__/safety_statutesdi.php',
+                dataType:'JSON',
+                type:'POST',
+                data:{
+                    pid:groupid,
+                    years:years,
+                    times:times
+                },
+                success:function (data) {
+                    console.log(data);
+                }
+            });
+        }
+
+        //按版本查看
+        $('#history').change(function(){
+            filterData();
+        });
+
+        //按年度查看
+        $('#years').jeDate({
+            isinitVal:true,
+            format:"YYYY",
+            okfun:function (obj) {
+                filterData();
+            }
         });
     </script>
 </body>

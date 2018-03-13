@@ -98,12 +98,13 @@
         top: 34px
     }
     #excel{
-        width: 797px;
+        width: 280px;
         height: 33px;
         /*border: 1px solid red;*/
         position: absolute;
         right: 6px;
         top: 50px;
+        z-index: 4;
     }
     #excel button{
         margin-left: 15px;
@@ -113,13 +114,11 @@
         border: none;
         background: orange;
         color: white;
+        outline: none;
     }
     #excel select{
         margin-left: 10px;
         width: 100px;
-    }
-    #year_excel{
-        margin-right: 370px;
     }
     .float_left{
         margin-right: 400px;
@@ -156,11 +155,8 @@
                     <div id="path">当前路径:</div>
                     <div id="mytable1_wrapper">
                         <div id="excel">
-                            <span></span>
-                            <span id="year_excel">
-                            </span>
-                            <button>导入</button>
-                            <button>导出</button>
+                            <button id="excelImport"></button>
+                            <button id="excelExport">导出</button>
                             <select name="down_excel" id="down_excel">
                                 <option value="查看历史版本">查看历史版本</option>
                                 <option value="两年">两年</option>
@@ -169,7 +165,7 @@
                         <table id="admin_table" width="100%" class="table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <th><input type="checkbox">全选</th>
+                                <th><input type="checkbox" class="checkall">全选</th>
                                 <th>ID</th>
                                 <th>标准号</th>
                                 <th>名称</th>
@@ -338,17 +334,16 @@
         "dom": '<"mybtn btn btn-outline btn-primary"><"selectyear"><"myl"l><"float_left"f>tip',
         "columnDefs": [
             {
-                "sClass": "text-center",
-                "orderable": false,
+                "searchable": false,
                 "targets": 0,
                 "render": function (data, type, full, meta) {
-                    return '<input type="checkbox"  class="checkchild"  value="' + data + '" />';
+                    return '<input type="checkbox"  class="checkchild" onclick="getRadioId(this)" value="' + data + '" />';
                 }
             },
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [9],
+                "targets": [10],
                 "render" :  function(data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='downloadFile(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='preview(this)' value='预览'/>" ;
@@ -381,32 +376,36 @@
     var mytree_node1;
     //树结构添加节点
     $("#options>i:first-child").click(function () {
+        $("#level2 input").val("");
+//        $("#treePid").val(mytree_node.id);
+        $("#level2 h5").text('添加');
+        $("#level2").modal('show');
         console.log(mytree_node)
-        if(mytree_node){
-            if(mytree_node.level == 0){
-                $("#level2 input").val("");
-                $("#treePid").val(mytree_node.id);
-                $("#level2 h5").text('添加');
-                $("#level2").modal('show');
-                console.log($("#treePid").val())
-//                var id = mytree_node.id;
-//                $.ajax({
-//                    url: "nodeAdd",
-//                    type: "post",
-//                    data: {id:id},
-//                    dataType: "json",
-//                    success: function (res) {
-//                        console.log(res);
-//                        if(res.msg == "success"){
-//                            if(res.data.post_sn){
-//                                $("#companyName").val(res.data.sn + "-" + res.data.post_sn + "-");
-//                            }else {
-//                                $("#companyName").val(res.data.sn + "-");
-//                            }
-//                        }
-//                    }
-//                });
-            }
+//        if(mytree_node){
+//            if(mytree_node.level == 0){
+//                $("#level2 input").val("");
+//                $("#treePid").val(mytree_node.id);
+//                $("#level2 h5").text('添加');
+//                $("#level2").modal('show');
+//                console.log($("#treePid").val())
+////                var id = mytree_node.id;
+////                $.ajax({
+////                    url: "nodeAdd",
+////                    type: "post",
+////                    data: {id:id},
+////                    dataType: "json",
+////                    success: function (res) {
+////                        console.log(res);
+////                        if(res.msg == "success"){
+////                            if(res.data.post_sn){
+////                                $("#companyName").val(res.data.sn + "-" + res.data.post_sn + "-");
+////                            }else {
+////                                $("#companyName").val(res.data.sn + "-");
+////                            }
+////                        }
+////                    }
+////                });
+//            }
 ////            else if(mytree_node.level == 1){
 ////                $("#level3 input").val("");
 ////                $("#pid3").val(mytree_node.id);
@@ -452,9 +451,9 @@
 ////                $("#level4 h5").text('添加');
 ////                $("#level4").modal('show');
 ////            }
-        }else {
-            layer.msg("请选择节点",{time:1500,shade: 0.1});
-        }
+//        }else {
+//            layer.msg("请选择节点",{time:1500,shade: 0.1});
+//        }
     })
     //树结构编辑节点
     $("#options>i:nth-child(2)").click(function () {
@@ -841,6 +840,11 @@
         console.log($("#file_list1 .info").text())
         if($("#file_list1").html()){
             if(!$("#id1").val()){
+                //非空判断
+//                isEmpty('standardNumr','标准号不能为空');
+//                isEmpty('dataImple','施行日期不能为空');
+//                isEmpty('appEvaluation','适用性评价不能为空');
+//                isEmpty('recogner','识别人不能为空');
                 if($("#appEvaluation").val() == '过期'){
                     if($("#alternativeStandard").val() != ''){
                         uploader1.upload();
@@ -866,7 +870,7 @@
                             rul_name : $("#file_list1 .info .infoText").val(),//名称
                             go_date : $("#dataImple").val(),//施行日期
                             standard : $("#alternativeStandard").val(),//替代标准
-                            evaluation : null,//适用性评价
+                            evaluation : $("#appEvaluation").val(),//适用性评价
                             rul_user : $("#recogner").val(),//识别人
                             remark : $("#rulesDesc").val()//备注
                         },
@@ -1146,7 +1150,6 @@
             layer.close(index);
         })
     }
-
     //点击评价标准置灰
     $("#appEvaluation").click(function () {
         console.log($("#appEvaluation").val())
@@ -1156,10 +1159,102 @@
             $("#alternativeStandard").attr("readOnly",true);
         }
     });
+    //获取选中行ID
+    var dataArr=[];
+    function getDataId(that) {
+        var isChecked = $(that).prop('checked');
+        var id = $(that).parents('tr').find('td:eq(1)').text();
+        if(isChecked){
+            dataArr.push(id);
+        }
+    }
 
-    //导出
-    $("#excel button").eq(2).click(function () {
-        alert(88999)
+    //单选
+    function getRadioId(that) {
+        console.log(dataArr);
+        getDataId(that);
+    }
+
+    //checkbox全选
+    $(".checkall").on("click", function () {
+        console.log(dataArr);
+
+        if ($(this).prop("checked") === true) {
+            var check = $(this).prop("checked");
+            $(".checkchild").prop("checked", check);
+            $(".checkchild").each(function(){
+                getDataId(this);
+            });
+        } else {
+            $(".checkchild").prop("checked", false);
+        }
+    });
+//    //点击全选
+//    $(".checkall").click(function () {
+//        var check = $(this).prop("checked");
+//        $(".checkchild").prop("checked", check);
+//    });
+    var uploaderExcel;
+    //导入excelImport
+    $("#excelImport").click(function () {
+        uploaderExcel = WebUploader.create({
+            auto: false,// 选完文件后，是否自动上传。
+            swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+            server: "{:url('Rulesregulations/importExcel')}",// 文件接收服务端。
+            chunked: false,
+            fileSizeLimit: 1000 *1024 *1024,
+            fileNumLimit: 1,
+            formData: {
+                id : '',//id
+                group_id : '',//group_id
+                number : '',//标准号
+                rul_name : '',//名称
+                go_date : '',//施行日期
+                standard : '',//替代标准
+                evaluation : '',//适用性评价
+                rul_user : '',//识别人
+                remark : ''//备注
+            },
+            duplicate :true,// 重复上传图片，true为可重复false为不可重复
+            pick: {
+                multiple: false,
+                id: "#excelImport",
+                innerHTML: "导入"
+            }
+        });
+        uploaderExcel.on( 'fileQueued', function( file ) {
+            $list.val('等待上传...');
+        });
+
+        uploaderExcel.on( 'uploadSuccess', function( file ) {
+
+            var tt = $list.val(file.name+'已上传成功');
+            layer.msg(tt, {icon: 1});
+        });
+
+        uploaderExcel.on( 'uploadError', function( file ) {
+            $list.val('上传出错');
+        });
+    });
+
+    //导出excelExport
+    $("#excelExport").click(function () {
+        $.ajax({
+            url: "./exportExcel",
+            type: "post",
+            data: {
+                'id':dataArr
+            },
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.code ==1){
+                    layer.msg('导出成功！', {icon: 1});
+                }else{
+                    alert("获取数据失败！")
+                }
+            }
+        })
     });
     var selectyear ='<input id="year" />';
     $("div.selectyear").html("年度："+selectyear)
@@ -1168,10 +1263,12 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table.ajax.url("__SCRIPT__/safety_rules.php?year="+obj.date.YYYY).load();
+            admin_table.ajax.url("__SCRIPT__/safety_rules.php?years="+obj.date.YYYY+"&pid=" + groupid).load();
+            console.log(groupid)
             console.log(obj.date.YYYY);
         }
     });
+
 </script>
 </body>
 </html>
