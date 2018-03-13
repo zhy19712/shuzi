@@ -335,7 +335,7 @@
         "columnDefs": [
             {
                 "searchable": false,
-                "targets": [0],
+                "targets": 0,
                 "render": function (data, type, full, meta) {
                     return '<input type="checkbox"  class="checkchild" onclick="getRadioId(this)" value="' + data + '" />';
                 }
@@ -1166,8 +1166,6 @@
         var id = $(that).parents('tr').find('td:eq(1)').text();
         if(isChecked){
             dataArr.push(id);
-        }else{
-            dataArr.remove(id);
         }
     }
 
