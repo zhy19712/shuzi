@@ -155,7 +155,7 @@
                     <div id="path">当前路径:</div>
                     <div id="mytable1_wrapper">
                         <div id="excel">
-                            <button id="excelImport">导入</button>
+                            <button id="excelImport"></button>
                             <button id="excelExport">导出</button>
                             <select name="down_excel" id="down_excel">
                                 <option value="查看历史版本">查看历史版本</option>
@@ -841,10 +841,10 @@
         if($("#file_list1").html()){
             if(!$("#id1").val()){
                 //非空判断
-                isEmpty('standardNumr','标准号不能为空');
-                isEmpty('dataImple','施行日期不能为空');
-                isEmpty('appEvaluation','适用性评价不能为空');
-                isEmpty('recogner','识别人不能为空');
+//                isEmpty('standardNumr','标准号不能为空');
+//                isEmpty('dataImple','施行日期不能为空');
+//                isEmpty('appEvaluation','适用性评价不能为空');
+//                isEmpty('recogner','识别人不能为空');
                 if($("#appEvaluation").val() == '过期'){
                     if($("#alternativeStandard").val() != ''){
                         uploader1.upload();
@@ -1216,11 +1216,11 @@
                 remark : ''//备注
             },
             duplicate :true,// 重复上传图片，true为可重复false为不可重复
-//            pick: {
-//                multiple: false,
-//                id: "#file_upload1",
-//                innerHTML: "上传文件"
-//            }
+            pick: {
+                multiple: false,
+                id: "#excelImport",
+                innerHTML: "导入"
+            }
         });
         uploaderExcel.on( 'fileQueued', function( file ) {
             $list.val('等待上传...');
