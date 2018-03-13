@@ -57,10 +57,10 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
 require( '../ssp.class.php' );
 
 
-$group_id = isset($_GET["group_id"]) ? $_GET["group_id"] : ''; // 所属分组
+$group_id = isset($_GET["pid"]) ? $_GET["pid"] : ''; // 所属分组
 $years = isset($_GET["years"]) ? $_GET["years"] : ''; // 年度
 $times = isset($_GET["times"]) ? $_GET["times"] : '';// 历史版本
-if(!empty($pid))
+if(!empty($group_id))
 {
     if(!empty($years) && !empty($times)){
         echo json_encode(
