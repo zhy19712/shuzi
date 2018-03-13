@@ -73,13 +73,14 @@
         #import,#export,#upload{
             padding: 6px 12px;
             border-radius: 4px;
-            border: 1px solid #00b7ee;
-            background: #00b7ee;
-            color: #FFF;
+            border: 1px solid #1ab394;
             cursor: pointer;
         }
         #upload{
             float: none;
+        }
+        #years{
+            width: 100px;
         }
         #tableItem .btn{
             margin-right: 2px;
@@ -107,9 +108,12 @@
         }
         .webuploader-pick{
             padding: 0;
+            background: none;
+            color: #1ab394;
         }
         .webuploader-pick-hover{
             background: none;
+            color: #FFF;
         }
     </style>
 
@@ -464,7 +468,7 @@
            ajax: {
                "url": "__SCRIPT__/safety_statutesdi.php"
            },
-           dom: 'lf<"#view"><"#seach"><"#export"><"#import"><"#upload">rtip',
+           dom: 'lf<"#view"><"#seach"><"#export.export btn-outline btn-primary"><"#import.import btn-outline btn-primary"><"#upload.upload btn-outline btn-primary">rtip',
            columnDefs: [
                {
                    searchable: false,
@@ -502,13 +506,14 @@
                }
            }
        });
-        $("div#upload").html('<div>上传文件</div>');
+
         var selectDom = '<input type="text" id="years">';
         var dataViewDom = '<select name="" id="history" style="height: 32px">' +
                             '<option value="">按历史版本查看</option>'+
                             '<option value="">2015-2017</option>'+
                             '<option value="">2013-2015</option>'+
                         '</select>';
+        $("div#upload").html('<div>上传文件</div>');
         $("div#seach").html('年度：'+selectDom);
         $('div#import').html('导入');
         $('div#export').html('导出');
@@ -516,7 +521,7 @@
 
         //上传弹层
         $(function(){
-            $('#upload').on('click',function(){
+            $('.upload').on('click',function(){
                 $('#addRules_modal').modal('show');
 
             });
@@ -925,7 +930,7 @@
                 idArr.removalArray();
             }
         }
-        
+
         //单选
         function getSelectId(that) {
             getId(that);
@@ -966,8 +971,6 @@
                     }
                 }
             });
-
-
         });
 
         //构建查看历史版本
