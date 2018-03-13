@@ -98,7 +98,7 @@
         top: 34px
     }
     #excel{
-        width: 280px;
+        width: 390px;
         height: 33px;
         /*border: 1px solid red;*/
         position: absolute;
@@ -118,7 +118,7 @@
     }
     #excel select{
         margin-left: 10px;
-        width: 100px;
+        width: 152px;
     }
     .float_left{
         margin-right: 400px;
@@ -158,8 +158,9 @@
                             <button id="excelImport"></button>
                             <button id="excelExport">导出</button>
                             <select name="down_excel" id="down_excel">
-                                <option value="查看历史版本">查看历史版本</option>
-                                <option value="两年">两年</option>
+                                <!--<option value="查看历史版本">查看历史版本</option>-->
+                                <!--<option value="一年">一年</option>-->
+                                <!--<option value="两年">两年</option>-->
                             </select>
                         </div>
                         <table id="admin_table" width="100%" class="table table-striped table-bordered">
@@ -562,11 +563,22 @@
         groupid = treeNode.id;
         console.log(groupid)
         if(treeNode.level == 0){
+            $.ajax({
+                url:'./getHistory',
+                dataType:'JSON',
+                type:'POST',
+                success:function (data) {
+                    console.log(data);
+                    var optionStr='';
+                    for(var i=0;i<data.length;i++){
+                        optionStr += '<option value="'+data[i]+'">' + data[i] + '</option>'
+                    }
+                    $("#down_excel").append(optionStr);
+                }
+            });
             $("#mytable1_wrapper").css("display","block");
             admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
-//            console.log(groupid)
-//            console.log(mytree_node.id)
-//            console.log(treeNode);
+
         }else {
             if(treeNode.level == 1){
                 $("#mytable1_wrapper").css("display","block");
@@ -1189,31 +1201,19 @@
             $(".checkchild").prop("checked", false);
         }
     });
-//    //点击全选
-//    $(".checkall").click(function () {
-//        var check = $(this).prop("checked");
-//        $(".checkchild").prop("checked", check);
-//    });
+
     var uploaderExcel;
     //导入excelImport
-    $("#excelImport").click(function () {
+
         uploaderExcel = WebUploader.create({
-            auto: false,// 选完文件后，是否自动上传。
+            auto: true,// 选完文件后，是否自动上传。
             swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
             server: "{:url('Rulesregulations/importExcel')}",// 文件接收服务端。
             chunked: false,
             fileSizeLimit: 1000 *1024 *1024,
             fileNumLimit: 1,
             formData: {
-                id : '',//id
-                group_id : '',//group_id
-                number : '',//标准号
-                rul_name : '',//名称
-                go_date : '',//施行日期
-                standard : '',//替代标准
-                evaluation : '',//适用性评价
-                rul_user : '',//识别人
-                remark : ''//备注
+                group_id:''
             },
             duplicate :true,// 重复上传图片，true为可重复false为不可重复
             pick: {
@@ -1222,20 +1222,111 @@
                 innerHTML: "导入"
             }
         });
+        var $list = $('#trainerMaterials');
         uploaderExcel.on( 'fileQueued', function( file ) {
             $list.val('等待上传...');
         });
 
-        uploaderExcel.on( 'uploadSuccess', function( file ) {
-
-            var tt = $list.val(file.name+'已上传成功');
-            layer.msg(tt, {icon: 1});
+        uploaderExcel.on( 'uploadSuccess', function( file ,res) {
+            $list.val(file.name+'已上传成功');
+            complete(res);
         });
-
+        function complete(data){
+            console.log(data);
+            if(data.code === 1){
+                console.log(groupid+77777777)
+                layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
+            }else {
+                var tt = $list.val(file.name+'导入失败！');
+                layer.msg(tt);
+                return false;
+            }
+        }
         uploaderExcel.on( 'uploadError', function( file ) {
             $list.val('上传出错');
         });
+        // 文件上传过程中创建进度条实时显示。
+        uploaderExcel.on('uploadProgress', function (file, percentage) {
+            var $li = $('#' + file.id),
+                $percent = $li.find('.progress .progress-bar');
+            // 避免重复创建
+            if (!$percent.length) {
+                $percent = $('<div class="progress progress-striped active">' +
+                    '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                    '</div>' +
+                    '</div>').appendTo($li).find('.progress-bar');
+            }
+            $li.find('p.state').text('上传中');
+            $percent.css('width', percentage * 100 + '%');
+        });
+
+        uploaderExcel.on("uploadStart",function () {
+            uploaderExcel.options.formData.group_id = groupid;
+        });
+
+    //导入
+    var importExcel = WebUploader.create({
+        auto: true,
+        // swf文件路径
+        swf:  '/static/admin/js/webupload/Uploader.swf',
+
+        // 文件接收服务端。
+        server: "{:url('Statutestdi/importExcel')}",
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: {
+            multiple: false,
+            id: "#import",
+            innerHTML: "导入"
+        },
+        formData:{
+            group_id:'',
+        },
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false
+
     });
+    var $list = $('#addName');
+
+    importExcel.on( 'uploadSuccess', function( file ,res) {
+        $list.val(file.name+'已上传成功');
+        complete(res);
+    });
+
+    importExcel.on( 'uploadError', function( file ) {
+        $list.val('上传出错');
+    });
+
+    // 文件上传过程中创建进度条实时显示。
+    importExcel.on('uploadProgress', function (file, percentage) {
+        var $li = $('#' + file.id),
+            $percent = $li.find('.progress .progress-bar');
+        // 避免重复创建
+        if (!$percent.length) {
+            $percent = $('<div class="progress progress-striped active">' +
+                '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                '</div>' +
+                '</div>').appendTo($li).find('.progress-bar');
+        }
+        $li.find('p.state').text('上传中');
+        $percent.css('width', percentage * 100 + '%');
+    });
+
+    importExcel.on("uploadStart",function () {
+        importExcel.options.formData.group_id = $('input[type="hidden"][name="groupId"]').val();
+    });
+
+
+
+
+
+
+
+
+
 
     //导出excelExport
     $("#excelExport").click(function () {
@@ -1269,6 +1360,13 @@
         }
     });
 
+    //点击查看历史版本
+    $("#down_excel").click(function () {
+        var time = $('#down_excel option:selected').val();//选中的值
+//        console.log($('#down_excel option:selected').val())
+//        console.log($('#down_excel option:selected').text())
+        admin_table.ajax.url("__SCRIPT__/safety_rules.php?times="+time+"&pid=" + groupid).load();
+    })
 </script>
 </body>
 </html>
