@@ -128,7 +128,7 @@
                                 <thead>
                                     <tr>
                                         <th>全选
-                                            <input type ='checkbox' name='test' id="all_checked" class='icheckbox_minimal' value=''>
+                                            <input type='checkbox' name='all_checked' id="all_checked" class='icheckbox_minimal' value=''>
                                         </th>
                                         <th>序号</th>
                                         <th>标准号</th>
@@ -462,9 +462,14 @@
            dom: 'lf<"#view"><"#seach"><"#export"><"#import"><"#upload">rtip',
            columnDefs: [
                {
-                   orderable: false,
+                   searchable: false,
                    targets:0,
-                   defaultContent:"<input type ='checkbox' name='checkboxAll' class='icheckbox_minimal' value=''>",
+                   //orderable: false,
+                   data:null,
+                   render:function () {
+                       var ipt = "<input type='checkbox' name='checkList' onclick='getSelectId(this)'>";
+                       return ipt;
+                   }
                },
                {
                    searchable: false,
@@ -898,22 +903,71 @@
             uploader.options.formData.remark = $("#rulesDesc").text();
         });
 
+        //删除数组中的指定元素
+        Array.prototype.remove = function(val){
+            for (var i = 0; i < this.length; i++) {
+                if(this[i] === val){
+                    this.splice(i,1);
+                    break;
+                }
+            }
+            return this;
+        }
 
+        //获取选中行ID
+        var idArr = [];
+        function getId(that) {
+            var isChecked = $(that).prop('checked');
+            var id = $(that).parents('tr').find('td:eq(1)').text();
+            if(isChecked){
+                idArr.push(id);
+            }else{
+                idArr.remove(id);
+            }
+        }
+        
+        //单选
+        function getSelectId(that) {
+            getId(that);
+            console.log(idArr);
+        }
 
-        $('td input[type="checkbox"]').each(function(){
-            $(this).change(function(){
-                $('#export').attr('aaa','bbb');
-            });
+        //checkbox全选
+        $("#all_checked").on("click", function () {
+            if ($(this).prop("checked") === true) {
+                $("input[name='checkList']").prop("checked", $(this).prop("checked"));
+                $('#tableItem tbody tr').addClass('selected');
+                $('input[name="checkList"]').each(function(){
+                    getId(this);
+                });
+            } else {
+                $("input[name='checkList']").prop("checked", false);
+                $('#tableItem tbody tr').removeClass('selected');
+            }
+            console.log(idArr);
         });
 
         //导出
         $('#export').click(function(){
-            var isChecked = $(this).attr('isChecked');
+            /*var isChecked = $(this).attr('isChecked');
             if(isChecked){
                 return;
-            }else{
-                console.log(1);
-            }
+            }*/
+            $.ajax({
+                url: "{:url('Statutestdi/exportExcel')}",
+                type: "post",
+                dataType: 'json',
+                data:{
+                    id:idArr,
+                },
+                success: function (data) {
+                    if(data.code==1){
+                        layer.msg('导出成功！');
+                    }
+                }
+            });
+
+
         });
     </script>
 </body>

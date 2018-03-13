@@ -76,6 +76,7 @@ class Rulesregulations extends Base
             $param = input('post.');
             $data = [
                 'id' => $param['id'],
+                'years' => date('Y'),
                 'group_id' =>  $param['group_id'],
                 'number' => $param['number'],
                 'rul_name' => $param['rul_name'],
@@ -332,8 +333,8 @@ class Rulesregulations extends Base
                     $insertData[$k]['rul_user'] = $v[$rul_user_index];
                     $insertData[$k]['rul_date'] = $v[$rul_date_index];
                     $insertData[$k]['remark'] = $v[$remark_index];
-                    // 年度
-                    $insertData[$k]['years'] = date('Y-m-d H:i:s');
+                    $insertData[$k]['years'] = date('Y');
+                    $insertData[$k]['improt_time'] = date('Y-m-d H:i:s');
                     $insertData[$k]['group_id'] = $group_id;
                 }
             }
