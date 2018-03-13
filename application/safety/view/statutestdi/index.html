@@ -508,16 +508,12 @@
        });
 
         var selectDom = '<input type="text" id="years">';
-        var dataViewDom = '<select name="" id="history" style="height: 32px">' +
-                            '<option value="">按历史版本查看</option>'+
-                            '<option value="">2015-2017</option>'+
-                            '<option value="">2013-2015</option>'+
-                        '</select>';
+
         $("div#upload").html('<div>上传文件</div>');
         $("div#seach").html('年度：'+selectDom);
         $('div#import').html('导入');
         $('div#export').html('导出');
-        $('div#view').html(dataViewDom);
+
 
         //上传弹层
         $(function(){
@@ -743,7 +739,7 @@
 
         //删除数据
         function del(that){
-            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
             layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
                 $.ajax({
                     url: "{:url('Statutestdi/sdiDel')}",
@@ -985,7 +981,12 @@
                     years:years
                 },
                 success:function (data) {
-                    console.log(data);
+                    var dataViewDom = '<select name="" id="history" style="height: 32px">';
+                    for (var i=0;i<data.length;i++){
+                        dataViewDom += '<option value="">'+data[i]+'</option>';
+                    }
+                    dataViewDom += '</select>';
+                    $('div#view').html(dataViewDom);
                 }
             });
         }
