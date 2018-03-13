@@ -76,7 +76,7 @@ if(!empty($group_id))
         );
     }else{
         echo json_encode(
-            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' and improt_time = '$times'" )
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' " )
         );
     }
 }
