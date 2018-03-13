@@ -1131,6 +1131,7 @@
             layer.close(index);
         })
     }
+
     //点击评价标准置灰
     $("#appEvaluation").click(function () {
         console.log($("#appEvaluation").val())
@@ -1139,6 +1140,11 @@
         }else if($("#appEvaluation").val() == '适用'){
             $("#alternativeStandard").attr("readOnly",true);
         }
+    });
+
+    //导出
+    $("#excel button").eq(2).click(function () {
+        alert(88999)
     });
 </script>
 </body>

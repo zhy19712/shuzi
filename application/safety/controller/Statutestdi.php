@@ -75,6 +75,7 @@ class Statutestdi extends Base
             $param = input('post.');
             $data = [
                 'id' => $param['id'],
+                'years' => date('Y'),
                 'group_id' => $param['group_id'],
                 'sdi_number' => $param['sdi_number'],
                 'sdi_name' => $param['sdi_name'],
@@ -316,8 +317,8 @@ class Statutestdi extends Base
                     $insertData[$k]['sid_user'] = $v[$sid_user_index];
                     $insertData[$k]['sdi_date'] = $v[$sdi_date_index];
                     $insertData[$k]['remark'] = $v[$remark_index];
-                    // 年度
-                    $insertData[$k]['years'] = date('Y-m-d H:i:s');
+                    $insertData[$k]['years'] = date('Y');
+                    $insertData[$k]['improt_time'] = date('Y-m-d H:i:s');
                     $insertData[$k]['group_id'] = $group_id;
                 }
             }

@@ -60,10 +60,11 @@ require( '../ssp.class.php' );
 //    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
 //);
 
-if(!empty($_GET["pid"]))
+$pid = isset($_GET["pid"]) ? $_GET["pid"] : ''; // 所属分组
+$years = isset($_GET["years"]) ? $_GET["years"] : ''; // 年度
+$times = isset($_GET["times"]) ? $_GET["times"] : '';// 历史版本
+if(!empty($pid))
 {
-    $pid = $_GET["pid"];
-    $years = $_GET["years"];
     if(!empty($years)){
         echo json_encode(
             SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid' and years = '$years'" )
