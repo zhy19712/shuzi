@@ -344,10 +344,11 @@ class Statutestdi extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('param.idarr');
+        $idArr = input('param.');
+        $idArr2 = $idArr['id'];
         $name = '法规标准识别'.date('Y-m-d H:i:s'); // 导出的文件名
         $sdi = new StatutestdiModel();
-        $list = $sdi->getList($idArr);
+        $list = $sdi->getList($idArr2);
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
