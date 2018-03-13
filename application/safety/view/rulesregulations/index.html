@@ -871,7 +871,7 @@
                             rul_name : $("#file_list1 .info .infoText").val(),//名称
                             go_date : $("#dataImple").val(),//施行日期
                             standard : $("#alternativeStandard").val(),//替代标准
-                            evaluation : null,//适用性评价
+                            evaluation : $("#appEvaluation").val(),//适用性评价
                             rul_user : $("#recogner").val(),//识别人
                             remark : $("#rulesDesc").val()//备注
                         },
@@ -1151,7 +1151,6 @@
             layer.close(index);
         })
     }
-
     //点击评价标准置灰
     $("#appEvaluation").click(function () {
         console.log($("#appEvaluation").val())
@@ -1161,14 +1160,24 @@
             $("#alternativeStandard").attr("readOnly",true);
         }
     });
-
     //导入excelImport
     $("#excelImport").click(function () {
-        alert(88999544564645645645645)
+
     });
     //导出excelExport
     $("#excelExport").click(function () {
-        alert(88999)
+        var dataArr=[];
+        $.ajax({
+            url: "./exportExcel",
+            type: "post",
+            data: dataArr,
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
+                layer.msg(res.msg);
+            }
+        })
     });
     var selectyear ='<input id="year" />';
     $("div.selectyear").html("年度："+selectyear)
