@@ -56,26 +56,27 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
 
 require( '../ssp.class.php' );
 
-//echo json_encode(
-//    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
-//);
 
-$pid = isset($_GET["pid"]) ? $_GET["pid"] : ''; // 所属分组
+$group_id = isset($_GET["group_id"]) ? $_GET["group_id"] : ''; // 所属分组
 $years = isset($_GET["years"]) ? $_GET["years"] : ''; // 年度
 $times = isset($_GET["times"]) ? $_GET["times"] : '';// 历史版本
 if(!empty($pid))
 {
     if(!empty($years) && !empty($times)){
         echo json_encode(
-            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$pid' and years = '$years' and improt_time = '$times'" )
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' and years = '$years' and improt_time = '$times'" )
         );
     }else if (!empty($years)){
         echo json_encode(
-            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid' and years = '$years'" )
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$group_id' and years = '$years'" )
         );
     }else if (!empty($times)){
         echo json_encode(
-            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$pid' and improt_time = '$times'" )
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' and improt_time = '$times'" )
+        );
+    }else{
+        echo json_encode(
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' " )
         );
     }
 }
