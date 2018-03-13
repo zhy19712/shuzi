@@ -15,6 +15,7 @@ class Specialequipmentmanagement extends Base
 {
     /*
      * 获取一条特种设备管理信息
+     * @return mixed|\think\response\Json
     */
     public function index()
     {
@@ -28,7 +29,8 @@ class Specialequipmentmanagement extends Base
     }
 
     /*
-     *编辑一条特种设备管理信息
+     * 编辑一条特种设备管理信息
+     * @return mixed|\think\response\Json
     */
     public function  equipmentEdit()
     {
@@ -61,7 +63,8 @@ class Specialequipmentmanagement extends Base
     }
 
     /*
-     *删除一条特种设备管理信息
+     * 删除一条特种设备管理信息
+     * @return mixed|\think\response\Json
     */
     public function equipmentDel()
     {
@@ -83,7 +86,8 @@ class Specialequipmentmanagement extends Base
     }
 
     /*
-     *预览一条特种设备管理信息
+     * 预览一条特种设备管理信息
+     * @return mixed|\think\response\Json
    */
     public function equipmentPreview()
     {
@@ -117,7 +121,8 @@ class Specialequipmentmanagement extends Base
     }
 
     /*
-     * 获取特种设备的版本信息
+     * 获取特种设备的版本信息,excel导入时间
+     * @return mixed|\think\response\Json
     */
     public function getversion()
     {

@@ -15,8 +15,9 @@
       display: block;
    }
    #box{
-    width: 100%;
-    height: 821px;
+    width: 96%;
+      margin: 0 auto;
+    /*height: 821px;*/
     border: 1px solid black;
     }
    #left{
@@ -58,6 +59,13 @@
     }
    #table1_wrapper .mybtn{
       margin-bottom: 3px;
+   }
+   .selectyear{
+      float: left;
+      margin-left: 20px;
+      margin-top: 8px;
+      font-weight: 700;
+      color: black;
    }
 </style>
 <body>
@@ -464,7 +472,8 @@
         "ajax": {
             "url": "__SCRIPT__/safety_responsibilityinsty_table.php"
         },
-        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        // "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear">frtip',
         "bLengthChange": false,
         "columnDefs": [
             {
@@ -494,7 +503,18 @@
         }
 
     });
-
+    var selectyear ='<input id="year" />';
+    $("div.selectyear").html("年度："+selectyear);
+    //选择年度
+    $("#year").jeDate({
+        isinitVal:true,
+        format:"YYYY年",
+        okfun:function (obj) {
+            table1.ajax.url("/datatables/safety/safety_responsibilityinfo.php?year="+obj.date.YYYY).load();
+            console.log(obj.date.YYYY);
+        }
+    });
+    $("#year").val("");
     $("div.mybtn").html('<div>上传</div>');
     // $("div.toolbar").html('<b style="color:red">自定义文字、图片等等</b>');
 

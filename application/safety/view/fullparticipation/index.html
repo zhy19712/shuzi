@@ -15,8 +15,9 @@
         display: block;
     }
     #box{
-        width: 100%;
-        height: 821px;
+        width: 96%;
+        margin: 0 auto;
+        /*height: 821px;*/
         border: 1px solid black;
     }
 
@@ -26,6 +27,7 @@
         font-size: 18px;
         height:40px;
         line-height: 40px;
+        border-bottom: 1px solid black;
     }
     #right{
         width: 100%;
@@ -42,7 +44,13 @@
         float: right;
         margin-right: 20px;
     }
-
+     .selectyear{
+         float: left;
+         margin-left: 20px;
+         margin-top: 5px;
+         font-weight: 700;
+         color: black;
+     }
 </style>
 <body>
 <div id="box" class="clearfix">
@@ -57,9 +65,9 @@
             <div class="tab-pane active" id="home">
                 <div id="table1_wrapper">
                     <!--<div>搜索<input type="select" id="aa"></div>-->
-                    <div class="myblock col-xs-8 input-group">
-                        <input id="year1" type="text" class="form-control" name="year" >
-                    </div>
+                    <!--<div class="myblock col-xs-8 input-group">-->
+                        <!--<input id="year1" type="text" class="form-control" name="year" >-->
+                    <!--</div>-->
                     <table id="table1" width="100%" class="table table-striped table-bordered">
                         <thead>
                         <tr>
@@ -140,11 +148,14 @@
 </div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
+
 <script src="__JS__/jquery.ztree.all.js"></script>
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/jquery.jedate.js"></script>
 <script>
-
+    $("#year").jeDate({
+        format:"YYYY-MM-DD"
+    })
     function showPdf(id,url) {
         $.ajax({
             url: url,
@@ -183,7 +194,8 @@
             });
             layer.close(index);
         })
-    }
+    };
+
     function download(id,url) {
         $.ajax({
             url: url,
@@ -373,7 +385,9 @@
         "ajax": {
             "url": "__SCRIPT__/safety_fullparticipation.php"
         },
-        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear">frtip',
+        // "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear">frtip',
+
         "bLengthChange": false,
         "columnDefs": [
             {
@@ -403,7 +417,18 @@
         }
 
     });
-
+    var selectyear ='<input id="year" />';
+    $("div.selectyear").html("年度："+selectyear);
+    //选择年度
+    $("#year").jeDate({
+        isinitVal:true,
+        format:"YYYY年",
+        okfun:function (obj) {
+            table1.ajax.url("/datatables/safety/safety_responsibilityinfo.php?year="+obj.date.YYYY).load();
+            console.log(obj.date.YYYY);
+        }
+    });
+    $("#year").val("");
     $("div.mybtn").html('<div>上传</div>');
 
     //总体目标-新增
