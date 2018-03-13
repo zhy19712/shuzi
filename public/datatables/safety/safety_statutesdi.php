@@ -63,7 +63,7 @@ require( '../ssp.class.php' );
 if(!empty($_GET["pid"]))
 {
     $pid = $_GET["pid"];
-    $years = $_GET["years"];
+    $years = isset($_GET["years"]) ? $_GET["years"] : '';
     if(!empty($years)){
         echo json_encode(
             SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid' and years = '$years'" )
