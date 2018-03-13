@@ -565,14 +565,7 @@
     //新增中的保存
     $("#education_modal .btn-primary").click(function () {
         if($("#trainerRecords").val() && $("#trainerMaterials").val() != null){
-//            console.log($("#edId").val())
-//            if(!$("#edId").val()){
-//                layer.msg('请输入名称',{icon:2,time:1500,shade: 0.1}, function(index){
-//                    layer.close(index);
-//                });
-//                return false;
-//            }
-                console.log("新增")
+            console.log("新增")
             $.ajax({
                 url: "./eduAdd",
                 type: "post",
