@@ -104,6 +104,7 @@
         position: absolute;
         right: 6px;
         top: 50px;
+        z-index: 4;
     }
     #excel button{
         margin-left: 15px;
@@ -159,8 +160,8 @@
                             <span></span>
                             <span id="year_excel">
                             </span>
-                            <button>导入</button>
-                            <button>导出</button>
+                            <button id="excelImport">导入</button>
+                            <button id="excelExport">导出</button>
                             <select name="down_excel" id="down_excel">
                                 <option value="查看历史版本">查看历史版本</option>
                                 <option value="两年">两年</option>
@@ -381,32 +382,36 @@
     var mytree_node1;
     //树结构添加节点
     $("#options>i:first-child").click(function () {
+        $("#level2 input").val("");
+//        $("#treePid").val(mytree_node.id);
+        $("#level2 h5").text('添加');
+        $("#level2").modal('show');
         console.log(mytree_node)
-        if(mytree_node){
-            if(mytree_node.level == 0){
-                $("#level2 input").val("");
-                $("#treePid").val(mytree_node.id);
-                $("#level2 h5").text('添加');
-                $("#level2").modal('show');
-                console.log($("#treePid").val())
-//                var id = mytree_node.id;
-//                $.ajax({
-//                    url: "nodeAdd",
-//                    type: "post",
-//                    data: {id:id},
-//                    dataType: "json",
-//                    success: function (res) {
-//                        console.log(res);
-//                        if(res.msg == "success"){
-//                            if(res.data.post_sn){
-//                                $("#companyName").val(res.data.sn + "-" + res.data.post_sn + "-");
-//                            }else {
-//                                $("#companyName").val(res.data.sn + "-");
-//                            }
-//                        }
-//                    }
-//                });
-            }
+//        if(mytree_node){
+//            if(mytree_node.level == 0){
+//                $("#level2 input").val("");
+//                $("#treePid").val(mytree_node.id);
+//                $("#level2 h5").text('添加');
+//                $("#level2").modal('show');
+//                console.log($("#treePid").val())
+////                var id = mytree_node.id;
+////                $.ajax({
+////                    url: "nodeAdd",
+////                    type: "post",
+////                    data: {id:id},
+////                    dataType: "json",
+////                    success: function (res) {
+////                        console.log(res);
+////                        if(res.msg == "success"){
+////                            if(res.data.post_sn){
+////                                $("#companyName").val(res.data.sn + "-" + res.data.post_sn + "-");
+////                            }else {
+////                                $("#companyName").val(res.data.sn + "-");
+////                            }
+////                        }
+////                    }
+////                });
+//            }
 ////            else if(mytree_node.level == 1){
 ////                $("#level3 input").val("");
 ////                $("#pid3").val(mytree_node.id);
@@ -452,9 +457,9 @@
 ////                $("#level4 h5").text('添加');
 ////                $("#level4").modal('show');
 ////            }
-        }else {
-            layer.msg("请选择节点",{time:1500,shade: 0.1});
-        }
+//        }else {
+//            layer.msg("请选择节点",{time:1500,shade: 0.1});
+//        }
     })
     //树结构编辑节点
     $("#options>i:nth-child(2)").click(function () {
@@ -1157,8 +1162,12 @@
         }
     });
 
-    //导出
-    $("#excel button").eq(2).click(function () {
+    //导入excelImport
+    $("#excelImport").click(function () {
+        alert(88999544564645645645645)
+    });
+    //导出excelExport
+    $("#excelExport").click(function () {
         alert(88999)
     });
     var selectyear ='<input id="year" />';
