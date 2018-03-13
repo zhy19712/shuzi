@@ -97,6 +97,12 @@
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
+            },
+            {
+                targets:0,
+                data: null,
+               // orderable: false,
+                defaultContent:"<input type ='checkbox' name='checkboxAll' class='icheckbox_minimal' value=''>",
             }
         ],
         language: {
@@ -112,20 +118,10 @@
                 "previous": "上一页",
                 "next": "下一页"
             }
-        },
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                text: '导出',
-                className: 'btn btn-primary btn-xs upload',
-                exportOptions: {
-                    'modifier': {
-                        'page': 'current'
-                    }
-                }
-            }
-        ],
+        }
     });
+
+    $('.mybtn1').html('导出');
 
     //预览
     function showPdf(id,url) {
