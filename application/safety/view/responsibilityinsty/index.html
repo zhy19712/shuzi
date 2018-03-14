@@ -187,6 +187,7 @@
    <script src="__JS__/jquery.dataTables.min.js"></script>
    <script src="__JS__/jquery.jedate.js"></script>
    <script type="text/javascript">
+
        $("#table1_wrapper").css("display","none")
        var curMenu = null, zTree_Menu = null;
        //组织结构
@@ -514,6 +515,7 @@
         }
 
     });
+    var selfid;
     var selectyear ='<input id="year" />';
     $("div.selectyear").html("年度："+selectyear);
     //选择年度
@@ -521,8 +523,8 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?year="+obj.date.YYYY).load();
-            // console.log(obj.date.YYYY);
+            table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
+            console.log(obj.date.YYYY);
         }
     });
     $("#year").val("");
