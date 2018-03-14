@@ -11,6 +11,7 @@ namespace app\safety\controller;
 use app\admin\controller\Base;
 use app\safety\model\JobhealthModel;
 use app\safety\model\JobhealthGroupModel;
+use app\safety\model\JobhealthManageModel;
 
 class Jobhealth extends Base
 {
@@ -120,7 +121,7 @@ class Jobhealth extends Base
     }
 
     /**
-     * [responsibilityinstyDownload 下载一条设置机构中的上传文件]
+     * [jobhealthDownload 下载一条设置机构中的上传文件]
      */
     public function jobhealthDownload()
     {
@@ -145,4 +146,58 @@ class Jobhealth extends Base
         fclose($file);
         exit;
     }
+
+
+    /**
+     * 预览获取一条数据  或者  编辑获取一条数据
+     * [healthmanageindex 预览获取一条数据  或者  编辑获取一条数据的上传文件]
+     * @return mixed|\think\response\Json
+     */
+    public function healthmanageindex()
+    {
+        if(request()->isAjax()){
+            $param = input('post.');
+            $healthmanage = new JobhealthManageModel();
+            $data = $healthmanage->getOne($param['id']);
+            return json($data);
+        }
+        return $this ->fetch();
+    }
+
+    /**
+     * 新增或者修改
+     * [healthmanageAdd 新增或者修改]
+     * @return \think\response\Json
+     */
+    public function healthmanageAdd()
+    {
+        if(request()->isAjax()){
+            $healthmanage = new JobhealthManageModel();
+            $param = input('post.');
+            if(empty($param['id'])){
+                $param['owner'] = session('username');
+                $param['date'] = date("Y-m-d H:i:s");
+                $flag = $healthmanage->insertJobhealthManage($param);
+            }else{
+                $flag = $healthmanage->editJobhealthManage($param);
+            }
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    /**
+     * 删除
+     * [healthmanageDel 删除]
+     * @return \think\response\Json
+     */
+    public function healthmanageDel()
+    {
+        if(request()->isAjax()){
+            $param = input('param.');
+            $healthmanage = new JobhealthManageModel();
+            $flag = $healthmanage->delJobhealthManage($param['id']);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
 }
