@@ -212,7 +212,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">培训人员：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="trainers" type="text" required="required" class="form-control" name="trainers" >
+                                    <input id="trainers" type="text" required="required" placeholder="输入框不能为空！" class="form-control" name="trainers" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
@@ -662,7 +662,7 @@
     //点击新增出现modal
     $(".mybtn").click(function () {
         $("#education_modal input").val("");
-        $("#rulesDesc").empty();
+        $("#edDesc").empty();
         $("#education_modal h5").text("新增");
         $("#education_modal").modal('show');
         $("#pickerMaterials").css('display',"block");
@@ -792,86 +792,76 @@
     });
 
     admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
+    var edamid1,edamid2;
     //新增中的保存
     $("#education_modal .btn-primary").click(function () {
         if($("#trainerRecords").val() && $("#trainerMaterials").val() != null){
-            console.log("新增")
-            $.ajax({
-                url: "./eduAdd",
-                type: "post",
-                data: {
-                    id : $("#edId").val(),//id
+            if(!$("#edId").val()){
+                console.log("新增")
+                $.ajax({
+                    url: "./eduAdd",
+                    type: "post",
+                    data: {
+                        id : $("#edId").val(),//id
 //                    group_id : groupid,//group_id
-                    group_id : 1,//group_id
-                    lecturer : $("#trainer").val(),//培训人
-                    edu_time : $("#trainingTime").val(),//培训时间
-                    trainee : $("#trainers").val(),//培训人员
-                    address : $("#trainingPlace").val(),//培训地点
-                    num : $("#numTraining").val(),//培训人数
-                    content : $("#trainerCon").val(),//培训内容
-                    material_name : $("#trainerMaterials").val(),//培训材料
-                    record_name : $("#trainerRecords").val(),//培训记录
-                    remark : $("#edDesc").val()//备注
-                },
-                dataType: "json",
-                success: function (res) {
-                    console.log(res);
-                    $("#education_modal").modal('hide');
-                    // admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1?").load();
-                    admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
-                    layer.msg(res.msg, {time:1500,shade: 0.1});
-                }
-            })
-//            $('#education_modal').ajaxForm({
-//                success: complete1,
-//                data:{
-//                    id : $("#edId").val(),//id
-////                    group_id : groupid,//group_id
-//                    group_id : 1,//group_id
-//                    lecturer : $("#trainer").val(),//培训人
-//                    edu_time : $("#trainingTime").val(),//培训时间
-//                    trainee : $("#trainers").val(),//培训人员
-//                    address : $("#trainingPlace").val(),//培训地点
-//                    num : $("#numTraining").val(),//培训人数
-//                    content : $("#trainerCon").val(),//培训内容
-//                    material_name : $("#trainerMaterials").val(),//培训材料
-//                    record_name : $("#trainerRecords").val(),//培训记录
-//                    remark : $("#edDesc").val()//备注
-//                },
-//                dataType: 'json'
-//            });
-//            else {
-//                console.log("编辑")
-//                if(aname1 === aname2){
-//                    $.ajax({
-//                        url: "./rulesEdit",
-//                        type: "post",
-//                        data: {
-//                            id : $("#rulesid").val(),//id
-//                            group_id : groupid,//group_id
-//                            number : $("#standardNumr").val(),//标准号
-//                            rul_name : $("#file_list1 .info .infoText").val(),//名称
-//                            go_date : $("#dataImple").val(),//施行日期
-//                            standard : $("#alternativeStandard").val(),//替代标准
-//                            evaluation : null,//适用性评价
-//                            rul_user : $("#recogner").val(),//识别人
-//                            remark : $("#rulesDesc").val()//备注
-//                        },
-//                        datatype: "json",
-//                        success: function (res) {
-//                            if(res.code === 1){
-//                                layer.msg(res.msg);
-//                                admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
-//                                $("#education_modal").modal('hide');
-//                            }else {
-//                                layer.msg(res.msg);
-//                            }
-//                        }
-//                    })
-//                }else {
-//                    uploader1.upload();
-//                }
-//            }
+                        group_id : 1,//group_id
+                        lecturer : $("#trainer").val(),//培训人
+                        edu_time : $("#trainingTime").val(),//培训时间
+                        trainee : $("#trainers").val(),//培训人员
+                        address : $("#trainingPlace").val(),//培训地点
+                        num : $("#numTraining").val(),//培训人数
+                        content : $("#trainerCon").val(),//培训内容
+                        material_name : $("#trainerMaterials").val(),//培训材料
+                        record_name : $("#trainerRecords").val(),//培训记录
+                        remark : $("#edDesc").val()//备注
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        console.log(res);
+                        if(res.code === 1){
+                            $("#education_modal").modal('hide');
+                            admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
+                            layer.msg(res.msg, {time: 1500, shade: 0.1});
+                        }else {
+                            layer.msg(res.msg);
+                        }
+                    }
+                })
+            }else{
+                console.log("编辑")
+               if(edamid1 === edamid2) {
+                   $.ajax({
+                       url: "./eduAdd",
+                       type: "post",
+                       data: {
+                           id: $("#edId").val(),//id
+//                    group_id : groupid,//group_id
+                           group_id: 1,//group_id
+                           lecturer: $("#trainer").val(),//培训人
+                           edu_time: $("#trainingTime").val(),//培训时间
+                           trainee: $("#trainers").val(),//培训人员
+                           address: $("#trainingPlace").val(),//培训地点
+                           num: $("#numTraining").val(),//培训人数
+                           content: $("#trainerCon").val(),//培训内容
+                           material_name: $("#trainerMaterials").val(),//培训材料
+                           record_name: $("#trainerRecords").val(),//培训记录
+                           remark: $("#edDesc").val()//备注
+                       },
+                       datatype: "json",
+                       success: function (res) {
+                           console.log(res);
+                           if (res.code === 1) {
+                               $("#education_modal").modal('hide');
+                               admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
+                               layer.msg(res.msg, {time: 1500, shade: 0.1});
+                               // admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+                           } else {
+                               layer.msg(res.msg);
+                           }
+                       }
+                   })
+               }
+            }
         }else {
             alert("请选择上传文件");
         }
@@ -894,7 +884,34 @@
             return false;
         }
     }
-
+    //专题培训-点击编辑
+    function edEdit(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        console.log(id)
+        $("#education_modal h5").text("编辑");
+        $("#education_modal").modal('show');
+        $.ajax({
+            url:"./index",
+            type: "post",
+            data: {id:id},
+            success: function (res) {
+                console.log(res)
+                id = $("#edId").val(res.id);//id
+                // group_id = groupid;//group_id
+                lecturer = $("#trainer").val(res.lecturer);//培训人
+                edu_time = $("#trainingTime").val(res.edu_time);//培训时间
+                trainee = $("#trainers").val(res.trainee);//培训人员
+                address = $("#trainingPlace").val(res.address);//培训地点
+                num = $("#numTraining").val(res.num);//培训人数
+                content = $("#trainerCon").val(res.content);//培训内容
+                material_name = $("#trainerMaterials").val(res.material_name);//培训材料
+                record_name = $("#trainerRecords").val(res.record_name);//培训记录
+                remark = $("#edDesc").val(res.remark)//备注
+                edamid1 = res.id
+                edamid2 = res.id
+            }
+        })
+    }
     //专题培训-点击查看
     function edSee(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
@@ -933,8 +950,6 @@
                 remark = $("#edDesc").val(res.remark)//备注
             }
         })
-
-
     }
     //专题培训-点击删除
     function edDel(that) {
@@ -1037,7 +1052,8 @@
         console.log(data);
         if(data.code === 1){
             layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
-            admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
+            admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
+            // admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
         }else {
             layer.msg('导入失败！');
             return false;
@@ -1061,7 +1077,8 @@
         $percent.css('width', percentage * 100 + '%');
     });
     importExcel.on("uploadStart",function () {
-        importExcel.options.formData.group_id = groupid;
+        importExcel.options.formData.group_id = 1;
+        // importExcel.options.formData.group_id = groupid;
     });
     importExcel.on("uploadFinished", function () {
         importExcel.reset();
@@ -1069,7 +1086,7 @@
 
     //导出excelExport
     $("#excelExport").click(function () {
-        alert(88999)
+
     });
     //导出excel模版 moldPlate
     $("#moldPlate").click(function () {
@@ -1078,9 +1095,8 @@
     //点击查看历史版本
     $("#down_excel").click(function () {
         var time = $('#down_excel option:selected').val();//选中的值
-//        console.log($('#down_excel option:selected').val())
 //        console.log($('#down_excel option:selected').text())
-        admin_table.ajax.url("__SCRIPT__/safety_rules.php?times="+time+"&pid=" + groupid).load();
+        admin_table.ajax.url("__SCRIPT__/safety_education.php?times="+time+"&pid=" + groupid).load();
     })
 </script>
 </body>
