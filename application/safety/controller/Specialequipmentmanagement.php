@@ -130,8 +130,9 @@ class Specialequipmentmanagement extends Base
     {
         if(request()->isAjax()){
             $param = input('post.');
+            $selfid = $param['selfid'];
             $equipment= new SafetySpecialEquipmentManagementModel();
-            $data = $equipment->getVersion($param);
+            $data = $equipment->getVersion($selfid);
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
