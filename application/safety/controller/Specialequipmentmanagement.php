@@ -129,8 +129,10 @@ class Specialequipmentmanagement extends Base
     public function getversion()
     {
         if(request()->isAjax()){
+            $param = input('post.');
+            $selfid = $param['selfid'];
             $equipment= new SafetySpecialEquipmentManagementModel();
-            $data = $equipment->getVersion();
+            $data = $equipment->getVersion($selfid);
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();

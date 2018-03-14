@@ -22,39 +22,28 @@
     .mybtn{
         float: left;
         margin-right: 20px;
+        margin-top: 5px;
     }
     .selectyear1,.selectyear2,.selectyear3{
         float: left;
         margin-left: 20px;
-        margin-top: 5px;
+        margin-top: 10px;
         font-weight: 700;
         color: black;
+    }
+    .dataTables_wrapper .dataTables_length , .dataTables_wrapper .dataTables_filter{
+        margin-top: 10px;
     }
     .file-item{
         float: left;
     }
-    #excelExport,.excelImport{
-        float: right;
-        margin: 0 10px;
-    }
     #excel{
         width: 280px;
         height: 33px;
-        /*border: 1px solid red;*/
         position: absolute;
-        right: 6px;
+        right: 210px;
         top: 50px;
         z-index: 4;
-    }
-    #excel .btn{
-        margin-left: 15px;
-        width: 60px;
-        height: 27px;
-        border-radius: 24px;
-        border: none;
-        background: orange;
-        color: white;
-        outline: none;
     }
     #excel select{
         margin-left: 10px;
@@ -92,26 +81,24 @@
                     </div>
                     <div class="tab-pane active" id="mytable2_wrapper">
                         <table id="table2" width="100%" class="table table-striped table-bordered ">
-                        <thead>
-                        <tr>
-                            <th>序号</th>
-                            <th>文件名称</th>
-                            <th>时间</th>
-                            <th>上传人</th>
-                            <th>上传时间</th>
-                            <th>备注</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                    </table>
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>文件名称</th>
+                                <th>时间</th>
+                                <th>上传人</th>
+                                <th>上传时间</th>
+                                <th>备注</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                        </table>
                     </div>
                     <div class="tab-pane active" id="mytable3_wrapper">
                         <div id="excel">
-                            <div id="excelImport" class="btn"></div>
-                            <div class="excelExport btn">导出</div>
+                            <div class="excelImport btn btn-outline btn-primary">导入</div>
+                            <div class="excelExport btn btn-outline btn-primary">导出</div>
                             <select name="down_excel" id="down_excel">
-                                <option value="查看历史版本">查看历史版本</option>
-                                <option value="两年">两年</option>
                             </select>
                         </div>
                         <table id="table3" width="100%" class="table table-striped table-bordered ">
@@ -130,7 +117,7 @@
                                 <th>设备状态</th>
                                 <th>备注</th>
                                 <th>操作</th>
-                                <th>全选<input type="checkbox"/></th>
+                                <th>全选<input type="checkbox" class="checkall"/></th>
                             </tr>
                             </thead>
                         </table>
@@ -384,6 +371,30 @@
         </div>
     </div>
 </div>
+<div id="fname4" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                </div>
+                <div class="ibox-content">
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" id="file4" style="text-align: right;line-height: 44px;">文件：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <div id="file_per4" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_upload4" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_list4" style="display: inline-block;vertical-align: middle;"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="text-align: center;">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 {include file="public/footer" /}
@@ -439,6 +450,22 @@
                 case 131:
                 case 132:
                 case 133:
+                    $.ajax({
+                        url:'../Specialequipmentmanagement/getversion',
+                        dataType:'JSON',
+                        type:'POST',
+                        data:{
+                            "selfid":selfid
+                        },
+                        success:function (data) {
+                            console.log(data);
+                            var optionStr='';
+                            for(var i=0;i<data.length;i++){
+                                optionStr += '<option value="'+data[i]+'">' + data[i] + '</option>'
+                            }
+                            $("#down_excel").append(optionStr);
+                        }
+                    })
                     table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid=" + selfid).load();
                     $("#mytable3_wrapper").css("display","block");
                     break;
@@ -1126,7 +1153,13 @@
             {
                 "targets":[10],
                 "render":function (data,type,row) {
-                    var state = getNowFormatDate()<=row[12]?"正常":"异常";
+                    var state;
+                    console.log(data);
+                    if(!row[12]){
+                        state =row[20];
+                    }else{
+                        state = getNowFormatDate()<=row[12]?"正常":"过期";
+                    }
                     var html = "<div>"+state+"</div>";
                     return  html;
                 }
@@ -1136,7 +1169,7 @@
                 "orderable":false,   //禁止排序
                 "targets":[13],
                 "render":function (data,type,row) {
-                    var html = "<input type='checkbox' />"
+                    var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
                     return  html;
                 }
             }
@@ -1304,7 +1337,7 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table2.ajax.url("__SCRIPT__/safety_special_equipment_management.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
+            table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
             console.log(obj.date.YYYY);
         }
     });
@@ -1459,58 +1492,167 @@
     }
 
     var uploaderExcel;
-    $("div.excelImport").html("导入")
-    $("div.excelExport").html("导出")
     //导入excelImport
     $(".excelImport").click(function () {
-        uploaderExcel = WebUploader.create({
-            auto: false,// 选完文件后，是否自动上传。
-            swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-            server: "{:url('Rulesregulations/importExcel')}",// 文件接收服务端。
-            chunked: false,
-            fileSizeLimit: 1000 *1024 *1024,
-            fileNumLimit: 1,
-            formData: {
-                id : '',//id
-                group_id : '',//group_id
-                number : '',//标准号
-                rul_name : '',//名称
-                go_date : '',//施行日期
-                standard : '',//替代标准
-                evaluation : '',//适用性评价
-                rul_user : '',//识别人
-                remark : ''//备注
-            },
-            duplicate :true,// 重复上传图片，true为可重复false为不可重复
-            pick: {
-                multiple: false,
-                id: "#excelImport",
-                innerHTML: "导入"
-            }
-        });
-        uploaderExcel.on( 'fileQueued', function( file ) {
-            $list.val('等待上传...');
-        });
-
-        uploaderExcel.on( 'uploadSuccess', function( file ) {
-
-            var tt = $list.val(file.name+'已上传成功');
-            layer.msg(tt, {icon: 1});
-        });
-
-        uploaderExcel.on( 'uploadError', function( file ) {
-            $list.val('上传出错');
-        });
+        uploaderExcel = null;
+        $("#fname4 input").val("");
+        $("#file_list4").empty();
+        $("#fname4").modal('show');
+        upload4();
     });
+    //特种设备导入文件-初始化
+    function upload4() {
+        if(!uploaderExcel){
+            uploaderExcel = WebUploader.create({
+                auto: false,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('Specialequipmentmanagement/importExcel')}",// 文件接收服务端。
+                fileSizeLimit: 1000 *1024 *1024,
+                fileNumLimit: 1,
+                chunked: false,
+                formData: {"selfid":""},
+                duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: false,
+                    id: "#file_upload4",
+                    innerHTML: "上传文件"
+                }
+            });
 
+            uploaderExcel.on( 'fileQueued', function( file ) {
+                $("#file_per4").append('<div id="' + file.id + '" class="item">' +
+                    '</div>');
+                $("#file_list4").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                    '<span class="info4">' + file.name + '</span>&nbsp' +
+                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>' );
+            });
+            $("#file_list4").on("click", ".webuploadDelbtn", function () {
+                var $ele = $(this);
+                var id = $ele.parent().attr("class");
+                var file = uploaderExcel.getFile(id);
+                uploaderExcel.removeFile(file,true);
+            });
+            uploaderExcel.on('fileDequeued', function (file) {
+                $(file.id).remove();
+                $('.'+file.id).remove();
+                console.log("remove");
+            });
+            uploaderExcel.on("uploadStart",function () {
+                uploaderExcel.options.formData.selfid = selfid;
+            });
+            uploaderExcel.on('beforeFileQueued', function (file) {
+                if($("#file_list4").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
+            // 文件上传过程中创建进度条实时显示。
+            uploaderExcel.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            uploaderExcel.on( 'uploadSuccess', function( file,data, response ) {
+                // console.log(file)
+                // console.log(data)
+                if(data.code === 1){
+                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    $("#file_upload4").empty();
+                    $("#file_per4").empty();
+                    $("#file_list4").empty();
+                    $("#fname4").modal('hide');
+                    table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid).load();
+                }else {
+                    layer.msg("抱歉，您没有此权限");
+                }
+            });
+
+            // 文件上传失败，显示上传出错。
+            uploaderExcel.on( 'uploadError', function( file ) {
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                $("#file_per2").empty();
+            });
+        }
+    }
+    //提交导入
+    $("#fname4 .btn-primary").click(function () {
+        if($("#file_list4").html()){
+            uploaderExcel.upload();
+
+        }else {
+            alert("请选择上传文件");
+        }
+    })
+
+
+    //获取选中行ID
+    var dataArr=[];
+    function getDataId(that) {
+        var isChecked = $(that).prop('checked');
+        var id = $(that).parents('tr').find('td:eq(0)').text();//获取id
+        if(isChecked){ //选中判断有没有 没有就push id
+            if(dataArr.indexOf(id)==-1){
+                dataArr.push(id);
+            }
+            var allTrue = $(".checkchild").each(function(){
+                if(!$(this).prop('checked')){
+                    return "all"
+                }
+            });
+            if(allTrue!=="all"){
+                $(".checkall").prop("checked",true);
+            }
+        }else{
+            //没选中验证数组有没有 有就删除掉
+            //有未选项就取消全选
+            $(".checkall").prop("checked",false);
+            if(dataArr.indexOf(id)!==-1){
+                dataArr.splice(dataArr.indexOf(id),1)
+            }
+        }
+    }
+
+
+    //单选
+    function getRadioId(that) {
+        getDataId(that);
+    }
+
+    //checkbox全选
+    $(".checkall").on("click", function () {
+        var check = $(this).prop("checked");
+        if (check === true) {
+            $(".checkchild").prop("checked", true); //全部选中
+            $(".checkchild").each(function(){
+                getDataId(this);
+            });
+        } else {
+            $(".checkchild").prop("checked", false); //全部不选中
+            $(".checkchild").each(function(){
+                getDataId(this);
+            });
+        }
+        console.log(dataArr);
+    });
     //导出excelExport
     $(".excelExport").click(function () {
+        alert(dataArr)
         $.ajax({
-            url: "./exportExcel",
+            url: "../Specialequipmentmanagement/exportExcel",
             type: "post",
-            data: {
-                'id':dataArr
-            },
+            data: {'idarr':dataArr},
             dataType: "json",
             success: function (res) {
                 console.log(res);
@@ -1521,7 +1663,104 @@
                 }
             }
         })
+        // method1("table3")
     });
+
+    //导出
+    // var idTmr;
+    // function  getExplorer() {
+    //     var explorer = window.navigator.userAgent ;
+    //     //ie
+    //     if (explorer.indexOf("MSIE") >= 0) {
+    //         return 'ie';
+    //     }
+    //     //firefox
+    //     else if (explorer.indexOf("Firefox") >= 0) {
+    //         return 'Firefox';
+    //     }
+    //     //Chrome
+    //     else if(explorer.indexOf("Chrome") >= 0){
+    //         return 'Chrome';
+    //     }
+    //     //Opera
+    //     else if(explorer.indexOf("Opera") >= 0){
+    //         return 'Opera';
+    //     }
+    //     //Safari
+    //     else if(explorer.indexOf("Safari") >= 0){
+    //         return 'Safari';
+    //     }
+    // }
+    // function method1(tableid) {
+    //     //整个表格拷贝到EXCEL中
+    //     if(getExplorer()=='ie'){
+    //         var curTbl = document.getElementById(tableid);
+    //         var oXL = new ActiveXObject("Excel.Application");
+    //
+    //         //创建AX对象excel
+    //         var oWB = oXL.Workbooks.Add();
+    //         //获取workbook对象
+    //         var xlsheet = oWB.Worksheets(1);
+    //         //激活当前sheet
+    //         var sel = document.body.createTextRange();
+    //         sel.moveToElementText(curTbl);
+    //         //把表格中的内容移到TextRange中
+    //         sel.select();
+    //         //全选TextRange中内容
+    //         sel.execCommand("Copy");
+    //         //复制TextRange中内容
+    //         xlsheet.Paste();
+    //         //粘贴到活动的EXCEL中
+    //         oXL.Visible = true;
+    //         //设置excel可见属性
+    //
+    //         try {
+    //             var fname = oXL.Application.GetSaveAsFilename("Excel.xls", "Excel Spreadsheets (*.xls), *.xls");
+    //         } catch (e) {
+    //             print("Nested catch caught " + e);
+    //         } finally {
+    //             oWB.SaveAs(fname);
+    //
+    //             oWB.Close(savechanges = false);
+    //             //xls.visible = false;
+    //             oXL.Quit();
+    //             oXL = null;
+    //             //结束excel进程，退出完成
+    //             //window.setInterval("Cleanup();",1);
+    //             idTmr = window.setInterval("Cleanup();", 1);
+    //
+    //         }
+    //
+    //     }
+    //     else
+    //     {
+    //         tableToExcel('table3');
+    //     }
+    // }
+    // function Cleanup() {
+    //     window.clearInterval(idTmr);
+    //     CollectGarbage();
+    // }
+    // var tableToExcel = (function() {
+    //     var uri = 'data:application/vnd.ms-excel;base64,',
+    //         template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+    //         base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
+    //         format = function(s, c) {
+    //             return s.replace(/{(\w+)}/g,
+    //                 function(m, p) { return c[p]; }) }
+    //     return function(table, name) {
+    //         if (!table.nodeType) table = document.getElementById(table)
+    //         var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    //         window.location.href = uri + base64(format(template, ctx))
+    //     }
+    // })();
+
+    //点击查看历史版本
+    $("#down_excel").click(function () {
+        var time  = $('#down_excel option:selected').val();
+        var history_version = time===undefined?"":time ;//选中的值
+        table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid+"&history_version="+history_version).load();
+    })
 </script>
 
 </body>
