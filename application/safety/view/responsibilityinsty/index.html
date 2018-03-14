@@ -294,17 +294,18 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        if(url === "./responsibilityinstyDel"){
-                            table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
+                        if(url === "./fullpartDel"){
+                            table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php").load();
+
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
                 }
-            })
+            });
             layer.close(index);
         })
-    }
+    };
     function download(id,url) {
         $.ajax({
             url: url,
@@ -457,7 +458,7 @@
                 console.log(res);
                 if(res.code === 1){
                     $("#aid").val(res.data.id);
-                    $("#ai").val(res.data.id);
+                    // $("#ai").val(res.data.id);
                     $("#remark1").val(res.data.remark);
                     $("#version1").val(res.data.version);
                     aname1 = res.data.name;
