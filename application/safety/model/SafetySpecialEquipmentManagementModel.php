@@ -98,7 +98,7 @@ class SafetySpecialEquipmentManagementModel extends Model
     public function getVersion($param)
     {
 //        return $this->field('input_time')->order('id desc')->select();
-        return $this->where('selfid',$param['selfid'])->group('input_time')->column('input_time');
+        return $this->where('selfid',$param)->group('input_time')->column('input_time');
     }
 
 
