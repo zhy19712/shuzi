@@ -33,6 +33,33 @@
     .file-item{
         float: left;
     }
+    #excelExport,.excelImport{
+        float: right;
+        margin: 0 10px;
+    }
+    #excel{
+        width: 280px;
+        height: 33px;
+        /*border: 1px solid red;*/
+        position: absolute;
+        right: 6px;
+        top: 50px;
+        z-index: 4;
+    }
+    #excel .btn{
+        margin-left: 15px;
+        width: 60px;
+        height: 27px;
+        border-radius: 24px;
+        border: none;
+        background: orange;
+        color: white;
+        outline: none;
+    }
+    #excel select{
+        margin-left: 10px;
+        width: 100px;
+    }
 </style>
 <body class="gray-bg animated fadeInRight" style="background-color:#fff;">
 
@@ -79,6 +106,14 @@
                     </table>
                     </div>
                     <div class="tab-pane active" id="mytable3_wrapper">
+                        <div id="excel">
+                            <div id="excelImport" class="btn"></div>
+                            <div class="excelExport btn">导出</div>
+                            <select name="down_excel" id="down_excel">
+                                <option value="查看历史版本">查看历史版本</option>
+                                <option value="两年">两年</option>
+                            </select>
+                        </div>
                         <table id="table3" width="100%" class="table table-striped table-bordered ">
                             <thead>
                             <tr>
@@ -1344,7 +1379,7 @@
     function edit3(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         $.ajax({
-            url: "./edit",
+            url: "../Specialequipmentmanagement/index",
             type: "post",
             data: {id:id},
             dataType: "json",
@@ -1422,6 +1457,71 @@
             }
         })
     }
+
+    var uploaderExcel;
+    $("div.excelImport").html("导入")
+    $("div.excelExport").html("导出")
+    //导入excelImport
+    $(".excelImport").click(function () {
+        uploaderExcel = WebUploader.create({
+            auto: false,// 选完文件后，是否自动上传。
+            swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+            server: "{:url('Rulesregulations/importExcel')}",// 文件接收服务端。
+            chunked: false,
+            fileSizeLimit: 1000 *1024 *1024,
+            fileNumLimit: 1,
+            formData: {
+                id : '',//id
+                group_id : '',//group_id
+                number : '',//标准号
+                rul_name : '',//名称
+                go_date : '',//施行日期
+                standard : '',//替代标准
+                evaluation : '',//适用性评价
+                rul_user : '',//识别人
+                remark : ''//备注
+            },
+            duplicate :true,// 重复上传图片，true为可重复false为不可重复
+            pick: {
+                multiple: false,
+                id: "#excelImport",
+                innerHTML: "导入"
+            }
+        });
+        uploaderExcel.on( 'fileQueued', function( file ) {
+            $list.val('等待上传...');
+        });
+
+        uploaderExcel.on( 'uploadSuccess', function( file ) {
+
+            var tt = $list.val(file.name+'已上传成功');
+            layer.msg(tt, {icon: 1});
+        });
+
+        uploaderExcel.on( 'uploadError', function( file ) {
+            $list.val('上传出错');
+        });
+    });
+
+    //导出excelExport
+    $(".excelExport").click(function () {
+        $.ajax({
+            url: "./exportExcel",
+            type: "post",
+            data: {
+                'id':dataArr
+            },
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.code ==1){
+                    layer.msg('导出成功！', {icon: 1});
+                }else{
+                    alert("获取数据失败！")
+                }
+            }
+        })
+    });
 </script>
 
 </body>
