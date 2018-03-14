@@ -89,8 +89,23 @@ class Education extends Base
             Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
             $exclePath = $info->getSaveName();  //获取文件名
             $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/education' . DS . $exclePath;   //上传文件的地址
-            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
-            $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');  //加载文件内容,编码utf-8
+            // 当文件后缀是xlsx 或者 csv 就会报：the filename xxx is not recognised as an OLE file错误
+            $extension = get_extension($file_name);
+            if ($extension =='xlsx') {
+                $objReader = new \PHPExcel_Reader_Excel2007();
+                $obj_PHPExcel = $objReader->load($file_name);
+            } else if ($extension =='xls') {
+                $objReader = new \PHPExcel_Reader_Excel5();
+                $obj_PHPExcel = $objReader->load($file_name);
+            } else if ($extension=='csv') {
+                $PHPReader = new \PHPExcel_Reader_CSV();
+                //默认输入字符集
+                $PHPReader->setInputEncoding('GBK');
+                //默认的分隔符
+                $PHPReader->setDelimiter(',');
+                //载入文件
+                $obj_PHPExcel = $PHPReader->load($file_name);
+            }
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
             // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
             $content_index = $edu_time_index = $address_index = $lecturer_index = $trainee_index = $num_index = -1;
