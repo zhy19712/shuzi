@@ -66,11 +66,11 @@ if(!empty($group_id)){
         echo json_encode(
             SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' and years = '$years' and improt_time = '$times'" )
         );
-    }else if (!empty($years)){
+    }else if (!empty($years) && empty($times)){
         echo json_encode(
             SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$group_id' and years = '$years'" )
         );
-    }else if (!empty($times)){
+    }else if (!empty($times) && empty($years)){
         echo json_encode(
             SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' and improt_time = '$times'" )
         );

@@ -77,7 +77,7 @@ class ContractModel extends Model
 
     public function getBiaoduanName()
     {
-        $this->group('biaoduan_name')->column('id','biaoduan_name');
+       return $this->group('biaoduan_name')->column('id','biaoduan_name');
     }
 
 
