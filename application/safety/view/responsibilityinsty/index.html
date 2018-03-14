@@ -64,8 +64,8 @@
    }
 .mybtn{
     float: left;
-    margin-top: 5px;
-    margin-left: 20px;
+   margin-top: 5px;
+   margin-left: 20px;
 }
    #example_filter{
       float: right;
@@ -84,9 +84,6 @@
       font-weight: 700;
       color: black;
    }
-    #path{
-        font-weight: bolder;
-    }
 </style>
 <body  class="gray-bg animated fadeInRight" style="background-color:#fff;">
    <div id="box" class="clearfix">
@@ -192,7 +189,7 @@
    <script src="__JS__/jquery.jedate.js"></script>
    <script type="text/javascript">
 
-       // $("#table1_wrapper").css("display","none")
+       $("#table1_wrapper").css("display","none")
        var curMenu = null, zTree_Menu = null;
        //组织结构
        var zTreeObj;
@@ -491,7 +488,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid
+            "url": "__SCRIPT__/safety_responsibilityinsty_table.php"
         },
         // "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear">frtip',

@@ -1240,12 +1240,7 @@
             innerHTML: "导入"
         }
     });
-    var $list = $('#trainerMaterials');
-    uploaderExcel.on( 'fileQueued', function( file ) {
-        $list.val('等待上传...');
-    });
     uploaderExcel.on( 'uploadSuccess', function( file ,res) {
-        $list.val(file.name+'已上传成功');
         complete(res);
     });
     function complete(data){
@@ -1255,13 +1250,12 @@
             layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
             admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
         }else {
-            var tt = $list.val(file.name+'导入失败！');
-            layer.msg(tt);
+            layer.msg('导入数据失败!');
             return false;
         }
     }
     uploaderExcel.on( 'uploadError', function( file ) {
-        $list.val('上传出错');
+        alert('上传出错');
     });
     // 文件上传过程中创建进度条实时显示。
     uploaderExcel.on('uploadProgress', function (file, percentage) {
