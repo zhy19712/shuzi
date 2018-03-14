@@ -15,23 +15,28 @@
         display: block;
     }
     #box{
-        width: 96%;
+        width: 100%;
         margin: 0 auto;
-        /*height: 821px;*/
         border: 1px solid black;
     }
     #left{
         width: 20%;
-        border: 1px solid black;
+        border-right:1px solid lightgrey ;
         height:821px;
         float: left;
+       margin: 20px auto;
+    }
+    #mycontent{
+      width: 95%;
+      margin-left: 15px;
     }
     #left #p{
+        background: #1ab394;
         height: 40px;
-        width: 100%;
-        border-bottom:1px solid black;
+        width: 90%;
         text-align: center;
         line-height: 40px;
+        margin: 0 auto;
     }
     #path{
         margin:0px auto;
@@ -41,19 +46,9 @@
     }
     #right{
         width: 80%;
-        border: 1px solid black;
-        /*height:821px;*/
         float: right;
     }
-    #right p{
-        text-align: center;
-        font-weight: bolder;
-        font-size: 18px;
-        /*padding: 5px;*/
-        height: 40px;
-        line-height: 40px;
-        border-bottom: 1px solid black;
-    }
+
     .mybtn{
         float: left;
         margin-top: 5px;
@@ -79,25 +74,39 @@
     #ymd{
         background:white;
     }
-</style><style></style>
+    #table1_filter{
+        margin-left: 5px;
+    }
+    .tab-content{
+        width: 95%;
+        margin: 10px auto;
+    }
+     #pp{
+        text-align: center;
+        font-weight: bolder;
+        font-size: 18px;
+        /*padding: 5px;*/
+        height: 40px;
+        line-height: 40px;
+        border-bottom: 1px solid black;
+        width: 95%;
+         margin:20px auto;
+        background: #bae2f3;;
+
+    }
+</style>
 <body>
 <div id="box" class="clearfix">
     <div id="left">
         <p id="p">职业健康管理</p>
-        <div id="mycontent" style="width: 100%;height: 93%;display: inline-block;background-color:#fff;overflow-x: scroll;padding-right:0px;border-right: 1px solid #ccc;">
-            <!--<div id="file_per"></div>-->
-            <!--<div id="file_list"></div>-->
+        <div id="mycontent" style="height: 93%;display: inline-block;background-color:#fff;overflow-x: scroll;padding-right:0px;">
             <div id="tree_container" class="ztree"></div>
             <p style="display: none;"></p>
         </div>
 
     </div>
     <div id="right">
-        <!--<div id="top">-->
-        <!--当前路径-->
-        <!--</div>-->
-        <!--<div id="path">当前路径:</div>-->
-         <p>相关方职业健康检查</p>
+        <p id="pp">相关方职业健康检查</p>
         <div class="tab-content">
             <div class="tab-pane active" id="home">
                 <div id="table1_wrapper">
@@ -130,21 +139,15 @@
                 <div class="ibox-title">
                     <h5></h5>
                 </div>
-
-
                 <div class="ibox-content">
-
                     <div class="col-lg-12 col-xs-12">
-
                         <label class="col-xs-3 control-label" id="file" style="text-align: right;line-height: 44px;">文件名称：</label>
-
                         <div class="myblock col-xs-8 input-group">
                             <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
                             <div id="file_upload1" style="display: inline-block;vertical-align: middle;"></div>
                             <div id="file_list1" style="display: inline-block;vertical-align: middle;"></div>
                         </div>
                     </div>
-
                     <input id="ai" type="text" class="form-control" value="" style="display: none;">
                     <div class="col-lg-12 col-xs-12">
                         <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">文件编号：</label>
@@ -159,9 +162,7 @@
                             <!--<input id="remark1" type="text" class="form-control" name="remark" >-->
                             <input id="ymd" type="text" class="form-control"  placeholder="YYYY年MM月DD日 hh:mm:ss" readonly>
                         </div>
-
                     </div>
-
                     <input id="aid" type="text" class="form-control" value="" style="display: none;">
                     <div class="col-lg-12 col-xs-12">
                         <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">备注：</label>
@@ -169,10 +170,6 @@
                             <input id="remark1" type="text" class="form-control" name="remark" >
                         </div>
                     </div>
-
-
-
-
                     <div class="col-xs-12" style="text-align: center;">
                         <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
                         <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
@@ -300,7 +297,6 @@
             })
         };
 
-
         var uploader1;          //初始化三个upload按钮
         //总体目标
         var aname1,aname2;           //用于区分 编辑时是否修改了文件
@@ -402,11 +398,11 @@
                   },
             "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear">frtip',
             "bLengthChange": false,
-            "columnDefs":[
+            "columnDefs": [
                 {
-                    "searchable":false,
-                    "orderable":false,
-                    "target":[8],
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": [7],
                     "render" :  function(data,type,row) {
                         var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download1(this)' value='下载'/>";
                         html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit1(this)' value='编辑'/>" ;
