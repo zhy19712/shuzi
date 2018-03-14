@@ -1,22 +1,32 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: sir
- * Date: 2018/3/7
- * Time: 14:01
+ * User: admin
+ * Date: 2018/3/14
+ * Time: 13:35
  */
+//相关方职业健康检查
 
 namespace app\safety\model;
-
-
 use think\exception\PDOException;
 use think\Model;
 
-class EducationModel extends Model
+class JobhealthGroupModel extends Model
 {
-    protected $name = 'safety_education';
+    protected $name = 'think_safety_jobhealth_check';
 
-    public function insertEdu($param)
+    /*
+     * 查询预览单条记录
+    */
+    public function getOne($id)
+    {
+        return $this->where('id', $id)->find();
+    }
+
+    /*
+     * 添加新的文件，文件名、上传人等一些信息
+    */
+    public function insertJobhealth($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -30,7 +40,10 @@ class EducationModel extends Model
         }
     }
 
-    public function editEdu($param)
+    /*
+     *对上传的文件进行编辑
+    */
+    public function editJobhealth($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -44,41 +57,17 @@ class EducationModel extends Model
         }
     }
 
-    public function delEdu($id)
+    /*
+     *对上传的文件进行删除
+    */
+    public function delJobhealth($id)
     {
         try{
-            $data = $this->getOne($id);
-//            $path = $data['path'];
-//            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-//            if(file_exists($path)){
-//                unlink($path); //删除文件
-//            }
-//            if(file_exists($pdf_path)){
-//                unlink($pdf_path); //删除生成的预览pdf
-//            }
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
+
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
-    }
-
-    public function getOne($id)
-    {
-        return $this->where('id', $id)->find();
-    }
-
-    public  function getList($idArr)
-    {
-        $data = [];
-        foreach($idArr as $v){
-            $data[] = $this->getOne($v);
-        }
-        return $data;
-    }
-
-    public function getYears()
-    {
-        return $this->group('years')->column('years');
     }
 }

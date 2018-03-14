@@ -1,22 +1,34 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: sir
- * Date: 2018/3/7
- * Time: 14:01
+ * User: admin
+ * Date: 2018/3/14
+ * Time: 17:27
  */
+//监理部职业健康管理
 
 namespace app\safety\model;
-
-
 use think\exception\PDOException;
 use think\Model;
 
-class EducationModel extends Model
+class JobhealthManageModel extends Model
 {
-    protected $name = 'safety_education';
+    protected $name = 'think_safety_health_manage';
 
-    public function insertEdu($param)
+
+    /*
+     * 获取一条监理部职业健康管理
+
+     */
+    public function getOne($id)
+    {
+        return $this->where('id', $id)->find();
+    }
+
+    /*
+     * 插入监理部职业健康管理信息
+     */
+    public function insertJobhealthManage($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -30,7 +42,10 @@ class EducationModel extends Model
         }
     }
 
-    public function editEdu($param)
+    /*
+     * 编辑监理部职业健康管理信息
+     */
+    public function editJobhealthManage($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -44,41 +59,25 @@ class EducationModel extends Model
         }
     }
 
-    public function delEdu($id)
+    /*
+     * 删除监理部职业健康管理信息
+     */
+    public function delJobhealthManage($id)
     {
         try{
             $data = $this->getOne($id);
-//            $path = $data['path'];
-//            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-//            if(file_exists($path)){
-//                unlink($path); //删除文件
-//            }
-//            if(file_exists($pdf_path)){
-//                unlink($pdf_path); //删除生成的预览pdf
-//            }
+            $path = $data['path'];
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
+            if(file_exists($pdf_path)){
+                unlink($pdf_path); //删除生成的预览pdf
+            }
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
-    }
-
-    public function getOne($id)
-    {
-        return $this->where('id', $id)->find();
-    }
-
-    public  function getList($idArr)
-    {
-        $data = [];
-        foreach($idArr as $v){
-            $data[] = $this->getOne($v);
-        }
-        return $data;
-    }
-
-    public function getYears()
-    {
-        return $this->group('years')->column('years');
     }
 }
