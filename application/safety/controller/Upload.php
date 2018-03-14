@@ -841,4 +841,32 @@ class Upload extends Base
         }
     }
 
+    /**
+     * 监理部职业健康管理 文件上传
+     * @author hutao
+     */
+    public function uploadHealthmanage(){
+        /**
+        id 监理部职业健康管理表id
+        fullname 姓名
+        age 年龄
+        station 岗位
+        inform_name 职业危害告知书原文件名
+        inform_filename 职业危害告知书上传文件名
+        inform_path 职业危害告知书上传文件路径
+        physical_name 职业健康体检报告原文件名
+        physical_filename 职业健康体检报告上传文件名
+        physical_path 职业健康体检报告文件路径
+        owner 上传人
+        date 上传时间
+         */
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/healthmanage');
+        if($info){
+            echo $info->getSaveName();
+        }else{
+            echo $file->getError();
+        }
+    }
+
 }
