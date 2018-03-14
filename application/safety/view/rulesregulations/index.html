@@ -931,7 +931,7 @@
     });
     //编辑
     function edit(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var id = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
         $("#addRules_modal input").val("");
         $("#id1").val(id);
         $("#file_list1").empty();
@@ -977,7 +977,7 @@
     //规章制度-点击编辑
     //    var standard_uploader;
     //    function edit(that) {
-    //        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+    //        var id = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
     //        $("#addRules_modal input").val("");
     //        $("#id1").val(id);
     //        $("#standard_list").empty();
@@ -1133,7 +1133,7 @@
     }
     //规章制度-点击下载
     function downloadFile(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var id = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
         console.log(id)
         download(id,"./rulesDownload");
     }
@@ -1155,13 +1155,14 @@
     }
     //规章制度-点击预览
     function preview(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var id = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
         console.log(id)
         showPdf(id,"./rulesPreview");
     }
     //规章制度-点击删除
     function del(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var id = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
+        console.log(id)
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
                 url: "./rulesDel",
@@ -1232,7 +1233,7 @@
         formData: {
             group_id:''
         },
-        duplicate :true,// 重复上传图片，true为可重复false为不可重复
+        duplicate: true,// 重复上传图片，true为可重复false为不可重复
         pick: {
             multiple: false,
             id: "#excelImport",
@@ -1278,6 +1279,9 @@
     });
     uploaderExcel.on("uploadStart",function () {
         uploaderExcel.options.formData.group_id = groupid;
+    });
+    uploaderExcel.on("uploadFinished", function () {
+        uploaderExcel.reset();
     });
 
     //导出excelExport
