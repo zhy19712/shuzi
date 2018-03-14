@@ -99,8 +99,6 @@
                             <div class="excelImport btn btn-outline btn-primary">导入</div>
                             <div class="excelExport btn btn-outline btn-primary">导出</div>
                             <select name="down_excel" id="down_excel">
-                                <option value="查看历史版本">查看历史版本</option>
-                                <option value="两年">两年</option>
                             </select>
                         </div>
                         <table id="table3" width="100%" class="table table-striped table-bordered ">
@@ -452,6 +450,22 @@
                 case 131:
                 case 132:
                 case 133:
+                    $.ajax({
+                        url:'../Specialequipmentmanagement/getversion',
+                        dataType:'JSON',
+                        type:'POST',
+                        data:{
+                            "selfid":selfid
+                        },
+                        success:function (data) {
+                            console.log(data);
+                            var optionStr='';
+                            for(var i=0;i<data.length;i++){
+                                optionStr += '<option value="'+data[i]+'">' + data[i] + '</option>'
+                            }
+                            $("#down_excel").append(optionStr);
+                        }
+                    })
                     table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid=" + selfid).load();
                     $("#mytable3_wrapper").css("display","block");
                     break;
@@ -1139,7 +1153,8 @@
             {
                 "targets":[10],
                 "render":function (data,type,row) {
-                    var state
+                    var state;
+                    console.log(data);
                     if(!row[12]){
                         state =row[20];
                     }else{
@@ -1322,7 +1337,7 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table2.ajax.url("__SCRIPT__/safety_special_equipment_management.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
+            table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
             console.log(obj.date.YYYY);
         }
     });
@@ -1494,7 +1509,8 @@
                 server: "{:url('Specialequipmentmanagement/importExcel')}",// 文件接收服务端。
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"remark":"","selfid":""},
+                chunked: false,
+                formData: {"selfid":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -1738,6 +1754,13 @@
     //         window.location.href = uri + base64(format(template, ctx))
     //     }
     // })();
+
+    //点击查看历史版本
+    $("#down_excel").click(function () {
+        var time  = $('#down_excel option:selected').val();
+        var history_version = time===undefined?"":time ;//选中的值
+        table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid+"&history_version="+history_version).load();
+    })
 </script>
 
 </body>
