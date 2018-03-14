@@ -725,7 +725,7 @@ class Upload extends Base
                     'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
-                    'create_time' => date("Y-m-d H:i:s"),
+                    'date' => date("Y-m-d H:i:s"),
                     'path' => $path,
                     'remark' => $remark,
                     'input_time' =>$input_time  //excel表格导入时间
@@ -758,7 +758,7 @@ class Upload extends Base
                     'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
-                    'create_time' => date("Y-m-d H:i:s"),
+                    'date' => date("Y-m-d H:i:s"),
                     'path' => $path,
                     'remark' => $remark,
                     'input_time' =>$input_time  //excel表格导入时间
