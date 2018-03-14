@@ -521,7 +521,7 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table1.ajax.url("__SCRIPT__/safety_responsibilityinsty.php?year="+obj.date.YYYY).load();
+            table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?year="+obj.date.YYYY).load();
             // console.log(obj.date.YYYY);
         }
     });
