@@ -188,7 +188,7 @@
     </div>
 </div>
 
-<div id="addRules_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 40%;margin: 0 auto;margin-top: 40px;">
+<div id="addRules_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 40%;margin: 0 auto;margin-top: 0;">
     <div class="row">
         <div class="col-sm-12" style="background-color:#fff;">
             <div class="ibox float-e-margins">
@@ -208,18 +208,6 @@
                                     <label class="col-xs-6 col-sm-4 control-label">标准号：</label>
                                 <div class="myblock col-xs-6 input-group">
                                     <input id="standardNumr" type="text" class="form-control" name="standardNumr" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-3 col-sm-4 control-label">名称：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input id="addName" type="text" class="form-control" name="addName" >
-                                    <span class="input-group-btn">
-                                            <div class="btn btn-upload" id="picker">上传</div>
-                                        </span>
                                 </div>
                             </div>
                         </div>
@@ -267,6 +255,26 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label">文件名称：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="addName" type="text" class="form-control" name="addName" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label">文件上传：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <div class="btn btn-upload" id="picker">上传</div>
+                                    <div id="fileUpload" style="display: inline-block;vertical-align: middle;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-2 col-sm-4 control-label">备注：</label>
@@ -275,6 +283,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-xs-12 col-lg-6"  style="text-align: center;margin-top: 10px">
                                 <button class="btn btn-primary" type="submit" id="save"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
@@ -605,8 +614,13 @@
         var $list = $('#addName');
 
         uploader.on( 'fileQueued', function( file ) {
+            console.log(file);
             $('#newFileName').val(file.name);
-            $list.val('等待上传...');
+            var fileList = '<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '">' +
+                            '<span class="info">' + file.name + '</span>&nbsp' +
+                            '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '</div>';
+            $('#fileUpload').append(fileList);
         });
 
         uploader.on( 'uploadSuccess', function( file ,res) {
@@ -616,6 +630,19 @@
 
         uploader.on( 'uploadError', function( file ) {
             $list.val('上传出错');
+        });
+
+        $("#fileUpload").on("click", ".webuploadDelbtn", function () {
+            var $ele = $(this);
+            var id = $ele.parent().attr("class");
+            var file = uploader.getFile(id);
+            uploader.removeFile(file,true);
+        });
+
+        uploader.on('fileDequeued', function (file) {
+            $(file.id).remove();
+            $('.'+file.id).remove();
+            console.log("删除成功");
         });
 
         // 文件上传过程中创建进度条实时显示。
