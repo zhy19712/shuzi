@@ -71,7 +71,7 @@ if(!empty($_GET["year"]) && !empty($_GET["selfid"]) && !empty($_GET["history_ver
     $year = $_GET["year"];
     $history_version = $_GET["history_version"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and create_time like '%" .$year. "%' and input_time like '%" .$history_version. "%'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and date like '%" .$year. "%' and input_time like '%" .$history_version. "%'" )
     );
 }
 else if(empty($_GET["year"]) && !empty($_GET["selfid"]) && empty($_GET["history_version"]))
@@ -85,7 +85,7 @@ else if(empty($_GET["year"]) && !empty($_GET["selfid"]) && empty($_GET["history_
     $selfid = $_GET["selfid"];
     $year = $_GET["year"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and create_time like '%" .$year. "%'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and date like '%" .$year. "%'" )
     );
 }else if(empty($_GET["year"]) && !empty($_GET["selfid"]) && !empty($_GET["history_version"]))
 {
