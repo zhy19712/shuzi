@@ -22,9 +22,9 @@ class Specialequipmentmanagement extends Base
     public function index()
     {
         if(request()->isAjax()){
-            $equipment= new SafetySpecialEquipmentManagementModel();
+            $culture= new SafetySpecialEquipmentManagementModel();
             $param = input('post.');
-            $data = $equipment->getOne($param['id']);
+            $data = $culture->getOne($param['id']);
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
@@ -129,8 +129,9 @@ class Specialequipmentmanagement extends Base
     public function getversion()
     {
         if(request()->isAjax()){
+            $param = input('post.');
             $equipment= new SafetySpecialEquipmentManagementModel();
-            $data = $equipment->getVersion();
+            $data = $equipment->getVersion($param);
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
@@ -289,9 +290,9 @@ class Specialequipmentmanagement extends Base
                 ->setCellValue('G'.$key, $v['current_state'])
                 ->setCellValue('H'.$key, $v['safety_inspection_num'])
                 ->setCellValue('I'.$key, $v['inspection_unit'])
-                ->setCellValue('I'.$key, $v['inspection_unit'])
-                ->setCellValue('I'.$key, $v['inspection_unit'])
-                ->setCellValue('I'.$key, $v['inspection_unit']);
+                ->setCellValue('I'.$key, $v['entry_time'])
+                ->setCellValue('I'.$key, $v['equip_state'])
+                ->setCellValue('I'.$key, $v['remark']);
         }
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);

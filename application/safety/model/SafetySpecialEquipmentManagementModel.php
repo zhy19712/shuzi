@@ -95,10 +95,10 @@ class SafetySpecialEquipmentManagementModel extends Model
     /*
      * 获取特种设备管理文件的版本日期,excel的导入日期
     */
-    public function getVersion()
+    public function getVersion($param)
     {
 //        return $this->field('input_time')->order('id desc')->select();
-        return $this->group('input_time')->column('input_time');
+        return $this->where('selfid',$param['selfid'])->group('input_time')->column('input_time');
     }
 
 

@@ -102,10 +102,21 @@ class Responsibilityinsty extends Base
      */
     public function responsibilityinstyDel()
     {
-        $id = input('param.id');
         $group = new ResponsibilityinstyGroupModel();
-        $flag = $group->delResponsibilityinstyGroup($id);
-        return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $data = $group->getOne($param['id']);
+            $path = $data['path'];
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
+            if(file_exists($pdf_path)){
+                unlink($pdf_path); //删除生成的预览pdf
+            }
+            $flag = $group->delResponsibilityinstyGroup($param['id']);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
     }
 
     /**
