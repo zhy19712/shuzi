@@ -160,7 +160,7 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th><input type="checkbox">全选</th>
+                            <th><input type="checkbox" class="checkall">全选</th>
                             <th>培训内容</th>
                             <th>培训时间</th>
                             <th>培训地点</th>
@@ -588,6 +588,19 @@
                 console.log(res)
             }
         })
+        $.ajax({
+            url:'./getHistory',
+            dataType:'JSON',
+            type:'POST',
+            success:function (data) {
+                console.log(data);
+                var optionStr='';
+                for(var i=0;i<data.length;i++){
+                    optionStr += '<option value="'+data[i]+'">' + data[i] + '</option>'
+                }
+                $("#down_excel").append(optionStr);
+            }
+        });
 //         mytree_node = treeNode;
 //         var grioupid;
 //         groupid = treeNode.id;
@@ -1084,9 +1097,53 @@
         importExcel.reset();
     });
 
+    var dataArr=[];
+    //获取选中行ID
+    function getDataId(that) {
+        var isChecked = $(that).prop('checked');
+        var id = $(that).parents('tr').find('td:eq(2)').text();
+        if(isChecked){
+            dataArr.push(id);
+        }
+    }
+    //单选
+    function getRadioId(that) {
+        console.log(dataArr);
+        getDataId(that);
+    }
+
+    //checkbox全选
+    $(".checkall").on("click", function () {
+        console.log(dataArr);
+
+        if ($(this).prop("checked") === true) {
+            var check = $(this).prop("checked");
+            $(".checkchild").prop("checked", check);
+            $(".checkchild").each(function(){
+                getDataId(this);
+            });
+        } else {
+            $(".checkchild").prop("checked", false);
+        }
+    });
     //导出excelExport
     $("#excelExport").click(function () {
-
+        $.ajax({
+            url: "./exportExcel",
+            type: "post",
+            data: {
+                'id':dataArr
+            },
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.code ==1){
+                    layer.msg('导出成功！', {icon: 1});
+                }else{
+                    alert("获取数据失败！")
+                }
+            }
+        })
     });
     //导出excel模版 moldPlate
     $("#moldPlate").click(function () {
