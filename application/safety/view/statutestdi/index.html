@@ -277,7 +277,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-xs-12 col-lg-6"  style="text-align: center;margin-top: 10px">
-                                <button class="btn btn-primary" type="button" id="save"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-primary" type="submit" id="save"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
                                 <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
                             </div>
                         </div>
@@ -647,11 +647,7 @@
     //关闭模态框销毁WebUploader
     $('#addRules_modal').on('hide.bs.modal', function () {
         uploader.destroy();
-        $(':input','#memberAdd')
-            .not(':button, :submit, :reset, :hidden')
-            .val('')
-            .removeAttr('checked')
-            .removeAttr('selected');
+        validator.resetForm();
     });
 
     //根据适用性评价设置替换标准是否只读
@@ -668,108 +664,86 @@
         $('#pdivision').val(treeNode.name);
     };
     //组织机构及用户树
-    function siduserZtree() {
-        var setting = {
-            async: {
-                enable : true,
-                autoParam: ["pId"],
-                type : "post",
-                url : "{:url('Statutestdi/getSiduser')}",
-                dataType :"json"
+    var setting = {
+        async: {
+            enable : true,
+            autoParam: ["pId"],
+            type : "post",
+            url : "{:url('Statutestdi/getSiduser')}",
+            dataType :"json"
+        },
+        data:{
+            keep: {
+                leaf : true,
+                parent : true
             },
-            data:{
-                keep: {
-                    leaf : true,
-                    parent : true
-                },
-                simpleData : {
-                    enable:true,
-                    idkey: "id",
-                    pIdKey: "pId"
-                }
-            },
-            callback: {
-                onClick: getSiduser
+            simpleData : {
+                enable:true,
+                idkey: "id",
+                pIdKey: "pId"
             }
-        };
-        zTreeObj = $.fn.zTree.init($("#siduserZtree"), setting,null);
-    }
-    siduserZtree();
-
-    //非空判断
-    function isEmpty(element,msg) {
-        if(!$("#"+element).val()){
-            $("#"+element).focus().css('border-color','red');
-            layer.msg(msg);
-            return false;
-        }else{
-            $("#"+element).blur().css('border-color','#e5e6e7');
+        },
+        callback: {
+            onClick: getSiduser
         }
-    }
-
-    $('#memberAdd input').blur(function(){
-        var _this = $(this);
-        if(!_this.val()){
-            _this.css('border-color','red');
-        }else{
-            _this.css('border-color','#e5e6e7');
-        }
-    });
+    };
+    zTreeObj = $.fn.zTree.init($("#siduserZtree"), setting,null);
 
     //上传保存
-    $('#save').click(function(){
-        //非空判断
-        isEmpty('pdivision','识别人不能为空');
-        isEmpty('psex','适用性评价不能为空');
-        isEmpty('dataImple','施行日期不能为空');
-        isEmpty('addName','文件名称不能为空');
-        isEmpty('standardNumr','标准号不能为空');
-
-        if($('#psex').find('option:selected').val()==-1){
-            if($('alternativeStandard').val()==''){
-                layer.msg('替代标准不能为空');
-                return false;
+    var validator = $("#memberAdd").validate({
+        submitHandler: function(form) {
+            //获取表单数据
+            var id = $('#sid').val();
+            var group_id = $('input[type="hidden"][name="groupId"]').val();
+            var sdi_name = $('#addName').val();
+            var sdi_number = $('#standardNumr').val();
+            var go_date = $('#dataImple').val();
+            var standard = $('#alternativeStandard').val();
+            var evaluation = $('#psex').val();
+            var sid_user = $('#pdivision').val();
+            var remark = $('#rulesDesc').val();
+            var oldFileName = $('#oldFileName').val();
+            var newFileNmae = $('#newFileName').val();
+            //表单提交
+            if(!newFileNmae||newFileNmae===oldFileName){
+                //修改
+                $(form).ajaxSubmit({
+                    url: "{:url('Statutestdi/sdiEdit')}",
+                    type: "post",
+                    dataType: 'json',
+                    data:{
+                        id:id,
+                        group_id:group_id,
+                        sdi_name:sdi_name,
+                        sdi_number:sdi_number,  //标准号
+                        go_date:go_date,//执行日期
+                        standard:standard,//替代标准
+                        evaluation:evaluation,//适用性评价
+                        sid_user:sid_user,//识别人
+                        remark:remark
+                    },
+                    success: complete
+                });
+            }else{
+                //上传文件
+                uploader.upload();
             }
-            return false;
-        }
+        },
+        rules: {
+            standardNumr: "required",
+            division: "required",
+            dataImple: "required",
+            alternativeStandard:function(){
 
-        //获取表单数据
-        var id = $('#sid').val();
-        var group_id = $('input[type="hidden"][name="groupId"]').val();
-        var sdi_name = $('#addName').val();
-        var sdi_number = $('#standardNumr').val();
-        var go_date = $('#dataImple').val();
-        var standard = $('#alternativeStandard').val();
-        var evaluation = $('#psex').val();
-        var sid_user = $('#pdivision').val();
-        var remark = $('#rulesDesc').val();
-        var oldFileName = $('#oldFileName').val();
-        var newFileNmae = $('#newFileName').val();
-        //表单提交
-        if(!newFileNmae||newFileNmae===oldFileName){
-            //修改
-            $.ajax({
-                url: "{:url('Statutestdi/sdiEdit')}",
-                type: "post",
-                dataType: 'json',
-                data:{
-                    id:id,
-                    group_id:group_id,
-                    sdi_name:sdi_name,
-                    sdi_number:sdi_number,  //标准号
-                    go_date:go_date,//执行日期
-                    standard:standard,//替代标准
-                    evaluation:evaluation,//适用性评价
-                    sid_user:sid_user,//识别人
-                    remark:remark
-                },
-                success: complete
-            });
-        }else{
-            //上传文件
-            uploader.upload();
+            }
+        },
+        messages: {
+            standardNumr:'标准号不能为空',
+            division:'识别人不能为空',
+            dataImple:'施行日期不能为空'
         }
     });
+
     //数据返回
     function complete(data){
         var groupid = $('input[type="hidden"][name="groupId"]').val();
