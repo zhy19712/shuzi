@@ -38,6 +38,7 @@
      text-align: center;
       line-height: 40px;
    }
+
    #p{
 
       border-bottom: 1px solid lightgray;
@@ -64,7 +65,7 @@
 .mybtn{
     float: left;
    margin-top: 5px;
-   margin-left: 20px;
+   /*margin-left: 20px;*/
 }
    #example_filter{
       float: right;
@@ -83,12 +84,15 @@
       font-weight: 700;
       color: black;
    }
+   #path{
+      font-weight: bolder;
+   }
 </style>
 <body  class="gray-bg animated fadeInRight" style="background-color:#fff;">
    <div id="box" class="clearfix">
       <div id="left">
          <p id="p">机构和设置</p>
-         <div id="mycontent" style="width: 100%;height: 93%;display: inline-block;background-color:#fff;overflow-x: scroll;padding-right:0px;">
+         <div id="mycontent" style="height: 93%;display: inline-block;background-color:#fff;overflow-x: scroll;padding-right:0px;">
             <div id="tree_container" class="ztree"></div>
             <p style="display: none;"></p>
          </div>
@@ -188,7 +192,7 @@
    <script src="__JS__/jquery.jedate.js"></script>
    <script type="text/javascript">
 
-       $("#table1_wrapper").css("display","none")
+       // $("#table1_wrapper").css("display","none")
        var curMenu = null, zTree_Menu = null;
        //组织结构
        var zTreeObj;
@@ -351,7 +355,7 @@
                     $("#file_list1").empty();
                     $("#fname1").modal('hide');
                     console.log(selfid)
-                    table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php").load();
+                    table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -404,7 +408,7 @@
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         if(url === "./responsibilityinstyDel"){
-                            table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php").load();
+                            table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
 
                         }
                     }else{
@@ -487,7 +491,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/safety_responsibilityinsty_table.php"
+            "url": "__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid
         },
         // "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear">frtip',
