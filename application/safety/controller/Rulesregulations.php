@@ -298,8 +298,8 @@ class Rulesregulations extends Base
                 $str = preg_replace('/[ ]/', '', $v);
                 if ($str == '标准号'){
                     $number_index = $k;
-                }else if ($str == '名称'){
                     $rul_name_index = $k;
+                }else if ($str == '名称'){
                 }else if ($str == '施行日期'){
                     $go_date_index = $k;
                 }else if($str == '替代标准'){
@@ -308,7 +308,7 @@ class Rulesregulations extends Base
                     $evaluation_index = $k;
                 }else if($str == '识别人'){
                     $rul_user_index = $k;
-                }else if($str == '上传时间'){
+                }else if($str == '上传时间' || $str == '上传日期'){
                     $rul_date_index = $k;
                 }else if($str == '备注'){
                     $remark_index = $k;
