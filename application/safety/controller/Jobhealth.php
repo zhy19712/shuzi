@@ -9,14 +9,22 @@
 namespace app\safety\controller;
 
 use app\admin\controller\Base;
+use app\safety\model\JobhealthModel;
 
 class Jobhealth extends Base
 {
     /*
-     * 获取一条特种作业人员
+     * [index 职业健康中的左边的分类节点]
     */
     public function index()
     {
-        return $this->fetch();
+        if(request()->isAjax()){
+            $node = new JobhealthModel();
+            $nodeStr = $node->getNodeInfo();
+            return json($nodeStr);
+
+        }
+        else
+            return $this->fetch();
     }
 }
