@@ -14,6 +14,7 @@ use app\safety\model\StatutestdiModel;
 use app\safety\model\FullparticipationModel;
 use app\safety\model\EquipmentCheckAcceptModel;
 use app\safety\model\SafetySpecialEquipmentManagementModel;
+use app\safety\model\JobhealthGroupModel;
 
 class Upload extends Base
 {
@@ -725,7 +726,7 @@ class Upload extends Base
                     'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
-                    'create_time' => date("Y-m-d H:i:s"),
+                    'date' => date("Y-m-d H:i:s"),
                     'path' => $path,
                     'remark' => $remark,
                     'input_time' =>$input_time  //excel表格导入时间
@@ -758,7 +759,7 @@ class Upload extends Base
                     'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
-                    'create_time' => date("Y-m-d H:i:s"),
+                    'date' => date("Y-m-d H:i:s"),
                     'path' => $path,
                     'remark' => $remark,
                     'input_time' =>$input_time  //excel表格导入时间
@@ -766,6 +767,103 @@ class Upload extends Base
                 $flag = $equipment->editSpecialEquipmentManagement($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /*
+     *职业健康检查文件上传
+    * @return \think\response\Json
+    */
+
+    public function uploadJobhealth(){
+        /**
+         * id 相关方职业健康检查表id
+         * selfid 区别职业健康管理类别的id
+         * name 上传文件名
+         * filename 上传文件名
+         * filenumber 文件编号
+         * checktime 检查时间
+         * owner 上传人
+         * date 上传时间
+         * remark 备注
+         * path 文件路径
+
+         */
+        $jobhealth = new JobhealthGroupModel();
+        $id = request()->param('aid');
+        $selfid = request()->param('selfid');
+        $filenumber = request()->param('filenumber');
+        $checktime = request()->param('checktime');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/jobhealth');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/jobhealth/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'selfid' => $selfid,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'filenumber' => $filenumber,
+                    'checktime' => $checktime,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $jobhealth->insertJobhealth($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $jobhealth->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'selfid' => $selfid,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'filenumber' => $filenumber,
+                    'checktime' => $checktime,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $jobhealth->editJobhealth($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /**
+     * 监理部职业健康管理 文件上传
+     * @author hutao
+     */
+    public function uploadHealthmanage(){
+        /**
+        id 监理部职业健康管理表id
+        fullname 姓名
+        age 年龄
+        station 岗位
+        inform_name 职业危害告知书原文件名
+        inform_filename 职业危害告知书上传文件名
+        inform_path 职业危害告知书上传文件路径
+        physical_name 职业健康体检报告原文件名
+        physical_filename 职业健康体检报告上传文件名
+        physical_path 职业健康体检报告文件路径
+        owner 上传人
+        date 上传时间
+         */
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/healthmanage');
+        if($info){
+            echo $info->getSaveName();
         }else{
             echo $file->getError();
         }

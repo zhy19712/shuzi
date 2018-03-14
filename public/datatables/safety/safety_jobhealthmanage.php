@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 include('../conn.php');
 /*
@@ -19,8 +19,8 @@ include('../conn.php');
  * Easy set variables
  */
 
-// DB table to use 法规标准识别
-$table = 'think_safety_education';
+// DB table to use
+$table = 'think_safety_health_manage';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -31,13 +31,13 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'content',  'dt' => 2 ),
-    array( 'db' => 'edu_time',  'dt' => 3 ),
-    array( 'db' => 'address',  'dt' => 4 ),
-    array( 'db' => 'lecturer',  'dt' => 5 ),
-    array( 'db' => 'trainee',  'dt' => 6 ),
-    array( 'db' => 'num',  'dt' => 7 ),
-    array( 'db' => 'remark',  'dt' => 8)
+    array( 'db' => 'fullname',  'dt' => 1 ),
+    array( 'db' => 'sex',  'dt' => 2 ),
+    array( 'db' => 'age',  'dt' => 3 ),
+    array( 'db' => 'station',  'dt' => 4 ),
+    array( 'db' => 'inform_path',  'dt' => 5 ),
+    array( 'db' => 'physical_path',  'dt' => 6 ),
+    array( 'db' => 'remark',  'dt' => 7 )
 );
 
 
@@ -55,20 +55,15 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
 
 require( '../ssp.class.php' );
 
-//echo json_encode(
-//    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
-//);
-
-if(!empty($_GET["pid"]))
+if(!empty($_GET["year"]))
 {
-    $pid = $_GET["pid"];
+    $year = $_GET["year"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null, "date like '%" .$year. "%'" )
     );
-}
-else{
+}else{
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = 'empty'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
     );
 }
 

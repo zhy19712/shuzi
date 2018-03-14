@@ -1,5 +1,5 @@
-﻿<?php
-
+<?php
+//相关设备设施建设验收表格展示
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
@@ -19,8 +19,8 @@ include('../conn.php');
  * Easy set variables
  */
 
-// DB table to use 法规标准识别
-$table = 'think_safety_education';
+// DB table to use
+$table = 'think_safety_jobhealth_check';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -31,13 +31,12 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'content',  'dt' => 2 ),
-    array( 'db' => 'edu_time',  'dt' => 3 ),
-    array( 'db' => 'address',  'dt' => 4 ),
-    array( 'db' => 'lecturer',  'dt' => 5 ),
-    array( 'db' => 'trainee',  'dt' => 6 ),
-    array( 'db' => 'num',  'dt' => 7 ),
-    array( 'db' => 'remark',  'dt' => 8)
+    array( 'db' => 'filename',  'dt' => 1 ),
+    array( 'db' => 'filenumber',  'dt' => 2 ),
+    array( 'db' => 'checktime',  'dt' => 3 ),
+    array( 'db' => 'owner',  'dt' => 4 ),
+    array( 'db' => 'date',  'dt' => 5 ),
+    array( 'db' => 'remark',  'dt' => 6 )
 );
 
 
@@ -59,19 +58,25 @@ require( '../ssp.class.php' );
 //    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
 //);
 
-if(!empty($_GET["pid"]))
+if(!empty($_GET["year"]) && !empty($_GET["selfid"]))
 {
-    $pid = $_GET["pid"];
+    $selfid = $_GET["selfid"];
+    $year = $_GET["year"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and date like '%" .$year. "%'" )
     );
 }
-else{
+else if(empty($_GET["year"]) && !empty($_GET["selfid"]))
+{
+    $selfid = $_GET["selfid"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = 'empty'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid'" )
+    );
+}else{
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
     );
 }
-
 
 
 

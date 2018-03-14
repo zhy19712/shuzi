@@ -81,16 +81,6 @@
     #mytable1_wrapper{
         display: block;
     }
-    /*.panrpos{*/
-        /*position: relative;*/
-    /*}*/
-    /*.pos{*/
-        /*width: 223px;*/
-        /*height: 106px;*/
-        /*position: absolute;*/
-        /*left: 0px;*/
-        /*top: 34px*/
-    /*}*/
     #excel{
         width: 431px;
         height: 33px;
@@ -98,6 +88,7 @@
         position: absolute;
         right: 0px;
         top: 50px;
+        z-index: 4;
     }
     #excel button{
         margin-left: 15px;
@@ -107,6 +98,7 @@
         border: none;
         background: orange;
         color: white;
+        outline: none;
     }
     #excel button:nth-of-type(3){
         width:115px;
@@ -120,6 +112,20 @@
     }
     #trainerMaterials,#trainerRecords{
         width: 45%;
+    }
+    #excelImport div:nth-of-type(1){
+        width: 60px;
+        height: 27px;
+        line-height: 6px;
+        border-radius: 24px;
+        border: none;
+        background: orange;
+        color: white;
+        outline: none;
+        display: block;
+    }
+    #edParent {
+        width: 100px;
     }
 </style>
 <body>
@@ -141,22 +147,20 @@
     <div class="ibox float-e-margins">
         <div class="ibox-content">
             <div class="row">
-                <div id="path">当前路径</div>
+                <div id="path">但</div>
                 <div id="mytable1_wrapper">
                     <div id="excel">
                         <button id="excelImport">导入</button>
                         <button id="excelExport">导出</button>
                         <button id="moldPlate">导出excel模板</button>
                         <select name="down_excel" id="down_excel">
-                            <option value="查看历史版本">查看历史版本</option>
-                            <option value="两年">两年</option>
                         </select>
                     </div>
                     <table id="admin_table" width="100%" class="table table-striped table-bordered">
                         <thead>
                         <tr>
-                            <th><input type="checkbox">全选</th>
                             <th>ID</th>
+                            <th><input type="checkbox">全选</th>
                             <th>培训内容</th>
                             <th>培训时间</th>
                             <th>培训地点</th>
@@ -193,13 +197,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">培训人：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="trainer" type="text" class="form-control" name="trainer" >
+                                    <input id="trainer" required="required" type="text" class="form-control" name="trainer" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">培训时间：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="trainingTime" type="text" class="form-control" name="trainingTime" >
+                                    <input id="trainingTime"  required="required" type="text" class="form-control" name="trainingTime" >
                                 </div>
                             </div>
                         </div>
@@ -208,13 +212,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">培训人员：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="trainers" type="text" class="form-control" name="trainers" >
+                                    <input id="trainers" type="text" required="required" placeholder="输入框不能为空！" class="form-control" name="trainers" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">培训地点：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="trainingPlace" type="text" class="form-control" name="trainingPlace" >
+                                    <input id="trainingPlace" type="text" required="required" class="form-control" name="trainingPlace" >
                                 </div>
                             </div>
                         </div>
@@ -223,13 +227,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">培训人数：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="numTraining" type="text" class="form-control" name="numTraining" >
+                                    <input id="numTraining" type="text" required="required" class="form-control" name="numTraining" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">培训内容：</label>
                                 <div class="myblock col-xs-6 input-group panrpos" >
-                                    <input id="trainerCon" type="text" class="form-control" name="trainerCon" >
+                                    <input id="trainerCon" type="text" required="required" class="form-control" name="trainerCon" >
                                 </div>
                             </div>
                         </div>
@@ -238,9 +242,10 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-6 col-sm-2 control-label">培训材料：</label>
                                 <div class="myblock col-xs-6 col-sm-10 input-group">
-                                    <input type="text" id="trainerMaterials" class="form-control" name="trainerMaterials">
+                                    <input type="text" required="required" id="trainerMaterials" class="form-control" name="trainerMaterials">
                                     <span class="input-group-btn">
                                         <div class="btn btn-upload" id="pickerMaterials">上传</div>
+
                                     </span>
                                 </div>
                             </div>
@@ -250,9 +255,10 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-6 col-sm-2 control-label">培训记录：</label>
                                 <div class="myblock col-xs-6 col-sm-10 input-group">
-                                    <input type="text" id="trainerRecords" class="form-control" name="trainerRecords">
+                                    <input type="text" required="required" id="trainerRecords" class="form-control" name="trainerRecords">
                                     <span class="input-group-btn">
                                         <div class="btn btn-upload" id="pickerRecords">上传</div>
+
                                     </span>
                                 </div>
                             </div>
@@ -318,12 +324,38 @@
 </div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
-
 <script src="__JS__/jquery.ztree.all.js"></script>
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/jquery.jedate.js"></script>
 
 <script type="text/javascript">
+    // var table = $("#mytable").DataTable({
+    //       "processing":true,
+    //       "ajax": {
+    //           "url": "user/getTableDatas",
+    //       },
+    //       "columns": [
+    //              {
+    //                  "data":"index",//序号
+    //                  "render":function(data,type,row,meta){
+    //                      var startIndex = meta.settings._iDisplayStart;
+    //                      return startIndex+meta.row+1;
+    //                  }
+    //              },
+    //             {
+    //                  "sClass": "text-center",
+    //                  "data": "id",//行单选框
+    //                  "render": function (data, type, full, meta) {
+    //                      return '<input id="checkchild" type="checkbox"  class="checkchild"  value="' + data + '" />';
+    //                  },
+    //                  "bSortable": false
+    //             }
+    //       ],
+    //       //行被创建时调用
+    //       "createdRow":function(row,data,dataIndex){
+    //
+    //           }
+    // });
     var admin_table = $('#admin_table').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -333,9 +365,9 @@
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"float_left"f>tip',
         "columnDefs": [
             {
-//                "sClass": "text-center",
+                "searchable": false,
                 "orderable": false,
-                "targets": 0,
+                "targets": 1,
                 "render": function (data, type, full, meta) {
                     return '<input type="checkbox"  class="checkchild"  value="' + data + '" />';
                 }
@@ -345,8 +377,8 @@
                 "orderable": false,
                 "targets": [9],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edDownload(this)' value='下载'/>";
-                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='edPreview(this)' value='预览'/>" ;
+                    // var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edDownload(this)' value='下载'/>";
+                    var html = "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='edSee(this)' value='查看'/>" ;
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edEdit(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='edDel(this)' value='删除'/>" ;
                     return html;
@@ -371,38 +403,232 @@
     //组织结构
     var zTreeObj;
     var mytree_node;
-    点击获取节点名称
+    //树结构添加节点
+    $("#options>i:first-child").click(function () {
+        console.log(mytree_node)
+       if(mytree_node){
+                   if(mytree_node.level == 0){
+                       $("#level2 input").val("");
+                       $("#treePid").val(mytree_node.id);
+                       $("#level2 h5").text('添加');
+                       $("#level2").modal('show');
+                       console.log($("#treePid").val())
+////                var id = mytree_node.id;
+////                $.ajax({
+////                    url: "nodeAdd",
+////                    type: "post",
+////                    data: {id:id},
+////                    dataType: "json",
+////                    success: function (res) {
+////                        console.log(res);
+////                        if(res.msg == "success"){
+////                            if(res.data.post_sn){
+////                                $("#companyName").val(res.data.sn + "-" + res.data.post_sn + "-");
+////                            }else {
+////                                $("#companyName").val(res.data.sn + "-");
+////                            }
+////                        }
+////                    }
+////                });
+//            }
+////            else if(mytree_node.level == 1){
+////                $("#level3 input").val("");
+////                $("#pid3").val(mytree_node.id);
+////                var id = mytree_node.id;
+////                $.ajax({
+////                    url: "nodeEdit",
+////                    type: "post",
+////                    data: {id:id},
+////                    dataType: "json",
+////                    success: function (res) {
+////                        console.log(res);
+////                        if(res.msg == "success"){
+////                            if(res.data.post_sn){
+////                                $("#new3").val(res.data.sn + "-" + res.data.post_sn + "-");
+////                            }else {
+////                                $("#new3").val(res.data.sn + "-");
+////                            }
+////                        }
+////                    }
+////                });
+////                $("#level3 h5").text('添加');
+////                $("#level3").modal('show');
+////            }else if(mytree_node.level == 2){
+////                $("#level4 input").val("");
+////                $("#pid4").val(mytree_node.id);
+////                var id = mytree_node.id;
+////                $.ajax({
+////                    url: "nodeEdit",
+////                    type: "post",
+////                    data: {id:id},
+////                    dataType: "json",
+////                    success: function (res) {
+////                        console.log(res);
+////                        if(res.msg == "success"){
+////                            if(res.data.post_sn){
+////                                $("#new5").val(res.data.sn + "-" + res.data.post_sn + "-");
+////                            }else {
+////                                $("#new5").val(res.data.sn + "-");
+////                            }
+////                        }
+////                    }
+////                });
+////                $("#level4 h5").text('添加');
+////                $("#level4").modal('show');
+           }
+       }else {
+           layer.msg("请选择节点",{time:1500,shade: 0.1});
+       }
+    })
+    //树结构编辑节点
+    $("#options>i:nth-child(2)").click(function () {
+        if(mytree_node){
+            var id = mytree_node.id;
+            console.log(id)
+            $.ajax({
+                url: "getOneNode",
+                type: "post",
+                data: {id:id},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                    console.log(mytree_node);
+//                    if(res.msg == "编辑成功"){
+//                        var data = res.data;
+                    console.log(mytree_node.id);
+                    if(mytree_node.level == 0) {
+                        $("#level2 input").val("");
+                        $("#treePid").val(mytree_node.pId);
+                        $("#id2").val(mytree_node.id);
+                        $("#companyName").val(res.pname);
+                        $("#level2 h5").text('编辑');
+                        $("#level2").modal('show');
+                    }else if(mytree_node.level == 1) {
+                        $("#level2 input").val("");
+                        $("#treePid").val(mytree_node.pId);
+                        $("#id2").val(mytree_node.id);
+                        $("#companyName").val(res.pname);
+                        $("#level2 h5").text('编辑');
+                        $("#level2").modal('show');
+                    }
+//                        }else if(mytree_node.level == 2){
+//                            $("#level3 input").val("");
+//                            $("#pid3").val(mytree_node.pId);
+//                            $("#id3").val(mytree_node.id);
+//                            if(data.sn.substr(-1,1) == "-"){
+//                                $("#new3").val(data.sn);
+//                            }else {
+//                                $("#new3").val(data.sn + "-");
+//                            }
+//                            if(data.post_sn){
+//                                $("#new4").val(data.sn + "-" + data.post_sn + "-");
+//                            }else {
+//                                $("#new4").val(data.sn + "-");
+//                            }
+//                            $("#new4").val(data.post_sn);
+//                            $("#project_name3").val(data.name);
+//                            $("#main_project3").val(data.primary);
+//                            $("#level3 h5").text('编辑');
+//                            $("#level3").modal('show');
+//                        }else if(mytree_node.level == 3){
+//                            $("#level2 input").val("");
+//                            $("#pid4").val(mytree_node.pId);
+//                            $("#id4").val(mytree_node.id);
+//                            if(data.sn.substr(-1,1) == "-"){
+//                                $("#new5").val(data.sn);
+//                            }else {
+//                                $("#new5").val(data.sn + "-");
+//                            }
+//                            $("#new6").val(data.post_sn);
+//                            $("#project_name4").val(data.name);
+//                            $("#main_project4").val(data.primary);
+//                            $("#level4 h5").text('编辑');
+//                            $("#level4").modal('show');
+//                        }
+//                    }
+                }
+            })
+        }else {
+            layer.msg("请选择节点",{time:1500,shade: 0.1});
+        }
+    })
+    //树结构删除节点
+    $("#options>i:nth-child(3)").click(function () {
+        if(mytree_node){
+            layer.confirm("警告！你将会删除"+  mytree_node.name  +"！确认删除?", {icon: 3, title:'提示'}, function(index){
+                var id = mytree_node.id;
+                $.ajax({
+                    url: "nodeDel",
+                    type: "post",
+                    data: {id:id},
+                    dataType: "json",
+                    success: function (res) {
+//                        if(mytree_node.level === 3){
+//                            admin_table.ajax.url("__SCRIPT__/project_table.php").load();
+//                        }
+                        mytree_node = "";
+                        layer.msg(res.msg,{time:1500,shade: 0.1});
+                        zTreeObj.reAsyncChildNodes(null, "refresh");
+                    }
+                })
+                layer.close(index);
+            })
+        }else {
+            layer.msg("请选择节点",{time:1500,shade: 0.1});
+        }
+    })
+    //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
-        mytree_node = treeNode;
-        $("#groupname").val(treeNode.name);
-        $("#mycontent>p").text(treeNode.name);
-        $("#groupid").val(treeNode.id);
-        groupid = treeNode.id;
-        console.log(groupid)
-        if(treeNode.level == 0){
-            $("#mytable1_wrapper").css("display","block");
-            admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
-        }else {
-            if(treeNode.level == 1){
-                $("#mytable1_wrapper").css("display","block");
-                admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
-            }
-//            $("#mytable1_wrapper").css("display","none");
-        }
-        //获取路径
         $.ajax({
-            url: "./getParents",
+            url: "./getSegment",
             type: "post",
-            data: {id:groupid},
             dataType: "json",
             success: function (res) {
-                if(res.msg === "success"){
-                    $("#path").text("当前路径:" + res.path)
-                }
+                console.log(res)
             }
         })
+//         mytree_node = treeNode;
+//         var grioupid;
+//         groupid = treeNode.id;
+//         console.log(groupid)
+//         if(treeNode.level == 0){
+//             $("#mytable1_wrapper").css("display","block");
+//             admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+//         }else {
+//             if(treeNode.level == 1){
+//                 $("#mytable1_wrapper").css("display","block");
+//                 admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+//             }
+// //            $("#mytable1_wrapper").css("display","none");
+//         }
+//         //获取路径
+//         $.ajax({
+//             url: "./getSegment",
+//             type: "post",
+//             data: {id:groupid},
+//             dataType: "json",
+//             success: function (res) {
+//                 console.log(res)
+//                 if(res.msg === "success"){
+//                     $("#path").text(res.path)
+//                 }
+//             }
+//         })
     };
+    // var node = [
+    //     {name: "监理单位", children: [
+    //             {name: "北京咨询金寨监理部", id:'1', pid:"1"}
+    //         ]},
+    //     {name: "施工单位", children: [
+    //             {name: "C1标 葛洲坝集团",pid:"2"},
+    //             {name: "C2标 中水六局",pid:"3"},
+    //         ]}
+    // ]
+    var node = [
+        {name: "监理单位"},
+        {name: "施工单位"}
+    ]
     var setting = {
         async: {
             enable : true,
@@ -426,7 +652,7 @@
             onClick: zTreeOnClick
         }
     };
-    zTreeObj = $.fn.zTree.init($("#tree_container"), setting, mytree_node);
+    zTreeObj = $.fn.zTree.init($("#tree_container"), setting,node, mytree_node);
 
     //点击时间插件
     $("#trainingTime").jeDate({
@@ -436,9 +662,13 @@
     //点击新增出现modal
     $(".mybtn").click(function () {
         $("#education_modal input").val("");
-        $("#rulesDesc").empty();
+        $("#edDesc").empty();
         $("#education_modal h5").text("新增");
         $("#education_modal").modal('show');
+        $("#pickerMaterials").css('display',"block");
+        $("#pickerRecords").css('display',"block");
+        $(".edParent").css('display',"none");
+
     });
 
     var uploader;
@@ -494,7 +724,6 @@
             // 文件接收服务端。
             server: "{:url('Upload/uploadEdu')}",
 
-            // 选择文件的按钮。可选。
             // 内部根据当前运行是创建，可能是input元素，也可能是flash.
             pick: {
                 multiple: false,
@@ -562,85 +791,77 @@
         uploaderRecords.destroy();
     });
 
+    admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
+    var edamid1,edamid2;
     //新增中的保存
     $("#education_modal .btn-primary").click(function () {
         if($("#trainerRecords").val() && $("#trainerMaterials").val() != null){
-            console.log("新增")
-            $.ajax({
-                url: "./eduAdd",
-                type: "post",
-                data: {
-                    id : $("#edId").val(),//id
+            if(!$("#edId").val()){
+                console.log("新增")
+                $.ajax({
+                    url: "./eduAdd",
+                    type: "post",
+                    data: {
+                        id : $("#edId").val(),//id
 //                    group_id : groupid,//group_id
-                    group_id : 1,//group_id
-                    lecturer : $("#trainer").val(),//培训人
-                    edu_time : $("#trainingTime").val(),//培训时间
-                    trainee : $("#trainers").val(),//培训人员
-                    address : $("#trainingPlace").val(),//培训地点
-                    num : $("#numTraining").val(),//培训人数
-                    content : $("#trainerCon").val(),//培训内容
-                    material_name : $("#trainerMaterials").val(),//培训材料
-                    record_name : $("#trainerRecords").val(),//培训记录
-                    remark : $("#edDesc").val()//备注
-                },
-                dataType: "json",
-                success: function (res) {
-                    console.log(res);
-                    $("#education_modal").modal('hide');
-                    admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
-                    layer.msg(res.msg, {time:1500,shade: 0.1});
-                }
-            })
-//            $('#education_modal').ajaxForm({
-//                success: complete1,
-//                data:{
-//                    id : $("#edId").val(),//id
-////                    group_id : groupid,//group_id
-//                    group_id : 1,//group_id
-//                    lecturer : $("#trainer").val(),//培训人
-//                    edu_time : $("#trainingTime").val(),//培训时间
-//                    trainee : $("#trainers").val(),//培训人员
-//                    address : $("#trainingPlace").val(),//培训地点
-//                    num : $("#numTraining").val(),//培训人数
-//                    content : $("#trainerCon").val(),//培训内容
-//                    material_name : $("#trainerMaterials").val(),//培训材料
-//                    record_name : $("#trainerRecords").val(),//培训记录
-//                    remark : $("#edDesc").val()//备注
-//                },
-//                dataType: 'json'
-//            });
-//            else {
-//                console.log("编辑")
-//                if(aname1 === aname2){
-//                    $.ajax({
-//                        url: "./rulesEdit",
-//                        type: "post",
-//                        data: {
-//                            id : $("#rulesid").val(),//id
-//                            group_id : groupid,//group_id
-//                            number : $("#standardNumr").val(),//标准号
-//                            rul_name : $("#file_list1 .info .infoText").val(),//名称
-//                            go_date : $("#dataImple").val(),//施行日期
-//                            standard : $("#alternativeStandard").val(),//替代标准
-//                            evaluation : null,//适用性评价
-//                            rul_user : $("#recogner").val(),//识别人
-//                            remark : $("#rulesDesc").val()//备注
-//                        },
-//                        datatype: "json",
-//                        success: function (res) {
-//                            if(res.code === 1){
-//                                layer.msg(res.msg);
-//                                admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
-//                                $("#education_modal").modal('hide');
-//                            }else {
-//                                layer.msg(res.msg);
-//                            }
-//                        }
-//                    })
-//                }else {
-//                    uploader1.upload();
-//                }
-//            }
+                        group_id : 1,//group_id
+                        lecturer : $("#trainer").val(),//培训人
+                        edu_time : $("#trainingTime").val(),//培训时间
+                        trainee : $("#trainers").val(),//培训人员
+                        address : $("#trainingPlace").val(),//培训地点
+                        num : $("#numTraining").val(),//培训人数
+                        content : $("#trainerCon").val(),//培训内容
+                        material_name : $("#trainerMaterials").val(),//培训材料
+                        record_name : $("#trainerRecords").val(),//培训记录
+                        remark : $("#edDesc").val()//备注
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        console.log(res);
+                        if(res.code === 1){
+                            $("#education_modal").modal('hide');
+                            admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
+                            layer.msg(res.msg, {time: 1500, shade: 0.1});
+                        }else {
+                            layer.msg(res.msg);
+                        }
+                    }
+                })
+            }else{
+                console.log("编辑")
+               if(edamid1 === edamid2) {
+                   $.ajax({
+                       url: "./eduAdd",
+                       type: "post",
+                       data: {
+                           id: $("#edId").val(),//id
+//                    group_id : groupid,//group_id
+                           group_id: 1,//group_id
+                           lecturer: $("#trainer").val(),//培训人
+                           edu_time: $("#trainingTime").val(),//培训时间
+                           trainee: $("#trainers").val(),//培训人员
+                           address: $("#trainingPlace").val(),//培训地点
+                           num: $("#numTraining").val(),//培训人数
+                           content: $("#trainerCon").val(),//培训内容
+                           material_name: $("#trainerMaterials").val(),//培训材料
+                           record_name: $("#trainerRecords").val(),//培训记录
+                           remark: $("#edDesc").val()//备注
+                       },
+                       datatype: "json",
+                       success: function (res) {
+                           console.log(res);
+                           if (res.code === 1) {
+                               $("#education_modal").modal('hide');
+                               admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
+                               layer.msg(res.msg, {time: 1500, shade: 0.1});
+                               // admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+                           } else {
+                               layer.msg(res.msg);
+                           }
+                       }
+                   })
+               }
+            }
         }else {
             alert("请选择上传文件");
         }
@@ -656,17 +877,84 @@
             console.log(2222222222222222)
             layer.msg(data.msg);
 //            admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
-            admin_table.ajax.url("__SCRIPT__/safety_education.php").load();
+            admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
             $("#education_modal").modal('hide');
         }else{
             layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
             return false;
         }
     }
+    //专题培训-点击编辑
+    function edEdit(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        console.log(id)
+        $("#education_modal h5").text("编辑");
+        $("#education_modal").modal('show');
+        $.ajax({
+            url:"./index",
+            type: "post",
+            data: {id:id},
+            success: function (res) {
+                console.log(res)
+                id = $("#edId").val(res.id);//id
+                // group_id = groupid;//group_id
+                lecturer = $("#trainer").val(res.lecturer);//培训人
+                edu_time = $("#trainingTime").val(res.edu_time);//培训时间
+                trainee = $("#trainers").val(res.trainee);//培训人员
+                address = $("#trainingPlace").val(res.address);//培训地点
+                num = $("#numTraining").val(res.num);//培训人数
+                content = $("#trainerCon").val(res.content);//培训内容
+                material_name = $("#trainerMaterials").val(res.material_name);//培训材料
+                record_name = $("#trainerRecords").val(res.record_name);//培训记录
+                remark = $("#edDesc").val(res.remark)//备注
+                edamid1 = res.id
+                edamid2 = res.id
+            }
+        })
+    }
+    //专题培训-点击查看
+    function edSee(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        console.log(id)
+        $("#education_modal h5").text("查看");
+        $("#education_modal").modal('show');
+        //记录
+        $("#trainerMaterials").after('<div class="edParent">' +
+            '    <input type="button" class="btn btn-primary btn-outline btn-xs" id="edPreviewMa" style="margin-left: 5px;" onclick="edViewMa(this)" value="预览"/>' +
+            '    <input type="button" class="btn btn-danger btn-outline btn-xs" id="edDownloadMa" style="margin-left: 5px;" onclick="edloadMa(this)" value="下载"/>' +
+            '</div>')
 
+        $("#trainerRecords").after('<div class="edParent">' +
+            '    <input type="button" class="btn btn-primary btn-outline btn-xs" id="edPreviewRe" style="margin-left: 5px;" onclick="edViewRe(this)" value="预览"/>' +
+            '    <input type="button" class="btn btn-danger btn-outline btn-xs" id="edDownloadRe" style="margin-left: 5px;" onclick="edloadRe(this)" value="下载"/>' +
+            '</div>')
+
+        $("#pickerMaterials").css('display',"none");
+        $("#pickerRecords").css('display',"none");
+        $.ajax({
+            url:"./index",
+            type: "post",
+            data: {id:id},
+            success: function (res) {
+                console.log(res)
+                id = $("#edId").val();//id
+                // group_id = groupid;//group_id
+                lecturer = $("#trainer").val(res.lecturer);//培训人
+                edu_time = $("#trainingTime").val(res.edu_time);//培训时间
+                trainee = $("#trainers").val(res.trainee);//培训人员
+                address = $("#trainingPlace").val(res.address);//培训地点
+                num = $("#numTraining").val(res.num);//培训人数
+                content = $("#trainerCon").val(res.content);//培训内容
+                material_name = $("#trainerMaterials").val(res.material_name);//培训材料
+                record_name = $("#trainerRecords").val(res.record_name);//培训记录
+                remark = $("#edDesc").val(res.remark)//备注
+            }
+        })
+    }
     //专题培训-点击删除
     function edDel(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        console.log(id)
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
                 url: "./eduDel",
@@ -737,18 +1025,79 @@
         console.log(id)
         showPdf(id,"./rulesPreview");
     }
-    //导入excelImport excelExport
-    $("#excelImport").click(function () {
-        alert(88999544564645645645645)
+
+    var importExcel;
+    //导入excelImport
+    importExcel = WebUploader.create({
+        auto: true,// 选完文件后，是否自动上传。
+        swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+        server: "{:url('Education/importExcel')}",// 文件接收服务端。
+        chunked: false,
+        fileSizeLimit: 1000 *1024 *1024,
+        fileNumLimit: 1,
+        formData: {
+            group_id:''
+        },
+        duplicate: true,// 重复上传图片，true为可重复false为不可重复
+        pick: {
+            multiple: false,
+            id: "#excelImport",
+            innerHTML: "导入"
+        }
     });
+    importExcel.on( 'uploadSuccess', function( file ,res) {
+        complete(res);
+    });
+    function complete(data){
+        console.log(data);
+        if(data.code === 1){
+            layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+            admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
+            // admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+        }else {
+            layer.msg('导入失败！');
+            return false;
+        }
+    }
+    importExcel.on( 'uploadError', function( file ) {
+        alert('导入数据出错');
+    });
+    // 文件上传过程中创建进度条实时显示。
+    importExcel.on('uploadProgress', function (file, percentage) {
+        var $li = $('#' + file.id),
+            $percent = $li.find('.progress .progress-bar');
+        // 避免重复创建
+        if (!$percent.length) {
+            $percent = $('<div class="progress progress-striped active">' +
+                '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                '</div>' +
+                '</div>').appendTo($li).find('.progress-bar');
+        }
+        $li.find('p.state').text('上传中');
+        $percent.css('width', percentage * 100 + '%');
+    });
+    importExcel.on("uploadStart",function () {
+        importExcel.options.formData.group_id = 1;
+        // importExcel.options.formData.group_id = groupid;
+    });
+    importExcel.on("uploadFinished", function () {
+        importExcel.reset();
+    });
+
     //导出excelExport
     $("#excelExport").click(function () {
-        alert(88999)
+
     });
     //导出excel模版 moldPlate
     $("#moldPlate").click(function () {
         alert(88999999999999999)
     });
+    //点击查看历史版本
+    $("#down_excel").click(function () {
+        var time = $('#down_excel option:selected').val();//选中的值
+//        console.log($('#down_excel option:selected').text())
+        admin_table.ajax.url("__SCRIPT__/safety_education.php?times="+time+"&pid=" + groupid).load();
+    })
 </script>
 </body>
 </html>

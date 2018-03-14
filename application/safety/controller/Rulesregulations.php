@@ -289,8 +289,23 @@ class Rulesregulations extends Base
             Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
             $exclePath = $info->getSaveName();  //获取文件名
             $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/rules' . DS . $exclePath;   //上传文件的地址
-            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
-            $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');  //加载文件内容,编码utf-8
+            // 当文件后缀是xlsx 或者 csv 就会报：the filename xxx is not recognised as an OLE file错误
+            $extension = get_extension($file_name);
+            if ($extension =='xlsx') {
+                $objReader = new \PHPExcel_Reader_Excel2007();
+                $obj_PHPExcel = $objReader->load($file_name);
+            } else if ($extension =='xls') {
+                $objReader = new \PHPExcel_Reader_Excel5();
+                $obj_PHPExcel = $objReader->load($file_name);
+            } else if ($extension=='csv') {
+                $PHPReader = new \PHPExcel_Reader_CSV();
+                //默认输入字符集
+                $PHPReader->setInputEncoding('GBK');
+                //默认的分隔符
+                $PHPReader->setDelimiter(',');
+                //载入文件
+                $obj_PHPExcel = $PHPReader->load($file_name);
+            }
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
             // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
             $number_index = $rul_name_index = $go_date_index = $standard_index = $evaluation_index = $rul_user_index = $rul_date_index =  $remark_index = -1;
@@ -314,10 +329,9 @@ class Rulesregulations extends Base
                     $remark_index = $k;
                 }
             }
-            if($number_index == -1 || $rul_name_index == -1
-                || $go_date_index == -1 || $standard_index == -1 ||
-                $evaluation_index == -1 || $rul_user_index == -1 ||
-                $rul_date_index == -1 || $remark_index == -1){
+            if($number_index == -1 || $rul_name_index == -1 || $go_date_index == -1
+                || $standard_index == -1 || $evaluation_index == -1 || $rul_user_index == -1
+                || $rul_date_index == -1 || $remark_index == -1){
                 $json_data['code'] = 0;
                 $json_data['info'] = '文件内容格式不对';
                 return json($json_data);
@@ -365,7 +379,21 @@ class Rulesregulations extends Base
         $name = '规章制度'.date('Y-m-d H:i:s'); // 导出的文件名
         $sdi = new RulesregulationsModel();
         $list = $sdi->getList($idArr2);
-        header("Content-type:text/html;charset=utf-8");
+        $i=0;
+        foreach ($list as $v){
+            $v['id'] = iconv("utf-8","gb2312",$v['id']);
+            $v['number'] = iconv("utf-8","gb2312",$v['number']);
+            $v['rul_name'] = iconv("utf-8","gb2312",$v['rul_name']);
+            $v['go_date'] = iconv("utf-8","gb2312",$v['go_date']);
+            $v['standard'] = iconv("utf-8","gb2312",$v['standard']);
+            $v['evaluation'] = iconv("utf-8","gb2312",$v['evaluation']);
+            $v['rul_user'] = iconv("utf-8","gb2312",$v['rul_user']);
+            $v['rul_date'] = iconv("utf-8","gb2312",$v['rul_date']);
+            $v['remark'] = iconv("utf-8","gb2312",$v['remark']);
+            $list[$i] = $v;
+            $i++;
+        }
+        header("Content-type:text/html;charset=gb2312");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
         $objPHPExcel = new \PHPExcel();
@@ -409,6 +437,7 @@ class Rulesregulations extends Base
         }
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
+        ob_end_clean();  //清除缓冲区,避免乱码
         ob_end_clean();  //清除缓冲区,避免乱码
         header('Content-Type: application/vnd.ms-excel'); //文件类型
         header('Content-Disposition: attachment;filename="'.$name.'.xls"'); //文件名
