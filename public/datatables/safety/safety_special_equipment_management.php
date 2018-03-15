@@ -30,18 +30,18 @@ $primaryKey = 'id';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
-    array( 'db' => 'id',  'dt' => 0 ),//序号
-    array( 'db' => 'equip_name',  'dt' => 1 ),//设备名称
-    array( 'db' => 'model',  'dt' => 2 ),//型号
-    array( 'db' => 'equip_num',  'dt' => 3 ),//设备编号
-    array( 'db' => 'manufactur_unit',  'dt' => 4 ),//制造单位
-    array( 'db' => 'date_production',  'dt' => 5 ),//出厂日期
-    array( 'db' => 'current_state',  'dt' => 6 ),//当前状态
-    array( 'db' => 'safety_inspection_num',  'dt' => 7 ),//安全检验合格证书编号
-    array( 'db' => 'inspection_unit',  'dt' => 8 ),//检验单位
-    array( 'db' => 'entry_time',  'dt' => 9 ),//进场时间
-    array( 'db' => 'equip_state',  'dt' => 10 ),//设备状态
-    array( 'db' => 'remark',  'dt' => 11 ),//备注
+    array( 'db' => 'id',  'dt' => 1 ),//序号
+    array( 'db' => 'equip_name',  'dt' => 2 ),//设备名称
+    array( 'db' => 'model',  'dt' => 3 ),//型号
+    array( 'db' => 'equip_num',  'dt' => 4 ),//设备编号
+    array( 'db' => 'manufactur_unit',  'dt' => 5 ),//制造单位
+    array( 'db' => 'date_production',  'dt' => 6 ),//出厂日期
+    array( 'db' => 'current_state',  'dt' => 7 ),//当前状态
+    array( 'db' => 'safety_inspection_num',  'dt' => 8 ),//安全检验合格证书编号
+    array( 'db' => 'inspection_unit',  'dt' => 9 ),//检验单位
+    array( 'db' => 'entry_time',  'dt' => 10 ),//进场时间
+    array( 'db' => 'equip_state',  'dt' => 11 ),//设备状态
+    array( 'db' => 'remark',  'dt' => 12 ),//备注
 
     array( 'db' => 'safety_inspecte_certificate_time',  'dt' => 12 )//备用，安全检验合格证书有效截止日期
 );

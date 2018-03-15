@@ -15,6 +15,7 @@ use app\safety\model\FullparticipationModel;
 use app\safety\model\EquipmentCheckAcceptModel;
 use app\safety\model\SafetySpecialEquipmentManagementModel;
 use app\safety\model\JobhealthGroupModel;
+use app\safety\model\AccidentreportModel;
 
 class Upload extends Base
 {
@@ -810,6 +811,66 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/healthmanage');
         if($info){
             echo $info->getSaveName();
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /*
+    *事故报告上传
+    * @return \think\response\Json
+    */
+    public function uploadAccidentreport(){
+        /**
+         * id 事故报告表id
+         * name 文件名
+         * filename 上传文件名
+         * number 编号
+         * owner 上传人
+         * date 上传时间
+         * remark 备注
+         * path 文件路径
+
+         */
+        $accident = new AccidentreportModel();
+        $id = request()->param('id');
+        $number = request()->param('number');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/accidentreport');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/accidentreport/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'number' => $number,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $accident->insertAccidentreport($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $accident->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'number' => $number,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $accident->editAccidentreport($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
         }else{
             echo $file->getError();
         }
