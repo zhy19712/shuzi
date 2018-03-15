@@ -262,7 +262,7 @@
     //事故管理-删除
     function del1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        del(id,"./infoDel");
+        del(id,"./cultureDel");
     }
 
     //事故管理-编辑-删除文件
@@ -287,7 +287,7 @@
                     $("#number").val(res.data.number);
                     name1 = res.data.remark;
                     name2 = res.data.name;
-                    name3 = res.data.name;
+                    name3 = res.data.number;
                     uploader = null;
                     upload();
                     if(res.data.path){
@@ -320,7 +320,7 @@
                     $.ajax({
                         url: "./accidentEdit",
                         type: "post",
-                        data: {aid:$("#aid").val(),remark:$("#remark").val(),number:$("#number").val()},
+                        data: {id:$("#aid").val(),remark:$("#remark").val(),number:$("#number").val()},
                         datatype: "json",
                         success: function (res) {
                             if(res.code === 1){

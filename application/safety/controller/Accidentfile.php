@@ -15,6 +15,13 @@ use think\Loader;
 
 class Accidentfile extends Base
 {
+    /*
+     * 获取一条事故报告信息
+    */
+    public function index()
+    {
+        return $this->fetch();
+    }
     /**
      * 新增一条事故档案记录
      * @return \think\response\Json

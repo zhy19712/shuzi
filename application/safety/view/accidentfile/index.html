@@ -1,0 +1,297 @@
+{include file="public/header" /}
+<link rel="stylesheet" type="text/css" href="/static/admin/webupload/webuploader.css">
+<link rel="stylesheet" type="text/css" href="/static/admin/webupload/style.css">
+<link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="/static/admin/css/jedate.css">
+<style>
+    #container{
+        width: 96%;
+        margin: 0 auto;
+        padding-top: 10px;
+    }
+    .myp{
+        background-color: #bae2f3;
+        font-weight: 700;
+        line-height: 30px;
+        padding: 8px 0;
+        position: absolute;
+        text-align: center;
+        width: 96%;
+    }
+    .mybtn{
+        float: left;
+        margin-right: 20px;
+        margin-bottom: 5px;
+    }
+    .selectyear{
+        float: left;
+        margin-left: 20px;
+        margin-top: 5px;
+        font-weight: 700;
+        color: black;
+    }
+</style>
+<body class="gray-bg animated fadeInRight" style="background-color:#fff;">
+<div id="container">
+    <div style="height: 50px;">
+        <p class="myp">事故管理</p>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane active" >
+            <table id="info_table" width="100%" class="table table-striped table-bordered ">
+                <thead>
+                <tr>
+                    <th rowspan="2">序号</th>
+                    <th rowspan="2">事故名称</th>
+                    <th rowspan="2">事故发生时间</th>
+                    <th rowspan="2">事故发生地点</th>
+                    <th rowspan="2">事故类型</th>
+                    <th rowspan="2">事故等级</th>
+                    <th colspan="3">伤亡人数</th>
+                    <th rowspan="2">直接经济损失（万元）</th>
+                    <th rowspan="2">事故责任单位</th>
+                    <th rowspan="2">事故处理结果</th>
+                    <th rowspan="2">备注</th>
+                </tr>
+                <tr>
+                    <th>死亡人数</th>
+                    <th>重伤人数</th>
+                    <th>轻伤人数</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="form_container" style="display: none;"></div>
+<div id="fname" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>事故档案</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal" id="accidentform" onsubmit="return false" >
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">事故名称：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="accident_name" type="text" class="form-control" name="accident_name" required="required" placeholder="此处为必填项">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">事故发生时间：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="accident_time" type="date" class="form-control" required="required" name="accident_time" placeholder="此处为必填项">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">事故发生地点：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="accident_place" type="text" class="form-control" required="required" name="accident_place" placeholder="此处为必填项">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">事故类型：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <select name="accident_type" id="accident_type" required="required" class="form-control" placeholder="此处为必填项">
+                                        <option value="物体打击">物体打击</option>
+                                        <option value="车辆伤害">车辆伤害</option>
+                                        <option value="机械伤害">机械伤害</option>
+                                        <option value="起重伤害">起重伤害</option>
+                                        <option value="触电">触电</option>
+                                        <option value="淹溺">淹溺</option>
+                                        <option value="灼烫">灼烫</option>
+                                        <option value="火灾">火灾</option>
+                                        <option value="高处坠落">高处坠落</option>
+                                        <option value="坍塌">坍塌</option>
+                                        <option value="冒顶片帮">冒顶片帮</option>
+                                        <option value="透水">透水</option>
+                                        <option value="放炮">放炮</option>
+                                        <option value="火药爆炸">火药爆炸</option>
+                                        <option value="瓦斯爆炸">瓦斯爆炸</option>
+                                        <option value="锅炉爆炸">锅炉爆炸</option>
+                                        <option value="锅炉爆炸">容器爆炸</option>
+                                        <option value="容器爆炸">其他爆炸</option>
+                                        <option value="容器爆炸">中毒和窒息</option>
+                                        <option value="容器爆炸">其他伤害</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">事故等级：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <select name="accident_level" id="accident_level" required="required" class="form-control" placeholder="此处为必填项">
+                                        <option value="特别重大事故">特别重大事故</option>
+                                        <option value="重大事故">重大事故</option>
+                                        <option value="较大事故">较大事故</option>
+                                        <option value="一般事故">一般事故</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">死亡人数：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="death_toll" type="number" required="required" placeholder="此处为必填项" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">重伤人数：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="injure" type="number" class="form-control" required="required" name="injure" placeholder="此处为必填项"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">轻伤人数：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="light_injure" type="number" required="required" class="form-control" placeholder="此处为必填项"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">直接经济损失（万元）：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="economic_loss" type="number" class="form-control" required="required" name="economic_loss" placeholder="此处为必填项" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">事故责任单位：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input type="text" id="accident_unit" class="form-control" required="required" name="accident_unit" placeholder="此处为必填项"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">事故处理结果：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="accident_result" type="text" class="form-control" required="required" name="accident_result"placeholder="此处为必填项" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">备注：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input type="text" id="remark" class="form-control datepicker" name="remark" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12" style="text-align: center;">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="public/footer" /}
+<script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script>
+<script src="__JS__/jquery.jedate.js"></script>
+<script>
+    //日期控件
+    $("#accident_time").jeDate({
+        "format":"YYYY-MM-DD"
+    });
+    //默认为空
+    $("select").val("");
+    //提交
+        $("#accidentform").submit(function () {
+            $.ajax({
+                url: "./accidentfileAdd",
+                type: "post",
+                data: {
+                    remark:$("#remark").val(),
+                    accident_name:$("#accident_name").val(),
+                    accident_time:$("#accident_time").val(),
+                    accident_type:$("#accident_type").val(),
+                    accident_level:$("#accident_level").val(),
+                    accident_place:$("#accident_place").val(),
+                    death_toll:$("#death_toll").val(),
+                    injure:$("#injure").val(),
+                    light_injure:$("#light_injure").val(),
+                    economic_loss:$("#economic_loss").val(),
+                    accident_unit:$("#accident_unit").val(),
+                    accident_result:$("#accident_result").val()
+                },
+                datatype: "json",
+                success: function (res) {
+                    if(res.code === 1){
+                        layer.msg(res.msg);
+                        table.ajax.url("__SCRIPT__/safety_accidentfile.php").load();
+                        $("#fname").modal('hide');
+                    }else {
+                        layer.msg(res.msg);
+                    }
+                }
+            });
+        });
+
+
+
+    //事故管理表格
+    var table = $("#info_table").DataTable({
+        "processing": true,//是否显示处理状态
+        "serverSide":true,//是否开启服务器模式
+        "ordering":false,
+        "ajax":{
+            "url": "__SCRIPT__/safety_accidentfile.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear">frtip',
+        "columnDefs":[
+            // {
+            //     "targets":[0,1,2,3,4,5],
+            //     "orderable":false
+            // }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    })
+
+    var selectyear ='<input id="year" />';
+    $("div.selectyear").html("年度："+selectyear)
+    //选择年度
+    $("#year").jeDate({
+        isinitVal:true,
+        format:"YYYY年",
+        okfun:function (obj) {
+            table.ajax.url("__SCRIPT__/safety_accidentreport.php?year="+obj.date.YYYY).load();
+            console.log(obj.date.YYYY);
+        }
+    });
+    $("#year").val("");
+    //新增
+    $("div.mybtn").html("新增")
+    $("#info_table_wrapper .mybtn").click(function () {
+        $("#fname input").val("");
+        $("select").val("");
+        $("#fname").modal('show');
+    })
+</script>
+</body>
