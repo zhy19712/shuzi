@@ -644,10 +644,7 @@
     //             {name: "C2标 中水六局",pid:"3"},
     //         ]}
     // ]
-    var node = [
-        {name: "监理单位"},
-        {name: "施工单位"}
-    ]
+
     var setting = {
         async: {
             enable : true,
@@ -671,7 +668,7 @@
             onClick: zTreeOnClick
         }
     };
-    zTreeObj = $.fn.zTree.init($("#tree_container"), setting,node, mytree_node);
+    zTreeObj = $.fn.zTree.init($("#tree_container"), setting, mytree_node);
 
     //点击时间插件
     $("#trainingTime").jeDate({
