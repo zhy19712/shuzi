@@ -376,7 +376,7 @@ class Rulesregulations extends Base
         }
         $idArr = input('post.');
         $idArr2 = $idArr['id'];
-        $name = '规章制度'.date('Y-m-d H:i:s'); // 导出的文件名
+        $name = '规章制度'.date('Y-m-d H:i:s'); // 导出的文件名 可以指定是哪个节点下的那个节点.xls 例如:规章制度-国家电网公司.xls
         $sdi = new RulesregulationsModel();
         $list = $sdi->getList($idArr2);
         $i=0;
