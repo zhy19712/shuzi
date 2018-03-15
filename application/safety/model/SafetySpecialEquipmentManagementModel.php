@@ -138,7 +138,7 @@ class SafetySpecialEquipmentManagementModel extends Model
      */
     public function getOne($id)
     {
-        $picture = Db::name('safety_special_equipment_manage_pic') ->field("pid,uid,picture_name,path")->where('id',$id)->select();
+        $picture = Db::name('safety_special_equipment_manage_pic') ->field("uid,picture_name,path")->where('uid',$id)->select();
 
         $equip = $this->where('id', $id)->find();
 
