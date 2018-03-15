@@ -1,5 +1,5 @@
 <?php
-//相关设备设施建设验收表格展示
+//相关方职业健康检查
 include('../conn.php');
 /*
  * DataTables example server-side processing script.

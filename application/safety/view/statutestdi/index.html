@@ -927,6 +927,11 @@
         formData:{
             group_id:'',
         },
+        accept: {
+            title: 'excel',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx'
+        },
 
         // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
         resize: false
@@ -943,83 +948,8 @@
         $list.val('上传出错');
     });
 
-    // 文件上传过程中创建进度条实时显示。
-    importExcel.on('uploadProgress', function (file, percentage) {
-        var $li = $('#' + file.id),
-            $percent = $li.find('.progress .progress-bar');
-        // 避免重复创建
-        if (!$percent.length) {
-            $percent = $('<div class="progress progress-striped active">' +
-                '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                '</div>' +
-                '</div>').appendTo($li).find('.progress-bar');
-        }
-        $li.find('p.state').text('上传中');
-        $percent.css('width', percentage * 100 + '%');
-    });
-
     importExcel.on("uploadStart",function () {
         importExcel.options.formData.group_id = $('input[type="hidden"][name="groupId"]').val();
-    });
-
-    //删除数组中的指定元素
-    Array.prototype.remove = function(val){
-        for (var i = 0; i < this.length; i++) {
-            if(this[i] === val){
-                this.splice(i,1);
-                break;
-            }
-        }
-        return this;
-    }
-
-    //数组去重
-    Array.prototype.removalArray = function(){
-        var newArr = [];
-        for (var i = 0; i < this.length; i++) {
-            if(newArr.indexOf(this[i]) == -1){  //indexOf 不兼容IE8及以下
-                newArr.push(this[i]);
-            }
-        }
-        return newArr;
-    }
-
-    //获取选中行ID
-    var idArr = [];
-    function getId(that) {
-        var isChecked = $(that).prop('checked');
-        var id = $(that).parents('tr').find('td:eq(0)').text();
-        if(isChecked){
-            idArr.push(id);
-            idArr.removalArray();
-        }else{
-            idArr.remove(id);
-            idArr.removalArray();
-        }
-    }
-
-    //单选
-    function getSelectId(that) {
-        getId(that);
-        console.log(idArr);
-    }
-
-    //checkbox全选
-    $("#all_checked").on("click", function () {
-        if ($(this).prop("checked") === true) {
-            $("input[name='checkList']").prop("checked", $(this).prop("checked"));
-            $('#tableItem tbody tr').addClass('selected');
-            $('input[name="checkList"]').each(function(){
-                getId(this);
-            });
-        } else {
-            $("input[name='checkList']").prop("checked", false);
-            $('#tableItem tbody tr').removeClass('selected');
-            $('input[name="checkList"]').each(function(){
-                getId(this);
-            });
-        }
-        console.log(idArr);
     });
 
     //导出
@@ -1100,6 +1030,66 @@
         okfun:function (obj) {
             filterData();
         }
+    });
+
+    //删除数组中的指定元素
+    Array.prototype.remove = function(val){
+        for (var i = 0; i < this.length; i++) {
+            if(this[i] === val){
+                this.splice(i,1);
+                break;
+            }
+        }
+        return this;
+    }
+
+    //数组去重
+    Array.prototype.removalArray = function(){
+        var newArr = [];
+        for (var i = 0; i < this.length; i++) {
+            if(newArr.indexOf(this[i]) == -1){  //indexOf 不兼容IE8及以下
+                newArr.push(this[i]);
+            }
+        }
+        return newArr;
+    }
+
+    //获取选中行ID
+    var idArr = [];
+    function getId(that) {
+        var isChecked = $(that).prop('checked');
+        var id = $(that).parents('tr').find('td:eq(0)').text();
+        if(isChecked){
+            idArr.push(id);
+            idArr.removalArray();
+        }else{
+            idArr.remove(id);
+            idArr.removalArray();
+        }
+    }
+
+    //单选
+    function getSelectId(that) {
+        getId(that);
+        console.log(idArr);
+    }
+
+    //checkbox全选
+    $("#all_checked").on("click", function () {
+        if ($(this).prop("checked") === true) {
+            $("input[name='checkList']").prop("checked", $(this).prop("checked"));
+            $('#tableItem tbody tr').addClass('selected');
+            $('input[name="checkList"]').each(function(){
+                getId(this);
+            });
+        } else {
+            $("input[name='checkList']").prop("checked", false);
+            $('#tableItem tbody tr').removeClass('selected');
+            $('input[name="checkList"]').each(function(){
+                getId(this);
+            });
+        }
+        console.log(idArr);
     });
 </script>
 </body>

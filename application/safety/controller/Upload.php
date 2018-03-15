@@ -647,7 +647,7 @@ class Upload extends Base
     }
 
     /*
-     *特种设备管理文件上传
+     *特种设备管理文件图片上传
      * @return \think\response\Json
     */
     public function uploadSpecialequipmentmanagement(){
@@ -677,26 +677,10 @@ class Upload extends Base
          * path 文件路径
          */
         $equipment = new SafetySpecialEquipmentManagementModel();
-        $id = request()->param('aid');
-        $selfid = request()->param('selfid');
-        $equip_name = request()->param('equip_name');
-        $model = request()->param('model');
-        $equip_num = request()->param('equip_num');
-        $manufactur_unit = request()->param('manufactur_unit');
-        $date_production = request()->param('date_production');
-        $current_state = request()->param('current_state');
-        $equip_manage_department = request()->param('equip_manage_department');
-        $safety_machinery_time = request()->param('safety_machinery_time');
-        $safety_inspection_num = request()->param('safety_inspection_num');
-        $inspection_unit = request()->param('inspection_unit');
-        $safety_inspecte_certificate_time = request()->param('safety_inspecte_certificate_time');
-        $equipmen_overhaul = request()->param('equipmen_overhaul');
-        $date_overhaul = request()->param('date_overhaul');
-        $entry_time = request()->param('entry_time');
-        $equip_state = request()->param('equip_state');
-        $remark = request()->param('remark');
 
-        $input_time = request() ->param('input_time');//excel表格导入时间
+        $id = request()->param('id');//获取特种设备文件的id
+
+        $pid = request()->param('pid');//获取特种设备文件上传图片的uid
 
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/specialequipmentmanagement');
@@ -704,67 +688,26 @@ class Upload extends Base
             $temp = $info->getSaveName();
             $path = './uploads/safety/specialequipmentmanagement/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
-            if(empty($id))
+            if(empty($pid))
             {
                 $data = [
-                    'selfid' => $selfid,
-                    'equip_name' => $equip_name,
-                    'model' => $model,
-                    'equip_num' => $equip_num,
-                    'manufactur_unit' => $manufactur_unit,
-                    'date_production' => $date_production,
-                    'current_state' => $current_state,
-                    'equip_manage_department' => $equip_manage_department,
-                    'safety_machinery_time' => $safety_machinery_time,
-                    'safety_inspection_num' => $safety_inspection_num,
-                    'inspection_unit' => $inspection_unit,
-                    'safety_inspecte_certificate_time' => $safety_inspecte_certificate_time,
-                    'equipmen_overhaul' => $equipmen_overhaul,
-                    'date_overhaul' => $date_overhaul,
-                    'entry_time' => $entry_time,
-                    'equip_state' => $equip_state,
+                    'uid' => $id,
                     'name' => $filename,
-                    'filename' => $filename,
-                    'owner' => session('username'),
-                    'date' => date("Y-m-d H:i:s"),
+                    'picture_name' => $filename,
                     'path' => $path,
-                    'remark' => $remark,
-                    'input_time' =>$input_time  //excel表格导入时间
-
-
                 ];
-                $flag = $equipment->insertSpecialEquipmentManagement($data);
+                $flag = $equipment->insertSpecialEquipmentManagePic($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
-                $data_older = $equipment->getOne($id);
-                unlink($data_older['path']);
                 $data = [
                     'id' => $id,
-                    'selfid' => $selfid,
-                    'equip_name' => $equip_name,
-                    'model' => $model,
-                    'equip_num' => $equip_num,
-                    'manufactur_unit' => $manufactur_unit,
-                    'date_production' => $date_production,
-                    'current_state' => $current_state,
-                    'equip_manage_department' => $equip_manage_department,
-                    'safety_machinery_time' => $safety_machinery_time,
-                    'safety_inspection_num' => $safety_inspection_num,
-                    'inspection_unit' => $inspection_unit,
-                    'safety_inspecte_certificate_time' => $safety_inspecte_certificate_time,
-                    'equipmen_overhaul' => $equipmen_overhaul,
-                    'date_overhaul' => $date_overhaul,
-                    'entry_time' => $entry_time,
-                    'equip_state' => $equip_state,
+                    'pid' => $pid,
                     'name' => $filename,
-                    'filename' => $filename,
-                    'owner' => session('username'),
-                    'date' => date("Y-m-d H:i:s"),
+                    'picture_name' => $filename,
                     'path' => $path,
-                    'remark' => $remark,
-                    'input_time' =>$input_time  //excel表格导入时间
+
                 ];
-                $flag = $equipment->editSpecialEquipmentManagement($data);
+                $flag = $equipment->editSpecialEquipmentManagementPic($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{
@@ -844,6 +787,9 @@ class Upload extends Base
     /**
      * 监理部职业健康管理 文件上传
      * @author hutao
+     */
+    /**
+     * @author
      */
     public function uploadHealthmanage(){
         /**
