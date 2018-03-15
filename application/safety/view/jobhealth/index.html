@@ -52,7 +52,7 @@
     .mybtn{
         float: left;
         margin-top: 5px;
-        margin-left: 20px;
+        /*margin-left: 20px;*/
     }
     #example_filter{
         float: right;
@@ -152,7 +152,7 @@
                     <div class="col-lg-12 col-xs-12">
                         <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">文件编号：</label>
                         <div class="myblock col-xs-8 input-group">
-                            <input id="version1" type="text" class="form-control" name="version" >
+                            <input id="filenumber" type="text" class="form-control" name="filenumber" >
                         </div>
                     </div>
                     <input id="aid" type="text" class="form-control" value="" style="display: none;">
@@ -160,7 +160,7 @@
                         <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">检查时间：</label>
                         <div class="myblock col-xs-8 input-group">
                             <!--<input id="remark1" type="text" class="form-control" name="remark" >-->
-                            <input id="ymd" type="text" class="form-control"  placeholder="YYYY年MM月DD日 hh:mm:ss" readonly>
+                            <input id="checktime" type="text" class="form-control" name="checktime" placeholder="YYYY年MM月DD日 hh:mm:ss" readonly>
                         </div>
                     </div>
                     <input id="aid" type="text" class="form-control" value="" style="display: none;">
@@ -187,23 +187,46 @@
 <script src="__JS__/jquery.jedate.js"></script>
 
     <script type="text/javascript">
-        $("#ymd").jeDate({
+        $("#checktime").jeDate({
             isinitVal:true,
             festival: false,
             format: 'YYYY-MM-DD hh:mm:ss'
 
         });
+        var curMenu = null, zTree_Menu = null;
+        //组织结构
+        var zTreeObj;
         var selfid;
-        function onclick(e,treeId,node){
-            $("#mytable1_wrapper").css("display","none");
-            // $("#path").txt("");
-            var sNodes=zTreeObj.getSelectedNodes();
+        function onClick(e, treeId, node) {
+            $("#table1_wrapper").css("display","none");
+            // $("#path").text("");
+            var sNodes = zTreeObj.getSelectedNodes();//选中节点
             selfid=zTreeObj.getSelectedNodes()[0].id;
-            var groupid=sNodes[0].pId;
-            if(!sNodes[0].children&&groupid!==1){
-                table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
-                $("#mytable1_wrapper").css("display","block");
-            }
+            // var path = sNodes[0].name; //选中节点的名字
+            node = sNodes[0].getParentNode();//获取父节点
+            //判断是否还有父节点
+            // if (node) {
+            //     //判断是否还有父节点
+            //     while (node){
+            //         path = node.name + ">>" + path;
+            //         node = node.getParentNode();
+            //     }
+            // }else{
+            //     $("#path").text(sNodes[0].name);
+            // }
+            // 判断是否拉数据
+            var groupid = sNodes[0].pId; //父节点的id
+            if (!sNodes[0].children && groupid !== 1){
+                $("#table1_wrapper").show();
+                $("#table1_wrapper").css("display","block");
+                table1.ajax.url("__SCRIPT__/safety_jobhealth.php?selfid="+selfid).load();
+                // table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php").load();
+
+            };
+
+            // $("#path").text("当前路径:"+path);
+
+
         };
         var setting={
             view:{
@@ -237,6 +260,10 @@
         zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
         zTree_Menu = $.fn.zTree.getZTreeObj("tree_container");
         curMenu = zTree_Menu.getNodes();//获取 zTree 的全部节点数据
+        function showpdf1(that) {
+            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            showPdf(id,"./jobhealthPreview");
+        }
         function showPdf(id,url){
             $.ajax({
                 url:url,
@@ -252,6 +279,10 @@
                 }
             })
         };
+        function del1(that) {
+            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            del(id,"./jobhealthDel");
+        }
         function del(id,url) {
 
             layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
@@ -263,8 +294,8 @@
                     success: function (res) {
                         if(res.code == 1){
                             layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                            if(url === "./responsibilityinstyDel"){
-                                table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
+                            if(url === "./jobhealthDel"){
+                                table1.ajax.url("__SCRIPT__/safety_jobhealth.php?selfid="+selfid).load();
                             }
                         }else{
                             layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
@@ -274,6 +305,10 @@
                 layer.close(index);
             })
         };
+        function download1(that) {
+            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            download(id,"./jobhealthDownload");
+        }
         function download(id,url) {
             $.ajax({
                 url: url,
@@ -305,11 +340,11 @@
                 uploader1 = WebUploader.create({
                     auto: false,// 选完文件后，是否自动上传。
                     swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadResponsibilityinstyGroup')}",// 文件接收服务端。
+                    server: "{:url('Upload/uploadJobhealth')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
                     fileNumLimit: 1,
-                    formData: {"remark":"","aid":"","version":"","ai":"","selfid":""},
+                    formData: {"remark":"","aid":"","checktime":"","ai":"","selfid":"","filenumber":""},
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
                     pick: {
                         multiple: false,
@@ -341,7 +376,8 @@
                 uploader1.on("uploadStart",function () {
                     uploader1.options.formData.aid = $("#aid").val();
                     uploader1.options.formData.remark = $("#remark1").val();
-                    uploader1.options.formData.version = $("#version1").val();
+                    uploader1.options.formData.filenumber = $("#filenumber").val();
+                    uploader1.options.formData.checktime = $("#checktime").val();
                     uploader1.options.formData.selfid =selfid;
                 });
                 uploader1.on('beforeFileQueued', function (file) {
@@ -377,7 +413,7 @@
                         $("#file_list1").empty();
                         $("#fname1").modal('hide');
                         console.log(selfid)
-                        table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
+                        table1.ajax.url("__SCRIPT__/safety_jobhealth.php?selfid="+selfid).load();
                     }else {
                         layer.msg("抱歉，您没有此权限");
                     }
@@ -394,7 +430,7 @@
                  "processing":true,
                   "serverSide":true,
                   "ajax":{
-                     "url":"__SCRIPT__/safety_responsibilityinsty_table.php"
+                     "url":"__SCRIPT__/safety_jobhealth.php?selfid="+selfid
                   },
             "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear">frtip',
             "bLengthChange": false,
@@ -426,6 +462,37 @@
             }
 
         });
+        function edit1(that) {
+            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            $.ajax({
+                url: "./getindex",
+                type: "post",
+                data: {id:id},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                    if(res.code === 1){
+                        $("#aid").val(res.data.id);
+                        // $("#ai").val(res.data.id);
+                        $("#remark1").val(res.data.remark);
+                        $("#filenumber").val(res.data.filenumber);
+                        aname1 = res.data.name;
+                        aname2 = res.data.name;
+                        aname3 = res.data.name;
+                        uploader1 = null;
+                        upload1();
+                        if(res.data.path){
+                            $("#file_list1").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                                '<span class="info">' + res.data.name + '</span>&nbsp' +
+                                '<span onclick="fdelatt1(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                                '</div>' );
+                        }
+                        // alert("sws")
+                        $("#fname1").modal('show');
+                    }
+                }
+            })
+        };
 
         $("div.mybtn").html('<div>上传</div>');
         // $("div.mybtn").html('<div>上传</div>');
@@ -447,14 +514,14 @@
                 }else {
                     if(aname1 === aname2){
                         $.ajax({
-                            url: "./responsibilityinstyEdit",
+                            url: "./jobhealthEdit",
                             type: "post",
-                            data: {aid:$("#aid").val(),remark:$("#remark1").val(),version:$("#version1").val(),ai:$("#ai").val()},
+                            data: {id:$("#aid").val(),remark:$("#remark1").val(),filenumber:$("#filenumber").val(),checktime:$("#checktime").val(),ai:$("#ai").val()},
                             datatype: "json",
                             success: function (res) {
                                 if(res.code === 1){
                                     layer.msg(res.msg);
-                                    table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php?selfid="+selfid).load();
+                                    table1.ajax.url("__SCRIPT__/safety_jobhealth.php?selfid="+selfid).load();
                                     $("#fname1").modal('hide');
                                 }else {
                                     layer.msg(res.msg);

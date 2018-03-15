@@ -95,7 +95,7 @@ class RulesregulationsModel extends Model
 
     public function getYears()
     {
-        return $this->group('improt_time')->column('improt_time');
+        return $this->where('improt_time is not null')->group('improt_time')->column('improt_time');
     }
 
 }
