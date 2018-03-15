@@ -24,6 +24,6 @@ class Risk extends Base
      */
     public function duty()
     {
-        return $this->duty();
+        return $this->fetch();
     }
 }
