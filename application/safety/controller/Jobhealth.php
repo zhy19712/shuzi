@@ -80,7 +80,7 @@ class Jobhealth extends Base
     }
 
     /**
-     * [jobhealthEdit 设置机构中的文件编辑]
+     * [jobhealthEdit 职业健康的文件编辑]
      */
     public function jobhealthEdit()
     {
@@ -121,7 +121,7 @@ class Jobhealth extends Base
     }
 
     /**
-     * [jobhealthDownload 下载一条设置机构中的上传文件]
+     * [jobhealthDownload 下载一条职业健康的上传文件]
      */
     public function jobhealthDownload()
     {
@@ -148,21 +148,21 @@ class Jobhealth extends Base
     }
 
 
-    /**
-     * 预览获取一条数据  或者  编辑获取一条数据
-     * [healthmanageindex 预览获取一条数据  或者  编辑获取一条数据的上传文件]
-     * @return mixed|\think\response\Json
-     */
-    public function healthmanageindex()
-    {
-        if(request()->isAjax()){
-            $param = input('post.');
-            $healthmanage = new JobhealthManageModel();
-            $data = $healthmanage->getOne($param['id']);
-            return json($data);
-        }
-        return $this ->fetch();
-    }
+//    /**
+//     * 预览获取一条数据  或者  编辑获取一条数据
+//     * [healthmanageindex 预览获取一条数据  或者  编辑获取一条数据的上传文件]
+//     * @return mixed|\think\response\Json
+//     */
+//    public function healthmanageindex()
+//    {
+//        if(request()->isAjax()){
+//            $param = input('post.');
+//            $healthmanage = new JobhealthManageModel();
+//            $data = $healthmanage->getOne($param['id']);
+//            return json($data);
+//        }
+//        return $this ->fetch();
+//    }
 
     /**
      * 新增或者修改
