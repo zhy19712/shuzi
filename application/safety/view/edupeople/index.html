@@ -208,7 +208,7 @@
                     <input type="text" name="uid" id="id1" style="display: none;" value="">
                     <div class="ibox-content">
                         <!--新增用户信息开始-->
-                        <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
+                        <form class="form-horizontal" name="manageAddForm" id="manageAddForm" method="post">
                             <input type="hidden" name="id" id="sid">
                             <input type="hidden" name="group_id" id="pgroup_id">
                             <input type="hidden" name="oldFileName" id="oldFileName">
@@ -297,7 +297,7 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-xs-12 col-lg-12"  style="text-align: center;margin-top: 10px">
-                                    <button class="btn btn-primary" type="button" id="save"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
                                     <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
                                 </div>
                             </div>
@@ -308,7 +308,6 @@
             </div>
         </div>
     </div>
-
 
     <!--从业人员新增弹层-->
     <div id="pract_addRules_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
@@ -321,7 +320,7 @@
                     <input type="text" name="uid" id="id1" style="display: none;" value="">
                     <div class="ibox-content">
                         <!--新增用户信息开始-->
-                        <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
+                        <form class="form-horizontal" name="practAddForm" id="practAddForm" method="post">
                             <input type="hidden" name="id" id="sid">
                             <input type="hidden" name="group_id" id="pgroup_id">
                             <input type="hidden" name="oldFileName" id="oldFileName">
@@ -425,7 +424,7 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-xs-12 col-lg-12"  style="text-align: center;margin-top: 10px">
-                                    <button class="btn btn-primary" type="button" id="save"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
                                     <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
                                 </div>
                             </div>
@@ -448,7 +447,7 @@
                     <input type="text" name="uid" id="id1" style="display: none;" value="">
                     <div class="ibox-content">
                         <!--新增用户信息开始-->
-                        <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
+                        <form class="form-horizontal" name="foreignAddForm" id="foreignAddForm" method="post">
                             <input type="hidden" name="id" id="sid">
                             <input type="hidden" name="group_id" id="pgroup_id">
                             <input type="hidden" name="oldFileName" id="oldFileName">
@@ -558,7 +557,7 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-xs-12 col-lg-12"  style="text-align: center;margin-top: 10px">
-                                    <button class="btn btn-primary" type="button" id="save"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
                                     <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
                                 </div>
                             </div>
@@ -579,6 +578,7 @@
     <script src="__JS__/jquery.jedate.js"></script>
     <script src="__JS__/pdf.js"></script>
     <script src="__JS__/mypdf.js"></script>
+    <script src="__JS__/plugins/validate/jquery.validate.min.js"></script>
 
     <script>
         $('.effectiveDate').jeDate();
@@ -646,7 +646,7 @@
          *  右侧表格
          **/
 
-        //管理人员
+        //主要负责人和安全管理人员
         var manageTableItem = $('#manageTableItem').DataTable( {
             processing: true,
             serverSide: true,
@@ -761,6 +761,7 @@
 
         //点击节点
         function zTreeOnClick(event, treeId, treeNode) {
+
             if(treeNode.id==1){
                 isHidden('manageTableItem_wrapper');
             }
@@ -779,7 +780,7 @@
             }
         };
 
-        //新增
+        //打开新增弹层
         $('#manageAdd').click(function () {
             $('#manage_addRules_modal').modal('show');
         });
@@ -789,6 +790,87 @@
         $('#foreignAdd').click(function () {
             $('#foreign_addRules_modal').modal('show');
         });
+
+        //关闭新增弹层
+        $('#manage_addRules_modal').on('hide.bs.modal', function () {
+            manageValidator.resetForm();//重置form表单
+        });
+        $('#pract_addRules_modal').on('hide.bs.modal', function () {
+            practValidator.resetForm();//重置form表单
+        });
+        $('#foreign_addRules_modal').on('hide.bs.modal', function () {
+            foreignValidator.resetForm();//重置form表单
+        });
+
+        //新增主要负责人和安全管理人员
+        var manageValidator = $("#manageAddForm").validate({
+            submitHandler: function(form) {
+                //获取表单数据
+                var id = $('#sid').val();
+                var pid = $('input[type="hidden"][name="groupId"]').val();
+                var edu_name = $('#name').val();
+                var job = $('#duties').val();
+                var certificate_name = $('#certificateName').val();
+                var certificate_number = $('#certificateCode').val();
+                var availability_date = $('#effectiveDate').val();
+                var vld = $('#validTillDate').val();
+                var training_mode = $('#trainMode option:selected').val();
+                var training_time = $('#trainTimeDate').val();
+                var remark = $('#rulesDesc').val();
+                //表单提交
+                $(form).ajaxSubmit({
+                    url: "{:url('Edupeople/eduAdd')}",
+                    type: "post",
+                    dataType: 'json',
+                    data:{
+                        id:id,
+                        pid:pid,
+                        edu_name:edu_name,
+                        job:job,
+                        certificate_name:certificate_name,
+                        certificate_number:certificate_number,
+                        availability_date:availability_date,
+                        vld:vld,
+                        training_mode:training_mode,
+                        training_time:training_time,
+                        remark:remark
+                    },
+                    success: complete
+                });
+            },
+            rules: {
+                name: "required",
+                duties: "required",
+                certificateName: "required",
+                certificateCode: "required",
+                effectiveDate: "required",
+                validTillDate: "required",
+                trainTimeDate: "required"
+            },
+            messages: {
+                name: "姓名不能为空",
+                duties: "职务不能为空",
+                certificateName: "证书名称不能为空",
+                certificateCode: "证书编号不能为空",
+                effectiveDate: "生效日期不能为空",
+                validTillDate: "有效期至不能为空",
+                trainTimeDate: "培训时间不能为空"
+            }
+        });
+
+        //数据返回
+        function complete(data){
+            var groupid = $('input[type="hidden"][name="groupId"]').val();
+            console.log(data);
+            if(data.code==1){
+                layer.msg(data.msg);
+                tableItem.ajax.url("__SCRIPT__/safety_edupeople.php?pid=" + groupid).load();
+                $("#addRules_modal").modal('hide');
+            }else{
+                layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                return false;
+            }
+        }
 
     </script>
 </body>

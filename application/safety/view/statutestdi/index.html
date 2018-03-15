@@ -359,21 +359,29 @@
         }
         var zTree = $.fn.zTree.getZTreeObj("tree_container");
         //将新节点添加到数据库中
-        var name='新节点';
-        $.ajax({
-            url:'{:url("Statutestdi/nodeAdd")}',
-            dataType:'JSON',
-            type:'POST',
-            data:{
-                pid:treeNode.id,
-                pname:name
-            },
-            success:function(data){
-                $('input[type="hidden"][name="treeId"]').val(data.data);
-                var id = $('input[type="hidden"][name="treeId"]').val();
-                zTree.addNodes(treeNode, {id:id,pId:treeNode.pId, name:name});
+        layer.prompt({title: '请输入节点名称', formType: 3}, function(newName, index){
+            if(!newName){
+                return false;
+            }else{
+                $.ajax({
+                    url:'{:url("Statutestdi/nodeAdd")}',
+                    dataType:'JSON',
+                    type:'POST',
+                    data:{
+                        pid:treeNode.id,
+                        pname:newName
+                    },
+                    success:function(data){
+                        $('input[type="hidden"][name="treeId"]').val(data.data);
+                        var id = $('input[type="hidden"][name="treeId"]').val();
+                        zTree.addNodes(treeNode, {id:id,pId:treeNode.pId, name:newName});
+                    }
+                });
             }
+            layer.close(index);
         });
+
+
         return false;
     };
 
@@ -455,13 +463,9 @@
         if (nodes.length > 0) {
             isParent = nodes[0].isParent;
         }
-        //是否为父节点
-        if(isParent){
-            layer.msg('不能删除父节点！');
-            return false;
-        }
-        layer.confirm('确定要删除该节点',{
-            btn:['确定','取消']
+        layer.confirm('警告！删除'+currentNodeName+'单位工程节点将会删除它的所有子节点以及节点包含的单元工程！确认删除?',{
+            btn:['确定','取消'],
+            icon:3
         },function(){
             $.ajax({
                 url:'{:url("Statutestdi/nodeDel")}',
@@ -491,13 +495,13 @@
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
         $('input[type="hidden"][name="currentNodeName"]').val(treeNode.name);
-        $('#tableItem_wrapper').css("visibility","visible");
         $('input[type="hidden"][name="groupId"]').val(treeNode.id);
-        if(treeNode.level){
-            $("#mytable1_wrapper").css("display","block");
+
+        if(treeNode.isParent){
+            $('#tableItem_wrapper').css("visibility","hidden");
+        }else{
+            $('#tableItem_wrapper').css("visibility","visible");
             tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php?pid=" + treeNode.id).load();
-        }else {
-            $("#mytable1_wrapper").css("display","none");
         }
 
         //获取路径
