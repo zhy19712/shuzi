@@ -1,5 +1,5 @@
-﻿<?php
-
+<?php
+//安全生产文明建设
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
@@ -19,8 +19,8 @@ include('../conn.php');
  * Easy set variables
  */
 
-// DB table to use 法规标准识别
-$table = 'think_safety_edupeople';
+// DB table to use
+$table = 'think_safety_accidentreport';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -31,15 +31,11 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'edu_name',  'dt' => 1 ),
-    array( 'db' => 'job',  'dt' => 2 ),
-    array( 'db' => 'certificate_name',  'dt' => 3 ),
-    array( 'db' => 'certificate_number',  'dt' => 4 ),
-    array( 'db' => 'availability_date',  'dt' => 5 ),
-    array( 'db' => 'vld',  'dt' => 6 ),
-    array( 'db' => 'training_mode',  'dt' => 7 ),
-    array( 'db' => 'training_time',  'dt' => 8 ),
-    array( 'db' => 'remark',  'dt' => 9)
+    array( 'db' => 'filename',  'dt' => 1 ),
+    array( 'db' => 'number',  'dt' => 2 ),
+    array( 'db' => 'date',  'dt' => 3 ),
+    array( 'db' => 'owner',  'dt' => 4 ),
+    array( 'db' => 'remark',  'dt' => 5 )
 );
 
 
@@ -57,21 +53,15 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
 
 require( '../ssp.class.php' );
 
-//echo json_encode(
-//    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
-//);
-
-if(!empty($_GET["pid"]))
+if(!empty($_GET["year"]))
 {
-    $pid = $_GET["pid"];
-    $zid = $_GET["zid"];
+    $year = $_GET["year"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "pid = '$pid' and zid = '$zid'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "date like '%" .$year. "%'" )
     );
-}
-else{
+}else{
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = 'empty'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
     );
 }
 

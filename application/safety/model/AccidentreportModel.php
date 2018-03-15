@@ -2,33 +2,21 @@
 /**
  * Created by PhpStorm.
  * User: admin
- * Date: 2018/3/14
- * Time: 17:27
+ * Date: 2018/3/8
+ * Time: 11:19
  */
-//监理部职业健康管理
-
+//事故报告
 namespace app\safety\model;
 use think\exception\PDOException;
 use think\Model;
 
-class JobhealthManageModel extends Model
+class AccidentreportModel extends Model
 {
-    protected $name = 'safety_health_manage';
-
-
+    protected $name = 'safety_accidentreport';
     /*
-     * 获取一条监理部职业健康管理
-
+     * 添加新的事故报告文件
      */
-    public function getOne($id)
-    {
-        return $this->where('id', $id)->find();
-    }
-
-    /*
-     * 插入监理部职业健康管理信息
-     */
-    public function insertJobhealthManage($param)
+    public function insertAccidentreport($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -41,11 +29,10 @@ class JobhealthManageModel extends Model
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
-
     /*
-     * 编辑监理部职业健康管理信息
+     * 编辑安全文化建设文件
      */
-    public function editJobhealthManage($param)
+    public function editAccidentreport($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -58,26 +45,31 @@ class JobhealthManageModel extends Model
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
-
     /*
-     * 删除监理部职业健康管理信息
-     */
-    public function delJobhealthManage($id)
+    * 删除安全文化建设文件
+    */
+    public function delAccidentreport($id)
     {
         try{
-            $data = $this->getOne($id);
-            $path = $data['path'];
-            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-            if(file_exists($path)){
-                unlink($path); //删除文件
-            }
-            if(file_exists($pdf_path)){
-                unlink($pdf_path); //删除生成的预览pdf
-            }
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
+
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
+    }
+    /*
+    * 获取一条安全文化建设文件
+    */
+    /**
+     * @param $id
+     * @return array|false|\PDOStatement|string|Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getOne($id)
+    {
+        return $this->where('id', $id)->find();
     }
 }

@@ -150,7 +150,12 @@
     #rulesDesc{
         border: 1px solid #ccc;
     }
-
+    table.dataTable thead th.sorting:first-child:after{
+        content:''
+    }
+    table.dataTable tbody tr.selected{
+        background: none;
+    }
 </style>
 
 <div id="mycontent" class="mycontent">
@@ -177,10 +182,11 @@
                         <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
                             <thead>
                             <tr>
-                                <th>序号</th>
-                                <th>全选
+                                <th>
+                                    <label for="all_checked" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
                                     <input type='checkbox' name='all_checked' id="all_checked" class='icheckbox_minimal' value=''>
                                 </th>
+                                <th>序号</th>
                                 <th>标准号</th>
                                 <th>名称</th>
                                 <th>施行日期</th>
@@ -300,10 +306,8 @@
 <div>
 </div>
 
-
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
-
 <script src="__JS__/jquery.ztree.all.js"></script>
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/plugins/dataTables/dataTables.buttons.min.js"></script>
@@ -534,8 +538,7 @@
         columnDefs: [
             {
                 searchable: false,
-                targets:1,
-                orderable: false,
+                targets:0,
                 data:null,
                 render:function () {
                     var ipt = "<input type='checkbox' name='checkList' onclick='getSelectId(this)'>";
@@ -576,6 +579,7 @@
     $('div#import').html('导入');
     $('div#export').html('导出');
 
+    $("thead tr th:first-child").unbind();
 
     //上传弹层
     $(function(){
@@ -813,6 +817,7 @@
     //删除数据
     function del(that){
         var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
+        var groupid = $('input[type="hidden"][name="groupId"]').val();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
                 url: "{:url('Statutestdi/sdiDel')}",
@@ -822,7 +827,7 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php").load();
+                        tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php?pid="+ groupid).load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
