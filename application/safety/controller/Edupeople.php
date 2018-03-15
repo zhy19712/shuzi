@@ -35,6 +35,7 @@ class Edupeople extends Base
     }
 
     /**
+     * 主要负责人和安全管理人员
      * 新增或者修改
      * @return \think\response\Json
      * @author hutao
