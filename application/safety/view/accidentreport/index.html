@@ -34,7 +34,7 @@
 <body class="gray-bg animated fadeInRight" style="background-color:#fff;">
 <div id="container">
     <div style="height: 50px;">
-        <p class="myp">安全生产信息化建设</p>
+        <p class="myp">事故管理</p>
     </div>
     <div class="tab-content">
         <div class="tab-pane active" >
@@ -43,8 +43,9 @@
                 <tr>
                     <th>序号</th>
                     <th>文件名称</th>
-                    <th>上传人</th>
+                    <th>编号</th>
                     <th>上传时间</th>
+                    <th>上传人</th>
                     <th>备注</th>
                     <th>操作</th>
                 </tr>
@@ -59,10 +60,16 @@
         <div class="col-sm-12" style="background-color:#fff;">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5></h5>
+                    <h5>事故管理</h5>
                 </div>
                 <div class="ibox-content">
                     <input id="aid" type="text" class="form-control" value="" style="display: none;">
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">编号：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="number" type="text" class="form-control" name="remark" >
+                        </div>
+                    </div>
                     <div class="col-lg-12 col-xs-12">
                         <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">备注：</label>
                         <div class="myblock col-xs-8 input-group">
@@ -119,7 +126,7 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        table.ajax.url("__SCRIPT__/safety_responsibilityinfo.php").load();
+                        table.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -155,7 +162,7 @@
 
     var uploader;          //初始化upload按钮
 
-    var name1,name2;         //用于区分 编辑时是否修改了文件
+    var name1,name2,name3;         //用于区分 编辑时是否修改了文件
 
     //初始化
     function upload() {
@@ -163,7 +170,7 @@
             uploader = WebUploader.create({
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadSafetyResponsibilityinfo')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadAccidentreport')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
@@ -198,6 +205,7 @@
             uploader.on("uploadStart",function () {
                 uploader.options.formData.aid = $("#aid").val();
                 uploader.options.formData.remark = $("#remark").val();
+                uploader.options.formData.number = $("#number").val();
             });
             uploader.on('beforeFileQueued', function (file) {
                 if($("#file_list").html()){
@@ -231,7 +239,7 @@
                     $("#file_per").empty();
                     $("#file_list").empty();
                     $("#fname").modal('hide');
-                    table.ajax.url("__SCRIPT__/safety_responsibilityinfo.php").load();
+                    table.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -245,28 +253,26 @@
         }
     }
 
-    //安全文化-预览
+    //事故管理-预览
     function showpdf1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        showPdf(id,"./infoPreview");
+        showPdf(id,"./accidentPreview");
     }
 
-    //安全文化-删除
+    //事故管理-删除
     function del1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         del(id,"./infoDel");
     }
 
-    //安全文化-编辑-删除文件
+    //事故管理-编辑-删除文件
     function fdelatt1(that) {
         var id = $(that).parent("div").attr("id");
         $("#"+id).remove();
     }
 
-    //安全生产信息化建设-编辑
+    //事故管理-编辑
     function edit1(that) {
-        uploader = null;
-        upload();
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         $.ajax({
             url: "./index",
@@ -278,8 +284,10 @@
                 if(res.code === 1){
                     $("#aid").val(res.data.id);
                     $("#remark").val(res.data.remark);
+                    $("#number").val(res.data.number);
                     name1 = res.data.remark;
                     name2 = res.data.name;
+                    name3 = res.data.name;
                     uploader = null;
                     upload();
                     if(res.data.path){
@@ -294,10 +302,10 @@
         })
     }
 
-    //安全生产信息化建设-下载
+    //事故管理-下载
     function download1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        download(id,"./infoDownload");
+        download(id,"./accidentDownload");
     }
 
     //提交
@@ -308,22 +316,22 @@
             }else {
                 if(name2 !== $(".info").html()){
                     uploader.upload();
-                }else if(name1 !== $("#remark").val()){
+                }else if(name1 !== $("#remark").val()||name3 !== $("#number").val()){
                     $.ajax({
-                    url: "./infoEdit",
-                    type: "post",
-                    data: {aid:$("#aid").val(),remark:$("#remark").val()},
-                    datatype: "json",
-                    success: function (res) {
-                        if(res.code === 1){
-                            layer.msg(res.msg);
-                            table.ajax.url("__SCRIPT__/safety_responsibilityinfo.php").load();
-                            $("#fname").modal('hide');
-                        }else {
-                            layer.msg(res.msg);
+                        url: "./accidentEdit",
+                        type: "post",
+                        data: {aid:$("#aid").val(),remark:$("#remark").val(),number:$("#number").val()},
+                        datatype: "json",
+                        success: function (res) {
+                            if(res.code === 1){
+                                layer.msg(res.msg);
+                                table.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
+                                $("#fname").modal('hide');
+                            }else {
+                                layer.msg(res.msg);
+                            }
                         }
-                    }
-                });
+                    });
                 }else {
                     layer.msg("未发生更改");
                     $("#fname").modal('hide');
@@ -335,19 +343,19 @@
     });
 
 
-    //安全生产信息化建设表格
+    //事故管理表格
     var table = $("#info_table").DataTable({
         "processing": true,//是否显示处理状态
         "serverSide":true,//是否开启服务器模式
         "ajax":{
-            "url": "__SCRIPT__/safety_responsibilityinfo.php"
+            "url": "__SCRIPT__/safety_accidentreport.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear">frtip',
         "columnDefs":[ //设置列定义初始化属性
             {
                 "searchable":false,  //禁止搜索
                 "orderable":false,   //禁止排序
-                "targets":[5],         //指定第六列
+                "targets":[6],         //指定第六列
                 "render": function (data,type,row) {
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download1(this)' value='下载'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit1(this)' value='编辑'/>" ;
@@ -378,11 +386,11 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table.ajax.url("__SCRIPT__/safety_responsibilityinfo.php?year="+obj.date.YYYY).load();
+            table.ajax.url("__SCRIPT__/safety_accidentreport.php?year="+obj.date.YYYY).load();
             console.log(obj.date.YYYY);
         }
     });
-   $("#year").val("");
+    $("#year").val("");
     //新增
     $("div.mybtn").html("新增")
     $("#info_table_wrapper .mybtn").click(function () {

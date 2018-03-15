@@ -305,7 +305,9 @@
             if(!$("#aid").val()){
                 uploader.upload();
             }else {
-                if(name1 !== $("#remark").val() || name2 !== $(".info").html()){
+                if(name2 !== $(".info").html()){
+                    uploader.upload();
+                }else if(name1 !== $("#remark").val()){
                     $.ajax({
                         url: "./cultureEdit",
                         type: "post",
@@ -320,7 +322,7 @@
                                 layer.msg(res.msg);
                             }
                         }
-                    })
+                    });
                 }else {
                     layer.msg("未发生更改");
                     $("#fname").modal('hide');
@@ -329,7 +331,7 @@
         }else {
             alert("请选择上传文件");
         }
-    })
+    });
 
 
     //安全文化表格
