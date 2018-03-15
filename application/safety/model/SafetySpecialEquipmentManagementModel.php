@@ -40,7 +40,7 @@ class SafetySpecialEquipmentManagementModel extends Model
     public function insertSpecialEquipmentManagePic($param)
     {
         try{
-            $result = Db::name('safety_special_equipment_manage_pic')->allowField(true)->save($param);
+            $result = Db::name('safety_special_equipment_manage_pic')->save($param);
             if(false === $result){
                 return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
             }else{
@@ -93,7 +93,7 @@ class SafetySpecialEquipmentManagementModel extends Model
 
             }
 
-            $result =  Db::name('safety_special_equipment_manage_pic')->allowField(true)->save($param, ['uid' => $param['id']]);
+            $result =  Db::name('safety_special_equipment_manage_pic')->save($param, ['uid' => $param['id']]);
 
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
