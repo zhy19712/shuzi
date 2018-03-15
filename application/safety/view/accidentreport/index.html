@@ -253,25 +253,25 @@
         }
     }
 
-    //安全文化-预览
+    //事故管理-预览
     function showpdf1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         showPdf(id,"./accidentPreview");
     }
 
-    //安全文化-删除
+    //事故管理-删除
     function del1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         del(id,"./infoDel");
     }
 
-    //安全文化-编辑-删除文件
+    //事故管理-编辑-删除文件
     function fdelatt1(that) {
         var id = $(that).parent("div").attr("id");
         $("#"+id).remove();
     }
 
-    //安全文化-编辑
+    //事故管理-编辑
     function edit1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         $.ajax({
@@ -302,7 +302,7 @@
         })
     }
 
-    //安全文化-下载
+    //事故管理-下载
     function download1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         download(id,"./accidentDownload");
@@ -320,12 +320,12 @@
                     $.ajax({
                         url: "./accidentEdit",
                         type: "post",
-                        data: {id:$("#aid").val(),remark:$("#remark").val()},
+                        data: {aid:$("#aid").val(),remark:$("#remark").val(),number:$("#number").val()},
                         datatype: "json",
                         success: function (res) {
                             if(res.code === 1){
                                 layer.msg(res.msg);
-                                table.ajax.url("__SCRIPT__/safety_responsibilityculture.php").load();
+                                table.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
                                 $("#fname").modal('hide');
                             }else {
                                 layer.msg(res.msg);
@@ -343,7 +343,7 @@
     });
 
 
-    //安全文化表格
+    //事故管理表格
     var table = $("#info_table").DataTable({
         "processing": true,//是否显示处理状态
         "serverSide":true,//是否开启服务器模式

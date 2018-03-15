@@ -178,6 +178,7 @@
             });
 
             uploader.on( 'fileQueued', function( file ) {
+                name2 = file.name;
                 $("#file_per").append('<div id="' + file.id + '" class="item">' +
                     '</div>');
                 $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
@@ -197,7 +198,7 @@
                 console.log("remove");
             });
             uploader.on("uploadStart",function () {
-                uploader.options.formData.aid = $("#aid").val();
+                uploader.options.formData.aid = $("#id").val();
                 uploader.options.formData.remark = $("#remark").val();
             });
             uploader.on('beforeFileQueued', function (file) {
