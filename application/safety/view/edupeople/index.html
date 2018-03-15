@@ -119,8 +119,7 @@
     <div id="mycontent" class="mycontent">
         <h2>人员教育培训</h2>
         <ul id="tree_container" class="ztree"></ul>
-        <input type="hidden" name="treeId">
-        <input type="hidden" name="currentDragId">
+        <input type="hidden" name="id">
         <input type="hidden" name="groupId">
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -196,7 +195,6 @@
             </div>
         </div>
     </div>
-
     <!--负责人/管理人新增弹层-->
     <div id="manage_addRules_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
         <div class="row">
@@ -209,11 +207,6 @@
                     <div class="ibox-content">
                         <!--新增用户信息开始-->
                         <form class="form-horizontal" name="manageAddForm" id="manageAddForm" method="post">
-                            <input type="hidden" name="id" id="sid">
-                            <input type="hidden" name="group_id" id="pgroup_id">
-                            <input type="hidden" name="oldFileName" id="oldFileName">
-                            <input type="hidden" name="newFileName" id="newFileName">
-
                             <div class="form-group">
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">姓名：</label>
@@ -321,11 +314,6 @@
                     <div class="ibox-content">
                         <!--新增用户信息开始-->
                         <form class="form-horizontal" name="practAddForm" id="practAddForm" method="post">
-                            <input type="hidden" name="id" id="sid">
-                            <input type="hidden" name="group_id" id="pgroup_id">
-                            <input type="hidden" name="oldFileName" id="oldFileName">
-                            <input type="hidden" name="newFileName" id="newFileName">
-
                             <div class="form-group">
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">姓名：</label>
@@ -448,11 +436,6 @@
                     <div class="ibox-content">
                         <!--新增用户信息开始-->
                         <form class="form-horizontal" name="foreignAddForm" id="foreignAddForm" method="post">
-                            <input type="hidden" name="id" id="sid">
-                            <input type="hidden" name="group_id" id="pgroup_id">
-                            <input type="hidden" name="oldFileName" id="oldFileName">
-                            <input type="hidden" name="newFileName" id="newFileName">
-
                             <div class="form-group">
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">姓名：</label>
@@ -651,7 +634,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                "url": "__SCRIPT__/safety_statutesdi.php"
+                "url": "__SCRIPT__/safety_edupeople.php"
             },
             dom: 'lf<"#exportExcel.exportExcel btn-outline btn-primary"><"#export.export btn-outline btn-primary"><"#manageAdd.add btn-outline btn-primary">rtip',
             columnDefs: [
@@ -685,7 +668,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                "url": "__SCRIPT__/safety_statutesdi.php"
+                "url": "__SCRIPT__/safety_edupeople.php"
             },
             dom: 'lf<"#exportExcel.exportExcel btn-outline btn-primary"><"#export.export btn-outline btn-primary"><"#practAdd.add btn-outline btn-primary">rtip',
             columnDefs: [
@@ -719,7 +702,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                "url": "__SCRIPT__/safety_statutesdi.php"
+                "url": "__SCRIPT__/safety_edupeople.php"
             },
             dom: 'lf<"#exportExcel.exportExcel btn-outline btn-primary"><"#export.export btn-outline btn-primary"><"#foreignAdd.add btn-outline btn-primary">rtip',
             columnDefs: [
@@ -756,27 +739,29 @@
 
         //根据左侧树节点显隐对于表格
         function isHidden(e) {
-            $('#'+e).css("display","block").siblings().css("display","none");
+            $('#'+e).show().siblings().hide();
         }
 
         //点击节点
         function zTreeOnClick(event, treeId, treeNode) {
+            $('input[type="hidden"][name="id"]').val(treeNode.id);
+            $('input[type="hidden"][name="groupId"]').val(treeNode.pId);
 
-            if(treeNode.id==1){
+            if(treeNode.pId==1){
                 isHidden('manageTableItem_wrapper');
             }
-            if(treeNode.id==2){
+            if(treeNode.pId==2){
                 isHidden('practTableItem_wrapper');
             }
-            if(treeNode.id==3){
+            if(treeNode.pId==3){
                 isHidden('foreignTableItem_wrapper');
             }
             console.log(treeNode);
 
-            $('input[type="hidden"][name="groupId"]').val(treeNode.id);
-            if(treeNode.level){
+            if(!treeNode.isParent){
                 manageTableItem.ajax.url("__SCRIPT__/safety_edupeople.php?pid=" + treeNode.id).load();
-            }else {
+            }else{
+                $('.dataTables_wrapper').hide();
             }
         };
 
@@ -806,7 +791,7 @@
         var manageValidator = $("#manageAddForm").validate({
             submitHandler: function(form) {
                 //获取表单数据
-                var id = $('#sid').val();
+                var id = $('input[type="hidden"][name="id"]').val();
                 var pid = $('input[type="hidden"][name="groupId"]').val();
                 var edu_name = $('#name').val();
                 var job = $('#duties').val();
@@ -819,11 +804,11 @@
                 var remark = $('#rulesDesc').val();
                 //表单提交
                 $(form).ajaxSubmit({
-                    url: "{:url('Edupeople/eduAdd')}",
+                    url: "{:url('edupeople/eduAdd')}",
                     type: "post",
                     dataType: 'json',
                     data:{
-                        id:id,
+                        zid:id,
                         pid:pid,
                         edu_name:edu_name,
                         job:job,
@@ -860,12 +845,13 @@
 
         //数据返回
         function complete(data){
-            var groupid = $('input[type="hidden"][name="groupId"]').val();
+            var pid = $('input[type="hidden"][name="groupId"]').val();
+            var zid = $('input[type="hidden"][name="id"]').val();
             console.log(data);
             if(data.code==1){
                 layer.msg(data.msg);
-                tableItem.ajax.url("__SCRIPT__/safety_edupeople.php?pid=" + groupid).load();
-                $("#addRules_modal").modal('hide');
+                manageTableItem.ajax.url('__SCRIPT__/safety_edupeople.php?pid=' + pid +'&zid='+ zid).load();
+                $("#manage_addRules_modal").modal('hide');
             }else{
                 layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
                 return false;
