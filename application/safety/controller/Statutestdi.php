@@ -263,6 +263,9 @@ class Statutestdi extends Base
     public function importExcel()
     {
         $group_id = input('param.group_id');
+        if(empty($group_id)){
+            return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
+        }
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/statutestdi');
         if($info){
