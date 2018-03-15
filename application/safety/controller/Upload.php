@@ -833,7 +833,7 @@ class Upload extends Base
 
          */
         $accident = new AccidentreportModel();
-        $id = request()->param('id');
+        $id = request()->param('aid');
         $number = request()->param('number');
         $remark = request()->param('remark');
         $file = request()->file('file');
