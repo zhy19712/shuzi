@@ -12,9 +12,9 @@ namespace app\safety\model;
 use think\exception\PDOException;
 use think\Model;
 
-class EducationModel extends Model
+class RiskModel extends Model
 {
-    protected $name = 'safety_education';
+    protected $name = 'safety_risk';
 
     public function insertEdu($param)
     {
