@@ -54,6 +54,81 @@ class Education extends Base
         }
     }
 
+
+    /**
+     * 下载
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function eduDownload()
+    {
+        if(request()->isAjax()){
+            return json(['code' => 1]);
+        }
+        $id = input('param.id');
+        $type = input('param.type');
+        $edu = new EducationModel();
+        $param = $edu->getOne($id);
+        if($type == '1'){ // type 1 表示的是 培训材料文件名称 2 表示培训记录文件名称
+            $filePath = $param['ma_path'];
+            $fileName = $param['material_name'];
+        }else{
+            $filePath = $param['re_path'];
+            $fileName = $param['record_name'];
+        }
+        $file = fopen($filePath, "r"); //   打开文件
+        //输入文件标签
+        $fileName = iconv("utf-8","gb2312",$fileName);
+        Header("Content-type:application/octet-stream ");
+        Header("Accept-Ranges:bytes ");
+        Header("Accept-Length:   " . filesize($filePath));
+        Header("Content-Disposition:   attachment;   filename= " . $fileName);
+        //   输出文件内容
+        echo fread($file, filesize($filePath));
+        fclose($file);
+        exit;
+    }
+
+    /**
+     * 预览
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function eduPreview()
+    {
+        $edu = new EducationModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $code = 1;
+            $msg = '预览成功';
+            $data = $edu->getOne($param['id']);
+            if($param['type'] == '1'){ // type 1 表示的是 培训材料文件名称 2 表示培训记录文件名称
+                $path = $data['ma_path'];
+            }else{
+                $path = $data['re_path'];
+            }
+            $extension = strtolower(get_extension(substr($path,1)));
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(!file_exists($pdf_path)){
+                if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
+                    doc_to_pdf($path);
+                }else if($extension === 'xls' || $extension === 'xlsx'){
+                    excel_to_pdf($path);
+                }else if($extension === 'ppt' || $extension === 'pptx'){
+                    ppt_to_pdf($path);
+                }else if($extension === 'pdf'){
+                    $pdf_path = $path;
+                }else{
+                    $code = 0;
+                    $msg = '文不支持的件格式';
+                }
+                return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
+            }else{
+                return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
+            }
+        }
+    }
+
     /**
      * 删除
      * @return \think\response\Json
