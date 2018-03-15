@@ -80,7 +80,7 @@
 
     }
     #mytable1_wrapper{
-        display: block;
+        display: none;
     }
     #excel{
         width: 450px;
@@ -133,8 +133,9 @@
         top: 14px;
         left: 130px;
     }
-    #admin_table thead th:first-child .sorting:after {
-        color: white;
+    .dataTable thead  tr th:first-child:after{
+        content: ""!important;
+        display: none!important;
     }
 </style>
 <body>
@@ -580,17 +581,17 @@
         });
         mytree_node = treeNode;
         idParent = treeNode.pId;
-        console.log(treeNode.pId)
+        console.log(treeNode.pId +" pid-idParent")
         var grioupid;
         groupid = treeNode.id;
-        console.log(groupid)
+        console.log(groupid +" id-groupid")
         if(treeNode.level == 0){
             $("#mytable1_wrapper").css("display","none");
-            admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+            admin_table.ajax.url("__SCRIPT__/safety_education.php?id="+idParent+"&pid=" + groupid).load();
         }else {
             if(treeNode.level == 1){
                 $("#mytable1_wrapper").css("display","block");
-                admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+                admin_table.ajax.url("__SCRIPT__/safety_education.php?id="+idParent+"&pid=" + groupid).load();
             }
 //            $("#mytable1_wrapper").css("display","none");
         }
@@ -786,16 +787,17 @@
         uploaderRecords.destroy();
     });
 
-    admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
+    // admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
     var edamid1,edamid2;
     function flager() {
         $.ajax({
             url: "./eduAdd",
             type: "post",
             data: {
-                zid: $("#edId").val(),//id
-//                    group_id : groupid,//group_id
-                pid: 1,//group_id
+                zid:idParent,//id
+                // zid: $("#edId").val(),//id
+                pid : groupid,//group_id
+                // pid: 1,//group_id
                 lecturer: $("#trainer").val(),//培训人
                 edu_time: $("#trainingTime").val(),//培训时间
                 trainee: $("#trainers").val(),//培训人员
@@ -813,8 +815,8 @@
 
                     flag = 1;
                     $("#education_modal").modal('hide');
-                    // admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
-                    admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
+                    admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+idParent+"&pid=" + groupid).load();
+                    // admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
                     layer.msg(res.msg, {time: 1500, shade: 0.1});
                     uploaderRecords.upload();
                     uploaderMaterials.upload();
@@ -1082,10 +1084,10 @@
         if(data.code === 1){
             console.log(groupid)
             console.log(idParent)
+            admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+idParent+"&pid=" + groupid).load();
             layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
-            admin_table.ajax.url("__SCRIPT__/safety_education.php?id="+idParent+"&pid=" + groupid).load();
         }else {
-            layer.msg('导入失败！');
+            layer.msg('导入数据失败!');
             return false;
         }
     }
@@ -1107,8 +1109,8 @@
         $percent.css('width', percentage * 100 + '%');
     });
     importExcel.on("uploadStart",function () {
-        importExcel.options.formData.group_id = 1;
-        // importExcel.options.formData.group_id = groupid;
+        importExcel.options.formData.pid = groupid;
+        importExcel.options.formData.zid = idParent;
     });
     importExcel.on("uploadFinished", function () {
         importExcel.reset();
