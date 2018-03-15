@@ -84,7 +84,7 @@
             font-weight: normal;
         }
         #manageTableItem_wrapper,#practTableItem_wrapper,#foreignTableItem_wrapper,.title{
-            visibility: hidden;
+            display: none;
         }
         #material,#record{
             padding: 0;
@@ -573,32 +573,25 @@
         $('.foreignTrainTimeDate').jeDate();
         $('.departureDate').jeDate();
 
+        //请求树子节点
+        var childNodes = [];
+        function getChildNode() {
+            $.ajax({
+                url: "{:url('edupeople/getSegment')}",
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    $.each(res,function (n,i) {
+                        childNodes.push({
+                            name:n
+                        });
+                    })
+                }
+            });
+        }
+        getChildNode();
         //左侧菜单
         var setting = {
-            /*async: {
-                enable : true,
-                autoParam: ["pId"],
-                type : "post",
-                url : "./index",
-                dataType :"json"
-            },*/
-            view:{
-                /*addHoverDom: addHoverDom,
-                removeHoverDom: removeHoverDom,*/
-            },
-            edit:{
-                enable: true,
-                /*showRemoveBtn :showRemoveBtn,*/
-                showRenameBtn :true,
-                removeTitle :"删除",
-                renameTitle :"修改",
-                drag:{
-                    isMove:true,
-                    prev:true,
-                    next:true,
-                    inner:true
-                }
-            },
             data:{
                 simpleData : {
                     enable:true,
@@ -608,26 +601,18 @@
             },
             callback: {
                 onClick: zTreeOnClick,
-                /*beforeRemove: beforeRemove,
-                beforeRename: beforeRename,
-                beforeDrag: beforeDrag,
-                beforeDrop: beforeDrop*/
             }
         };
         var node = [
-            {name: "主要负责人和安全管理人员", children: [
-                {name: "监理部"},
-                {name: "C1标"},
-                {name: "C2标"},
-            ]},
-            {name: "从业人员", children: [
-                {name: "监理部"},
-                {name: "C1标"},
-                {name: "C2标"},
-            ]},
-            {name: "外来人员"}
+            {id:1,pid:0,name: "主要负责人和安全管理人员",children:childNodes},
+            {id:2,pid:0,name: "从业人员",children:childNodes},
+            {id:3,pid:0,name: "外来人员",children:childNodes}
         ]
-        zTreeObj = $.fn.zTree.init($("#tree_container"), setting,node).expandAll(true);
+
+        //TODO 应该有更好的方式实现
+        setTimeout(function () {
+            zTreeObj = $.fn.zTree.init($("#tree_container"), setting,node).expandAll(true);
+        },200);
 
         /**
          *  右侧表格
@@ -735,14 +720,28 @@
             }
         });
         $("div#add").html('新增');
+        $('div#import').html('导入');
         $('div#export').html('导出');
         $('div#exportExcel').html('导出Excel模板');
 
+        //根据左侧树节点显隐对于表格
+        function isHidden(e) {
+            $('#'+e).css("display","block").siblings().css("display","none");
+        }
 
         //点击节点
         function zTreeOnClick(event, treeId, treeNode) {
+            if(treeNode.id==1){
+                isHidden('manageTableItem_wrapper');
+            }
+            if(treeNode.id==2){
+                isHidden('practTableItem_wrapper');
+            }
+            if(treeNode.id==3){
+                isHidden('foreignTableItem_wrapper');
+            }
             console.log(treeNode);
-            $('#manageTableItem_wrapper').css("visibility","visible");
+
             mytree_node = treeNode;
             groupid = treeNode.id;
             $('input[type="hidden"][name="groupId"]').val(groupid);
