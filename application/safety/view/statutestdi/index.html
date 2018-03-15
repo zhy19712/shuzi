@@ -13,6 +13,9 @@
         visibility: hidden;
     }
     .mycontent{
+        margin: 0 10px;
+        padding-top: 20px;
+        padding-right: 10px;
         width: 20%;
         height: 98%;
         display: inline-block;
@@ -20,10 +23,10 @@
         border-right: 1px solid #ccc;
     }
     .mycontent h2{
-        padding: 10px 0;
         margin: 0;
         text-align: center;
-        font-size: 16px;
+        line-height: 30px;
+        font-size: 13px;
         border-bottom: 1px solid #ccc;
         background: #19aa8d;
         color: #FFF;
@@ -31,6 +34,7 @@
     #operate{
         font-size: 0;
         border: 1px solid #ccc;
+        border-top: 0;
     }
     #operate i {
         display: inline-block;
@@ -139,6 +143,9 @@
     .form-horizontal .pdivision{
         float: left;
     }
+    .ibox-title{
+        display: none;
+    }
 </style>
 
 <div id="mycontent" class="mycontent">
@@ -200,7 +207,6 @@
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
                         <input type="hidden" name="id" id="sid">
-                        <input type="hidden" name="group_id" id="group_id">
                         <input type="hidden" name="oldFileName" id="oldFileName">
                         <input type="hidden" name="newFileName" id="newFileName">
                         <div class="form-group">
@@ -285,7 +291,7 @@
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <div class="col-xs-12 col-lg-6"  style="text-align: center;margin-top: 10px">
+                            <div class="col-xs-12 col-lg-12"  style="text-align: center;margin-top: 10px">
                                 <button class="btn btn-primary" type="submit" id="save"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
                                 <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
                             </div>
@@ -1038,7 +1044,7 @@
                 years:years
             },
             success:function (data) {
-                var dataViewDom = '<select name="" id="history" style="height: 32px">';
+                var dataViewDom = '<select name="" id="history" style="height: 32px" onchange="filterHistory(this)">';
                 for (var i=0;i<data.length;i++){
                     dataViewDom += '<option value="">'+data[i]+'</option>';
                 }
@@ -1051,14 +1057,14 @@
     //筛选数据
     function filterData() {
         var years = $('#years').val();
-        var pid = $('#group_id').val();
+        var pid = $('input[type="hidden"][name="groupId"]').val();
         var times = $('#history').find('option:selected').text();
         $.ajax({
             url:'__SCRIPT__/safety_statutesdi.php',
             dataType:'JSON',
             type:'POST',
             data:{
-                pid:groupid,
+                pid:pid,
                 years:years,
                 times:times
             },
@@ -1069,9 +1075,9 @@
     }
 
     //按版本查看
-    $('#history').change(function(){
+    function filterHistory(that) {
         filterData();
-    });
+    }
 
     //按年度查看
     $('#years').jeDate({
