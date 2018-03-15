@@ -242,7 +242,7 @@ class Statutestdi extends Base
             $idarr = $node->hasSubclass($id);
             if(count($idarr) > 0){
                 foreach($idarr as $v){
-                    $flag = $node->delSdinode($v,1); // 1 法规标准识别 2 规章制度
+                    $flag = $node->delSdinode($v['id'],1); // 1 法规标准识别 2 规章制度
                     if($flag['code'] != 1){
                         return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
                     }
