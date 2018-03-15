@@ -678,7 +678,7 @@ class Upload extends Base
          */
         $equipment = new SafetySpecialEquipmentManagementModel();
 
-        $id = request()->param('id');//获取特种设备文件的id
+        c = request()->param('id');//获取特种设备文件的id
 
         $pid = request()->param('pid');//获取特种设备文件上传图片的uid
 
