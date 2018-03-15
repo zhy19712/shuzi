@@ -44,7 +44,7 @@ class JobhealthModel extends Model
 
         }
 
-        $str .= '{ "id": "' . '12' . '", "pId":"' . '1' . '", "name":"' . '监理部'.'"';
+        $str .= '{ "id": "' . '2' . '", "pId":"' . '0' . '", "name":"' . '监理部'.'"';
         $str .= '},';
 
         return "[" . substr($str, 0, -1) . "]";
