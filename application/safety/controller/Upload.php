@@ -694,7 +694,7 @@ class Upload extends Base
                     'uid' => $id,
                     'name' => $filename,
                     'picture_name' => $filename,
-                    'path' => $path,
+                    'path' => $path
                 ];
                 $flag = $equipment->insertSpecialEquipmentManagePic($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
@@ -704,7 +704,7 @@ class Upload extends Base
                     'pid' => $pid,
                     'name' => $filename,
                     'picture_name' => $filename,
-                    'path' => $path,
+                    'path' => $path
 
                 ];
                 $flag = $equipment->editSpecialEquipmentManagementPic($data);
