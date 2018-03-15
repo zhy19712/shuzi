@@ -13,7 +13,7 @@ use think\Model;
 
 class JobhealthManageModel extends Model
 {
-    protected $name = 'think_safety_health_manage';
+    protected $name = 'safety_health_manage';
 
 
     /*
