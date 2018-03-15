@@ -85,20 +85,27 @@ class ContractModel extends Model
      */
     public function getBiaoduanName($num)
     {
-        $data = $this->field('id,biaoduan_name')->group('biaoduan_name')->select();
+        $data = $this->field('id,biaoduan_name')->where('biaoduan_name','neq','监理部')->group('biaoduan_name')->select();
         if($num == 2){
             $arr = [1=>['id'=>'1','biaoduan_name'=>'监理单位'],2=>['id'=>'2','biaoduan_name'=>'施工单位']];
         }else{
             $arr = [1=>['id'=>'1','biaoduan_name'=>'主要负责人和安全管理人员'],2=>['id'=>'2','biaoduan_name'=>'从业人员'],3=>['id'=>'3','biaoduan_name'=>'外来人员']];
         }
-        $str = "";
+        $str = ""; $j = 0;
         for ($i = 1; $i <= $num; $i++){
             $str .= '{ "id": "' . $arr[$i]['id'] . '", "pId":"' . 0 . '", "name":"' . $arr[$i]['biaoduan_name'].'"';
             $str .= '},';
             foreach($data as $key=>$v){
                 $id = $v['id'] + 10; // 避免和pId一样
-                $str .= '{ "id": "' . $id . '", "pId":"' . $i . '", "name":"' . $v['biaoduan_name'].'"';
-                $str .= '},';
+                if($arr[$i]['biaoduan_name'] == '监理单位' && $j == 0){
+                    $name = '监理部';
+                    $str .= '{ "id": "' . $id . '", "pId":"' . $i . '", "name":"' .$name.'"';
+                    $str .= '},';
+                    $j++;
+                }else if($arr[$i]['biaoduan_name'] != '监理单位'){
+                    $str .= '{ "id": "' . $id . '", "pId":"' . $i . '", "name":"' . $v['biaoduan_name'].'"';
+                    $str .= '},';
+                }
             }
         }
         return "[" . substr($str, 0, -1) . "]";
