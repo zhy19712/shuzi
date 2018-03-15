@@ -45,7 +45,7 @@ class Education extends Base
             $param = input('post.');
             if(empty($param['id'])){
                 $param['owner'] = session('username');
-                $param['edu_date'] = date("Y-m-d H:i:s");
+                $param['years'] = date("Y");
                 $flag = $edu->insertEdu($param);
             }else{
                 $flag = $edu->editEdu($param);

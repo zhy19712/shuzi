@@ -162,15 +162,15 @@ class Eduforeignpersonnel extends Base
                     $insertData[$k]['iphone'] = $v[$iphone_index];
                     $insertData[$k]['departure_time'] = $v[$departure_time_index];
                     $insertData[$k]['remark'] = $v[$remark_index];
-
+                    // 非表格数据
                     $insertData[$k]['pid'] = $pid;
                     $insertData[$k]['zid'] = $zid;
                     $insertData[$k]['years'] = date('Y');
                     $insertData[$k]['import_time'] = date('Y-m-d H:i:s');
                     $insertData[$k]['owner'] = session('username');
                     $insertData[$k]['name'] = $exclePath;
-                    $insertData[$k]['filename'] = $exclePath;
-                    $insertData[$k]['path'] = $file_name;
+                    $insertData[$k]['filename'] = $file->getInfo('name');
+                    $insertData[$k]['path'] = './uploads/safety/import/education/' . str_replace("\\","/",$exclePath);
                 }
             }
             $success = Db::name('safety_eduforeignpersonnel')->insertAll($insertData);
