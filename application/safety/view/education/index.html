@@ -82,9 +82,8 @@
         display: block;
     }
     #excel{
-        width: 431px;
+        width: 450px;
         height: 33px;
-        /*border: 1px solid red;*/
         position: absolute;
         right: 0px;
         top: 50px;
@@ -92,20 +91,17 @@
     }
     #excel button{
         margin-left: 15px;
-        width: 60px;
-        height: 27px;
-        border-radius: 24px;
-        border: none;
-        background: orange;
-        color: white;
         outline: none;
+    }
+    #excel button:nth-of-type(1){
+        background: white;
     }
     #excel button:nth-of-type(3){
         width:115px;
     }
     #excel select{
         margin-left: 10px;
-        width: 100px;
+        width: 120px;
     }
     .float_left{
         margin-right: 576px;
@@ -115,14 +111,17 @@
     }
     #excelImport div:nth-of-type(1){
         width: 60px;
-        height: 27px;
+        height: 30px;
         line-height: 6px;
-        border-radius: 24px;
-        border: none;
-        background: orange;
-        color: white;
-        outline: none;
+        color: #1c84c6;
+        border:1px solid #1c84c6;
         display: block;
+        outline: none;
+        background: #FFFFFF;
+    }
+    #excelImport .webuploader-pick-hover{
+        background: #1c84c6;
+        color: #FFFFFF;
     }
     #edParent {
         width: 100px;
@@ -156,9 +155,9 @@
                 <div id="path">但</div>
                 <div id="mytable1_wrapper">
                     <div id="excel">
-                        <button id="excelImport">导入</button>
-                        <button id="excelExport">导出</button>
-                        <button id="moldPlate">导出excel模板</button>
+                        <button class='btn' id="excelImport"></button>
+                        <button class='btn btn-success btn-outline btn-sm' id="excelExport">导出</button>
+                        <button class='btn btn-success btn-outline btn-sm' id="moldPlate">导出excel模板</button>
                         <select name="down_excel" id="down_excel">
                         </select>
                     </div>
@@ -644,10 +643,7 @@
     //             {name: "C2标 中水六局",pid:"3"},
     //         ]}
     // ]
-    var node = [
-        {name: "监理单位"},
-        {name: "施工单位"}
-    ]
+
     var setting = {
         async: {
             enable : true,
@@ -671,7 +667,7 @@
             onClick: zTreeOnClick
         }
     };
-    zTreeObj = $.fn.zTree.init($("#tree_container"), setting,node, mytree_node);
+    zTreeObj = $.fn.zTree.init($("#tree_container"), setting, mytree_node);
 
     //点击时间插件
     $("#trainingTime").jeDate({

@@ -251,16 +251,20 @@ class Edupeople extends Base
         }
     }
 
+
     /**
-     * 获取标段
+     * 初始化左侧节点树
      * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      * @author hutao
      */
     public function getSegment()
     {
         if(request()->isAjax()){
             $con = new ContractModel();
-            $data = $con->getBiaoduanName();
+            $data = $con->getBiaoduanName(3);
             return json($data);
         }
     }
