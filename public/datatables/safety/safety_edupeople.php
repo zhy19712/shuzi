@@ -64,8 +64,9 @@ require( '../ssp.class.php' );
 if(!empty($_GET["pid"]))
 {
     $pid = $_GET["pid"];
+    $zid = $_GET["zid"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "pid = '$pid' and zid = '$zid'" )
     );
 }
 else{
