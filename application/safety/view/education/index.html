@@ -19,6 +19,7 @@
         /*background-color: #00a2d4;*/
     }
     #path{
+        height: 34px;
         line-height: 30px;
         font-weight: 700;
         border-bottom: 1px solid #000;
@@ -79,7 +80,7 @@
 
     }
     #mytable1_wrapper{
-        display: none;
+        display: block;
     }
     #excel{
         width: 450px;
@@ -807,7 +808,7 @@
         uploaderRecords.destroy();
     });
 
-    // admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+    admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
     var edamid1,edamid2;
     //新增中的保存
     var flag=1;
@@ -845,7 +846,8 @@
 
                                     flag = 1;
                                     $("#education_modal").modal('hide');
-                                    admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+                                    // admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+                                    admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
                                     layer.msg(res.msg, {time: 1500, shade: 0.1});
                                     uploaderRecords.upload();
                                     uploaderMaterials.upload();
@@ -946,11 +948,13 @@
             }
         })
     }
+    var edSeeId;
     //专题培训-点击查看
     function edSee(that) {
         $(".edParent").remove()
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         console.log(id)
+        edSeeId=id
         $("#education_modal h5").text("查看");
         $("#education_modal").modal('show');
         //记录
@@ -1009,18 +1013,24 @@
         })
     }
     //专题培训-下载方法
-    function download(id,url) {
+    function download(id,typeNum,url) {
         $.ajax({
             url: url,
+            data:{
+                type:typeNum,
+                id:id
+            },
             success: function (res) {
+                console.log(2121212121212121)
                 if(res.code != 1){
                     layer.msg(res.msg)
+                    console.log(res.msg)
                 }else {
                     $("#formDown").empty();
                     var str = "";
                     str += ""
                         + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-                        + "<form name=download"+ id +" action="+ url +" method='get' target=downloadFrame"+ id +">"
+                        + "<form name=download"+ id +" action="+ url&typeNum +" method='get' target=downloadFrame"+ id + ">"
                         + "<span class='file_name' style='color: #000;'>"+str+"</span>"
                         + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
                         + "<button type='submit' class=btn" + id +"></button>"
@@ -1031,18 +1041,20 @@
             }
         })
     }
-    //专题培训-点击下载
-    function edDownload(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        console.log(id)
-        download(id,"./rulesDownload");
+    //专题培训-点击下载-培训材料
+    function edloadMa(that) {
+        download(edSeeId,1,"./eduDownload");
+    }
+    //专题培训-点击下载-培训材料
+    function edloadRe(that) {
+        download(edSeeId,2,"./eduDownload");
     }
     //专题培训-预览方法
-    function showPdf(id,url) {
+    function showPdf(id,typeNum,url) {
         $.ajax({
             url: url,
             type: "post",
-            data: {id:id},
+            data: {id:id,type:typeNum},
             success: function (res) {
                 if(res.code === 1){
                     var path = res.path;
@@ -1053,11 +1065,13 @@
             }
         })
     }
-    //专题培训-点击预览
-    function edPreview(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        console.log(id)
-        showPdf(id,"./rulesPreview");
+    //专题培训-点击预览-培训材料
+    function edViewMa(that) {
+        showPdf(edSeeId,1,"./eduPreview");
+    }
+    //专题培训-点击预览-培训记录
+    function edViewRe(that) {
+        showPdf(edSeeId,2,"./eduPreview");
     }
 
     var importExcel;
