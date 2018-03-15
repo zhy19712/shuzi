@@ -10,6 +10,7 @@ namespace app\safety\model;
 
 use think\exception\PDOException;
 use think\Model;
+use think\Db;
 
 class SafetySpecialEquipmentManagementModel extends Model
 {
