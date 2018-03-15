@@ -55,23 +55,36 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
 
 require( '../ssp.class.php' );
 
-//echo json_encode(
-//    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
-//);
+$pid = isset($_GET["pid"]) ? $_GET["pid"] : ''; // 所属一级节点编号
+$zid = isset($_GET["zid"]) ? $_GET["zid"] : ''; // 所属分组当前节点编号
+$years = isset($_GET["years"]) ? $_GET["years"] : ''; // 年度
+$times = isset($_GET["times"]) ? $_GET["times"] : '';// 历史版本
 
-if(!empty($_GET["pid"]))
+if(!empty($pid) && !empty($zid))
 {
-    $pid = $_GET["pid"];
-    echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
-    );
+    if(!empty($years) && !empty($times)){
+        echo json_encode(
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "pid = '$pid' and zid = '$zid' and years = '$years' and import_time = '$times'" )
+        );
+    }else if(!empty($years) && empty($times)){
+        echo json_encode(
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "pid = '$pid' and zid = '$zid' and years = '$years'" )
+        );
+    }else if(empty($years) && !empty($times)){
+        echo json_encode(
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "pid = '$pid' and zid = '$zid' and import_time = '$times'" )
+        );
+    }else{
+        echo json_encode(
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "pid = '$pid' and zid = '$zid'" )
+        );
+    }
 }
 else{
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = 'empty'" )
+        SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
     );
 }
-
 
 
 

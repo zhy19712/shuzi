@@ -49,12 +49,8 @@ class EdupeopleModel extends Model
         try{
             $data = $this->getOne($id);
             $path = $data['path'];
-            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
             if(file_exists($path)){
-                unlink($path); //删除文件
-            }
-            if(file_exists($pdf_path)){
-                unlink($pdf_path); //删除生成的预览pdf
+                unlink($path); //删除导入文件
             }
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
@@ -79,6 +75,6 @@ class EdupeopleModel extends Model
 
     public function getYears()
     {
-        return $this->where('improt_time is not null')->group('improt_time')->column('improt_time');
+        return $this->where('improt_time is not null')->group('import_time')->column('import_time');
     }
 }

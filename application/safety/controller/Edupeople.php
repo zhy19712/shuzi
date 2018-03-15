@@ -46,6 +46,8 @@ class Edupeople extends Base
             $edu = new EdupeopleModel();
             $param = input('post.');
             if(empty($param['id'])){
+                $param['owner'] = session('username');
+                $param['years'] = date("Y");
                 $flag = $edu->insertEdu($param);
             }else{
                 $flag = $edu->editEdu($param);
@@ -78,8 +80,9 @@ class Edupeople extends Base
      */
     public function importExcel()
     {
-        $group_id = input('param.group_id');
-        if(empty($group_id)){
+        $pid = input('param.pid');
+        $zid = input('param.zid');
+        if(empty($pid) || empty($zid)){
             return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
         }
         $file = request()->file('file');
@@ -112,7 +115,7 @@ class Edupeople extends Base
             $training_time_index = $remark_index = -1;
             foreach ($excel_array[0] as $k=>$v){
                 $str = preg_replace('/[ ]/', '', $v);
-                if ($str == '名称'){
+                if ($str == '姓名'){
                     $edu_name_index = $k;
                 }else if ($str == '职务'){
                     $job_index = $k;
@@ -151,9 +154,14 @@ class Edupeople extends Base
                     $insertData[$k]['training_mode'] = $v[$training_mode_index];
                     $insertData[$k]['training_time'] = $v[$training_time_index];
                     $insertData[$k]['remark'] = $v[$remark_index];
-                    // 年度
-                    $insertData[$k]['years'] = date('Y-m-d H:i:s');
-                    $insertData[$k]['group_id'] = $group_id;
+                    // 非表格数据
+                    $param['owner'] = session('username');
+                    $insertData[$k]['years'] = date('Y');
+                    $insertData[$k]['import_time'] = date('Y-m-d H:i:s');
+                    $insertData[$k]['pid'] = $pid;
+                    $insertData[$k]['zid'] = $zid;
+                    $insertData[$k]['filename'] = $file->getInfo('name');
+                    $insertData[$k]['path'] = './uploads/safety/import/education/' . str_replace("\\","/",$exclePath);
                 }
             }
             $success = Db::name('safety_edupeople')->insertAll($insertData);

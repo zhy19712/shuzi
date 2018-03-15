@@ -51,7 +51,7 @@ class EduforeignpersonnelModel extends Model
             $data = $this->getOne($id);
             $path = $data['path'];
             if(file_exists($path)){
-                unlink($path); //删除文件
+                unlink($path); //删除导入文件
             }
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
