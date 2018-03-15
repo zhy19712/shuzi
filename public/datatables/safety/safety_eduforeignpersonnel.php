@@ -19,8 +19,8 @@ include('../conn.php');
  * Easy set variables
  */
 
-// DB table to use 人员教育培训
-$table = 'think_safety_edupeople';
+// DB table to use 外来人员
+$table = 'think_safety_eduforeignpersonnel';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -31,15 +31,13 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'edu_name',  'dt' => 1 ),
-    array( 'db' => 'job',  'dt' => 2 ),
-    array( 'db' => 'certificate_name',  'dt' => 3 ),
-    array( 'db' => 'certificate_number',  'dt' => 4 ),
-    array( 'db' => 'availability_date',  'dt' => 5 ),
-    array( 'db' => 'vld',  'dt' => 6 ),
-    array( 'db' => 'training_mode',  'dt' => 7 ),
-    array( 'db' => 'training_time',  'dt' => 8 ),
-    array( 'db' => 'remark',  'dt' => 9)
+    array( 'db' => 'content',  'dt' => 2 ),
+    array( 'db' => 'edu_time',  'dt' => 3 ),
+    array( 'db' => 'address',  'dt' => 4 ),
+    array( 'db' => 'lecturer',  'dt' => 5 ),
+    array( 'db' => 'trainee',  'dt' => 6 ),
+    array( 'db' => 'num',  'dt' => 7 ),
+    array( 'db' => 'remark',  'dt' => 8)
 );
 
 
@@ -64,9 +62,8 @@ require( '../ssp.class.php' );
 if(!empty($_GET["pid"]))
 {
     $pid = $_GET["pid"];
-    $zid = $_GET["zid"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "pid = '$pid' and zid = '$zid'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = '$pid'" )
     );
 }
 else{

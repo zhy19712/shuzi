@@ -8,14 +8,14 @@
 
 namespace app\safety\controller;
 
-// 专题教育培训
+// 重大危险源识别与管理
 use app\admin\controller\Base;
 use app\admin\model\ContractModel;
 use app\safety\model\EducationModel;
 use think\Db;
 use think\Loader;
 
-class Education extends Base
+class Greatsource extends Base
 {
     /**
      * 预览获取一条数据  或者  编辑获取一条数据

@@ -15,6 +15,7 @@ use app\safety\model\FullparticipationModel;
 use app\safety\model\EquipmentCheckAcceptModel;
 use app\safety\model\SafetySpecialEquipmentManagementModel;
 use app\safety\model\JobhealthGroupModel;
+use app\safety\model\AccidentreportModel;
 
 class Upload extends Base
 {
@@ -554,24 +555,6 @@ class Upload extends Base
      * @author hutao
      */
     public function uploadEdu(){
-        /**
-         * group_id   所属分类编号
-        edu_time 培训时间
-        lecturer 讲课人
-        address 培训地址
-        trainee 培训人员
-        num 培训人数
-        remark 备注
-        content 培训内容
-        material_name 培训材料手动输入名
-        ma_filename 培训材料原文件名
-        ma_path 培训材料文件路径
-        record_name 培训记录手动输入名
-        re_filename 培训记录原文件名
-        re_path 培训记录文件路径
-        owner 上传人
-        edu_date 上传时间
-         */
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/education');
         if($info){
@@ -810,6 +793,66 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/healthmanage');
         if($info){
             echo $info->getSaveName();
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /*
+    *事故报告上传
+    * @return \think\response\Json
+    */
+    public function uploadAccidentreport(){
+        /**
+         * id 事故报告表id
+         * name 文件名
+         * filename 上传文件名
+         * number 编号
+         * owner 上传人
+         * date 上传时间
+         * remark 备注
+         * path 文件路径
+
+         */
+        $accident = new AccidentreportModel();
+        $id = request()->param('aid');
+        $number = request()->param('number');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/accidentreport');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/accidentreport/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'number' => $number,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $accident->insertAccidentreport($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $accident->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'number' => $number,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $accident->editAccidentreport($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
         }else{
             echo $file->getError();
         }
