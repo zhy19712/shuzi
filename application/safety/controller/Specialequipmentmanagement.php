@@ -89,7 +89,7 @@ class Specialequipmentmanagement extends Base
                 ];
                 $flag = $equipment->editSpecialEquipmentManagement($data);
             }
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            return json(['code' => $flag['code'], 'data' => $flag, 'msg' => $flag['msg']]);
         }
     }
 
