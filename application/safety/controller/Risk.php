@@ -18,6 +18,10 @@ class Risk extends Base
     {
         return  $this->fetch();
     }
+
+    /**
+     * 一岗双责
+     */
     public function duty()
     {
         return $this->duty();
