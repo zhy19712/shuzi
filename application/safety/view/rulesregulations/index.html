@@ -230,7 +230,7 @@
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">替代标准：</label>
                                     <div class="myblock col-xs-6 input-group">
-                                        <input id="alternativeStandard" type="text" class="form-control" name="alternativeStandard" >
+                                        <input id="alternativeStandard" type="text" class="form-control" readOnly name="alternativeStandard" >
                                     </div>
                                 </div>
                             </div>
@@ -637,9 +637,13 @@
     function zTreeRecognerOnClick(event, treeId, treeNode) {
         console.log(treeNode);
         mytree_node1 = treeNode;
-        $("#groupname").val(treeNode.name);
-        $("#pRecogner").text(treeNode.name);
-        $("#recogner").val(treeNode.name);
+        if(treeNode.level == 1){
+            $("#groupname").val(treeNode.name);
+            $("#pRecogner").text(treeNode.name);
+            $("#recogner").val(treeNode.name);
+        }else{
+            alert("识别人不能为系统管理员！")
+        }
     };
     var setting1 = {
         async: {
