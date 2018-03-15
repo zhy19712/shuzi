@@ -47,6 +47,11 @@ class EduemployeeModel extends Model
     public function delEdu($id)
     {
         try{
+            $data = $this->getOne($id);
+            $path = $data['path'];
+            if(file_exists($path)){
+                unlink($path); //删除 导入文件
+            }
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
         }catch( PDOException $e){
@@ -70,6 +75,6 @@ class EduemployeeModel extends Model
 
     public function getYears()
     {
-        return $this->where('improt_time is not null')->group('improt_time')->column('improt_time');
+        return $this->where('improt_time is not null')->group('import_time')->column('import_time');
     }
 }

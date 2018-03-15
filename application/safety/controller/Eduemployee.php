@@ -45,6 +45,8 @@ class Eduemployee extends Base
             $edu = new EduemployeeModel();
             $param = input('post.');
             if(empty($param['id'])){
+                $param['owner'] = session('username');
+                $param['years'] = date("Y");
                 $flag = $edu->insertEdu($param);
             }else{
                 $flag = $edu->editEdu($param);
@@ -77,17 +79,18 @@ class Eduemployee extends Base
      */
     public function importExcel()
     {
-        $group_id = input('param.group_id');
-        if(empty($group_id)){
+        $pid = input('param.pid');
+        $zid = input('param.zid');
+        if(empty($pid) || empty($zid)){
             return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
         }
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/education');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/eduemployee');
         if($info){
             // 调用插件PHPExcel把excel文件导入数据库
             Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
             $exclePath = $info->getSaveName();  //获取文件名
-            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/education' . DS . $exclePath;   //上传文件的地址
+            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/eduemployee' . DS . $exclePath;   //上传文件的地址
             // 当文件后缀是xlsx 或者 csv 就会报：the filename xxx is not recognised as an OLE file错误
             $extension = get_extension($file_name);
             if ($extension =='xlsx') {
@@ -107,24 +110,41 @@ class Eduemployee extends Base
             }
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
             // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
-            $content_index = $edu_time_index = $address_index = $lecturer_index = $trainee_index = $num_index = -1;
+            $edu_name_index = $sex_index = $id_on_index = $job_index = $situation_index = $iphone_index = $approach_tiem_index = -1;
+            $content_index = $edu_time_index = $exam_performance_index = $exit_time_index = $remark_index = -1;
             foreach ($excel_array[0] as $k=>$v){
                 $str = preg_replace('/[ ]/', '', $v);
-                if ($str == '培训内容'){
+                if ($str == '姓名'){
+                    $edu_name_index = $k;
+                }else if ($str == '性别'){
+                    $sex_index = $k;
+                }else if ($str == '身份证号'){
+                    $id_on_index = $k;
+                }else if($str == '职务/工种'){
+                    $job_index = $k;
+                }else if($str == '持证情况'){
+                    $situation_index = $k;
+                }else if($str == '联系方式'){
+                    $iphone_index = $k;
+                }else if($str == '进场时间'){
+                    $approach_tiem_index = $k;
+                }else if($str == '培训内容'){
                     $content_index = $k;
-                }else if ($str == '培训时间'){
+                }else if($str == '培训时间'){
                     $edu_time_index = $k;
-                }else if ($str == '培训地点'){
-                    $address_index = $k;
-                }else if($str == '培训人'){
-                    $lecturer_index = $k;
-                }else if($str == '培训人员'){
-                    $trainee_index = $k;
-                }else if($str == '培训人数'){
-                    $num_index = $k;
+                }else if($str == '考试成绩'){
+                    $exam_performance_index = $k;
+                }else if($str == '退场时间'){
+                    $exit_time_index = $k;
+                }else if($str == '备注'){
+                    $remark_index = $k;
                 }
             }
-            if($content_index == -1 || $edu_time_index == -1 || $address_index == -1 || $lecturer_index == -1 || $trainee_index == -1 || $num_index == -1){
+            if($edu_name_index == -1 || $sex_index == -1 || $id_on_index == -1 || $job_index == -1 || $situation_index == -1 || $iphone_index == -1){
+                $json_data['code'] = 0;
+                $json_data['info'] = '文件内容格式不对';
+                return json($json_data);
+            }else if ($approach_tiem_index == -1 || $content_index == -1 || $edu_time_index == -1 || $exam_performance_index == -1 || $exit_time_index == -1 || $remark_index == -1){
                 $json_data['code'] = 0;
                 $json_data['info'] = '文件内容格式不对';
                 return json($json_data);
@@ -132,15 +152,27 @@ class Eduemployee extends Base
             $insertData = [];
             foreach($excel_array as $k=>$v){
                 if($k > 0){
+                    $insertData[$k]['edu_name'] = $v[$edu_name_index];
+                    $insertData[$k]['sex'] = $v[$sex_index];
+                    $insertData[$k]['id_on'] = $v[$id_on_index];
+                    $insertData[$k]['job'] = $v[$job_index];
+                    $insertData[$k]['situation'] = $v[$situation_index];
+                    $insertData[$k]['iphone'] = $v[$iphone_index];
+                    $insertData[$k]['approach_tiem'] = $v[$approach_tiem_index];
+                    $insertData[$k]['content'] = $v[$content_index];
                     $insertData[$k]['content'] = $v[$content_index];
                     $insertData[$k]['edu_time'] = $v[$edu_time_index];
-                    $insertData[$k]['address'] = $v[$address_index];
-                    $insertData[$k]['lecturer'] = $v[$lecturer_index];
-                    $insertData[$k]['trainee'] = $v[$trainee_index];
-                    $insertData[$k]['num'] = $v[$num_index];
-                    // 年度
-                    $insertData[$k]['years'] = date('Y-m-d H:i:s');
-                    $insertData[$k]['group_id'] = $group_id;
+                    $insertData[$k]['exam_performance'] = $v[$exam_performance_index];
+                    $insertData[$k]['exit_time'] = $v[$exit_time_index];
+                    $insertData[$k]['remark'] = $v[$remark_index];
+                    // 非表格数据
+                    $insertData[$k]['pid'] = $pid;
+                    $insertData[$k]['zid'] = $zid;
+                    $insertData[$k]['years'] = date('Y');
+                    $insertData[$k]['improt_time'] = date('Y-m-d H:i:s');
+                    $insertData[$k]['owner'] = session('username');
+                    $insertData[$k]['filename'] = $file->getInfo('name');
+                    $insertData[$k]['path'] = './uploads/safety/import/eduemployee/' . str_replace("\\","/",$exclePath);
                 }
             }
             $success = Db::name('safety_education')->insertAll($insertData);
@@ -212,6 +244,57 @@ class Eduemployee extends Base
         ob_end_clean();  //清除缓冲区,避免乱码
         header('Content-Type: application/vnd.ms-excel'); //文件类型
         header('Content-Disposition: attachment;filename="'.$name.'.xls"'); //文件名
+        header('Cache-Control: max-age=0');
+        header('Content-Type: text/html; charset=utf-8'); //编码
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003
+        $objWriter->save('php://output');
+        exit;
+    }
+
+    /**
+     * 导出模板
+     * @return \think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     * @author hutao
+     */
+    public function exportExcelTemplete()
+    {
+        if(request()->isAjax()){
+            return json(['code'=>1]);
+        }
+        $name = input('param.name');
+        $newName = '专题教育培训 - '.$name.date('Y-m-d H:i:s'); // 导出的文件名
+        header("Content-type:text/html;charset=utf-8");
+        Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+        //实例化
+        $objPHPExcel = new \PHPExcel();
+        /*右键属性所显示的信息*/
+        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
+        ->setLastModifiedBy("zxf")  //最后一次保存者
+        ->setTitle('数据EXCEL导出')  //标题
+        ->setSubject('数据EXCEL导出') //主题
+        ->setDescription('导出数据')  //描述
+        ->setKeywords("excel")   //标记
+        ->setCategory("result file");  //类别
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        // 设置表格第一行显示内容
+        $objPHPExcel->getActiveSheet()
+            ->setCellValue('A1', '序号')
+            ->setCellValue('B1', '培训内容')
+            ->setCellValue('C1', '培训时间')
+            ->setCellValue('D1', '培训地点')
+            ->setCellValue('E1', '培训人')
+            ->setCellValue('F1', '培训人员')
+            ->setCellValue('G1', '培训人数')
+            ->setCellValue('H1', '备注');
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        ob_end_clean();  //清除缓冲区,避免乱码
+        header('Content-Type: application/vnd.ms-excel'); //文件类型
+        header('Content-Disposition: attachment;filename="'.$newName.'.xls"'); //文件名
         header('Cache-Control: max-age=0');
         header('Content-Type: text/html; charset=utf-8'); //编码
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003

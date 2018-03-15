@@ -4,6 +4,7 @@ namespace app\safety\controller;
 use app\admin\controller\Base;
 use app\safety\model\EducationModel;
 use app\safety\model\ResponsibilityModel;
+use app\safety\model\RevisionrecordModel;
 use app\safety\model\RulesregulationsModel;
 use app\safety\model\SafetyGoalAnualModel;
 use app\safety\model\SafetyGoalGeneralModel;
@@ -16,6 +17,7 @@ use app\safety\model\EquipmentCheckAcceptModel;
 use app\safety\model\SafetySpecialEquipmentManagementModel;
 use app\safety\model\JobhealthGroupModel;
 use app\safety\model\AccidentreportModel;
+use think\Db;
 
 class Upload extends Base
 {
@@ -181,6 +183,7 @@ class Upload extends Base
     public function uploadSdi(){
         $sdi = new StatutestdiModel();
         $years = date('Y');
+        $id = request()->param('id');
         $group_id = request()->param('group_id');
         $number = request()->param('number');
         $sdi_name = request()->param('sdi_name');
@@ -220,6 +223,25 @@ class Upload extends Base
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $sdi->getOne($id);
+
+                // 当 存在替代标准 适用性评价 状态为 : 过期  时 新增一条 修编记录
+                if(!empty($standard) && $evaluation == -1){
+                    $pname = Db::name('safety_sdi_node')->where('id',$data_older['group_id'])->value('pname');
+                    $record = new RevisionrecordModel();
+                    $re_data = [
+                        'record_name' => $data_older['sdi_name'],
+                        'original_number' => $data_older['number'],
+                        'replace_number' => $standard,
+                        'replace_time' => date("Y-m-d H:i:s"),
+                        'owner' => session('username'),
+                        'record_type' => '法规标准识别'.$pname
+                    ];
+                    $re_flag = $record->insertRecord($re_data);
+                    if($re_flag['code'] == '-1'){
+                        return json($re_flag);
+                    }
+                }
+
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
@@ -253,6 +275,7 @@ class Upload extends Base
     public function uploadRules(){
         $rules = new RulesregulationsModel();
         $years = date('Y');
+        $id = request()->param('id');
         $group_id = request()->param('group_id');
         $number = request()->param('number');
         $rul_name = request()->param('rul_name');
@@ -288,6 +311,24 @@ class Upload extends Base
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $rules->getOne($id);
+                // 当 存在替代标准 适用性评价 状态为 : 过期  时 新增一条 修编记录
+                if(!empty($standard) && $evaluation == '过期'){
+                    $pname = Db::name('safety_sdi_node')->where('id',$data_older['group_id'])->value('pname');
+                    $record = new RevisionrecordModel();
+                    $re_data = [
+                        'record_name' => $data_older['rul_name'],
+                        'original_number' => $data_older['number'],
+                        'replace_number' => $standard,
+                        'replace_time' => date("Y-m-d H:i:s"),
+                        'owner' => session('username'),
+                        'record_type' => '规章制度'.$pname
+                    ];
+                    $re_flag = $record->insertRecord($re_data);
+                    if($re_flag['code'] == '-1'){
+                        return json($re_flag);
+                    }
+                }
+
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,

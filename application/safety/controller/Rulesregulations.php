@@ -106,17 +106,19 @@ class Rulesregulations extends Base
         $param = $rules->getOne($id);
         $filePath = $param['path'];
         $fileName = $param['rul_name'] . '.' . substr(strrchr($filePath, '.'), 1);
-        $file = fopen($filePath, "r"); // 打开文件
-        // 输入文件标签
-        $fileName = iconv("utf-8","gb2312",$fileName);
-        Header("Content-type:application/octet-stream ");
-        Header("Accept-Ranges:bytes ");
-        Header("Accept-Length:   " . filesize($filePath));
-        Header("Content-Disposition:   attachment;   filename= " . $fileName);
-        // 输出文件内容
-        echo fread($file, filesize($filePath));
-        fclose($file);
-        exit;
+        if(file_exists($filePath)){
+            $file = fopen($filePath, "r"); // 打开文件
+            // 输入文件标签
+            $fileName = iconv("utf-8","gb2312",$fileName);
+            Header("Content-type:application/octet-stream ");
+            Header("Accept-Ranges:bytes ");
+            Header("Accept-Length:   " . filesize($filePath));
+            Header("Content-Disposition:   attachment;   filename= " . $fileName);
+            // 输出文件内容
+            echo fread($file, filesize($filePath));
+            fclose($file);
+            exit;
+        }
     }
 
     /**
