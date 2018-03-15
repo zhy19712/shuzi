@@ -13,7 +13,7 @@ use think\Model;
 
 class JobhealthGroupModel extends Model
 {
-    protected $name = 'think_safety_jobhealth_check';
+    protected $name = 'safety_jobhealth_check';
 
     /*
      * 查询预览单条记录
