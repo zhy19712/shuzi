@@ -263,9 +263,6 @@ class Statutestdi extends Base
     public function importExcel()
     {
         $group_id = input('param.group_id');
-        if(empty($group_id)){
-            return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
-        }
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/statutestdi');
         if($info){
@@ -273,9 +270,6 @@ class Statutestdi extends Base
             Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
             $exclePath = $info->getSaveName();  //获取文件名
             $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/statutestdi' . DS . $exclePath;   //上传文件的地址
-//            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
-//            $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');  //加载文件内容,编码utf-8
-
             // 当文件后缀是xlsx 或者 csv 就会报：the filename xxx is not recognised as an OLE file错误
             $extension = get_extension($file_name);
             if ($extension =='xlsx') {
