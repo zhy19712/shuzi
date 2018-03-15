@@ -10,6 +10,9 @@
 <body>
     <style>
         .mycontent{
+            margin: 0 10px;
+            padding-top: 20px;
+            padding-right: 10px;
             width: 20%;
             height: 98%;
             display: inline-block;
@@ -18,10 +21,10 @@
             border-right: 1px solid #ccc;
         }
         .mycontent h2{
-            padding: 10px 0;
             margin: 0;
             text-align: center;
-            font-size: 16px;
+            line-height: 30px;
+            font-size: 13px;
             border-bottom: 1px solid #ccc;
             background: #19aa8d;
             color: #FFF;
@@ -46,7 +49,7 @@
             font-size: 20px;
             border-bottom: 1px solid #ccc;
         }
-        #import,#export,#seach,#exportExcel,#add{
+        /*#import,#export,#seach,#exportExcel,#add{
             float: right;
             display: inline-block;
             margin: 10px 5px 10px;
@@ -58,8 +61,19 @@
             background: #00b7ee;
             color: #FFF;
             cursor: pointer;
+        }*/
+        #import,#export,#seach,#exportExcel,.add{
+            float: right;
+            display: inline-block;
+            margin: 10px 5px 10px;
         }
-        #add{
+        #import,#export,#exportExcel,.add{
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: 1px solid #1ab394;
+            cursor: pointer;
+        }
+        .add{
             float: none;
         }
         #tableItem .btn{
@@ -94,6 +108,12 @@
         }
         #rulesDesc{
             border: 1px solid #e5e6e7;
+        }
+        .form-control{
+            border-color: #ccc;
+        }
+        #rulesDesc{
+            border: 1px solid #ccc;
         }
     </style>
     <div id="mycontent" class="mycontent">
@@ -574,7 +594,7 @@
         $('.departureDate').jeDate();
 
         //请求树子节点
-        var childNodes = [];
+        /*var childNodes = [];
         function getChildNode() {
             $.ajax({
                 url: "{:url('edupeople/getSegment')}",
@@ -589,9 +609,16 @@
                 }
             });
         }
-        getChildNode();
+        getChildNode();*/
         //左侧菜单
         var setting = {
+            async: {
+                enable : true,
+                autoParam: ["pId"],
+                type : "post",
+                url : "{:url('edupeople/getSegment')}",
+                dataType :"json"
+            },
             data:{
                 simpleData : {
                     enable:true,
@@ -603,16 +630,17 @@
                 onClick: zTreeOnClick,
             }
         };
-        var node = [
+        /*var node = [
             {id:1,pid:0,name: "主要负责人和安全管理人员",children:childNodes},
             {id:2,pid:0,name: "从业人员",children:childNodes},
-            {id:3,pid:0,name: "外来人员",children:childNodes}
-        ]
+            {id:3,pid:0,name: "外来人员"}
+        ]*/
 
+        zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null).expandAll(true);
         //TODO 应该有更好的方式实现
-        setTimeout(function () {
-            zTreeObj = $.fn.zTree.init($("#tree_container"), setting,node).expandAll(true);
-        },200);
+        /*setTimeout(function () {
+            zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null).expandAll(true);
+        },200);*/
 
         /**
          *  右侧表格
@@ -625,7 +653,7 @@
             ajax: {
                 "url": "__SCRIPT__/safety_statutesdi.php"
             },
-            dom: 'lf<"#exportExcel"><"#export"><"#import"><"#add">rtip',
+            dom: 'lf<"#exportExcel.exportExcel btn-outline btn-primary"><"#export.export btn-outline btn-primary"><"#manageAdd.add btn-outline btn-primary">rtip',
             columnDefs: [
                 {
                     "searchable": false,
@@ -659,7 +687,7 @@
             ajax: {
                 "url": "__SCRIPT__/safety_statutesdi.php"
             },
-            dom: 'lf<"#exportExcel"><"#export"><"#import"><"#add">rtip',
+            dom: 'lf<"#exportExcel.exportExcel btn-outline btn-primary"><"#export.export btn-outline btn-primary"><"#practAdd.add btn-outline btn-primary">rtip',
             columnDefs: [
                 {
                     "searchable": false,
@@ -693,7 +721,7 @@
             ajax: {
                 "url": "__SCRIPT__/safety_statutesdi.php"
             },
-            dom: 'lf<"#exportExcel"><"#export"><"#add">rtip',
+            dom: 'lf<"#exportExcel.exportExcel btn-outline btn-primary"><"#export.export btn-outline btn-primary"><"#foreignAdd.add btn-outline btn-primary">rtip',
             columnDefs: [
                 {
                     "searchable": false,
@@ -719,7 +747,9 @@
                 }
             }
         });
-        $("div#add").html('新增');
+        $("div#manageAdd").html('新增');
+        $("div#practAdd").html('新增');
+        $("div#foreignAdd").html('新增');
         $('div#import').html('导入');
         $('div#export').html('导出');
         $('div#exportExcel').html('导出Excel模板');
@@ -742,34 +772,21 @@
             }
             console.log(treeNode);
 
-            mytree_node = treeNode;
-            groupid = treeNode.id;
-            $('input[type="hidden"][name="groupId"]').val(groupid);
+            $('input[type="hidden"][name="groupId"]').val(treeNode.id);
             if(treeNode.level){
-                $("#mytable1_wrapper").css("display","block");
-                //tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php?pid=" + groupid).load();
+                manageTableItem.ajax.url("__SCRIPT__/safety_edupeople.php?pid=" + treeNode.id).load();
             }else {
-                $("#mytable1_wrapper").css("display","none");
             }
-
-            //获取路径
-            $.ajax({
-                url: "./getParents",
-                type: "post",
-                data: {id:groupid},
-                dataType: "json",
-                success: function (res) {
-                    if(res.msg === "success"){
-                        $("#path").text("当前路径:" + res.path)
-                    }
-                }
-            })
-
-
         };
 
         //新增
-        $('#add').click(function () {
+        $('#manageAdd').click(function () {
+            $('#manage_addRules_modal').modal('show');
+        });
+        $('#practAdd').click(function () {
+            $('#pract_addRules_modal').modal('show');
+        });
+        $('#foreignAdd').click(function () {
             $('#foreign_addRules_modal').modal('show');
         });
 
