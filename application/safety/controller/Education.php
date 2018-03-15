@@ -164,6 +164,7 @@ class Education extends Base
     {
         $pid = input('param.pid');
         $zid = input('param.zid');
+
         if(empty($pid) || empty($zid)){
             return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
         }
