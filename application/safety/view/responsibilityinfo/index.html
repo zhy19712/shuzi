@@ -177,7 +177,6 @@
             });
 
             uploader.on( 'fileQueued', function( file ) {
-                name2 = file.name;
                 $("#file_per").append('<div id="' + file.id + '" class="item">' +
                     '</div>');
                 $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
@@ -197,7 +196,7 @@
                 console.log("remove");
             });
             uploader.on("uploadStart",function () {
-                uploader.options.formData.aid = $("#id").val();
+                uploader.options.formData.aid = $("#aid").val();
                 uploader.options.formData.remark = $("#remark").val();
             });
             uploader.on('beforeFileQueued', function (file) {
@@ -264,8 +263,10 @@
         $("#"+id).remove();
     }
 
-    //安全文化-编辑
+    //安全生产信息化建设-编辑
     function edit1(that) {
+        uploader = null;
+        upload();
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         $.ajax({
             url: "./index",
@@ -293,7 +294,7 @@
         })
     }
 
-    //安全文化-下载
+    //安全生产信息化建设-下载
     function download1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         download(id,"./infoDownload");
@@ -305,22 +306,24 @@
             if(!$("#aid").val()){
                 uploader.upload();
             }else {
-                if(name1 !== $("#remark").val() || name2 !== $(".info").html()){
+                if(name2 !== $(".info").html()){
+                    uploader.upload();
+                }else if(name1 !== $("#remark").val()){
                     $.ajax({
-                        url: "./infoEdit",
-                        type: "post",
-                        data: {aid:$("#aid").val(),remark:$("#remark").val()},
-                        datatype: "json",
-                        success: function (res) {
-                            if(res.code === 1){
-                                layer.msg(res.msg);
-                                table.ajax.url("__SCRIPT__/safety_responsibilityinfo.php").load();
-                                $("#fname").modal('hide');
-                            }else {
-                                layer.msg(res.msg);
-                            }
+                    url: "./infoEdit",
+                    type: "post",
+                    data: {aid:$("#aid").val(),remark:$("#remark").val()},
+                    datatype: "json",
+                    success: function (res) {
+                        if(res.code === 1){
+                            layer.msg(res.msg);
+                            table.ajax.url("__SCRIPT__/safety_responsibilityinfo.php").load();
+                            $("#fname").modal('hide');
+                        }else {
+                            layer.msg(res.msg);
                         }
-                    })
+                    }
+                });
                 }else {
                     layer.msg("未发生更改");
                     $("#fname").modal('hide');
@@ -329,10 +332,10 @@
         }else {
             alert("请选择上传文件");
         }
-    })
+    });
 
 
-    //安全文化表格
+    //安全生产信息化建设表格
     var table = $("#info_table").DataTable({
         "processing": true,//是否显示处理状态
         "serverSide":true,//是否开启服务器模式

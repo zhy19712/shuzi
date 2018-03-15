@@ -1,5 +1,5 @@
-﻿<?php
-
+<?php
+//安全生产信息化建设
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
@@ -19,8 +19,8 @@ include('../conn.php');
  * Easy set variables
  */
 
-// DB table to use 人员教育培训
-$table = 'think_safety_edupeople';
+// DB table to use
+$table = 'think_safety_accident_file';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -31,15 +31,18 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'edu_name',  'dt' => 1 ),
-    array( 'db' => 'job',  'dt' => 2 ),
-    array( 'db' => 'certificate_name',  'dt' => 3 ),
-    array( 'db' => 'certificate_number',  'dt' => 4 ),
-    array( 'db' => 'availability_date',  'dt' => 5 ),
-    array( 'db' => 'vld',  'dt' => 6 ),
-    array( 'db' => 'training_mode',  'dt' => 7 ),
-    array( 'db' => 'training_time',  'dt' => 8 ),
-    array( 'db' => 'remark',  'dt' => 9)
+    array( 'db' => 'accident_name',  'dt' => 1 ),
+    array( 'db' => 'accident_time',  'dt' => 2 ),
+    array( 'db' => 'accident_place',  'dt' => 3 ),
+    array( 'db' => 'accident_type',  'dt' => 4 ),
+    array( 'db' => 'accident_level',  'dt' => 5 ),
+    array( 'db' => 'death_toll',  'dt' => 6 ),
+    array( 'db' => 'injure',  'dt' => 7 ),
+    array( 'db' => 'light_injure',  'dt' => 8 ),
+    array( 'db' => 'economic_loss',  'dt' => 9 ),
+    array( 'db' => 'accident_unit',  'dt' => 10 ),
+    array( 'db' => 'accident_result',  'dt' => 11 ),
+    array( 'db' => 'remark',  'dt' => 12 )
 );
 
 
@@ -56,24 +59,10 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
  */
 
 require( '../ssp.class.php' );
-
-//echo json_encode(
-//    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
-//);
-
-if(!empty($_GET["pid"]))
-{
-    $pid = $_GET["pid"];
-    $zid = $_GET["zid"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "pid = '$pid' and zid = '$zid'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
     );
-}
-else{
-    echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "group_id = 'empty'" )
-    );
-}
+
 
 
 

@@ -141,6 +141,7 @@
                         <table id="table5" width="100%" class="table table-striped table-bordered ">
                             <thead>
                             <tr>
+                                <th>全选<input type="checkbox" class="checkall"/></th>
                                 <th>序号</th>
                                 <th>通行证编号</th>
                                 <th>所属单位</th>
@@ -153,7 +154,6 @@
                                 <th>车辆状态</th>
                                 <th>备注</th>
                                 <th>操作</th>
-                                <th>全选<input type="checkbox" class="checkall"/></th>
                             </tr>
                             </thead>
                         </table>
@@ -176,6 +176,7 @@
                                 <table id="table6" width="100%" class="table table-striped table-bordered ">
                                     <thead>
                                     <tr>
+                                        <th>全选<input type="checkbox" class="checkall"/></th>
                                         <th>序号</th>
                                         <th>工器具名称</th>
                                         <th>规格型号</th>
@@ -188,7 +189,6 @@
                                         <th>使用位置</th>
                                         <th>备注</th>
                                         <th>操作</th>
-                                        <th>全选<input type="checkbox" class="checkall"/></th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -204,6 +204,7 @@
                                 <table id="table7" width="100%" class="table table-striped table-bordered ">
                                     <thead>
                                     <tr>
+                                        <th>全选<input type="checkbox" class="checkall"/></th>
                                         <th>序号</th>
                                         <th>工器具名称</th>
                                         <th>规格型号</th>
@@ -216,7 +217,6 @@
                                         <th>使用位置</th>
                                         <th>备注</th>
                                         <th>操作</th>
-                                        <th>全选<input type="checkbox" class="checkall"/></th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -232,6 +232,7 @@
                                 <table id="table8" width="100%" class="table table-striped table-bordered ">
                                     <thead>
                                     <tr>
+                                        <th>全选<input type="checkbox" class="checkall"/></th>
                                         <th>序号</th>
                                         <th>工器具名称</th>
                                         <th>规格型号</th>
@@ -244,7 +245,6 @@
                                         <th>使用位置</th>
                                         <th>备注</th>
                                         <th>操作</th>
-                                        <th>全选<input type="checkbox" class="checkall"/></th>
                                     </tr>
                                     </thead>
                                 </table>
@@ -760,6 +760,7 @@
 
 <script type="text/javascript">
     //
+    $("thead tr th:first-child").unbind();
     // var curMenu = null, zTree_Menu = null;
     //组织结构
     var zTreeObj;
@@ -1510,15 +1511,16 @@
         "serverSide":true,//是否开启服务器模式
         "ajax":{
             "url": "__SCRIPT__/safety_special_equipment_management.php",
-            "dataSrc":function (json) {
-                var dataset = new Array();
-                dataset = json.data;
-                var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
-                for(var i = 0; i<dataset.length;i++){
-                    dataset[i].unshift(html)
-                }
-                return dataset;
-            }
+            // "dataSrc":function (json) {
+            //     //后台数据来过来处理 unshift一项
+            //     var dataset = new Array();
+            //     dataset = json.data;
+            //     var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
+            //     for(var i = 0; i<dataset.length;i++){
+            //         dataset[i].unshift(html)
+            //     }
+            //     return dataset;
+            // }
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear3">frtip',
         "columnDefs":[ //设置列定义初始化属性
@@ -1538,11 +1540,18 @@
                 "render":function (data,type,row) {
                     var state;
                     if(!row[13]){
-                        state = row[11];
+                        state = row[12];
                     }else{
-                        state = getNowFormatDate()<=row[13]?"正常":"过期";
+                        state = getNowFormatDate()<=row[12]?"正常":"过期";
                     }
                     var html = "<div>"+state+"</div>";
+                    return  html;
+                }
+            },
+            {
+                "targets":[0],
+                "render":function (data,type,row) {
+                    var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
                     return  html;
                 }
             }
@@ -1560,7 +1569,7 @@
             }
         }
     });
-
+    //阻止表第一项点击事件
     $("thead tr th:first-child").click(function () {
             $("thead tr th:first-child").unbind();
     });
@@ -2172,6 +2181,7 @@
     //交通车辆-表格
     var dataset = [
         [
+            "",
             "1",
             "1",
             "1",
@@ -2207,7 +2217,7 @@
             {
                 "searchable":false,  //禁止搜索
                 "orderable":false,   //禁止排序
-                "targets":[11],         //指定第六列
+                "targets":[12],         //指定第六列
                 "render": function (data,type,row) {
                     var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit5(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='show5(this)' value='预览'/>" ;
@@ -2228,15 +2238,6 @@
             //         return  html;
             //     }
             // },
-            {
-                "searchable":false,  //禁止搜索
-                "orderable":false,   //禁止排序
-                "targets":[12],
-                "render":function (data,type,row) {
-                    var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
-                    return  html;
-                }
-            }
 
         ],
         "language": {
@@ -2384,6 +2385,7 @@
             1,
             1,
             1,
+            1,
             1
         ]
     ];
@@ -2393,7 +2395,16 @@
         "processing": true,//是否显示处理状态
         // "serverSide":true,//是否开启服务器模式
         // "ajax":{
-        //     "url": "__SCRIPT__/safety_special_equipment_management.php"
+        //     "url": "__SCRIPT__/safety_special_equipment_management.php",
+        //      "dataSrc":function (json) {
+            //         var dataset = new Array();
+            //         dataset = json.data;
+            //         var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
+            //         for(var i = 0; i<dataset.length;i++){
+            //             dataset[i].unshift(html)
+            //         }
+            //         return dataset;
+            //     }
         // },
         "data":dataset1,
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear6">frtip',
@@ -2401,7 +2412,7 @@
             {
                 "searchable":false,  //禁止搜索
                 "orderable":false,   //禁止排序
-                "targets":[11],         //指定第六列
+                "targets":[12],         //指定第六列
                 "render": function (data,type,row) {
                     var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit6(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='show7(this)' value='预览'/>" ;
@@ -2409,15 +2420,15 @@
                     return html;
                 }
             },
-            {
-                "searchable":false,  //禁止搜索
-                "orderable":false,   //禁止排序
-                "targets":[12],
-                "render":function (data,type,row) {
-                    var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
-                    return  html;
-                }
-            }
+            // {
+            //     "searchable":false,  //禁止搜索
+            //     "orderable":false,   //禁止排序
+            //     "targets":[12],
+            //     "render":function (data,type,row) {
+            //         var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
+            //         return  html;
+            //     }
+            // }
 
         ],
         "language": {
@@ -2439,7 +2450,16 @@
         "processing": true,//是否显示处理状态
         // "serverSide":true,//是否开启服务器模式
         // "ajax":{
-        //     "url": "__SCRIPT__/safety_special_equipment_management.php"
+        //     "url": "__SCRIPT__/safety_special_equipment_management.php",
+        // "dataSrc":function (json) {
+        //         var dataset = new Array();
+        //         dataset = json.data;
+        //         var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
+        //         for(var i = 0; i<dataset.length;i++){
+        //             dataset[i].unshift(html)
+        //         }
+        //         return dataset;
+        //     }
         // },
         "data":dataset1,
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear7">frtip',
@@ -2447,7 +2467,7 @@
             {
                 "searchable":false,  //禁止搜索
                 "orderable":false,   //禁止排序
-                "targets":[11],         //指定第六列
+                "targets":[12],         //指定第六列
                 "render": function (data,type,row) {
                     var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit7(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='show6(this)' value='预览'/>" ;
@@ -2455,15 +2475,15 @@
                     return html;
                 }
             },
-            {
-                "searchable":false,  //禁止搜索
-                "orderable":false,   //禁止排序
-                "targets":[12],
-                "render":function (data,type,row) {
-                    var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
-                    return  html;
-                }
-            }
+            // {
+            //     "searchable":false,  //禁止搜索
+            //     "orderable":false,   //禁止排序
+            //     "targets":[12],
+            //     "render":function (data,type,row) {
+            //         var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
+            //         return  html;
+            //     }
+            // }
 
         ],
         "language": {
@@ -2485,7 +2505,16 @@
         "processing": true,//是否显示处理状态
         // "serverSide":true,//是否开启服务器模式
         // "ajax":{
-        //     "url": "__SCRIPT__/safety_special_equipment_management.php"
+        //     "url": "__SCRIPT__/safety_special_equipment_management.php",
+        // "dataSrc":function (json) {
+        //         var dataset = new Array();
+        //         dataset = json.data;
+        //         var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
+        //         for(var i = 0; i<dataset.length;i++){
+        //             dataset[i].unshift(html)
+        //         }
+        //         return dataset;
+        //     }
         // },
         "data":dataset1,
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear8">frtip',
@@ -2493,7 +2522,7 @@
             {
                 "searchable":false,  //禁止搜索
                 "orderable":false,   //禁止排序
-                "targets":[11],         //指定第六列
+                "targets":[12],         //指定列
                 "render": function (data,type,row) {
                     var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit8(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='show8(this)' value='预览'/>" ;
@@ -2501,15 +2530,15 @@
                     return html;
                 }
             },
-            {
-                "searchable":false,  //禁止搜索
-                "orderable":false,   //禁止排序
-                "targets":[12],
-                "render":function (data,type,row) {
-                    var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
-                    return  html;
-                }
-            }
+            // {
+            //     "searchable":false,  //禁止搜索
+            //     "orderable":false,   //禁止排序
+            //     "targets":[13],
+            //     "render":function (data,type,row) {
+            //         var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
+            //         return  html;
+            //     }
+            // }
 
         ],
         "language": {
