@@ -9,6 +9,7 @@
 namespace app\safety\model;
 use think\exception\PDOException;
 use think\Model;
+
 class SafetyResponsibilitycultureModel extends Model
 {
     protected $name = 'safety_responsibilityculture';
