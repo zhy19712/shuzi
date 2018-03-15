@@ -10,6 +10,7 @@ namespace app\safety\model;
 
 use think\exception\PDOException;
 use think\Model;
+use think\Db;
 
 class SafetySpecialEquipmentManagementModel extends Model
 {
@@ -25,12 +26,32 @@ class SafetySpecialEquipmentManagementModel extends Model
             if(false === $result){
                 return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
             }else{
-                return ['code' => 1, 'data' => '', 'msg' => '添加成功'];
+                $id = $this->getLastInsID();
+                return ['code' => 1, 'id' => $id,'data' => '', 'msg' => '添加成功'];
             }
         }catch( PDOException $e){
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
+
+    /*
+     * 添加新的特种设备管理文件上传图片
+    */
+    public function insertSpecialEquipmentManagePic($param)
+    {
+        try{
+            $result = Db::name('safety_special_equipment_manage_pic')->allowField(true)->save($param);
+            if(false === $result){
+                return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
+            }else{
+                return ['code' => 1,'data' => '', 'msg' => '添加成功'];
+            }
+        }catch( PDOException $e){
+            return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
+        }
+    }
+
+
 
     /*
      * 编辑特种设备管理文件
@@ -50,12 +71,54 @@ class SafetySpecialEquipmentManagementModel extends Model
     }
 
     /*
+     * 编辑特种设备管理文件上传图片
+    */
+    public function editSpecialEquipmentManagementPic($param)
+    {
+        try{
+            //查询之前上传的图片是否存在
+            $state = Db::name('safety_special_equipment_manage_pic')->where('pid',$param['pid'])->find();
+            if($state)
+            {
+                //编辑之前先把原来的图片删除
+
+                $result_pic = Db::name('safety_special_equipment_manage_pic')->where('pid', $param['pid'])->delete();
+                if($result_pic)
+                {
+                    $path = $state['path'];
+                    if(file_exists($path)){
+                        unlink($path); //删除已经上传的图片
+                    }
+                }
+
+            }
+
+            $result =  Db::name('safety_special_equipment_manage_pic')->allowField(true)->save($param, ['uid' => $param['id']]);
+
+            if(false === $result){
+                return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
+            }else{
+                return ['code' => 1, 'data' => '', 'msg' => '编辑成功'];
+            }
+        }catch( PDOException $e){
+            return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
+        }
+    }
+
+    /*
      * 删除特种设备管理文件
     */
     public function delSpecialEquipmentManagement($id)
     {
         try{
             $this->where('id', $id)->delete();
+            //删除上传图片表中的图片记录
+            Db::name('safety_special_equipment_manage_pic')->where('uid',$id)->delete();
+            $picture_data = Db::name('safety_special_equipment_manage_pic')->field("path")->where('uid',$id)->select();
+            foreach((array)$picture_data as $k=>$v)
+            {
+                unlink($v['path']); //删除文件
+            }
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
 
         }catch( PDOException $e){
@@ -64,7 +127,7 @@ class SafetySpecialEquipmentManagementModel extends Model
     }
 
     /*
-     * 获取一条特种设备管理文件
+     * 获取一条特种设备管理文件,获取特种设备文件对应的图片
     */
     /**
      * @param $id
@@ -75,8 +138,12 @@ class SafetySpecialEquipmentManagementModel extends Model
      */
     public function getOne($id)
     {
+        $picture = Db::name('safety_special_equipment_manage_pic') ->field("pid,uid,picture_name,path")->where('id',$id)->select();
 
-        return $this->where('id', $id)->find();
+        $equip = $this->where('id', $id)->find();
+
+        return ['equip' => $equip, 'picture' => $picture];
+
 
     }
 
