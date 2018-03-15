@@ -43,7 +43,7 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
     array( 'db' => 'equip_state',  'dt' => 11 ),//设备状态
     array( 'db' => 'remark',  'dt' => 12 ),//备注
 
-    array( 'db' => 'safety_inspecte_certificate_time',  'dt' => 12 )//备用，安全检验合格证书有效截止日期
+    array( 'db' => 'safety_inspecte_certificate_time',  'dt' => 13 )//备用，安全检验合格证书有效截止日期
 );
 
 
