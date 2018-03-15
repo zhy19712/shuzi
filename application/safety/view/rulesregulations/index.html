@@ -208,14 +208,14 @@
                     <input type="text" name="uid" id="id1" style="display: none;" value="">
                     <div class="ibox-content">
                         <!--新增用户信息开始-->
-                        <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
+                        <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post"  action="#" onsubmit="return false">
                             <input type="text" name="id" id="rulesid" style="display: none;">
                             <input type="text" name="group_id" id="pgroup_id" style="display: none;">
                             <div class="form-group">
                                 <div class="col-lg-12 col-xs-12">
                                     <label class="col-xs-2 col-sm-2 control-label">标准号：</label>
                                     <div class="myblock col-xs-10 col-sm-10 input-group">
-                                        <input id="standardNumr" type="text" class="form-control" name="standardNumr" >
+                                        <input id="standardNumr" type="text" class="form-control" name="standardNumr"  required="required" placeholder="此处为必填项">
                                     </div>
                                 </div>
                             </div>
