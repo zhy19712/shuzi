@@ -121,6 +121,10 @@
         table.dataTable tbody tr.selected{
             background: none;
         }
+        table.dataTable thead label{
+            margin-bottom: 0;
+            font-weight: normal;
+        }
     </style>
     <div id="mycontent" class="mycontent">
         <h2>人员教育培训</h2>
@@ -138,7 +142,10 @@
                             <table id="manageTableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
                                 <thead>
                                 <tr>
-                                    <th>全选</th>
+                                    <th>
+                                        <label for="manage_all_checked" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
+                                        <input type='checkbox' name='all_checked' id="manage_all_checked" class='icheckbox_minimal' value=''>
+                                    </th>
                                     <th>序号</th>
                                     <th>姓名</th>
                                     <th>职务</th>
@@ -156,7 +163,10 @@
                             <table id="practTableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
                                 <thead>
                                 <tr>
-                                    <th>全选</th>
+                                    <th>
+                                        <label for="pract_all_checked" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
+                                        <input type='checkbox' name='all_checked' id="pract_all_checked" class='icheckbox_minimal' value=''>
+                                    </th>
                                     <th>序号</th>
                                     <th>姓名</th>
                                     <th>性别</th>
@@ -177,7 +187,10 @@
                             <table id="foreignTableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
                                 <thead>
                                 <tr>
-                                    <th>全选</th>
+                                    <th>
+                                        <label for="foreign_all_checked" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
+                                        <input type='checkbox' name='all_checked' id="foreign_all_checked" class='icheckbox_minimal' value=''>
+                                    </th>
                                     <th>序号</th>
                                     <th>姓名</th>
                                     <th>性别</th>
@@ -645,6 +658,15 @@
             dom: 'lf<"#exportExcel.exportExcel btn-outline btn-primary"><"#export.export btn-outline btn-primary"><"#manageAdd.add btn-outline btn-primary">rtip',
             columnDefs: [
                 {
+                    searchable: false,
+                    targets:0,
+                    data:null,
+                    render:function () {
+                        var ipt = "<input type='checkbox' name='checkList' onclick='getSelectId(this)'>";
+                        return ipt;
+                    }
+                },
+                {
                     "searchable": false,
                     "orderable": false,
                     "targets": [11],
@@ -678,6 +700,15 @@
             },
             dom: 'lf<"#exportExcel.exportExcel btn-outline btn-primary"><"#export.export btn-outline btn-primary"><"#practAdd.add btn-outline btn-primary">rtip',
             columnDefs: [
+                {
+                    searchable: false,
+                    targets:0,
+                    data:null,
+                    render:function () {
+                        var ipt = "<input type='checkbox' name='checkList' onclick='getSelectId(this)'>";
+                        return ipt;
+                    }
+                },
                 {
                     "searchable": false,
                     "orderable": false,
@@ -713,6 +744,15 @@
             dom: 'lf<"#exportExcel.exportExcel btn-outline btn-primary"><"#export.export btn-outline btn-primary"><"#foreignAdd.add btn-outline btn-primary">rtip',
             columnDefs: [
                 {
+                    searchable: false,
+                    targets:0,
+                    data:null,
+                    render:function () {
+                        var ipt = "<input type='checkbox' name='checkList' onclick='getSelectId(this)'>";
+                        return ipt;
+                    }
+                },
+                {
                     "searchable": false,
                     "orderable": false,
                     "targets": [11],
@@ -742,6 +782,9 @@
         $('div#import').html('导入');
         $('div#export').html('导出');
         $('div#exportExcel').html('导出Excel模板');
+
+        //禁止全选排序
+        $("thead tr th:first-child").unbind();
 
         //根据左侧树节点显隐对于表格
         function isHidden(e) {

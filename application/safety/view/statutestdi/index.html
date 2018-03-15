@@ -156,6 +156,10 @@
     table.dataTable tbody tr.selected{
         background: none;
     }
+    table.dataTable thead label{
+        margin-bottom: 0;
+        font-weight: normal;
+    }
 </style>
 
 <div id="mycontent" class="mycontent">
@@ -579,6 +583,7 @@
     $('div#import').html('导入');
     $('div#export').html('导出');
 
+    //禁止全选排序
     $("thead tr th:first-child").unbind();
 
     //上传弹层
@@ -1067,7 +1072,7 @@
     var idArr = [];
     function getId(that) {
         var isChecked = $(that).prop('checked');
-        var id = $(that).parents('tr').find('td:eq(0)').text();
+        var id = $(that).parents('tr').find('td:eq(1)').text();
         if(isChecked){
             idArr.push(id);
             idArr.removalArray();
