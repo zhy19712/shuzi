@@ -74,8 +74,10 @@
         <table id="tableItem" class="table table-striped" cellspacing="0"  width="100%">
             <thead>
             <tr>
-                <th>全选</th>
                 <th>序号</th>
+                <th>全选
+                    <input type='checkbox' name='all_checked' id="all_checked" class='icheckbox_minimal' value=''>
+                </th>
                 <th>文件名称</th>
                 <th>原有版本号</th>
                 <th>替换版本号</th>
@@ -109,6 +111,16 @@
         dom: '<"myl"l>f<"export btn btn-outline btn-primary">rtip',
         columnDefs: [
             {
+                searchable: false,
+                targets:1,
+                orderable: false,
+                data:null,
+                render:function () {
+                    var ipt = "<input type='checkbox' name='checkList' onclick='getSelectId(this)'>";
+                    return ipt;
+                }
+            },
+            {
                 "searchable": false,
                 "orderable": false,
                 "targets": [8],
@@ -118,11 +130,6 @@
                     return html;
                 }
             },
-            {
-                targets:0,
-                //orderable: false,
-                defaultContent:"<input type ='checkbox' name='checkboxAll' class='icheckbox_minimal' value='' onclick='getSelectId(this)'>",
-            }
         ],
         language: {
             "lengthMenu": "每页 _MENU_ 条记录",
@@ -167,7 +174,7 @@
 
     //删除数据
     function del(that){
-        var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
+        var id = $(that).parent("td").parent("tr").children("td:eq('0')").text();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
                 url: "{:url('Revisionrecord/recordDel')}",
@@ -215,7 +222,7 @@
     var idArr = [];
     function getId(that) {
         var isChecked = $(that).prop('checked');
-        var id = $(that).parents('tr').find('td:eq(1)').text();
+        var id = $(that).parents('tr').find('td:eq(0)').text();
         if(isChecked){
             idArr.push(id);
             idArr.removalArray();
@@ -230,6 +237,24 @@
         getId(that);
         console.log(idArr);
     }
+
+    //checkbox全选
+    $("#all_checked").on("click", function () {
+        if ($(this).prop("checked") === true) {
+            $("input[name='checkList']").prop("checked", $(this).prop("checked"));
+            $('#tableItem tbody tr').addClass('selected');
+            $('input[name="checkList"]').each(function(){
+                getId(this);
+            });
+        } else {
+            $("input[name='checkList']").prop("checked", false);
+            $('#tableItem tbody tr').removeClass('selected');
+            $('input[name="checkList"]').each(function(){
+                getId(this);
+            });
+        }
+        console.log(idArr);
+    });
 
     //导出
     $('.export').click(function(){

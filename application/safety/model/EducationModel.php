@@ -25,7 +25,7 @@ class EducationModel extends Model
             }else{
                 return ['code' => 1, 'data' => '', 'msg' => '添加成功'];
             }
-        }catch( PDOException $e){
+        }catch(PDOException $e){
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
@@ -48,17 +48,25 @@ class EducationModel extends Model
     {
         try{
             $data = $this->getOne($id);
-//            $path = $data['path'];
-//            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-//            if(file_exists($path)){
-//                unlink($path); //删除文件
-//            }
-//            if(file_exists($pdf_path)){
-//                unlink($pdf_path); //删除生成的预览pdf
-//            }
+            $path = $data['ma_path'];
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
+            if(file_exists($pdf_path)){
+                unlink($pdf_path); //删除生成的预览pdf
+            }
+            $path2 = $data['re_path'];
+            $pdf_path2 = './uploads/temp/' . basename($path2) . '.pdf';
+            if(file_exists($path2)){
+                unlink($path2); //删除文件
+            }
+            if(file_exists($pdf_path2)){
+                unlink($pdf_path2); //删除生成的预览pdf
+            }
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
-        }catch( PDOException $e){
+        }catch(PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
