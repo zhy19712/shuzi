@@ -208,14 +208,14 @@
                     <input type="text" name="uid" id="id1" style="display: none;" value="">
                     <div class="ibox-content">
                         <!--新增用户信息开始-->
-                        <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
+                        <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post"  action="#" onsubmit="return false">
                             <input type="text" name="id" id="rulesid" style="display: none;">
                             <input type="text" name="group_id" id="pgroup_id" style="display: none;">
                             <div class="form-group">
                                 <div class="col-lg-12 col-xs-12">
                                     <label class="col-xs-2 col-sm-2 control-label">标准号：</label>
                                     <div class="myblock col-xs-10 col-sm-10 input-group">
-                                        <input id="standardNumr" type="text" class="form-control" name="standardNumr" >
+                                        <input id="standardNumr" type="text" class="form-control" name="standardNumr"  required="required" placeholder="此处为必填项">
                                     </div>
                                 </div>
                             </div>
@@ -224,7 +224,7 @@
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">施行日期：</label>
                                     <div class="myblock col-xs-6 input-group">
-                                        <input id="dataImple" type="text" class="form-control" name="dataImple" >
+                                        <input id="dataImple" type="text" class="form-control" name="dataImple"  required="required" placeholder="此处为必填项">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-xs-12">
@@ -248,7 +248,7 @@
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">识别人：</label>
                                     <div class="myblock col-xs-6 input-group panrpos" >
-                                        <input id="recogner" type="text" class="form-control" name="recogner" >
+                                        <input id="recogner" type="text" class="form-control" name="recogner"  required="required" placeholder="此处为必填项">
                                         <div class="pos">
                                             <div id="tree_recogner" class="ztree"></div>
                                             <p id="pRecogner" style="display: none;"></p>
@@ -279,7 +279,7 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-xs-12 col-lg-12"  style="text-align: center;margin-top: 10px">
-                                    <button class="btn btn-primary" type="button"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                    <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
                                     <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
                                 </div>
                             </div>
@@ -815,66 +815,13 @@
         $("#addRules_modal").modal('show');
         upload1();
     });
-    //    var uploader;
-    //    //在点击弹出模态框的时候再初始化WebUploader，解决点击上传无反应问题
-    //    $("#addRules_modal").on("shown.bs.modal",function(){
-    //        uploader = WebUploader.create({
-    //            auto: true,
-    //            // swf文件路径
-    //            swf:  '/static/admin/js/webupload/Uploader.swf',
-    //
-    //            // 文件接收服务端。
-    //            server: "{:url('Upload/uploadRules')}",
-    //
-    //            // 选择文件的按钮。可选。
-    //            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-    //            pick: {
-    //                multiple: false,
-    //                id: "#picker",
-    //                innerHTML: "上传"
-    //            },
-    //            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-    //            resize: false
-    //
-    //        });
-    //        var $list = $('#addName');
-    //        uploader.on( 'fileQueued', function( file ) {
-    //            $list.val('等待上传...');
-    //        });
-    //
-    //        uploader.on( 'uploadSuccess', function( file ) {
-    //            $list.val(file.name+'已上传成功');
-    //        });
-    //
-    //        uploader.on( 'uploadError', function( file ) {
-    //            $list.val('上传出错');
-    //        });
-    //    });
-    //    //关闭模态框销毁WebUploader
-    //    $('#addRules_modal').on('hide.bs.modal', function () {
-    //        uploader.destroy();
-    //    });
 
-    //非空判断
-    function isNull(ele,msg) {
-        if(!$("#"+ele).val()){
-            $("#"+ele).focus().css('border-color','red');
-            layer.msg(msg);
-            return;
-        }else{
-            $("#"+ele).blur().css('border-color','#e5e6e7');
-        }
-    }
     //新增的保存
     $("#addRules_modal .btn-primary").click(function () {
         console.log($("#alternativeStandard").val())
         console.log($("#file_list1 .info").text())
-        //非空判断
-//        isNull('standardNumr','标准号不能为空');
-//        isNull('dataImple','施行日期不能为空');
-//        isNull('appEvaluation','适用性评价不能为空');
-//        isNull('recogner','识别人不能为空');
-        if($("#file_list1").html()){
+        $("#memberAdd").submit(function (){
+            if($("#file_list1").html()){
             if(!$("#id1").val()){
                 if($("#appEvaluation").val() == '过期'){
                     if($("#alternativeStandard").val() != ''){
@@ -923,6 +870,7 @@
         }else {
             alert("请选择上传文件");
         }
+        })
     })
 
     //新增中的返回

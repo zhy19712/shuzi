@@ -558,7 +558,7 @@
                     $.ajax({
                         url: "./responsibilityinstyEdit",
                         type: "post",
-                        data: {aid:$("#aid").val(),remark:$("#remark1").val(),version:$("#version1").val(),ai:$("#ai").val()},
+                        data: {id:$("#aid").val(),remark:$("#remark1").val(),version:$("#version1").val(),ai:$("#ai").val()},
                         datatype: "json",
                         success: function (res) {
                             if(res.code === 1){
