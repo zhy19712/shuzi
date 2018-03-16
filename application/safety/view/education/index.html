@@ -390,7 +390,7 @@
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
-        $("#path").text("当前路径:"+treeNode.name)
+        // $("#path").text("当前路径:"+treeNode.name)
         $.ajax({
             url:'./getHistory',
             dataType:'JSON',
@@ -426,6 +426,7 @@
             data: {id:groupid},
             dataType: "json",
             success: function (res) {
+                console.log(res)
                 if(res.msg === "success"){
                     $("#path").text("当前路径:" + res.path)
                 }

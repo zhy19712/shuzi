@@ -62,10 +62,10 @@
         display: block;
     }
     #mytable1_wrapper #additionTerm{
-        margin-top: 42px;
+        margin-top: 45px;
         border-top: 1px solid lightseagreen;
         padding-top: 8px;
-        padding-bottom: 8px;
+        padding-bottom: 12px;
     }
     .panrpos{
         position: relative;
@@ -203,25 +203,24 @@
                                     <option>4</option>
                                 </select>
                             </div>
-                            <div id="aPairOf"></div>
+                            <button id="aPairOf"></button>
                         </from>
                     </div>
                     <table id="admin_table" width="100%" class="table table-striped table-bordered">
-
                         <thead>
-                        <tr>
-                            <th><input type="checkbox" class="checkall">全选</th>
-                            <th>ID</th>
-                            <th>标准号</th>
-                            <th>名称</th>
-                            <th>施行日期</th>
-                            <th>替代标准</th>
-                            <th>适用性评价</th>
-                            <th>识别人</th>
-                            <th>上传时间</th>
-                            <th>备注</th>
-                            <th>操作</th>
-                        </tr>
+                            <tr>
+                                <th><input type="checkbox" class="checkall">全选</th>
+                                <th>ID</th>
+                                <th>标准号</th>
+                                <th>名称</th>
+                                <th>施行日期</th>
+                                <th>替代标准</th>
+                                <th>适用性评价</th>
+                                <th>识别人</th>
+                                <th>上传时间</th>
+                                <th>备注</th>
+                                <th>操作</th>
+                            </tr>
                         </thead>
                     </table>
                 </div>
@@ -412,6 +411,7 @@
         }
     } );
     $("div.mybtn").html('<div>新增</div>');
+    $("#aPairOf").html('<div>一岗双责</div>');
     $("thead th:first-child").unbind();
 
     //点击时间插件
