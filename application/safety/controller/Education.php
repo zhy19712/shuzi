@@ -396,4 +396,29 @@ class Education extends Base
         }
     }
 
+    /**
+     * 获取右侧  当前路径: 获取路径
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getParents()
+    {
+        $node = new ContractModel();
+        $parent = array();
+        $path = "";
+        if(request()->isAjax()){
+            $param = input('post.');
+            $id = $param['id'];
+            while($id>0)
+            {
+                $id = $id - 10;
+                $data = $node->getOneContract($id);
+                array_unshift($parent, $data['id']);
+                $path = $data['pname'] . ">>" . $path;
+                $id = $data['pid'];
+            }
+            return json(['path' => substr($path, 0 , -2), 'idList' => $parent, 'msg' => "success", 'code'=>1]);
+        }
+    }
+
 }
