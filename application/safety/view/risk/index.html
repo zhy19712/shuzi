@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {include file="public/header" /}
 <link rel="stylesheet" type="text/css" href="/static/admin/webupload/webuploader.css">
 <link rel="stylesheet" type="text/css" href="/static/admin/webupload/style.css">
@@ -23,8 +22,9 @@
         border-bottom: 1px solid #000;
     }
     .mybtn{
-        margin-right: 30px;
-        float: left;
+        position: absolute;
+        left: 30px;
+        top: -89px;
     }
     #imgPicker>div:nth-child(2){
         width: 100% !important;
@@ -61,6 +61,12 @@
     #mytable1_wrapper{
         display: block;
     }
+    #mytable1_wrapper #additionTerm{
+        margin-top: 42px;
+        border-top: 1px solid lightseagreen;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
     .panrpos{
         position: relative;
     }
@@ -95,7 +101,8 @@
     }
     .float_left{
         position: absolute;
-        left: 230px;
+        left: 260px;
+        top: -89px;
     }
     .selectyear{
         position: absolute;
@@ -121,6 +128,19 @@
         top: 14px;
         left: 130px;
     }
+    .myLine{
+        margin-right: 55px;
+    }
+    #sel1,#sel2,#sel3,#sel4,#sel5{
+        width: 160px;
+        margin-left: 10px;
+    }
+    .myl{
+        position: absolute;
+        top: -86px;
+        left: 104px;
+    }
+    }
 </style>
 <body>
 <!--表格-->
@@ -135,7 +155,59 @@
                         <button class='btn btn-success btn-outline btn-sm' id="excelExport">导出</button>
                         <button class='btn btn-success btn-outline btn-sm' id="moldPlate">导出excel模板</button>
                     </div>
+                    <!--加分项-->
+                    <div id="additionTerm">
+                        <from  class="form-inline">
+                            <div class="form-group myLine">
+                                <label for="sel1">责任标段</label>
+                                <select class="form-control" id="sel1">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                            <div class="form-group myLine">
+                                <label for="sel1">责任标段</label>
+                                <select class="form-control" id="sel2">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                            <div class="form-group myLine">
+                                <label for="sel1">责任标段</label>
+                                <select class="form-control" id="sel3">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                            <div class="form-group myLine">
+                                <label for="sel1">责任标段</label>
+                                <select class="form-control" id="sel4">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                            <div class="form-group myLine">
+                                <label for="sel1">责任标段</label>
+                                <select class="form-control" id="sel5">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                </select>
+                            </div>
+                            <div id="aPairOf"></div>
+                        </from>
+                    </div>
                     <table id="admin_table" width="100%" class="table table-striped table-bordered">
+
                         <thead>
                         <tr>
                             <th><input type="checkbox" class="checkall">全选</th>
@@ -850,15 +922,4 @@
     });
 
 </script>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
->>>>>>> origin/master
 </html>
