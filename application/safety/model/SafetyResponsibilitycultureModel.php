@@ -7,12 +7,14 @@
  */
 //安全生产文明建设
 namespace app\safety\model;
+
 use think\exception\PDOException;
 use think\Model;
 
 class SafetyResponsibilitycultureModel extends Model
 {
     protected $name = 'safety_responsibilityculture';
+
     /*
      * 添加新的安全文化建设文件
      */
