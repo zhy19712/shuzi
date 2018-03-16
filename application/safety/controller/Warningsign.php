@@ -11,15 +11,22 @@ namespace app\safety\controller;
 use app\admin\controller\Base;
 use think\Db;
 use think\Loader;
-use app\safety\model\AccidentfileModel;
+use app\safety\model\WarningsignModel;
 
 class Warningsign extends Base
 {
     /*
-     * 获取一条警示标志信息
+     * [index 设置机构中左边的分类节点]
     */
     public function index()
     {
-        return $this->fetch();
+        if(request()->isAjax()){
+            $node = new WarningsignModel();
+            $nodeStr = $node->getNodeInfo();
+            return json($nodeStr);
+
+        }
+        else
+            return $this->fetch();
     }
 }
