@@ -1,5 +1,5 @@
 <?php
-//应急救援组织
+//应急预案
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
