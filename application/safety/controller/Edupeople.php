@@ -285,21 +285,29 @@ class Edupeople extends Base
      */
     public function getParents()
     {
-        $node = new ContractModel();
-        $parent = array();
-        $path = "";
         if(request()->isAjax()){
             $param = input('post.');
+            $pid = $param['pid'];
             $id = $param['id'];
-            while($id>0)
-            {
+            if($pid == 0 && $id == 1 ){
+                $path = "主要负责人和安全管理人员";
+            }else if($pid == 0 && $id == 2 ){
+                $path = "从业人员";
+            }else if($pid == 0 && $id == 3 ){
+                $path = "外来人员";
+            }else{
+                $node = new ContractModel();
                 $id = $id - 10;
                 $data = $node->getOneContract($id);
-                array_unshift($parent, $data['id']);
-                $path = $data['pname'] . ">>" . $path;
-                $id = $data['pid'];
+                if($pid == 1){
+                    $path = "主要负责人和安全管理人员 >> " . $data['biaoduan_name'];
+                }else if($pid == 2){
+                    $path = "从业人员 >> " . $data['biaoduan_name'];
+                }else{
+                    $path = "外来人员 >> " . $data['biaoduan_name'];
+                }
             }
-            return json(['path' => substr($path, 0 , -2), 'idList' => $parent, 'msg' => "success", 'code'=>1]);
+            return json(['path' => $path, 'msg' => "success", 'code'=>1]);
         }
     }
 
