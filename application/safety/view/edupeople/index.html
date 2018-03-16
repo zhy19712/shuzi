@@ -223,7 +223,6 @@
                     <div class="ibox-title">
                         <h5></h5>
                     </div>
-                    <input type="text" name="uid" id="id1" style="display: none;" value="">
                     <div class="ibox-content">
                         <!--新增用户信息开始-->
                         <form class="form-horizontal" name="manageAddForm" id="manageAddForm" method="post">
@@ -330,7 +329,6 @@
                     <div class="ibox-title">
                         <h5></h5>
                     </div>
-                    <input type="text" name="uid" id="id1" style="display: none;" value="">
                     <div class="ibox-content">
                         <!--新增用户信息开始-->
                         <form class="form-horizontal" name="practAddForm" id="practAddForm" method="post">
@@ -338,13 +336,13 @@
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">姓名：</label>
                                     <div class="myblock col-xs-6 input-group">
-                                        <input id="name" type="text" class="form-control" name="name" >
+                                        <input id="practName" type="text" class="form-control" name="practName" >
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">性别：</label>
                                     <div class="myblock col-xs-6 input-group">
-                                        <select name="sex" class="form-control" id="sex">
+                                        <select name="practSex" class="form-control" id="practSex">
                                             <option value="0">男</option>
                                             <option value="1">女</option>
                                         </select>
@@ -356,7 +354,7 @@
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">身份证号：</label>
                                     <div class="myblock col-xs-6 input-group">
-                                        <input id="idcode" type="text" class="form-control" name="idcode" >
+                                        <input id="practIdCode" type="text" class="form-control" name="practIdCode" >
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-xs-12">
@@ -422,10 +420,19 @@
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
+                                <div class="col-lg-6 col-xs-12">
+                                    <label class="col-xs-6 col-sm-4 control-label">培训内容：</label>
+                                    <div class="myblock col-xs-6 col-sm-8 input-group">
+                                        <textarea name="practContent" id="practContent" style="width: 100%;min-height: 100px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
                                 <div class="col-lg-12 col-xs-12">
                                     <label class="col-xs-2 col-sm-2 control-label">备注：</label>
                                     <div class="myblock col-xs-8 col-sm-8 input-group">
-                                        <textarea name="rulesDesc" id="rulesDesc" style="width: 100%;min-height: 100px;"></textarea>
+                                        <textarea name="practRulesDesc" id="practRulesDesc" style="width: 100%;min-height: 100px;"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -452,7 +459,6 @@
                     <div class="ibox-title">
                         <h5></h5>
                     </div>
-                    <input type="text" name="uid" id="id1" style="display: none;" value="">
                     <div class="ibox-content">
                         <!--新增用户信息开始-->
                         <form class="form-horizontal" name="foreignAddForm" id="foreignAddForm" method="post">
@@ -460,13 +466,13 @@
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">姓名：</label>
                                     <div class="myblock col-xs-6 input-group">
-                                        <input id="name" type="text" class="form-control" name="name" >
+                                        <input id="foreignName" type="text" class="form-control" name="foreignName" >
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">性别：</label>
                                     <div class="myblock col-xs-6 input-group">
-                                        <select name="sex" class="form-control" id="sex">
+                                        <select name="foreignSex" class="form-control" id="foreignSex">
                                             <option value="0">男</option>
                                             <option value="1">女</option>
                                         </select>
@@ -478,7 +484,7 @@
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">身份证号：</label>
                                     <div class="myblock col-xs-6 input-group">
-                                        <input id="idcode" type="text" class="form-control" name="idcode" >
+                                        <input id="foreignIdCode" type="text" class="form-control" name="foreignIdCode" >
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-xs-12">
@@ -511,7 +517,7 @@
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">培训内容：</label>
                                     <div class="myblock col-xs-6 input-group">
-                                        <input id="content" type="text" class="form-control" name="content" >
+                                        <input id="foreignContent" type="text" class="form-control" name="foreignContent" >
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-xs-12">
@@ -553,7 +559,7 @@
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-2 col-sm-4 control-label">备注：</label>
                                     <div class="myblock col-xs-8 input-group">
-                                        <textarea name="rulesDesc" id="rulesDesc" style="width: 100%;min-height: 100px;"></textarea>
+                                        <textarea name="foreignRulesDesc" id="foreignRulesDesc" style="width: 100%;min-height: 100px;"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -663,7 +669,7 @@
                     targets:0,
                     data:null,
                     render:function () {
-                        var ipt = "<input type='checkbox' name='checkList' onclick='getSelectId(this)'>";
+                        var ipt = "<input type='checkbox' name='manageCheckList' onclick='getSelectId(this)'>";
                         return ipt;
                     }
                 },
@@ -672,8 +678,8 @@
                     "orderable": false,
                     "targets": [11],
                     "render" :  function(data,type,row) {
-                        var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
-                        html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                        var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='manageEdit(this)' value='编辑'/>" ;
+                        html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='manageDel(this)' value='删除'/>" ;
                         return html;
                     }
                 }
@@ -697,7 +703,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                "url": "__SCRIPT__/safety_edupeople.php"
+                "url": "__SCRIPT__/safety_eduployee.php"
             },
             dom: 'lf<"#exportExcel.exportExcel btn-outline btn-primary"><"#export.export btn-outline btn-primary"><"#practAdd.add btn-outline btn-primary">rtip',
             columnDefs: [
@@ -706,17 +712,17 @@
                     targets:0,
                     data:null,
                     render:function () {
-                        var ipt = "<input type='checkbox' name='checkList' onclick='getSelectId(this)'>";
+                        var ipt = "<input type='checkbox' name='practCheckList' onclick='getSelectId(this)'>";
                         return ipt;
                     }
                 },
                 {
                     "searchable": false,
                     "orderable": false,
-                    "targets": [11],
+                    "targets": [14],
                     "render" :  function(data,type,row) {
-                        var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
-                        html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                        var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='practEdit(this)' value='编辑'/>" ;
+                        html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='practDel(this)' value='删除'/>" ;
                         return html;
                     }
                 }
@@ -740,7 +746,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                "url": "__SCRIPT__/safety_edupeople.php"
+                "url": "__SCRIPT__/safety_eduforeignpersonnel.php"
             },
             dom: 'lf<"#exportExcel.exportExcel btn-outline btn-primary"><"#export.export btn-outline btn-primary"><"#foreignAdd.add btn-outline btn-primary">rtip',
             columnDefs: [
@@ -749,17 +755,17 @@
                     targets:0,
                     data:null,
                     render:function () {
-                        var ipt = "<input type='checkbox' name='checkList' onclick='getSelectId(this)'>";
+                        var ipt = "<input type='checkbox' name='foreignCheckList' onclick='getSelectId(this)'>";
                         return ipt;
                     }
                 },
                 {
                     "searchable": false,
                     "orderable": false,
-                    "targets": [11],
+                    "targets": [14],
                     "render" :  function(data,type,row) {
-                        var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
-                        html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                        var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='foreignEdit(this)' value='编辑'/>" ;
+                        html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='foreignDel(this)' value='删除'/>" ;
                         return html;
                     }
                 }
@@ -788,8 +794,9 @@
         $("thead tr th:first-child").unbind();
 
         //根据左侧树节点显隐对于表格
-        function isHidden(e) {
+        function isHidden(e,treeNode,path,tableItem) {
             $('#'+e).show().siblings().hide();
+            tableItem.ajax.url("__SCRIPT__/"+path+".php?pid=" + treeNode.id).load();
         }
 
         //点击节点
@@ -798,21 +805,20 @@
             $('input[type="hidden"][name="groupId"]').val(treeNode.pId);
 
             if(treeNode.pId==1){
-                isHidden('manageTableItem_wrapper');
+                isHidden('manageTableItem_wrapper',treeNode,'safety_edupeople',manageTableItem);
             }
             if(treeNode.pId==2){
-                isHidden('practTableItem_wrapper');
+                isHidden('practTableItem_wrapper',treeNode,'safety_eduployee',practTableItem);
             }
             if(treeNode.pId==3){
-                isHidden('foreignTableItem_wrapper');
+                isHidden('foreignTableItem_wrapper',treeNode,'safety_eduforeignpersonnel',foreignTableItem);
             }
             console.log(treeNode);
 
-            if(!treeNode.isParent){
-                manageTableItem.ajax.url("__SCRIPT__/safety_edupeople.php?pid=" + treeNode.id).load();
-            }else{
+            if(treeNode.isParent){
                 $('.dataTables_wrapper').hide();
             }
+
         };
 
         //打开新增弹层
@@ -829,15 +835,20 @@
         //关闭新增弹层
         $('#manage_addRules_modal').on('hide.bs.modal', function () {
             manageValidator.resetForm();//重置form表单
-            $('input[type="hidden"][name="id"]').val(' ');  //清除编辑ID
+            $('input[type="hidden"][name="id"]').val('');  //清除编辑ID
         });
         $('#pract_addRules_modal').on('hide.bs.modal', function () {
             practValidator.resetForm();//重置form表单
+            $('input[type="hidden"][name="id"]').val('');  //清除编辑ID
         });
         $('#foreign_addRules_modal').on('hide.bs.modal', function () {
             foreignValidator.resetForm();//重置form表单
+            $('input[type="hidden"][name="id"]').val('');  //清除编辑ID
         });
 
+        /**
+         * 主要负责人和安全管理人员 增删改
+         */
         //新增主要负责人和安全管理人员
         var manageValidator = $("#manageAddForm").validate({
             submitHandler: function(form) {
@@ -873,7 +884,7 @@
                         training_time:training_time,
                         remark:remark
                     },
-                    success: complete
+                    success: manageComplete
                 });
             },
             rules: {
@@ -896,8 +907,8 @@
             }
         });
 
-        //数据返回
-        function complete(data){
+        //数据返回主要负责人和安全管理人员
+        function manageComplete(data){
             var pid = $('input[type="hidden"][name="groupId"]').val();
             var zid = $('input[type="hidden"][name="zid"]').val();
             console.log(data);
@@ -911,8 +922,8 @@
             }
         }
 
-        //删除数据
-        function del(that){
+        //删除主要负责人和安全管理人员数据
+        function manageDel(that){
             var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
             layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
                 $.ajax({
@@ -933,8 +944,8 @@
             })
         }
 
-        //编辑弹层
-        function zedit(that) {
+        //编辑主要负责人和安全管理人员弹层
+        function manageEdit(that) {
             $('#manage_addRules_modal').modal('show');
             var id = $(that).parents('tr').find('td:eq(1)').text();
             $('input[type="hidden"][name="id"]').val(id);
@@ -959,7 +970,258 @@
             })
         }
 
-        //删除数组中的指定元素
+        /**
+         * 从业人员 增删改
+         */
+        //新增从业人员
+        var practValidator = $("#practAddForm").validate({
+            submitHandler: function(form) {
+                //获取表单数据
+                var id = $('input[type="hidden"][name="id"]').val();
+                var zid = $('input[type="hidden"][name="zid"]').val();
+                var pid = $('input[type="hidden"][name="groupId"]').val();
+                var edu_name = $('#practName').val();
+                var sex = $('#practSex option:selected').val();
+                var id_on = $('#practIdCode').val();
+                var job = $('#worktype').val();
+                var situation = $('#iscertificate').val();
+                var iphone = $('#contact').val();
+                var approach_time = $('#approachDate').val();
+                var content = $('#practContent').val();
+                var edu_time = $('#exitDate').val();
+                var exit_time = $('#practTrainTimeDate').val();
+                var exam_performance = $('#achievement').val();
+                var remark = $('#practRulesDesc').val();
+                //表单提交
+                $(form).ajaxSubmit({
+                    url: "{:url('Eduemployee/eduAdd')}",
+                    type: "post",
+                    dataType: 'json',
+                    data:{
+                        id:id,
+                        zid:zid,
+                        pid:pid,
+                        edu_name:edu_name,
+                        sex:sex,
+                        id_on:id_on,
+                        job:job,
+                        situation:situation,
+                        iphone:iphone,
+                        approach_time:approach_time,
+                        content:content,
+                        exit_time:exit_time,
+                        edu_time:edu_time,
+                        exam_performance:exam_performance,
+                        remark:remark
+                    },
+                    success: practComplete
+                });
+            },
+            rules: {
+                name: "required",
+                idcode: "required",
+                worktype: "required",
+                iscertificate: "required",
+                contact: "required",
+                approachDate: "required",
+                exitDate: "required",
+                practTrainTimeDate: "required",
+                achievement: "required"
+            },
+            messages: {
+                name: "姓名不能为空",
+                idcode: "身份证号不能为空",
+                worktype: "职务/工种不能为空",
+                iscertificate: "持证情况不能为空",
+                contact: "联系方式不能为空",
+                approachDate: "进场时间不能为空",
+                exitDate: "退场时间不能为空",
+                practTrainTimeDate: "培训时间不能为空",
+                achievement: "考试成绩不能为空"
+            }
+        });
+
+        //数据返回从业人员
+        function practComplete(data){
+            var pid = $('input[type="hidden"][name="groupId"]').val();
+            var zid = $('input[type="hidden"][name="zid"]').val();
+            console.log(data);
+            if(data.code==1){
+                layer.msg(data.msg);
+                practTableItem.ajax.url('__SCRIPT__/safety_eduployee.php?pid=' + pid +'&zid='+ zid).load();
+                $("#pract_addRules_modal").modal('hide');
+            }else{
+                layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                return false;
+            }
+        }
+
+        //删除从业人员
+        function practDel(that){
+            var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
+            layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+                $.ajax({
+                    url: "{:url('Eduemployee/eduDel')}",
+                    data: {'id' : id},
+                    type: "get",
+                    dataType: "json",
+                    success: function (res) {
+                        if(res.code == 1){
+                            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                            practTableItem.ajax.url("__SCRIPT__/safety_eduployee.php?pid="+ id).load();
+                        }else{
+                            layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                        }
+                    }
+                })
+                layer.close(index);
+            })
+        }
+
+        //编辑从业人员
+        function practEdit(that) {
+            $('#pract_addRules_modal').modal('show');
+            var id = $(that).parents('tr').find('td:eq(1)').text();
+            $('input[type="hidden"][name="id"]').val(id);
+            $.ajax({
+                url: "{:url('Eduemployee/index')}",
+                type: "post",
+                dataType: "json",
+                data:{
+                    id:id
+                },
+                success: function (res) {
+                    $('#practName').val(res.edu_name);
+                    $('#practSex').val(res.sex);
+                    $('#practIdCode').val(res.id_on);
+                    $('#worktype').val(res.job);
+                    $('#iscertificate').val(res.situation);
+                    $('#contact').val(res.iphone);
+                    $('#approachDate').val(res.approach_time);
+                    $('#exitDate').val(res.edu_time);
+                    $('#practTrainTimeDate').val(res.exit_time);
+                    $('#achievement').val(res.exam_performance);
+                    $('#practContent').val(res.content);
+                    $('#practRulesDesc').val(res.remark);
+                }
+            })
+        }
+
+        /**
+         * 外来人员 增删改
+         */
+        //新增外来人员
+        var foreignValidator = $("#foreignAddForm").validate({
+                submitHandler: function(form) {
+                    //获取表单数据
+                    var id = $('input[type="hidden"][name="id"]').val();
+                    var zid = $('input[type="hidden"][name="zid"]').val();
+                    var pid = $('input[type="hidden"][name="groupId"]').val();
+                    var edu_name = $('#foreignName').val();
+                    var sex = $('#foreignSex option:selected').val();
+                    var id_on = $('#foreignIdCode').val();
+                    var address = $('#address').val();
+                    var approach_cause = $('#reason').val();
+                    var approach_time = $('#foreignApproachDate').val();
+                    var content = $('#foreignContent').val();
+                    var training_time = $('#foreignTrainTimeDate').val();
+                    var user = $('#emergencyContact').val();
+                    var iphone = $('#contactNumber').val();
+                    var departure_time = $('#departureDate').val();
+                    var remark = $('#foreignRulesDesc').val();
+                    //表单提交
+                    $(form).ajaxSubmit({
+                        url: "{:url('Eduforeignpersonnel/eduForAdd')}",
+                        type: "post",
+                        dataType: 'json',
+                        data:{
+                            id:id,
+                            zid:zid,
+                            pid:pid,
+                            edu_name:edu_name,
+                            sex:sex,
+                            id_on:id_on,
+                            address:address,
+                            approach_cause:approach_cause,
+                            approach_time:approach_time,
+                            content:content,
+                            training_time:training_time,
+                            user:user,
+                            iphone:iphone,
+                            departure_time:departure_time,
+                            remark:remark
+                        },
+                        success: foreignComplete
+                    });
+                },
+                rules: {
+                    foreignName: "required",
+                    foreignIdCode: "required",
+                    address: "required",
+                    reason: "required",
+                    foreignApproachDate: "required",
+                    foreignContent: "required",
+                    foreignTrainTimeDate: "required",
+                    emergencyContact: "required",
+                    contactNumber: "required",
+                    departureDate: "required",
+                },
+                messages: {
+                    foreignName: "required",
+                    foreignIdCode: "required",
+                    address: "required",
+                    reason: "required",
+                    foreignApproachDate: "required",
+                    foreignContent: "required",
+                    foreignTrainTimeDate: "required",
+                    emergencyContact: "required",
+                    contactNumber: "required",
+                    departureDate: "required",
+                }
+            });
+
+        //数据返回外来人员
+        function foreignComplete(data){
+            var pid = $('input[type="hidden"][name="groupId"]').val();
+            var zid = $('input[type="hidden"][name="zid"]').val();
+            console.log(data);
+            if(data.code==1){
+                layer.msg(data.msg);
+                foreignTableItem.ajax.url('__SCRIPT__/safety_eduforeignpersonnel.php?pid=' + pid +'&zid='+ zid).load();
+                $("#foreign_addRules_modal").modal('hide');
+            }else{
+                layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                return false;
+            }
+        }
+
+        //删除外来人员
+        function foreignDel(that){
+            var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
+            layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+                $.ajax({
+                    url: "{:url('Eduforeignpersonnel/eduDel')}",
+                    data: {'id' : id},
+                    type: "get",
+                    dataType: "json",
+                    success: function (res) {
+                        if(res.code == 1){
+                            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                            foreignTableItem.ajax.url("__SCRIPT__/safety_eduforeignpersonnel.php?pid="+ id).load();
+                        }else{
+                            layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                        }
+                    }
+                })
+                layer.close(index);
+            })
+        }
+
+        /**
+         * 删除数组中指定元素
+         * @param val
+         * @returns {Array}
+         */
         Array.prototype.remove = function(val){
             for (var i = 0; i < this.length; i++) {
                 if(this[i] === val){
@@ -970,7 +1232,10 @@
             return this;
         }
 
-        //数组去重
+        /**
+         * 数组去重
+         * @returns {Array}
+         */
         Array.prototype.removalArray = function(){
             var newArr = [];
             for (var i = 0; i < this.length; i++) {
@@ -1001,18 +1266,18 @@
             console.log(idArr);
         }
 
-        //checkbox全选
-        $("#all_checked").on("click", function () {
+        //checkbox全选主要负责人和安全管理人员
+        $("#manage_all_checked").on("click", function () {
             if ($(this).prop("checked") === true) {
-                $("input[name='checkList']").prop("checked", $(this).prop("checked"));
+                $("input[name='manageCheckList']").prop("checked", $(this).prop("checked"));
                 $('#tableItem tbody tr').addClass('selected');
-                $('input[name="checkList"]').each(function(){
+                $('input[name="manageCheckList"]').each(function(){
                     getId(this);
                 });
             } else {
-                $("input[name='checkList']").prop("checked", false);
+                $("input[name='manageCheckList']").prop("checked", false);
                 $('#tableItem tbody tr').removeClass('selected');
-                $('input[name="checkList"]').each(function(){
+                $('input[name="manageCheckList"]').each(function(){
                     getId(this);
                 });
             }
