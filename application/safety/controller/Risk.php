@@ -11,7 +11,7 @@ namespace app\safety\controller;
 // 安全风险管理
 use app\admin\controller\Base;
 use app\admin\model\ContractModel;
-use app\safety\model\EducationModel;
+use app\safety\model\RiskModel;
 use think\Db;
 use think\Loader;
 
@@ -26,26 +26,33 @@ class Risk extends Base
     {
         if(request()->isAjax()){
             $param = input('post.');
-            $edu = new EducationModel();
+            $edu = new RiskModel();
             $data = $edu->getOne($param['id']);
             return json($data);
         }
         return $this ->fetch();
     }
 
+    public function riskGet()
+    {
+        if(request()->isAjax()){
+            $param = input('post.');
+            $edu = new RiskModel();
+            $data = $edu->getOne($param['id']);
+            return json($data);
+        }
+    }
     /**
      * 新增或者修改
      * @return \think\response\Json
      * @author hutao
      */
-    public function eduAdd()
+    public function riskAdd()
     {
         if(request()->isAjax()){
-            $edu = new EducationModel();
+            $edu = new RiskModel();
             $param = input('post.');
             if(empty($param['id'])){
-                $param['owner'] = session('username');
-                $param['edu_date'] = date("Y-m-d H:i:s");
                 $flag = $edu->insertEdu($param);
             }else{
                 $flag = $edu->editEdu($param);
@@ -103,9 +110,9 @@ class Risk extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function eduPreview()
+    public function riskPreview()
     {
-        $edu = new EducationModel();
+        $edu = new RiskModel();
         if(request()->isAjax()) {
             $param = input('post.');
             $code = 1;

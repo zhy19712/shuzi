@@ -20,7 +20,7 @@ class RiskModel extends Model
      * 发现人
      */
     public function fouder(){
-        return $this->hasOne('User','founder_id');
+        return $this->hasOne('User','founder_id')->field('nickname');
     }
 
     /**
@@ -28,7 +28,7 @@ class RiskModel extends Model
      */
     public function workduty()
     {
-        return $this->hasOne('User','workduty_id');
+        return $this->hasOne('User','workduty_id')->field('nickname');
     }
 
     /**
@@ -36,7 +36,7 @@ class RiskModel extends Model
      */
     public function acceptor()
     {
-        return $this->hasOne('User','acceptor_id');
+        return $this->hasOne('User','acceptor_id')->field('nickname');
     }
 //    /**
 //     * 标段
