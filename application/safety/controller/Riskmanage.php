@@ -8,14 +8,15 @@
 
 namespace app\safety\controller;
 
-// 重大危险源识别与管理
+// 安全风险管理
 use app\admin\controller\Base;
 use app\admin\model\ContractModel;
-use app\safety\model\EducationModel;
+use app\safety\model\RiskManageModel;
+use app\safety\model\RiskModel;
 use think\Db;
 use think\Loader;
 
-class Greatsource extends Base
+class Riskmanage extends Base
 {
     /**
      * 预览获取一条数据  或者  编辑获取一条数据
@@ -26,7 +27,7 @@ class Greatsource extends Base
     {
         if(request()->isAjax()){
             $param = input('post.');
-            $edu = new EducationModel();
+            $edu = new RiskManageModel();
             $data = $edu->getOne($param['id']);
             return json($data);
         }
@@ -38,14 +39,15 @@ class Greatsource extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function eduAdd()
+    public function riskAdd()
     {
         if(request()->isAjax()){
-            $edu = new EducationModel();
+            $edu = new RiskModel();
             $param = input('post.');
             if(empty($param['id'])){
-                $param['owner'] = session('username');
-                $param['edu_date'] = date("Y-m-d H:i:s");
+                if(isset($param['id'])){
+                    unset($param['id']); // 避免提交的id是0 或者 空 的时候的赋值
+                }
                 $flag = $edu->insertEdu($param);
             }else{
                 $flag = $edu->editEdu($param);
@@ -67,12 +69,21 @@ class Greatsource extends Base
         }
         $id = input('param.id');
         $type = input('param.type');
-        $edu = new EducationModel();
+        $edu = new RiskManageModel();
         $param = $edu->getOne($id);
-        if($type == '1'){ // type 1 表示的是 培训材料文件 2 表示培训记录文件
+        if($type == '1'){ // type 1 年度风险辨识文件 2 季度风险辨识文件3 风险复测单 4风险管控卡 5施工作业票
             $filePath = $param['ma_path'];
             $fileName = $param['material_name'];
-        }else{
+        }else if($type == '2'){
+            $filePath = $param['re_path'];
+            $fileName = $param['record_name'];
+        }else if($type == '3'){
+            $filePath = $param['re_path'];
+            $fileName = $param['record_name'];
+        }else if($type == '4'){
+            $filePath = $param['re_path'];
+            $fileName = $param['record_name'];
+        }else if($type == '5'){
             $filePath = $param['re_path'];
             $fileName = $param['record_name'];
         }
@@ -103,19 +114,26 @@ class Greatsource extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function eduPreview()
+    public function riskPreview()
     {
-        $edu = new EducationModel();
+        $edu = new RiskManageModel();
         if(request()->isAjax()) {
             $param = input('post.');
             $code = 1;
             $msg = '预览成功';
             $data = $edu->getOne($param['id']);
-            if($param['type'] == '1'){ // type 1 表示的是 培训材料文件 2 表示培训记录文件
+            if($param['type'] == '1'){ // type 1 年度风险辨识文件 2 季度风险辨识文件3 风险复测单 4风险管控卡 5施工作业票
                 $path = $data['ma_path'];
-            }else{
+            }else if($param['type'] == '2'){
+                $path = $data['re_path'];
+            }else if($param['type'] == '3'){
+                $path = $data['re_path'];
+            }else if($param['type'] == '4'){
+                $path = $data['re_path'];
+            }else if($param['type'] == '5'){
                 $path = $data['re_path'];
             }
+
             $extension = strtolower(get_extension(substr($path,1)));
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
             if(!file_exists($pdf_path)){
@@ -147,7 +165,7 @@ class Greatsource extends Base
     {
         if(request()->isAjax()){
             $param = input('param.');
-            $edu = new EducationModel();
+            $edu = new RiskManageModel();
             $flag = $edu->delEdu($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
@@ -372,26 +390,9 @@ class Greatsource extends Base
     public function getHistory()
     {
         if(request()->isAjax()){
-            $edu = new EducationModel();
+            $edu = new RiskManageModel();
             $years = $edu->getYears();
             return json($years);
-        }
-    }
-
-    /**
-     * 初始化左侧节点树
-     * @return \think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @author hutao
-     */
-    public function getSegment()
-    {
-        if(request()->isAjax()){
-            $con = new ContractModel();
-            $data = $con->getBiaoduanName(2); // 2 表示页面有2个一一级节点
-            return json($data);
         }
     }
 
