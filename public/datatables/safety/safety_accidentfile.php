@@ -1,5 +1,5 @@
 <?php
-//安全生产信息化建设
+//事故档案
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
@@ -59,9 +59,18 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
  */
 
 require( '../ssp.class.php' );
+
+if(!empty($_GET["year"]))
+{
+    $year = $_GET["year"];
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "accident_time like '%" .$year. "%'" )
+    );
+}else{
     echo json_encode(
         SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
     );
+}
 
 
 

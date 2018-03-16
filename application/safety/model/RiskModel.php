@@ -16,6 +16,32 @@ class RiskModel extends Model
 {
     protected $name = 'safety_risk';
 
+    /**
+     * 发现人
+     */
+    public function fouder(){
+        return $this->hasOne('User','founder_id');
+    }
+
+    /**
+     * 责任人
+     */
+    public function workduty()
+    {
+        return $this->hasOne('User','workduty_id');
+    }
+
+    /**
+     * 验收人
+     */
+    public function acceptor()
+    {
+        return $this->hasOne('User','acceptor_id');
+    }
+//    /**
+//     * 标段
+//     */
+//    public function section('User','section_id');
     public function insertEdu($param)
     {
         try{
