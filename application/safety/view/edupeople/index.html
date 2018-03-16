@@ -29,6 +29,11 @@
             background: #19aa8d;
             color: #FFF;
         }
+        #path{
+            line-height: 30px;
+            font-weight: 700;
+            border-bottom: 1px solid #ccc;
+        }
         .ztree li span.button.add {
             margin-left:2px;
             margin-right: -1px;
@@ -137,7 +142,7 @@
         <div class="ibox float-e-margins">
             <div class="ibox-content">
                 <div class="row">
-                    <h2 class="title">主要负责人和安全管理人员</h2>
+                    <div id="path">当前路径:</div>
                     <div id="table_info">
                         <div id="level">
                             <table id="manageTableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
@@ -590,6 +595,7 @@
     <script src="__JS__/plugins/validate/jquery.validate.min.js"></script>
 
     <script>
+        //TODO  以下重复代码需要重构
         $('.effectiveDate').jeDate();
         $('.validTillDate').jeDate();
         $('.trainTimeDate').jeDate();
@@ -796,7 +802,7 @@
         //根据左侧树节点显隐对于表格
         function isHidden(e,treeNode,path,tableItem) {
             $('#'+e).show().siblings().hide();
-            tableItem.ajax.url("__SCRIPT__/"+path+".php?pid=" + treeNode.id).load();
+            tableItem.ajax.url("__SCRIPT__/"+path+".php?pid=" + treeNode.pId+"&zid="+treeNode.id).load();
         }
 
         //点击节点
@@ -818,6 +824,22 @@
             if(treeNode.isParent){
                 $('.dataTables_wrapper').hide();
             }
+
+            //获取路径
+            $.ajax({
+                url: "./getParents",
+                type: "post",
+                data: {
+                    id:treeNode.id,
+                    pid:treeNode.pId
+                },
+                dataType: "json",
+                success: function (res) {
+                    if(res.msg === "success"){
+                        $("#path").text("当前路径:" + res.path)
+                    }
+                }
+            })
 
         };
 
@@ -1217,6 +1239,34 @@
             })
         }
 
+        //编辑外来人员
+        function foreignEdit(that) {
+            $('#foreign_addRules_modal').modal('show');
+            var id = $(that).parents('tr').find('td:eq(1)').text();
+            $('input[type="hidden"][name="id"]').val(id);
+            $.ajax({
+                url: "{:url('Eduforeignpersonnel/index')}",
+                type: "post",
+                dataType: "json",
+                data:{
+                    id:id
+                },
+                success: function (res) {
+                    $('#foreignName').val(res.edu_name);
+                    $('#foreignSex').val(res.sex);
+                    $('#foreignIdCode').val(res.id_on);
+                    $('#address').val(res.address);
+                    $('#reason').val(res.approach_cause);
+                    $('#foreignApproachDate').val(res.approach_time);
+                    $('#foreignContent').val(res.content);
+                    $('#foreignTrainTimeDate').val(res.training_time);
+                    $('#emergencyContact').val(res.user);
+                    $('#contactNumber').val(res.iphone);
+                    $('#departureDate').val(res.departure_time);
+                    $('#foreignRulesDesc').val(res.remark);
+                }
+            })
+        }
         /**
          * 删除数组中指定元素
          * @param val
