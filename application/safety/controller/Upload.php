@@ -244,7 +244,9 @@ class Upload extends Base
                     }
                 }
 
-                unlink($data_older['path']);
+                if(file_exists($data_older['path'])){
+                    unlink($data_older['path']);
+                }
                 $data = [
                     'id' => $id,
                     'years' => $years,
@@ -331,7 +333,9 @@ class Upload extends Base
                     }
                 }
 
-                unlink($data_older['path']);
+                if(file_exists(unlink($data_older['path']))){
+                    unlink($data_older['path']);
+                }
                 $data = [
                     'id' => $id,
                     'years' => $years,

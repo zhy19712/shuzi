@@ -160,6 +160,16 @@
         margin-bottom: 0;
         font-weight: normal;
     }
+    .graytip{
+        background: #ffffe9;
+        border-bottom: 1px solid #e3e6eb;
+    }
+    .div_mail_info{
+        width: 100%;
+        line-height: 24px;
+        text-align: center;
+
+    }
 </style>
 
 <div id="mycontent" class="mycontent">
@@ -175,6 +185,7 @@
     <input type="hidden" name="groupId">
     <input type="hidden" name="currentNodeId">
     <input type="hidden" name="currentNodeName">
+    <input type="hidden" name="dataCount">
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox float-e-margins">
@@ -504,12 +515,14 @@
         console.log(treeNode);
         $('input[type="hidden"][name="currentNodeName"]').val(treeNode.name);
         $('input[type="hidden"][name="groupId"]').val(treeNode.id);
+        $('input[type="hidden"][name="dataCount"]').val(treeNode.id);
 
         if(treeNode.isParent){
             $('#tableItem_wrapper').css("visibility","hidden");
         }else{
             $('#tableItem_wrapper').css("visibility","visible");
             tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php?pid=" + treeNode.id).load();
+            console.log(tableItem.rows().count());
         }
 
         //获取路径
@@ -1096,13 +1109,16 @@
             $('input[name="checkList"]').each(function(){
                 getId(this);
             });
+            $('#tableItem tbody').prepend('<tr class="graytip"><td colspan="11" class="div_mail_info">已勾选本页 50 封邮件，勾选"收件箱"中全部 1119 封邮件</td></tr>')
         } else {
             $("input[name='checkList']").prop("checked", false);
             $('#tableItem tbody tr').removeClass('selected');
             $('input[name="checkList"]').each(function(){
                 getId(this);
             });
+            $('#tableItem tbody').find('tr:first-child').remove();
         }
+
         console.log(idArr);
     });
 </script>

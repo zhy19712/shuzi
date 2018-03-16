@@ -46,6 +46,9 @@ class Edupeople extends Base
             $edu = new EdupeopleModel();
             $param = input('post.');
             if(empty($param['id'])){
+                if(isset($param['id'])){
+                    unset($param['id']); // 避免提交的id是0 或者 空 的时候的赋值
+                }
                 $param['owner'] = session('username');
                 $param['years'] = date("Y");
                 $flag = $edu->insertEdu($param);
