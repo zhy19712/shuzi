@@ -36,7 +36,6 @@ class Responsibility extends Base
                 'id' => $param['aid'],
                 'remark' => $param['remark']
             ];
-
             $flag = $anual->editSafetyGoalAnual($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
@@ -107,7 +106,7 @@ class Responsibility extends Base
                     $pdf_path = $path;
                 }else{
                     $code = 0;
-                    $msg = '文不支持的件格式';
+                    $msg = '不支持的文件格式';
                 }
                 return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
             }else{

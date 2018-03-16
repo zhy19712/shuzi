@@ -1,5 +1,5 @@
 <?php
-//事故报告
+//事故调查报告
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
@@ -20,7 +20,7 @@ include('../conn.php');
  */
 
 // DB table to use
-$table = 'think_safety_accidentreport';
+$table = 'think_safety_accident_investigation_report';
 
 // Table's primary key
 $primaryKey = 'id';
