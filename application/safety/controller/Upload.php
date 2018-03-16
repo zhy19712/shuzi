@@ -842,7 +842,7 @@ class Upload extends Base
     }
 
     /*
-    * 事故报告上传
+    *事故报告上传
     * @return \think\response\Json
     */
     public function uploadAccidentreport(){
@@ -1035,4 +1035,18 @@ class Upload extends Base
         }
     }
 
+    /**
+     * 通用上传方法
+     */
+    public function upload()
+    {
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/normal/');
+        if($info){
+            $path = './uploads/normal/' . str_replace("\\","/",$info->getSaveName());
+            return json(['code'=>1,'msg'=>'上传成功','data'=>$path]);
+        }else{
+            return json(['code'=>-1,'msg'=>'上传失败']);
+        }
+    }
 }
