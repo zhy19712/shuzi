@@ -23,7 +23,6 @@
         line-height: 30px;
         font-weight: 700;
         border-bottom: 1px solid #000;
-        text-align: center;
     }
     .mybtn{
         margin-right: 30px;
@@ -157,7 +156,7 @@
     <div class="ibox float-e-margins">
         <div class="ibox-content">
             <div class="row">
-                <div id="path"></div>
+                <div id="path">当前路径:</div>
                 <div id="mytable1_wrapper">
                     <div id="excel">
                         <button class='btn' id="excelImport"></button>
@@ -391,7 +390,7 @@
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
-        $("#path").text(treeNode.name)
+        $("#path").text("当前路径:"+treeNode.name)
         $.ajax({
             url:'./getHistory',
             dataType:'JSON',
@@ -413,13 +412,25 @@
         console.log(groupid +" id-groupid")
         if(treeNode.level == 0){
             $("#mytable1_wrapper").css("display","none");
-            admin_table.ajax.url("__SCRIPT__/safety_education.php?id="+idParent+"&pid=" + groupid).load();
+            admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+idParent+"&pid=" + groupid).load();
         }else {
             if(treeNode.level == 1){
                 $("#mytable1_wrapper").css("display","block");
-                admin_table.ajax.url("__SCRIPT__/safety_education.php?id="+idParent+"&pid=" + groupid).load();
+                admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+idParent+"&pid=" + groupid).load();
             }
         }
+        //获取路径
+        $.ajax({
+            url: "./getParents",
+            type: "post",
+            data: {id:groupid},
+            dataType: "json",
+            success: function (res) {
+                if(res.msg === "success"){
+                    $("#path").text("当前路径:" + res.path)
+                }
+            }
+        })
     };
 
     var setting = {
