@@ -3,52 +3,22 @@
  * Created by PhpStorm.
  * User: admin
  * Date: 2018/3/16
- * Time: 10:40
+ * Time: 13:22
  */
-//警示标志
+//事故调查报告
 namespace app\safety\model;
 
 use think\exception\PDOException;
 use think\Model;
 
-class WarningsignModel extends Model
+class AccidentinvestigationreportModel extends Model
 {
-    protected $name = 'safety_warningsign';
-
-    /**
-     * [getNodeInfo 获取工程划分2级节点树结构数据]
-     *
-     */
-    public function getNodeInfo()
-    {
-        //定义一个空的字符串
-        $str = "";
-
-        $str .= '{ "id": "' . '1' . '", "pId":"' . '0' . '", "name":"' . '警示标志'.'"';
-        $str .= '},';
-        $str .= '{ "id": "' . '11' . '", "pId":"' . '1' . '", "name":"' . '分类列表树'.'"';
-        $str .= '},';
-
-        $str .= '{ "id": "' . '111' . '", "pId":"' . '11' . '", "name":"' . '标识牌'.'"';
-        $str .= '},';
-
-        $str .= '{ "id": "' . '112' . '", "pId":"' . '11' . '", "name":"' . '指路牌'.'"';
-        $str .= '},';
-
-        $str .= '{ "id": "' . '113' . '", "pId":"' . '11' . '", "name":"' . '警示牌'.'"';
-        $str .= '},';
-
-        $str .= '{ "id": "' . '114' . '", "pId":"' . '11' . '", "name":"' . '防护围栏'.'"';
-        $str .= '},';
-
-        return "[" . substr($str, 0, -1) . "]";
-
-    }
+    protected $name = 'safety_accident_investigation_report';
 
     /*
-     * 添加新的警示标志
+     * 添加新的事故调查报告文件
     */
-    public function insertWarningsign($param)
+    public function insertAccidentinvestigationreport($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -61,11 +31,10 @@ class WarningsignModel extends Model
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
-
     /*
-     * 编辑警示标志
-    */
-    public function editWarningsign($param)
+      * 编辑事故调查报告文件
+     */
+    public function editAccidentinvestigationreport($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -78,11 +47,10 @@ class WarningsignModel extends Model
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
-
     /*
-     * 删除警示标志
+     * 删除事故调查报告文件
     */
-    public function delWarningsign($id)
+    public function delAccidentinvestigationreport($id)
     {
         try{
             $this->where('id', $id)->delete();
@@ -92,9 +60,8 @@ class WarningsignModel extends Model
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
-
     /*
-     * 获取一条警示标志记录
+     * 获取一条事故调查报告文件
     */
     /**
      * @param $id
@@ -107,9 +74,4 @@ class WarningsignModel extends Model
     {
         return $this->where('id', $id)->find();
     }
-
-
-
-
-
 }

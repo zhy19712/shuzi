@@ -96,14 +96,16 @@ class ContractModel extends Model
             $str .= '{ "id": "' . $arr[$i]['id'] . '", "pId":"' . 0 . '", "name":"' . $arr[$i]['biaoduan_name'].'"';
             $str .= '},';
             foreach($data as $key=>$v){
-                $id = $v['id'] + 10; // 避免和pId一样
                 if($arr[$i]['biaoduan_name'] == '监理单位' && $j == 0){
+                    $id = $this->where('biaoduan_name','eq','监理部')->value('id');
+                    $id2 = $id + 10; // 避免和pId一样
                     $name = '监理部';
-                    $str .= '{ "id": "' . $id . '", "pId":"' . $i . '", "name":"' .$name.'"';
+                    $str .= '{ "id": "' . $id2 . '", "pId":"' . $i . '", "name":"' .$name.'"';
                     $str .= '},';
                     $j++;
                 }else if($arr[$i]['biaoduan_name'] != '监理单位'){
-                    $str .= '{ "id": "' . $id . '", "pId":"' . $i . '", "name":"' . $v['biaoduan_name'].'"';
+                    $id3 = $v['id'] + 10; // 避免和pId一样
+                    $str .= '{ "id": "' . $id3 . '", "pId":"' . $i . '", "name":"' . $v['biaoduan_name'].'"';
                     $str .= '},';
                 }
             }

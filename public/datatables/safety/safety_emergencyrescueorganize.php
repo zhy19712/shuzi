@@ -1,5 +1,5 @@
 <?php
-//事故档案
+//应急救援组织
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
@@ -20,7 +20,7 @@ include('../conn.php');
  */
 
 // DB table to use
-$table = 'think_safety_accident_file';
+$table = 'think_safety_responsibilityinsty_group';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -31,20 +31,12 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'accident_name',  'dt' => 1 ),
-    array( 'db' => 'accident_time',  'dt' => 2 ),
-    array( 'db' => 'accident_place',  'dt' => 3 ),
-    array( 'db' => 'accident_type',  'dt' => 4 ),
-    array( 'db' => 'accident_level',  'dt' => 5 ),
-    array( 'db' => 'death_toll',  'dt' => 6 ),
-    array( 'db' => 'injure',  'dt' => 7 ),
-    array( 'db' => 'light_injure',  'dt' => 8 ),
-    array( 'db' => 'economic_loss',  'dt' => 9 ),
-    array( 'db' => 'accident_unit',  'dt' => 10 ),
-    array( 'db' => 'accident_result',  'dt' => 11 ),
-    array( 'db' => 'remark',  'dt' => 12 )
+    array( 'db' => 'filename',  'dt' => 1 ),
+    array( 'db' => 'owner',  'dt' => 2 ),
+    array( 'db' => 'date',  'dt' => 3 ),
+    array( 'db' => 'version',  'dt' => 4 ),
+    array( 'db' => 'remark',  'dt' => 5 )
 );
-
 
 
 
@@ -64,14 +56,19 @@ if(!empty($_GET["year"]))
 {
     $year = $_GET["year"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "accident_time like '%" .$year. "%'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid  like  '%18%' and date like '%" .$year. "%'" )
+    );
+}
+else if(empty($_GET["year"]))
+{
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid  like  '%18%'" )
     );
 }else{
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns )
     );
 }
-
 
 
 
