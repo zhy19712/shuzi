@@ -34,7 +34,10 @@ class RiskModel extends Model
     /**
      * 验收人
      */
-    public function acceptor('User','acceptor_id');
+    public function acceptor()
+    {
+        return $this->hasOne('User','acceptor_id');
+    }
 //    /**
 //     * 标段
 //     */
