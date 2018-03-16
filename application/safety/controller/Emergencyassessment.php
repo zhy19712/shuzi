@@ -5,7 +5,7 @@
  * Date: 2018/3/15
  * Time: 19:09
  */
-//警示标志
+//应急评估
 namespace app\safety\controller;
 
 use app\admin\controller\Base;
@@ -13,10 +13,10 @@ use think\Db;
 use think\Loader;
 use app\safety\model\AccidentfileModel;
 
-class Warningsign extends Base
+class Emergencyassessment extends Base
 {
     /*
-     * 获取一条警示标志信息
+     * 获取一条应急评估信息
     */
     public function index()
     {
