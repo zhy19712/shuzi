@@ -655,58 +655,54 @@
     }
     //新增中的保存
     var flag=1;
-    $("#education_modal .btn-primary").unbind('click').bind('click',function(){
+    $("#memberAdd").submit(function () {
+        if ($("#pickerRecords").html() && $("#pickerMaterials").html()) {
+            console.log($("#edId").val());//等于空
 
-        $("#memberAdd").submit(function () {
-
-            if ($("#pickerRecords").html() && $("#pickerMaterials").html()) {
-                console.log($("#edId").val());//等于空
-
-                if (!$("#edId").val()) {
-                    console.log("新增")
-                    if(flag) {
-                        flager()
-                    }
-                } else {
-                    console.log("编辑")
-                    if (edamid1 === edamid2) {
-                        $.ajax({
-                            url: "./eduAdd",
-                            type: "post",
-                            data: {
-                                zid: $("#edId").val(),//id
-//                    group_id : groupid,//group_id
-                                group_id: 1,//group_id
-                                lecturer: $("#trainer").val(),//培训人
-                                edu_time: $("#trainingTime").val(),//培训时间
-                                trainee: $("#trainers").val(),//培训人员
-                                address: $("#trainingPlace").val(),//培训地点
-                                num: $("#numTraining").val(),//培训人数
-                                content: $("#trainerCon").val(),//培训内容
-                                material_name: $("#trainerMaterials").val(),//培训材料
-                                record_name: $("#trainerRecords").val(),//培训记录
-                                remark: $("#edDesc").val()//备注
-                            },
-                            datatype: "json",
-                            success: function (res) {
-                                console.log(res);
-                                if (res.code === 1) {
-                                    $("#education_modal").modal('hide');
-                                    admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
-                                    layer.msg(res.msg, {time: 1500, shade: 0.1});
-                                } else {
-                                    layer.msg(res.msg);
-                                }
-                            }
-                        })
-                    }
+            if (!$("#edId").val()) {
+                console.log("新增")
+                if(flag) {
+                    flager()
                 }
             } else {
-                alert("请选择上传文件");
+                console.log("编辑")
+                if (edamid1 === edamid2) {
+                    $.ajax({
+                        url: "./eduAdd",
+                        type: "post",
+                        data: {
+                            zid: $("#edId").val(),//id
+//                    group_id : groupid,//group_id
+                            group_id: 1,//group_id
+                            lecturer: $("#trainer").val(),//培训人
+                            edu_time: $("#trainingTime").val(),//培训时间
+                            trainee: $("#trainers").val(),//培训人员
+                            address: $("#trainingPlace").val(),//培训地点
+                            num: $("#numTraining").val(),//培训人数
+                            content: $("#trainerCon").val(),//培训内容
+                            material_name: $("#trainerMaterials").val(),//培训材料
+                            record_name: $("#trainerRecords").val(),//培训记录
+                            remark: $("#edDesc").val()//备注
+                        },
+                        datatype: "json",
+                        success: function (res) {
+                            console.log(res);
+                            if (res.code === 1) {
+                                $("#education_modal").modal('hide');
+                                admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+                                layer.msg(res.msg, {time: 1500, shade: 0.1});
+                            } else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    })
+                }
             }
-
-        })
+        } else {
+            alert("请选择上传文件");
+        }
     })
+
     //新增中的返回
     $("#education_modal .btn-danger").click(function () {
         standard_uploader = null;
