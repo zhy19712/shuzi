@@ -13,7 +13,7 @@ use think\Model;
 
 class EmergencyplanModel extends Model
 {
-    protected $name = 'think_safety_emergency_plan';
+    protected $name = 'safety_emergency_plan';
 
     /*
      * 添加新的应急预案文件
