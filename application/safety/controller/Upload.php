@@ -17,6 +17,7 @@ use app\safety\model\EquipmentCheckAcceptModel;
 use app\safety\model\SafetySpecialEquipmentManagementModel;
 use app\safety\model\JobhealthGroupModel;
 use app\safety\model\AccidentreportModel;
+use app\safety\model\WarningsignModel;
 use think\Db;
 
 class Upload extends Base
@@ -840,7 +841,7 @@ class Upload extends Base
     }
 
     /*
-    *事故报告上传
+    * 事故报告上传
     * @return \think\response\Json
     */
     public function uploadAccidentreport(){
@@ -892,6 +893,80 @@ class Upload extends Base
                     'remark' => $remark
                 ];
                 $flag = $accident->editAccidentreport($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /*
+    * 警示标志图片上传
+    * @return \think\response\Json
+    */
+    public function uploadWarningsign(){
+        /**
+         * id 警示标志表自增id
+         * selfid 区别警示标志类别id
+         * name 上传的警示标志原图片名
+         * filename 上传的警示标志图片名
+         * standard_number 标准号
+         * warn_name 名称
+         * structure_size 结构尺寸
+         * measurement_unit 计量单位
+         * date 上传时间
+         * remark 备注
+         * path 文件路径
+         */
+
+
+        $warn = new WarningsignModel();
+        $id = request()->param('aid');
+        $selfid = request()->param('selfid');
+        $standard_number = request()->param('standard_number');
+        $warn_name = request()->param('warn_name');
+        $structure_size = request()->param('structure_size');
+        $measurement_unit = request()->param('measurement_unit');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/warningsign');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/warningsign/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'selfid' => $selfid,
+                    'standard_number' => $standard_number,
+                    'warn_name' => $warn_name,
+                    'structure_size' => $structure_size,
+                    'measurement_unit' => $measurement_unit,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $warn->insertWarningsign($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $warn->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'selfid' => $selfid,
+                    'standard_number' => $standard_number,
+                    'warn_name' => $warn_name,
+                    'structure_size' => $structure_size,
+                    'measurement_unit' => $measurement_unit,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $warn->editWarningsign($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{

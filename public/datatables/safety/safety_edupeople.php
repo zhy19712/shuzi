@@ -30,16 +30,16 @@ $primaryKey = 'id';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
-    array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'edu_name',  'dt' => 1 ),
-    array( 'db' => 'job',  'dt' => 2 ),
-    array( 'db' => 'certificate_name',  'dt' => 3 ),
-    array( 'db' => 'certificate_number',  'dt' => 4 ),
-    array( 'db' => 'availability_date',  'dt' => 5 ),
-    array( 'db' => 'vld',  'dt' => 6 ),
-    array( 'db' => 'training_mode',  'dt' => 7 ),
-    array( 'db' => 'training_time',  'dt' => 8 ),
-    array( 'db' => 'remark',  'dt' => 9)
+    array( 'db' => 'id',  'dt' => 1 ),
+    array( 'db' => 'edu_name',  'dt' => 2 ),
+    array( 'db' => 'job',  'dt' => 3 ),
+    array( 'db' => 'certificate_name',  'dt' => 4 ),
+    array( 'db' => 'certificate_number',  'dt' => 5 ),
+    array( 'db' => 'availability_date',  'dt' => 6 ),
+    array( 'db' => 'vld',  'dt' => 7 ),
+    array( 'db' => 'training_mode',  'dt' => 8 ),
+    array( 'db' => 'training_time',  'dt' => 9 ),
+    array( 'db' => 'remark',  'dt' => 10)
 );
 
 

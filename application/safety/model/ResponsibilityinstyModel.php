@@ -7,8 +7,10 @@
  */
 //机构和职责一级二级分类节点的设置
 namespace app\safety\model;
+
 use think\exception\PDOException;
 use think\Model;
+
 class ResponsibilityinstyModel extends Model
 {
     protected $name = 'contract';

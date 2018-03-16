@@ -130,6 +130,7 @@
         <h2>人员教育培训</h2>
         <ul id="tree_container" class="ztree"></ul>
         <input type="hidden" name="id">
+        <input type="hidden" name="zid">
         <input type="hidden" name="groupId">
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -793,7 +794,7 @@
 
         //点击节点
         function zTreeOnClick(event, treeId, treeNode) {
-            $('input[type="hidden"][name="id"]').val(treeNode.id);
+            $('input[type="hidden"][name="zid"]').val(treeNode.id);
             $('input[type="hidden"][name="groupId"]').val(treeNode.pId);
 
             if(treeNode.pId==1){
@@ -828,6 +829,7 @@
         //关闭新增弹层
         $('#manage_addRules_modal').on('hide.bs.modal', function () {
             manageValidator.resetForm();//重置form表单
+            $('input[type="hidden"][name="id"]').val(' ');  //清除编辑ID
         });
         $('#pract_addRules_modal').on('hide.bs.modal', function () {
             practValidator.resetForm();//重置form表单
@@ -841,6 +843,7 @@
             submitHandler: function(form) {
                 //获取表单数据
                 var id = $('input[type="hidden"][name="id"]').val();
+                var zid = $('input[type="hidden"][name="zid"]').val();
                 var pid = $('input[type="hidden"][name="groupId"]').val();
                 var edu_name = $('#name').val();
                 var job = $('#duties').val();
@@ -857,7 +860,8 @@
                     type: "post",
                     dataType: 'json',
                     data:{
-                        zid:id,
+                        id:id,
+                        zid:zid,
                         pid:pid,
                         edu_name:edu_name,
                         job:job,
@@ -895,7 +899,7 @@
         //数据返回
         function complete(data){
             var pid = $('input[type="hidden"][name="groupId"]').val();
-            var zid = $('input[type="hidden"][name="id"]').val();
+            var zid = $('input[type="hidden"][name="zid"]').val();
             console.log(data);
             if(data.code==1){
                 layer.msg(data.msg);
@@ -907,6 +911,113 @@
             }
         }
 
+        //删除数据
+        function del(that){
+            var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
+            layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+                $.ajax({
+                    url: "{:url('Edupeople/eduDel')}",
+                    data: {'id' : id},
+                    type: "get",
+                    dataType: "json",
+                    success: function (res) {
+                        if(res.code == 1){
+                            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                            manageTableItem.ajax.url("__SCRIPT__/safety_edupeople.php?pid="+ id).load();
+                        }else{
+                            layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                        }
+                    }
+                })
+                layer.close(index);
+            })
+        }
+
+        //编辑弹层
+        function zedit(that) {
+            $('#manage_addRules_modal').modal('show');
+            var id = $(that).parents('tr').find('td:eq(1)').text();
+            $('input[type="hidden"][name="id"]').val(id);
+            $.ajax({
+                url: "{:url('Edupeople/index')}",
+                type: "post",
+                dataType: "json",
+                data:{
+                    id:id
+                },
+                success: function (res) {
+                    $('#name').val(res.edu_name);
+                    $('#duties').val(res.job);
+                    $('#certificateName').val(res.certificate_name);
+                    $('#certificateCode').val(res.certificate_number);
+                    $('#effectiveDate').val(res.availability_date);
+                    $('#validTillDate').val(res.vld);
+                    $('#trainMode').val(res.training_mode);
+                    $('#trainTimeDate').val(res.training_time);
+                    $('#rulesDesc').val(res.remark);
+                }
+            })
+        }
+
+        //删除数组中的指定元素
+        Array.prototype.remove = function(val){
+            for (var i = 0; i < this.length; i++) {
+                if(this[i] === val){
+                    this.splice(i,1);
+                    break;
+                }
+            }
+            return this;
+        }
+
+        //数组去重
+        Array.prototype.removalArray = function(){
+            var newArr = [];
+            for (var i = 0; i < this.length; i++) {
+                if(newArr.indexOf(this[i]) == -1){  //indexOf 不兼容IE8及以下
+                    newArr.push(this[i]);
+                }
+            }
+            return newArr;
+        }
+
+        //获取选中行ID
+        var idArr = [];
+        function getId(that) {
+            var isChecked = $(that).prop('checked');
+            var id = $(that).parents('tr').find('td:eq(1)').text();
+            if(isChecked){
+                idArr.push(id);
+                idArr.removalArray();
+            }else{
+                idArr.remove(id);
+                idArr.removalArray();
+            }
+        }
+
+        //单选
+        function getSelectId(that) {
+            getId(that);
+            console.log(idArr);
+        }
+
+        //checkbox全选
+        $("#all_checked").on("click", function () {
+            if ($(this).prop("checked") === true) {
+                $("input[name='checkList']").prop("checked", $(this).prop("checked"));
+                $('#tableItem tbody tr').addClass('selected');
+                $('input[name="checkList"]').each(function(){
+                    getId(this);
+                });
+            } else {
+                $("input[name='checkList']").prop("checked", false);
+                $('#tableItem tbody tr').removeClass('selected');
+                $('input[name="checkList"]').each(function(){
+                    getId(this);
+                });
+            }
+            console.log(idArr);
+        });
     </script>
 </body>
 </html>

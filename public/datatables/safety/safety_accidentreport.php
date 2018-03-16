@@ -1,5 +1,5 @@
 <?php
-//安全生产文明建设
+//事故报告
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
