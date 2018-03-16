@@ -354,7 +354,7 @@ class Upload extends Base
         }
     }
 
-    /*
+    /**
      * 设置机构文件上传
      * @return \think\response\Json
     */
@@ -418,7 +418,7 @@ class Upload extends Base
         }
     }
 
-    /*
+    /**
      * 安全生产文明建设文件上传
      * @return \think\response\Json
     */
@@ -473,7 +473,7 @@ class Upload extends Base
             echo $file->getError();
         }
     }
-    /*
+    /**
      *安全生产信息化建设文件上传
      * @return \think\response\Json
     */
@@ -528,13 +528,10 @@ class Upload extends Base
             echo $file->getError();
         }
     }
-    /*
+    /**
      *安全生产责任制文件上传
      * @return \think\response\Json
     */
-
-
-
     public function uploadFullparticipation(){
         /**
          * id 安全生产责任制文件上传id
@@ -605,7 +602,7 @@ class Upload extends Base
         }
     }
 
-    /*
+    /**
      *设备设施管理文件上传
      * @return \think\response\Json
     */
@@ -670,7 +667,7 @@ class Upload extends Base
         }
     }
 
-    /*
+    /**
      *特种设备管理文件图片上传
      * @return \think\response\Json
     */
@@ -739,11 +736,10 @@ class Upload extends Base
         }
     }
 
-    /*
+    /**
      *职业健康检查文件上传
     * @return \think\response\Json
     */
-
     public function uploadJobhealth(){
         /**
          * id 相关方职业健康检查表id
@@ -899,4 +895,18 @@ class Upload extends Base
         }
     }
 
+    /**
+     * 通用上传方法
+     */
+    public function upload()
+    {
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/normal/');
+        if($info){
+            $path = './uploads/normal/' . str_replace("\\","/",$info->getSaveName());
+            return json(['code'=>1,'msg'=>'上传成功','data'=>$path]);
+        }else{
+            return json(['code'=>-1,'msg'=>'上传失败']);
+        }
+    }
 }
