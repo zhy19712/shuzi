@@ -1,5 +1,5 @@
 <?php
-//事故报告
+//警示标志
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
@@ -20,7 +20,7 @@ include('../conn.php');
  */
 
 // DB table to use
-$table = 'think_safety_accidentreport';
+$table = 'think_safety_warningsign';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -31,10 +31,10 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'filename',  'dt' => 1 ),
-    array( 'db' => 'number',  'dt' => 2 ),
-    array( 'db' => 'date',  'dt' => 3 ),
-    array( 'db' => 'owner',  'dt' => 4 ),
+    array( 'db' => 'standard_number',  'dt' => 1 ),
+    array( 'db' => 'warn_name',  'dt' => 2 ),
+    array( 'db' => 'structure_size',  'dt' => 3 ),
+    array( 'db' => 'measurement_unit',  'dt' => 4 ),
     array( 'db' => 'remark',  'dt' => 5 )
 );
 
