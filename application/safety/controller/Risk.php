@@ -26,8 +26,8 @@ class Risk extends Base
     {
         if(request()->isAjax()){
             $param = input('post.');
-            $edu = new RiskModel();
-            $data = $edu->getOne($param['id']);
+            $risk = new RiskModel();
+            $data = $risk->getOne($param['id']);
             return json($data);
         }
         return $this ->fetch();
@@ -37,8 +37,8 @@ class Risk extends Base
     {
         if(request()->isAjax()){
             $param = input('post.');
-            $edu = new RiskModel();
-            $data = $edu->getOne($param['id']);
+            $risk = new RiskModel();
+            $data = $risk->getOne($param['id']);
             return json($data);
         }
     }
