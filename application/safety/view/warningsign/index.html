@@ -139,11 +139,10 @@
                         <thead>
                         <tr>
                             <th>序号</th>
-                            <th>文件名称</th>
-                            <th>文件编号</th>
-                            <th>检查时间时间</th>
-                            <th>上传人</th>
-                            <th>上传时间</th>
+                            <th>标准号</th>
+                            <th>名称</th>
+                            <th>结构尺寸</th>
+                            <th>计量单位</th>
                             <th>备注</th>
                             <th>操作</th>
                         </tr>
@@ -168,31 +167,55 @@
                     <div class="col-lg-12 col-xs-12">
                         <label class="col-xs-2 control-label" style="margin: 0;padding: 0;text-align:left;line-height: 44px;">名称：</label>
                         <div class="myblock col-xs-10 input-group">
-                            <input id="remark1" type="text" class="form-control" name="remark" >
+                            <input id="warn_name" type="text" class="form-control" name="warn_name" >
                         </div>
                     </div>
-                    <div class="col-lg-12 col-xs-12" id="aa" style="margin: 0;padding: 0;">
+                    <div class="col-lg-12 col-xs-12" style="margin: 0;padding: 0;">
                         <div  class="col-lg-6 col-xs-6">
                             <label class="col-xs-2 control-label" style="margin:0;padding: 0;text-align: left;line-height: 44px;">结构尺寸：</label>
                             <div class="myblock col-xs-10 input-group">
 
-                                <input id="remark1" type="text" class="form-control" name="remark" >
+                                <input id="structure_size" type="text" class="form-control" name="structure_size" >
                             </div>
                         </div>
                         <div  class="col-lg-6 col-xs-6">
                             <label class="col-xs-2 control-label" style="margin:0;padding: 0;text-align: left;line-height: 44px;">计量单位：</label>
                             <div class="myblock col-xs-10 input-group">
-                                <input id="remark1" type="text" class="form-control" name="remark" >
+                                <input id="measurement_unit" type="text" class="form-control" name="measurement_unit" >
                             </div>
                         </div>
 
                     </div>
 
                     <input id="aid" type="text" class="form-control" value="" style="display: none;">
+                    <!--<div class="col-lg-12 col-xs-12">-->
+                        <!--<label class="col-xs-2 control-label" style="margin: 0;padding: 0;text-align:  left;line-height: 44px;">备注：</label>-->
+                        <!--<div class="myblock col-xs-10 input-group">-->
+                            <!--<input id="remark1" type="text" class="form-control" name="remark" >-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="col-lg-12 col-xs-12" style="margin: 0;padding: 0;">
+                        <div  class="col-lg-6 col-xs-6">
+                            <label class="col-xs-2 control-label" style="margin:0;padding: 0;text-align: left;line-height: 44px;">备注：</label>
+                            <div class="myblock col-xs-10 input-group">
+
+                                <input id="remark1" type="text" class="form-control" name="remark" >
+                            </div>
+                        </div>
+                        <div  class="col-lg-6 col-xs-6">
+                            <label class="col-xs-2 control-label" style="margin:0;padding: 0;text-align: left;line-height: 44px;">标准号：</label>
+                            <div class="myblock col-xs-10 input-group">
+                                <input id="standard_number" type="text" class="form-control" name="standard_number" >
+                            </div>
+                        </div>
+
+                    </div>
                     <div class="col-lg-12 col-xs-12">
-                        <label class="col-xs-2 control-label" style="margin: 0;padding: 0;text-align:  left;line-height: 44px;">备注：</label>
-                        <div class="myblock col-xs-10 input-group">
-                            <input id="remark1" type="text" class="form-control" name="remark" >
+                        <label class="col-xs-3 control-label" id="file" style="margin: 0;padding: 0;text-align:  right;line-height: 44px;">文件名称：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_upload1" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_list1" style="display: inline-block;vertical-align: middle;"></div>
                         </div>
                     </div>
                     <div class="col-xs-12" style="text-align: center;">
@@ -212,72 +235,85 @@
 <script src="__JS__/jquery.jedate.js"></script>
 
 <script type="text/javascript">
-
-    // $("#checktime").jeDate({
-    //     isinitVal:true,
-    //     festival: false,
-    //     format: 'YYYY-MM-DD hh:mm:ss'
-    //
-    // });
     var curMenu = null, zTree_Menu = null;
     //组织结构
     var zTreeObj;
     var selfid;
+    //点击获取路径
     function onClick(e, treeId, node) {
-
+        $("#table1_wrapper").css("display","none");
         // $("#path").text("");
         var sNodes = zTreeObj.getSelectedNodes();//选中节点
         selfid=zTreeObj.getSelectedNodes()[0].id;
         // var path = sNodes[0].name; //选中节点的名字
-        node = sNodes[0].getParentNode();//获取父节点
+        // node = sNodes[0].getParentNode();//获取父节点
+        // //判断是否还有父节点
+        // if (node) {
+        //     //判断是否还有父节点
+        //     while (node){
+        //         path = node.name + ">>" + path;
+        //         node = node.getParentNode();
+        //     }
+        // }else{
+        //     $("#path").text(sNodes[0].name);
+        // }
         // 判断是否拉数据
         var groupid = sNodes[0].pId; //父节点的id
         if (!sNodes[0].children && groupid !== 1){
+            // $("#table1_wrapper").show();
             $("#table1_wrapper").css("display","block");
-            $("#table2_wrapper2").css("display","none");
-            table1.ajax.url("__SCRIPT__/safety_jobhealth.php?selfid="+selfid).load();
+            table1.ajax.url("__SCRIPT__/safety_warningsign.php?selfid="+selfid).load();
+            // table1.ajax.url("__SCRIPT__/safety_responsibilityinsty_table.php").load();
 
         };
 
-
+        // $("#path").text("当前路径:"+path);
 
 
     };
-    var setting={
-        view:{
-            showLine:true,
-            selectedMulti:false,
-            dbClickExpand:true
+
+    //配置信息
+    var setting = {
+        view: {
+            showLine: true, //设置 zTree 是否显示节点之间的连线。
+            selectedMulti: false, //设置是否允许同时选中多个节点。
+            dblClickExpand: true //双击节点时，是否自动展开父节点的标识。
         },
-        async:{
-            enable:true,
-            autoParam:["pId"],
-            type:"post",
-            url:"./index",
-            dataType:"json"
+        async: {
+            enable : true,
+            autoParam: ["pId"],
+            type : "post",
+            url : "./index",
+            dataType :"json"
         },
         data:{
-            keep:{
-                leaf:true,
-                parent:true,
+            keep: {
+                leaf : true,
+                parent : true
             },
-            simpleData:{
+            simpleData : {
                 enable:true,
-                idkey:"id",
-                pIdkey:"pId",
-                rootpId:0
+                idkey: "id",
+                pIdKey: "pId",
+                rootPId:0
             }
         },
-        callback:{
-            onClick:this.onClick,
-        }
+        callback: {
+            // beforeClick: this.beforeClick,
+            onClick: this.onClick,
+
+
+        },
     };
+    //初始化
     zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
     zTree_Menu = $.fn.zTree.getZTreeObj("tree_container");
     curMenu = zTree_Menu.getNodes();//获取 zTree 的全部节点数据
+
     function showpdf1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        showPdf(id,"./jobhealthPreview");
+        // showPdf(id,"./jobhealthPreview");
+        showPdf(id,"./getindex");
     }
     function showPdf(id,url){
         $.ajax({
@@ -296,7 +332,7 @@
     };
     function del1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        del(id,"./jobhealthDel");
+        del(id,"./warningsignDel");
     }
     function del(id,url) {
 
@@ -309,8 +345,8 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        if(url === "./jobhealthDel"){
-                            table1.ajax.url("__SCRIPT__/safety_jobhealth.php?selfid="+selfid).load();
+                        if(url === "./warningsignDel"){
+                            table1.ajax.url("__SCRIPT__/safety_warningsign.php?selfid="+selfid).load();
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
@@ -320,32 +356,7 @@
             layer.close(index);
         })
     };
-    function download1(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        download(id,"./jobhealthDownload");
-    }
-    function download(id,url) {
-        $.ajax({
-            url: url,
-            success: function (res) {
-                if(res.code != 1){
-                    layer.msg(res.msg)
-                }else {
-                    $("#form_container").empty();
-                    var str = "";
-                    str += ""
-                        + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-                        + "<form name=download"+ id +" action="+ url +" method='get' target=downloadFrame"+ id +">"
-                        + "<span class='file_name' style='color: #000;'>"+str+"</span>"
-                        + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
-                        + "<button type='submit' class=btn" + id +"></button>"
-                        + "</form>"
-                    $("#form_container").append(str);
-                    $("#form_container").find(".btn" + id).click();
-                }
-            }
-        })
-    };
+
 
     var uploader1;          //初始化三个upload按钮
     //总体目标
@@ -355,11 +366,11 @@
             uploader1 = WebUploader.create({
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadJobhealth')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadWarningsign')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
-                formData: {"remark":"","aid":"","checktime":"","ai":"","selfid":"","filenumber":""},
+                formData: {"remark":"","aid":"","measurement_unit":"","structure_size":"","selfid":"","warn_name":""},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
@@ -391,8 +402,10 @@
             uploader1.on("uploadStart",function () {
                 uploader1.options.formData.aid = $("#aid").val();
                 uploader1.options.formData.remark = $("#remark1").val();
-                uploader1.options.formData.filenumber = $("#filenumber").val();
-                uploader1.options.formData.checktime = $("#checktime").val();
+                uploader1.options.formData.standard_number = $("#standard_number").val();
+                uploader1.options.formData.structure_size = $("#structure_size").val();
+                uploader1.options.formData.measurement_unit = $("#measurement_unit").val();
+                uploader1.options.formData.warn_name = $("#warn_name").val();
                 uploader1.options.formData.selfid =selfid;
             });
             uploader1.on('beforeFileQueued', function (file) {
@@ -418,7 +431,7 @@
                 $percent.css('width', percentage * 100 + '%');
             });
             // 文件上传成功
-            uploader1.on( 'uploadSuccess', function( file,data, response ) {
+            uploader1.on( 'uploadSuccess', function( file,data, w23onse ) {
                 console.log(file)
                 console.log(data)
                 if(data.code === 1){
@@ -428,7 +441,7 @@
                     $("#file_list1").empty();
                     $("#fname1").modal('hide');
                     console.log(selfid)
-                    table1.ajax.url("__SCRIPT__/safety_jobhealth.php?selfid="+selfid).load();
+                    table1.ajax.url("__SCRIPT__/safety_warningsign.php?selfid="+selfid).load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -437,7 +450,7 @@
             // 文件上传失败，显示上传出错。
             uploader1.on( 'uploadError', function( file ) {
                 layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                $("#file_per1").empty();
+                // $("#file_per1").empty();
             });
         }
     }
@@ -445,7 +458,7 @@
         "processing":true,
         "serverSide":true,
         "ajax":{
-            "url":"__SCRIPT__/safety_jobhealth.php?selfid="+selfid
+            "url":"__SCRIPT__/safety_warningsign.php?selfid="+selfid
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear">frtip',
         "bLengthChange": false,
@@ -453,10 +466,10 @@
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [5],
+                "targets": [6],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download1(this)' value='下载'/>";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit1(this)' value='编辑'/>" ;
+                    // var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download1(this)' value='下载'/>";
+                    var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit1(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del1(this)' value='删除'/>" ;
                     return html;
@@ -477,10 +490,23 @@
         }
 
     });
+    var selectyear ='<input id="year" />';
+    $("div.selectyear").html("年度："+selectyear);
+    //选择年度
+    $("#year").jeDate({
+        isinitVal:true,
+        format:"YYYY年",
+        okfun:function (obj) {
+            table1.ajax.url("__SCRIPT__/safety_warningsign.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
+            console.log(obj.date.YYYY);
+        }
+    });
+    $("#year").val("");
     function edit1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         $.ajax({
             url: "./getindex",
+            // url: "./warningsignEdit",
             type: "post",
             data: {id:id},
             dataType: "json",
@@ -490,10 +516,13 @@
                     $("#aid").val(res.data.id);
                     // $("#ai").val(res.data.id);
                     $("#remark1").val(res.data.remark);
-                    $("#filenumber").val(res.data.filenumber);
+                    $("#structure_size").val(res.data.structure_size);
+                    $("#measurement_unit").val(res.data.measurement_unit);
+                    $("#warn_name").val(res.data.warn_name);
+                    $("#standard_number").val(res.data.standard_number);
                     aname1 = res.data.name;
                     aname2 = res.data.name;
-                    aname3 = res.data.name;
+                    // aname3 = res.data.name;
                     uploader1 = null;
                     upload1();
                     if(res.data.path){
@@ -529,14 +558,14 @@
             }else {
                 if(aname1 === aname2){
                     $.ajax({
-                        url: "./jobhealthEdit",
+                        url: "./warningsignEdit",
                         type: "post",
-                        data: {id:$("#aid").val(),remark:$("#remark1").val(),filenumber:$("#filenumber").val(),checktime:$("#checktime").val(),ai:$("#ai").val()},
+                        data: {id:$("#aid").val(),remark:$("#remark1").val(),structure_size:$("#structure_size").val(),standard_number:$("#standard_number").val(),warn_name:$("#warn_name").val(),measurement_unit:$("#measurement_unit").val()},
                         datatype: "json",
                         success: function (res) {
                             if(res.code === 1){
                                 layer.msg(res.msg);
-                                table1.ajax.url("__SCRIPT__/safety_jobhealth.php?selfid="+selfid).load();
+                                table1.ajax.url("__SCRIPT__/safety_warningsign.php?selfid="+selfid).load();
                                 $("#fname1").modal('hide');
                             }else {
                                 layer.msg(res.msg);
@@ -551,8 +580,6 @@
             alert("请选择上传文件");
         }
     })
-    // ----------------------------------------------------------------------
-
 </script>
 </body>
 </html>

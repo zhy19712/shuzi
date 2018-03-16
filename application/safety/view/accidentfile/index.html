@@ -34,7 +34,7 @@
 <body class="gray-bg animated fadeInRight" style="background-color:#fff;">
 <div id="container">
     <div style="height: 50px;">
-        <p class="myp">事故档案</p>
+        <p class="myp">事故管理</p>
     </div>
     <div class="tab-content">
         <div class="tab-pane active" >
@@ -245,7 +245,7 @@
 
 
 
-    //事故档案表格
+    //事故管理表格
     var table = $("#info_table").DataTable({
         "processing": true,//是否显示处理状态
         "serverSide":true,//是否开启服务器模式
@@ -272,7 +272,7 @@
                 "next": "下一页"
             }
         }
-    })
+    });
 
     var selectyear ='<input id="year" />';
     $("div.selectyear").html("年度："+selectyear)
@@ -281,7 +281,7 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table.ajax.url("__SCRIPT__/safety_accidentfile.php?year="+obj.date.YYYY).load();
+            table.ajax.url("__SCRIPT__/safety_accidentreport.php?year="+obj.date.YYYY).load();
             console.log(obj.date.YYYY);
         }
     });

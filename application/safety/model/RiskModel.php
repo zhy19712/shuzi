@@ -19,8 +19,9 @@ class RiskModel extends Model
     /**
      * 发现人
      */
-    public function fouder(){
-        return $this->hasOne('User','founder_id')->field('nickname');
+    public function fouder()
+    {
+        return $this->hasOne('User', 'founder_id')->field('nickname');
     }
 
     /**
@@ -28,7 +29,7 @@ class RiskModel extends Model
      */
     public function workduty()
     {
-        return $this->hasOne('User','workduty_id')->field('nickname');
+        return $this->hasOne('User', 'workduty_id')->field('nickname');
     }
 
     /**
@@ -36,68 +37,122 @@ class RiskModel extends Model
      */
     public function acceptor()
     {
-        return $this->hasOne('User','acceptor_id')->field('nickname');
+        return $this->hasOne('User', 'acceptor_id')->field('nickname');
     }
 //    /**
 //     * 标段
 //     */
 //    public function section('User','section_id');
+
+    public function insertOrEdit($risk)
+    {
+        try {
+            if (empty($risk['id'])) {
+//            新增，直接计算分数
+                $founder_id = $risk['founder_id'];
+                $acceptor_id = $risk['acceptor_id'];
+            } else {
+//            修改，对比发现人与验收人
+            }
+        } catch (PDOException $e) {
+            return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
+        }
+    }
+
+
+    function proessScore($userId, $cat, $act,$time)
+    {
+        $score = 0;
+        switch ($cat) {
+            case '脚手架':
+            case '环水保':
+            case '施工用电':
+            case '施工机具':
+            case '起重作业':
+            case '交通安全':
+                $score = 0.5;
+                break;
+            case '安全文明施工':
+            case '反违章':
+            case '警示标示':
+            case '消防安全':
+            case '职业健康':
+                $score = 0.2;
+                break;
+            case '特种设备':
+                $score = 2;
+                break;
+            case '地质灾害':
+            case '爆破作业':
+                $score = 5;
+                break;
+            case '重大事故隐患':
+                $score = 10;
+                break;
+            default:
+                $score = 0;
+        }
+        if (!$score==0)
+        {
+        }
+    }
+
     public function insertEdu($param)
     {
-        try{
+        try {
             $result = $this->allowField(true)->save($param);
-            if(false === $result){
+            if (false === $result) {
                 return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
-            }else{
+            } else {
                 return ['code' => 1, 'data' => '', 'msg' => '添加成功'];
             }
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
 
     public function editEdu($param)
     {
-        try{
-            $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
-            if(false === $result){
+        try {
+            $result = $this->allowField(true)->save($param, ['id' => $param['id']]);
+            if (false === $result) {
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
-            }else{
+            } else {
                 return ['code' => 1, 'data' => '', 'msg' => '编辑成功'];
             }
-        }catch( PDOException $e){
+        } catch (PDOException $e) {
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
 
     public function delEdu($id)
     {
-        try{
+        try {
             $data = $this->getOne($id);
             $path = $data['ma_path'];
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-            if(file_exists($path)){
+            if (file_exists($path)) {
                 unlink($path); //删除文件 培训材料文件
             }
-            if(file_exists($pdf_path)){
+            if (file_exists($pdf_path)) {
                 unlink($pdf_path); //删除生成的预览pdf
             }
             $path2 = $data['re_path'];
             $pdf_path2 = './uploads/temp/' . basename($path2) . '.pdf';
-            if(file_exists($path2)){
+            if (file_exists($path2)) {
                 unlink($path2); //删除文件 培训记录文件
             }
-            if(file_exists($pdf_path2)){
+            if (file_exists($pdf_path2)) {
                 unlink($pdf_path2); //删除生成的预览pdf
             }
             $import_path = $data['path'];
-            if(file_exists($import_path)){
+            if (file_exists($import_path)) {
                 unlink($path); //删除文件 导入的文件
             }
 
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
@@ -107,10 +162,10 @@ class RiskModel extends Model
         return $this->where('id', $id)->find();
     }
 
-    public  function getList($idArr)
+    public function getList($idArr)
     {
         $data = [];
-        foreach($idArr as $v){
+        foreach ($idArr as $v) {
             $data[] = $this->getOne($v);
         }
         return $data;
