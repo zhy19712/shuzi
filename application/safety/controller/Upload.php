@@ -18,6 +18,7 @@ use app\safety\model\SafetySpecialEquipmentManagementModel;
 use app\safety\model\JobhealthGroupModel;
 use app\safety\model\AccidentreportModel;
 use app\safety\model\WarningsignModel;
+use app\safety\model\AccidentinvestigationreportModel;
 use think\Db;
 
 class Upload extends Base
@@ -967,6 +968,66 @@ class Upload extends Base
                     'remark' => $remark
                 ];
                 $flag = $warn->editWarningsign($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /*
+    * 事故调查报告文件上传
+    * @return \think\response\Json
+    */
+    public function uploadAccidentinvestigationreport(){
+        /**
+         * id 安全生产文明建设文件上传id
+         * number 编号
+         * name 事故调查报告上传原文件名
+         * filename 事故调查报告文件名
+         * owner 上传人
+         * date 上传时间
+         * remark 备注
+         * path 文件路径
+
+         */
+        $accident = new AccidentinvestigationreportModel();
+        $id = request()->param('aid');
+        $number = request()->param('number');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/accidentinvestigationreport');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/accidentinvestigationreport/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'number' => $number,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $accident->insertAccidentinvestigationreport($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $accident->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'number' => $number,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $accident->editAccidentinvestigationreport($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{
