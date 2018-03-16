@@ -1,5 +1,5 @@
 <?php
-//警示标志
+//应急预案
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
@@ -20,7 +20,7 @@ include('../conn.php');
  */
 
 // DB table to use
-$table = 'think_safety_warningsign';
+$table = 'think_safety_emergency_plan';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -31,13 +31,16 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'standard_number',  'dt' => 1 ),
-    array( 'db' => 'warn_name',  'dt' => 2 ),
-    array( 'db' => 'structure_size',  'dt' => 3 ),
-    array( 'db' => 'measurement_unit',  'dt' => 4 ),
-    array( 'db' => 'remark',  'dt' => 5 )
+    array( 'db' => 'preplan_file_name',  'dt' => 1 ),
+    array( 'db' => 'preplan_number',  'dt' => 2 ),
+    array( 'db' => 'version_number',  'dt' => 3 ),
+    array( 'db' => 'alternative_version',  'dt' => 4 ),
+    array( 'db' => 'applicability',  'dt' => 5 ),
+    array( 'db' => 'date',  'dt' => 6 ),
+    array( 'db' => 'owner',  'dt' => 7 ),
+    array( 'db' => 'preplan_state',  'dt' => 8 ),
+    array( 'db' => 'remark',  'dt' => 9 )
 );
-
 
 
 
@@ -53,23 +56,29 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
 
 require( '../ssp.class.php' );
 
-if(!empty($_GET["year"]) && !empty($_GET["selfid"]))
+if(!empty($_GET["year"]) && !empty($_GET["nameid"]))
 {
-    $selfid = $_GET["selfid"];
     $year = $_GET["year"];
+    $nameid = $_GET["nameid"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and date like '%" .$year. "%'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "id = '$nameid' and date like '%" .$year. "%'" )
     );
 }
-else if(empty($_GET["year"]) && !empty($_GET["selfid"]))
+else if(empty($_GET["year"]) && !empty($_GET["nameid"]))
 {
-    $selfid = $_GET["selfid"];
+    $nameid = $_GET["nameid"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "id = '$nameid'" )
+    );
+}else if(!empty($_GET["year"]) && empty($_GET["nameid"]))
+{
+    $year = $_GET["year"];
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "date like '%" .$year. "%'" )
     );
 }else{
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
     );
 }
 
