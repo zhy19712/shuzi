@@ -47,6 +47,13 @@
         font-weight: 700;
         color: black;
     }
+    .selectfile{
+        float: right;
+        margin-left: 20px;
+        margin-top: 5px;
+        font-weight: 700;
+        color: black;
+    }
     .skyblue{
         background-color: skyblue!important;
     }
@@ -201,7 +208,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label ">适用性评价：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="applicability" id="preplan_state" required="required" class="form-control" placeholder="此处为必填项">
+                                    <select name="applicability" id="applicability" required="required" class="form-control" placeholder="此处为必填项">
                                         <option value="适用">适用</option>
                                         <option value="不适用">不适用</option>
                                     </select>
@@ -212,17 +219,17 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">状态：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input id="preplan_state" type="text" class="form-control" name="applicability">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">备注：</label>
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">备注：</label>
                                 <div class="myblock col-xs-6 input-group">
                                     <input type="text" id="remark2" class="form-control datepicker" name="remark" />
                                 </div>
                             </div>
+                            <div class="col-lg-6 col-xs-12">
+                            <label class="col-xs-6 col-sm-4 control-label">状态：</label>
+                            <div class="myblock col-xs-6 input-group">
+                                <input id="preplan_state" type="text" class="form-control" name="preplan_state">
+                            </div>
+                        </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
@@ -531,7 +538,7 @@
 <script>
     //应急预案
     var bname1,bname2;           //用于区分 编辑时是否修改了文件
-    var current_id; //修订的id
+    var current_id=""; //修订的id
     //应急预案-初始化upload
     function upload2() {
         var swf = current_id===""?"":"";
@@ -663,8 +670,12 @@
     //应急预案-编辑
     function edit2(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $("#fname2").modal('show');
+        $("#preplan_state").show();
+        $("#applicability").parent().parent().show();
+        $("#preplan_state").parent().parent().show();
         $.ajax({
-            url: "./index",
+            url: "../Emergencyplan/index",
             type: "post",
             data: {id:id},
             dataType: "json",
@@ -681,16 +692,10 @@
                     $("#preplan_state").val(res.data.preplan_state);
                     uploader2 = null;
                     upload2();
-                    if(res.data.path){
-                        $("#file_list2").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
-                            '<span class="info">' + res.data.name + '</span>&nbsp' +
-                            '<span onclick="fdelatt2(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                            '</div>' );
-                    }
                     $("#fname2").modal('show');
                 }
             }
-        })
+        });
     };
     //应急预案-表格
     var table2 = $('#table2').DataTable( {
@@ -700,7 +705,7 @@
             "url": "__SCRIPT__/safety_emergencyplan.php",
             "async": false
         },
-        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear2 selectyear">frtip',
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear2 selectyear"><"selectfile">frtip',
         "columnDefs": [
             {
                 "searchable": false,
@@ -732,11 +737,9 @@
 
     //应急预案-修订
     $("#table2_wrapper .mybtn").click(function () {
-        if(current_id===""){
-            $("#preplan_state").hide();
+        if(current_id!==""){
             $("#preplan_state").hide();
             $("#applicability").parent().parent().hide();
-            console.log($("#preplan_state").parent().parent())
             $("#preplan_state").parent().parent().hide();
             $.ajax({
                 url: "../Emergencyplan/index",
@@ -779,6 +782,34 @@
         }
     });
     $(".selectyear input").val("");
+    //选择文件名
+    $("#table2_filter").hide();
+    var selectfile ='<select name="selectfile" id="selectfile">\n' +
+        '                                        <option value="">全部</option>\n' +
+        '                                        <option value="综合应急预案">综合应急预案</option>\n' +
+        '                                        <option value="人身伤害事故专项应急救援预案">人身伤害事故专项应急救援预案</option>\n' +
+        '                                        <option value="车辆交通事故专项应急救援预案">车辆交通事故专项应急救援预案</option>\n' +
+        '                                        <option value="火灾事故专项应急救援预案">火灾事故专项应急救援预案</option>\n' +
+        '                                        <option value="触电事故专项应急救援预案">触电事故专项应急救援预案</option>\n' +
+        '                                        <option value="社会公共安全突发事件专项应急救援预案">社会公共安全突发事件专项应急救援预案</option>\n' +
+        '                                        <option value="突发公共卫生事件专项应急救援预案">突发公共卫生事件专项应急救援预案</option>\n' +
+        '                                        <option value="地震灾害专项应急救援预案">地震灾害专项应急救援预案</option>\n' +
+        '                                        <option value="地质灾害专项应急救援预案">地质灾害专项应急救援预案</option>\n' +
+        '                                        <option value="环境污染事件专项应急救援预案">环境污染事件专项应急救援预案</option>\n' +
+        '                                        <option value="突发高温及恶劣天气专项应急救援预案">突发高温及恶劣天气专项应急救援预案</option>\n' +
+        '                                        <option value="防洪度汛及强对流天气专项应急救援预案">防洪度汛及强对流天气专项应急救援预案</option>\n' +
+        '                                        <option value="急性传染病专项应急救援预案">急性传染病专项应急救援预案</option>\n' +
+        '                                        <option value="施工机械事故专项应急救援预案">施工机械事故专项应急救援预案</option>\n' +
+        '                                        <option value="爆炸事故专项应急救援预案">爆炸事故专项应急救援预案</option>\n' +
+        '                                        <option value="自然灾害事故专项应急救援预案">自然灾害事故专项应急救援预案</option>\n' +
+        '                                        <option value="食物中毒事件专项应急救援预案">食物中毒事件专text项应急救援预案</option>\n' +
+        '                                        <option value="坍（垮）塌事故专项应救援急预案">坍（垮）塌事故专项应救援急预案</option>\n' +
+        '                                    </select>';
+
+    $("div.selectfile").html("文件："+selectfile);
+    $("#selectfile").change(function () {
+        table2.search($(this).val()).draw();
+    })
 
     //应急预案-提交
     $("#fname2").submit(function () {
@@ -821,6 +852,7 @@
     $("#table2 tbody tr").click(function (e) {
         if($(e.target).val()==="编辑"){
             current_id="";
+            $(this).removeClass("skyblue").siblings().removeClass("skyblue");
         }else{
             $(this).addClass("skyblue").siblings().removeClass("skyblue");
             current_id = $(this).find("td:first-child").html();
