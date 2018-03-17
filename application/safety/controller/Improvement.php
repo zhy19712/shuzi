@@ -6,13 +6,13 @@
  * Time: 10:56
  */
 
-// 绩效评定
+// 持续改进
 namespace app\safety\controller;
 
 use app\admin\controller\Base;
-use app\safety\model\EvaluationModel;
+use app\safety\model\ImprovementModel;
 
-class Evaluation extends Base
+class Improvement extends Base
 {
     /**
      *  编辑时 根据 id 编号获取一条数据
@@ -22,9 +22,9 @@ class Evaluation extends Base
     public  function  index()
     {
         if(request()->isAjax()){
-            $eval= new EvaluationModel();
+            $improve = new ImprovementModel();
             $param = input('post.');
-            $data = $eval->getOne($param['id']);
+            $data = $improve->getOne($param['id']);
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
@@ -37,14 +37,14 @@ class Evaluation extends Base
      */
     public function evalEdit()
     {
-        $eval = new EvaluationModel();
+        $improve = new ImprovementModel();
         $param = input('post.');
         if(request()->isAjax()){
-            $is_exist = $eval->getOne($param['id']);
+            $is_exist = $improve->getOne($param['id']);
             if(isNull($is_exist)){
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
-            $flag = $eval->editEval($param);
+            $flag = $improve->editImprovement($param);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -57,9 +57,9 @@ class Evaluation extends Base
     public function evalDel()
     {
         if(request()->isAjax()){
-            $eval = new EvaluationModel();
+            $improve = new ImprovementModel();
             $param = input('post.');
-            $flag = $eval->delEval($param['id']);
+            $flag = $improve->delImprovement($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -72,10 +72,10 @@ class Evaluation extends Base
     public function evalDownload()
     {
         $id = input('param.id');
-        $eval = new EvaluationModel();
-        $param = $eval->getOne($id);
+        $improve = new ImprovementModel();
+        $param = $improve->getOne($id);
         $filePath = $param['path'];
-        $fileName = $param['eval_name'];
+        $fileName = $param['ment_name'];
         // 如果是手动输入的名称，就有可能没有文件后缀
         $extension = get_extension($fileName);
         if(empty($extension)){
@@ -105,12 +105,12 @@ class Evaluation extends Base
      */
     public function evalPreview()
     {
-        $eval = new EvaluationModel();
+        $improve = new ImprovementModel();
         if(request()->isAjax()) {
             $param = input('post.');
             $code = 1;
             $msg = '预览成功';
-            $data = $eval->getOne($param['id']);
+            $data = $improve->getOne($param['id']);
             $path = $data['path'];
             $extension = strtolower(get_extension(substr($path,1)));
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
