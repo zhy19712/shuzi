@@ -758,6 +758,7 @@
             });
             uploader1.on("uploadStart",function () {
                 console.log(groupid)
+                console.log($("#rulesid").val())
                 uploader1.options.formData.id = $("#rulesid").val();//id
                 uploader1.options.formData.group_id = groupid;//group_id
                 uploader1.options.formData.number = $("#standardNumr").val();//标准号
@@ -819,67 +820,68 @@
         $("#addRules_modal input").val("");
         $("#file_list1").empty();
         $("#rulesDesc").empty();
+        $("#rulesid").val("");
         $("#addRules_modal h5").text("新增");
         $("#addRules_modal").modal('show');
         upload1();
     });
 
     //新增的保存
-    $("#addRules_modal .btn-primary").click(function () {
-        console.log($("#alternativeStandard").val())
-        console.log($("#file_list1 .info").text())
+    // $("#addRules_modal .btn-primary").click(function () {
         $("#memberAdd").submit(function (){
+            console.log($("#rulesid").val())
+
             if($("#file_list1").html()){
-            if(!$("#id1").val()){
-                if($("#appEvaluation").val() == '过期'){
-                    if($("#alternativeStandard").val() != ''){
+                if($("#rulesid").val() == ''){
+                    if($("#appEvaluation").val() == '过期'){
+                        if($("#alternativeStandard").val() != ''){
+                            console.log("新增")
+                            uploader1.upload();
+                        }else {
+                            alert('请填写替代标准')
+                        }
+                    }else if($("#appEvaluation").val() == '适用'){
+                        $("#alternativeStandard").val("")
                         uploader1.upload();
-                        console.log("新增")
-                    }else {
-                        alert('请填写替代标准')
                     }
-                }else if($("#appEvaluation").val() == '适用'){
-                    $("#alternativeStandard").val("")
-                    uploader1.upload();
+                }else if($("#rulesid").val() != ''){
+                    console.log("编辑BAO")
+                    console.log($("#file_list1 .info .infoText").text())
+                    if(aname1 === aname2){
+                        $.ajax({
+                            url: "./rulesEdit",
+                            type: "post",
+                            data: {
+                                id : $("#rulesid").val(),//id
+                                group_id : groupid,//group_id
+                                number : $("#standardNumr").val(),//标准号
+                                rul_name : $("#file_list1 .info .infoText").val(),//名称
+                                go_date : $("#dataImple").val(),//施行日期
+                                standard : $("#alternativeStandard").val(),//替代标准
+                                evaluation : $("#appEvaluation").val(),//适用性评价
+                                rul_user : $("#recogner").val(),//识别人
+                                remark : $("#rulesDesc").val()//备注
+                            },
+                            datatype: "json",
+                            success: function (res) {
+                                if(res.code === 1){
+                                    layer.msg(res.msg);
+                                    admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
+                                    $("#addRules_modal").modal('hide');
+                                }else {
+                                    layer.msg(res.msg);
+                                }
+                            }
+                        })
+                    }else {
+                        uploader1.upload();
+                    }
                 }
             }else {
-                console.log("编辑")
-                console.log($("#file_list1 .info .infoText").text())
-                if(aname1 === aname2){
-                    $.ajax({
-                        url: "./rulesEdit",
-                        type: "post",
-                        data: {
-                            id : $("#rulesid").val(),//id
-                            group_id : groupid,//group_id
-                            number : $("#standardNumr").val(),//标准号
-                            rul_name : $("#file_list1 .info .infoText").val(),//名称
-                            go_date : $("#dataImple").val(),//施行日期
-                            standard : $("#alternativeStandard").val(),//替代标准
-                            evaluation : $("#appEvaluation").val(),//适用性评价
-                            rul_user : $("#recogner").val(),//识别人
-                            remark : $("#rulesDesc").val()//备注
-                        },
-                        datatype: "json",
-                        success: function (res) {
-                            if(res.code === 1){
-                                layer.msg(res.msg);
-                                admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
-                                $("#addRules_modal").modal('hide');
-                            }else {
-                                layer.msg(res.msg);
-                            }
-                        }
-                    })
-                }else {
-                    uploader1.upload();
-                }
+                alert("请选择上传文件");
             }
-        }else {
-            alert("请选择上传文件");
-        }
         })
-    })
+    // })
 
     //新增中的返回
     $("#addRules_modal .btn-danger").click(function () {
@@ -889,7 +891,7 @@
     function edit(that) {
         var id = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
         $("#addRules_modal input").val("");
-        $("#id1").val(id);
+        $("#rulesid").val(id);
         $("#file_list1").empty();
         $("#addRules_modal h5").text("编辑");
         $("#addRules_modal").modal("show");
@@ -1147,6 +1149,26 @@
             $("#alternativeStandard").attr("readOnly",true);
         }
     });
+    //驱虫
+    Array.prototype.removal = function(){
+        var newArr = [];
+        for (var i = 0; i < this.length; i++) {
+            if(newArr.indexOf(this[i]) == -1){  //判断在newArr数组中是否存在，不存在则push到newArr数组中 indexOf 不兼容IE8及以下
+                newArr.push(this[i]);
+            }
+        }
+        return newArr;
+    }
+    //删除数组中的指定元素
+    Array.prototype.remove = function(val){
+        for (var i = 0; i < this.length; i++) {
+            if(this[i] === val){
+                this.splice(i,1);
+                break;
+            }
+        }
+        return this;
+    }
     var dataArr=[];
     //获取选中行ID
     function getDataId(that) {
@@ -1154,6 +1176,10 @@
         var id = $(that).parents('tr').find('td:eq(1)').text();
         if(isChecked){
             dataArr.push(id);
+            dataArr.removal(id);
+        }else {
+            dataArr.remove(id);
+            dataArr.removal(id);
         }
     }
     //单选
@@ -1164,9 +1190,7 @@
 
     //checkbox全选
     $(".checkall").on("click", function () {
-        console.log(dataArr);
-
-        if ($(this).prop("checked") === true) {
+        if ($(this).prop("checked") == true) {
             var check = $(this).prop("checked");
             $(".checkchild").prop("checked", check);
             $(".checkchild").each(function(){
@@ -1174,7 +1198,11 @@
             });
         } else {
             $(".checkchild").prop("checked", false);
+            $(".checkchild").each(function(){
+                getDataId(this);
+            });
         }
+        console.log(dataArr);
     });
 
     var uploaderExcel;

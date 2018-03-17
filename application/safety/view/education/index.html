@@ -251,7 +251,7 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-6 col-sm-2 control-label">培训材料：</label>
                                 <div class="myblock col-xs-6 col-sm-10 input-group">
-                                    <input type="text" id="trainerMaterials" class="form-control" name="trainerMaterials">
+                                    <input type="text" id="trainerMaterials" required="required" class="form-control" name="trainerMaterials" placeholder="此处为必填项！请上传文件或填写">
                                     <span class="input-group-btn">
                                         <div class="btn btn-upload" id="pickerMaterials">上传</div>
 
@@ -264,7 +264,7 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-6 col-sm-2 control-label">培训记录：</label>
                                 <div class="myblock col-xs-6 col-sm-10 input-group">
-                                    <input type="text" required="required" id="trainerRecords" class="form-control" name="trainerRecords">
+                                    <input type="text" required="required" id="trainerRecords" class="form-control" name="trainerRecords" placeholder="此处为必填项！请上传文件或填写">
                                     <span class="input-group-btn">
                                         <div class="btn btn-upload" id="pickerRecords">上传</div>
 
@@ -412,18 +412,17 @@
         console.log(groupid +" id-groupid")
         if(treeNode.level == 0){
             $("#mytable1_wrapper").css("display","none");
-            admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+idParent+"&pid=" + groupid).load();
         }else {
             if(treeNode.level == 1){
                 $("#mytable1_wrapper").css("display","block");
-                admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+idParent+"&pid=" + groupid).load();
+                admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+groupid+"&pid=" + idParent).load();
             }
         }
         //获取路径
         $.ajax({
             url: "./getParents",
             type: "post",
-            data: {id:groupid},
+            data: {id:groupid,pid:idParent},
             dataType: "json",
             success: function (res) {
                 console.log(res)
@@ -469,6 +468,7 @@
     $(".mybtn").click(function () {
         console.log($("#edDesc").html())
         $("#education_modal input").val("");
+        $("#edId").val("")
         $("#edDesc").empty();
         $("#education_modal h5").text("新增");
         $("#education_modal").modal('show');
@@ -614,16 +614,16 @@
         uploaderRecords.destroy();
     });
 
-    // admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=1").load();
     var edamid1,edamid2;
     function flager() {
+        console.log($("#edId").val())
         $.ajax({
             url: "./eduAdd",
             type: "post",
             data: {
-                // zid: $("#edId").val(),//id
-                zid:idParent,//id
                 pid : groupid,//group_id
+                zid:idParent,//id
+                id: $("#edId").val(),//id
                 lecturer: $("#trainer").val(),//培训人
                 edu_time: $("#trainingTime").val(),//培训时间
                 trainee: $("#trainers").val(),//培训人员
@@ -654,52 +654,76 @@
         })
     }
     //新增中的保存
-    var flag=1;
     $("#memberAdd").submit(function () {
-        if ($("#pickerRecords").html() && $("#pickerMaterials").html()) {
-            console.log($("#edId").val());//等于空
+        console.log($("#edId").val());//等于空
 
-            if (!$("#edId").val()) {
-                console.log("新增")
-                if(flag) {
-                    flager()
+        if ($("#edId").val() == "") {
+            console.log("新增")
+            $.ajax({
+                url: "./eduAdd",
+                type: "post",
+                data: {
+                    pid : groupid,//group_id
+                    zid:idParent,//id
+                    id: $("#edId").val(),//id
+                    lecturer: $("#trainer").val(),//培训人
+                    edu_time: $("#trainingTime").val(),//培训时间
+                    trainee: $("#trainers").val(),//培训人员
+                    address: $("#trainingPlace").val(),//培训地点
+                    num: $("#numTraining").val(),//培训人数
+                    content: $("#trainerCon").val(),//培训内容
+                    material_name: $("#trainerMaterials").val(),//培训材料
+                    record_name: $("#trainerRecords").val(),//培训记录
+                    remark: $("#edDesc").val()//备注
+                },
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                    if (res.code === 1) {
+                        flag = 1;
+                        $("#education_modal").modal('hide');
+                        admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+idParent+"&pid=" + groupid).load();
+                        layer.msg(res.msg, {time: 1500, shade: 0.1});
+                        uploaderRecords.upload();
+                        uploaderMaterials.upload();
+                        return true; //阻止表单默认提交
+                    } else {
+                        layer.msg(res.msg);
+                        flag = 0;
+                    }
                 }
-            } else {
-                console.log("编辑")
-                if (edamid1 === edamid2) {
-                    $.ajax({
-                        url: "./eduAdd",
-                        type: "post",
-                        data: {
-                            zid: $("#edId").val(),//id
-//                    group_id : groupid,//group_id
-                            group_id: 1,//group_id
-                            lecturer: $("#trainer").val(),//培训人
-                            edu_time: $("#trainingTime").val(),//培训时间
-                            trainee: $("#trainers").val(),//培训人员
-                            address: $("#trainingPlace").val(),//培训地点
-                            num: $("#numTraining").val(),//培训人数
-                            content: $("#trainerCon").val(),//培训内容
-                            material_name: $("#trainerMaterials").val(),//培训材料
-                            record_name: $("#trainerRecords").val(),//培训记录
-                            remark: $("#edDesc").val()//备注
-                        },
-                        datatype: "json",
-                        success: function (res) {
-                            console.log(res);
-                            if (res.code === 1) {
-                                $("#education_modal").modal('hide');
-                                admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
-                                layer.msg(res.msg, {time: 1500, shade: 0.1});
-                            } else {
-                                layer.msg(res.msg);
-                            }
-                        }
-                    })
+            })
+        } else if($("#edId").val() != ""){
+            console.log("编辑bao")
+            $.ajax({
+                url: "./eduAdd",
+                type: "post",
+                data: {
+                    id: editId,//id
+                    lecturer: $("#trainer").val(),//培训人
+                    edu_time: $("#trainingTime").val(),//培训时间
+                    trainee: $("#trainers").val(),//培训人员
+                    address: $("#trainingPlace").val(),//培训地点
+                    num: $("#numTraining").val(),//培训人数
+                    content: $("#trainerCon").val(),//培训内容
+                    material_name: $("#trainerMaterials").val(),//培训材料
+                    record_name: $("#trainerRecords").val(),//培训记录
+                    remark: $("#edDesc").val()//备注
+                },
+                datatype: "json",
+                success: function (res) {
+                    console.log(res);
+                    if (res.code === 1) {
+                        $("#education_modal").modal('hide');
+                        uploaderRecords.upload();
+                        uploaderMaterials.upload();
+                        admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+idParent+"&pid=" + groupid).load();
+                        layer.msg(res.msg, {time: 1500, shade: 0.1});
+                    } else {
+                        layer.msg(res.msg);
+                    }
                 }
-            }
-        } else {
-            alert("请选择上传文件");
+            })
         }
     })
 
@@ -708,23 +732,14 @@
         standard_uploader = null;
     });
 
-    function complete1(data){
-        console.log(data);
-        if(data.code==1){
-            console.log(2222222222222222)
-            layer.msg(data.msg);
-           admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
-            $("#education_modal").modal('hide');
-        }else{
-            layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
-            return false;
-        }
-    }
+    var editId;//点击编辑保存的时候存的id
     //专题培训-点击编辑
     function edEdit(that) {
         var id = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
         console.log(id)
+        editId = id;
         $("#edDesc").empty();
+        $("#edId").val(id)
         $("#education_modal h5").text("编辑");
         $("#education_modal").modal('show');
         $("#pickerMaterials").css('display',"block");
@@ -909,7 +924,7 @@
         if(data.code === 1){
             console.log(groupid)
             console.log(idParent)
-            admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+idParent+"&pid=" + groupid).load();
+            admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+groupid+"&pid=" + idParent).load();
             layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
         }else {
             layer.msg('导入数据失败!');
@@ -934,8 +949,8 @@
         $percent.css('width', percentage * 100 + '%');
     });
     importExcel.on("uploadStart",function () {
-        importExcel.options.formData.pid = groupid;
-        importExcel.options.formData.zid = idParent;
+        importExcel.options.formData.pid = idParent;
+        importExcel.options.formData.zid = groupid;
     });
     importExcel.on("uploadFinished", function () {
         importExcel.reset();
