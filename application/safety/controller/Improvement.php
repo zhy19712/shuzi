@@ -71,6 +71,9 @@ class Improvement extends Base
      */
     public function improveDownload()
     {
+        if(request()->isAjax()){
+            return json(['code'=>1]);
+        }
         $id = input('param.id');
         $improve = new ImprovementModel();
         $param = $improve->getOne($id);

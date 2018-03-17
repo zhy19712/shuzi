@@ -71,6 +71,9 @@ class Evaluation extends Base
      */
     public function evalDownload()
     {
+        if(request()->isAjax()){
+            return json(['code'=>1]);
+        }
         $id = input('param.id');
         $eval = new EvaluationModel();
         $param = $eval->getOne($id);

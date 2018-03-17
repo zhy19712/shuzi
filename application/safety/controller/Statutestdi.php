@@ -100,11 +100,16 @@ class Statutestdi extends Base
         if(request()->isAjax()){
             return json(['code' => 1]);
         }
-        $id = input('post.id');
+        $id = input('param.id');
         $sdi = new StatutestdiModel();
         $param = $sdi->getOne($id);
         $filePath = $param['path'];
-        $fileName = $param['sdi_name'] . '.' . substr(strrchr($filePath, '.'), 1);
+        $fileName = $param['sdi_name'];
+        // 如果是手动输入的名称，就有可能没有文件后缀
+        $extension = get_extension($fileName);
+        if(empty($extension)){
+            $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
+        }
         if(file_exists($filePath)){
             $file = fopen($filePath, "r"); //   打开文件
             //输入文件标签
@@ -117,6 +122,8 @@ class Statutestdi extends Base
             echo fread($file, filesize($filePath));
             fclose($file);
             exit;
+        }else{
+            return json(['code' => '-1','msg' => '文件不存在']);
         }
     }
 

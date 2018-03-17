@@ -59,6 +59,9 @@ class Risksources extends Base
      */
     public function sourcesDownload()
     {
+        if(request()->isAjax()){
+            return json(['code'=>1]);
+        }
         $id = input('param.id');
         $sources = new RiskSourcesModel();
         $param = $sources->getOne($id);

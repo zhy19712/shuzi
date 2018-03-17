@@ -59,6 +59,9 @@ class Riskmanage extends Base
      */
     public function manageDownload()
     {
+        if(request()->isAjax()){
+            return json(['code'=>1]);
+        }
         $id = input('param.id');
         $type = input('param.type');
         $manage = new RiskManageModel();

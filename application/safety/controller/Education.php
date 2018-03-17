@@ -98,6 +98,8 @@ class Education extends Base
             echo fread($file, filesize($filePath));
             fclose($file);
             exit;
+        }else{
+            return json(['code' => '-1','msg' => '文件不存在']);
         }
     }
 
