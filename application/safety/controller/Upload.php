@@ -3,6 +3,7 @@
 namespace app\safety\controller;
 use app\admin\controller\Base;
 use app\safety\model\EducationModel;
+use app\safety\model\EvaluationModel;
 use app\safety\model\ResponsibilityModel;
 use app\safety\model\RevisionrecordModel;
 use app\safety\model\RulesregulationsModel;
@@ -1053,4 +1054,104 @@ class Upload extends Base
             return json(['code'=>-1,'msg'=>'上传失败']);
         }
     }
+
+
+    /**
+     * 绩效评定
+     * 一岗双责绩效评定
+     * 安全标准化评估报告
+     * 安全文明施工年度工作总结
+     * 共用 新增 或 (有文件上传的修改)
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function uploadEval(){
+        $eval = new EvaluationModel();
+        // 前台 页面提交的数据
+        $id = request()->param('id'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
+        $type = request()->param('type'); // 必填 type 是1 绩效评定  2评估报告 3工作总结
+        $eval_name = request()->param('eval_name'); // 可选 文件名称 用户输入的文件名称 不传 默认和原文件名称一致
+        $years = $quarter = '';
+        if($type == '1'){ //  一岗双责绩效评定
+            $years = request()->param('years'); // 必填 年度
+            $quarter = request()->param('quarter'); // 必填 季度
+        }else if($type == '3'){ //  安全文明施工年度工作总结
+            $years = request()->param('years'); // 必填 年度
+        }
+        $remark = request()->param('remark'); // 可选 备注
+
+        // 系统自动生成的数据
+        $owner = session('username'); // 上传人
+        $eval_date = date('Y-m-d H:i:s'); // 上传时间
+
+        // 上传的文件
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/statutesdi');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/statutesdi/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if($eval_name == '等待上传...'){
+                $houzhui = substr(strrchr($filename, '.'), 1);
+                $sdi_name = basename($filename,".".$houzhui); // 取不带后缀的文件名
+            }
+
+            if($type == '1'){ //  一岗双责绩效评定
+                $data = [
+                    'type' => $type,
+                    'eval_name' => $eval_name,
+                    'filename' => $filename,
+                    'owner' => $owner,
+                    'eval_date' => $eval_date,
+                    'path' => $path,
+                    'years' => $years,
+                    'quarter' => $quarter,
+                    'remark' => $remark
+                ];
+            }else if ($type == '3'){ //  安全文明施工年度工作总结
+                $data = [
+                    'type' => $type,
+                    'eval_name' => $eval_name,
+                    'filename' => $filename,
+                    'owner' => $owner,
+                    'eval_date' => $eval_date,
+                    'path' => $path,
+                    'years' => $years,
+                    'remark' => $remark
+                ];
+            }else{ // 安全标准化评估报告
+                $data = [
+                    'type' => $type,
+                    'eval_name' => $eval_name,
+                    'filename' => $filename,
+                    'owner' => $owner,
+                    'eval_date' => $eval_date,
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+            }
+
+            if(empty($id)){
+                $flag = $eval->insertEval($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $eval->getOne($id);
+                if(isNull($data_older)){
+                    return json(['code' => '0', 'msg' => '无效的编号']);
+                }
+                if(file_exists($data_older['path'])){
+                    unlink($data_older['path']);
+                }
+                $data['id'] = $id;
+                $flag = $eval->editEval($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+
+
+
 }
