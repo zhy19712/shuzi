@@ -9,17 +9,15 @@
 namespace app\safety\controller;
 
 // 重大危险源识别与管理
+
 use app\admin\controller\Base;
 use app\admin\model\ContractModel;
-use app\safety\model\EducationModel;
 use app\safety\model\RiskSourcesModel;
-use think\Db;
-use think\Loader;
 
 class Risksources extends Base
 {
     /**
-     * 预览获取一条数据  或者  编辑获取一条数据
+     * 编辑获取一条数据
      * @return mixed|\think\response\Json
      * @author hutao
      */
@@ -27,8 +25,8 @@ class Risksources extends Base
     {
         if(request()->isAjax()){
             $param = input('post.');
-            $edu = new RiskSourcesModel();
-            $data = $edu->getOne($param['id']);
+            $sources = new RiskSourcesModel();
+            $data = $sources->getOne($param['id']);
             return json($data);
         }
         return $this ->fetch();
@@ -39,16 +37,16 @@ class Risksources extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function sdiEdit()
+    public function sourcesEdit()
     {
         if(request()->isAjax()){
-            $sdi = new RiskSourcesModel();
+            $sources = new RiskSourcesModel();
             $param = input('post.');
-            $data = [
-                'id' => $param['id'],
-                'remark' => $param['remark']
-            ];
-            $flag = $sdi->editEdu($data);
+            $is_exist = $sources->getOne($param['id']);
+            if(isNull($is_exist)){
+                return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
+            }
+            $flag = $sources->editRiskSources($param);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -59,22 +57,18 @@ class Risksources extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function eduDownload()
+    public function sourcesDownload()
     {
-        if(request()->isAjax()){
-            return json(['code' => 1]);
-        }
         $id = input('param.id');
-        $edu = new RiskSourcesModel();
-        $param = $edu->getOne($id);
-        $filePath = $param['ma_path'];
-        $fileName = $param['material_name'];
+        $sources = new RiskSourcesModel();
+        $param = $sources->getOne($id);
+        $filePath = $param['path'];
+        $fileName = $param['risk_name'];
         // 如果是手动输入的名称，就有可能没有文件后缀
         $extension = get_extension($fileName);
         if(empty($extension)){
             $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
         }
-
         if(file_exists($filePath)) {
             $file = fopen($filePath, "r"); //   打开文件
             //输入文件标签
@@ -87,6 +81,8 @@ class Risksources extends Base
             echo fread($file, filesize($filePath));
             fclose($file);
             exit;
+        }else{
+            return json(['code' => '-1','msg' => '文件不存在']);
         }
     }
 
@@ -95,19 +91,15 @@ class Risksources extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function eduPreview()
+    public function sourcesPreview()
     {
-        $edu = new RiskSourcesModel();
+        $sources = new RiskSourcesModel();
         if(request()->isAjax()) {
             $param = input('post.');
             $code = 1;
             $msg = '预览成功';
-            $data = $edu->getOne($param['id']);
-            if($param['type'] == '1'){ // type 1 表示的是 培训材料文件 2 表示培训记录文件
-                $path = $data['ma_path'];
-            }else{
-                $path = $data['re_path'];
-            }
+            $data = $sources->getOne($param['id']);
+            $path = $data['path'];
             $extension = strtolower(get_extension(substr($path,1)));
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
             if(!file_exists($pdf_path)){
@@ -135,12 +127,12 @@ class Risksources extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function eduDel()
+    public function sourcesDel()
     {
         if(request()->isAjax()){
             $param = input('param.');
-            $edu = new RiskSourcesModel();
-            $flag = $edu->delEdu($param['id']);
+            $sources = new RiskSourcesModel();
+            $flag = $sources->delRiskSources($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -158,7 +150,7 @@ class Risksources extends Base
     {
         if(request()->isAjax()){
             $con = new ContractModel();
-            $data = $con->getBiaoduanName(2); // 2 表示页面有2个一一级节点
+            $data = $con->getBiaoduanName(1); // 2 表示页面有2个一一级节点
             return json($data);
         }
     }

@@ -35,7 +35,7 @@ class Improvement extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function evalEdit()
+    public function improveEdit()
     {
         $improve = new ImprovementModel();
         $param = input('post.');
@@ -54,7 +54,7 @@ class Improvement extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function evalDel()
+    public function improveDel()
     {
         if(request()->isAjax()){
             $improve = new ImprovementModel();
@@ -69,7 +69,7 @@ class Improvement extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function evalDownload()
+    public function improveDownload()
     {
         $id = input('param.id');
         $improve = new ImprovementModel();
@@ -103,7 +103,7 @@ class Improvement extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function evalPreview()
+    public function improvePreview()
     {
         $improve = new ImprovementModel();
         if(request()->isAjax()) {

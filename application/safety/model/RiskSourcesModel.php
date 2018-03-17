@@ -16,7 +16,7 @@ class RiskSourcesModel extends Model
 {
     protected $name = 'safety_risksources';
 
-    public function insertEdu($param)
+    public function insertRiskSources($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -30,7 +30,7 @@ class RiskSourcesModel extends Model
         }
     }
 
-    public function editEdu($param)
+    public function editRiskSources($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -44,31 +44,18 @@ class RiskSourcesModel extends Model
         }
     }
 
-    public function delEdu($id)
+    public function delRiskSources($id)
     {
         try{
             $data = $this->getOne($id);
-            $path = $data['ma_path'];
+            $path = $data['path'];
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
             if(file_exists($path)){
-                unlink($path); //删除文件 培训材料文件
+                unlink($path); // 删除文件
             }
             if(file_exists($pdf_path)){
-                unlink($pdf_path); //删除生成的预览pdf
+                unlink($pdf_path); // 删除生成的预览pdf
             }
-            $path2 = $data['re_path'];
-            $pdf_path2 = './uploads/temp/' . basename($path2) . '.pdf';
-            if(file_exists($path2)){
-                unlink($path2); //删除文件 培训记录文件
-            }
-            if(file_exists($pdf_path2)){
-                unlink($pdf_path2); //删除生成的预览pdf
-            }
-            $import_path = $data['path'];
-            if(file_exists($import_path)){
-                unlink($path); //删除文件 导入的文件
-            }
-
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
         }catch(PDOException $e){
@@ -88,10 +75,5 @@ class RiskSourcesModel extends Model
             $data[] = $this->getOne($v);
         }
         return $data;
-    }
-
-    public function getYears()
-    {
-        return $this->where('improt_time is not null')->group('improt_time')->column('improt_time');
     }
 }

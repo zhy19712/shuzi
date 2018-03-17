@@ -7,6 +7,7 @@ use app\safety\model\EvaluationModel;
 use app\safety\model\ImprovementModel;
 use app\safety\model\ResponsibilityModel;
 use app\safety\model\RevisionrecordModel;
+use app\safety\model\RiskSourcesModel;
 use app\safety\model\RulesregulationsModel;
 use app\safety\model\SafetyGoalAnualModel;
 use app\safety\model\SafetyGoalGeneralModel;
@@ -1087,10 +1088,10 @@ class Upload extends Base
 
         // 上传的文件
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/statutesdi');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/eval');
         if($info){
             $temp = $info->getSaveName();
-            $path = './uploads/safety/statutesdi/' . str_replace("\\","/",$temp);
+            $path = './uploads/safety/eval/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             if($eval_name == '等待上传...' || empty($eval_name)){
                 $eval_name = $filename;
@@ -1168,10 +1169,10 @@ class Upload extends Base
 
         // 上传的文件
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/statutesdi');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/improve');
         if($info){
             $temp = $info->getSaveName();
-            $path = './uploads/safety/statutesdi/' . str_replace("\\","/",$temp);
+            $path = './uploads/safety/improve/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             if($ment_name == '等待上传...' || empty($ment_name)){
                 $ment_name = $filename;
@@ -1205,6 +1206,66 @@ class Upload extends Base
         }
     }
 
+
+    /**
+     * 重大危险源识别与管理 -- 新增 或 (有文件上传的修改)
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function uploadSources(){
+        $sources = new RiskSourcesModel();
+        // 前台 页面提交的数据
+        $id = request()->param('id'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
+        $pid = request()->param('pid'); // 必须 文件归属的父级节点编号 新增时 一定要有   修改时可以不传
+        $zid = request()->param('zid'); // 必须 文件归属的子级节点编号 新增时 一定要有   修改时可以不传
+        $risk_name = request()->param('risk_name'); // 可选 文件名称 用户输入的文件名称 不传 默认和原文件名称一致
+        $number = request()->param('number'); // 可选 文件编号
+        $remark = request()->param('remark'); // 可选 备注
+
+        // 系统自动生成的数据
+        $owner = session('username'); // 上传人
+        $risk_date = date('Y-m-d H:i:s'); // 上传时间
+
+        // 上传的文件
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/sources');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/sources/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if($risk_name == '等待上传...' || empty($risk_name)){
+                $risk_name = $filename;
+            }
+            $data = [
+                'pid' => $pid,
+                'zid' => $zid,
+                'risk_name' => $risk_name,
+                'number' => $number,
+                'owner' => $owner,
+                'risk_date' => $risk_date,
+                'filename' => $filename,
+                'path' => $path,
+                'remark' => $remark
+            ];
+            if(empty($id)){
+                $flag = $sources->insertRiskSources($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $sources->getOne($id);
+                if(isNull($data_older)){
+                    return json(['code' => '0', 'msg' => '无效的编号']);
+                }
+                if(file_exists($data_older['path'])){
+                    unlink($data_older['path']);
+                }
+                $data['id'] = $id;
+                $flag = $sources->editRiskSources($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
 
 
 
