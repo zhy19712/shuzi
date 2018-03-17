@@ -10,9 +10,7 @@ namespace app\safety\controller;
 
 // 安全风险管理
 use app\admin\controller\Base;
-use app\admin\model\ContractModel;
 use app\safety\model\RiskManageModel;
-use app\safety\model\RiskModel;
 use think\Db;
 use think\Loader;
 
@@ -27,31 +25,28 @@ class Riskmanage extends Base
     {
         if(request()->isAjax()){
             $param = input('post.');
-            $edu = new RiskManageModel();
-            $data = $edu->getOne($param['id']);
+            $manage = new RiskManageModel();
+            $data = $manage->getOne($param['id']);
             return json($data);
         }
         return $this ->fetch();
     }
 
     /**
-     * 新增或者修改
+     * 无文件上传的编辑
      * @return \think\response\Json
      * @author hutao
      */
-    public function riskAdd()
+    public function manageEdit()
     {
         if(request()->isAjax()){
-            $edu = new RiskModel();
+            $manage = new RiskManageModel();
             $param = input('post.');
-            if(empty($param['id'])){
-                if(isset($param['id'])){
-                    unset($param['id']); // 避免提交的id是0 或者 空 的时候的赋值
-                }
-                $flag = $edu->insertEdu($param);
-            }else{
-                $flag = $edu->editEdu($param);
+            $is_exist = $manage->getOne($param['id']);
+            if(isNull($is_exist)){
+                return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
+            $flag = $manage->editManage($param);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -62,30 +57,28 @@ class Riskmanage extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function eduDownload()
+    public function manageDownload()
     {
-        if(request()->isAjax()){
-            return json(['code' => 1]);
-        }
         $id = input('param.id');
         $type = input('param.type');
-        $edu = new RiskManageModel();
-        $param = $edu->getOne($id);
+        $manage = new RiskManageModel();
+        $param = $manage->getOne($id);
+        $filePath = $fileName = '';
         if($type == '1'){ // type 1 年度风险辨识文件 2 季度风险辨识文件3 风险复测单 4风险管控卡 5施工作业票
-            $filePath = $param['ma_path'];
-            $fileName = $param['material_name'];
+            $filePath = $param['year_path'];
+            $fileName = $param['year_name'];
         }else if($type == '2'){
-            $filePath = $param['re_path'];
-            $fileName = $param['record_name'];
+            $filePath = $param['quarter_path'];
+            $fileName = $param['quarter_name'];
         }else if($type == '3'){
-            $filePath = $param['re_path'];
-            $fileName = $param['record_name'];
+            $filePath = $param['sheet_path'];
+            $fileName = $param['sheet_name'];
         }else if($type == '4'){
-            $filePath = $param['re_path'];
-            $fileName = $param['record_name'];
+            $filePath = $param['card_path'];
+            $fileName = $param['card_name'];
         }else if($type == '5'){
-            $filePath = $param['re_path'];
-            $fileName = $param['record_name'];
+            $filePath = $param['work_path'];
+            $fileName = $param['work_name'];
         }
 
         // 如果是手动输入的名称，就有可能没有文件后缀
@@ -106,32 +99,35 @@ class Riskmanage extends Base
             echo fread($file, filesize($filePath));
             fclose($file);
             exit;
+        }else{
+            return json(['code' => '-1','msg' => '文件不存在']);
         }
     }
 
     /**
-     * 预览
+     *  上传的文件点击预览为pdf文件
      * @return \think\response\Json
      * @author hutao
      */
-    public function riskPreview()
+    public function managePreview()
     {
-        $edu = new RiskManageModel();
+        $manage = new RiskManageModel();
         if(request()->isAjax()) {
             $param = input('post.');
             $code = 1;
             $msg = '预览成功';
-            $data = $edu->getOne($param['id']);
+            $data = $manage->getOne($param['id']);
+            $path = '';
             if($param['type'] == '1'){ // type 1 年度风险辨识文件 2 季度风险辨识文件3 风险复测单 4风险管控卡 5施工作业票
-                $path = $data['ma_path'];
+                $path = $data['year_path'];
             }else if($param['type'] == '2'){
-                $path = $data['re_path'];
+                $path = $data['quarter_path'];
             }else if($param['type'] == '3'){
-                $path = $data['re_path'];
+                $path = $data['sheet_path'];
             }else if($param['type'] == '4'){
-                $path = $data['re_path'];
+                $path = $data['card_path'];
             }else if($param['type'] == '5'){
-                $path = $data['re_path'];
+                $path = $data['work_path'];
             }
 
             $extension = strtolower(get_extension(substr($path,1)));
@@ -161,12 +157,12 @@ class Riskmanage extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function eduDel()
+    public function manageDel()
     {
         if(request()->isAjax()){
             $param = input('param.');
-            $edu = new RiskManageModel();
-            $flag = $edu->delEdu($param['id']);
+            $manage = new RiskManageModel();
+            $flag = $manage->delManage($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -180,18 +176,13 @@ class Riskmanage extends Base
      */
     public function importExcel()
     {
-        $pid = input('param.pid');
-        $zid = input('param.zid');
-        if(empty($pid) || empty($zid)){
-            return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
-        }
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/education');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/manage');
         if($info){
             // 调用插件PHPExcel把excel文件导入数据库
             Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
             $exclePath = $info->getSaveName();  //获取文件名
-            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/education' . DS . $exclePath;   //上传文件的地址
+            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/manage' . DS . $exclePath;   //上传文件的地址
             // 当文件后缀是xlsx 或者 csv 就会报：the filename xxx is not recognised as an OLE file错误
             $extension = get_extension($file_name);
             if ($extension == 'xlsx') {
@@ -208,29 +199,50 @@ class Riskmanage extends Base
                 $PHPReader->setDelimiter(',');
                 //载入文件
                 $obj_PHPExcel = $PHPReader->load($file_name);
+            }else{
+                return  json(['code' => 1,'data' => '','msg' => '导入的文件格式不对']);
             }
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
             // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
-            $content_index = $edu_time_index = $address_index = $lecturer_index = $trainee_index = $num_index = $remark_index = -1;
+            $segmentv_index = $position_index = $riskname_index = $risk_grade_index = $on_stream_time_index = $completion_time_index = $construction_user_index = -1;
+            $supervision_user_index = $remark_index = $c_iphone_index = $s_iphone_index = $job_content_index = $risk_factor_index = $measures_index = -1;
             foreach ($excel_array[0] as $k=>$v){
                 $str = preg_replace('/[ ]/', '', $v);
-                if ($str == '培训内容'){
-                    $content_index = $k;
-                }else if ($str == '培训时间'){
-                    $edu_time_index = $k;
-                }else if ($str == '培训地点'){
-                    $address_index = $k;
-                }else if($str == '培训人'){
-                    $lecturer_index = $k;
-                }else if($str == '培训人员'){
-                    $trainee_index = $k;
-                }else if($str == '培训人数'){
-                    $num_index = $k;
+                if ($str == '标段'){
+                    $segmentv_index = $k;
+                }else if ($str == '部位'){
+                    $position_index = $k;
+                }else if ($str == '风险名称'){
+                    $riskname_index = $k;
+                }else if($str == '风险等级'){
+                    $risk_grade_index = $k;
+                }else if($str == '开工时间'){
+                    $on_stream_time_index = $k;
+                }else if($str == '完工时间'){
+                    $completion_time_index = $k;
+                }else if($str == '施工单位责任人' || $str == '施工方责任人'){
+                    $construction_user_index = $k;
+                }else if($str == '监理单位责任人' || $str == '监理责任人'){
+                    $supervision_user_index = $k;
                 }else if($str == '备注'){
                     $remark_index = $k;
+                }else if($str == '施工联系电话' || $str == '施工单位责任人联系电话' || $str == '施工方责任人联系电话'){
+                    $c_iphone_index = $k;
+                }else if($str == '监理联系电话' || $str == '监理单位责任人联系电话' || $str == '监理责任人联系电话'){
+                    $s_iphone_index = $k;
+                }else if($str == '作业内容'){
+                    $job_content_index = $k;
+                }else if($str == '风险因素'){
+                    $risk_factor_index = $k;
+                }else if($str == '预控措施'){
+                    $measures_index = $k;
                 }
             }
-            if($content_index == -1 || $edu_time_index == -1 || $address_index == -1 || $lecturer_index == -1 || $trainee_index == -1 || $num_index == -1 || $remark_index == -1){
+            if($segmentv_index == -1 || $position_index == -1 || $riskname_index == -1 || $risk_grade_index == -1 || $on_stream_time_index == -1 || $completion_time_index == -1 || $construction_user_index == -1){
+                $json_data['code'] = -1;
+                $json_data['info'] = '文件内容格式不对';
+                return json($json_data);
+            }else if($supervision_user_index == -1 || $remark_index == -1 || $c_iphone_index == -1 || $s_iphone_index == -1 || $job_content_index == -1 || $risk_factor_index == -1 || $measures_index == -1){
                 $json_data['code'] = -1;
                 $json_data['info'] = '文件内容格式不对';
                 return json($json_data);
@@ -238,24 +250,29 @@ class Riskmanage extends Base
             $insertData = [];
             foreach($excel_array as $k=>$v){
                 if($k > 0){
-                    $insertData[$k]['content'] = $v[$content_index];
-                    $insertData[$k]['edu_time'] = $v[$edu_time_index];
-                    $insertData[$k]['address'] = $v[$address_index];
-                    $insertData[$k]['lecturer'] = $v[$lecturer_index];
-                    $insertData[$k]['trainee'] = $v[$trainee_index];
-                    $insertData[$k]['num'] = $v[$num_index];
+                    $insertData[$k]['segmentv'] = $v[$segmentv_index];
+                    $insertData[$k]['position'] = $v[$position_index];
+                    $insertData[$k]['riskname'] = $v[$riskname_index];
+                    $insertData[$k]['risk_grade'] = $v[$risk_grade_index];
+                    $insertData[$k]['on_stream_time'] = $v[$on_stream_time_index];
+                    $insertData[$k]['completion_time'] = $v[$completion_time_index];
+                    $insertData[$k]['construction_user'] = $v[$construction_user_index];
+                    $insertData[$k]['supervision_user'] = $v[$supervision_user_index];
                     $insertData[$k]['remark'] = $v[$remark_index];
+                    $insertData[$k]['c_iphone'] = $v[$c_iphone_index];
+                    $insertData[$k]['s_iphone'] = $v[$s_iphone_index];
+                    $insertData[$k]['job_content'] = $v[$job_content_index];
+                    $insertData[$k]['risk_factor'] = $v[$risk_factor_index];
+                    $insertData[$k]['measures'] = $v[$measures_index];
                     // 非表格数据
-                    $insertData[$k]['pid'] = $pid;
-                    $insertData[$k]['zid'] = $zid;
                     $insertData[$k]['years'] = date('Y');
                     $insertData[$k]['import_time'] = date('Y-m-d H:i:s');
                     $insertData[$k]['owner'] = session('username');
                     $insertData[$k]['filename'] = $file->getInfo('name');
-                    $insertData[$k]['path'] = './uploads/safety/import/education/' . str_replace("\\","/",$exclePath);
+                    $insertData[$k]['path'] = './uploads/safety/import/manage/' . str_replace("\\","/",$exclePath);
                 }
             }
-            $success = Db::name('safety_education')->insertAll($insertData);
+            $success = Db::name('safety_riskmanage')->insertAll($insertData);
             if($success !== false){
                 return  json(['code' => 1,'data' => '','msg' => '导入成功']);
             }else{
@@ -278,9 +295,9 @@ class Riskmanage extends Base
             return json(['code'=>1]);
         }
         $idArr = input('param.idarr');
-        $name = '专题教育培训'.date('Y-m-d H:i:s'); // 导出的文件名
-        $edu = new EducationModel();
-        $list = $edu->getList($idArr);
+        $name = '安全风险管理'.date('Y-m-d H:i:s'); // 导出的文件名
+        $manage = new RiskManageModel();
+        $list = $manage->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -298,12 +315,20 @@ class Riskmanage extends Base
         // 设置表格第一行显示内容
         $objPHPExcel->getActiveSheet()
             ->setCellValue('A1', '序号')
-            ->setCellValue('B1', '培训内容')
-            ->setCellValue('C1', '培训时间')
-            ->setCellValue('D1', '培训地点')
-            ->setCellValue('E1', '培训人')
-            ->setCellValue('F1', '培训人员')
-            ->setCellValue('G1', '培训人数');
+            ->setCellValue('B1', '标段')
+            ->setCellValue('C1', '部位')
+            ->setCellValue('D1', '风险名称')
+            ->setCellValue('E1', '风险等级')
+            ->setCellValue('F1', '开工时间')
+            ->setCellValue('G1', '完工时间')
+            ->setCellValue('H1', '施工单位责任人')
+            ->setCellValue('I1', '监理单位责任人')
+            ->setCellValue('J1', '备注')
+            ->setCellValue('K1', '施工联系电话')
+            ->setCellValue('L1', '监理联系电话')
+            ->setCellValue('M1', '作业内容')
+            ->setCellValue('N1', '风险因素')
+            ->setCellValue('O1', '预控措施');
         $key = 1;
         /*以下就是对处理Excel里的数据，横着取数据*/
         foreach($list as $v){
@@ -312,12 +337,20 @@ class Riskmanage extends Base
             $objPHPExcel->getActiveSheet()
                 //Excel的第A列，name是你查出数组的键值字段，下面以此类推
                 ->setCellValue('A'.$key, $v['id'])
-                ->setCellValue('B'.$key, $v['content'])
-                ->setCellValue('C'.$key, $v['edu_time'])
-                ->setCellValue('D'.$key, $v['address'])
-                ->setCellValue('E'.$key, $v['lecturer'])
-                ->setCellValue('F'.$key, $v['trainee'])
-                ->setCellValue('G'.$key, $v['num']);
+                ->setCellValue('B'.$key, $v['segmentv'])
+                ->setCellValue('C'.$key, $v['position'])
+                ->setCellValue('D'.$key, $v['riskname'])
+                ->setCellValue('E'.$key, $v['risk_grade'])
+                ->setCellValue('F'.$key, $v['on_stream_time'])
+                ->setCellValue('G'.$key, $v['completion_time'])
+                ->setCellValue('H'.$key, $v['construction_user'])
+                ->setCellValue('I'.$key, $v['supervision_user'])
+                ->setCellValue('J'.$key, $v['remark'])
+                ->setCellValue('K'.$key, $v['c_iphone'])
+                ->setCellValue('L'.$key, $v['s_iphone'])
+                ->setCellValue('M'.$key, $v['job_content'])
+                ->setCellValue('N'.$key, $v['risk_factor'])
+                ->setCellValue('O'.$key, $v['measures']);
         }
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
@@ -344,8 +377,7 @@ class Riskmanage extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $name = input('param.name');
-        $newName = '专题教育培训 - '.$name.date('Y-m-d H:i:s'); // 导出的文件名
+        $newName = '安全风险管理模板 - '.date('Y-m-d H:i:s'); // 导出的文件名
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -363,13 +395,20 @@ class Riskmanage extends Base
         // 设置表格第一行显示内容
         $objPHPExcel->getActiveSheet()
             ->setCellValue('A1', '序号')
-            ->setCellValue('B1', '培训内容')
-            ->setCellValue('C1', '培训时间')
-            ->setCellValue('D1', '培训地点')
-            ->setCellValue('E1', '培训人')
-            ->setCellValue('F1', '培训人员')
-            ->setCellValue('G1', '培训人数')
-            ->setCellValue('H1', '备注');
+            ->setCellValue('B1', '标段')
+            ->setCellValue('C1', '部位')
+            ->setCellValue('D1', '风险名称')
+            ->setCellValue('E1', '风险等级')
+            ->setCellValue('F1', '开工时间')
+            ->setCellValue('G1', '完工时间')
+            ->setCellValue('H1', '施工单位责任人')
+            ->setCellValue('I1', '监理单位责任人')
+            ->setCellValue('J1', '备注')
+            ->setCellValue('K1', '施工联系电话')
+            ->setCellValue('L1', '监理联系电话')
+            ->setCellValue('M1', '作业内容')
+            ->setCellValue('N1', '风险因素')
+            ->setCellValue('O1', '预控措施');
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
         ob_end_clean();  //清除缓冲区,避免乱码

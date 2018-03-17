@@ -16,7 +16,7 @@ class RiskManageModel extends Model
 {
     protected $name = 'safety_riskmanage';
 
-    public function insertEdu($param)
+    public function insertManage($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -30,7 +30,7 @@ class RiskManageModel extends Model
         }
     }
 
-    public function editEdu($param)
+    public function editManage($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -44,29 +44,28 @@ class RiskManageModel extends Model
         }
     }
 
-    public function delEdu($id)
+    public function delManage($id)
     {
         try{
             $data = $this->getOne($id);
-            $path = $data['ma_path'];
-            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-            if(file_exists($path)){
-                unlink($path); //删除文件 培训材料文件
+            $path[0] = $data['year_path']; // 年度风险辨识文件
+            $path[1] = $data['quarter_path']; // 年度风险辨识文件
+            $path[2] = $data['sheet_path']; // 年度风险辨识文件
+            $path[3]= $data['card_path']; // 风险管控卡
+            $path[4] = $data['work_path']; // 施工作业票
+            foreach($path as $v){
+                $pdf_path = './uploads/temp/' . basename($v) . '.pdf';
+                if(file_exists($v)){
+                    unlink($v); //删除文件
+                }
+                if(file_exists($pdf_path)){
+                    unlink($pdf_path); //删除生成的预览pdf
+                }
             }
-            if(file_exists($pdf_path)){
-                unlink($pdf_path); //删除生成的预览pdf
-            }
-            $path2 = $data['re_path'];
-            $pdf_path2 = './uploads/temp/' . basename($path2) . '.pdf';
-            if(file_exists($path2)){
-                unlink($path2); //删除文件 培训记录文件
-            }
-            if(file_exists($pdf_path2)){
-                unlink($pdf_path2); //删除生成的预览pdf
-            }
-            $import_path = $data['path'];
+
+            $import_path = $data['path']; // 导入的文件
             if(file_exists($import_path)){
-                unlink($path); //删除文件 导入的文件
+                unlink($import_path); //  删除文件
             }
 
             $this->where('id', $id)->delete();
@@ -92,6 +91,6 @@ class RiskManageModel extends Model
 
     public function getYears()
     {
-        return $this->where('improt_time is not null')->group('improt_time')->column('improt_time');
+        return $this->where('import_time is not null')->group('import_time')->column('import_time');
     }
 }
