@@ -26,6 +26,7 @@ use app\safety\model\EmergencyplanModel;
 use app\safety\model\EmergencyschemeModel;
 use app\safety\model\EmergencyimagedataModel;
 use app\safety\model\EmergencyrehearsalModel;
+use app\safety\model\EmergencydisposalModel;
 use think\Db;
 
 class Upload extends Base
@@ -1292,7 +1293,7 @@ class Upload extends Base
          */
         $emergencyplan = new EmergencyplanModel();
         $id = request()->param('aid');//获取上传的18的文件id
-
+        $panid = request()->param('panid');//判断是否有文件上传
         $preplan_number = request()->param('preplan_number');//文件编号
         $applicability = request()->param('applicability');//适用性评价
         $remark = request()->param('remark');//备注
@@ -1302,9 +1303,10 @@ class Upload extends Base
             $temp = $info->getSaveName();
             $path = './uploads/safety/emergencyplan/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
-            if(empty($id))
+            if(empty($panid))
             {
                 $data = [
+                    'id' => $id,
                     'preplan_number' => $preplan_number,
                     'applicability' => $applicability,
                     'name' => $filename,
@@ -1314,7 +1316,7 @@ class Upload extends Base
                     'path' => $path,
                     'remark' => $remark
                 ];
-                $flag = $emergencyplan->insertEmergencyplan($data);
+                $flag = $emergencyplan->editEmergencyplan($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $emergencyplan->getOne($id);
@@ -1526,6 +1528,76 @@ class Upload extends Base
     }
 
 
+    /*
+     * 应急处置文件上传
+     * @return \think\response\Json
+     */
+    public function uploadEmergencydisposal(){
+        /**
+         * id 应急处置表自增id
+         * preplan_file_name 文件名称
+         * name 上传原文件名
+         * filename 上传文件名
+         * preplan_number 文件编号
+         * version_number 版本号
+         * alternative_version 替代版本
+         * applicability 适用性评价
+         * preplan_state 状态
+         * owner 上传人
+         * date 上传时间
+         * remark 备注
+         * path 上传文件路径
+         */
+        $emergencydisposal = new EmergencydisposalModel();
+        $id = request()->param('aid');//获取上传的18的文件id
+        $panid = request()->param('panid');//判断编辑时候是否有文件上传
+        $preplan_number = request()->param('preplan_number');//文件编号
+        $applicability = request()->param('applicability');//适用性评价
+        $remark = request()->param('remark');//备注
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/emergencydisposal');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/emergencydisposal/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($panid))//无文件上传
+            {
+                $data = [
+                    'id' => $id,
+                    'preplan_number' => $preplan_number,
+                    'applicability' => $applicability,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencydisposal->editEmergencydisposal($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $emergencydisposal->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'preplan_number' => $preplan_number,
+                    'applicability' => $applicability,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencydisposal->editEmergencydisposal($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }
 
+
+
+        }else{
+            echo $file->getError();
+        }
+    }
 
 }

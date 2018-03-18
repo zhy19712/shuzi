@@ -30,7 +30,7 @@ class Emergencyplan extends Base
     }
 
     /*
-     *修订一条应急预案信息
+     * 修订一条应急预案信息
      */
     public function reviseEdit()
     {
@@ -89,43 +89,43 @@ class Emergencyplan extends Base
                         {
                             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
                         }
-                    }
-                }else{
-                    if(empty($param['panid']))//没有文件上传
-                    {
-                        $data = [
-                            'id' => $param['aid'],
-                            'preplan_file_name' => $param['preplan_file_name'],
-                            'preplan_number' => $param['preplan_number'],
-                            'version_number' => $param['version_number'],
-                            'alternative_version' => $param['alternative_version'],
-                            'preplan_state' => $param['preplan_state'],
-                            'remark' => $param['remark']
-                        ];
-                        $flag = $emergency->editEmergencyplan($data);
-                        $data1 = [
+                    }else
+                         {
+                             $data = [
+                                 'id' => $param['aid'],
+                                 'preplan_file_name' => $param['preplan_file_name'],
+                                 'preplan_number' => $param['preplan_number'],
+                                 'version_number' => $param['version_number'],
+                                 'alternative_version' => $param['alternative_version'],
+                                 'preplan_state' => $param['preplan_state'],
+                                 'remark' => $param['remark']
+                             ];
+                             $flag = $emergency->editEmergencyplan($data);
+                             $data1 = [
 //                            'id' => $param['aid'],
-                            'preplan_file_name' => $param['preplan_file_name'],
-                            'preplan_number' => $param['preplan_number'],
-                            'version_number' => $param['version_number'],
-                            'alternative_version' => $param['alternative_version'],
-                            'preplan_state' => $param['preplan_state'],
-                            'remark' => $param['remark']
-                        ];
-                        $flag1 = $revise->insertEmergencyrevise($data1);
+                                 'preplan_file_name' => $param['preplan_file_name'],
+                                 'preplan_number' => $param['preplan_number'],
+                                 'version_number' => $param['version_number'],
+                                 'alternative_version' => $param['alternative_version'],
+                                 'preplan_state' => $param['preplan_state'],
+                                 'remark' => $param['remark']
+                             ];
+                             $flag1 = $revise->insertEmergencyrevise($data1);
 
-                        if($flag['code'] && $flag1['code'])
-                        {
-                            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-                        }
-                    }
+                             if($flag['code'] && $flag1['code'])
+                             {
+                                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+                             }
+                         }
+                }else{
+                    echo $file->getError();
                 }
             }
 
     }
 
     /*
-     *下载一条应急预案信息
+     * 下载一条应急预案信息
     */
     public function emergencyDownload()
     {
@@ -152,7 +152,7 @@ class Emergencyplan extends Base
     }
 
     /*
-     *删除一条应急预案信息
+     * 删除一条应急预案信息
     */
     public function emergencyDel()
     {
@@ -174,7 +174,7 @@ class Emergencyplan extends Base
     }
 
     /*
-     *预览一条应急预案信息
+     * 预览一条应急预案信息
     */
     public function emergencyPreview()
     {
