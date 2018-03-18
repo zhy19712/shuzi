@@ -48,8 +48,8 @@ class Revisionrecord extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('param.idarr');
-        $name = '修编记录'.date('Y-m-d H:i:s'); // 导出的文件名
+        $idArr = input('id/a');
+        $name = '修编记录 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $record = new RevisionrecordModel();
         $list = $record->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
