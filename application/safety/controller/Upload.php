@@ -22,6 +22,10 @@ use app\safety\model\JobhealthGroupModel;
 use app\safety\model\AccidentreportModel;
 use app\safety\model\WarningsignModel;
 use app\safety\model\AccidentinvestigationreportModel;
+use app\safety\model\EmergencyplanModel;
+use app\safety\model\EmergencyschemeModel;
+use app\safety\model\EmergencyimagedataModel;
+use app\safety\model\EmergencyrehearsalModel;
 use think\Db;
 
 class Upload extends Base
@@ -1263,6 +1267,262 @@ class Upload extends Base
             echo $file->getError();
         }
     }
+
+    /*
+     * 应急预案文件上传上传
+     * @return \think\response\Json
+     */
+    public function uploadEmergencyplan(){
+        /**
+         * id 应急预案表中的自增id
+         * preplan_file_name 文件名称
+         * name 上传原文件名
+         * filename 上传文件名
+         * preplan_number 文件编号
+         * version_number 版本号
+         * alternative_version 替代版本
+         * applicability 适用性评价
+         * preplan_state 状态
+         * owner 上传人
+         * date 上传时间
+         * remark 备注
+         * path 上传文件路径
+         */
+        $emergencyplan = new EmergencyplanModel();
+        $id = request()->param('aid');//获取上传的18的文件id
+
+        $preplan_number = request()->param('preplan_number');//文件编号
+        $applicability = request()->param('applicability');//适用性评价
+        $remark = request()->param('remark');//备注
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/emergencyplan');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/emergencyplan/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'preplan_number' => $preplan_number,
+                    'applicability' => $applicability,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyplan->insertEmergencyplan($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $emergencyplan->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'preplan_number' => $preplan_number,
+                    'applicability' => $applicability,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyplan->editEmergencyplan($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }
+
+
+
+        }else{
+            echo $file->getError();
+        }
+    }
+
+
+
+    /*
+     * 应急演练方案文件上传
+     * @return \think\response\Json
+     */
+    public function uploadEmergencyscheme(){
+        /**
+         * id 应急演练方案自增id
+         * name 应急演练上传文件原文件名
+         * filename 应急演练上传文件名
+         * number 编号
+         * date 上传时间
+         * owner 上传人
+         * remark 备注
+         * path 文件路径
+
+         */
+        $emergencyscheme = new EmergencyschemeModel();
+        $id = request()->param('aid');
+        $number = request()->param('number');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/emergencyscheme');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/emergencyscheme/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'number' => $number,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyscheme->insertEmergencyrehearsalscheme($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $emergencyscheme->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'number' => $number,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyscheme->editEmergencyrehearsalscheme($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+
+    /*
+     * 应急演练影像资料文件上传
+     * @return \think\response\Json
+     */
+    public function uploadEmergencyimagedata(){
+        /**
+         * id 应急演练影像资料自增id
+         * name 应急演练影像资料上传原文件名
+         * filename 应急演练影像资料上传文件名
+         * place 地点
+         * date 上传时间
+         * owner 上传人
+         * remark 备注
+         * path 文件路径
+
+         */
+        $emergencyimagedata = new EmergencyimagedataModel();
+        $id = request()->param('aid');
+        $place = request()->param('place');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/emergencyimagedata');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/emergencyimagedata/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'place' => $place,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyimagedata->insertEmergencyimagedata($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $emergencyimagedata->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'place' => $place,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyimagedata->editEmergencyimagedata($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+
+    /*
+     * 应急演练文件上传
+     * @return \think\response\Json
+     */
+    public function uploadEmergencyrehearsal(){
+        /**
+         * id 应急演练自增id
+         * name 应急演练上传原文件名
+         * filename 应急演练上传文件名
+         * number 编号
+         * date 上传时间
+         * owner 上传人
+         * remark 备注
+         * path 文件路径
+
+         */
+        $emergencyrehearsal = new EmergencyrehearsalModel();
+        $id = request()->param('aid');
+        $number = request()->param('number');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/$emergencyrehearsal');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/$emergencyrehearsal/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'number' => $number,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyrehearsal->insertEmergencyrehearsal($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $emergencyrehearsal->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'number' => $number,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyrehearsal->editEmergencyrehearsal($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
 
 
 

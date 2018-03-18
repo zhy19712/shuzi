@@ -2,23 +2,23 @@
 /**
  * Created by PhpStorm.
  * User: admin
- * Date: 2018/3/16
- * Time: 15:36
+ * Date: 2018/3/18
+ * Time: 13:54
  */
-//应急预案
+//应急演练
 namespace app\safety\model;
 
 use think\exception\PDOException;
 use think\Model;
 
-class EmergencyplanModel extends Model
+class EmergencyrehearsalModel extends Model
 {
-    protected $name = 'safety_emergency_plan';
+    protected $name = 'safety_emergency_rehearsal';
 
     /*
-     * 添加新的应急预案文件
+     * 添加新的应急演练文件
      */
-    public function insertEmergencyplan($param)
+    public function insertEmergencyrehearsal($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -31,11 +31,10 @@ class EmergencyplanModel extends Model
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
-
     /*
-     * 编辑应急预案文件
+     * 编辑应急演练文件
      */
-    public function editEmergencyplan($param)
+    public function editEmergencyrehearsal($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -48,37 +47,21 @@ class EmergencyplanModel extends Model
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
-
     /*
-     * 删除应急预案文件
+     * 删除应急演练文件
      */
-    public function delEmergencyplan($id)
+    public function delEmergencyrehearsal($id)
     {
         try{
-            //文件名称保留其余清空
-            $data = array();
-            $data['name'] = " ";
-            $data['filename'] = " ";
-            $data['preplan_number'] = " ";
-            $data['version_number'] = " ";
-            $data['alternative_version'] = " ";
-            $data['applicability'] = " ";
-            $data['preplan_state'] = " ";
-            $data['owner'] = " ";
-            $data['date'] = " ";
-            $data['remark'] = " ";
-            $data['path'] = " ";
-
-            $this->allowField(true)->save($data, ['id' => $id]);
+            $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
 
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
-
     /*
-     * 获取一条应急预案文件
+     * 获取一条应急演练文件
      */
     /**
      * @param $id
