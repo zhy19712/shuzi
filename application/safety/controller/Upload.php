@@ -196,7 +196,7 @@ class Upload extends Base
         $standard = request()->param('standard'); // 替代标准
         $evaluation = request()->param('evaluation'); // 适用性评价
         $evaluation = $evaluation == '0' ? '适用' : '过期';
-        $sid_user = request()->param('sid_user'); // 识别人
+        $sdi_user = request()->param('sdi_user'); // 识别人
         $remark = request()->param('remark'); // 备注
 
         // 系统自动生成的数据
@@ -223,7 +223,7 @@ class Upload extends Base
                 'go_date' => $go_date,
                 'standard' => $standard,
                 'evaluation' => $evaluation,
-                'sid_user' => $sid_user,
+                'sdi_user' => $sdi_user,
                 'filename' => $filename,
                 'owner' => $owner,
                 'sdi_date' => $sdi_date,

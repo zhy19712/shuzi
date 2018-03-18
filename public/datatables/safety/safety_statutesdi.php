@@ -64,7 +64,7 @@ if(!empty($group_id))
 {
     if(!empty($years) && !empty($times)){
         echo json_encode(
-            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' and years = '$years' and improt_time = '$times'" )
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' and years = '$years' and import_time = '$times'" )
         );
     }else if (!empty($years)  && empty($times)){
         echo json_encode(
@@ -72,7 +72,7 @@ if(!empty($group_id))
         );
     }else if (!empty($times)  && empty($years)){
         echo json_encode(
-            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' and improt_time = '$times'" )
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' and import_time = '$times'" )
         );
     }else{
         echo json_encode(

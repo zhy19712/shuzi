@@ -73,16 +73,20 @@ class Statutestdi extends Base
         if(request()->isAjax()){
             $sdi = new StatutestdiModel();
             $param = input('post.');
+            $is_exist = $sdi->getOne($param['id']);
+            if(empty($is_exist)){
+                return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
+            }
             $data = [
                 'id' => $param['id'],
                 'years' => date('Y'),
                 'group_id' => $param['group_id'],
-                'sdi_number' => $param['sdi_number'],
+                'number' => $param['number'],
                 'sdi_name' => $param['sdi_name'],
                 'go_date' => $param['go_date'],
                 'standard' => $param['standard'],
                 'evaluation' => $param['evaluation'],
-                'sid_user' => $param['sid_user'],
+                'sdi_user' => $param['sdi_user'],
                 'remark' => $param['remark']
             ];
             $flag = $sdi->editSdi($data);
@@ -137,15 +141,6 @@ class Statutestdi extends Base
         if(request()->isAjax()) {
             $sdi = new StatutestdiModel();
             $param = input('param.');
-            $data = $sdi->getOne($param['id']);
-            $path = $data['path'];
-            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-            if(file_exists($path)){
-                unlink($path); //删除文件
-            }
-            if(file_exists($pdf_path)){
-                unlink($pdf_path); //删除生成的预览pdf
-            }
             $flag = $sdi->delSdi($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
@@ -156,7 +151,7 @@ class Statutestdi extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function anualPreview()
+    public function sdiPreview()
     {
         $sdi = new StatutestdiModel();
         if(request()->isAjax()) {
@@ -276,12 +271,12 @@ class Statutestdi extends Base
             return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
         }
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/statutestdi');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/sdi');
         if($info){
             // 调用插件PHPExcel把excel文件导入数据库
             Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
             $exclePath = $info->getSaveName();  //获取文件名
-            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/statutestdi' . DS . $exclePath;   //上传文件的地址
+            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/sdi' . DS . $exclePath;   //上传文件的地址
             // 当文件后缀是xlsx 或者 csv 就会报：the filename xxx is not recognised as an OLE file错误
             $extension = get_extension($file_name);
             if ($extension =='xlsx') {
@@ -301,7 +296,7 @@ class Statutestdi extends Base
             }
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
             // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
-            $number_index = $sdi_name_index = $go_date_index = $standard_index = $evaluation_index = $sid_user_index = $sdi_date_index =  $remark_index = -1;
+            $number_index = $sdi_name_index = $go_date_index = $standard_index = $evaluation_index = $sdi_user_index = $sdi_date_index =  $remark_index = -1;
             foreach ($excel_array[0] as $k=>$v){
                 $str = preg_replace('/[ ]/', '', $v);
                 if ($str == '标准号'){
@@ -315,7 +310,7 @@ class Statutestdi extends Base
                 }else if($str == '适用性评价'){
                     $evaluation_index = $k;
                 }else if($str == '识别人'){
-                    $sid_user_index = $k;
+                    $sdi_user_index = $k;
                 }else if($str == '上传日期'){
                     $sdi_date_index = $k;
                 }else if($str == '备注'){
@@ -324,7 +319,7 @@ class Statutestdi extends Base
             }
             if($number_index == -1 || $sdi_name_index == -1
                 || $go_date_index == -1 || $standard_index == -1 ||
-                $evaluation_index == -1 || $sid_user_index == -1 ||
+                $evaluation_index == -1 || $sdi_user_index == -1 ||
                 $sdi_date_index == -1 || $remark_index == -1){
                 $json_data['code'] = 0;
                 $json_data['info'] = '文件内容格式不对';
@@ -338,12 +333,13 @@ class Statutestdi extends Base
                     $insertData[$k]['go_date'] = $v[$go_date_index];
                     $insertData[$k]['standard'] = $v[$standard_index];
                     $insertData[$k]['evaluation'] = $v[$evaluation_index];
-                    $insertData[$k]['sid_user'] = $v[$sid_user_index];
+                    $insertData[$k]['sdi_user'] = $v[$sdi_user_index];
                     $insertData[$k]['sdi_date'] = $v[$sdi_date_index];
                     $insertData[$k]['remark'] = $v[$remark_index];
                     $insertData[$k]['years'] = date('Y');
-                    $insertData[$k]['improt_time'] = date('Y-m-d H:i:s');
+                    $insertData[$k]['import_time'] = date('Y-m-d H:i:s');
                     $insertData[$k]['group_id'] = $group_id;
+                    $insertData[$k]['import_path'] = './uploads/safety/import/sdi/' . str_replace("\\","/",$exclePath);;
                 }
             }
             $success = Db::name('safety_statutesdi')->insertAll($insertData);
@@ -411,7 +407,7 @@ class Statutestdi extends Base
                 ->setCellValue('D'.$key, $v['go_date'])
                 ->setCellValue('E'.$key, $v['standard'])
                 ->setCellValue('F'.$key, $v['evaluation'])
-                ->setCellValue('G'.$key, $v['sid_user'])
+                ->setCellValue('G'.$key, $v['sdi_user'])
                 ->setCellValue('H'.$key, $v['sdi_date'])
                 ->setCellValue('I'.$key, $v['remark']);
         }
@@ -428,7 +424,7 @@ class Statutestdi extends Base
     }
 
     /**
-     * 查看历史版本
+     * 查看导入的历史版本
      * @return \think\response\Json
      * @author hutao
      */
@@ -436,8 +432,8 @@ class Statutestdi extends Base
     {
         if(request()->isAjax()){
             $edu = new StatutestdiModel();
-            $years = $edu->getYears();
-            return json($years);
+            $history = $edu->getImportTime();
+            return json($history);
         }
     }
 }
