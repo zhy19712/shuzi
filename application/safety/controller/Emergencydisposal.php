@@ -9,7 +9,7 @@
 namespace app\safety\controller;
 
 use app\admin\controller\Base;
-use app\safety\model\EmergencyplanModel;
+
 
 class Emergencydisposal extends Base
 {

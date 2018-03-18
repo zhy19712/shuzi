@@ -1,5 +1,11 @@
 <?php
-//全民参与
+/**
+ * Created by PhpStorm.
+ * User: admin
+ * Date: 2018/3/18
+ * Time: 14:43
+ */
+//应急演练
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
@@ -20,7 +26,7 @@ include('../conn.php');
  */
 
 // DB table to use
-$table = 'think_safety_fullparticipation';
+$table = 'think_safety_emergency_rehearsal';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -30,12 +36,12 @@ $primaryKey = 'id';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
-    array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'filename',  'dt' => 1 ),
-    array( 'db' => 'owner',  'dt' => 2 ),
-    array( 'db' => 'date',  'dt' => 3 ),
-    array( 'db' => 'version',  'dt' => 4 ),
-    array( 'db' => 'remark',  'dt' => 5 )
+    array( 'db' => 'id',  'dt' => 0 ),//应急演练自增id
+    array( 'db' => 'filename',  'dt' => 1 ),//应急演练上传文件名
+    array( 'db' => 'number',  'dt' => 2 ),//编号
+    array( 'db' => 'date',  'dt' => 3 ),//上传时间
+    array( 'db' => 'owner',  'dt' => 4 ),//上传人
+    array( 'db' => 'remark',  'dt' => 5 )//备注
 );
 
 
@@ -64,9 +70,4 @@ if(!empty($_GET["year"]))
         SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
     );
 }
-
-
-
-
-
 

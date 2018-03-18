@@ -1,5 +1,5 @@
 <?php
-//全民参与
+//应急物资
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
@@ -20,7 +20,7 @@ include('../conn.php');
  */
 
 // DB table to use
-$table = 'think_safety_fullparticipation';
+$table = 'think_safety_emergency_supplies';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -31,11 +31,13 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'filename',  'dt' => 1 ),
-    array( 'db' => 'owner',  'dt' => 2 ),
-    array( 'db' => 'date',  'dt' => 3 ),
-    array( 'db' => 'version',  'dt' => 4 ),
-    array( 'db' => 'remark',  'dt' => 5 )
+    array( 'db' => 'material_name',  'dt' => 1 ),//设备物资名称
+    array( 'db' => 'material_model',  'dt' => 2 ),//规格型号
+    array( 'db' => 'material_company',  'dt' => 3 ),//单位
+    array( 'db' => 'material_number',  'dt' => 4 ),//数量
+    array( 'db' => 'material_situation',  'dt' => 5 ),//完好情况
+    array( 'db' => 'material_location',  'dt' => 6 ),//存放地点
+    array( 'db' => 'remark',  'dt' => 7 )//备注
 );
 
 
