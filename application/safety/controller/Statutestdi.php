@@ -339,7 +339,7 @@ class Statutestdi extends Base
                     $insertData[$k]['years'] = date('Y');
                     $insertData[$k]['import_time'] = date('Y-m-d H:i:s');
                     $insertData[$k]['group_id'] = $group_id;
-                    $insertData[$k]['import_path'] = './uploads/safety/import/sdi/' . str_replace("\\","/",$exclePath);;
+                    $insertData[$k]['import_path'] = './uploads/safety/import/sdi/' . str_replace("\\","/",$exclePath);
                 }
             }
             $success = Db::name('safety_statutesdi')->insertAll($insertData);
@@ -411,6 +411,57 @@ class Statutestdi extends Base
                 ->setCellValue('H'.$key, $v['sdi_date'])
                 ->setCellValue('I'.$key, $v['remark']);
         }
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        ob_end_clean();  //清除缓冲区,避免乱码
+        header('Content-Type: application/vnd.ms-excel'); //文件类型
+        header('Content-Disposition: attachment;filename="'.$name.'.xls"'); //文件名
+        header('Cache-Control: max-age=0');
+        header('Content-Type: text/html; charset=utf-8'); //编码
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003
+        $objWriter->save('php://output');
+        exit;
+    }
+
+    /**
+     * 导出模板
+     * @return \think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     * @author hutao
+     */
+    public function exportExcelTemplete()
+    {
+        if(request()->isAjax()){
+            return json(['code'=>1]);
+        }
+        $name = '法规标准识别-模板'; // 导出的文件名
+        header("Content-type:text/html;charset=utf-8");
+        Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+        //实例化
+        $objPHPExcel = new \PHPExcel();
+        /*右键属性所显示的信息*/
+        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
+        ->setLastModifiedBy("zxf")  //最后一次保存者
+        ->setTitle('数据EXCEL导出')  //标题
+        ->setSubject('数据EXCEL导出') //主题
+        ->setDescription('导出数据')  //描述
+        ->setKeywords("excel")   //标记
+        ->setCategory("result file");  //类别
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        // 设置表格第一行显示内容
+        $objPHPExcel->getActiveSheet()
+            ->setCellValue('A1', '序号')
+            ->setCellValue('B1', '标准号')
+            ->setCellValue('C1', '名称')
+            ->setCellValue('D1', '施行日期')
+            ->setCellValue('E1', '替代标准')
+            ->setCellValue('F1', '适用性评价')
+            ->setCellValue('G1', '识别人')
+            ->setCellValue('H1', '上传日期')
+            ->setCellValue('I1', '备注');
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
         ob_end_clean();  //清除缓冲区,避免乱码
