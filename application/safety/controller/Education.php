@@ -265,7 +265,7 @@ class Education extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('param.idarr');
+        $idArr = input('id/a');
         $name = '专题教育培训'.date('Y-m-d H:i:s'); // 导出的文件名
         $edu = new EducationModel();
         $list = $edu->getList($idArr);
@@ -332,8 +332,7 @@ class Education extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $name = input('param.name');
-        $newName = '专题教育培训 - '.$name.date('Y-m-d H:i:s'); // 导出的文件名
+        $newName = '专题教育培训 - '.date('Y-m-d H:i:s'); // 导出的文件名
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -379,8 +378,8 @@ class Education extends Base
     {
         if(request()->isAjax()){
             $edu = new EducationModel();
-            $years = $edu->getYears();
-            return json($years);
+            $history = $edu->getImportTime();
+            return json($history);
         }
     }
 
