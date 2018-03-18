@@ -36,7 +36,7 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
     array( 'db' => 'go_date',  'dt' => 4 ),
     array( 'db' => 'standard',  'dt' => 5 ),
     array( 'db' => 'evaluation',  'dt' => 6 ),
-    array( 'db' => 'sid_user',  'dt' => 7 ),
+    array( 'db' => 'sdi_user',  'dt' => 7 ),
     array( 'db' => 'sdi_date',  'dt' => 8 ),
     array( 'db' => 'remark',  'dt' => 9 )
 );
