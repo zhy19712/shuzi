@@ -2,23 +2,23 @@
 /**
  * Created by PhpStorm.
  * User: admin
- * Date: 2018/3/16
- * Time: 17:25
+ * Date: 2018/3/18
+ * Time: 15:33
  */
-//应急评估修订记录
+//应急处置
 namespace app\safety\model;
 
 use think\exception\PDOException;
 use think\Model;
 
-class EmergencyreviseModel extends Model
+class EmergencydisposalModel extends Model
 {
-    protected $name = 'safety_emergency_revise';
+    protected $name = 'safety_emergency_disposal';
 
     /*
-     * 添加新的应急修订文件
+     * 添加新的应急处置文件
      */
-    public function insertEmergencyrevise($param)
+    public function insertEmergencydisposal($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -33,9 +33,9 @@ class EmergencyreviseModel extends Model
     }
 
     /*
-     * 编辑应急修订文件
+     * 编辑应急处置文件
      */
-    public function editEmergencyrevise($param)
+    public function editEmergencydisposal($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -50,12 +50,26 @@ class EmergencyreviseModel extends Model
     }
 
     /*
-     * 删除应急修订文件
+     * 删除应急处置文件
      */
-    public function delEmergencyrevise($id)
+    public function delEmergencydisposal($id)
     {
         try{
-            $this->where('id', $id)->delete();
+            //文件名称保留其余清空
+            $data = array();
+            $data['name'] = " ";
+            $data['filename'] = " ";
+            $data['preplan_number'] = " ";
+            $data['version_number'] = " ";
+            $data['alternative_version'] = " ";
+            $data['applicability'] = " ";
+            $data['preplan_state'] = " ";
+            $data['owner'] = " ";
+            $data['date'] = " ";
+            $data['remark'] = " ";
+            $data['path'] = " ";
+
+            $this->allowField(true)->save($data, ['id' => $id]);
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
 
         }catch( PDOException $e){
@@ -64,7 +78,7 @@ class EmergencyreviseModel extends Model
     }
 
     /*
-     * 获取一条应急修订文件
+     * 获取一条应急处置文件
      */
     /**
      * @param $id
@@ -76,18 +90,5 @@ class EmergencyreviseModel extends Model
     public function getOne($id)
     {
         return $this->where('id', $id)->find();
-    }
-
-    /*
-     * 批量导出选中的数组
-     *
-     */
-    public  function getList($idArr)
-    {
-        $data = [];
-        foreach($idArr as $v){
-            $data[] = $this->getOne($v);
-        }
-        return $data;
     }
 }
