@@ -73,8 +73,8 @@ class EdupeopleModel extends Model
         return $data;
     }
 
-    public function getYears()
+    public function getImportTime()
     {
-        return $this->where('improt_time is not null')->group('import_time')->column('import_time');
+        return $this->where('import_time is not null')->group('import_time')->column('import_time');
     }
 }

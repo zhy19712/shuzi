@@ -1134,7 +1134,9 @@ class Upload extends Base
                     'remark' => $remark
                 ];
             }
-            if(empty($id)){
+            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
+            $is_add = explode('_',$id);
+            if(empty($id) || $is_add[0] == 'WU'){
                 $flag = $eval->insertEval($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
@@ -1190,7 +1192,9 @@ class Upload extends Base
                 'ment_date' => $ment_date,
                 'remark' => $remark
             ];
-            if(empty($id)){
+            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
+            $is_add = explode('_',$id);
+            if(empty($id) || $is_add[0] == 'WU'){
                 $flag = $improve->insertImprovement($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
@@ -1251,7 +1255,9 @@ class Upload extends Base
                 'path' => $path,
                 'remark' => $remark
             ];
-            if(empty($id)){
+            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
+            $is_add = explode('_',$id);
+            if(empty($id) || $is_add[0] == 'WU'){
                 $flag = $sources->insertRiskSources($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
