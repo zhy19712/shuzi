@@ -36,7 +36,7 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
     array( 'db' => 'go_date',  'dt' => 4 ),
     array( 'db' => 'standard',  'dt' => 5 ),
     array( 'db' => 'evaluation',  'dt' => 6 ),
-    array( 'db' => 'sid_user',  'dt' => 7 ),
+    array( 'db' => 'sdi_user',  'dt' => 7 ),
     array( 'db' => 'sdi_date',  'dt' => 8 ),
     array( 'db' => 'remark',  'dt' => 9 )
 );
@@ -64,7 +64,7 @@ if(!empty($group_id))
 {
     if(!empty($years) && !empty($times)){
         echo json_encode(
-            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' and years = '$years' and improt_time = '$times'" )
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' and years = '$years' and import_time = '$times'" )
         );
     }else if (!empty($years)  && empty($times)){
         echo json_encode(
@@ -72,7 +72,7 @@ if(!empty($group_id))
         );
     }else if (!empty($times)  && empty($years)){
         echo json_encode(
-            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' and improt_time = '$times'" )
+            SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, " group_id = '$group_id' and import_time = '$times'" )
         );
     }else{
         echo json_encode(

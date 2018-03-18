@@ -200,13 +200,13 @@ class Upload extends Base
         $standard = request()->param('standard'); // 替代标准
         $evaluation = request()->param('evaluation'); // 适用性评价
         $evaluation = $evaluation == '0' ? '适用' : '过期';
-        $sid_user = request()->param('sid_user'); // 识别人
+        $sdi_user = request()->param('sdi_user'); // 识别人
         $remark = request()->param('remark'); // 备注
 
         // 系统自动生成的数据
-        $years = date('Y');
-        $owner = session('username');
-        $sdi_date = date("Y-m-d H:i:s");
+        $years = date('Y'); // 年度
+        $owner = session('username'); // 上传人
+        $sdi_date = date("Y-m-d H:i:s"); // 上传时间
 
         // 上传的文件
         $file = request()->file('file');
@@ -227,7 +227,7 @@ class Upload extends Base
                 'go_date' => $go_date,
                 'standard' => $standard,
                 'evaluation' => $evaluation,
-                'sid_user' => $sid_user,
+                'sdi_user' => $sdi_user,
                 'filename' => $filename,
                 'owner' => $owner,
                 'sdi_date' => $sdi_date,
@@ -242,7 +242,7 @@ class Upload extends Base
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $sdi->getOne($id);
-                if(isNull($data_older)){
+                if(empty($data_older)){
                     return json(['code' => '0', 'msg' => '无效的编号']);
                 }
                 // 当 存在替代标准 适用性评价 状态为 : 过期  时 新增一条 修编记录
@@ -282,43 +282,60 @@ class Upload extends Base
      */
     public function uploadRules(){
         $rules = new RulesregulationsModel();
-        $years = date('Y');
-        $id = request()->param('id');
-        $group_id = request()->param('group_id');
-        $number = request()->param('number');
-        $rul_name = request()->param('rul_name');
-        $go_date = request()->param('go_date');
-        $standard = request()->param('standard');
-        $evaluation = request()->param('evaluation');
-        $rul_user = request()->param('rul_user');
-        $remark = request()->param('remark');
+        // 前台提交的数据
+        $id = request()->param('id'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
+        $group_id = request()->param('group_id'); // 必须  文件所属分组的编号 也就是当前选择的节点id编号
+        $number = request()->param('number'); // 标准号
+        $rul_name = request()->param('rul_name'); // 名称
+        $go_date = request()->param('go_date'); // 施行日期
+        $standard = request()->param('standard'); // 替代标准
+        $evaluation = request()->param('evaluation'); // 适用性评价
+        $rul_user = request()->param('rul_user'); // 识别人
+        $remark = request()->param('remark'); // 备注
+
+        // 系统自动生成的数据
+        $years = date('Y'); // 年度
+        $owner = session('username'); // 上传人
+        $rul_date = date("Y-m-d H:i:s"); // 上传时间
+
+        // 上传的文件
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/rules');
         if($info){
             $temp = $info->getSaveName();
             $path = './uploads/safety/rules/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
-            if(empty($id))
+            if($rul_name == '等待上传...' || empty($rul_name)){
+                $rul_name = $filename;
+            }
+            // 构造数据
+            $data = [
+                'years' => $years,
+                'group_id' => $group_id,
+                'number' => $number,
+                'rul_name' => $rul_name,
+                'go_date' => $go_date,
+                'standard' => $standard,
+                'evaluation' => $evaluation,
+                'rul_user' => $rul_user,
+                'filename' => $filename,
+                'owner' => $owner,
+                'rul_date' => $rul_date,
+                'path' => $path,
+                'remark' => $remark
+            ];
+            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
+            $is_add = explode('_',$id);
+            if(empty($id) || $is_add[0] == 'WU')
             {
-                $data = [
-                    'years' => $years,
-                    'group_id' => $group_id,
-                    'number' => $number,
-                    'rul_name' => $rul_name,
-                    'go_date' => $go_date,
-                    'standard' => $standard,
-                    'evaluation' => $evaluation,
-                    'rul_user' => $rul_user,
-                    'filename' => $filename,
-                    'owner' => session('username'),
-                    'rul_date' => date("Y-m-d H:i:s"),
-                    'path' => $path,
-                    'remark' => $remark
-                ];
                 $flag = $rules->insertRules($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $rules->getOne($id);
+                if(empty($data_older)){
+                    return json(['code' => '0', 'msg' => '无效的编号']);
+                }
+
                 // 当 存在替代标准 适用性评价 状态为 : 过期  时 新增一条 修编记录
                 if(!empty($standard) && $evaluation == '过期'){
                     $pname = Db::name('safety_sdi_node')->where('id',$data_older['group_id'])->value('pname');
@@ -340,22 +357,7 @@ class Upload extends Base
                 if(file_exists(unlink($data_older['path']))){
                     unlink($data_older['path']);
                 }
-                $data = [
-                    'id' => $id,
-                    'years' => $years,
-                    'group_id' => $group_id,
-                    'number' => $number,
-                    'rul_name' => $rul_name,
-                    'go_date' => $go_date,
-                    'standard' => $standard,
-                    'evaluation' => $evaluation,
-                    'rul_user' => $rul_user,
-                    'filename' => $filename,
-                    'owner' => session('username'),
-                    'rul_date' => date("Y-m-d H:i:s"),
-                    'path' => $path,
-                    'remark' => $remark
-                ];
+                $data['id'] = $id;
                 $flag = $rules->editRules($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
