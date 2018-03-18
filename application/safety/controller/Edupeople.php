@@ -11,7 +11,6 @@ namespace app\safety\controller;
 // 人员教育培训
 use app\admin\controller\Base;
 use app\admin\model\ContractModel;
-use app\safety\model\EducationModel;
 use app\safety\model\EdupeopleModel;
 use think\Db;
 use think\Loader;
@@ -19,7 +18,7 @@ use think\Loader;
 class Edupeople extends Base
 {
     /**
-     * 预览获取一条数据  或者  编辑获取一条数据
+     * 编辑获取一条数据
      * @return mixed|\think\response\Json
      * @author hutao
      */
@@ -164,7 +163,7 @@ class Edupeople extends Base
                     $insertData[$k]['pid'] = $pid;
                     $insertData[$k]['zid'] = $zid;
                     $insertData[$k]['filename'] = $file->getInfo('name');
-                    $insertData[$k]['path'] = './uploads/safety/import/education/' . str_replace("\\","/",$exclePath);
+                    $insertData[$k]['path'] = './uploads/safety/import/edupeople/' . str_replace("\\","/",$exclePath);
                 }
             }
             $success = Db::name('safety_edupeople')->insertAll($insertData);
@@ -189,8 +188,8 @@ class Edupeople extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('param.idarr');
-        $name = '人员教育培训'.date('Y-m-d H:i:s'); // 导出的文件名
+        $idArr = input('id/a');
+        $name = '人员教育培训 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $edu = new EdupeopleModel();
         $list = $edu->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
@@ -250,6 +249,58 @@ class Edupeople extends Base
     }
 
     /**
+     * 导出模板
+     * @return \think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     * @author hutao
+     */
+    public function exportExcelTemplete()
+    {
+        if(request()->isAjax()){
+            return json(['code'=>1]);
+        }
+        $newName = '人员教育培训模板'; // 导出的文件名
+        header("Content-type:text/html;charset=utf-8");
+        Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+        //实例化
+        $objPHPExcel = new \PHPExcel();
+        /*右键属性所显示的信息*/
+        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
+        ->setLastModifiedBy("zxf")  //最后一次保存者
+        ->setTitle('数据EXCEL导出')  //标题
+        ->setSubject('数据EXCEL导出') //主题
+        ->setDescription('导出数据')  //描述
+        ->setKeywords("excel")   //标记
+        ->setCategory("result file");  //类别
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        // 设置表格第一行显示内容
+        $objPHPExcel->getActiveSheet()
+            ->setCellValue('A1', '序号')
+            ->setCellValue('B1', '姓名')
+            ->setCellValue('C1', '职务')
+            ->setCellValue('D1', '证书名称')
+            ->setCellValue('E1', '证书编号')
+            ->setCellValue('F1', '生效日期')
+            ->setCellValue('G1', '有效期至')
+            ->setCellValue('H1', '培训方式')
+            ->setCellValue('I1', '培训时间')
+            ->setCellValue('J1', '备注');
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        ob_end_clean();  //清除缓冲区,避免乱码
+        header('Content-Type: application/vnd.ms-excel'); //文件类型
+        header('Content-Disposition: attachment;filename="'.$newName.'.xls"'); //文件名
+        header('Cache-Control: max-age=0');
+        header('Content-Type: text/html; charset=utf-8'); //编码
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003
+        $objWriter->save('php://output');
+        exit;
+    }
+
+    /**
      * 查看历史版本
      * @return \think\response\Json
      * @author hutao
@@ -258,8 +309,8 @@ class Edupeople extends Base
     {
         if(request()->isAjax()){
             $edu = new EdupeopleModel();
-            $years = $edu->getYears();
-            return json($years);
+            $history = $edu->getImportTime();
+            return json($history);
         }
     }
 

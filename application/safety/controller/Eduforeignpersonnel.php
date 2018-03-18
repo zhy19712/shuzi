@@ -11,7 +11,6 @@ namespace app\safety\controller;
 // 外来人员
 use app\admin\controller\Base;
 use app\admin\model\ContractModel;
-use app\safety\model\EducationModel;
 use app\safety\model\EduforeignpersonnelModel;
 use think\Db;
 use think\Loader;
@@ -19,7 +18,7 @@ use think\Loader;
 class Eduforeignpersonnel extends Base
 {
     /**
-     * 预览获取一条数据  或者  编辑获取一条数据
+     * 编辑获取一条数据
      * @return mixed|\think\response\Json
      * @author hutao
      */
@@ -173,7 +172,7 @@ class Eduforeignpersonnel extends Base
                     $insertData[$k]['owner'] = session('username');
                     $insertData[$k]['name'] = $exclePath;
                     $insertData[$k]['filename'] = $file->getInfo('name');
-                    $insertData[$k]['path'] = './uploads/safety/import/education/' . str_replace("\\","/",$exclePath);
+                    $insertData[$k]['path'] = './uploads/safety/import/eduforpnnel/' . str_replace("\\","/",$exclePath);
                 }
             }
             $success = Db::name('safety_eduforeignpersonnel')->insertAll($insertData);
@@ -198,8 +197,8 @@ class Eduforeignpersonnel extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('param.idarr');
-        $name = '专题教育培训'.date('Y-m-d H:i:s'); // 导出的文件名
+        $idArr = input('id/a');
+        $name = '外来人员 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $edu = new EduforeignpersonnelModel();
         $list = $edu->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
@@ -277,8 +276,7 @@ class Eduforeignpersonnel extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $name = input('param.name');
-        $newName = '外来人员 - '.$name.date('Y-m-d H:i:s'); // 导出的文件名
+        $newName = '外来人员模板'; // 导出的文件名
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -329,8 +327,8 @@ class Eduforeignpersonnel extends Base
     {
         if(request()->isAjax()){
             $edu = new EduforeignpersonnelModel();
-            $years = $edu->getYears();
-            return json($years);
+            $history = $edu->getImportTime();
+            return json($history);
         }
     }
 

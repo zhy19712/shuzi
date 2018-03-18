@@ -77,4 +77,17 @@ class EmergencyreviseModel extends Model
     {
         return $this->where('id', $id)->find();
     }
+
+    /*
+     * 批量导出选中的数组
+     *
+     */
+    public  function getList($idArr)
+    {
+        $data = [];
+        foreach($idArr as $v){
+            $data[] = $this->getOne($v);
+        }
+        return $data;
+    }
 }
