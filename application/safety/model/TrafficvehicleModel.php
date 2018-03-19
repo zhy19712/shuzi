@@ -71,4 +71,25 @@ class TrafficvehicleModel extends Model
         return $this->where('id', $id)->find();
 
     }
+
+    /*
+     * 获取交通车辆的版本日期,excel的导入日期
+     */
+    public function getVersion($param)
+    {
+//        return $this->field('input_time')->order('id desc')->select();
+        return $this->where('selfid',$param)->group('input_time')->column('input_time');
+    }
+
+    /*
+     * 交通车辆批量导出的文件列表id
+     */
+    public function getList($idArr)
+    {
+        $data = [];
+        foreach($idArr as $v){
+            $data[] = $this->getOne($v);
+        }
+        return $data;
+    }
 }
