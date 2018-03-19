@@ -10,6 +10,8 @@ namespace app\safety\controller;
 
 use app\admin\controller\Base;
 use app\safety\model\TrafficvehicleModel;
+use think\Db;
+use think\Loader;
 
 class Trafficvehicle extends Base
 {
