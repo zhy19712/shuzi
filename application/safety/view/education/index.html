@@ -684,7 +684,7 @@
                     if (res.code === 1) {
                         flag = 1;
                         $("#education_modal").modal('hide');
-                        admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+idParent+"&pid=" + groupid).load();
+                        admin_table.ajax.url("__SCRIPT__/safety_education.php?pid="+idParent+"&zid=" + groupid).load();
                         layer.msg(res.msg, {time: 1500, shade: 0.1});
                         uploaderRecords.upload();
                         uploaderMaterials.upload();
@@ -719,7 +719,7 @@
                         $("#education_modal").modal('hide');
                         uploaderRecords.upload();
                         uploaderMaterials.upload();
-                        admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+idParent+"&pid=" + groupid).load();
+                        admin_table.ajax.url("__SCRIPT__/safety_education.php?pid="+idParent+"&zid=" + groupid).load();
                         layer.msg(res.msg, {time: 1500, shade: 0.1});
                     } else {
                         layer.msg(res.msg);
@@ -916,6 +916,11 @@
             multiple: false,
             id: "#excelImport",
             innerHTML: "导入"
+        },
+        accept: {
+            title: 'excel',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx'
         }
     });
     importExcel.on( 'uploadSuccess', function( file ,res) {
