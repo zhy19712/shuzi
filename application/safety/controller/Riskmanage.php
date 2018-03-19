@@ -297,8 +297,8 @@ class Riskmanage extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('param.idarr');
-        $name = '安全风险管理'.date('Y-m-d H:i:s'); // 导出的文件名
+        $idArr = input('id/a');
+        $name = '安全风险管理 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $manage = new RiskManageModel();
         $list = $manage->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
@@ -380,7 +380,7 @@ class Riskmanage extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $newName = '安全风险管理模板 - '.date('Y-m-d H:i:s'); // 导出的文件名
+        $newName = '安全风险管理模板'; // 导出的文件名
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -433,8 +433,8 @@ class Riskmanage extends Base
     {
         if(request()->isAjax()){
             $edu = new RiskManageModel();
-            $years = $edu->getYears();
-            return json($years);
+            $history = $edu->getImportTime();
+            return json($history);
         }
     }
 
