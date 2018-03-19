@@ -1573,6 +1573,12 @@
     $("thead tr th:first-child").click(function () {
             $("thead tr th:first-child").unbind();
     });
+    // 分页事件
+    table3.on( 'draw', function () {
+        console.log("***********");
+        console.log(dataArr);
+        console.log("***********");
+    } );
     //特种设备-初始化
     function upload3() {
         if(!uploader3){
@@ -2066,7 +2072,7 @@
     //导出excelExport
     $(".excelExport").click(function () {
         $.ajax({
-            url: "./exportExcel",
+            url: "../Specialequipmentmanagement/exportExcel",
             type: "post",
             data: {
                 'id':dataArr
@@ -2076,7 +2082,7 @@
                 if(res.code ==1){
                     $("#form_container").empty();
                     var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
-                        +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
+                        +'<form action="../Specialequipmentmanagement/exportExcel" method="get" target="exportExcelFrame">';
                     for (var i = 0; i < dataArr.length; i++)
                     {
                         str += '<input style="display: none;" name="id[]" value="'+ dataArr[i] +'">';

@@ -90,4 +90,12 @@ class EmergencyreviseModel extends Model
         }
         return $data;
     }
+
+    /*
+     * 查看所有的id值
+     */
+    public  function getallid()
+    {
+        return $this->group('id')->column('id');
+    }
 }

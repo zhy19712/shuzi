@@ -275,7 +275,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label ">适用性评价：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="applicability" id="applicability" class="form-control" >
+                                    <select name="applicability" id="applicability" class="form-control" placeholder="此处为必填项">
                                         <option value="适用">适用</option>
                                         <option value="不适用">不适用</option>
                                     </select>
@@ -539,16 +539,16 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        if(url === "./Emergencyplan/emergencyDel"){
+                        if(url === "../Emergencyplan/emergencyDel"){
                             table2.ajax.url("__SCRIPT__/safety_emergencyplan.php").load();
-                        }else if(url === "./generalDel"){
-                            table2.ajax.url("__SCRIPT__/safety_goal_general.php").load();
-                        }else if(url === "./responsibilityDel"){
-                            if(tablename == "department"){
-                                table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=department").load();
-                            }else {
-                                table3.ajax.url("__SCRIPT__/safety_responsibility_agreemnet.php?tablename=personal").load();
-                            }
+                        }else if(url === "../Emergencysupplies/emergencysuppliesDel"){
+                            table3.ajax.url("__SCRIPT__/safety_emergencysupplies.php").load();
+                        }else if(url === "../Emergencyrehearsal/emergencyschemeDel"){
+                            table4.ajax.url("__SCRIPT__/safety_emergencyscheme.php").load();
+                        }else if(url === "../Emergencyrehearsal/emergencyimagedataDel"){
+                            table5.ajax.url("__SCRIPT__/safety_emergencyimagedata.php").load();
+                        }else if(url === "../Emergencyrehearsal/cultureDel"){
+                            table6.ajax.url("__SCRIPT__/safety_emergencyrehearsal.php").load();
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
@@ -658,14 +658,15 @@
 <script>
     //应急预案
     var current_id=""; //修订的id
+    var filename1,fname2;
     //应急预案-初始化upload
     function upload2() {
-        var swf = current_id===""?"":"";
+        var server = current_id===""?"uploadEmergencyplanedit":"uploadEmergencyplan";
         if(!uploader2){
             uploader2 = WebUploader.create({
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Emergencyplan/reviseEdit')}",// 文件接收服务端。
+                server: "{:url('Upload/"+server+"')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
@@ -688,7 +689,7 @@
             });
 
             uploader2.on( 'fileQueued', function( file ) {
-                $("#preplan_state").val("上传")
+                $("#preplan_state").val("已上传")
                 $("#file_per2").append('<div id="' + file.id + '" class="item">' +
                     '</div>');
                 $("#file_list2").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
@@ -714,7 +715,7 @@
                 uploader2.options.formData.preplan_number = $("#preplan_number").val();
                 uploader2.options.formData.version_number = $("#version_number").val();
                 uploader2.options.formData.alternative_version = $("#alternative_version").val();
-                uploader2.options.formData.applicability = $("#applicability").val();
+                uploader2.options.formData.applicability = $("#applicability").val()===null?"适用":$("#applicability").val();
                 uploader2.options.formData.preplan_state = $("#preplan_state").val();
             });
             uploader2.on('beforeFileQueued', function (file) {
@@ -745,6 +746,7 @@
                 console.log(data)
                 if(data.code === 1){
                     layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    current_id="";
                     $("#file_upload2").empty();
                     $("#file_per2").empty();
                     $("#file_list2").empty();
@@ -799,11 +801,9 @@
     //应急预案-编辑
     function edit2(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $("#fname2").modal('show');
-        $("#preplan_state").show();
-        $("#version_number").removeAttr("disabled").attr("required","required");
+        // $("#version_number").removeAttr("disabled").attr("required","required");
         $("#applicability").parent().parent().show();
-        // $("#preplan_state").parent().parent().show();
+        $("#preplan_state").parent().parent().hide();
         $.ajax({
             url: "../Emergencyplan/index",
             type: "post",
@@ -820,8 +820,17 @@
                     $("#alternative_version").val(res.data.alternative_version);
                     $("#applicability").val(res.data.applicability);
                     $("#preplan_state").val(res.data.preplan_state);
+                    filename1 = res.data.filename;
                     uploader2 = null;
                     upload2();
+                    if(res.data.path.trim()){
+                        $("#file_list2").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                        '<span class="info">' + res.data.name + '</span>&nbsp' +
+                        '<span onclick="fdelatt2(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                        '</div>' );
+                    }else{
+                        $("#file_list2").empty();
+                    }
                     $("#fname2").modal('show');
                 }
             }
@@ -888,6 +897,15 @@
                         $("#alternative_version").val("");
                         $("#applicability").val(res.data.applicability);
                         $("#preplan_state").val(res.data.preplan_state);
+                        filename1 = res.data.filename.trim();
+                        if(res.data.path.trim()){
+                            $("#file_list2").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                                '<span class="info">' + res.data.name + '</span>&nbsp' +
+                                '<span onclick="fdelatt2(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                        '</div>' );
+                        }else{
+                            $("#file_list2").empty()
+                        }
                         uploader2 = null;
                         upload2();
                         $("#fname2").modal('show');
@@ -944,11 +962,15 @@
 
     //应急预案-提交
     $("#fname2").submit(function () {
-        var url = current_id===""?"":"../Emergencyplan/reviseEdit";
+        var url = current_id===""?"../Emergencyplan/emergencyplanEdit":"../Emergencyplan/reviseEdit";
         //判断是不是新增
-      if(!$("#file_list2").html()){
+      if( !$("#file_list2").html() || filename1 === $(".info").html() ){
             //判断有无文件变化
-          $("#preplan_state").val("未上传")
+          if(filename1 ===" "){
+              $("#preplan_state").val("未上传");
+          }else{
+              $("#preplan_state").val("已上传");
+          };
             $.ajax({
                 url: url,
                 type: "post",
@@ -959,6 +981,7 @@
                     preplan_number:$("#preplan_number").val(),
                     version_number:$("#version_number").val(),
                     alternative_version:$("#alternative_version").val(),
+                    applicability:filename1===" "?"不适用":$("#applicability").val(),
                     preplan_state:$("#preplan_state").val(),
                     path:""
                 },
@@ -968,23 +991,26 @@
                         layer.msg(res.msg);
                         table2.ajax.url("__SCRIPT__/safety_emergencyplan.php").load();
                         $("#fname2").modal('hide');
+                        current_id="";
                     }else {
                         layer.msg(res.msg);
                     }
                 }
             });
         }else{
-            $("#preplan_state").val("已上传")
-            uploader2.upload();
+          $("#preplan_state").val("已上传");
+          uploader2.upload();
         }
     });
 
     //获取点击行
-    $("#table2 tbody tr").click(function (e) {
+    $("#table2").delegate("tbody tr","click",function (e) {
+        console.log($(e.target).val())
         if($(e.target).val()==="编辑"){
             current_id="";
             $(this).removeClass("skyblue").siblings().removeClass("skyblue");
         }else{
+            $("#applicability").removeAttr("required");
             $(this).addClass("skyblue").siblings().removeClass("skyblue");
             current_id = $(this).find("td:first-child").html();
         }
@@ -995,17 +1021,12 @@
 
 <!--应急物资开始-->
 <script>
-        var dataset = [
-            [
-            1,1,1,1,1,1,1,1,1
-            ]
-        ];
     //物资-编辑
     function edit3(that) {
             var id = $(that).parent("td").parent("tr").children("td:first-child").text();
             $("#fname3").modal('show');
             $.ajax({
-                url: "../Emergencyplan/index",
+                url: "../Emergencysupplies/index",
                 type: "post",
                 data: {id:id},
                 dataType: "json",
@@ -1026,18 +1047,17 @@
             });
         };
     //物资-删除
-    function del2(that) {
+    function del3(that) {
             var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-            del(id,"./generalDel");
+            del(id,"../Emergencysupplies/emergencysuppliesDel");
         }
     //物资表格
     var table3 = $("#table3").DataTable({
         "processing": true,//是否显示处理状态
-        // "serverSide":true,//是否开启服务器模式
-        // "ajax":{
-        //     "url": "__SCRIPT__/safety_accidentfile.php"
-        // },
-        "data":dataset,
+        "serverSide":true,//是否开启服务器模式
+        "ajax":{
+            "url": "__SCRIPT__/safety_emergencysupplies.php"
+        },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear3 selectyear">frtip',
         "columnDefs":[
             {
@@ -1078,7 +1098,7 @@
          isinitVal:true,
          format:"YYYY年",
          okfun:function (obj) {
-             table3.ajax.url("__SCRIPT__/safety_emergencyplan.php?year="+obj.date.YYYY).load();
+             table3.ajax.url("__SCRIPT__/safety_emergencysupplies.php?year="+obj.date.YYYY).load();
              console.log(obj.date.YYYY);
          }
      });
@@ -1086,7 +1106,7 @@
      //提交
      $("#fname3").submit(function () {
          $.ajax({
-             url: "./accidentfileAdd",
+             url: "../Emergencysupplies/emergencysuppliesEdit",
              type: "post",
              data: {
                  bid:$("#bid").val(),
@@ -1102,8 +1122,8 @@
              success: function (res) {
                  if(res.code === 1){
                      layer.msg(res.msg);
-                     table.ajax.url("__SCRIPT__/safety_accidentfile.php").load();
-                     $("#fname").modal('hide');
+                     table3.ajax.url("__SCRIPT__/safety_emergencysupplies.php").load();
+                     $("#fname3").modal('hide');
                  }else {
                      layer.msg(res.msg);
                  }
@@ -1126,7 +1146,7 @@
             uploader4 = WebUploader.create({
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadAccidentreport')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadEmergencyscheme')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
@@ -1195,7 +1215,7 @@
                     $("#file_per4").empty();
                     $("#file_list4").empty();
                     $("#fname4").modal('hide');
-                    table.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
+                    table4.ajax.url("__SCRIPT__/safety_emergencyscheme.php").load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -1212,13 +1232,13 @@
     //事故管理-预览
     function showpdf4(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        showPdf(id,"./accidentPreview");
+        showPdf(id,"../Emergencyrehearsal/emergencyschemePreview");
     }
 
     //事故管理-删除
     function del4(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        del(id,"./cultureDel");
+        del(id,"../Emergencyrehearsal/emergencyschemeDel");
     }
 
     //事故管理-编辑-删除文件
@@ -1231,7 +1251,7 @@
     function edit4(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         $.ajax({
-            url: "./index",
+            url: "../Emergencyrehearsal/index",
             type: "post",
             data: {id:id},
             dataType: "json",
@@ -1261,7 +1281,7 @@
     //事故管理-下载
     function download4(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        download(id,"./accidentDownload");
+        download(id,"../Emergencyrehearsal/emergencyschemeDownload");
     }
 
     //提交
@@ -1274,14 +1294,14 @@
                     uploader4.upload();
                 }else if(aname1 !== $("#remark").val()||aname3 !== $("#number4").val()){
                     $.ajax({
-                        url: "./accidentEdit",
+                        url: "../Emergencyrehearsal/emergencyschemeEdit",
                         type: "post",
-                        data: {id:$("#cid").val(),remark:$("#remark4").val(),number:$("#number4").val()},
+                        data: {aid:$("#cid").val(),remark:$("#remark4").val(),number:$("#number4").val()},
                         datatype: "json",
                         success: function (res) {
                             if(res.code === 1){
                                 layer.msg(res.msg);
-                                table4.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
+                                table4.ajax.url("__SCRIPT__/safety_emergencyscheme.php").load();
                                 $("#fname4").modal('hide');
                             }else {
                                 layer.msg(res.msg);
@@ -1304,7 +1324,7 @@
         "processing": true,//是否显示处理状态
         "serverSide":true,//是否开启服务器模式
         "ajax":{
-            "url": "__SCRIPT__/safety_accidentreport.php"
+            "url": "__SCRIPT__/safety_emergencyscheme.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear selectyear4">frtip',
         "columnDefs":[ //设置列定义初始化属性
@@ -1341,7 +1361,7 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table4.ajax.url("__SCRIPT__/safety_accidentreport.php?year="+obj.date.YYYY).load();
+            table4.ajax.url("__SCRIPT__/safety_emergencyscheme.php?year="+obj.date.YYYY).load();
             console.log(obj.date.YYYY);
         }
     });
@@ -1349,7 +1369,6 @@
     //新增
     $("#table4_wrapper .mybtn").html("新增")
     $("#table4_wrapper .mybtn").click(function () {
-        alert(4)
         uploader4 = null;
         $("#fname4 input").val("");
         $("#file_list4").empty();
@@ -1369,7 +1388,7 @@
             uploader5 = WebUploader.create({
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadAccidentreport')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadEmergencyimagedata')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
@@ -1411,7 +1430,7 @@
                 uploader5.options.formData.remark = $("#remark5").val();
                 uploader5.options.formData.number = $("#place").val();
             });
-            uploader4.on('beforeFileQueued', function (file) {
+            uploader5.on('beforeFileQueued', function (file) {
                 if($("#file_list5").html()){
                     alert("只能上传一个文件,请先删除文件");
                     return false;
@@ -1443,7 +1462,7 @@
                     $("#file_per5").empty();
                     $("#file_list5").empty();
                     $("#fname5").modal('hide');
-                    table.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
+                    table5.ajax.url("__SCRIPT__/safety_emergencyimagedata.php").load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -1460,13 +1479,13 @@
     function play(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         $.ajax({
-            url: url,
+            url: "../Emergencyrehearsal/getindex",
             type: "post",
             data: {id:id},
             success: function (res) {
                 if(res.code === 1){
-                    var path = res.path;
-                    path = encodeURIComponent(path);
+                    var path = res.data.path;
+                    path = encodeURIComponent(path).slice(1);
                     window.open("./videoplay.html?url=" + path,"_blank");
                 }else {
                     layer.msg(res.msg);
@@ -1478,7 +1497,7 @@
     //事故管理-删除
     function del5(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        del(id,"./cultureDel");
+        del(id,"../Emergencyrehearsal/emergencyimagedataDel");
     }
 
     //事故管理-编辑-删除文件
@@ -1491,7 +1510,7 @@
     function edit5(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         $.ajax({
-            url: "./index",
+            url: "../Emergencyrehearsal/getindex",
             type: "post",
             data: {id:id},
             dataType: "json",
@@ -1521,7 +1540,7 @@
     //事故管理-下载
     function download5(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        download(id,"./accidentDownload");
+        download(id,"../Emergencyrehearsal/emergencyimagedataDownload");
     }
 
     //提交
@@ -1534,14 +1553,14 @@
                     uploader5.upload();
                 }else if(bname1 !== $("#remark").val()||bname3 !== $("#place").val()){
                     $.ajax({
-                        url: "./accidentEdit",
+                        url: "../Emergencyrehearsal/emergencyimagedataEdit",
                         type: "post",
-                        data: {id:$("#did").val(),remark:$("#remark5").val(),number:$("#place").val()},
+                        data: {aid:$("#did").val(),remark:$("#remark5").val(),number:$("#place").val()},
                         datatype: "json",
                         success: function (res) {
                             if(res.code === 1){
                                 layer.msg(res.msg);
-                                table5.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
+                                table5.ajax.url("__SCRIPT__/safety_emergencyimagedata.php").load();
                                 $("#fname5").modal('hide');
                             }else {
                                 layer.msg(res.msg);
@@ -1564,7 +1583,7 @@
         "processing": true,//是否显示处理状态
         "serverSide":true,//是否开启服务器模式
         "ajax":{
-            "url": "__SCRIPT__/safety_accidentreport.php"
+            "url": "__SCRIPT__/safety_emergencyimagedata.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear selectyear5">frtip',
         "columnDefs":[ //设置列定义初始化属性
@@ -1601,7 +1620,7 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table5.ajax.url("__SCRIPT__/safety_accidentreport.php?year="+obj.date.YYYY).load();
+            table5.ajax.url("__SCRIPT__/safety_emergencyimagedata.php?year="+obj.date.YYYY).load();
             console.log(obj.date.YYYY);
         }
     });
@@ -1609,7 +1628,6 @@
     //新增
     $("#table5_wrapper .mybtn").html("新增")
     $("#table5_wrapper .mybtn").click(function () {
-        alert(5)
         uploader5 = null;
         $("#fname5 input").val("");
         $("#file_list5").empty();
@@ -1629,7 +1647,7 @@
             uploader6 = WebUploader.create({
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadAccidentreport')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadEmergencyrehearsal')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
@@ -1698,7 +1716,7 @@
                     $("#file_per6").empty();
                     $("#file_list6").empty();
                     $("#fname6").modal('hide');
-                    table6.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
+                    table6.ajax.url("__SCRIPT__/safety_emergencyrehearsal.php").load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -1715,13 +1733,13 @@
     //事故管理-预览
     function showpdf6(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        showPdf(id,"./accidentPreview");
+        showPdf(id,"../Emergencyrehearsal/culturePreview");
     }
 
     //事故管理-删除
     function del6(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        del(id,"./cultureDel");
+        del(id,"../Emergencyrehearsal/cultureDel");
     }
 
     //事故管理-编辑-删除文件
@@ -1734,7 +1752,7 @@
     function edit6(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         $.ajax({
-            url: "./index",
+            url: "../Emergencyrehearsal/getoneindex",
             type: "post",
             data: {id:id},
             dataType: "json",
@@ -1764,7 +1782,7 @@
     //事故管理-下载
     function download6(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        download(id,"./accidentDownload");
+        download(id,"../Emergencyrehearsal/cultureDownload");
     }
 
     //提交
@@ -1777,14 +1795,14 @@
                     uploader4.upload();
                 }else if(cname1 !== $("#remark6").val()||cname3 !== $("#number6").val()){
                     $.ajax({
-                        url: "./accidentEdit",
+                        url: "../Emergencyrehearsal/cultureEdit",
                         type: "post",
-                        data: {id:$("#eid").val(),remark:$("#remark6").val(),number:$("#number6").val()},
+                        data: {aid:$("#eid").val(),remark:$("#remark6").val(),number:$("#number6").val()},
                         datatype: "json",
                         success: function (res) {
                             if(res.code === 1){
                                 layer.msg(res.msg);
-                                table6.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
+                                table6.ajax.url("__SCRIPT__/safety_emergencyrehearsal.php").load();
                                 $("#fname6").modal('hide');
                             }else {
                                 layer.msg(res.msg);
@@ -1807,7 +1825,7 @@
         "processing": true,//是否显示处理状态
         "serverSide":true,//是否开启服务器模式
         "ajax":{
-            "url": "__SCRIPT__/safety_accidentreport.php"
+            "url": "__SCRIPT__/safety_emergencyrehearsal.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear selectyear6">frtip',
         "columnDefs":[ //设置列定义初始化属性
@@ -1845,7 +1863,7 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table6.ajax.url("__SCRIPT__/safety_accidentreport.php?year="+obj.date.YYYY).load();
+            table6.ajax.url("__SCRIPT__/safety_emergencyrehearsal.php?year="+obj.date.YYYY).load();
             console.log(obj.date.YYYY);
         }
     });
@@ -1853,7 +1871,6 @@
     //新增
     $("#table6_wrapper .mybtn").html("新增")
     $("#table6_wrapper .mybtn").click(function () {
-        alert(6)
         uploader6 = null;
         $("#fname6 input").val("");
         $("#file_list6").empty();
