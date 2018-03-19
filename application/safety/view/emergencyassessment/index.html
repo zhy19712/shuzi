@@ -214,6 +214,7 @@
                 }
             },
             {
+                "orderable":false,
                 "targets":[0],
                 "render":function (data,type,row) {
                     var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
@@ -232,12 +233,33 @@
                 "previous": "上一页",
                 "next": "下一页"
             }
+        },
+        "drawCallback": function( settings ) {
+            if(dataArr[0]==="all"){
+                $(".checkchild").prop("checked", true); //全部选中
+            }else{
+                $(".checkchild").each(function () {
+                    if(dataArr.indexOf($(this).parents('tr').find('td:eq(1)').text())!==-1){
+                        $(this).prop("checked", true)
+                    }
+                })
+            }
         }
     });
     //阻止表第一项点击事件
     $("thead tr th:first-child").click(function () {
         $("thead tr th:first-child").unbind();
     });
+    // // 分页事件
+    // table.on( 'page', function (a,b,c,d) {
+    //     console.log("***********");
+    //     console.log(dataArr);
+    //     console.log(a,b,c,d)
+    //     if(dataArr[0]==="all"){
+    //         $(".checkchild").prop("checked", true); //全部选中
+    //     }
+    //     console.log("***********");
+    // } );
 
     var selectyear ='<input id="year" />';
     $("div.selectyear").html("年度："+selectyear)
@@ -255,24 +277,39 @@
     //获取选中行ID
     var dataArr=[];
     function getDataId(that) {
+        var allTrue;
         var isChecked = $(that).prop('checked');
         var id = $(that).parents('tr').find('td:eq(1)').text();//获取id
         if(isChecked){ //选中判断有没有 没有就push id
             if(dataArr.indexOf(id)==-1){
                 dataArr.push(id);
             }
-            var allTrue = $(".checkchild").each(function(){
+            $(".checkchild").each(function(){
                 if(!$(this).prop('checked')){
-                    return "all"
+                    allTrue = "noall"
+                    return
                 }
             });
-            if(allTrue!=="all"){
+            if(allTrue!=="noall"){
+                $("#msg").show("fast");
+                $(".msg").html('选择当前页面信息或者<a herf="javascript:void(0)" onclick="selectAll(this)">全部信息</a>');
                 $(".checkall").prop("checked",true);
             }
         }else{
             //没选中验证数组有没有 有就删除掉
             //有未选项就取消全选
             $(".checkall").prop("checked",false);
+            $("#msg").hide("fast");
+            if(dataArr[0]==="all"){
+                dataArr.shift();
+                //把选择的存起来
+                $(".checkchild").each(function(){
+                    if($(this).prop('checked')){
+                        var id = $(this).parents('tr').find('td:eq(1)').text();
+                        dataArr.push(id);
+                    }
+                });
+            }
             if(dataArr.indexOf(id)!==-1){
                 dataArr.splice(dataArr.indexOf(id),1)
             }
@@ -282,7 +319,8 @@
     function selectAll(that) {
         console.log($(that).parent());
         $(that).parent().html("已选择全部");
-        dataArr = "All";
+        dataArr = ["all"];
+        $(".checkchild").prop("checked", true); //全部选中
     }
 
     //单选
@@ -294,14 +332,15 @@
     $(".checkall").on("click", function () {
         dataArr=[];
         $(".msg").html('选择当前页面信息或者<a herf="javascript:void(0)" onclick="selectAll(this)">全部信息</a>');
-        $("#msg").toggle("fast");
         var check = $(this).prop("checked");
         if (check === true) {
+            $("#msg").show("fast");
             $(".checkchild").prop("checked", true); //全部选中
             $(".checkchild").each(function(){
                 getDataId(this);
             });
         } else {
+            $("#msg").hide("fast");
             $(".checkchild").prop("checked", false); //全部不选中
             $(".checkchild").each(function(){
                 getDataId(this);
