@@ -825,6 +825,7 @@
         //点击节点
         function zTreeOnClick(event, treeId, treeNode) {
             idArr.length=0;
+            console.log(idArr);
             $('input[type="hidden"][name="zid"]').val(treeNode.id);
             $('input[type="hidden"][name="groupId"]').val(treeNode.pId);
 
@@ -1012,8 +1013,9 @@
 
         //导出excelExport主要负责人和安全管理人员
         $("#manageExport").click(function () {
+            var url = "{:url('Edupeople/exportExcel')}";
             $.ajax({
-                url: "./exportExcel",
+                url: url,
                 type: "post",
                 data: {
                     'id':idArr
@@ -1023,7 +1025,7 @@
                     if(res.code ==1){
                         $("#form_container").empty();
                         var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
-                            +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
+                            +'<form action='+url+' method="get" target="exportExcelFrame">';
                         for (var i = 0; i < idArr.length; i++)
                         {
                             str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
@@ -1040,8 +1042,9 @@
 
         //导出excelExport模板主要负责人和安全管理人员
         $("#manageExportExcel").click(function () {
+            var manageUrlExcel = "{:url('Edupeople/exportExcelTemplete')}";
             $.ajax({
-                url: "./exportExcelTemplete",
+                url: manageUrlExcel,
                 type: "post",
                 data: {
                     'id':idArr
@@ -1051,7 +1054,7 @@
                     if(res.code ==1){
                         $("#form_container").empty();
                         var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
-                            +'<form action="./exportExcelTemplete" method="get" target="exportExcelFrame">';
+                            +'<form action='+ manageUrlExcel +' method="get" target="exportExcelFrame">';
                         for (var i = 0; i < idArr.length; i++)
                         {
                             str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
@@ -1066,7 +1069,7 @@
             })
         });
 
-        //导入
+        //导入主要负责人和安全管理人员
         var manageImportExcel = WebUploader.create({
             auto: true,
             // swf文件路径
@@ -1094,6 +1097,10 @@
 
             // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
             resize: false
+        });
+
+        manageImportExcel.on( 'uploadSuccess', function( file ,res) {
+            manageComplete(res);
         });
 
         manageImportExcel.on("uploadStart",function () {
@@ -1238,13 +1245,11 @@
             })
         }
 
-        //导出excelExport从业人员
+        //导出从业人员excel
         $("#practExport").click(function () {
-            $('input[name="manageCheckList"]').each(function(){
-
-            });
+            var practUrl = "{:url('Eduemployee/exportExcel')}";
             $.ajax({
-                url: "./exportExcel",
+                url: practUrl,
                 type: "post",
                 data: {
                     'id':idArr
@@ -1254,7 +1259,7 @@
                     if(res.code ==1){
                         $("#form_container").empty();
                         var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
-                            +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
+                            +'<form action='+practUrl+' method="get" target="exportExcelFrame">';
                         for (var i = 0; i < idArr.length; i++)
                         {
                             str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
@@ -1269,10 +1274,11 @@
             })
         });
 
-        //导出excelExport模板主要负责人和安全管理人员
+        //导出从业人员excel模板
         $("#practExportExcel").click(function () {
+            var practUrlExcel = "{:url('Eduemployee/exportExcelTemplete')}";
             $.ajax({
-                url: "./exportExcelTemplete",
+                url: practUrlExcel,
                 type: "post",
                 data: {
                     'id':idArr
@@ -1282,7 +1288,7 @@
                     if(res.code ==1){
                         $("#form_container").empty();
                         var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
-                            +'<form action="./exportExcelTemplete" method="get" target="exportExcelFrame">';
+                            +'<form action='+practUrlExcel+' method="get" target="exportExcelFrame">';
                         for (var i = 0; i < idArr.length; i++)
                         {
                             str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
@@ -1295,6 +1301,45 @@
                     }
                 }
             })
+        });
+
+        //导入从业人员
+        var practImportExcel = WebUploader.create({
+            auto: true,
+            // swf文件路径
+            swf:  '/static/admin/js/webupload/Uploader.swf',
+
+            // 文件接收服务端。
+            server: "{:url('Eduemployee/importExcel')}",
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: {
+                multiple: false,
+                id: "#practImport",
+                innerHTML: "导入"
+            },
+            formData:{
+                pid:'',
+                zid:''
+            },
+            accept: {
+                title: 'excel',
+                extensions: 'xls,xlsx',
+                mimeTypes: '.xls,.xlsx'
+            },
+
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false
+        });
+
+        practImportExcel.on( 'uploadSuccess', function( file ,res) {
+            practComplete(res);
+        });
+
+        practImportExcel.on("uploadStart",function () {
+            practImportExcel.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+            practImportExcel.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
         });
 
         /**
@@ -1438,9 +1483,7 @@
 
         //导出excelExport外来人员
         $("#foreignExport").click(function () {
-            $('input[name="manageCheckList"]').each(function(){
-
-            });
+            var foreignUrl = "{:url('Eduforeignpersonnel/exportExcel')}";
             $.ajax({
                 url: "./exportExcel",
                 type: "post",
@@ -1452,7 +1495,7 @@
                     if(res.code ==1){
                         $("#form_container").empty();
                         var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
-                            +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
+                            +'<form action='+ foreignUrl +' method="get" target="exportExcelFrame">';
                         for (var i = 0; i < idArr.length; i++)
                         {
                             str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
@@ -1469,8 +1512,9 @@
 
         //导出excelExport外来人员
         $("#foreignExportExcel").click(function () {
+            var foreignUrlExcel = "{:url('Eduforeignpersonnel/exportExcelTemplete')}";
             $.ajax({
-                url: "./exportExcelTemplete",
+                url: foreignUrlExcel,
                 type: "post",
                 data: {
                     'id':idArr
@@ -1480,7 +1524,7 @@
                     if(res.code ==1){
                         $("#form_container").empty();
                         var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
-                            +'<form action="./exportExcelTemplete" method="get" target="exportExcelFrame">';
+                            +'<form action='+ foreignUrlExcel +' method="get" target="exportExcelFrame">';
                         for (var i = 0; i < idArr.length; i++)
                         {
                             str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
@@ -1493,6 +1537,45 @@
                     }
                 }
             })
+        });
+
+        //导入从业人员
+        var foreignImportExcel = WebUploader.create({
+            auto: true,
+            // swf文件路径
+            swf:  '/static/admin/js/webupload/Uploader.swf',
+
+            // 文件接收服务端。
+            server: "{:url('Eduforeignpersonnel/importExcel')}",
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: {
+                multiple: false,
+                id: "#foreignImport",
+                innerHTML: "导入"
+            },
+            formData:{
+                pid:'',
+                zid:''
+            },
+            accept: {
+                title: 'excel',
+                extensions: 'xls,xlsx',
+                mimeTypes: '.xls,.xlsx'
+            },
+
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false
+        });
+
+        foreignImportExcel.on( 'uploadSuccess', function( file ,res) {
+            foreignComplete(res);
+        });
+
+        foreignImportExcel.on("uploadStart",function () {
+            foreignImportExcel.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+            foreignImportExcel.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
         });
 
         /**
