@@ -58,7 +58,7 @@ class Emergencyrevise extends Base
             $data = $emergencyrevise->getOne($param['id']);
             if(!empty($data['version_number_path']))
             {
-                $path = $data['path'];
+                $path = $data['version_number_path'];
                 $extension = strtolower(get_extension(substr($path,1)));
                 $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
                 if(!file_exists($pdf_path)){
@@ -100,7 +100,7 @@ class Emergencyrevise extends Base
             $data = $emergencyrevise->getOne($param['id']);
             if(!empty($data['alternative_version_path']))
             {
-                $path = $data['path'];
+                $path = $data['alternative_version_path'];
                 $extension = strtolower(get_extension(substr($path,1)));
                 $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
                 if(!file_exists($pdf_path)){
