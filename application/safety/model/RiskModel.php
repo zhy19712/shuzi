@@ -50,7 +50,15 @@ class RiskModel extends Model
             if (empty($risk['id'])) {
 //            新增，直接计算分数
                 $founder_id = $risk['founder_id'];
+                $this->proessScore($founder_id, $risk['cat'],'排查', $risk['founddate']);
                 $acceptor_id = $risk['acceptor_id'];
+                $this->proessScore($acceptor_id, $risk['cat'],'验收', $risk['completedate']);
+                $res = $this->allowField(true)->save($risk);
+                if ($res) {
+                    return ['code' => 1, 'data' => '', 'msg' => '添加成功'];
+                } else {
+                    return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
+                }
             } else {
 //            修改，对比发现人与验收人
             }
@@ -60,7 +68,7 @@ class RiskModel extends Model
     }
 
 
-    function proessScore($userId, $cat, $act,$time)
+    function proessScore($userId, $cat, $act, $time)
     {
         $score = 0;
         switch ($cat) {
@@ -92,8 +100,8 @@ class RiskModel extends Model
             default:
                 $score = 0;
         }
-        if (!$score==0)
-        {
+        if (!$score == 0) {
+
         }
     }
 
