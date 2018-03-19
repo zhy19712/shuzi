@@ -257,7 +257,7 @@ class Eduemployee extends Base
                 ->setCellValue('E'.$key, $v['job'])
                 ->setCellValue('F'.$key, $v['situation'])
                 ->setCellValue('G'.$key, $v['iphone'])
-                ->setCellValue('H'.$key, $v['approach_tiem'])
+                ->setCellValue('H'.$key, $v['approach_time'])
                 ->setCellValue('I'.$key, $v['content'])
                 ->setCellValue('J'.$key, $v['edu_time'])
                 ->setCellValue('K'.$key, $v['exam_performance'])
