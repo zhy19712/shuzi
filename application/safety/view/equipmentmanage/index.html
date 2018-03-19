@@ -2065,22 +2065,30 @@
     });
     //导出excelExport
     $(".excelExport").click(function () {
-        alert(dataArr)
         $.ajax({
-            url: "../Specialequipmentmanagement/exportExcel",
+            url: "./exportExcel",
             type: "post",
-            data: {'idarr':dataArr},
+            data: {
+                'id':dataArr
+            },
             dataType: "json",
             success: function (res) {
-                console.log(res);
                 if(res.code ==1){
-                    layer.msg('导出成功！', {icon: 1});
+                    $("#form_container").empty();
+                    var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
+                        +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
+                    for (var i = 0; i < dataArr.length; i++)
+                    {
+                        str += '<input style="display: none;" name="id[]" value="'+ dataArr[i] +'">';
+                    }
+                    str += '<button type="submit" id="exportExcelBtn"><button></form>';
+                    $("#form_container").append(str);
+                    $("#form_container").find("#exportExcelBtn").click();
                 }else{
                     alert("获取数据失败！")
                 }
             }
         })
-        // method1("table3")
     });
 
     //导出

@@ -252,7 +252,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">原始版本号：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="version_number" type="text" class="form-control" required="required" name="version_number" placeholder="此处为必填项">
+                                    <input id="version_number" type="text" class="form-control" required="required" name="version_number" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
@@ -275,7 +275,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label ">适用性评价：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="applicability" id="applicability" required="required" class="form-control" placeholder="此处为必填项">
+                                    <select name="applicability" id="applicability" class="form-control" >
                                         <option value="适用">适用</option>
                                         <option value="不适用">不适用</option>
                                     </select>
@@ -539,8 +539,8 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        if(url === "./anualDel"){
-                            table1.ajax.url("__SCRIPT__/safety_goal_anual.php").load();
+                        if(url === "./Emergencyplan/emergencyDel"){
+                            table2.ajax.url("__SCRIPT__/safety_emergencyplan.php").load();
                         }else if(url === "./generalDel"){
                             table2.ajax.url("__SCRIPT__/safety_goal_general.php").load();
                         }else if(url === "./responsibilityDel"){
@@ -665,7 +665,7 @@
             uploader2 = WebUploader.create({
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/uploadSafeyGoalGeneral')}",// 文件接收服务端。
+                server: "{:url('Emergencyplan/reviseEdit')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
                 fileNumLimit: 1,
@@ -749,7 +749,7 @@
                     $("#file_per2").empty();
                     $("#file_list2").empty();
                     $("#fname2").modal('hide');
-                    table2.ajax.url("__SCRIPT__/safety_goal_general.php").load();
+                    table2.ajax.url("__SCRIPT__/safety_emergencyplan.php").load();
                 }else {
                     layer.msg("抱歉，您没有此权限");
                 }
@@ -770,13 +770,13 @@
             return ;
         }
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        showPdf(id,"./generalPreview");
+        showPdf(id,"../Emergencyplan/emergencyPreview");
     }
 
     //应急预案-删除
     function del2(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        del(id,"./generalDel");
+        del(id,"../Emergencyplan/emergencyDel");
     }
 
     //应急预案-下载
@@ -787,7 +787,7 @@
             return ;
         }
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        download(id,"./generalDownload");
+        download(id,"../Emergencyplan/emergencyDownload");
     }
 
     //应急预案-编辑-删除文件
@@ -944,7 +944,7 @@
 
     //应急预案-提交
     $("#fname2").submit(function () {
-        var url = current_id===""?"":"";
+        var url = current_id===""?"":"../Emergencyplan/reviseEdit";
         //判断是不是新增
       if(!$("#file_list2").html()){
             //判断有无文件变化
