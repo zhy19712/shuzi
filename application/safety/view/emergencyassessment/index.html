@@ -68,6 +68,7 @@
         <div class="tab-pane active" >
             <div class="excel">
                 <div class="excelExport btn btn-outline btn-primary" id="excelExport">导出</div>
+                <div class="excelExport btn btn-outline btn-primary" id="excelExport_model">导出excel模板</div>
             </select>
             </div>
             <table id="table" width="100%" class="table table-striped table-bordered ">
@@ -88,6 +89,8 @@
     </div>
 </div>
 <div id="form_container" style="display: none;"></div>
+<div id="form_container_excel" style="display: none;"></div>
+<div id="form_container_model" style="display: none;"></div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 <script src="__JS__/jquery.dataTables.min.js"></script>
@@ -121,7 +124,7 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        table.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
+                        table.ajax.url("__SCRIPT__/safety_emergencyrevise.php").load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -159,28 +162,28 @@
     //修订记录-预览
     function showpdf1(that) {
         var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
-        showPdf(id,"./accidentPreview");
+        showPdf(id,"../Emergencyrevise/versionnumberpathPreview");
+    }
+    //替换版本
+    function showpdf2(that) {
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
+        showPdf(id,"../Emergencyrevise/alternativeversionpathPreview");
     }
 
     //修订记录-删除
     function del1(that) {
         var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
-        del(id,"./cultureDel");
+        del(id,"../Emergencyrevise/equipmentDel");
     }
 
-    var dataset = [
-        [
-            1,1,1,1.1,1.2,1,1,1,1
-        ]
-    ];
     //修订记录表格
     var table = $("#table").DataTable({
         "processing": true,//是否显示处理状态
-        // "serverSide":true,//是否开启服务器模式
-        // "ajax":{
-        //     "url": "__SCRIPT__/safety_accidentreport.php"
-        // },
-        "data":dataset,
+        "serverSide":true,//是否开启服务器模式
+        'order' : [5,'desc'],
+        "ajax":{
+            "url": "__SCRIPT__/safety_emergencyrevise.php"
+        },
         "dom": '<"myl"l><"selectyear">frtip',
         "columnDefs":[ //设置列定义初始化属性
             {
@@ -206,7 +209,7 @@
                 "orderable":false,   //禁止排序
                 "targets":[4],         //指定列
                 "render": function (data,type,row) {
-                    var html = "<a href='javascript:void(0)'>"+row[4]+"</a>" ;
+                    var html = "<a href='javascript:void(0)' onclick='showpdf2(this)'>"+row[4]+"</a>" ;
                     return html;
                 }
             },
@@ -243,7 +246,7 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table.ajax.url("__SCRIPT__/safety_accidentreport.php?year="+obj.date.YYYY).load();
+            table.ajax.url("__SCRIPT__/safety_emergencyrevise.php?year="+obj.date.YYYY).load();
             console.log(obj.date.YYYY);
         }
     });
@@ -289,6 +292,7 @@
 
     //checkbox全选
     $(".checkall").on("click", function () {
+        dataArr=[];
         $(".msg").html('选择当前页面信息或者<a herf="javascript:void(0)" onclick="selectAll(this)">全部信息</a>');
         $("#msg").toggle("fast");
         var check = $(this).prop("checked");
@@ -307,33 +311,51 @@
     });
     //导出excelExport
     $("#excelExport").click(function () {
-        alert(111)
         $.ajax({
-            url: "./exportExcel",
+            url: "../Emergencyrevise/exportExcel",
             type: "post",
             data: {
-                'id':dataArr
+                'idarr':dataArr
             },
             dataType: "json",
             success: function (res) {
                 if(res.code ==1){
-                    $("#form_container").empty();
+                    $("#form_container_excel").empty();
                     var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
-                        +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
+                        +'<form action="../Emergencyrevise/exportExcel" method="get" target="exportExcelFrame">';
                     for (var i = 0; i < dataArr.length; i++)
                     {
-                        str += '<input style="display: none;" name="id[]" value="'+ dataArr[i] +'">';
+                        str += '<input style="display: none;" name="idarr[]" value="'+ dataArr[i] +'">';
                     }
-                    str += '<button type="submit" id="exportExcelBtn"><button></form>';
-                    $("#form_container").append(str);
-                    $("#form_container").find("#exportExcelBtn").click();
+                    str += '<button type="submit" id="exportExcelBtn"></button></form>';
+                    $("#form_container_excel").append(str);
+                    $("#form_container_excel").find("#exportExcelBtn").click();
                 }else{
                     alert("获取数据失败！")
                 }
             }
         })
     });
-
+    //导出excelExport模板
+    $("#excelExport_model").click(function () {
+        $.ajax({
+            url: "../Emergencyrevise/exportExcelTemplete",
+            type: "post",
+            dataType: "json",
+            success: function (res) {
+                if(res.code ==1){
+                    $("#form_container_model").empty();
+                    var str = '<iframe name="exportExcelFrameModel" style="display:none;"></iframe>'
+                        +'<form action="../Emergencyrevise/exportExcelTemplete" method="get" target="exportExcelFrameModel">';
+                    str += '<button type="submit" id="exportExcelModelBtn"></button></form>';
+                    $("#form_container_model").append(str);
+                    $("#form_container_model").find("#exportExcelModelBtn").click();
+                }else{
+                    alert("获取数据失败！")
+                }
+            }
+        })
+    });
 </script>
 </body>
 </html>
