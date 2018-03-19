@@ -188,6 +188,8 @@
 </div>
 <!--下载的文件-->
 <div id="formDown" style="display: none"></div>
+<!--导出的文件-->
+<div id="form_container" style="display: none;"></div>
 <!--右边表格的新增与编辑-->
 <div id="education_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
     <div class="row">
@@ -956,27 +958,48 @@
         importExcel.reset();
     });
 
+    //驱虫
+    Array.prototype.removal = function(){
+        var newArr = [];
+        for (var i = 0; i < this.length; i++) {
+            if(newArr.indexOf(this[i]) == -1){  //判断在newArr数组中是否存在，不存在则push到newArr数组中 indexOf 不兼容IE8及以下
+                newArr.push(this[i]);
+            }
+        }
+        return newArr;
+    }
+    //删除数组中的指定元素
+    Array.prototype.remove = function(val){
+        for (var i = 0; i < this.length; i++) {
+            if(this[i] === val){
+                this.splice(i,1);
+                break;
+            }
+        }
+        return this;
+    }
     var dataArr=[];
     //获取选中行ID
     function getDataId(that) {
         var isChecked = $(that).prop('checked');
         var id = $(that).parents('tr').find('td:eq(1)').text();
-        console.log(id)
         if(isChecked){
             dataArr.push(id);
+            dataArr.removal(id);
+        }else {
+            dataArr.remove(id);
+            dataArr.removal(id);
         }
     }
     //单选
     function getRadioId(that) {
-        console.log(dataArr);
         getDataId(that);
+        console.log(dataArr);
     }
 
     //checkbox全选
     $(".checkall").on("click", function () {
-        console.log(dataArr);
-
-        if ($(this).prop("checked") === true) {
+        if ($(this).prop("checked") == true) {
             var check = $(this).prop("checked");
             $(".checkchild").prop("checked", check);
             $(".checkchild").each(function(){
@@ -984,7 +1007,11 @@
             });
         } else {
             $(".checkchild").prop("checked", false);
+            $(".checkchild").each(function(){
+                getDataId(this);
+            });
         }
+        console.log(dataArr);
     });
     //导出excelExport
     $("#excelExport").click(function () {
@@ -996,8 +1023,16 @@
             },
             dataType: "json",
             success: function (res) {
-                console.log(res);
                 if(res.code ==1){
+                    $("#form_container").empty();
+                    var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
+                        +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
+                    for (var i = 0; i < dataArr.length; i++) {
+                        str += '<input style="display: none;" name="id[]" value="'+ dataArr[i] +'">';
+                    }
+                    str += '<button type="submit" id="exportExcelBtn"></button></form>';
+                    $("#form_container").append(str);
+                    $("#form_container").find("#exportExcelBtn").click();
                     layer.msg('导出成功！', {icon: 1});
                 }else{
                     alert("获取数据失败！")
