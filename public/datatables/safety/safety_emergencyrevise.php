@@ -30,12 +30,12 @@ $primaryKey = 'id';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
-    array( 'db' => 'id',  'dt' => 1 ),//序号
-    array( 'db' => 'preplan_file_name',  'dt' => 2 ),//文件名称
-    array( 'db' => 'version_number',  'dt' => 3 ),//原有版本号
-    array( 'db' => 'alternative_version',  'dt' => 4 ),//替换版本号
-    array( 'db' => 'date',  'dt' => 5 ),//替换时间
-    array( 'db' => 'owner',  'dt' => 6 )//上传人
+    array( 'db' => 'id',  'dt' => 0 ),//序号
+    array( 'db' => 'preplan_file_name',  'dt' => 1 ),//文件名称
+    array( 'db' => 'version_number',  'dt' => 2 ),//原有版本号
+    array( 'db' => 'alternative_version',  'dt' => 3 ),//替换版本号
+    array( 'db' => 'date',  'dt' => 4 ),//替换时间
+    array( 'db' => 'owner',  'dt' => 5 )//上传人
 );
 
 
@@ -57,11 +57,11 @@ if(!empty($_GET["year"]))
 {
     $year = $_GET["year"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null, "date like '%" .$year. "%' order by 'id' desc" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null, "date like '%" .$year. "%'" )
     );
 }else{
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null,"order by 'id' desc")
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
     );
 }
 
