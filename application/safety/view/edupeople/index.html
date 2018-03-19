@@ -110,6 +110,15 @@
         }
         .webuploader-pick{
             padding: 6px 12px;
+            background: none;
+            color: #1ab394;
+        }
+        .webuploader-pick-hover{
+            background: none;
+            color: #FFF;
+        }
+        .webuploader-container{
+            padding: 0;
         }
         #rulesDesc{
             border: 1px solid #e5e6e7;
@@ -669,7 +678,7 @@
             ajax: {
                 "url": "__SCRIPT__/safety_edupeople.php"
             },
-            dom: 'lf<"#manageExportExcel.export-excel btn-outline btn-primary"><"#manageExport.export btn-outline btn-primary"><"#manageAdd.add btn-outline btn-primary">rtip',
+            dom: 'lf<"#manageExportExcel.export-excel btn-outline btn-primary"><"#manageExport.export btn-outline btn-primary"><"#manageImport.import btn-outline btn-primary"><"#manageAdd.add btn-outline btn-primary">rtip',
             columnDefs: [
                 {
                     searchable: false,
@@ -712,7 +721,7 @@
             ajax: {
                 "url": "__SCRIPT__/safety_eduployee.php"
             },
-            dom: 'lf<"#practExportExcel.export-excel btn-outline btn-primary"><"#practExport.export btn-outline btn-primary"><"#practAdd.add btn-outline btn-primary">rtip',
+            dom: 'lf<"#practExportExcel.export-excel btn-outline btn-primary"><"#practExport.export btn-outline btn-primary"><"#practImport.import btn-outline btn-primary"><"#practAdd.add btn-outline btn-primary">rtip',
             columnDefs: [
                 {
                     searchable: false,
@@ -755,7 +764,7 @@
             ajax: {
                 "url": "__SCRIPT__/safety_eduforeignpersonnel.php"
             },
-            dom: 'lf<"#foreignExportExcel.export-excel btn-outline btn-primary"><"#foreignExport.export btn-outline btn-primary"><"#foreignAdd.add btn-outline btn-primary">rtip',
+            dom: 'lf<"#foreignExportExcel.export-excel btn-outline btn-primary"><"#foreignExport.export btn-outline btn-primary"><"#foreignImport.import btn-outline btn-primary"><"#foreignAdd.add btn-outline btn-primary">rtip',
             columnDefs: [
                 {
                     searchable: false,
@@ -790,10 +799,13 @@
                 }
             }
         });
+
         $("div#manageAdd").html('新增');
         $("div#practAdd").html('新增');
-        $("div#foreignAdd").html('新增');
-        $('div#import').html('导入');
+        $('div#foreignAdd').html('新增');
+        $('div#manageImport').html('导入');
+        $('div#practImport').html('导入');
+        $('div#foreignImport').html('导入');
         $('div#manageExport').html('导出');
         $('div#practExport').html('导出');
         $('div#foreignExport').html('导出');
@@ -1052,6 +1064,41 @@
                     }
                 }
             })
+        });
+
+        //导入
+        var manageImportExcel = WebUploader.create({
+            auto: true,
+            // swf文件路径
+            swf:  '/static/admin/js/webupload/Uploader.swf',
+
+            // 文件接收服务端。
+            server: "{:url('Edupeople/importExcel')}",
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: {
+                multiple: false,
+                id: "#manageImport",
+                innerHTML: "导入"
+            },
+            formData:{
+                pid:'',
+                zid:''
+            },
+            accept: {
+                title: 'excel',
+                extensions: 'xls,xlsx',
+                mimeTypes: '.xls,.xlsx'
+            },
+
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false
+        });
+
+        manageImportExcel.on("uploadStart",function () {
+            manageImportExcel.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+            manageImportExcel.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
         });
 
         /**
