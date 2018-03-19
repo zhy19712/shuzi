@@ -303,13 +303,13 @@ class Riskmanage extends Base
         }
         $idArr = input('id/a');
         if(count($idArr) == 0){
-            return json(['code' => 1 ,'msg' => '请选择需要下载的编号']);
+            return json(['code' => -1 ,'msg' => '请选择需要下载的编号']);
         }
         $name = '安全风险管理 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $manage = new RiskManageModel();
         $list = $manage->getList($idArr);
         if(count($list) == 0){
-            return json(['code' => 1 ,'msg' => '数据为空']);
+            return json(['code' => -1 ,'msg' => '数据为空']);
         }
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);

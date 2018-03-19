@@ -387,13 +387,13 @@ class Rulesregulations extends Base
         }
         $idArr = input('id/a');
         if(count($idArr) == 0){
-            return json(['code' => 1 ,'msg' => '请选择需要下载的编号']);
+            return json(['code' => -1 ,'msg' => '请选择需要下载的编号']);
         }
         $name = '规章制度 - '.date('Y-m-d H:i:s'); // 导出的文件名 可以指定是哪个节点下的那个节点.xls 例如:规章制度-国家电网公司.xls
         $sdi = new RulesregulationsModel();
         $list = $sdi->getList($idArr);
         if(count($list) == 0){
-            return json(['code' => 1 ,'msg' => '数据为空']);
+            return json(['code' => -1 ,'msg' => '数据为空']);
         }
         $i=0;
         foreach ($list as $v){
