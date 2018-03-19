@@ -24,6 +24,10 @@ class Emergencyplan extends Base
             $emergency= new EmergencyplanModel();
             $param = input('post.');
             $data = $emergency->getOne($param['id']);
+            if(empty($data['path']))
+            {
+                $data['path'] = '';
+            }
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
