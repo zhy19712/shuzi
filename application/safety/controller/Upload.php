@@ -27,6 +27,7 @@ use app\safety\model\EmergencyschemeModel;
 use app\safety\model\EmergencyimagedataModel;
 use app\safety\model\EmergencyrehearsalModel;
 use app\safety\model\EmergencydisposalModel;
+use app\safety\model\EmergencyreviseModel;
 use think\Db;
 
 class Upload extends Base
@@ -1278,7 +1279,7 @@ class Upload extends Base
     }
 
     /*
-     * 应急预案文件上传上传
+     * 应急预案修订文件上传上传
      * @return \think\response\Json
      */
     public function uploadEmergencyplan(){
@@ -1298,10 +1299,14 @@ class Upload extends Base
          * path 上传文件路径
          */
         $emergencyplan = new EmergencyplanModel();
+        $revise = new EmergencyreviseModel();
         $id = request()->param('aid');//获取上传的18的文件id
-        $panid = request()->param('panid');//判断是否有文件上传
+//        $panid = request()->param('panid');//判断是否有文件上传
         $preplan_number = request()->param('preplan_number');//文件编号
+        $version_number = request()->param('version_number');//文件版本号
+        $alternative_version = request()->param('alternative_version');//文件替代版本号
         $applicability = request()->param('applicability');//适用性评价
+        $preplan_state = request()->param('preplan_state');//状态
         $remark = request()->param('remark');//备注
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/emergencyplan');
@@ -1309,12 +1314,15 @@ class Upload extends Base
             $temp = $info->getSaveName();
             $path = './uploads/safety/emergencyplan/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
-            if(empty($panid))
+            if($preplan_state == "已上传")
             {
                 $data = [
                     'id' => $id,
                     'preplan_number' => $preplan_number,
+                    'version_number' => $version_number,
+                    'alternative_version' => $alternative_version,
                     'applicability' => $applicability,
+                    'preplan_state' => $preplan_state,
                     'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
@@ -1322,25 +1330,42 @@ class Upload extends Base
                     'path' => $path,
                     'remark' => $remark
                 ];
-                $flag = $emergencyplan->editEmergencyplan($data);
-                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
-            }else{
-                $data_older = $emergencyplan->getOne($id);
-                unlink($data_older['path']);
-                $data = [
-                    'id' => $id,
-                    'preplan_number' => $preplan_number,
-                    'applicability' => $applicability,
+                //查询员版本路径
+                $version_number_path = $emergencyplan ->getOne($id);
+                $data1 = [
+//                    'id' => $id,
+//                    'preplan_number' => $preplan_number,
+                    'version_number' => $version_number,
+                    'alternative_version' => $alternative_version,
+//                    'applicability' => $applicability,
+//                    'preplan_state' => $preplan_state,
                     'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
-                    'path' => $path,
-                    'remark' => $remark
+                    'version_number_path' => $version_number_path['path'],
+                    'alternative_version_path' => $path,//替换版本路径
+//                    'remark' => $remark
                 ];
                 $flag = $emergencyplan->editEmergencyplan($data);
+                $flag1 = $revise->insertEmergencyrevise($data1);
+                if($flag['code'] && $flag1['code'])
+                {
+                    return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+                }
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }
+//            else if($preplan_state == "未上传"){
+//
+//
+//
+//
+//
+//
+//
+//                $flag = $emergencyplan->editEmergencyplan($data);
+//                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+//            }
 
 
 
