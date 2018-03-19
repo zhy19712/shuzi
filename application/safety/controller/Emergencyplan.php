@@ -39,6 +39,7 @@ class Emergencyplan extends Base
         $param = input('post.');
             if(request()->isAjax())
             {
+                $emergency_revise = $emergency ->getOne($param['aid']);
                         $data = [
                             'id' => $param['aid'],
                             'preplan_number' => $param['preplan_number'],
@@ -53,7 +54,7 @@ class Emergencyplan extends Base
                         $flag = $emergency->editEmergencyplan($data);
 
                     //查询文件信息
-                    $emergency_revise = $emergency ->getOne($param['aid']);
+
 
                     $data1 = [
 //                        'id' => $param['aid'],
