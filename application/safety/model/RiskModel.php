@@ -49,26 +49,42 @@ class RiskModel extends Model
         try {
             if (empty($risk['id'])) {
 //            新增，直接计算分数
-                $founder_id = $risk['founder_id'];
-                $this->proessScore($founder_id, $risk['cat'], '排查', $risk['founddate']);
-                $acceptor_id = $risk['acceptor_id'];
-                $this->proessScore($acceptor_id, $risk['cat'], '验收', $risk['completedate']);
+                $this->proessScore($risk['founder_id'], $risk['cat'], '排查', $risk['founddate']);
+                $this->proessScore($risk['acceptor_id'], $risk['cat'], '验收', $risk['completedate']);
                 $res = $this->allowField(true)->save($risk);
-                if ($res) {
-                    return ['code' => 1, 'data' => '', 'msg' => '添加成功'];
-                } else {
-                    return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
-                }
             } else {
 //            修改，对比发现人与验收人
+                $item_old = $this->where('id', $risk['id'])->find();
+                if (!$item_old['founder_id'] == $risk['founder_id']) {
+                    $this->proessScore($item_old['founder_id'], $item_old['cat'], '修改', $item_old['founddate'], true);
+                    $this->proessScore($risk['founder_id'], $risk['cat'], '排查', $risk['founddate']);
+                }
+                if (!$item_old['acceptor_id'] == $risk['acceptor_id']) {
+                    $this->proessScore($item_old['acceptor_id'], $item_old['cat'], '修改', $risk['acceptor_id'], true);
+                    $this->proessScore($risk['acceptor_id'], $risk['cat'], '验收', $risk['acceptor_id']);
+                }
+                $res = $this->allowField(true)->save($risk, ['id' => $risk['id']]);
+            }
+            if ($res) {
+                return ['code' => 1, 'data' => '', 'msg' => '操作成功'];
+            } else {
+                return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
             }
         } catch (PDOException $e) {
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
 
-
-    function proessScore($userId, $cat, $act, $time)
+    /**
+     * 分数计算
+     * @param $userId
+     * @param $cat
+     * @param $act
+     * @param $time
+     * @param bool $isEdit 是否编辑修改
+     * @return bool
+     */
+    function proessScore($userId, $cat, $act, $time, $isEdit = false)
     {
         $score = 0;
         switch ($cat) {
@@ -101,8 +117,11 @@ class RiskModel extends Model
                 $score = 0;
         }
         if (!$score == 0) {
+            if ($isEdit) {
+                $score = 0 - $score;
+            }
             $duty = new RiskDoubleDutyModel();
-            return $duty->prossScore($userId,$score,$cat,$act,$time);
+            return $duty->prossScore($userId, $score, $cat, $act, $time);
         }
     }
 
