@@ -24,6 +24,10 @@ class Emergencyplan extends Base
             $emergency= new EmergencyplanModel();
             $param = input('post.');
             $data = $emergency->getOne($param['id']);
+            if(empty($data['path']))
+            {
+                $data['path'] = '';
+            }
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
@@ -39,6 +43,7 @@ class Emergencyplan extends Base
         $param = input('post.');
             if(request()->isAjax())
             {
+                $emergency_revise = $emergency ->getOne($param['aid']);
                         $data = [
                             'id' => $param['aid'],
                             'preplan_number' => $param['preplan_number'],
@@ -53,7 +58,7 @@ class Emergencyplan extends Base
                         $flag = $emergency->editEmergencyplan($data);
 
                     //查询文件信息
-                    $emergency_revise = $emergency ->getOne($param['aid']);
+
 
                     $data1 = [
 //                        'id' => $param['aid'],
@@ -75,6 +80,31 @@ class Emergencyplan extends Base
                 }
 
             }
+    }
+
+    /*
+     * 编辑一条应急预案信息,没有文件上传
+     */
+    public function emergencyplanEdit()
+    {
+        $emergency = new EmergencyplanModel();
+        $param = input('post.');
+        if(request()->isAjax())
+        {
+            $data = [
+                'id' => $param['aid'],
+                'preplan_number' => $param['preplan_number'],
+                'version_number' => $param['version_number'],
+                'alternative_version' => $param['alternative_version'],
+                'applicability' => $param['applicability'],
+                'preplan_state' => $param['preplan_state'],
+                'owner' => session('username'),
+                'date' => date("Y-m-d H:i:s"),
+                'path' => ''
+            ];
+            $flag = $emergency->editEmergencyplan($data);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
     }
 
     /*
