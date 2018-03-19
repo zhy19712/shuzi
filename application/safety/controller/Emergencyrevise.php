@@ -134,7 +134,6 @@ class Emergencyrevise extends Base
         if($idArr['0'] == "all")
         {
             $idArr = $emergencyrevise ->getallid();
-            halt($idArr);
         }
         $name = '应急评估'.date('Y-m-d H:i:s'); // 导出的文件名
 
