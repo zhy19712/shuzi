@@ -16,7 +16,6 @@ class RiskDoubleDutyModel extends Model
 {
     protected $name = 'safety_riskdoubleduty';
 
-
     /**
      * @param $user
      * @return int|string
@@ -25,15 +24,34 @@ class RiskDoubleDutyModel extends Model
     {
         try {
             $item = $this->where('user_id', $userId)->find();
+        } catch (Exception $e) {
+            $item = null;
+        }
+        if (!empty($item)) {
+            return $item;
+        }
+        $item = ['user_id' => $userId];
+        $id = $this->insertGetId($item);
+        return $this->where('user_id', $id)->find();
+    }
+
+    public function prossScore($userId,$score,$cat,$context,$time)
+    {
+        $item = $this->getbyid($userId);
+
+        Db::transaction();
+        try
+        {
+            //插入增减分记录
+            $info=new RiskDoubleDutyInfoModel();
+            $info->insert(['score'=>$score,'context'=>$context,'cat'=>$cat,'date'=>$time]);
+
+            $item['score']+=$item['score'];
+            $item->save();
         }
         catch (Exception $e)
         {
-            $item=null;
+            Db::rollback();
         }
-        if (!empty($item)) {
-            return $item['id'];
-        }
-        $item = ['user_id' => $userId];
-        return $this->insertGetId($item);
     }
 }
