@@ -67,6 +67,25 @@
     table.dataTable thead th, table.dataTable tfoot th{
         font-weight: normal;
     }
+    table.dataTable thead th.sorting:first-child:after{
+        content:''
+    }
+    table.dataTable tbody tr.selected{
+        background: none;
+    }
+    table.dataTable thead label{
+        margin-bottom: 0;
+        font-weight: normal;
+    }
+    .graytip{
+        background: #ffffe9;
+        border-bottom: 1px solid #e3e6eb;
+    }
+    .div_mail_info{
+        width: 100%;
+        line-height: 24px;
+        text-align: center;
+    }
 </style>
 <div class="revised-record">
     <h2>修编记录</h2>
@@ -74,10 +93,10 @@
         <table id="tableItem" class="table table-striped" cellspacing="0"  width="100%">
             <thead>
             <tr>
-                <th>序号</th>
                 <th>全选
                     <input type='checkbox' name='all_checked' id="all_checked" class='icheckbox_minimal' value=''>
                 </th>
+                <th>序号</th>
                 <th>文件名称</th>
                 <th>原有版本号</th>
                 <th>替换版本号</th>
@@ -90,6 +109,7 @@
         </table>
     </div>
 </div>
+<div id="form_container" style="display: none;"></div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 
@@ -108,12 +128,11 @@
         ajax: {
             "url": "__SCRIPT__/safety_record.php"
         },
-        dom: '<"myl"l>f<"export btn btn-outline btn-primary">rtip',
+        dom: '<"myl"l>f<"#export.export btn btn-outline btn-primary">rtip',
         columnDefs: [
             {
                 searchable: false,
-                targets:1,
-                orderable: false,
+                targets:0,
                 data:null,
                 render:function () {
                     var ipt = "<input type='checkbox' name='checkList' onclick='getSelectId(this)'>";
@@ -148,9 +167,12 @@
 
     $('.export').html('导出');
 
+    //禁止全选排序
+    $("thead tr th:first-child").unbind();
+
     //删除数据
     function del(that){
-        var id = $(that).parent("td").parent("tr").children("td:eq('0')").text();
+        var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
                 url: "{:url('Revisionrecord/recordDel')}",
@@ -162,7 +184,7 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        tableItem.ajax.url("__SCRIPT__/safety_record.php").load();
+                        tableItem.ajax.url("__SCRIPT__/safety_record.php?id="+id).load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -198,7 +220,7 @@
     var idArr = [];
     function getId(that) {
         var isChecked = $(that).prop('checked');
-        var id = $(that).parents('tr').find('td:eq(0)').text();
+        var id = $(that).parents('tr').find('td:eq(1)').text();
         if(isChecked){
             idArr.push(id);
             idArr.removalArray();
@@ -232,25 +254,32 @@
         console.log(idArr);
     });
 
-    //导出
-    $('.export').click(function(){
-        /*var isChecked = $(this).attr('isChecked');
-        if(isChecked){
-            return;
-        }*/
+    //导出excelExport
+    $("#export").click(function () {
         $.ajax({
-            url: "{:url('Revisionrecord/recordDownload')}",
+            url: "./recordDownload",
             type: "post",
-            dataType: 'json',
-            data:{
-                id:idArr,
+            data: {
+                'id':idArr
             },
-            success: function (data) {
-                if(data.code==1){
-                    layer.msg('导出成功！');
+            dataType: "json",
+            success: function (res) {
+                if(res.code ==1){
+                    $("#form_container").empty();
+                    var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
+                        +'<form action="./recordDownload" method="get" target="exportExcelFrame">';
+                    for (var i = 0; i < idArr.length; i++)
+                    {
+                        str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
+                    }
+                    str += '<button type="submit" id="exportExcelBtn"></button></form>';
+                    $("#form_container").append(str);
+                    $("#form_container").find("#exportExcelBtn").click();
+                }else{
+                    alert("获取数据失败！")
                 }
             }
-        });
+        })
     });
 </script>
 </body>

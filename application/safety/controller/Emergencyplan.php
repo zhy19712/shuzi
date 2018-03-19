@@ -30,98 +30,77 @@ class Emergencyplan extends Base
     }
 
     /*
-     * 修订一条应急预案信息
+     * 修订一条应急预案信息,没有文件上传
      */
     public function reviseEdit()
     {
         $emergency = new EmergencyplanModel();
         $revise = new EmergencyreviseModel();
         $param = input('post.');
-
-        $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/emergencyplan');
-
             if(request()->isAjax())
             {
-                if($info)
-                {
-                    $temp = $info->getSaveName();
-                    $path = './uploads/safety/emergencyplan/' . str_replace("\\","/",$temp);
-                    $filename = $file->getInfo('name');
-
-                    if(!empty($param['panid']))//有文件上传,设定一个变量panid表示有没有文件上传，panid=1表示有文件上传，empty为空为真，表示没有文件上传
-                    {
-                        $data_older = $emergency->getOne($param['aid']);
-                        unlink($data_older['path']);
+                $emergency_revise = $emergency ->getOne($param['aid']);
                         $data = [
                             'id' => $param['aid'],
-                            'preplan_file_name' => $param['preplan_file_name'],
                             'preplan_number' => $param['preplan_number'],
                             'version_number' => $param['version_number'],
                             'alternative_version' => $param['alternative_version'],
+                            'applicability' => $param['applicability'],
                             'preplan_state' => $param['preplan_state'],
-                            'name' => $filename,
-                            'filename' => $filename,
                             'owner' => session('username'),
                             'date' => date("Y-m-d H:i:s"),
-                            'path' => $path,
-                            'remark' => $param['remark']
+                            'path' => ''
                         ];
-
-                        $data1 = [
-                            //                'id' => $param['aid'],
-                            'preplan_file_name' => $param['preplan_file_name'],
-                            'preplan_number' => $param['preplan_number'],
-                            'version_number' => $param['version_number'],
-                            'alternative_version' => $param['alternative_version'],
-                            'preplan_state' => $param['preplan_state'],
-                            'name' => $filename,
-                            'filename' => $filename,
-                            'owner' => session('username'),
-                            'date' => date("Y-m-d H:i:s"),
-                            'path' => $param['path'],
-                            'remark' => $param['remark']
-                        ];
-
                         $flag = $emergency->editEmergencyplan($data);
-                        $flag1 = $revise->insertEmergencyrevise($data1);
-                        if($flag['code'] && $flag1['code'])
-                        {
-                            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-                        }
-                    }else
-                         {
-                             $data = [
-                                 'id' => $param['aid'],
-                                 'preplan_file_name' => $param['preplan_file_name'],
-                                 'preplan_number' => $param['preplan_number'],
-                                 'version_number' => $param['version_number'],
-                                 'alternative_version' => $param['alternative_version'],
-                                 'preplan_state' => $param['preplan_state'],
-                                 'remark' => $param['remark']
-                             ];
-                             $flag = $emergency->editEmergencyplan($data);
-                             $data1 = [
-//                            'id' => $param['aid'],
-                                 'preplan_file_name' => $param['preplan_file_name'],
-                                 'preplan_number' => $param['preplan_number'],
-                                 'version_number' => $param['version_number'],
-                                 'alternative_version' => $param['alternative_version'],
-                                 'preplan_state' => $param['preplan_state'],
-                                 'remark' => $param['remark']
-                             ];
-                             $flag1 = $revise->insertEmergencyrevise($data1);
 
-                             if($flag['code'] && $flag1['code'])
-                             {
-                                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-                             }
-                         }
-                }else{
-                    echo $file->getError();
+                    //查询文件信息
+
+
+                    $data1 = [
+//                        'id' => $param['aid'],
+                        'preplan_file_name' => $emergency_revise['preplan_file_name'],
+                        'version_number' => $param['version_number'],
+                        'alternative_version' => $param['alternative_version'],
+                        'applicability' => $param['applicability'],
+                        'preplan_state' => $param['preplan_state'],
+                        'owner' => session('username'),
+                        'date' => date("Y-m-d H:i:s"),
+                        'version_number_path' => $emergency_revise['path'],
+                        'alternative_version_path' => " "//替换版本路径
+                    ];
+
+                $flag1 = $revise->insertEmergencyrevise($data1);
+                if($flag['code'] && $flag1['code'])
+                {
+                    return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
                 }
-            }
 
+            }
+    }
+
+    /*
+     * 编辑一条应急预案信息,没有文件上传
+     */
+    public function emergencyplanEdit()
+    {
+        $emergency = new EmergencyplanModel();
+        $param = input('post.');
+        if(request()->isAjax())
+        {
+            $data = [
+                'id' => $param['aid'],
+                'preplan_number' => $param['preplan_number'],
+                'version_number' => $param['version_number'],
+                'alternative_version' => $param['alternative_version'],
+                'applicability' => $param['applicability'],
+                'preplan_state' => $param['preplan_state'],
+                'owner' => session('username'),
+                'date' => date("Y-m-d H:i:s"),
+                'path' => ''
+            ];
+            $flag = $emergency->editEmergencyplan($data);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
     }
 
     /*

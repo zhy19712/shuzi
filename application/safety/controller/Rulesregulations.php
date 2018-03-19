@@ -380,9 +380,15 @@ class Rulesregulations extends Base
             return json(['code'=>1]);
         }
         $idArr = input('id/a');
+        if(count($idArr) == 0){
+            return json(['code' => 1 ,'msg' => '请选择需要下载的编号']);
+        }
         $name = '规章制度 - '.date('Y-m-d H:i:s'); // 导出的文件名 可以指定是哪个节点下的那个节点.xls 例如:规章制度-国家电网公司.xls
         $sdi = new RulesregulationsModel();
         $list = $sdi->getList($idArr);
+        if(count($list) == 0){
+            return json(['code' => 1 ,'msg' => '数据为空']);
+        }
         $i=0;
         foreach ($list as $v){
             $v['id'] = iconv("utf-8","gb2312",$v['id']);
@@ -441,7 +447,6 @@ class Rulesregulations extends Base
         }
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
-        ob_end_clean();  //清除缓冲区,避免乱码
         ob_end_clean();  //清除缓冲区,避免乱码
         header('Content-Type: application/vnd.ms-excel'); //文件类型
         header('Content-Disposition: attachment;filename="'.$name.'.xls"'); //文件名
