@@ -254,7 +254,8 @@ class Riskmanage extends Base
                 return json($json_data);
             }
             $insertData = [];
-            foreach($excel_array as $k=>$v){
+            $new_excel_array = delArrayNull($excel_array); // 删除空数据
+            foreach($new_excel_array as $k=>$v){
                 if($k > 0){
                     $insertData[$k]['segmentv'] = $v[$segmentv_index];
                     $insertData[$k]['position'] = $v[$position_index];

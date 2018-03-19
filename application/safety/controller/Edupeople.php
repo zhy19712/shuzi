@@ -150,7 +150,8 @@ class Edupeople extends Base
                 return json($json_data);
             }
             $insertData = [];
-            foreach($excel_array as $k=>$v){
+            $new_excel_array = delArrayNull($excel_array); // 删除空数据
+            foreach($new_excel_array as $k=>$v){
                 if($k > 0){
                     $insertData[$k]['edu_name'] = $v[$edu_name_index];
                     $insertData[$k]['job'] = $v[$job_index];
