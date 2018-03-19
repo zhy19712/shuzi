@@ -130,8 +130,14 @@ class Emergencyrevise extends Base
             return json(['code'=>1]);
         }
         $idArr = input('param.idarr/a');
-        $name = '应急评估'.date('Y-m-d H:i:s'); // 导出的文件名
         $emergencyrevise = new EmergencyreviseModel();
+        if($idArr['0'] == "all")
+        {
+            $idArr = $emergencyrevise ->getallid();
+            halt($idArr);
+        }
+        $name = '应急评估'.date('Y-m-d H:i:s'); // 导出的文件名
+
         $list = $emergencyrevise->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
