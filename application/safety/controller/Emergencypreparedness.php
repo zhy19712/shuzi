@@ -22,4 +22,10 @@ class Emergencypreparedness extends Base
     {
         return $this->fetch();
     }
+
+
+    public function videoPlay()
+    {
+        return $this->fetch();
+    }
 }
