@@ -47,7 +47,7 @@ class Emergencyplan extends Base
 
                 if($param['preplan_state'] == "未上传")
                 {
-                    $path = " ";
+                    $path = "";
                 }else if($param['preplan_state'] == "已上传")
                 {
                    $path = $emergency_revise['path'];

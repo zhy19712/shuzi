@@ -321,8 +321,6 @@
         </div>
     </div>
 </div>
-<div>
-</div>
 <div id="form_container" style="display: none;"></div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
@@ -718,7 +716,6 @@
         uploader.destroy();//重置上传插件
         validator.resetForm();//重置form表单
         $('#fileUpload').empty();//清空上传列表
-
     });
 
     //根据适用性评价设置替换标准是否只读
@@ -1071,6 +1068,7 @@
     });
 
     //删除数组中的指定元素
+    // TODO 有时间封装成公用的方法
     Array.prototype.remove = function(val){
         for (var i = 0; i < this.length; i++) {
             if(this[i] === val){
@@ -1082,6 +1080,7 @@
     }
 
     //数组去重
+    // TODO 有时间封装成公用的方法
     Array.prototype.removalArray = function(){
         var newArr = [];
         for (var i = 0; i < this.length; i++) {
