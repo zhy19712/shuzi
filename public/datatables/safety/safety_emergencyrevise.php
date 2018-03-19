@@ -57,11 +57,11 @@ if(!empty($_GET["year"]))
 {
     $year = $_GET["year"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null, "date like '%" .$year. "%' order by id desc" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null, "date like '%" .$year. "%' order by 'id' desc" )
     );
 }else{
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null,"order by id desc")
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null,"order by 'id' desc")
     );
 }
 
