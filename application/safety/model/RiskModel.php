@@ -102,7 +102,7 @@ class RiskModel extends Model
         }
         if (!$score == 0) {
             $duty = new RiskDoubleDutyModel();
-            $duty = $duty->prossScore($userId,$score,$cat,$act,$time);
+            return $duty->prossScore($userId,$score,$cat,$act,$time);
         }
     }
 
