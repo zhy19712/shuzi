@@ -98,7 +98,7 @@ class Emergencyrevise extends Base
             $code = 1;
             $msg = '预览成功';
             $data = $emergencyrevise->getOne($param['id']);
-            if(!empty($data['alternative_version_path']))
+            if(!isset($data['alternative_version_path']))
             {
                 $path = $data['alternative_version_path'];
                 $extension = strtolower(get_extension(substr($path,1)));
