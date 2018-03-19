@@ -45,6 +45,90 @@ class Emergencyrevise extends Base
     }
 
     /**
+     * [versionnumberpathPreview 原有版本文件预览]
+     */
+
+    public function versionnumberpathPreview()
+    {
+        $emergencyrevise = new EmergencyreviseModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $code = 1;
+            $msg = '预览成功';
+            $data = $emergencyrevise->getOne($param['id']);
+            if(!empty($data['version_number_path']))
+            {
+                $path = $data['path'];
+                $extension = strtolower(get_extension(substr($path,1)));
+                $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+                if(!file_exists($pdf_path)){
+                    if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
+                        doc_to_pdf($path);
+                    }else if($extension === 'xls' || $extension === 'xlsx'){
+                        excel_to_pdf($path);
+                    }else if($extension === 'ppt' || $extension === 'pptx'){
+                        ppt_to_pdf($path);
+                    }else if($extension === 'pdf'){
+                        $pdf_path = $path;
+                    }else{
+                        $code = 0;
+                        $msg = '不支持的文件格式';
+                    }
+                    return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
+                }else{
+                    return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
+                }
+            }else
+            {
+                return json(['code' => $code,'msg' => '文件不存在']);
+            }
+
+        }
+    }
+
+    /**
+     * [alternativeversionpathPreview 替换版本文件预览]
+     */
+
+    public function alternativeversionpathPreview()
+    {
+        $emergencyrevise = new EmergencyreviseModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $code = 1;
+            $msg = '预览成功';
+            $data = $emergencyrevise->getOne($param['id']);
+            if(!empty($data['alternative_version_path']))
+            {
+                $path = $data['path'];
+                $extension = strtolower(get_extension(substr($path,1)));
+                $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+                if(!file_exists($pdf_path)){
+                    if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
+                        doc_to_pdf($path);
+                    }else if($extension === 'xls' || $extension === 'xlsx'){
+                        excel_to_pdf($path);
+                    }else if($extension === 'ppt' || $extension === 'pptx'){
+                        ppt_to_pdf($path);
+                    }else if($extension === 'pdf'){
+                        $pdf_path = $path;
+                    }else{
+                        $code = 0;
+                        $msg = '不支持的文件格式';
+                    }
+                    return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
+                }else{
+                    return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
+                }
+            }else
+            {
+                return json(['code' => $code,'msg' => '文件不存在']);
+            }
+
+        }
+    }
+
+    /**
      * 批量导出
      * @return \think\response\Json
      * @throws \PHPExcel_Exception
