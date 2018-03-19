@@ -56,8 +56,6 @@ class Emergencyrevise extends Base
             $code = 1;
             $msg = '预览成功';
             $data = $emergencyrevise->getOne($param['id']);
-            if(!empty($data['version_number_path']))
-            {
                 $path = $data['version_number_path'];
                 $extension = strtolower(get_extension(substr($path,1)));
                 $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
@@ -78,10 +76,6 @@ class Emergencyrevise extends Base
                 }else{
                     return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
                 }
-            }else
-            {
-                return json(['code' => $code,'msg' => '文件不存在']);
-            }
 
         }
     }
@@ -98,8 +92,6 @@ class Emergencyrevise extends Base
             $code = 1;
             $msg = '预览成功';
             $data = $emergencyrevise->getOne($param['id']);
-            if(!empty($data['alternative_version_path']))
-            {
                 $path = $data['alternative_version_path'];
                 $extension = strtolower(get_extension(substr($path,1)));
                 $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
@@ -120,10 +112,7 @@ class Emergencyrevise extends Base
                 }else{
                     return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
                 }
-            }else
-            {
-                return json(['code' => $code,'msg' => '文件不存在']);
-            }
+
 
         }
     }
