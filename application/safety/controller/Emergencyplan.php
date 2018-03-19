@@ -44,6 +44,15 @@ class Emergencyplan extends Base
             if(request()->isAjax())
             {
                 $emergency_revise = $emergency ->getOne($param['aid']);
+
+                if($param['preplan_state'] == "未上传")
+                {
+                    $path = " ";
+                }else if($param['preplan_state'] == "已上传")
+                {
+                   $path = $emergency_revise['path'];
+                }
+
                         $data = [
                             'id' => $param['aid'],
                             'preplan_number' => $param['preplan_number'],
@@ -53,7 +62,7 @@ class Emergencyplan extends Base
                             'preplan_state' => $param['preplan_state'],
                             'owner' => session('username'),
                             'date' => date("Y-m-d H:i:s"),
-                            'path' => ''
+                            'path' => $path
                         ];
                         $flag = $emergency->editEmergencyplan($data);
 
@@ -70,7 +79,7 @@ class Emergencyplan extends Base
                         'owner' => session('username'),
                         'date' => date("Y-m-d H:i:s"),
                         'version_number_path' => $emergency_revise['path'],
-                        'alternative_version_path' => " "//替换版本路径
+                        'alternative_version_path' => $path//替换版本路径
                     ];
 
                 $flag1 = $revise->insertEmergencyrevise($data1);
@@ -91,6 +100,15 @@ class Emergencyplan extends Base
         $param = input('post.');
         if(request()->isAjax())
         {
+            $emergency_revise = $emergency ->getOne($param['aid']);
+
+            if($param['preplan_state'] == "未上传")
+            {
+                $path = " ";
+            }else if($param['preplan_state'] == "已上传")
+            {
+                $path = $emergency_revise['path'];
+            }
             $data = [
                 'id' => $param['aid'],
                 'preplan_number' => $param['preplan_number'],
@@ -100,7 +118,7 @@ class Emergencyplan extends Base
                 'preplan_state' => $param['preplan_state'],
                 'owner' => session('username'),
                 'date' => date("Y-m-d H:i:s"),
-                'path' => ''
+                'path' => $path
             ];
             $flag = $emergency->editEmergencyplan($data);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
