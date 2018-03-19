@@ -337,4 +337,59 @@ class Specialequipmentmanagement extends Base
         exit;
     }
 
+    /**
+     * 导出模板
+     * @return \think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     */
+    public function exportExcelTemplete()
+    {
+        if(request()->isAjax()){
+            return json(['code'=>1]);
+        }
+        $name = input('param.name');
+        $newName = '特种设备管理 - '.$name.date('Y-m-d H:i:s'); // 导出的文件名
+        header("Content-type:text/html;charset=utf-8");
+        Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+        //实例化
+        $objPHPExcel = new \PHPExcel();
+        /*右键属性所显示的信息*/
+        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
+        ->setLastModifiedBy("zxf")  //最后一次保存者
+        ->setTitle('数据EXCEL导出')  //标题
+        ->setSubject('数据EXCEL导出') //主题
+        ->setDescription('导出数据')  //描述
+        ->setKeywords("excel")   //标记
+        ->setCategory("result file");  //类别
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        // 设置表格第一行显示内容
+        $objPHPExcel->getActiveSheet()
+            ->setCellValue('A1', '序号')
+            ->setCellValue('B1', '设备名称')
+            ->setCellValue('C1', '型号')
+            ->setCellValue('D1', '设备编号')
+            ->setCellValue('E1', '制造单位')
+            ->setCellValue('F1', '出厂日期')
+            ->setCellValue('G1', '当前状态')
+            ->setCellValue('H1', '安全检验合格证书编号')
+            ->setCellValue('I1', '检验单位')
+            ->setCellValue('J1', '进场时间')
+            ->setCellValue('K1', '设备状态')
+            ->setCellValue('L1', '备注');
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        ob_end_clean();  //清除缓冲区,避免乱码
+        header('Content-Type: application/vnd.ms-excel'); //文件类型
+        header('Content-Disposition: attachment;filename="'.$newName.'.xls"'); //文件名
+        header('Cache-Control: max-age=0');
+        header('Content-Type: text/html; charset=utf-8'); //编码
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003
+        $objWriter->save('php://output');
+        exit;
+    }
+
+
 }
