@@ -109,6 +109,11 @@ class Eduforeignpersonnel extends Base
                 $PHPReader->setDelimiter(',');
                 //载入文件
                 $obj_PHPExcel = $PHPReader->load($file_name);
+            }else{
+                return  json(['code' => 1,'data' => '','msg' => '请选择正确的模板文件']);
+            }
+            if(!is_object($obj_PHPExcel)){
+                return  json(['code' => 1,'data' => '','msg' => '请选择正确的模板文件']);
             }
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
             // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
@@ -146,11 +151,12 @@ class Eduforeignpersonnel extends Base
                 $approach_cause_index == -1 || $approach_time_index == -1 || $content_index == -1 || $training_time_index == -1 ||
                 $user_index == -1 || $iphone_index == -1 || $departure_time_index == -1 || $remark_index == -1){
                 $json_data['code'] = -1;
-                $json_data['info'] = '文件内容格式不对';
+                $json_data['info'] = '请检查标题名称';
                 return json($json_data);
             }
             $insertData = [];
-            foreach($excel_array as $k=>$v){
+            $new_excel_array = delArrayNull($excel_array); // 删除空数据
+            foreach($new_excel_array as $k=>$v){
                 if($k > 0){
                     $insertData[$k]['edu_name'] = $v[$edu_name_index];
                     $insertData[$k]['sex'] = $v[$sex_index];

@@ -247,7 +247,6 @@ class Specialequipmentmanagement extends Base
                     $insertData[$k]['remark'] = $v[$remark_index];
                     $insertData[$k]['input_time'] = date('Y-m-d H:i:s');
                     $insertData[$k]['owner'] = session('username');
-                    $insertData[$k]['owner'] = session('username');
                     $insertData[$k]['selfid'] = $selfid;
 
                 }
@@ -321,9 +320,9 @@ class Specialequipmentmanagement extends Base
                 ->setCellValue('G'.$key, $v['current_state'])
                 ->setCellValue('H'.$key, $v['safety_inspection_num'])
                 ->setCellValue('I'.$key, $v['inspection_unit'])
-                ->setCellValue('I'.$key, $v['entry_time'])
-                ->setCellValue('I'.$key, $v['equip_state'])
-                ->setCellValue('I'.$key, $v['remark']);
+                ->setCellValue('J'.$key, $v['entry_time'])
+                ->setCellValue('K'.$key, $v['equip_state'])
+                ->setCellValue('L'.$key, $v['remark']);
         }
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);

@@ -9,6 +9,7 @@
 namespace app\safety\model;
 
 
+use think\Db;
 use think\exception\PDOException;
 use think\Model;
 
@@ -21,7 +22,7 @@ class RiskModel extends Model
      */
     public function fouder()
     {
-        return $this->hasOne('User', 'founder_id')->field('nickname');
+        return $this->hasOne('User', 'id', 'founder_id')->field('nickname');
     }
 
     /**
@@ -29,7 +30,7 @@ class RiskModel extends Model
      */
     public function workduty()
     {
-        return $this->hasOne('User', 'workduty_id')->field('nickname');
+        return $this->hasOne('User', 'id', 'workduty_id')->field('nickname');
     }
 
     /**
@@ -37,7 +38,23 @@ class RiskModel extends Model
      */
     public function acceptor()
     {
-        return $this->hasOne('User', 'acceptor_id')->field('nickname');
+        return $this->hasOne('User', 'id', 'acceptor_id')->field('nickname');
+    }
+
+    /**
+     * 未治理图片
+     */
+    public function riskImg()
+    {
+        return $this->hasMany('RiskImg', 'risk_id', 'id');
+    }
+
+    /**
+     * 治理后
+     */
+    public function riskAfterImg()
+    {
+        return $this->hasMany('RiskImg', 'risk_id', 'id');
     }
 //    /**
 //     * 标段
@@ -52,6 +69,7 @@ class RiskModel extends Model
                 $this->proessScore($risk['founder_id'], $risk['cat'], '排查', $risk['founddate']);
                 $this->proessScore($risk['acceptor_id'], $risk['cat'], '验收', $risk['completedate']);
                 $res = $this->allowField(true)->save($risk);
+                $_id = $this->getLastInsID();
             } else {
 //            修改，对比发现人与验收人
                 $item_old = $this->where('id', $risk['id'])->find();
@@ -64,7 +82,22 @@ class RiskModel extends Model
                     $this->proessScore($risk['acceptor_id'], $risk['cat'], '验收', $risk['acceptor_id']);
                 }
                 $res = $this->allowField(true)->save($risk, ['id' => $risk['id']]);
+                $_id = $risk['id'];
             }
+            $item = $this->where('id', $_id)->find();
+
+            foreach (explode('', $risk['']) as $img) {
+                $riskImgs[] = array('path' => $img, 'cat' => 1);
+            }
+            foreach (explode('', $risk['']) as $img) {
+                $riskAfterImgs[] = array('path' => $img, 'cat' => 2);
+            }
+//            $item->riskImg()->delete();
+//            $item->riskAfterImg()->delete();
+
+            Db::table('safety_risk_img')->where('risk_id', $item['id'])->delete();
+            $item->riskImg()->saveAll($riskImgs);
+            $item->riskAfterImg()->saveAll($riskAfterImgs);
             if ($res) {
                 return ['code' => 1, 'data' => '', 'msg' => '操作成功'];
             } else {
@@ -125,33 +158,6 @@ class RiskModel extends Model
         }
     }
 
-    public function insertEdu($param)
-    {
-        try {
-            $result = $this->allowField(true)->save($param);
-            if (false === $result) {
-                return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
-            } else {
-                return ['code' => 1, 'data' => '', 'msg' => '添加成功'];
-            }
-        } catch (PDOException $e) {
-            return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
-        }
-    }
-
-    public function editEdu($param)
-    {
-        try {
-            $result = $this->allowField(true)->save($param, ['id' => $param['id']]);
-            if (false === $result) {
-                return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
-            } else {
-                return ['code' => 1, 'data' => '', 'msg' => '编辑成功'];
-            }
-        } catch (PDOException $e) {
-            return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
-        }
-    }
 
     public function delEdu($id)
     {

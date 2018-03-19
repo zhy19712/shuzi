@@ -203,7 +203,10 @@ class Riskmanage extends Base
                 //载入文件
                 $obj_PHPExcel = $PHPReader->load($file_name);
             }else{
-                return  json(['code' => 1,'data' => '','msg' => '导入的文件格式不对']);
+                return  json(['code' => 1,'data' => '','msg' => '请选择正确的模板文件']);
+            }
+            if(!is_object($obj_PHPExcel)){
+                return  json(['code' => 1,'data' => '','msg' => '请选择正确的模板文件']);
             }
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
             // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
@@ -243,15 +246,16 @@ class Riskmanage extends Base
             }
             if($segmentv_index == -1 || $position_index == -1 || $riskname_index == -1 || $risk_grade_index == -1 || $on_stream_time_index == -1 || $completion_time_index == -1 || $construction_user_index == -1){
                 $json_data['code'] = -1;
-                $json_data['info'] = '文件内容格式不对';
+                $json_data['info'] = '请检查标题名称';
                 return json($json_data);
             }else if($supervision_user_index == -1 || $remark_index == -1 || $c_iphone_index == -1 || $s_iphone_index == -1 || $job_content_index == -1 || $risk_factor_index == -1 || $measures_index == -1){
                 $json_data['code'] = -1;
-                $json_data['info'] = '文件内容格式不对';
+                $json_data['info'] = '请检查标题名称';
                 return json($json_data);
             }
             $insertData = [];
-            foreach($excel_array as $k=>$v){
+            $new_excel_array = delArrayNull($excel_array); // 删除空数据
+            foreach($new_excel_array as $k=>$v){
                 if($k > 0){
                     $insertData[$k]['segmentv'] = $v[$segmentv_index];
                     $insertData[$k]['position'] = $v[$position_index];
