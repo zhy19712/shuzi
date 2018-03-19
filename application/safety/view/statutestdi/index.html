@@ -220,7 +220,6 @@
         </div>
     </div>
 </div>
-
 <div id="addRules_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 50%;margin: 0 auto;margin-top: 40px;">
     <div class="row">
         <div class="col-sm-12" style="background-color:#fff;">
@@ -320,7 +319,7 @@
 </div>
 <div>
 </div>
-
+<div id="form_container" style="display: none;"></div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 <script src="__JS__/jquery.ztree.all.js"></script>
@@ -631,7 +630,7 @@
                 go_date:'',
                 standard:'',
                 evaluation:'',
-                sid_user:'',
+                sdi_user:'',
             },
 
             // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
@@ -706,7 +705,7 @@
             uploader.options.formData.go_date = $("#dataImple").val();
             uploader.options.formData.standard = $("#alternativeStandard").val();
             uploader.options.formData.evaluation = $("#psex").val();
-            uploader.options.formData.sid_user = $("#pdivision").val();
+            uploader.options.formData.sdi_user = $("#pdivision").val();
             uploader.options.formData.remark = $("#rulesDesc").text();
         });
     });
@@ -729,7 +728,9 @@
 
     //从组织机构及用户树中选择负责人
     function getSiduser(event, treeId, treeNode) {
-        $('#pdivision').val(treeNode.name);
+        if(!treeNode.isParent){
+            $('#pdivision').val(treeNode.name);
+        }
     };
     //组织机构及用户树
     var setting = {
@@ -775,7 +776,7 @@
             var go_date = $('#dataImple').val();
             var standard = $('#alternativeStandard').val();
             var evaluation = $('#psex').val();
-            var sid_user = $('#pdivision').val();
+            var sdi_user = $('#pdivision').val();
             var remark = $('#rulesDesc').val();
             var oldFileName = $('#oldFileName').val();
             var newFileNmae = $('#newFileName').val();
@@ -790,11 +791,11 @@
                         id:id,
                         group_id:group_id,
                         sdi_name:sdi_name,
-                        sdi_number:sdi_number,  //标准号
+                        number:sdi_number,  //标准号
                         go_date:go_date,//执行日期
                         standard:standard,//替代标准
                         evaluation:evaluation,//适用性评价
-                        sid_user:sid_user,//识别人
+                        sdi_user:sdi_user,//识别人
                         remark:remark
                     },
                     success: complete
@@ -875,7 +876,7 @@
 
     function showpdf1(that) {
         var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
-        showPdf(id,"{:url('Statutestdi/anualPreview')}");
+        showPdf(id,"{:url('Statutestdi/sdiPreview')}");
     }
 
     //文件下载
@@ -893,7 +894,6 @@
                     layer.msg(res.msg);
                 }else {
                     $("#form_container").empty();
-                    var id = $(that).parent("td").parent("tr").children("td:first-child").text();
                     var str = "";
                     str += ""
                         + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
@@ -927,7 +927,7 @@
                 $('#dataImple').val(res.go_date);
                 $('#alternativeStandard').val(res.standard);
                 $('#psex').val(res.evaluation);
-                $('#pdivision').val(res.sid_user);
+                $('#pdivision').val(res.sdi_user);
                 $('#addName').val(res.sdi_name);
                 $('#rulesDesc').val(res.remark);
             }
@@ -979,25 +979,32 @@
         importExcel.options.formData.group_id = $('input[type="hidden"][name="groupId"]').val();
     });
 
-    //导出
-    $('#export').click(function(){
-        /*var isChecked = $(this).attr('isChecked');
-        if(isChecked){
-            return;
-        }*/
+    //导出excelExport
+    $("#export").click(function () {
         $.ajax({
-            url: "{:url('Statutestdi/exportExcel')}",
+            url: "./exportExcel",
             type: "post",
-            dataType: 'json',
-            data:{
-                id:idArr,
+            data: {
+                'id':idArr
             },
-            success: function (data) {
-                if(data.code==1){
-                    layer.msg('导出成功！');
+            dataType: "json",
+            success: function (res) {
+                if(res.code ==1){
+                    $("#form_container").empty();
+                    var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
+                        +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
+                    for (var i = 0; i < idArr.length; i++)
+                    {
+                        str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
+                    }
+                    str += '<button type="submit" id="exportExcelBtn"></button></form>';
+                    $("#form_container").append(str);
+                    $("#form_container").find("#exportExcelBtn").click();
+                }else{
+                    alert("获取数据失败！")
                 }
             }
-        });
+        })
     });
 
     //构建查看历史版本

@@ -1,10 +1,451 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<link rel="stylesheet" type="text/css" href="/static/admin/webupload/webuploader.css">
+<link rel="stylesheet" type="text/css" href="/static/admin/webupload/style.css">
+<link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
+<link rel="stylesheet" href="/static/admin/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="/static/admin/css/jedate.css">
+<link rel="stylesheet" href="/static/admin/css/iconfont.css">
+{include file="public/header" /}
 <body>
+<style>
+    .revised-record{
+        background-color: #fff;
+        border-right: 1px solid #ccc;
+    }
+    .revised-record h2{
+        font-size: 16px;
+        border-bottom: 1px solid #ccc;
+        margin: 0 10px;
+        padding: 10px 0;
+        text-align: center;
+    }
+    .dt-buttons{
+        float: right;
+        margin-top: 5px;
+    }
+    #tableItem .btn{
+        margin-right: 2px;
+    }
+    .table-info{
+        padding: 0 10px;
+    }
+    .dataTables_filter input{
+        border: 1px solid #ccc;
+    }
 
+    table.dataTable thead th{
+        font-weight: normal;
+        font-size: 16px;
+    }
+    .table-info td{
+        font-weight: normal;
+        font-size: 14px;
+    }
+    table.dataTable.no-footer{
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+    }
+    .add,.import,.export,.exportExcel{
+        float: right;
+        margin: 10px 5px 10px;
+        font-size: 13px;
+    }
+    .dataTables_wrapper .dataTables_length{
+        margin-top: 15px;
+    }
+    .dataTables_wrapper .dataTables_filter{
+        margin-top: 10px;
+    }
+    .dataTables_wrapper .dataTables_filter input,#years{
+        margin: 0;
+        padding: 6px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .dataTables_wrapper .dataTables_filter label{
+        font-weight: normal;
+    }
+    table.dataTable thead th, table.dataTable tfoot th{
+        font-weight: normal;
+    }
+    table.dataTable thead th.sorting:first-child:after{
+        content:''
+    }
+    table.dataTable tbody tr.selected{
+        background: none;
+    }
+    table.dataTable thead label{
+        margin-bottom: 0;
+        font-weight: normal;
+    }
+    .graytip{
+        background: #ffffe9;
+        border-bottom: 1px solid #e3e6eb;
+    }
+    .div_mail_info{
+        width: 100%;
+        line-height: 24px;
+        text-align: center;
+    }
+</style>
+<div class="revised-record">
+    <h2>修编记录</h2>
+    <div class="table-info">
+        <table id="tableItem" class="table table-striped" cellspacing="0"  width="100%">
+            <thead>
+            <tr>
+                <th>全选
+                    <input type='checkbox' name='all_checked' id="all_checked" class='icheckbox_minimal' value=''>
+                </th>
+                <th>序号</th>
+                <th>标段</th>
+                <th>部位</th>
+                <th>风险名称</th>
+                <th>风险等级</th>
+                <th>开工时间</th>
+                <th>完工时间</th>
+                <th>施工方责任人</th>
+                <th>监理责任人</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<div id="addRules_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>文件上传</h5>
+                </div>
+                <input type="text" name="uid" id="id1" style="display: none;" value="">
+                <div class="ibox-content">
+                    <!--新增用户信息开始-->
+                    <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
+                        <input type="hidden" name="id" id="sid">
+                        <input type="hidden" name="oldFileName" id="oldFileName">
+                        <input type="hidden" name="newFileName" id="newFileName">
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">标段：</label>
+                                <div class="myblock col-xs-6 col-sm-6 input-group">
+                                    <input id="standardNumr" type="text" class="form-control" name="standardNumr" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">部位：</label>
+                                <div class="myblock col-xs-6 col-sm-6 input-group">
+                                    <input id="dataImple" type="text" class="form-control" name="dataImple" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">作业内容：</label>
+                                <div class="myblock col-xs-6 col-sm-6 input-group">
+                                    <input id="alternativeStandard" type="text" class="form-control" name="alternativeStandardReadonly" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-xs-offset-0">风险因素：</label>
+                                <div class="myblock col-xs-6 col-sm-6 input-group">
+                                    <select name="sex" id="psex" class="form-control" >
+                                        <option value="0" selected>适用</option>
+                                        <option value="-1">过期</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label"><span>存在的风险：</span><br /><span>(风险名称)</span></label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="addName" type="text" class="form-control" name="addName" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label">风险等级：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <div class="btn btn-upload" id="picker">上传</div>
+                                    <div id="fileUpload" style="display: inline-block;vertical-align: middle;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-2 control-label">施工单位责任人：</label>
+                                <div class="myblock col-xs-6 col-sm-9 input-group">
+                                    <input id="pdivision" type="text" class="form-control" name="division">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-2 control-label">联系电话：</label>
+                                <div class="myblock col-xs-6 col-sm-9 input-group">
+                                    <input id="pdivision" type="text" class="form-control" name="division">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-2 control-label">监理单位责任人：</label>
+                                <div class="myblock col-xs-6 col-sm-9 input-group">
+                                    <input id="pdivision" type="text" class="form-control" name="division">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-2 control-label">联系电话：</label>
+                                <div class="myblock col-xs-6 col-sm-9 input-group">
+                                    <input id="iphone" type="text" class="form-control" name="iphone">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-2 col-sm-2 control-label">预控措施：</label>
+                                <div class="myblock col-xs-6 col-sm-9 input-group">
+                                    <textarea name="rulesDesc" id="rulesDesc" style="width: 100%;min-height: 100px;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label">年度风险辨识文件：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <div class="btn btn-upload" id="yearUpload">上传</div>
+                                    <div id="yearUploadList" style="display: inline-block;vertical-align: middle;"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label">季度风险辨识文件：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <div class="btn btn-upload" id="quarterUpload">上传</div>
+                                    <div id="quarterUploadList" style="display: inline-block;vertical-align: middle;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label">风险复测单：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <div class="btn btn-upload" id="listUpload">上传</div>
+                                    <div id="listUploadList" style="display: inline-block;vertical-align: middle;"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label">风险控制卡：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <div class="btn btn-upload" id="cardUpload">上传</div>
+                                    <div id="cardUploadList" style="display: inline-block;vertical-align: middle;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label">施工作业票：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <div class="btn btn-upload" id="ticketUpload">上传</div>
+                                    <div id="ticketUploadList" style="display: inline-block;vertical-align: middle;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12 col-lg-12"  style="text-align: center;margin-top: 10px">
+                                <button class="btn btn-primary" type="submit" id="save"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                    <!--新增用户信息结束-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="public/footer" /}
+<script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
+
+<script src="__JS__/jquery.ztree.all.js"></script>
+<script src="__JS__/jquery.dataTables.min.js"></script>
+<script src="__JS__/plugins/dataTables/dataTables.buttons.min.js"></script>
+<script src="__JS__/jszip.min.js"></script>
+<script src="__JS__/jquery.jedate.js"></script>
+<script src="__JS__/pdf.js"></script>
+<script src="__JS__/mypdf.js"></script>
+<script>
+    //表格
+    var tableItem = $('#tableItem').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            "url": "__SCRIPT__/safety_riskmanage.php"
+        },
+        dom: '<"myl"l>f<"#exportExcel.exportExcel btn btn-outline btn-primary"><"#export.export btn btn-outline btn-primary"><"#import.import btn btn-outline btn-primary"><"#add.add btn btn-outline btn-primary">rtip',
+        columnDefs: [
+            {
+                searchable: false,
+                targets:0,
+                data:null,
+                render:function () {
+                    var ipt = "<input type='checkbox' name='checkList' onclick='getSelectId(this)'>";
+                    return ipt;
+                }
+            },
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [11],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    return html;
+                }
+            },
+        ],
+        language: {
+            "lengthMenu": "每页 _MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "search":"搜索：",
+            "paginate": {
+                "first": "第一页",
+                "last": "最后一页",
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    });
+
+    $('#add').html('新增');
+    $('#export').html('导出');
+    $('#import').html('导入');
+    $('#exportExcel').html('导出Excel模板');
+
+    //禁止全选排序
+    $("thead tr th:first-child").unbind();
+
+    //删除数据
+    function del(that){
+        var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "{:url('Revisionrecord/recordDel')}",
+                data: {
+                    id : id
+                },
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        tableItem.ajax.url("__SCRIPT__/safety_record.php?id="+id).load();
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                    }
+                }
+            })
+            layer.close(index);
+        })
+    }
+
+    //删除数组中的指定元素
+    Array.prototype.remove = function(val){
+        for (var i = 0; i < this.length; i++) {
+            if(this[i] === val){
+                this.splice(i,1);
+                break;
+            }
+        }
+        return this;
+    }
+
+    //数组去重
+    Array.prototype.removalArray = function(){
+        var newArr = [];
+        for (var i = 0; i < this.length; i++) {
+            if(newArr.indexOf(this[i]) == -1){  //indexOf 不兼容IE8及以下
+                newArr.push(this[i]);
+            }
+        }
+        return newArr;
+    }
+
+    //获取选中行ID
+    var idArr = [];
+    function getId(that) {
+        var isChecked = $(that).prop('checked');
+        var id = $(that).parents('tr').find('td:eq(0)').text();
+        if(isChecked){
+            idArr.push(id);
+            idArr.removalArray();
+        }else{
+            idArr.remove(id);
+            idArr.removalArray();
+        }
+    }
+
+    //单选
+    function getSelectId(that) {
+        getId(that);
+        console.log(idArr);
+    }
+
+    //checkbox全选
+    $("#all_checked").on("click", function () {
+        if ($(this).prop("checked") === true) {
+            $("input[name='checkList']").prop("checked", $(this).prop("checked"));
+            $('#tableItem tbody tr').addClass('selected');
+            $('input[name="checkList"]').each(function(){
+                getId(this);
+            });
+        } else {
+            $("input[name='checkList']").prop("checked", false);
+            $('#tableItem tbody tr').removeClass('selected');
+            $('input[name="checkList"]').each(function(){
+                getId(this);
+            });
+        }
+        console.log(idArr);
+    });
+
+    //打开新增弹层
+    $('.add').on('click',function(){
+        $('#addRules_modal').modal('show');
+    });
+
+    //导出
+    $('.export').click(function(){
+        /*var isChecked = $(this).attr('isChecked');
+        if(isChecked){
+            return;
+        }*/
+        $.ajax({
+            url: "{:url('Revisionrecord/recordDownload')}",
+            type: "post",
+            dataType: 'json',
+            data:{
+                id:idArr,
+            },
+            success: function (data) {
+                if(data.code==1){
+                    layer.msg('导出成功！');
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>
