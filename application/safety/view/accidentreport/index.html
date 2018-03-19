@@ -253,25 +253,25 @@
         }
     }
 
-    //事故管理-预览
+    //事故报告-预览
     function showpdf1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         showPdf(id,"./accidentPreview");
     }
 
-    //事故管理-删除
+    //事故报告-删除
     function del1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         del(id,"./cultureDel");
     }
 
-    //事故管理-编辑-删除文件
+    //事故报告-编辑-删除文件
     function fdelatt1(that) {
         var id = $(that).parent("div").attr("id");
         $("#"+id).remove();
     }
 
-    //事故管理-编辑
+    //事故报告-编辑
     function edit1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         $.ajax({
@@ -302,7 +302,7 @@
         })
     }
 
-    //事故管理-下载
+    //事故报告-下载
     function download1(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         download(id,"./accidentDownload");
@@ -343,7 +343,7 @@
     });
 
 
-    //事故管理表格
+    //事故报告表格
     var table = $("#info_table").DataTable({
         "processing": true,//是否显示处理状态
         "serverSide":true,//是否开启服务器模式
@@ -402,3 +402,4 @@
     })
 </script>
 </body>
+</html>

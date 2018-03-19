@@ -51,11 +51,17 @@ class RulesregulationsModel extends Model
             $path = $data['path'];
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
             if(file_exists($path)){
-                unlink($path); //删除文件
+                unlink($path); // 删除文件
             }
             if(file_exists($pdf_path)){
                 unlink($pdf_path); //删除生成的预览pdf
             }
+
+            $import_path = $data['import_path']; // 导入的文件
+            if(file_exists($import_path)){
+                unlink($import_path); //删除文件
+            }
+
             $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
         }catch( PDOException $e){
@@ -93,9 +99,9 @@ class RulesregulationsModel extends Model
         return $data;
     }
 
-    public function getYears()
+    public function getImportTime()
     {
-        return $this->where('improt_time is not null')->group('improt_time')->column('improt_time');
+        return $this->where('import_time is not null')->group('import_time')->column('import_time');
     }
 
 }

@@ -2,23 +2,23 @@
 /**
  * Created by PhpStorm.
  * User: admin
- * Date: 2018/3/16
- * Time: 15:36
+ * Date: 2018/3/18
+ * Time: 15:33
  */
-//应急预案
+//应急处置
 namespace app\safety\model;
 
 use think\exception\PDOException;
 use think\Model;
 
-class EmergencyplanModel extends Model
+class EmergencydisposalModel extends Model
 {
-    protected $name = 'safety_emergency_plan';
+    protected $name = 'safety_emergency_disposal';
 
     /*
-     * 添加新的应急预案文件
+     * 添加新的应急处置文件
      */
-    public function insertEmergencyplan($param)
+    public function insertEmergencydisposal($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -33,9 +33,9 @@ class EmergencyplanModel extends Model
     }
 
     /*
-     * 编辑应急预案文件
+     * 编辑应急处置文件
      */
-    public function editEmergencyplan($param)
+    public function editEmergencydisposal($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -50,9 +50,9 @@ class EmergencyplanModel extends Model
     }
 
     /*
-     * 删除应急预案文件
+     * 删除应急处置文件
      */
-    public function delEmergencyplan($id)
+    public function delEmergencydisposal($id)
     {
         try{
             //文件名称保留其余清空
@@ -78,7 +78,7 @@ class EmergencyplanModel extends Model
     }
 
     /*
-     * 获取一条应急预案文件
+     * 获取一条应急处置文件
      */
     /**
      * @param $id

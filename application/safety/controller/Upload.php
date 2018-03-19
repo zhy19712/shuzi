@@ -3,8 +3,11 @@
 namespace app\safety\controller;
 use app\admin\controller\Base;
 use app\safety\model\EducationModel;
+use app\safety\model\EvaluationModel;
+use app\safety\model\ImprovementModel;
 use app\safety\model\ResponsibilityModel;
 use app\safety\model\RevisionrecordModel;
+use app\safety\model\RiskSourcesModel;
 use app\safety\model\RulesregulationsModel;
 use app\safety\model\SafetyGoalAnualModel;
 use app\safety\model\SafetyGoalGeneralModel;
@@ -19,6 +22,11 @@ use app\safety\model\JobhealthGroupModel;
 use app\safety\model\AccidentreportModel;
 use app\safety\model\WarningsignModel;
 use app\safety\model\AccidentinvestigationreportModel;
+use app\safety\model\EmergencyplanModel;
+use app\safety\model\EmergencyschemeModel;
+use app\safety\model\EmergencyimagedataModel;
+use app\safety\model\EmergencyrehearsalModel;
+use app\safety\model\EmergencydisposalModel;
 use think\Db;
 
 class Upload extends Base
@@ -184,48 +192,60 @@ class Upload extends Base
      */
     public function uploadSdi(){
         $sdi = new StatutestdiModel();
-        $years = date('Y');
-        $id = request()->param('id');
-        $group_id = request()->param('group_id');
-        $number = request()->param('number');
-        $sdi_name = request()->param('sdi_name');
-        $go_date = request()->param('go_date');
-        $standard = request()->param('standard');
-        $evaluation = request()->param('evaluation');
-        $sid_user = request()->param('sid_user');
-        $remark = request()->param('remark');
+        // 前台提交的数据
+        $id = request()->param('id'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
+        $group_id = request()->param('group_id'); // 必须  文件所属分组的编号 也就是当前选择的节点id编号
+        $number = request()->param('number'); // 标准号
+        $sdi_name = request()->param('sdi_name'); // 文件名称
+        $go_date = request()->param('go_date'); // 施行日期
+        $standard = request()->param('standard'); // 替代标准
+        $evaluation = request()->param('evaluation'); // 适用性评价
+        $evaluation = $evaluation == '0' ? '适用' : '过期';
+        $sdi_user = request()->param('sdi_user'); // 识别人
+        $remark = request()->param('remark'); // 备注
+
+        // 系统自动生成的数据
+        $years = date('Y'); // 年度
+        $owner = session('username'); // 上传人
+        $sdi_date = date("Y-m-d H:i:s"); // 上传时间
+
+        // 上传的文件
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/statutesdi');
         if($info){
             $temp = $info->getSaveName();
             $path = './uploads/safety/statutesdi/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
-            if($sdi_name == '等待上传...'){
-                $houzhui = substr(strrchr($filename, '.'), 1);
-                $sdi_name = basename($filename,".".$houzhui); // 取不带后缀的文件名
+            if($sdi_name == '等待上传...' || empty($sdi_name)){
+                $sdi_name = $filename;
             }
-            if(empty($id))
+            // 构造数据
+            $data = [
+                'years' => $years,
+                'group_id' => $group_id,
+                'number' => $number,
+                'sdi_name' => $sdi_name,
+                'go_date' => $go_date,
+                'standard' => $standard,
+                'evaluation' => $evaluation,
+                'sdi_user' => $sdi_user,
+                'filename' => $filename,
+                'owner' => $owner,
+                'sdi_date' => $sdi_date,
+                'path' => $path,
+                'remark' => $remark
+            ];
+            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
+            $is_add = explode('_',$id);
+            if(empty($id) || $is_add[0] == 'WU')
             {
-                $data = [
-                    'years' => $years,
-                    'group_id' => $group_id,
-                    'number' => $number,
-                    'sdi_name' => $sdi_name,
-                    'go_date' => $go_date,
-                    'standard' => $standard,
-                    'evaluation' => $evaluation,
-                    'sid_user' => $sid_user,
-                    'filename' => $filename,
-                    'owner' => session('username'),
-                    'sdi_date' => date("Y-m-d H:i:s"),
-                    'path' => $path,
-                    'remark' => $remark
-                ];
                 $flag = $sdi->insertSdi($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $sdi->getOne($id);
-
+                if(empty($data_older)){
+                    return json(['code' => '0', 'msg' => '无效的编号']);
+                }
                 // 当 存在替代标准 适用性评价 状态为 : 过期  时 新增一条 修编记录
                 if(!empty($standard) && $evaluation == -1){
                     $pname = Db::name('safety_sdi_node')->where('id',$data_older['group_id'])->value('pname');
@@ -247,22 +267,7 @@ class Upload extends Base
                 if(file_exists($data_older['path'])){
                     unlink($data_older['path']);
                 }
-                $data = [
-                    'id' => $id,
-                    'years' => $years,
-                    'group_id' => $group_id,
-                    'number' => $number,
-                    'sdi_name' => $sdi_name,
-                    'go_date' => $go_date,
-                    'standard' => $standard,
-                    'evaluation' => $evaluation,
-                    'sid_user' => $sid_user,
-                    'filename' => $filename,
-                    'owner' => session('username'),
-                    'sdi_date' => date("Y-m-d H:i:s"),
-                    'path' => $path,
-                    'remark' => $remark
-                ];
+                $data['id'] = $id;
                 $flag = $sdi->editSdi($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
@@ -278,43 +283,60 @@ class Upload extends Base
      */
     public function uploadRules(){
         $rules = new RulesregulationsModel();
-        $years = date('Y');
-        $id = request()->param('id');
-        $group_id = request()->param('group_id');
-        $number = request()->param('number');
-        $rul_name = request()->param('rul_name');
-        $go_date = request()->param('go_date');
-        $standard = request()->param('standard');
-        $evaluation = request()->param('evaluation');
-        $rul_user = request()->param('rul_user');
-        $remark = request()->param('remark');
+        // 前台提交的数据
+        $id = request()->param('id'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
+        $group_id = request()->param('group_id'); // 必须  文件所属分组的编号 也就是当前选择的节点id编号
+        $number = request()->param('number'); // 标准号
+        $rul_name = request()->param('rul_name'); // 名称
+        $go_date = request()->param('go_date'); // 施行日期
+        $standard = request()->param('standard'); // 替代标准
+        $evaluation = request()->param('evaluation'); // 适用性评价
+        $rul_user = request()->param('rul_user'); // 识别人
+        $remark = request()->param('remark'); // 备注
+
+        // 系统自动生成的数据
+        $years = date('Y'); // 年度
+        $owner = session('username'); // 上传人
+        $rul_date = date("Y-m-d H:i:s"); // 上传时间
+
+        // 上传的文件
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/rules');
         if($info){
             $temp = $info->getSaveName();
             $path = './uploads/safety/rules/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
-            if(empty($id))
+            if($rul_name == '等待上传...' || empty($rul_name)){
+                $rul_name = $filename;
+            }
+            // 构造数据
+            $data = [
+                'years' => $years,
+                'group_id' => $group_id,
+                'number' => $number,
+                'rul_name' => $rul_name,
+                'go_date' => $go_date,
+                'standard' => $standard,
+                'evaluation' => $evaluation,
+                'rul_user' => $rul_user,
+                'filename' => $filename,
+                'owner' => $owner,
+                'rul_date' => $rul_date,
+                'path' => $path,
+                'remark' => $remark
+            ];
+            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
+            $is_add = explode('_',$id);
+            if(empty($id) || $is_add[0] == 'WU')
             {
-                $data = [
-                    'years' => $years,
-                    'group_id' => $group_id,
-                    'number' => $number,
-                    'rul_name' => $rul_name,
-                    'go_date' => $go_date,
-                    'standard' => $standard,
-                    'evaluation' => $evaluation,
-                    'rul_user' => $rul_user,
-                    'filename' => $filename,
-                    'owner' => session('username'),
-                    'rul_date' => date("Y-m-d H:i:s"),
-                    'path' => $path,
-                    'remark' => $remark
-                ];
                 $flag = $rules->insertRules($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $rules->getOne($id);
+                if(empty($data_older)){
+                    return json(['code' => '0', 'msg' => '无效的编号']);
+                }
+
                 // 当 存在替代标准 适用性评价 状态为 : 过期  时 新增一条 修编记录
                 if(!empty($standard) && $evaluation == '过期'){
                     $pname = Db::name('safety_sdi_node')->where('id',$data_older['group_id'])->value('pname');
@@ -336,22 +358,7 @@ class Upload extends Base
                 if(file_exists(unlink($data_older['path']))){
                     unlink($data_older['path']);
                 }
-                $data = [
-                    'id' => $id,
-                    'years' => $years,
-                    'group_id' => $group_id,
-                    'number' => $number,
-                    'rul_name' => $rul_name,
-                    'go_date' => $go_date,
-                    'standard' => $standard,
-                    'evaluation' => $evaluation,
-                    'rul_user' => $rul_user,
-                    'filename' => $filename,
-                    'owner' => session('username'),
-                    'rul_date' => date("Y-m-d H:i:s"),
-                    'path' => $path,
-                    'remark' => $remark
-                ];
+                $data['id'] = $id;
                 $flag = $rules->editRules($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
@@ -1053,4 +1060,550 @@ class Upload extends Base
             return json(['code'=>-1,'msg'=>'上传失败']);
         }
     }
+
+
+    /**
+     * 绩效评定
+     * 一岗双责绩效评定
+     * 安全标准化评估报告
+     * 安全文明施工年度工作总结
+     * 共用 新增 或 (有文件上传的修改)
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function uploadEval(){
+        $eval = new EvaluationModel();
+        // 前台 页面提交的数据
+        $id = request()->param('id'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
+        $type = request()->param('type'); // 必填 type 是1 绩效评定  2评估报告 3工作总结
+        $eval_name = request()->param('eval_name'); // 可选 文件名称 用户输入的文件名称 不传 默认和原文件名称一致
+        $years = $quarter = '';
+        if($type == '1'){ //  一岗双责绩效评定
+            $years = request()->param('years'); // 必填 年度
+            $quarter = request()->param('quarter'); // 必填 季度
+        }else if($type == '3'){ //  安全文明施工年度工作总结
+            $years = request()->param('years'); // 必填 年度
+        }
+        $remark = request()->param('remark'); // 可选 备注
+
+        // 系统自动生成的数据
+        $owner = session('username'); // 上传人
+        $eval_date = date('Y-m-d H:i:s'); // 上传时间
+
+        // 上传的文件
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/eval');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/eval/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if($eval_name == '等待上传...' || empty($eval_name)){
+                $eval_name = $filename;
+            }
+            if($type == '1'){ //  一岗双责绩效评定
+                $data = [
+                    'type' => $type,
+                    'eval_name' => $eval_name,
+                    'filename' => $filename,
+                    'owner' => $owner,
+                    'eval_date' => $eval_date,
+                    'path' => $path,
+                    'years' => $years,
+                    'quarter' => $quarter,
+                    'remark' => $remark
+                ];
+            }else if ($type == '3'){ //  安全文明施工年度工作总结
+                $data = [
+                    'type' => $type,
+                    'eval_name' => $eval_name,
+                    'filename' => $filename,
+                    'owner' => $owner,
+                    'eval_date' => $eval_date,
+                    'path' => $path,
+                    'years' => $years,
+                    'remark' => $remark
+                ];
+            }else{ // 安全标准化评估报告
+                $data = [
+                    'type' => $type,
+                    'eval_name' => $eval_name,
+                    'filename' => $filename,
+                    'owner' => $owner,
+                    'eval_date' => $eval_date,
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+            }
+            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
+            $is_add = explode('_',$id);
+            if(empty($id) || $is_add[0] == 'WU'){
+                $flag = $eval->insertEval($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $eval->getOne($id);
+                if(isNull($data_older)){
+                    return json(['code' => '0', 'msg' => '无效的编号']);
+                }
+                if(file_exists($data_older['path'])){
+                    unlink($data_older['path']);
+                }
+                $data['id'] = $id;
+                $flag = $eval->editEval($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /**
+     * 持续改进 ----  新增 或 (有文件上传的修改)
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function uploadImprovement(){
+        $improve = new ImprovementModel();
+        // 前台 页面提交的数据
+        $id = request()->param('id'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
+        $ment_name = request()->param('ment_name'); // 可选 文件名称 用户输入的文件名称 不传 默认和原文件名称一致
+        $years = request()->param('years'); // 必填 年度
+        $remark = request()->param('remark'); // 可选 备注
+
+        // 系统自动生成的数据
+        $owner = session('username'); // 上传人
+        $ment_date = date('Y-m-d H:i:s'); // 上传时间
+
+        // 上传的文件
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/improve');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/improve/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if($ment_name == '等待上传...' || empty($ment_name)){
+                $ment_name = $filename;
+            }
+            $data = [
+                'ment_name' => $ment_name,
+                'filename' => $filename,
+                'path' => $path,
+                'years' => $years,
+                'owner' => $owner,
+                'ment_date' => $ment_date,
+                'remark' => $remark
+            ];
+            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
+            $is_add = explode('_',$id);
+            if(empty($id) || $is_add[0] == 'WU'){
+                $flag = $improve->insertImprovement($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $improve->getOne($id);
+                if(isNull($data_older)){
+                    return json(['code' => '0', 'msg' => '无效的编号']);
+                }
+                if(file_exists($data_older['path'])){
+                    unlink($data_older['path']);
+                }
+                $data['id'] = $id;
+                $flag = $improve->editImprovement($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+
+    /**
+     * 重大危险源识别与管理 -- 新增 或 (有文件上传的修改)
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function uploadSources(){
+        $sources = new RiskSourcesModel();
+        // 前台 页面提交的数据
+        $id = request()->param('id'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
+        $pid = request()->param('pid'); // 必须 文件归属的父级节点编号 新增时 一定要有   修改时可以不传
+        $zid = request()->param('zid'); // 必须 文件归属的子级节点编号 新增时 一定要有   修改时可以不传
+        $risk_name = request()->param('risk_name'); // 可选 文件名称 用户输入的文件名称 不传 默认和原文件名称一致
+        $number = request()->param('number'); // 可选 文件编号
+        $remark = request()->param('remark'); // 可选 备注
+
+        // 系统自动生成的数据
+        $owner = session('username'); // 上传人
+        $risk_date = date('Y-m-d H:i:s'); // 上传时间
+
+        // 上传的文件
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/sources');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/sources/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if($risk_name == '等待上传...' || empty($risk_name)){
+                $risk_name = $filename;
+            }
+            $data = [
+                'pid' => $pid,
+                'zid' => $zid,
+                'risk_name' => $risk_name,
+                'number' => $number,
+                'owner' => $owner,
+                'risk_date' => $risk_date,
+                'filename' => $filename,
+                'path' => $path,
+                'remark' => $remark
+            ];
+            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
+            $is_add = explode('_',$id);
+            if(empty($id) || $is_add[0] == 'WU'){
+                $flag = $sources->insertRiskSources($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $sources->getOne($id);
+                if(isNull($data_older)){
+                    return json(['code' => '0', 'msg' => '无效的编号']);
+                }
+                if(file_exists($data_older['path'])){
+                    unlink($data_older['path']);
+                }
+                $data['id'] = $id;
+                $flag = $sources->editRiskSources($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /*
+     * 应急预案文件上传上传
+     * @return \think\response\Json
+     */
+    public function uploadEmergencyplan(){
+        /**
+         * id 应急预案表中的自增id
+         * preplan_file_name 文件名称
+         * name 上传原文件名
+         * filename 上传文件名
+         * preplan_number 文件编号
+         * version_number 版本号
+         * alternative_version 替代版本
+         * applicability 适用性评价
+         * preplan_state 状态
+         * owner 上传人
+         * date 上传时间
+         * remark 备注
+         * path 上传文件路径
+         */
+        $emergencyplan = new EmergencyplanModel();
+        $id = request()->param('aid');//获取上传的18的文件id
+        $panid = request()->param('panid');//判断是否有文件上传
+        $preplan_number = request()->param('preplan_number');//文件编号
+        $applicability = request()->param('applicability');//适用性评价
+        $remark = request()->param('remark');//备注
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/emergencyplan');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/emergencyplan/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($panid))
+            {
+                $data = [
+                    'id' => $id,
+                    'preplan_number' => $preplan_number,
+                    'applicability' => $applicability,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyplan->editEmergencyplan($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $emergencyplan->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'preplan_number' => $preplan_number,
+                    'applicability' => $applicability,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyplan->editEmergencyplan($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }
+
+
+
+        }else{
+            echo $file->getError();
+        }
+    }
+
+
+
+    /*
+     * 应急演练方案文件上传
+     * @return \think\response\Json
+     */
+    public function uploadEmergencyscheme(){
+        /**
+         * id 应急演练方案自增id
+         * name 应急演练上传文件原文件名
+         * filename 应急演练上传文件名
+         * number 编号
+         * date 上传时间
+         * owner 上传人
+         * remark 备注
+         * path 文件路径
+
+         */
+        $emergencyscheme = new EmergencyschemeModel();
+        $id = request()->param('aid');
+        $number = request()->param('number');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/emergencyscheme');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/emergencyscheme/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'number' => $number,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyscheme->insertEmergencyrehearsalscheme($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $emergencyscheme->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'number' => $number,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyscheme->editEmergencyrehearsalscheme($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+
+    /*
+     * 应急演练影像资料文件上传
+     * @return \think\response\Json
+     */
+    public function uploadEmergencyimagedata(){
+        /**
+         * id 应急演练影像资料自增id
+         * name 应急演练影像资料上传原文件名
+         * filename 应急演练影像资料上传文件名
+         * place 地点
+         * date 上传时间
+         * owner 上传人
+         * remark 备注
+         * path 文件路径
+
+         */
+        $emergencyimagedata = new EmergencyimagedataModel();
+        $id = request()->param('aid');
+        $place = request()->param('place');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/emergencyimagedata');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/emergencyimagedata/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'place' => $place,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyimagedata->insertEmergencyimagedata($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $emergencyimagedata->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'place' => $place,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyimagedata->editEmergencyimagedata($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+
+    /*
+     * 应急演练文件上传
+     * @return \think\response\Json
+     */
+    public function uploadEmergencyrehearsal(){
+        /**
+         * id 应急演练自增id
+         * name 应急演练上传原文件名
+         * filename 应急演练上传文件名
+         * number 编号
+         * date 上传时间
+         * owner 上传人
+         * remark 备注
+         * path 文件路径
+
+         */
+        $emergencyrehearsal = new EmergencyrehearsalModel();
+        $id = request()->param('aid');
+        $number = request()->param('number');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/$emergencyrehearsal');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/$emergencyrehearsal/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'number' => $number,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyrehearsal->insertEmergencyrehearsal($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $emergencyrehearsal->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'number' => $number,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencyrehearsal->editEmergencyrehearsal($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+
+    /*
+     * 应急处置文件上传
+     * @return \think\response\Json
+     */
+    public function uploadEmergencydisposal(){
+        /**
+         * id 应急处置表自增id
+         * preplan_file_name 文件名称
+         * name 上传原文件名
+         * filename 上传文件名
+         * preplan_number 文件编号
+         * version_number 版本号
+         * alternative_version 替代版本
+         * applicability 适用性评价
+         * preplan_state 状态
+         * owner 上传人
+         * date 上传时间
+         * remark 备注
+         * path 上传文件路径
+         */
+        $emergencydisposal = new EmergencydisposalModel();
+        $id = request()->param('aid');//获取上传的18的文件id
+        $panid = request()->param('panid');//判断编辑时候是否有文件上传
+        $preplan_number = request()->param('preplan_number');//文件编号
+        $applicability = request()->param('applicability');//适用性评价
+        $remark = request()->param('remark');//备注
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/emergencydisposal');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/emergencydisposal/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($panid))//无文件上传
+            {
+                $data = [
+                    'id' => $id,
+                    'preplan_number' => $preplan_number,
+                    'applicability' => $applicability,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencydisposal->editEmergencydisposal($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $emergencydisposal->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'preplan_number' => $preplan_number,
+                    'applicability' => $applicability,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $emergencydisposal->editEmergencydisposal($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }
+
+
+
+        }else{
+            echo $file->getError();
+        }
+    }
+
 }

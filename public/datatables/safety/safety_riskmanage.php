@@ -1,5 +1,5 @@
-<?php
-//全民参与
+﻿<?php
+
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
@@ -19,8 +19,8 @@ include('../conn.php');
  * Easy set variables
  */
 
-// DB table to use
-$table = 'think_safety_fullparticipation';
+// DB table to use 安全风险管理
+$table = 'think_safety_riskmanage';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -29,43 +29,31 @@ $primaryKey = 'id';
 // The `db` parameter represents the column name in the database, while the `dt`
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
-$columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
-    array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'filename',  'dt' => 1 ),
-    array( 'db' => 'owner',  'dt' => 2 ),
-    array( 'db' => 'date',  'dt' => 3 ),
-    array( 'db' => 'version',  'dt' => 4 ),
-    array( 'db' => 'remark',  'dt' => 5 )
+
+//定义数据库中查看的字段与表格中的哪一列相对应
+$columns = array(
+    array( 'db' => 'id',  'dt' => 1 ),
+    array( 'db' => 'segmentv',  'dt' => 2 ),
+    array( 'db' => 'position',  'dt' => 3 ),
+    array( 'db' => 'riskname',  'dt' => 4 ),
+    array( 'db' => 'risk_grade',  'dt' => 5 ),
+    array( 'db' => 'on_stream_time',  'dt' => 6 ),
+    array( 'db' => 'completion_time',  'dt' => 7 ),
+    array( 'db' => 'construction_user',  'dt' => 8 ),
+    array( 'db' => 'supervision_user',  'dt' => 9 ),
+    array( 'db' => 'remark',  'dt' => 10 )
 );
 
-
-
-
-
-
 // $_GET = "SELECT * FROM people WHERE 'uid' = '105625886366281950'";
-
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * If you just want to use the basic configuration for DataTables with PHP
  * server-side, there is no need to edit below this line.
  */
-
 require( '../ssp.class.php' );
 
-if(!empty($_GET["year"]))
-{
-    $year = $_GET["year"];
-    echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null, "date like '%" .$year. "%'" )
-    );
-}else{
-    echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
-    );
-}
-
-
+echo json_encode(
+    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
+);
 
 
 

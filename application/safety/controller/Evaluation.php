@@ -1,79 +1,91 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: sir
- * Date: 2018/3/9
- * Time: 13:45
+ * User: admin
+ * Date: 2018/3/7
+ * Time: 10:56
  */
 
+// 绩效评定
 namespace app\safety\controller;
 
-// 重大危险源识别与管理
-
 use app\admin\controller\Base;
-use app\admin\model\ContractModel;
-use app\safety\model\RiskSourcesModel;
+use app\safety\model\EvaluationModel;
 
-class Risksources extends Base
+class Evaluation extends Base
 {
     /**
-     * 编辑获取一条数据
+     *  编辑时 根据 id 编号获取一条数据
      * @return mixed|\think\response\Json
      * @author hutao
      */
-    public function index()
+    public  function  index()
     {
         if(request()->isAjax()){
+            $eval= new EvaluationModel();
             $param = input('post.');
-            $sources = new RiskSourcesModel();
-            $data = $sources->getOne($param['id']);
-            return json($data);
+            $data = $eval->getOne($param['id']);
+            return json(['code'=> 1, 'data' => $data]);
         }
-        return $this ->fetch();
+        return $this->fetch();
     }
 
     /**
-     * 无文件上传的编辑
+     * 无文件上传时的编辑
      * @return \think\response\Json
      * @author hutao
      */
-    public function sourcesEdit()
+    public function evalEdit()
     {
+        $eval = new EvaluationModel();
+        $param = input('post.');
         if(request()->isAjax()){
-            $sources = new RiskSourcesModel();
-            $param = input('post.');
-            $is_exist = $sources->getOne($param['id']);
+            $is_exist = $eval->getOne($param['id']);
             if(isNull($is_exist)){
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
-            $flag = $sources->editRiskSources($param);
+            $flag = $eval->editEval($param);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
 
+    /**
+     * 删除
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function evalDel()
+    {
+        if(request()->isAjax()){
+            $eval = new EvaluationModel();
+            $param = input('post.');
+            $flag = $eval->delEval($param['id']);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
 
     /**
      * 下载
      * @return \think\response\Json
      * @author hutao
      */
-    public function sourcesDownload()
+    public function evalDownload()
     {
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
         $id = input('param.id');
-        $sources = new RiskSourcesModel();
-        $param = $sources->getOne($id);
+        $eval = new EvaluationModel();
+        $param = $eval->getOne($id);
         $filePath = $param['path'];
-        $fileName = $param['risk_name'];
+        $fileName = $param['eval_name'];
         // 如果是手动输入的名称，就有可能没有文件后缀
         $extension = get_extension($fileName);
         if(empty($extension)){
             $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
         }
-        if(file_exists($filePath)) {
-            $file = fopen($filePath, "r"); //   打开文件
+        $file = fopen($filePath, "r"); //   打开文件
+        if(file_exists($filePath)){
             //输入文件标签
             $fileName = iconv("utf-8","gb2312",$fileName);
             Header("Content-type:application/octet-stream ");
@@ -94,14 +106,14 @@ class Risksources extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function sourcesPreview()
+    public function evalPreview()
     {
-        $sources = new RiskSourcesModel();
+        $eval = new EvaluationModel();
         if(request()->isAjax()) {
             $param = input('post.');
             $code = 1;
             $msg = '预览成功';
-            $data = $sources->getOne($param['id']);
+            $data = $eval->getOne($param['id']);
             $path = $data['path'];
             $extension = strtolower(get_extension(substr($path,1)));
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
@@ -116,45 +128,12 @@ class Risksources extends Base
                     $pdf_path = $path;
                 }else{
                     $code = 0;
-                    $msg = '文不支持的件格式';
+                    $msg = '不支持的文件格式';
                 }
                 return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
             }else{
                 return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
             }
-        }
-    }
-
-    /**
-     * 删除
-     * @return \think\response\Json
-     * @author hutao
-     */
-    public function sourcesDel()
-    {
-        if(request()->isAjax()){
-            $param = input('param.');
-            $sources = new RiskSourcesModel();
-            $flag = $sources->delRiskSources($param['id']);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        }
-    }
-
-
-    /**
-     * 初始化左侧节点树
-     * @return \think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @author hutao
-     */
-    public function getSegment()
-    {
-        if(request()->isAjax()){
-            $con = new ContractModel();
-            $data = $con->getBiaoduanName(1); // 2 表示页面有2个一一级节点
-            return json($data);
         }
     }
 

@@ -74,6 +74,10 @@ class Rulesregulations extends Base
         if(request()->isAjax()){
             $rules = new RulesregulationsModel();
             $param = input('post.');
+            $is_exist = $rules->getOne($param['id']);
+            if(empty($is_exist)){
+                return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
+            }
             $data = [
                 'id' => $param['id'],
                 'years' => date('Y'),
@@ -105,7 +109,12 @@ class Rulesregulations extends Base
         $rules = new RulesregulationsModel();
         $param = $rules->getOne($id);
         $filePath = $param['path'];
-        $fileName = $param['rul_name'] . '.' . substr(strrchr($filePath, '.'), 1);
+        $fileName = $param['rul_name'];
+        // 如果是手动输入的名称，就有可能没有文件后缀
+        $extension = get_extension($fileName);
+        if(empty($extension)){
+            $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
+        }
         if(file_exists($filePath)){
             $file = fopen($filePath, "r"); // 打开文件
             // 输入文件标签
@@ -118,6 +127,8 @@ class Rulesregulations extends Base
             echo fread($file, filesize($filePath));
             fclose($file);
             exit;
+        }else{
+            return json(['code' => '-1','msg' => '文件不存在']);
         }
     }
 
@@ -131,15 +142,6 @@ class Rulesregulations extends Base
         if(request()->isAjax()){
             $rules = new RulesregulationsModel();
             $param = input('post.');
-            $data = $rules->getOne($param['id']);
-            $path = $data['path'];
-            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-            if(file_exists($path)){
-                unlink($path); // 删除文件
-            }
-            if(file_exists($pdf_path)){
-                unlink($pdf_path); // 删除生成的预览pdf
-            }
             $flag = $rules->delRules($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
@@ -350,8 +352,9 @@ class Rulesregulations extends Base
                     $insertData[$k]['rul_date'] = $v[$rul_date_index];
                     $insertData[$k]['remark'] = $v[$remark_index];
                     $insertData[$k]['years'] = date('Y');
-                    $insertData[$k]['improt_time'] = date('Y-m-d H:i:s');
+                    $insertData[$k]['import_time'] = date('Y-m-d H:i:s');
                     $insertData[$k]['group_id'] = $group_id;
+                    $insertData[$k]['import_path'] = './uploads/safety/import/rules/' . str_replace("\\","/",$exclePath);
                 }
             }
             $success = Db::name('safety_rules')->insertAll($insertData);
@@ -376,11 +379,10 @@ class Rulesregulations extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('post.');
-        $idArr2 = $idArr['id'];
-        $name = '规章制度'.date('Y-m-d H:i:s'); // 导出的文件名 可以指定是哪个节点下的那个节点.xls 例如:规章制度-国家电网公司.xls
+        $idArr = input('id/a');
+        $name = '规章制度 - '.date('Y-m-d H:i:s'); // 导出的文件名 可以指定是哪个节点下的那个节点.xls 例如:规章制度-国家电网公司.xls
         $sdi = new RulesregulationsModel();
-        $list = $sdi->getList($idArr2);
+        $list = $sdi->getList($idArr);
         $i=0;
         foreach ($list as $v){
             $v['id'] = iconv("utf-8","gb2312",$v['id']);
@@ -451,7 +453,58 @@ class Rulesregulations extends Base
     }
 
     /**
-     * 查看历史版本
+     * 导出模板
+     * @return \think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     * @author hutao
+     */
+    public function exportExcelTemplete()
+    {
+        if(request()->isAjax()){
+            return json(['code'=>1]);
+        }
+        $newName = '规章制度-模板'; // 导出的文件名
+        header("Content-type:text/html;charset=utf-8");
+        Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+        //实例化
+        $objPHPExcel = new \PHPExcel();
+        /*右键属性所显示的信息*/
+        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
+        ->setLastModifiedBy("zxf")  //最后一次保存者
+        ->setTitle('数据EXCEL导出')  //标题
+        ->setSubject('数据EXCEL导出') //主题
+        ->setDescription('导出数据')  //描述
+        ->setKeywords("excel")   //标记
+        ->setCategory("result file");  //类别
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        // 设置表格第一行显示内容
+        $objPHPExcel->getActiveSheet()
+            ->setCellValue('A1', '序号')
+            ->setCellValue('B1', '标准号')
+            ->setCellValue('C1', '名称')
+            ->setCellValue('D1', '施行日期')
+            ->setCellValue('E1', '替代标准')
+            ->setCellValue('F1', '适用性评价')
+            ->setCellValue('G1', '识别人')
+            ->setCellValue('H1', '上传日期')
+            ->setCellValue('I1', '备注');
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        ob_end_clean();  //清除缓冲区,避免乱码
+        header('Content-Type: application/vnd.ms-excel'); //文件类型
+        header('Content-Disposition: attachment;filename="'.$newName.'.xls"'); //文件名
+        header('Cache-Control: max-age=0');
+        header('Content-Type: text/html; charset=utf-8'); //编码
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003
+        $objWriter->save('php://output');
+        exit;
+    }
+
+    /**
+     * 查看导入的历史版本
      * @return \think\response\Json
      * @author hutao
      */
@@ -459,8 +512,8 @@ class Rulesregulations extends Base
     {
         if(request()->isAjax()){
             $edu = new RulesregulationsModel();
-            $years = $edu->getYears();
-            return json($years);
+            $history = $edu->getImportTime();
+            return json($history);
         }
     }
 

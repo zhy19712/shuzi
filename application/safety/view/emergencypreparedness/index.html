@@ -14,7 +14,16 @@
         margin-right: 20px;
         margin-bottom: 5px;
     }
-    #home,#plan,#material{
+    .myp{
+        background-color: #bae2f3;
+        font-weight: 700;
+        line-height: 30px;
+        padding: 8px 0;
+        position: absolute;
+        text-align: center;
+        width: 96%;
+    }
+    #home,#plan,#material,#drill{
         padding-top: 20px;
     }
     #file_upload1>div:nth-child(2),#file_upload2>div:nth-child(2),#file_upload3>div:nth-child(2){
@@ -47,8 +56,20 @@
         font-weight: 700;
         color: black;
     }
+    .selectfile{
+        float: right;
+        margin-left: 20px;
+        margin-top: 5px;
+        font-weight: 700;
+        color: black;
+    }
     .skyblue{
         background-color: skyblue!important;
+    }
+    #table4,#table5,#table6{
+        max-height: 300px;
+        overflow-y: scroll;
+        margin-bottom: 30px;
     }
 </style>
 <body class="gray-bg animated fadeInRight">
@@ -57,7 +78,7 @@
         <li class="active"><a href="#home">应急救援组织</a></li>
         <li><a href="#plan">应急预案</a></li>
         <li><a href="#material">应急物资</a></li>
-        <li><a href="#messages">应急演练</a></li>
+        <li><a href="#drill">应急演练</a></li>
     </ul>
     <div class="tab-content">
 
@@ -126,6 +147,59 @@
             </div>
         </div>
         <!--应急物资结束-->
+
+        <!--应急演练开始-->
+        <div class="tab-pane" id="drill">
+            <div style="height: 50px;">
+                <p class="myp">应急演练方案</p>
+            </div>
+            <table id="table4" width="100%" class="table table-striped table-bordered ">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>文件名称</th>
+                        <th>编号</th>
+                        <th>上传时间</th>
+                        <th>上传人</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+            <div style="height: 50px;">
+                <p class="myp">应急演练影像资料</p>
+            </div>
+            <table id="table5" width="100%" class="table table-striped table-bordered ">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>影像名称</th>
+                    <th>地点</th>
+                    <th>上传时间</th>
+                    <th>上传人</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+            <div style="height: 50px;">
+                <p class="myp">应急演练评估</p>
+            </div>
+            <table id="table6" width="100%" class="table table-striped table-bordered ">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>文件名称</th>
+                    <th>编号</th>
+                    <th>上传时间</th>
+                    <th>上传人</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <!--应急演练结束-->
     </div>
 </div>
 <div id="form_container" style="display: none;"></div>
@@ -201,7 +275,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label ">适用性评价：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="applicability" id="preplan_state" required="required" class="form-control" placeholder="此处为必填项">
+                                    <select name="applicability" id="applicability" required="required" class="form-control" placeholder="此处为必填项">
                                         <option value="适用">适用</option>
                                         <option value="不适用">不适用</option>
                                     </select>
@@ -212,17 +286,17 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">状态：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input id="preplan_state" type="text" class="form-control" name="applicability">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">备注：</label>
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">备注：</label>
                                 <div class="myblock col-xs-6 input-group">
                                     <input type="text" id="remark2" class="form-control datepicker" name="remark" />
                                 </div>
                             </div>
+                            <div class="col-lg-6 col-xs-12" style="display: none">
+                            <label class="col-xs-6 col-sm-4 control-label">状态：</label>
+                            <div class="myblock col-xs-6 input-group">
+                                <input id="preplan_state" type="text" class="form-control" name="preplan_state">
+                            </div>
+                        </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
@@ -244,121 +318,61 @@
         <div class="col-sm-12" style="background-color:#fff;">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>事故档案</h5>
+                    <h5>应急物资</h5>
                 </div>
                 <div class="ibox-content">
-                    <form class="form-horizontal" id="accidentform" onsubmit="return false" >
+                    <input id="bid" type="text" class="form-control" value="" style="display: none;">
+                    <form class="form-horizontal" id="materialform" onsubmit="return false" >
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">事故名称：</label>
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">设备物资名称：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="accident_name" type="text" class="form-control" name="accident_name" required="required" placeholder="此处为必填项">
+                                    <input id="material_name" type="text" class="form-control" name="material_name" required="required" placeholder="此处为必填项">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">事故发生时间：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">规格型号：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="accident_time" type="date" class="form-control" required="required" name="accident_time" placeholder="此处为必填项">
+                                    <input id="material_model" class="form-control" required="required" name="material_model" placeholder="此处为必填项">
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">事故发生地点：</label>
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">单位：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="accident_place" type="text" class="form-control" required="required" name="accident_place" placeholder="此处为必填项">
+                                    <input id="material_company" type="text" class="form-control" required="required" name="material_company" placeholder="此处为必填项">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">事故类型：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">数量：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="accident_type" id="accident_type" required="required" class="form-control" placeholder="此处为必填项">
-                                        <option value="物体打击">物体打击</option>
-                                        <option value="车辆伤害">车辆伤害</option>
-                                        <option value="机械伤害">机械伤害</option>
-                                        <option value="起重伤害">起重伤害</option>
-                                        <option value="触电">触电</option>
-                                        <option value="淹溺">淹溺</option>
-                                        <option value="灼烫">灼烫</option>
-                                        <option value="火灾">火灾</option>
-                                        <option value="高处坠落">高处坠落</option>
-                                        <option value="坍塌">坍塌</option>
-                                        <option value="冒顶片帮">冒顶片帮</option>
-                                        <option value="透水">透水</option>
-                                        <option value="放炮">放炮</option>
-                                        <option value="火药爆炸">火药爆炸</option>
-                                        <option value="瓦斯爆炸">瓦斯爆炸</option>
-                                        <option value="锅炉爆炸">锅炉爆炸</option>
-                                        <option value="锅炉爆炸">容器爆炸</option>
-                                        <option value="容器爆炸">其他爆炸</option>
-                                        <option value="容器爆炸">中毒和窒息</option>
-                                        <option value="容器爆炸">其他伤害</option>
-                                    </select>
+                                    <input id="material_number" type="number" class="form-control" required="required" name="material_number" placeholder="此处为必填项">
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">事故等级：</label>
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">完好情况：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="accident_level" id="accident_level" required="required" class="form-control" placeholder="此处为必填项">
-                                        <option value="特别重大事故">特别重大事故</option>
-                                        <option value="重大事故">重大事故</option>
-                                        <option value="较大事故">较大事故</option>
-                                        <option value="一般事故">一般事故</option>
-                                    </select>
+                                    <input id="material_situation" type="number" class="form-control" required="required" name="material_situation" placeholder="此处为必填项">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">死亡人数：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">存放地点：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="death_toll" type="number" required="required" placeholder="此处为必填项" class="form-control"/>
+                                    <input id="material_location" required="required" placeholder="此处为必填项" class="form-control"/>
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">重伤人数：</label>
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">备注：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="injure" type="number" class="form-control" required="required" name="injure" placeholder="此处为必填项"/>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">轻伤人数：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input id="light_injure" type="number" required="required" class="form-control" placeholder="此处为必填项"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">直接经济损失（万元）：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input id="economic_loss" type="number" class="form-control" required="required" name="economic_loss" placeholder="此处为必填项" >
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">事故责任单位：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input type="text" id="accident_unit" class="form-control" required="required" name="accident_unit" placeholder="此处为必填项"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">事故处理结果：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input id="accident_result" type="text" class="form-control" required="required" name="accident_result"placeholder="此处为必填项" >
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">备注：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input type="text" id="remark" class="form-control datepicker" name="remark" />
+                                    <input type="text" id="remark3" class="form-control datepicker" name="remark3" />
                                 </div>
                             </div>
                         </div>
@@ -375,8 +389,121 @@
         </div>
     </div>
 </div>
-
 <!--应急物资结束-->
+<div id="fname4" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>应急演练方案</h5>
+                </div>
+                <div class="ibox-content">
+                    <input id="cid" type="text" class="form-control" value="" style="display: none;">
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">编号：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="number4" type="text" class="form-control" name="number4" >
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">备注：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="remark4" type="text" class="form-control" name="remark4" >
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" id="file" style="text-align: right;line-height: 44px;">文件：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <div id="file_per4" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_upload4" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_list4" style="display: inline-block;vertical-align: middle;"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="text-align: center;">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="fname5" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>应急演练影像资料</h5>
+                </div>
+                <div class="ibox-content">
+                    <input id="did" type="text" class="form-control" value="" style="display: none;">
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">地点：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="place" type="text" class="form-control" name="place" >
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">备注：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="remark5" type="text" class="form-control" name="remark5" >
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" id="file" style="text-align: right;line-height: 44px;">视频文件：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <div id="file_per5" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_upload5" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_list5" style="display: inline-block;vertical-align: middle;"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="text-align: center;">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="fname6" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>应急演练评估</h5>
+                </div>
+                <div class="ibox-content">
+                    <input id="eid" type="text" class="form-control" value="" style="display: none;">
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">编号：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="number6" type="text" class="form-control" name="number6" >
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">备注：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="remark6" type="text" class="form-control" name="remark6" >
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" id="file" style="text-align: right;line-height: 44px;">文件：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <div id="file_per6" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_upload6" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_list6" style="display: inline-block;vertical-align: middle;"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="text-align: center;">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 {include file="public/footer" /}
@@ -530,8 +657,7 @@
 <!--应急预案开始-->
 <script>
     //应急预案
-    var bname1,bname2;           //用于区分 编辑时是否修改了文件
-    var current_id; //修订的id
+    var current_id=""; //修订的id
     //应急预案-初始化upload
     function upload2() {
         var swf = current_id===""?"":"";
@@ -638,6 +764,11 @@
 
     //应急预案-预览
     function showpdf2(that) {
+        var val = $(that).parent("td").parent("tr").children("td:nth-child(9)").text();
+        if(val!=="已上传"){
+            layer.msg("无上传文件");
+            return ;
+        }
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         showPdf(id,"./generalPreview");
     }
@@ -650,6 +781,11 @@
 
     //应急预案-下载
     function download2(that) {
+        var val = $(that).parent("td").parent("tr").children("td:nth-child(9)").text();
+        if(val!=="已上传"){
+            layer.msg("无上传文件");
+            return ;
+        }
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         download(id,"./generalDownload");
     }
@@ -663,8 +799,13 @@
     //应急预案-编辑
     function edit2(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $("#fname2").modal('show');
+        $("#preplan_state").show();
+        $("#version_number").removeAttr("disabled").attr("required","required");
+        $("#applicability").parent().parent().show();
+        // $("#preplan_state").parent().parent().show();
         $.ajax({
-            url: "./index",
+            url: "../Emergencyplan/index",
             type: "post",
             data: {id:id},
             dataType: "json",
@@ -681,16 +822,10 @@
                     $("#preplan_state").val(res.data.preplan_state);
                     uploader2 = null;
                     upload2();
-                    if(res.data.path){
-                        $("#file_list2").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
-                            '<span class="info">' + res.data.name + '</span>&nbsp' +
-                            '<span onclick="fdelatt2(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                            '</div>' );
-                    }
                     $("#fname2").modal('show');
                 }
             }
-        })
+        });
     };
     //应急预案-表格
     var table2 = $('#table2').DataTable( {
@@ -700,7 +835,7 @@
             "url": "__SCRIPT__/safety_emergencyplan.php",
             "async": false
         },
-        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear2 selectyear">frtip',
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear2 selectyear"><"selectfile">frtip',
         "columnDefs": [
             {
                 "searchable": false,
@@ -728,15 +863,14 @@
             }
         }
     } );
-    $("div.mybtn").html('<div>修订</div>');
+    $("#table2_wrapper div.mybtn").html('<div>修订</div>');
 
     //应急预案-修订
     $("#table2_wrapper .mybtn").click(function () {
-        if(current_id===""){
+        if(current_id!==""){
             $("#preplan_state").hide();
-            $("#preplan_state").hide();
+            $("#version_number").attr("disabled",true).removeAttr("required");
             $("#applicability").parent().parent().hide();
-            console.log($("#preplan_state").parent().parent())
             $("#preplan_state").parent().parent().hide();
             $.ajax({
                 url: "../Emergencyplan/index",
@@ -750,8 +884,8 @@
                         $("#remark2").val(res.data.remark);
                         $("#preplan_file_name").val(res.data.preplan_file_name);
                         $("#preplan_number").val(res.data.preplan_number);
-                        $("#version_number").val(res.data.version_number);
-                        $("#alternative_version").val(res.data.alternative_version);
+                        $("#version_number").val(res.data.alternative_version);
+                        $("#alternative_version").val("");
                         $("#applicability").val(res.data.applicability);
                         $("#preplan_state").val(res.data.preplan_state);
                         uploader2 = null;
@@ -779,6 +913,34 @@
         }
     });
     $(".selectyear input").val("");
+    //选择文件名
+    $("#table2_filter").hide();
+    var selectfile ='<select name="selectfile" id="selectfile">\n' +
+        '                                        <option value="">全部</option>\n' +
+        '                                        <option value="综合应急预案">综合应急预案</option>\n' +
+        '                                        <option value="人身伤害事故专项应急救援预案">人身伤害事故专项应急救援预案</option>\n' +
+        '                                        <option value="车辆交通事故专项应急救援预案">车辆交通事故专项应急救援预案</option>\n' +
+        '                                        <option value="火灾事故专项应急救援预案">火灾事故专项应急救援预案</option>\n' +
+        '                                        <option value="触电事故专项应急救援预案">触电事故专项应急救援预案</option>\n' +
+        '                                        <option value="社会公共安全突发事件专项应急救援预案">社会公共安全突发事件专项应急救援预案</option>\n' +
+        '                                        <option value="突发公共卫生事件专项应急救援预案">突发公共卫生事件专项应急救援预案</option>\n' +
+        '                                        <option value="地震灾害专项应急救援预案">地震灾害专项应急救援预案</option>\n' +
+        '                                        <option value="地质灾害专项应急救援预案">地质灾害专项应急救援预案</option>\n' +
+        '                                        <option value="环境污染事件专项应急救援预案">环境污染事件专项应急救援预案</option>\n' +
+        '                                        <option value="突发高温及恶劣天气专项应急救援预案">突发高温及恶劣天气专项应急救援预案</option>\n' +
+        '                                        <option value="防洪度汛及强对流天气专项应急救援预案">防洪度汛及强对流天气专项应急救援预案</option>\n' +
+        '                                        <option value="急性传染病专项应急救援预案">急性传染病专项应急救援预案</option>\n' +
+        '                                        <option value="施工机械事故专项应急救援预案">施工机械事故专项应急救援预案</option>\n' +
+        '                                        <option value="爆炸事故专项应急救援预案">爆炸事故专项应急救援预案</option>\n' +
+        '                                        <option value="自然灾害事故专项应急救援预案">自然灾害事故专项应急救援预案</option>\n' +
+        '                                        <option value="食物中毒事件专项应急救援预案">食物中毒事件专text项应急救援预案</option>\n' +
+        '                                        <option value="坍（垮）塌事故专项应救援急预案">坍（垮）塌事故专项应救援急预案</option>\n' +
+        '                                    </select>';
+
+    $("div.selectfile").html("文件："+selectfile);
+    $("#selectfile").change(function () {
+        table2.search($(this).val()).draw();
+    })
 
     //应急预案-提交
     $("#fname2").submit(function () {
@@ -786,7 +948,7 @@
         //判断是不是新增
       if(!$("#file_list2").html()){
             //判断有无文件变化
-          $("#preplan_state").val("上传")
+          $("#preplan_state").val("未上传")
             $.ajax({
                 url: url,
                 type: "post",
@@ -812,7 +974,7 @@
                 }
             });
         }else{
-            $("#preplan_state").val("上传")
+            $("#preplan_state").val("已上传")
             uploader2.upload();
         }
     });
@@ -821,6 +983,7 @@
     $("#table2 tbody tr").click(function (e) {
         if($(e.target).val()==="编辑"){
             current_id="";
+            $(this).removeClass("skyblue").siblings().removeClass("skyblue");
         }else{
             $(this).addClass("skyblue").siblings().removeClass("skyblue");
             current_id = $(this).find("td:first-child").html();
@@ -832,20 +995,834 @@
 
 <!--应急物资开始-->
 <script>
+        var dataset = [
+            [
+            1,1,1,1,1,1,1,1,1
+            ]
+        ];
+    //物资-编辑
+    function edit3(that) {
+            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            $("#fname3").modal('show');
+            $.ajax({
+                url: "../Emergencyplan/index",
+                type: "post",
+                data: {id:id},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                    if(res.code === 1){
+                        $("#bid").val(res.data.id);
+                        $("#remark3").val(res.data.remark);
+                        $("#material_name").val(res.data.material_name);
+                        $("#material_model").val(res.data.material_model);
+                        $("#material_company").val(res.data.material_company);
+                        $("#material_number").val(res.data.material_number);
+                        $("#material_situation").val(res.data.material_situation);
+                        $("#material_location").val(res.data.material_location);
+                        $("#fname3").modal('show');
+                    }
+                }
+            });
+        };
+    //物资-删除
+    function del2(that) {
+            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            del(id,"./generalDel");
+        }
+    //物资表格
+    var table3 = $("#table3").DataTable({
+        "processing": true,//是否显示处理状态
+        // "serverSide":true,//是否开启服务器模式
+        // "ajax":{
+        //     "url": "__SCRIPT__/safety_accidentfile.php"
+        // },
+        "data":dataset,
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear3 selectyear">frtip',
+        "columnDefs":[
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [8],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit3(this)' value='编辑'/>";
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='del3(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    });
+    //新增
+    $("#table3_wrapper div.mybtn").html('<div>新增</div>');
+    $("#table3_wrapper div.mybtn").click(function () {
+        $("#fname3 input").val("");
+        $("#fname3").modal('show');
+    });
+     //选择年度
+     var selectyear3 ='<input id="year3" />';
+     $("div.selectyear3").html("年度："+selectyear3)
+     //
+     $("#year3").jeDate({
+         isinitVal:true,
+         format:"YYYY年",
+         okfun:function (obj) {
+             table3.ajax.url("__SCRIPT__/safety_emergencyplan.php?year="+obj.date.YYYY).load();
+             console.log(obj.date.YYYY);
+         }
+     });
+     $(".selectyear input").val("");
+     //提交
+     $("#fname3").submit(function () {
+         $.ajax({
+             url: "./accidentfileAdd",
+             type: "post",
+             data: {
+                 bid:$("#bid").val(),
+                 remark:$("#remark3").val(),
+                 material_name:$("#material_name").val(),
+                 material_model:$("#material_model").val(),
+                 material_company:$("#material_company").val(),
+                 material_number:$("#material_number").val(),
+                 material_situation:$("#material_situation").val(),
+                 material_location:$("#material_location").val()
+             },
+             datatype: "json",
+             success: function (res) {
+                 if(res.code === 1){
+                     layer.msg(res.msg);
+                     table.ajax.url("__SCRIPT__/safety_accidentfile.php").load();
+                     $("#fname").modal('hide');
+                 }else {
+                     layer.msg(res.msg);
+                 }
+             }
+         });
+     });
+</script>
+<!--应急物资结束-->
 
-    var table3 = $("#tavle3").DataTable({
+<!--应急演练开始-->
+<script>
+
+    var uploader4;          //初始化upload按钮
+
+    var aname1,aname2,aname3;         //用于区分 编辑时是否修改了文件
+
+    //初始化
+    function upload4() {
+        if(!uploader4){
+            uploader4 = WebUploader.create({
+                auto: false,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('Upload/uploadAccidentreport')}",// 文件接收服务端。
+                chunked: false,
+                fileSizeLimit: 1000 *1024 *1024,
+                fileNumLimit: 1,
+                formData: {"remark":"","cid":""},
+                duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: false,
+                    id: "#file_upload4",
+                    innerHTML: "上传文件"
+                }
+            });
+
+            uploader4.on( 'fileQueued', function( file ) {
+                $("#file_per4").append('<div id="' + file.id + '" class="item">' +
+                    '</div>');
+                $("#file_list4").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                    '<span class="info">' + file.name + '</span>&nbsp' +
+                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>' );
+            });
+            $("#file_list4").on("click", ".webuploadDelbtn", function () {
+                var $ele = $(this);
+                var id = $ele.parent().attr("class");
+                var file = uploader4.getFile(id);
+                uploader4.removeFile(file,true);
+            });
+            uploader4.on('fileDequeued', function (file) {
+                $(file.id).remove();
+                $('.'+file.id).remove();
+                console.log("remove");
+            });
+            uploader4.on("uploadStart",function () {
+                uploader4.options.formData.aid = $("#cid").val();
+                uploader4.options.formData.remark = $("#remark4").val();
+                uploader4.options.formData.number = $("#number4").val();
+            });
+            uploader4.on('beforeFileQueued', function (file) {
+                if($("#file_list4").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
+            // 文件上传过程中创建进度条实时显示
+            uploader4.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            uploader4.on( 'uploadSuccess', function( file,data, response ) {
+                // console.log(file)
+                // console.log(data)
+                if(data.code === 1){
+                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    $("#file_upload4").empty();
+                    $("#file_per4").empty();
+                    $("#file_list4").empty();
+                    $("#fname4").modal('hide');
+                    table.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
+                }else {
+                    layer.msg("抱歉，您没有此权限");
+                }
+            });
+
+            // 文件上传失败，显示上传出错。
+            uploader4.on( 'uploadError', function( file ) {
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                $("#file_per4").empty();
+            });
+        }
+    }
+
+    //事故管理-预览
+    function showpdf4(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        showPdf(id,"./accidentPreview");
+    }
+
+    //事故管理-删除
+    function del4(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        del(id,"./cultureDel");
+    }
+
+    //事故管理-编辑-删除文件
+    function fdelatt4(that) {
+        var id = $(that).parent("div").attr("id");
+        $("#"+id).remove();
+    }
+
+    //事故管理-编辑
+    function edit4(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $.ajax({
+            url: "./index",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                // console.log(res);
+                if(res.code === 1){
+                    $("#cid").val(res.data.id);
+                    $("#remark4").val(res.data.remark);
+                    $("#number4").val(res.data.number);
+                    aname1 = res.data.remark;
+                    aname2 = res.data.name;
+                    aname3 = res.data.number;
+                    uploader4 = null;
+                    upload4();
+                    if(res.data.path){
+                        $("#file_list4").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                            '<span class="info">' + res.data.name + '</span>&nbsp' +
+                            '<span onclick="fdelatt4(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '</div>' );
+                    }
+                    $("#fname4").modal('show');
+                }
+            }
+        })
+    }
+
+    //事故管理-下载
+    function download4(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        download(id,"./accidentDownload");
+    }
+
+    //提交
+    $("#fname4 .btn-primary").click(function () {
+        if($("#file_list4").html()){
+            if(!$("#cid").val()){
+                uploader4.upload();
+            }else {
+                if(aname2 !== $(".info").html()){
+                    uploader4.upload();
+                }else if(aname1 !== $("#remark").val()||aname3 !== $("#number4").val()){
+                    $.ajax({
+                        url: "./accidentEdit",
+                        type: "post",
+                        data: {id:$("#cid").val(),remark:$("#remark4").val(),number:$("#number4").val()},
+                        datatype: "json",
+                        success: function (res) {
+                            if(res.code === 1){
+                                layer.msg(res.msg);
+                                table4.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
+                                $("#fname4").modal('hide');
+                            }else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    });
+                }else {
+                    layer.msg("未发生更改");
+                    $("#fname4").modal('hide');
+                }
+            }
+        }else {
+            alert("请选择上传文件");
+        }
+    });
+
+
+    //表格
+    var table4 = $("#table4").DataTable({
         "processing": true,//是否显示处理状态
         "serverSide":true,//是否开启服务器模式
-        "ordering":false,
         "ajax":{
-            "url": "__SCRIPT__/safety_accidentfile.php"
+            "url": "__SCRIPT__/safety_accidentreport.php"
         },
-        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear">frtip',
-        "columnDefs":[
-            // {
-            //     "targets":[0,1,2,3,4,5],
-            //     "orderable":false
-            // }
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear selectyear4">frtip',
+        "columnDefs":[ //设置列定义初始化属性
+            {
+                "searchable":false,  //禁止搜索
+                "orderable":false,   //禁止排序
+                "targets":[6],         //指定第六列
+                "render": function (data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download4(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit4(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf4(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del4(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    });
+    var selectyear4 ='<input id="year4" />';
+    $("div.selectyear4").html("年度："+selectyear4);
+    //选择年度
+    $("#year4").jeDate({
+        isinitVal:true,
+        format:"YYYY年",
+        okfun:function (obj) {
+            table4.ajax.url("__SCRIPT__/safety_accidentreport.php?year="+obj.date.YYYY).load();
+            console.log(obj.date.YYYY);
+        }
+    });
+    $(".selectyear input").val("");
+    //新增
+    $("#table4_wrapper .mybtn").html("新增")
+    $("#table4_wrapper .mybtn").click(function () {
+        alert(4)
+        uploader4 = null;
+        $("#fname4 input").val("");
+        $("#file_list4").empty();
+        $("#fname4").modal('show');
+        upload4();
+    });
+</script>
+<script>
+
+    var uploader5;          //初始化upload按钮
+
+    var bname1,bname2,bname3;         //用于区分 编辑时是否修改了文件
+
+    //初始化
+    function upload5() {
+        if(!uploader5){
+            uploader5 = WebUploader.create({
+                auto: false,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('Upload/uploadAccidentreport')}",// 文件接收服务端。
+                chunked: false,
+                fileSizeLimit: 1000 *1024 *1024,
+                fileNumLimit: 1,
+                formData: {"remark":"","did":""},
+                duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: false,
+                    id: "#file_upload5",
+                    innerHTML: "上传视频文件"
+                },
+                accept: {
+                    title: 'mp4',
+                    extensions: 'mp4',
+                    mimeTypes: '.mp4'
+                }
+            });
+
+            uploader5.on( 'fileQueued', function( file ) {
+                $("#file_per5").append('<div id="' + file.id + '" class="item">' +
+                    '</div>');
+                $("#file_list5").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                    '<span class="info">' + file.name + '</span>&nbsp' +
+                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>' );
+            });
+            $("#file_list5").on("click", ".webuploadDelbtn", function () {
+                var $ele = $(this);
+                var id = $ele.parent().attr("class");
+                var file = uploader5.getFile(id);
+                uploader5.removeFile(file,true);
+            });
+            uploader5.on('fileDequeued', function (file) {
+                $(file.id).remove();
+                $('.'+file.id).remove();
+                console.log("remove");
+            });
+            uploader5.on("uploadStart",function () {
+                uploader5.options.formData.aid = $("#did").val();
+                uploader5.options.formData.remark = $("#remark5").val();
+                uploader5.options.formData.number = $("#place").val();
+            });
+            uploader4.on('beforeFileQueued', function (file) {
+                if($("#file_list5").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
+            // 文件上传过程中创建进度条实时显示
+            uploader5.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            uploader5.on( 'uploadSuccess', function( file,data, response ) {
+                // console.log(file)
+                // console.log(data)
+                if(data.code === 1){
+                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    $("#file_upload5").empty();
+                    $("#file_per5").empty();
+                    $("#file_list5").empty();
+                    $("#fname5").modal('hide');
+                    table.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
+                }else {
+                    layer.msg("抱歉，您没有此权限");
+                }
+            });
+
+            // 文件上传失败，显示上传出错。
+            uploader5.on( 'uploadError', function( file ) {
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                $("#file_per5").empty();
+            });
+        }
+    }
+    //查看
+    function play(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $.ajax({
+            url: url,
+            type: "post",
+            data: {id:id},
+            success: function (res) {
+                if(res.code === 1){
+                    var path = res.path;
+                    path = encodeURIComponent(path);
+                    window.open("./videoplay.html?url=" + path,"_blank");
+                }else {
+                    layer.msg(res.msg);
+                }
+            }
+        });
+    }
+
+    //事故管理-删除
+    function del5(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        del(id,"./cultureDel");
+    }
+
+    //事故管理-编辑-删除文件
+    function fdelatt5(that) {
+        var id = $(that).parent("div").attr("id");
+        $("#"+id).remove();
+    }
+
+    //事故管理-编辑
+    function edit5(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $.ajax({
+            url: "./index",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                // console.log(res);
+                if(res.code === 1){
+                    $("#did").val(res.data.id);
+                    $("#remark5").val(res.data.remark);
+                    $("#place").val(res.data.place);
+                    bname1 = res.data.remark;
+                    bname2 = res.data.name;
+                    bname3 = res.data.place;
+                    uploader5 = null;
+                    upload5();
+                    if(res.data.path){
+                        $("#file_list5").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                            '<span class="info">' + res.data.name + '</span>&nbsp' +
+                            '<span onclick="fdelatt5(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '</div>' );
+                    }
+                    $("#fname5").modal('show');
+                }
+            }
+        })
+    }
+
+    //事故管理-下载
+    function download5(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        download(id,"./accidentDownload");
+    }
+
+    //提交
+    $("#fname5 .btn-primary").click(function () {
+        if($("#file_list5").html()){
+            if(!$("#did").val()){
+                uploader5.upload();
+            }else {
+                if(bname2 !== $(".info").html()){
+                    uploader5.upload();
+                }else if(bname1 !== $("#remark").val()||bname3 !== $("#place").val()){
+                    $.ajax({
+                        url: "./accidentEdit",
+                        type: "post",
+                        data: {id:$("#did").val(),remark:$("#remark5").val(),number:$("#place").val()},
+                        datatype: "json",
+                        success: function (res) {
+                            if(res.code === 1){
+                                layer.msg(res.msg);
+                                table5.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
+                                $("#fname5").modal('hide');
+                            }else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    });
+                }else {
+                    layer.msg("未发生更改");
+                    $("#fname5").modal('hide');
+                }
+            }
+        }else {
+            alert("请选择上传文件");
+        }
+    });
+
+
+    //表格
+    var table5 = $("#table5").DataTable({
+        "processing": true,//是否显示处理状态
+        "serverSide":true,//是否开启服务器模式
+        "ajax":{
+            "url": "__SCRIPT__/safety_accidentreport.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear selectyear5">frtip',
+        "columnDefs":[ //设置列定义初始化属性
+            {
+                "searchable":false,  //禁止搜索
+                "orderable":false,   //禁止排序
+                "targets":[6],         //指定第六列
+                "render": function (data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download5(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit5(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='play(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del5(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    });
+    var selectyear5 ='<input id="year5" />';
+    $("div.selectyear5").html("年度："+selectyear5);
+    //选择年度
+    $("#year5").jeDate({
+        isinitVal:true,
+        format:"YYYY年",
+        okfun:function (obj) {
+            table5.ajax.url("__SCRIPT__/safety_accidentreport.php?year="+obj.date.YYYY).load();
+            console.log(obj.date.YYYY);
+        }
+    });
+    $(".selectyear input").val("");
+    //新增
+    $("#table5_wrapper .mybtn").html("新增")
+    $("#table5_wrapper .mybtn").click(function () {
+        alert(5)
+        uploader5 = null;
+        $("#fname5 input").val("");
+        $("#file_list5").empty();
+        $("#fname5").modal('show');
+        upload5();
+    });
+</script>
+<script>
+
+    var uploader6;          //初始化upload按钮
+
+    var cname1,cname2,cname3;         //用于区分 编辑时是否修改了文件
+
+    //初始化
+    function upload6() {
+        if(!uploader6){
+            uploader6 = WebUploader.create({
+                auto: false,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('Upload/uploadAccidentreport')}",// 文件接收服务端。
+                chunked: false,
+                fileSizeLimit: 1000 *1024 *1024,
+                fileNumLimit: 1,
+                formData: {"remark":"","eid":""},
+                duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: false,
+                    id: "#file_upload6",
+                    innerHTML: "上传文件"
+                }
+            });
+
+            uploader6.on( 'fileQueued', function( file ) {
+                $("#file_per6").append('<div id="' + file.id + '" class="item">' +
+                    '</div>');
+                $("#file_list6").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                    '<span class="info">' + file.name + '</span>&nbsp' +
+                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>' );
+            });
+            $("#file_list6").on("click", ".webuploadDelbtn", function () {
+                var $ele = $(this);
+                var id = $ele.parent().attr("class");
+                var file = uploader6.getFile(id);
+                uploader6.removeFile(file,true);
+            });
+            uploader6.on('fileDequeued', function (file) {
+                $(file.id).remove();
+                $('.'+file.id).remove();
+                console.log("remove");
+            });
+            uploader6.on("uploadStart",function () {
+                uploader6.options.formData.aid = $("#eid").val();
+                uploader6.options.formData.remark = $("#remark6").val();
+                uploader6.options.formData.number = $("#number6").val();
+            });
+            uploader6.on('beforeFileQueued', function (file) {
+                if($("#file_list6").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
+            // 文件上传过程中创建进度条实时显示
+            uploader6.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            uploader6.on( 'uploadSuccess', function( file,data, response ) {
+                // console.log(file)
+                // console.log(data)
+                if(data.code === 1){
+                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    $("#file_upload6").empty();
+                    $("#file_per6").empty();
+                    $("#file_list6").empty();
+                    $("#fname6").modal('hide');
+                    table6.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
+                }else {
+                    layer.msg("抱歉，您没有此权限");
+                }
+            });
+
+            // 文件上传失败，显示上传出错。
+            uploader6.on( 'uploadError', function( file ) {
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                $("#file_per6").empty();
+            });
+        }
+    }
+
+    //事故管理-预览
+    function showpdf6(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        showPdf(id,"./accidentPreview");
+    }
+
+    //事故管理-删除
+    function del6(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        del(id,"./cultureDel");
+    }
+
+    //事故管理-编辑-删除文件
+    function fdelatt6(that) {
+        var id = $(that).parent("div").attr("id");
+        $("#"+id).remove();
+    }
+
+    //事故管理-编辑
+    function edit6(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $.ajax({
+            url: "./index",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                // console.log(res);
+                if(res.code === 1){
+                    $("#eid").val(res.data.id);
+                    $("#remark6").val(res.data.remark);
+                    $("#number6").val(res.data.number);
+                    cname1 = res.data.remark;
+                    cname2 = res.data.name;
+                    cname3 = res.data.number;
+                    uploader6 = null;
+                    upload6();
+                    if(res.data.path){
+                        $("#file_list6").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                            '<span class="info">' + res.data.name + '</span>&nbsp' +
+                            '<span onclick="fdelatt6(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '</div>' );
+                    }
+                    $("#fname6").modal('show');
+                }
+            }
+        })
+    }
+
+    //事故管理-下载
+    function download6(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        download(id,"./accidentDownload");
+    }
+
+    //提交
+    $("#fname6 .btn-primary").click(function () {
+        if($("#file_list6").html()){
+            if(!$("#eid").val()){
+                uploader6.upload();
+            }else {
+                if(cname2 !== $(".info").html()){
+                    uploader4.upload();
+                }else if(cname1 !== $("#remark6").val()||cname3 !== $("#number6").val()){
+                    $.ajax({
+                        url: "./accidentEdit",
+                        type: "post",
+                        data: {id:$("#eid").val(),remark:$("#remark6").val(),number:$("#number6").val()},
+                        datatype: "json",
+                        success: function (res) {
+                            if(res.code === 1){
+                                layer.msg(res.msg);
+                                table6.ajax.url("__SCRIPT__/safety_accidentreport.php").load();
+                                $("#fname6").modal('hide');
+                            }else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    });
+                }else {
+                    layer.msg("未发生更改");
+                    $("#fname6").modal('hide');
+                }
+            }
+        }else {
+            alert("请选择上传文件");
+        }
+    });
+
+
+    //表格
+   var table6 = $("#table6").DataTable({
+        "processing": true,//是否显示处理状态
+        "serverSide":true,//是否开启服务器模式
+        "ajax":{
+            "url": "__SCRIPT__/safety_accidentreport.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear selectyear6">frtip',
+        "columnDefs":[ //设置列定义初始化属性
+            {
+                "searchable":false,  //禁止搜索
+                "orderable":false,   //禁止排序
+                "targets":[6],         //指定第六列
+                "render": function (data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download6(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit6(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf6(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del6(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
         ],
         "language": {
             "lengthMenu": "每页_MENU_ 条记录",
@@ -860,8 +1837,30 @@
             }
         }
     })
-</script>
-<!--应急物资结束-->
 
+    var selectyear6 ='<input id="year6" />';
+    $("div.selectyear6").html("年度："+selectyear6);
+    //选择年度
+    $("#year6").jeDate({
+        isinitVal:true,
+        format:"YYYY年",
+        okfun:function (obj) {
+            table6.ajax.url("__SCRIPT__/safety_accidentreport.php?year="+obj.date.YYYY).load();
+            console.log(obj.date.YYYY);
+        }
+    });
+    $(".selectyear input").val("");
+    //新增
+    $("#table6_wrapper .mybtn").html("新增")
+    $("#table6_wrapper .mybtn").click(function () {
+        alert(6)
+        uploader6 = null;
+        $("#fname6 input").val("");
+        $("#file_list6").empty();
+        $("#fname6").modal('show');
+        upload6();
+    });
+</script>
+<!--应急演练结束-->
 </body>
 </html>

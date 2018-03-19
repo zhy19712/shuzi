@@ -2,35 +2,44 @@
 /**
  * Created by PhpStorm.
  * User: admin
- * Date: 2018/3/7
- * Time: 10:56
+ * Date: 2018/3/18
+ * Time: 16:30
  */
-
+//应急评估
 namespace app\safety\controller;
 
 use app\admin\controller\Base;
-use app\safety\model\RevisionrecordModel;
+use app\safety\model\EmergencyreviseModel;
 use think\Db;
 use think\Loader;
-//修编记录
-class Revisionrecord extends Base
-{
-    public  function  index()
-    {
-        return $this ->fetch();
-    }
 
-    /**
-     * 删除
-     * @return \think\response\Json
-     * @author hutao
-     */
-    public function recordDel()
+class Emergencyrevise extends Base
+{
+    /*
+    * 获取一条应用设备信息
+    * @return mixed|\think\response\Json
+    */
+    public function index()
     {
         if(request()->isAjax()){
-            $record = new RevisionrecordModel();
+            $emergencyrevise = new EmergencyreviseModel();
             $param = input('post.');
-            $flag = $record->delRecord($param['id']);
+            $data = $emergencyrevise->getOne($param['id']);
+            return json(['code'=> 1, 'data' => $data]);
+        }
+        return $this->fetch();
+    }
+
+    /*
+     * 删除一条应急评估信息
+     * @return mixed|\think\response\Json
+     */
+    public function equipmentDel()
+    {
+        $emergencyrevise = new EmergencyreviseModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $flag = $emergencyrevise->delEmergencyrevise($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -41,17 +50,16 @@ class Revisionrecord extends Base
      * @throws \PHPExcel_Exception
      * @throws \PHPExcel_Reader_Exception
      * @throws \PHPExcel_Writer_Exception
-     * @author hutao
      */
-    public function recordDownload()
+    public function exportExcel()
     {
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('id/a');
-        $name = '修编记录 - '.date('Y-m-d H:i:s'); // 导出的文件名
-        $record = new RevisionrecordModel();
-        $list = $record->getList($idArr);
+        $idArr = input('param.idarr');
+        $name = '应急评估'.date('Y-m-d H:i:s'); // 导出的文件名
+        $emergencyrevise = new EmergencyreviseModel();
+        $list = $emergencyrevise->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -73,8 +81,7 @@ class Revisionrecord extends Base
             ->setCellValue('C1', '原有版本号')
             ->setCellValue('D1', '替换版本号')
             ->setCellValue('E1', '替换时间')
-            ->setCellValue('F1', '上传人')
-            ->setCellValue('G1', '类别');
+            ->setCellValue('F1', '上传人');
         $key = 1;
         /*以下就是对处理Excel里的数据，横着取数据*/
         foreach($list as $v){
@@ -83,12 +90,11 @@ class Revisionrecord extends Base
             $objPHPExcel->getActiveSheet()
                 //Excel的第A列，name是你查出数组的键值字段，下面以此类推
                 ->setCellValue('A'.$key, $v['id'])
-                ->setCellValue('B'.$key, $v['record_name'])
-                ->setCellValue('C'.$key, $v['original_number'])
-                ->setCellValue('D'.$key, $v['replace_number'])
-                ->setCellValue('E'.$key, $v['replace_time'])
-                ->setCellValue('F'.$key, $v['owner'])
-                ->setCellValue('G'.$key, $v['record_type']);
+                ->setCellValue('B'.$key, $v['preplan_file_name'])
+                ->setCellValue('C'.$key, $v['version_number'])
+                ->setCellValue('D'.$key, $v['alternative_version'])
+                ->setCellValue('E'.$key, $v['date'])
+                ->setCellValue('F'.$key, $v['owner']);
         }
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
@@ -101,5 +107,6 @@ class Revisionrecord extends Base
         $objWriter->save('php://output');
         exit;
     }
+
 
 }

@@ -86,7 +86,9 @@ class ContractModel extends Model
     public function getBiaoduanName($num)
     {
         $data = $this->field('id,biaoduan_name')->where('biaoduan_name','neq','监理部')->group('biaoduan_name')->select();
-        if($num == 2){
+        if($num == 1){
+            $arr = [1=>['id'=>'1','biaoduan_name'=>'重大危险源识别']];
+        }else if($num == 2){
             $arr = [1=>['id'=>'1','biaoduan_name'=>'监理单位'],2=>['id'=>'2','biaoduan_name'=>'施工单位']];
         }else{
             $arr = [1=>['id'=>'1','biaoduan_name'=>'主要负责人和安全管理人员'],2=>['id'=>'2','biaoduan_name'=>'从业人员'],3=>['id'=>'3','biaoduan_name'=>'外来人员']];

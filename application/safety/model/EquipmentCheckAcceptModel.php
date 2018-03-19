@@ -63,7 +63,7 @@ class EquipmentCheckAcceptModel extends Model
     }
 
     /*
-     * 获取一条安全文化建设文件
+     * 获取一条设备设施文件
     */
     public function getOne($id)
     {
