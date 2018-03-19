@@ -2,22 +2,22 @@
 /**
  * Created by PhpStorm.
  * User: admin
- * Date: 2018/3/9
- * Time: 14:26
+ * Date: 2018/3/18
+ * Time: 17:44
  */
-//设备设施验收
+//交通车辆
 namespace app\safety\model;
 use think\exception\PDOException;
 use think\Model;
 
-class EquipmentCheckAcceptModel extends Model
+class TrafficvehicleModel extends Model
 {
-    protected $name = 'safety_accept_equipment';
+    protected $name = 'safety_vehicle';
 
     /*
-     * 添加新的设备设施验收文件
-    */
-    public function insertEquipmentCheckAccept($param)
+      * 添加新的交通车辆文件
+     */
+    public function insertTrafficvehicle($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -32,9 +32,9 @@ class EquipmentCheckAcceptModel extends Model
     }
 
     /*
-     * 编辑设备设施验收文件
+     * 编辑交通车辆文件
     */
-    public function editEquipmentCheckAccept($param)
+    public function editTrafficvehicle($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -49,9 +49,9 @@ class EquipmentCheckAcceptModel extends Model
     }
 
     /*
-     * 删除设备设施验收文件
+     * 删除交通车辆文件
     */
-    public function delEquipmentCheckAccept($id)
+    public function delTrafficvehicle($id)
     {
         try{
             $this->where('id', $id)->delete();
@@ -63,7 +63,7 @@ class EquipmentCheckAcceptModel extends Model
     }
 
     /*
-     * 获取一条设备设施文件
+     * 获取一条交通车辆文件
     */
     public function getOne($id)
     {
@@ -71,5 +71,4 @@ class EquipmentCheckAcceptModel extends Model
         return $this->where('id', $id)->find();
 
     }
-
 }
