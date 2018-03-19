@@ -48,10 +48,12 @@ class RiskDoubleDutyModel extends Model
 
             $item['score']+=$item['score'];
             $item->save();
+            return true;
         }
         catch (Exception $e)
         {
             Db::rollback();
+            return false;
         }
     }
 }
