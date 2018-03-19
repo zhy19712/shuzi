@@ -201,6 +201,8 @@
     </div>
     <!--下载的文件-->
     <div id="formDown" style="display: none"></div>
+    <!--导出的文件-->
+    <div id="form_container" style="display: none;"></div>
     <!--右边表格的新增与编辑-->
     <div id="addRules_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
         <div class="row">
@@ -391,83 +393,9 @@
     //树结构添加节点
     $("#options>i:first-child").click(function () {
         $("#level2 input").val("");
-//        $("#treePid").val(mytree_node.id);
         $("#level2 h5").text('添加');
         $("#level2").modal('show');
         console.log(mytree_node)
-//        if(mytree_node){
-//            if(mytree_node.level == 0){
-//                $("#level2 input").val("");
-//                $("#treePid").val(mytree_node.id);
-//                $("#level2 h5").text('添加');
-//                $("#level2").modal('show');
-//                console.log($("#treePid").val())
-////                var id = mytree_node.id;
-////                $.ajax({
-////                    url: "nodeAdd",
-////                    type: "post",
-////                    data: {id:id},
-////                    dataType: "json",
-////                    success: function (res) {
-////                        console.log(res);
-////                        if(res.msg == "success"){
-////                            if(res.data.post_sn){
-////                                $("#companyName").val(res.data.sn + "-" + res.data.post_sn + "-");
-////                            }else {
-////                                $("#companyName").val(res.data.sn + "-");
-////                            }
-////                        }
-////                    }
-////                });
-//            }
-////            else if(mytree_node.level == 1){
-////                $("#level3 input").val("");
-////                $("#pid3").val(mytree_node.id);
-////                var id = mytree_node.id;
-////                $.ajax({
-////                    url: "nodeEdit",
-////                    type: "post",
-////                    data: {id:id},
-////                    dataType: "json",
-////                    success: function (res) {
-////                        console.log(res);
-////                        if(res.msg == "success"){
-////                            if(res.data.post_sn){
-////                                $("#new3").val(res.data.sn + "-" + res.data.post_sn + "-");
-////                            }else {
-////                                $("#new3").val(res.data.sn + "-");
-////                            }
-////                        }
-////                    }
-////                });
-////                $("#level3 h5").text('添加');
-////                $("#level3").modal('show');
-////            }else if(mytree_node.level == 2){
-////                $("#level4 input").val("");
-////                $("#pid4").val(mytree_node.id);
-////                var id = mytree_node.id;
-////                $.ajax({
-////                    url: "nodeEdit",
-////                    type: "post",
-////                    data: {id:id},
-////                    dataType: "json",
-////                    success: function (res) {
-////                        console.log(res);
-////                        if(res.msg == "success"){
-////                            if(res.data.post_sn){
-////                                $("#new5").val(res.data.sn + "-" + res.data.post_sn + "-");
-////                            }else {
-////                                $("#new5").val(res.data.sn + "-");
-////                            }
-////                        }
-////                    }
-////                });
-////                $("#level4 h5").text('添加');
-////                $("#level4").modal('show');
-////            }
-//        }else {
-//            layer.msg("请选择节点",{time:1500,shade: 0.1});
-//        }
     })
     //树结构编辑节点
     $("#options>i:nth-child(2)").click(function () {
@@ -741,7 +669,7 @@
                 $("#file_per1").append('<div id="' + file.id + '" class="item">' +
                     '</div>');
                 $("#file_list1").append('<div style="display: inline-block;vertical-align: middle;width: 100%;height: 100%;" class="' + file.id + '" class="item">' +
-                    '<span class="info" style="padding-left: 10px;"><input class="infoText" style="height: 38px;" type="text" value="' + file.name + '"/></span>&nbsp' +
+                    '<span class="info" style="padding-left: 10px;"><input id="inputText" class="infoText" style="height: 38px;" type="text" value="' + file.name + '"/></span>&nbsp' +
                     '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;padding-left: 5px;">删除</span>' +
                     '</div>' );
             });
@@ -845,9 +773,11 @@
                         uploader1.upload();
                     }
                 }else if($("#rulesid").val() != ''){
+                        console.log($("#file_list1 .info").text())
                     console.log("编辑BAO")
-                    console.log($("#file_list1 .info .infoText").text())
                     if(aname1 === aname2){
+                        console.log(333333333333333)
+                        console.log($("#rulesid").val())
                         $.ajax({
                             url: "./rulesEdit",
                             type: "post",
@@ -855,7 +785,7 @@
                                 id : $("#rulesid").val(),//id
                                 group_id : groupid,//group_id
                                 number : $("#standardNumr").val(),//标准号
-                                rul_name : $("#file_list1 .info .infoText").val(),//名称
+                                rul_name : $("#file_list1 .info").text(),//名称
                                 go_date : $("#dataImple").val(),//施行日期
                                 standard : $("#alternativeStandard").val(),//替代标准
                                 evaluation : $("#appEvaluation").val(),//适用性评价
@@ -874,6 +804,7 @@
                             }
                         })
                     }else {
+                        console.log(44443434343443443)
                         uploader1.upload();
                     }
                 }
@@ -1184,8 +1115,8 @@
     }
     //单选
     function getRadioId(that) {
-        console.log(dataArr);
         getDataId(that);
+        console.log(dataArr);
     }
 
     //checkbox全选
@@ -1272,8 +1203,16 @@
             },
             dataType: "json",
             success: function (res) {
-                console.log(res);
                 if(res.code ==1){
+                    $("#form_container").empty();
+                    var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
+                        +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
+                    for (var i = 0; i < dataArr.length; i++) {
+                        str += '<input style="display: none;" name="id[]" value="'+ dataArr[i] +'">';
+                    }
+                    str += '<button type="submit" id="exportExcelBtn"></button></form>';
+                    $("#form_container").append(str);
+                    $("#form_container").find("#exportExcelBtn").click();
                     layer.msg('导出成功！', {icon: 1});
                 }else{
                     alert("获取数据失败！")

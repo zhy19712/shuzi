@@ -35,7 +35,7 @@ class Emergencysupplies extends Base
         $emergencysupplies = new EmergencysuppliesModel();
         $param = input('post.');
         if(request()->isAjax()){
-            if(empty($param['id']))
+            if(empty($param['bid']))
             {
                 $data = [
                     'material_name' => $param['material_name'],//设备物资名称
@@ -51,7 +51,7 @@ class Emergencysupplies extends Base
             }else
             {
                 $data = [
-                    'id' => $param['aid'],//应急物资自增id
+                    'id' => $param['bid'],//应急物资自增id
                     'material_name' => $param['material_name'],//设备物资名称
                     'material_model' => $param['material_model'],//规格型号
                     'material_company' => $param['material_company'],//单位
