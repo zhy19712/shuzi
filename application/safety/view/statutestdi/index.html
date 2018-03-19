@@ -132,13 +132,16 @@
         border: 1px solid #e5e6e7;
     }
     .webuploader-pick{
-        padding: 0;
+        padding: 6px 12px;
         background: none;
         color: #1ab394;
     }
     .webuploader-pick-hover{
         background: none;
         color: #FFF;
+    }
+    #import{
+        padding: 0;
     }
     .form-horizontal .pdivision{
         float: left;
@@ -187,6 +190,7 @@
     <input type="hidden" name="currentNodeName">
     <input type="hidden" name="dataCount">
 </div>
+
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox float-e-margins">
         <div class="ibox-content">
@@ -967,12 +971,12 @@
     var $list = $('#addName');
 
     importExcel.on( 'uploadSuccess', function( file ,res) {
-        $list.val(file.name+'已上传成功');
+        $list.val(file.name+'导入成功');
         complete(res);
     });
 
     importExcel.on( 'uploadError', function( file ) {
-        $list.val('上传出错');
+        $list.val('导入出错');
     });
 
     importExcel.on("uploadStart",function () {

@@ -448,7 +448,6 @@ class Rulesregulations extends Base
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
         ob_end_clean();  //清除缓冲区,避免乱码
-        ob_end_clean();  //清除缓冲区,避免乱码
         header('Content-Type: application/vnd.ms-excel'); //文件类型
         header('Content-Disposition: attachment;filename="'.$name.'.xls"'); //文件名
         header('Cache-Control: max-age=0');
