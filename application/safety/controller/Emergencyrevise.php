@@ -126,10 +126,11 @@ class Emergencyrevise extends Base
      */
     public function exportExcel()
     {
-        if(request()->isAjax()){
-            return json(['code'=>1]);
-        }
+//        if(request()->isAjax()){
+//            return json(['code'=>1]);
+//        }
         $idArr = input('param.idarr/a');
+        halt($idArr);
         $name = '应急评估'.date('Y-m-d H:i:s'); // 导出的文件名
         $emergencyrevise = new EmergencyreviseModel();
         $list = $emergencyrevise->getList($idArr);
