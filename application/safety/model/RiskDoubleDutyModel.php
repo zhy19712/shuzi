@@ -16,6 +16,10 @@ class RiskDoubleDutyModel extends Model
 {
     protected $name = 'safety_riskdoubleduty';
 
+    public function infos()
+    {
+        return $this->hasMany('RiskDoubleDutyInfo','duty_id','id');
+    }
     /**
      * @param $user
      * @return int|string
@@ -38,13 +42,12 @@ class RiskDoubleDutyModel extends Model
     public function prossScore($userId,$score,$cat,$context,$time)
     {
         $item = $this->getbyid($userId);
-
         Db::transaction();
         try
         {
             //插入增减分记录
             $info=new RiskDoubleDutyInfoModel();
-            $info->insert(['score'=>$score,'context'=>$context,'cat'=>$cat,'date'=>$time]);
+            $info->insert(['score'=>$score,'context'=>$context,'cat'=>$cat,'date'=>$time,'duty_id'=>$item['id']]);
 
             $item['score']+=$item['score'];
             $item->save();

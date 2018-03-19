@@ -64,13 +64,37 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
 
 require( '../ssp.class.php' );
 
-if(!empty($_GET["year"]))
+if(!empty($_GET["year"]) && !empty($_GET["selfid"]) && !empty($_GET["history_version"]))
 {
+    $selfid = $_GET["selfid"];
+    $year = $_GET["year"];
+    $history_version = $_GET["history_version"];
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and date like '%" .$year. "%' and input_time like '%" .$history_version. "%'" )
+    );
+}
+else if(empty($_GET["year"]) && !empty($_GET["selfid"]) && empty($_GET["history_version"]))
+{
+    $selfid = $_GET["selfid"];
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid'" )
+    );
+}else if(!empty($_GET["year"]) && !empty($_GET["selfid"]) && empty($_GET["history_version"]))
+{
+    $selfid = $_GET["selfid"];
     $year = $_GET["year"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null, "year_limit like '%" .$year. "%'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and date like '%" .$year. "%'" )
     );
-}else{
+}else if(empty($_GET["year"]) && !empty($_GET["selfid"]) && !empty($_GET["history_version"]))
+{
+    $selfid = $_GET["selfid"];
+    $history_version = $_GET["history_version"];
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and input_time like '%" .$history_version. "%'" )
+    );
+}
+else{
     echo json_encode(
         SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
     );

@@ -5,19 +5,19 @@
  * Date: 2018/3/18
  * Time: 17:44
  */
-//交通车辆
+//个人防护装备
 namespace app\safety\model;
 use think\exception\PDOException;
 use think\Model;
 
-class TrafficvehicleModel extends Model
+class PersonalequipmentModel extends Model
 {
-    protected $name = 'safety_vehicle';
+    protected $name = 'safety_personal_equipment';
 
     /*
-      * 添加新的交通车辆文件
+      * 添加新的个人防护装备文件
      */
-    public function insertTrafficvehicle($param)
+    public function insertPersonalequipment($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -32,9 +32,9 @@ class TrafficvehicleModel extends Model
     }
 
     /*
-     * 编辑交通车辆文件
+     * 编辑个人防护装备文件
     */
-    public function editTrafficvehicle($param)
+    public function editPersonalequipment($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -49,9 +49,9 @@ class TrafficvehicleModel extends Model
     }
 
     /*
-     * 删除交通车辆文件
+     * 删除个人防护装备文件
     */
-    public function delTrafficvehicle($id)
+    public function delPersonalequipment($id)
     {
         try{
             $this->where('id', $id)->delete();
@@ -63,7 +63,7 @@ class TrafficvehicleModel extends Model
     }
 
     /*
-     * 获取一条交通车辆文件
+     * 获取一条个人防护装备文件
     */
     public function getOne($id)
     {
@@ -71,7 +71,6 @@ class TrafficvehicleModel extends Model
         return $this->where('id', $id)->find();
 
     }
-
 
     /*
      * 批量导出时候的数组处理
