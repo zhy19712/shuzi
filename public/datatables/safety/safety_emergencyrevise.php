@@ -61,7 +61,7 @@ if(!empty($_GET["year"]))
     );
 }else{
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns,null,"order by id desc")
     );
 }
 
