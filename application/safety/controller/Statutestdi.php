@@ -372,13 +372,13 @@ class Statutestdi extends Base
         }
         $idArr = input('id/a');
         if(count($idArr) == 0){
-            return json(['code' => 1 ,'msg' => '请选择需要下载的编号']);
+            return json(['code' => -1 ,'msg' => '请选择需要下载的编号']);
         }
         $name = '法规标准识别 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $sdi = new StatutestdiModel();
         $list = $sdi->getList($idArr);
         if(count($list) == 0){
-            return json(['code' => 1 ,'msg' => '数据为空']);
+            return json(['code' => -1 ,'msg' => '数据为空']);
         }
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
