@@ -1153,7 +1153,12 @@
             multiple: false,
             id: "#excelImport",
             innerHTML: "导入"
-        }
+        },
+        accept: {
+            title: 'excel',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx'
+        },
     });
     uploaderExcel.on( 'uploadSuccess', function( file ,res) {
         complete(res);
