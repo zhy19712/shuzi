@@ -853,7 +853,7 @@
         pick: {
             multiple: false,
             id: "#yearUpload",
-            innerHTML: "导入"
+            innerHTML: "上传"
         },
         formData:{
             pid:'',
@@ -876,5 +876,157 @@
     yearUpload.on("uploadStart",function () {
         yearUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
         yearUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
+    });
+
+    var quarterUpload = WebUploader.create({
+        auto: true,
+        // swf文件路径
+        swf:  '/static/admin/js/webupload/Uploader.swf',
+
+        // 文件接收服务端。
+        server: "{:url('Eduemployee/importExcel')}",
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: {
+            multiple: false,
+            id: "#quarterUpload",
+            innerHTML: "上传"
+        },
+        formData:{
+            pid:'',
+            zid:''
+        },
+        accept: {
+            title: 'excel',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx'
+        },
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false
+    });
+
+    quarterUpload.on( 'uploadSuccess', function( file ,res) {
+        complete(res);
+    });
+
+    quarterUpload.on("uploadStart",function () {
+        quarterUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+        quarterUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
+    });
+
+    var listUpload = WebUploader.create({
+        auto: true,
+        // swf文件路径
+        swf:  '/static/admin/js/webupload/Uploader.swf',
+
+        // 文件接收服务端。
+        server: "{:url('Eduemployee/importExcel')}",
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: {
+            multiple: false,
+            id: "#listUpload",
+            innerHTML: "上传"
+        },
+        formData:{
+            pid:'',
+            zid:''
+        },
+        accept: {
+            title: 'excel',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx'
+        },
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false
+    });
+
+    listUpload.on( 'uploadSuccess', function( file ,res) {
+        complete(res);
+    });
+
+    listUpload.on("uploadStart",function () {
+        listUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+        listUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
+    });
+
+    var cardUpload = WebUploader.create({
+        auto: true,
+        // swf文件路径
+        swf:  '/static/admin/js/webupload/Uploader.swf',
+
+        // 文件接收服务端。
+        server: "{:url('Eduemployee/importExcel')}",
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: {
+            multiple: false,
+            id: "#cardUpload",
+            innerHTML: "上传"
+        },
+        formData:{
+            pid:'',
+            zid:''
+        },
+        accept: {
+            title: 'excel',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx'
+        },
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false
+    });
+
+    cardUpload.on( 'uploadSuccess', function( file ,res) {
+        complete(res);
+    });
+
+    cardUpload.on("uploadStart",function () {
+        cardUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+        cardUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
+    });
+
+    var ticketUpload = WebUploader.create({
+        auto: true,
+        // swf文件路径
+        swf:  '/static/admin/js/webupload/Uploader.swf',
+
+        // 文件接收服务端。
+        server: "{:url('Eduemployee/importExcel')}",
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: {
+            multiple: false,
+            id: "#ticketUpload",
+            innerHTML: "上传"
+        },
+        formData:{
+            pid:'',
+            zid:''
+        },
+        accept: {
+            title: 'excel',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx'
+        },
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false
+    });
+
+    ticketUpload.on( 'uploadSuccess', function( file ,res) {
+        complete(res);
+    });
+
+    ticketUpload.on("uploadStart",function () {
+        ticketUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+        ticketUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
     });
 </script>
