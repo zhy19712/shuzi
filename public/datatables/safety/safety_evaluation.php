@@ -23,7 +23,7 @@ include('../conn.php');
 $table = 'think_safety_evaluation';
 
 // Table's primary key
-$primaryKey = 'id';
+$primaryKey = 'major_key';
 
 // Array of database columns which should be read and sent back to DataTables.
 // The `db` parameter represents the column name in the database, while the `dt`
@@ -35,7 +35,7 @@ $type = isset($_GET["type"]) ? $_GET["type"] : ''; // type 是1 绩效评定  2�
 //定义数据库中查看的字段与表格中的哪一列相对应
 if($type == '1'){
     $columns = array(  // 一岗双责绩效评定
-        array( 'db' => 'id',  'dt' => 0 ),
+        array( 'db' => 'major_key',  'dt' => 0 ),
         array( 'db' => 'eval_name',  'dt' => 1 ),
         array( 'db' => 'years',  'dt' => 2 ),
         array( 'db' => 'quarter',  'dt' => 3 ),
@@ -45,7 +45,7 @@ if($type == '1'){
     );
 }else if($type == '2'){ // 安全标准化评估报告
     $columns = array(
-        array( 'db' => 'id',  'dt' => 0 ),
+        array( 'db' => 'major_key',  'dt' => 0 ),
         array( 'db' => 'eval_name',  'dt' => 1 ),
         array( 'db' => 'eval_date',  'dt' => 2 ),
         array( 'db' => 'owner',  'dt' => 3 ),
@@ -53,7 +53,7 @@ if($type == '1'){
     );
 }else{
     $columns = array( // 安全文明施工年度工作总结
-        array( 'db' => 'id',  'dt' => 0 ),
+        array( 'db' => 'major_key',  'dt' => 0 ),
         array( 'db' => 'eval_name',  'dt' => 1 ),
         array( 'db' => 'years',  'dt' => 2 ),
         array( 'db' => 'eval_date',  'dt' => 3 ),
