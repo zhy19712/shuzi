@@ -76,10 +76,11 @@ class EducationModel extends Model
         }
     }
 
-    public function delEduFile($major_key,$types)
+    public function removeEditFile($major_key,$types)
     {
         try{
             $data = $this->getOne($major_key);
+            $edit_data['major_key'] = $major_key;
             if($types == '1'){
                 $path = $data['ma_path'];
                 $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
@@ -89,6 +90,9 @@ class EducationModel extends Model
                 if(file_exists($pdf_path)){
                     unlink($pdf_path); //删除生成的预览pdf
                 }
+                $edit_data['material_name'] = '';
+                $edit_data['ma_filename'] = '';
+                $edit_data['ma_path'] = '';
             }else{
                 $path2 = $data['re_path'];
                 $pdf_path2 = './uploads/temp/' . basename($path2) . '.pdf';
@@ -98,7 +102,14 @@ class EducationModel extends Model
                 if(file_exists($pdf_path2)){
                     unlink($pdf_path2); //删除生成的预览pdf
                 }
+                $edit_data['record_name'] = '';
+                $edit_data['re_filename'] = '';
+                $edit_data['re_path'] = '';
             }
+
+            // 文件删除后，修改数据库字段值
+            $this->editEdu($edit_data);
+
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
         }catch(PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
