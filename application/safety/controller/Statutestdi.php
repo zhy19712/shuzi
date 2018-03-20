@@ -92,7 +92,7 @@ class Statutestdi extends Base
                 'remark' => $param['remark']
             ];
 
-            // 当 存在替代标准 适用性评价 状态为 : 过期  时 新增一条 修编记录
+            // 替代标准不为空并且适用性评价 状态为 : 过期  时 新增或修改 修编记录表
             if(!empty($data['standard']) && $data['evaluation'] == '过期'){
                 $pname = Db::name('safety_sdi_node')->where('id',$data['group_id'])->value('pname');
                 $record = new RevisionrecordModel();
@@ -104,7 +104,16 @@ class Statutestdi extends Base
                     'owner' => session('username'),
                     'record_type' => '法规标准识别'.$pname
                 ];
-                $re_flag = $record->insertRecord($re_data);
+                // 根据 原来的版本号 和 替换版本号 查询是否 存在记录
+                // 不存在就新增,存在就修改
+                $is_exist_record = $record->getOneByNumber($is_exist['number'],$is_exist['standard']);
+                if(empty($is_exist_record)){
+                    $re_flag = $record->insertRecord($re_data);
+                }else{
+                    $re_data['major_key'] = $is_exist_record;
+                    $re_flag = $record->editRecord($re_data);
+                }
+
                 if($re_flag['code'] == '-1'){
                     return json($re_flag);
                 }

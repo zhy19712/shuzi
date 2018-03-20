@@ -59,6 +59,12 @@ class RevisionrecordModel extends Model
         return $this->where('major_key', $major_key)->find();
     }
 
+    public function getOneByNumber($original_number,$standard)
+    {
+        $data = $this->where(['original_number' => $original_number,'replace_number' => $standard])->value('major_key');
+        return $data;
+    }
+
     public function getList($majorKeyArr)
     {
         $list = [];
