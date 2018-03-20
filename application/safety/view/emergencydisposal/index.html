@@ -516,9 +516,9 @@
     });
 
     //选择年度
-    var selectyear2 ='<input id="year2" />';
-    $("div.selectyear2").html("年度："+selectyear2)
-    //
+    var selectyear2 ='<input id="year2"/>';
+    $("div.selectyear2").html("年度："+selectyear2);
+
     $("#year2").jeDate({
         isinitVal:true,
         format:"YYYY年",
@@ -527,6 +527,7 @@
             console.log(obj.date.YYYY);
         }
     });
+
     $(".selectyear input").val("");
     //选择文件名
     $("#table2_filter").hide();
