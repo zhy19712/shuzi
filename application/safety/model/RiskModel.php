@@ -16,31 +16,6 @@ use think\Model;
 class RiskModel extends Model
 {
     protected $name = 'safety_risk';
-
-    /**
-     * 发现人
-     */
-    public function fouder()
-    {
-        return $this->hasOne('User', 'id', 'founder_id')->field('nickname');
-    }
-
-    /**
-     * 责任人
-     */
-    public function workduty()
-    {
-        return $this->hasOne('User', 'id', 'workduty_id')->field('nickname');
-    }
-
-    /**
-     * 验收人
-     */
-    public function acceptor()
-    {
-        return $this->hasOne('User', 'id', 'acceptor_id')->field('nickname');
-    }
-
     /**
      * 未治理图片
      */
