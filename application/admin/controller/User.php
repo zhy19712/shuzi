@@ -29,17 +29,14 @@ class User extends Base
      */
     public function getUserDep()
     {
-        $roles=UserType::where('status',1)->where('id','<>',1)->column('id,title,pid');
-//        $roles=UserType::where('status',1)->column('id,title,pid');
-//        $users=UserModel::where('status',1)->column('id,username,groupid');
-        $users=UserModel::where('status',1)->where('id','<>',1) ->column('id,username,groupid');
+        $roles = UserType::where('status', 1)->where('id', '<>', 1)->column('id,title,pid');
+        $users = UserModel::where('status', 1)->where('id', '<>', 1)->column('id,username,groupid');
 
-        foreach ($roles as $item)
-        {
-            $items[]=array('id'=>$item['id'],'name'=>$item['title'],'pid'=>$item['pid'],'type'=>'dep');
+        foreach ($roles as $item) {
+            $items[] = array('id' => $item['id'], 'name' => $item['title'], 'pid' => $item['pid'], 'type' => 'dep');
         }
         foreach ($users as $item) {
-            $items[]=array('id'=>$item['id'],'name'=>$item['username'],'pid'=>$item['groupid'],'type'=>'user');
+            $items[] = array('id' => $item['id'], 'name' => $item['username'], 'pid' => $item['groupid'], 'type' => 'user');
         }
         return json($items);
     }
