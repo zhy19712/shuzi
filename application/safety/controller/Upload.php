@@ -1142,7 +1142,7 @@ class Upload extends Base
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $eval->getOne($id);
-                if(isNull($data_older)){
+                if(empty($data_older)){
                     return json(['code' => '0', 'msg' => '无效的编号']);
                 }
                 if(file_exists($data_older['path'])){
@@ -1200,7 +1200,7 @@ class Upload extends Base
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $improve->getOne($id);
-                if(isNull($data_older)){
+                if(empty($data_older)){
                     return json(['code' => '0', 'msg' => '无效的编号']);
                 }
                 if(file_exists($data_older['path'])){
@@ -1263,7 +1263,7 @@ class Upload extends Base
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $sources->getOne($id);
-                if(isNull($data_older)){
+                if(empty($data_older)){
                     return json(['code' => '0', 'msg' => '无效的编号']);
                 }
                 if(file_exists($data_older['path'])){

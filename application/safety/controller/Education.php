@@ -187,7 +187,7 @@ class Education extends Base
                 $obj_PHPExcel = $objReader->load($file_name);
             } else if ($extension =='xls') {
                 $objReader = new \PHPExcel_Reader_Excel5();
-                $obj_PHPExcel = $objReader->load($file_name);
+                $obj_PHPExcel = $objReader->load($file_name,'GBK');
             } else if ($extension=='csv') {
                 $PHPReader = new \PHPExcel_Reader_CSV();
                 //默认输入字符集
