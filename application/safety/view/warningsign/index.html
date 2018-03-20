@@ -111,6 +111,13 @@
     #cp_img_jian{
         cursor: pointer;
     }
+    .cp_img{
+        float: left;
+        margin-right: 3px;
+    }
+    #file_upload1{
+        float: right;
+    }
 </style>
 <body>
 <div id="box" class="clearfix">
@@ -204,8 +211,8 @@
 
                     </div>
                     <div class="col-lg-12 col-xs-12">
-                        <label class="col-xs-3 control-label" id="file" style="margin: 0;padding: 0;text-align:  right;line-height: 44px;">文件名称：</label>
-                        <div class="myblock col-xs-8 input-group">
+                        <label class="col-xs-1 control-label" id="file" style="margin: 0;padding: 0;text-align:left;line-height: 44px;">文件名称：</label>
+                        <div class="myblock col-xs-11 input-group">
                             <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
                             <div id="file_upload1" style="display: inline-block;vertical-align: middle;"></div>
                             <div id="file_list1" style="display: inline-block;vertical-align: middle;"></div>
@@ -216,23 +223,23 @@
                             <!--<div id="fileList" class="uploader-list"></div>-->
                             <!--<div id="filePicker">选择图片</div>-->
                         <!--</div>-->
-                        <div class="container">
-                            <!--<div class="row">图片上传示例：</div>-->
-                            <div class="row">
-                                <div id="file">
-                                    <!--用来存放文件信息-->
-                                    <div id="fileList" class="col-lg-12 col-xs-12 form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="cp_img_jia" id="filePicker"></div>
-                            </div>
-                            <div class="row">  <button id="ctlBtn" class="btn btn-default">开始上传</button></div>
-                        </div>
-                        <div>
-                        </div>
-                    </div>
+                        <!--<div class="container">-->
+                            <!--&lt;!&ndash;<div class="row">图片上传示例：</div>&ndash;&gt;-->
+                            <!--<div class="row">-->
+                                <!--<div id="file">-->
+                                    <!--&lt;!&ndash;用来存放文件信息&ndash;&gt;-->
+                                    <!--<div id="fileList" class="col-lg-12 col-xs-12 form-control">-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="row">-->
+                                <!--<div class="cp_img_jia" id="filePicker"></div>-->
+                            <!--</div>-->
+                            <!--<div class="row">  <button id="ctlBtn" class="btn btn-default">开始上传</button></div>-->
+                        <!--</div>-->
+                        <!--<div>-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="col-xs-12" style="text-align: center;">
                         <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
                         <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
@@ -359,178 +366,177 @@
             layer.close(index);
         })
     };
-    var applicationPath = window.applicationPath === "" ? "" : window.applicationPath || "../../";
-var   uploader;
-    $(function () {
-
-        var $ = jQuery,
-            $list = $('#fileList'),
-            // 优化retina, 在retina下这个值是2
-            ratio = window.devicePixelRatio || 1,
-
-            // 缩略图大小
-
-            thumbnailWidth = 90 * ratio,
-            thumbnailHeight = 90 * ratio,
-
-            // Web Uploader实例
-
-
-        uploader = WebUploader.create({
-            // 选完文件后，是否自动上传。
-
-            auto: false,
-            disableGlobalDnd: true,
-            // // swf文件路径
-            // swf: applicationPath + 'Script/webuploader/Uploader.swf',
-            //
-            // // 文件接收服务端。
-            //
-            // server: 'UploaderFileByBaidu.ashx',
-            swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-            //             server: "{:url('Upload/uploadWarningsign')}",// 文件接收服务端。
-            // 选择文件的按钮。可选。
-            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-            // pick: '#filePicker',
-            pick:{
-                id:"#filePicker",
-                innerHTML:"选择图片"
-             },
-
-            //只允许选择图片
-            accept: {
-                title: 'Images',
-                extensions: 'gif,jpg,jpeg,bmp,png',
-                mimeTypes: 'image/*'
-
-            }
-
-        });
-
-        // 当有文件添加进来的时候
-
-        uploader.on('fileQueued', function (file,e) {
-            var $li = $('<div id="' + file.id + '" class="cp_img clearfix">' + '<img>' + '<div class="cp_img_jian">删除</div></div>'),
-                $img = $li.find('img');
-            // $list为容器jQuery实例
-            $list.append($li);
-            if(e && e.stopPropagation) { //非IE
-                e.stopPropagation();
-                return false
-            } else { //IE
-                window.event.cancelBubble = true;
-            }
-            // 创建缩略图
-            // 如果为非图片文件，可以不用调用此方法。
-            // var aa= $("fileList");
-            // for(var i=0;i<aa.length;i++){
-            //     // var i=$(this).index();
-            //     // alert($(this))
-            //     aa[i].append("<p>删除</p>")
-            // }
-
-                     // $(".cp_img_jian").append("<p>删除</p>")
-           // $(".cp_img_jian").each(function () {
-           //     $(this).append("<p>删除</p>")
-           // })
-            // thumbnailWidth x thumbnailHeight 为 90x 90
-            uploader.makeThumb(file, function (error, src) {
-                if (error) {
-                    $img.replaceWith('<span>不能预览</span>');
-                    return;
-                }
-
-                $img.attr('src', src);
-            }, thumbnailWidth, thumbnailHeight);
-
-        });
-
-        // 文件上传过程中创建进度条实时显示。
-        uploader.on('uploadProgress', function (file, percentage) {
-
-            var $li = $('#' + file.id),
-                $percent = $li.find('.progress span');
-            // 避免重复创建，如果不想显示图4那样的进度条，可以使用下面的代码，把现在使用的注释掉。
-            /*  if (!$percent.length) {
-                  $percent = $('<p class="progress"><span></span></p>')
-                          .appendTo($li)
-                          .find('span');
-
-              }*/
-
-            if (!$percent.length) {
-                $percent = $('<div class="progress progress-striped active">' +
-                    '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                    '</div>' +
-                    '</div>').appendTo($li).find('.progress-bar');
-
-            }
-            $percent.css('width', percentage * 100 + '%');
-
-        });
-
-        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-        uploader.on('uploadSuccess', function (file, response) {
-            $('#' + file.id).addClass('upload-state-done');
-
-        });
-
-        // 文件上传失败，显示上传出错。
-        uploader.on('uploadError', function (file) {
-            var $li = $('#' + file.id),
-                $error = $li.find('div.error');
-
-            // 避免重复创建
-            if (!$error.length) {
-                $error = $('<div class="error"></div>').appendTo($li);
-
-            }
-            $error.text('上传失败');
-
-        });
-
-        // 完成上传完了，成功或者失败，先删除进度条。
-        uploader.on('uploadComplete', function (file) {
-            $('#' + file.id).find('.progress').remove();
-
-        });
-
-        //所有文件上传完毕
-        uploader.on("uploadFinished", function () {
-            //提交表单
-
-        });
-
-        //开始上传
-
-        $("#ctlBtn").click(function () {
-            uploader.upload();
-
-        });
-
-        //显示删除按钮
-        $(".cp_img").on("mouseover", function () {
-            $(this).children(".cp_img_jian").css('display', 'block');
-
-        });
-
-        //隐藏删除按钮
-        $(".cp_img").on("mouseout", function () {
-            $(this).children(".cp_img_jian").css('display', 'none');
-
-        });
-
-        //执行删除方法，只是从客户端删除
-        $list.on("click", ".cp_img_jian", function () {
-            var Id = $(this).parent().attr("id");
-            uploader.removeFile(uploader.getFile(Id, true));
-            $(this).parent().remove();
-
-        });
-
-    });
-
-
+//     var applicationPath = window.applicationPath === "" ? "" : window.applicationPath || "../../";
+// var   uploader;
+//     $(function () {
+//
+//         var $ = jQuery,
+//             $list = $('#fileList'),
+//             // 优化retina, 在retina下这个值是2
+//             ratio = window.devicePixelRatio || 1,
+//
+//             // 缩略图大小
+//
+//             thumbnailWidth = 90 * ratio,
+//             thumbnailHeight = 90 * ratio,
+//
+//             // Web Uploader实例
+//
+//
+//         uploader = WebUploader.create({
+//             // 选完文件后，是否自动上传。
+//
+//             auto: false,
+//             disableGlobalDnd: true,
+//             // // swf文件路径
+//             // swf: applicationPath + 'Script/webuploader/Uploader.swf',
+//             //
+//             // // 文件接收服务端。
+//             //
+//             // server: 'UploaderFileByBaidu.ashx',
+//             swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+//             //             server: "{:url('Upload/uploadWarningsign')}",// 文件接收服务端。
+//             // 选择文件的按钮。可选。
+//             // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+//             // pick: '#filePicker',
+//             pick:{
+//                 id:"#filePicker",
+//                 innerHTML:"选择图片"
+//              },
+//
+//             //只允许选择图片
+//             accept: {
+//                 title: 'Images',
+//                 extensions: 'gif,jpg,jpeg,bmp,png',
+//                 mimeTypes: 'image/*'
+//
+//             }
+//
+//         });
+//
+//         // 当有文件添加进来的时候
+//
+//         uploader.on('fileQueued', function (file,e) {
+//             var $li = $('<div id="' + file.id + '" class="cp_img clearfix">' + '<img>' + '<div class="cp_img_jian">删除</div></div>'),
+//                 $img = $li.find('img');
+//             // $list为容器jQuery实例
+//             $list.append($li);
+//             if(e && e.stopPropagation) { //非IE
+//                 e.stopPropagation();
+//                 return false
+//             } else { //IE
+//                 window.event.cancelBubble = true;
+//             }
+//             // 创建缩略图
+//             // 如果为非图片文件，可以不用调用此方法。
+//             // var aa= $("fileList");
+//             // for(var i=0;i<aa.length;i++){
+//             //     // var i=$(this).index();
+//             //     // alert($(this))
+//             //     aa[i].append("<p>删除</p>")
+//             // }
+//
+//                      // $(".cp_img_jian").append("<p>删除</p>")
+//            // $(".cp_img_jian").each(function () {
+//            //     $(this).append("<p>删除</p>")
+//            // })
+//             // thumbnailWidth x thumbnailHeight 为 90x 90
+//             uploader.makeThumb(file, function (error, src) {
+//                 if (error) {
+//                     $img.replaceWith('<span>不能预览</span>');
+//                     return;
+//                 }
+//
+//                 $img.attr('src', src);
+//             }, thumbnailWidth, thumbnailHeight);
+//
+//         });
+//
+//         // 文件上传过程中创建进度条实时显示。
+//         uploader.on('uploadProgress', function (file, percentage) {
+//
+//             var $li = $('#' + file.id),
+//                 $percent = $li.find('.progress span');
+//             // 避免重复创建，如果不想显示图4那样的进度条，可以使用下面的代码，把现在使用的注释掉。
+//             /*  if (!$percent.length) {
+//                   $percent = $('<p class="progress"><span></span></p>')
+//                           .appendTo($li)
+//                           .find('span');
+//
+//               }*/
+//
+//             if (!$percent.length) {
+//                 $percent = $('<div class="progress progress-striped active">' +
+//                     '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+//                     '</div>' +
+//                     '</div>').appendTo($li).find('.progress-bar');
+//
+//             }
+//             $percent.css('width', percentage * 100 + '%');
+//
+//         });
+//
+//         // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+//         uploader.on('uploadSuccess', function (file, response) {
+//             $('#' + file.id).addClass('upload-state-done');
+//
+//         });
+//
+//         // 文件上传失败，显示上传出错。
+//         uploader.on('uploadError', function (file) {
+//             var $li = $('#' + file.id),
+//                 $error = $li.find('div.error');
+//
+//             // 避免重复创建
+//             if (!$error.length) {
+//                 $error = $('<div class="error"></div>').appendTo($li);
+//
+//             }
+//             $error.text('上传失败');
+//
+//         });
+//
+//         // 完成上传完了，成功或者失败，先删除进度条。
+//         uploader.on('uploadComplete', function (file) {
+//             $('#' + file.id).find('.progress').remove();
+//
+//         });
+//
+//         //所有文件上传完毕
+//         uploader.on("uploadFinished", function () {
+//             //提交表单
+//
+//         });
+//
+//         //开始上传
+//
+//         $("#ctlBtn").click(function () {
+//             uploader.upload();
+//
+//         });
+//
+//         //显示删除按钮
+//         $(".cp_img").on("mouseover", function () {
+//             $(this).children(".cp_img_jian").css('display', 'block');
+//
+//         });
+//
+//         //隐藏删除按钮
+//         $(".cp_img").on("mouseout", function () {
+//             $(this).children(".cp_img_jian").css('display', 'none');
+//
+//         });
+//
+//         //执行删除方法，只是从客户端删除
+//         $list.on("click", ".cp_img_jian", function () {
+//             var Id = $(this).parent().attr("id");
+//             uploader.removeFile(uploader.getFile(Id, true));
+//             $(this).parent().remove();
+//
+//         });
+//
+//     });
+//
 
     // ----------------------------------------------------------------------
     var table1=$("#table1").DataTable({
@@ -566,7 +572,13 @@ var   uploader;
                 "previous": "上一页",
                 "next": "下一页"
             }
-        }
+        },
+        // accept: {
+        //         title: 'Images',
+        //         extensions: 'gif,jpg,jpeg,bmp,png',
+        //          mimeTypes: 'image/*'
+        //
+        //      }
 
     });
     var selectyear ='<input id="year" />';
@@ -628,137 +640,170 @@ var   uploader;
         $("#file_list1").empty();
         $("#file_list2").empty();
         $("#fname1").modal('show');
-        // upload1();
+        upload1();
     });
 
-    // var uploader1;
-    // //总体目标
-    // var aname1,aname2;           //用于区分 编辑时是否修改了文件
-    // function upload1() {
-    //     if(!uploader1){
-    //         uploader1 = WebUploader.create({
-    //             auto: false,// 选完文件后，是否自动上传。
-    //             swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-    //             server: "{:url('Upload/uploadWarningsign')}",// 文件接收服务端。
-    //             chunked: false,
-    //             fileSizeLimit: 1000 *1024 *1024,
-    //             fileNumLimit: 1,
-    //             formData: {"remark":"","warn_name":"","aid":"","standard_number":"","structure_size":"","measurement_unit":"",},
-    //             duplicate :true,// 重复上传图片，true为可重复false为不可重复
-    //             pick: {
-    //                 multiple: false,
-    //                 id: "#file_upload1",
-    //                 innerHTML: "上传文件"
-    //             }
-    //         });
-    //
-    //         uploader1.on( 'fileQueued', function( file ) {
-    //             aname2 = file.name;
-    //             $("#file_per1").append('<div id="' + file.id + '" class="item">' +
-    //                 '</div>');
-    //             // $("#file_per2").append('<div id="' + file.id + '" class="item">' +
-    //             //     '</div>');
-    //             $("#file_list1").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
-    //                 '<span class="info">' + file.name + '</span>&nbsp' +
-    //                 '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-    //                 '</div>' );
-    //         });
-    //         $("#file_list1").on("click", ".webuploadDelbtn", function () {
-    //             var $ele = $(this);
-    //             var id = $ele.parent().attr("class");
-    //             var file = uploader1.getFile(id);
-    //             uploader1.removeFile(file,true);
-    //         });
-    //         uploader1.on('fileDequeued', function (file) {
-    //             $(file.id).remove();
-    //             $('.'+file.id).remove();
-    //             console.log("remove");
-    //         });
-    //         uploader1.on("uploadStart",function () {
-    //                         uploader1.options.formData.aid = $("#aid").val();
-    //                         uploader1.options.formData.remark = $("#remark1").val();
-    //                         uploader1.options.formData.standard_number = $("#standard_number").val();
-    //                         uploader1.options.formData.structure_size = $("#structure_size").val();
-    //                         uploader1.options.formData.measurement_unit = $("#measurement_unit").val();
-    //                         uploader1.options.formData.warn_name = $("#warn_name").val();
-    //                         uploader1.options.formData.selfid =selfid;
-    //         });
-    //         uploader1.on('beforeFileQueued', function (file) {
-    //             if($("#file_list1").html()){
-    //                 alert("只能上传一个文件,请先删除文件");
-    //                 return false;
-    //             }else {
-    //                 return true;
-    //             }
-    //         });
-    //         // 文件上传过程中创建进度条实时显示。
-    //         uploader1.on('uploadProgress', function (file, percentage) {
-    //             var $li = $('#' + file.id),
-    //                 $percent = $li.find('.progress .progress-bar');
-    //             // 避免重复创建
-    //             if (!$percent.length) {
-    //                 $percent = $('<div class="progress progress-striped active">' +
-    //                     '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-    //                     '</div>' +
-    //                     '</div>').appendTo($li).find('.progress-bar');
-    //             }
-    //             $li.find('p.state').text('上传中');
-    //             $percent.css('width', percentage * 100 + '%');
-    //         });
-    //         // 文件上传成功
-    //         uploader1.on( 'uploadSuccess', function( file,data, response ) {
-    //             console.log(file)
-    //             console.log(data)
-    //             if(data.code === 1){
-    //                 layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
-    //                 $("#file_upload1").empty();
-    //                 $("#file_per1").empty();
-    //                 $("#file_list1").empty();
-    //                 $("#fname1").modal('hide');
-    //                 table1.ajax.url("__SCRIPT__/safety_warningsign.php?selfid="+selfid).load();
-    //             }else {
-    //                 layer.msg("抱歉，您没有此权限");
-    //             }
-    //         });
-    //
-    //         // 文件上传失败，显示上传出错。
-    //         uploader1.on( 'uploadError', function( file ) {
-    //             layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-    //             $("#file_per1").empty();
-    //         });
-    //     }
-    // }
-    //
-    // $("#fname1 .btn-primary").click(function () {
-    //     // alert("ss")
-    //     if($("#file_list1").html()){
-    //         if(!$("#aid").val()){
-    //             uploader1.upload();
-    //         }else {
-    //             if(aname1 === aname2){
-    //                 $.ajax({
-    //                     url: "./getindex",
-    //                     type: "post",
-    //                     data: {id:$("#aid").val(),remark:$("#remark1").val(),warn_name:$("#warn_name").val(),standard_number:$("#standard_number").val(),structure_size:$("#structure_size").val(),measurement_unit:$("#measurement_unit").val()},
-    //                     datatype: "json",
-    //                     success: function (res) {
-    //                         if(res.code === 1){
-    //                             layer.msg(res.msg);
-    //                             table1.ajax.url("__SCRIPT__/safety_warningsign.php?selfid="+selfid).load();
-    //                             $("#fname1").modal('hide');
-    //                         }else {
-    //                             layer.msg(res.msg);
-    //                         }
-    //                     }
-    //                 })
-    //             }else {
-    //                 uploader1.upload();
-    //             }
-    //         }
-    //     }else {
-    //         alert("请选择上传文件");
-    //     }
-    // })
+    var uploader1;
+    //总体目标
+    var thumbnailWidth = 90;
+       var thumbnailHeight = 90;
+    var aname1,aname2;           //用于区分 编辑时是否修改了文件
+    function upload1() {
+        if(!uploader1){
+            uploader1 = WebUploader.create({
+                auto: false,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('Upload/uploadWarningsign')}",// 文件接收服务端。
+                chunked: false,
+                fileSizeLimit: 1000 *1024 *1024,
+                fileNumLimit: 3,
+                formData: {"remark":"","warn_name":"","aid":"","standard_number":"","structure_size":"","measurement_unit":"",},
+                duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: false,
+                    id: "#file_upload1",
+                    innerHTML: "上传文件"
+                }
+            });
+
+            uploader1.on( 'fileQueued', function( file ) {
+                aname2 = file.name;
+                var $li = $(
+
+                    '<div id="' + file.id + '" class="cp_img">' +
+                    '<img>' +
+                    '<div class="cp_img_jian">删除</div></div>'
+
+                    ),
+
+                    $img = $li.find('img');
+                // $list为容器jQuery实例
+                // $list.append($li);
+                // $("#file_per1").append('<div id="' + file.id + '" class="item">' +
+                //     '</div>');
+                // $("#file_per2").append('<div id="' + file.id + '" class="item">' +
+                //     '</div>');
+                // $("#file_list1").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                //     '<span class="info">' + file.name + '</span>&nbsp' +
+                //     '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                //     '</div>' );
+                $("#file_list1").append($li),
+                    uploader1.makeThumb(file, function (error, src) {
+                        if (error) {
+                            $img.replaceWith('<span>不能预览</span>');
+                            return;
+                        }
+
+                        $img.attr('src', src);
+                    }, thumbnailWidth, thumbnailHeight);
+                if($("#file_list1").length==3){
+                    alert("sfda")
+                }
+
+            });
+
+            $("#file_list1").on("click", ".cp_img_jian", function () {
+                var Id = $(this).parent().attr("id");
+                uploader1.removeFile(uploader1.getFile(Id, true));
+                $(this).parent().remove();
+
+            });
+            // $("#file_list1").on("click", ".webuploadDelbtn", function () {
+            //     var $ele = $(this);
+            //     var id = $ele.parent().attr("class");
+            //     var file = uploader1.getFile(id);
+            //     uploader1.removeFile(file,true);
+            // });
+            // uploader1.on('fileDequeued', function (file) {
+            //     $(file.id).remove();
+            //     $('.'+file.id).remove();
+            //     console.log("remove");
+            // });
+            uploader1.on("uploadStart",function () {
+                            uploader1.options.formData.aid = $("#aid").val();
+                            uploader1.options.formData.remark = $("#remark1").val();
+                            uploader1.options.formData.standard_number = $("#standard_number").val();
+                            uploader1.options.formData.structure_size = $("#structure_size").val();
+                            uploader1.options.formData.measurement_unit = $("#measurement_unit").val();
+                            uploader1.options.formData.warn_name = $("#warn_name").val();
+                            uploader1.options.formData.selfid =selfid;
+            });
+            // uploader1.on('beforeFileQueued', function (file) {
+            //     if($("#file_list1").html()){
+            //         alert("只能上传一个文件,请先删除文件");
+            //         return false;
+            //     }else {
+            //         return true;
+            //     }
+            // });
+            // 文件上传过程中创建进度条实时显示。
+            uploader1.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            uploader1.on( 'uploadSuccess', function( file,data, response ) {
+                console.log(file)
+                console.log(data)
+                if(data.code === 1){
+                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    $("#file_upload1").empty();
+                    $("#file_per1").empty();
+                    $("#file_list1").empty();
+                    $("#fname1").modal('hide');
+                    table1.ajax.url("__SCRIPT__/safety_warningsign.php?selfid="+selfid).load();
+                }else {
+                    layer.msg("抱歉，您没有此权限");
+                }
+            });
+
+            // 文件上传失败，显示上传出错。
+            uploader1.on( 'uploadError', function( file ) {
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                $("#file_per1").empty();
+            });
+        }
+    }
+
+    $("#fname1 .btn-primary").click(function () {
+        // alert("ss")
+        if($("#file_list1").html()){
+            if(!$("#aid").val()){
+                uploader1.upload();
+            }else {
+                if(aname1 === aname2){
+                    $.ajax({
+                        url: "./getindex",
+                        type: "post",
+                        data: {id:$("#aid").val(),remark:$("#remark1").val(),warn_name:$("#warn_name").val(),standard_number:$("#standard_number").val(),structure_size:$("#structure_size").val(),measurement_unit:$("#measurement_unit").val()},
+                        datatype: "json",
+                        success: function (res) {
+                            if(res.code === 1){
+                                layer.msg(res.msg);
+                                table1.ajax.url("__SCRIPT__/safety_warningsign.php?selfid="+selfid).load();
+                                $("#fname1").modal('hide');
+                            }else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    })
+                }else {
+                    uploader1.upload();
+                }
+            }
+        }else {
+            alert("请选择上传文件");
+        }
+    })
 </script>
 </body>
 </html>
