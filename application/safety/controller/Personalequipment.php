@@ -2,111 +2,83 @@
 /**
  * Created by PhpStorm.
  * User: admin
- * Date: 2018/3/18
- * Time: 17:47
+ * Date: 2018/3/19
+ * Time: 16:28
  */
-//交通车辆
+//个人防护装备
 namespace app\safety\controller;
 
 use app\admin\controller\Base;
-use app\safety\model\TrafficvehicleModel;
+use app\safety\model\PersonalequipmentModel;
 use think\Db;
 use think\Loader;
 
-class Trafficvehicle extends Base
+class Personalequipment extends Base
 {
-
     /*
-     * 获取一条交通车辆信息
+     * 获取一条个人防护装备信息
      */
     public function getindex()
     {
         if(request()->isAjax()){
-            $traffic = new TrafficvehicleModel();
+            $personal = new PersonalequipmentModel();
             $param = input('post.');
-            $data = $traffic->getOne($param['id']);
+            $data = $personal->getOne($param['id']);
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
 
     /*
-     * 编辑一条交通车辆信息
+     * 编辑一条个人防护装备信息
      */
-    public function  trafficEdit()
+    public function  personalEdit()
     {
-        $traffic = new TrafficvehicleModel();
+        $personal = new PersonalequipmentModel();
         $param = input('post.');
         if(request()->isAjax()){
             $data = [
                 'id' => $param['id'],
-                'number_pass' => $param['number_pass'],//通行证编号
-                'subord_unit' => $param['subord_unit'],//所属单位
-                'car_number' => $param['car_number'],//车牌号/自编号
-                'vehicle_type' => $param['vehicle_type'],//车辆类型
-                'year_limit' => $param['year_limit'],//年审有效期
-                'insurance_limit' => $param['insurance_limit'],//保险有效期
-                'charage_person' => $param['charage_person'],//负责人/驾驶员
-                'entry_time' => $param['entry_time'],//进场时间
-                'car_state' => $param['car_state'],//车辆状态
-                'remark' => $param['remark']
+                'tool_name' => $param['tool_name'],//工器具名称
+                'type_model' => $param['type_model'],//规格型号
+                'number' => $param['number'],//数量
+                'batch' => $param['batch'],//批次
+                'manufacture' => $param['manufacture'],//生产厂家
+                'date_product' => $param['date_product'],//出厂日期
+                'check_round' => $param['check_round'],//定检周期
+                'first_check_date' => $param['first_check_date'],//首检日期
+                'use_position' => $param['use_position'],//使用位置
+                'remark' => $param['remark']//备注
             ];
-            $flag = $traffic->editTrafficvehicle($data);
+            $flag = $personal->editPersonalequipment($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
 
     /*
-     * 删除一条交通车辆信息
+     * 删除一条个人防护装备信息
      */
-    public function trafficDel()
+    public function personalDel()
     {
-        $traffic = new TrafficvehicleModel();
+        $personal = new PersonalequipmentModel();
         if(request()->isAjax()) {
             $param = input('post.');
-//            $data = $traffic->getOne($param['id']);
-//            $path = $data['path'];
-//            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-//            if(file_exists($path)){
-//                unlink($path); //删除文件
-//            }
-//            if(file_exists($pdf_path)){
-//                unlink($pdf_path); //删除生成的预览pdf
-//            }
-            $flag = $traffic->delTrafficvehicle($param['id']);
+            $data = $personal->getOne($param['id']);
+            $path = $data['path'];
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
+            if(file_exists($pdf_path)){
+                unlink($pdf_path); //删除生成的预览pdf
+            }
+            $flag = $personal->delPersonalequipment($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
 
     /*
-     * 新增一条交通车辆信息
-     */
-    public function  trafficInsert()
-    {
-        $traffic = new TrafficvehicleModel();
-        $param = input('post.');
-        if(request()->isAjax()){
-            $data = [
-                'selfid' => $param['selfid'],//类别id
-                'number_pass' => $param['number_pass'],//通行证编号
-                'subord_unit' => $param['subord_unit'],//所属单位
-                'car_number' => $param['car_number'],//车牌号/自编号
-                'vehicle_type' => $param['vehicle_type'],//车辆类型
-                'year_limit' => $param['year_limit'],//年审有效期
-                'insurance_limit' => $param['insurance_limit'],//保险有效期
-                'charage_person' => $param['charage_person'],//负责人/驾驶员
-                'entry_time' => $param['entry_time'],//进场时间
-                'car_state' => $param['car_state'],//车辆状态
-                'date' => date("Y-m-d H:i:s"),
-                'remark' => $param['remark']
-            ];
-            $flag = $traffic->insertTrafficvehicle($data);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        }
-    }
-
-    /*
-     * 获取交通车辆信息,excel导入时间
+     * 获取个人防护设备信息,excel导入时间
      * @return mixed|\think\response\Json
      */
     public function getversion()
@@ -114,16 +86,15 @@ class Trafficvehicle extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $selfid = $param['selfid'];
-            $traffic= new TrafficvehicleModel();
-            $data = $traffic->getVersion($selfid);
+            $personal= new PersonalequipmentModel();
+            $data = $personal->getVersion($selfid);
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
 
-
     /**
-     * 交通车辆excel表格导入
+     * 个人防护装备excel表格导入
      * @return array|\think\response\Json
      * @throws \PHPExcel_Exception
      * @throws \PHPExcel_Reader_Exception
@@ -135,12 +106,12 @@ class Trafficvehicle extends Base
             return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
         }
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/trafficvehicle');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/personalequipment');
         if($info){
             // 调用插件PHPExcel把excel文件导入数据库
             Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
             $exclePath = $info->getSaveName();  //获取文件名
-            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/trafficvehicle' . DS . $exclePath;   //上传文件的地址
+            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/personalequipment' . DS . $exclePath;   //上传文件的地址
             // 当文件后缀是xlsx 或者 csv 就会报：the filename xxx is not recognised as an OLE file错误
             $extension = get_extension($file_name);
             if ($extension =='xlsx') {
@@ -160,34 +131,34 @@ class Trafficvehicle extends Base
             }
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
             // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
-            $number_pass_index = $subord_unit_index = $car_number_index = $vehicle_type_index = $year_limit_index = $insurance_limit_index = $charage_person_index = $entry_time_index = $car_state_index = $remark_index = -1;
+            $tool_name_index = $type_model_index = $number_index = $batch_index = $manufacture_index = $date_product_index = $check_round_index = $first_check_date_index = $use_position_index = $remark_index = -1;
             foreach ($excel_array[0] as $k=>$v){
                 $str = preg_replace('/[ ]/', '', $v);
-                if ($str == '通行证编号'){
-                    $number_pass_index = $k;
-                }else if ($str == '所属单位'){
-                    $subord_unit_index = $k;
-                }else if($str == '车牌号（自编号）'){
-                    $car_number_index = $k;
-                }else if($str == '车辆类型'){
-                    $vehicle_type_index = $k;
-                }else if($str == '年审有效期'){
-                    $year_limit_index = $k;
-                }else if($str == '保险有效期'){
-                    $insurance_limit_index = $k;
-                }else if($str == '负责人/驾驶员'){
-                    $charage_person_index = $k;
-                }else if($str == '进场时间'){
-                    $entry_time_index = $k;
-                }else if($str == '车辆状态'){
-                    $car_state_index = $k;
+                if ($str == '工器具名称'){
+                    $tool_name_index = $k;
+                }else if ($str == '规格型号'){
+                    $type_model_index = $k;
+                }else if($str == '数量'){
+                    $number_index = $k;
+                }else if($str == '批次'){
+                    $batch_index = $k;
+                }else if($str == '生产厂家'){
+                    $manufacture_index = $k;
+                }else if($str == '出厂日期'){
+                    $date_product_index = $k;
+                }else if($str == '定检周期'){
+                    $check_round_index = $k;
+                }else if($str == '首检日期'){
+                    $first_check_date_index = $k;
+                }else if($str == '使用位置'){
+                    $use_position_index = $k;
                 }else if($str == '备注'){
                     $remark_index = $k;
                 }
             }
 //            return json(['1'=> $number_index, '2' => $equip_name_index,'3' =>$model_index,'4' => $equip_num_index,'5' => $manufactur_unit_index,'6' => $date_production_index,'7' => $current_state_index,'8' => $safety_inspection_num_index,'9' => $inspection_unit_index,'10' => $entry_time_index,'11' => $equip_state_index,'12' => $remark_index]);
 
-            if($number_pass_index == -1 || $subord_unit_index == -1 || $car_number_index == -1 || $vehicle_type_index == -1 || $year_limit_index == -1 || $insurance_limit_index == -1 || $charage_person_index == -1 || $entry_time_index == -1 || $car_state_index == -1 || $remark_index == -1){
+            if($tool_name_index == -1 || $type_model_index == -1 || $number_index == -1 || $batch_index == -1 || $manufacture_index == -1 || $date_product_index == -1 || $check_round_index == -1 || $first_check_date_index == -1 || $use_position_index == -1 || $remark_index == -1){
                 $json_data['code'] = 0;
                 $json_data['info'] = '文件内容格式不对';
                 return json($json_data);
@@ -196,22 +167,22 @@ class Trafficvehicle extends Base
             foreach($excel_array as $k=>$v){
                 if($k > 0){
 
-                    $insertData[$k]['number_pass'] = $v[$number_pass_index];
-                    $insertData[$k]['subord_unit'] = $v[$subord_unit_index];
-                    $insertData[$k]['car_number'] = $v[$car_number_index];
-                    $insertData[$k]['vehicle_type'] = $v[$vehicle_type_index];
-                    $insertData[$k]['year_limit'] = $v[$year_limit_index];
-                    $insertData[$k]['insurance_limit'] = $v[$insurance_limit_index];
-                    $insertData[$k]['charage_person'] = $v[$charage_person_index];
-                    $insertData[$k]['entry_time'] = $v[$entry_time_index];
-                    $insertData[$k]['car_state'] = $v[$car_state_index];
+                    $insertData[$k]['tool_name'] = $v[$tool_name_index];
+                    $insertData[$k]['type_model'] = $v[$type_model_index];
+                    $insertData[$k]['number'] = $v[$number_index];
+                    $insertData[$k]['batch'] = $v[$batch_index];
+                    $insertData[$k]['manufacture'] = $v[$manufacture_index];
+                    $insertData[$k]['date_product'] = $v[$date_product_index];
+                    $insertData[$k]['check_round'] = $v[$check_round_index];
+                    $insertData[$k]['first_check_date'] = $v[$first_check_date_index];
+                    $insertData[$k]['use_position'] = $v[$use_position_index];
                     $insertData[$k]['remark'] = $v[$remark_index];
                     $insertData[$k]['input_time'] = date('Y-m-d H:i:s');
                     $insertData[$k]['selfid'] = $selfid;
 
                 }
             }
-            $success = Db::name('safety_vehicle')->insertAll($insertData);
+            $success = Db::name('safety_personal_equipment')->insertAll($insertData);
             if($success !== false){
                 return  json(['code' => 1,'data' => '','msg' => '导入成功']);
             }else{
@@ -232,15 +203,15 @@ class Trafficvehicle extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $traffic = new TrafficvehicleModel();
-        $idArr = input('param.idarr/a');
+        $personalequipment = new PersonalequipmentModel();
+        $idArr = input('param.idarr');
         if($idArr['0'] == "all")
         {
-            $idArr = $traffic ->getallid();
+            $idArr = $personalequipment ->getallid();
         }
-        $name = '交通车辆'.date('Y-m-d H:i:s'); // 导出的文件名
+        $name = '个人防护装备'.date('Y-m-d H:i:s'); // 导出的文件名
 
-        $list = $traffic->getList($idArr);
+        $list = $personalequipment->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -258,15 +229,15 @@ class Trafficvehicle extends Base
         // 设置表格第一行显示内容
         $objPHPExcel->getActiveSheet()
             ->setCellValue('A1', '序号')
-            ->setCellValue('B1', '通行证编号')
-            ->setCellValue('C1', '所属单位')
-            ->setCellValue('D1', '车牌号（自编号）')
-            ->setCellValue('E1', '车辆类型')
-            ->setCellValue('F1', '年审有效期')
-            ->setCellValue('G1', '保险有效期')
-            ->setCellValue('H1', '负责人/驾驶员')
-            ->setCellValue('I1', '进场时间')
-            ->setCellValue('J1', '车辆状态')
+            ->setCellValue('B1', '工器具名称')
+            ->setCellValue('C1', '规格型号')
+            ->setCellValue('D1', '数量')
+            ->setCellValue('E1', '批次')
+            ->setCellValue('F1', '生产厂家')
+            ->setCellValue('G1', '出厂日期')
+            ->setCellValue('H1', '定检周期')
+            ->setCellValue('I1', '首检日期')
+            ->setCellValue('J1', '使用位置')
             ->setCellValue('K1', '备注');
         $key = 1;
         /*以下就是对处理Excel里的数据，横着取数据*/
@@ -276,15 +247,15 @@ class Trafficvehicle extends Base
             $objPHPExcel->getActiveSheet()
                 //Excel的第A列，name是你查出数组的键值字段，下面以此类推
                 ->setCellValue('A'.$key, $v['id'])
-                ->setCellValue('B'.$key, $v['number_pass'])
-                ->setCellValue('C'.$key, $v['subord_unit'])
-                ->setCellValue('D'.$key, $v['car_number'])
-                ->setCellValue('E'.$key, $v['vehicle_type'])
-                ->setCellValue('F'.$key, $v['year_limit'])
-                ->setCellValue('G'.$key, $v['insurance_limit'])
-                ->setCellValue('H'.$key, $v['charage_person'])
-                ->setCellValue('I'.$key, $v['entry_time'])
-                ->setCellValue('J'.$key, $v['car_state'])
+                ->setCellValue('B'.$key, $v['tool_name'])
+                ->setCellValue('C'.$key, $v['type_model'])
+                ->setCellValue('D'.$key, $v['number'])
+                ->setCellValue('E'.$key, $v['batch'])
+                ->setCellValue('F'.$key, $v['manufacture'])
+                ->setCellValue('G'.$key, $v['date_product'])
+                ->setCellValue('H'.$key, $v['check_round'])
+                ->setCellValue('I'.$key, $v['first_check_date'])
+                ->setCellValue('J'.$key, $v['use_position'])
                 ->setCellValue('K'.$key, $v['remark']);
         }
         //设置当前的表格
@@ -312,7 +283,7 @@ class Trafficvehicle extends Base
             return json(['code'=>1]);
         }
         $name = input('param.name');
-        $newName = '交通车辆 - '.$name.date('Y-m-d H:i:s'); // 导出的文件名
+        $newName = '个人防护装备 - '.$name.date('Y-m-d H:i:s'); // 导出的文件名
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -330,15 +301,15 @@ class Trafficvehicle extends Base
         // 设置表格第一行显示内容
         $objPHPExcel->getActiveSheet()
             ->setCellValue('A1', '序号')
-            ->setCellValue('B1', '通行证编号')
-            ->setCellValue('C1', '所属单位')
-            ->setCellValue('D1', '车牌号（自编号）')
-            ->setCellValue('E1', '车辆类型')
-            ->setCellValue('F1', '年审有效期')
-            ->setCellValue('G1', '保险有效期')
-            ->setCellValue('H1', '负责人/驾驶员')
-            ->setCellValue('I1', '进场时间')
-            ->setCellValue('J1', '车辆状态')
+            ->setCellValue('B1', '工器具名称')
+            ->setCellValue('C1', '规格型号')
+            ->setCellValue('D1', '数量')
+            ->setCellValue('E1', '批次')
+            ->setCellValue('F1', '生产厂家')
+            ->setCellValue('G1', '出厂日期')
+            ->setCellValue('H1', '定检周期')
+            ->setCellValue('I1', '首检日期')
+            ->setCellValue('J1', '使用位置')
             ->setCellValue('K1', '备注');
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);

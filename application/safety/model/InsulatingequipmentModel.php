@@ -2,23 +2,22 @@
 /**
  * Created by PhpStorm.
  * User: admin
- * Date: 2018/3/16
- * Time: 17:25
+ * Date: 2018/3/18
+ * Time: 17:44
  */
-//应急评估修订记录
+//绝缘工器具
 namespace app\safety\model;
-
 use think\exception\PDOException;
 use think\Model;
 
-class EmergencyreviseModel extends Model
+class InsulatingequipmentModel extends Model
 {
-    protected $name = 'safety_emergency_revise';
+    protected $name = 'safety_insulating_equipment';
 
     /*
-     * 添加新的应急修订文件
+      * 添加新的绝缘工器具文件
      */
-    public function insertEmergencyrevise($param)
+    public function insertInsulatingequipment($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -33,9 +32,9 @@ class EmergencyreviseModel extends Model
     }
 
     /*
-     * 编辑应急修订文件
-     */
-    public function editEmergencyrevise($param)
+     * 编辑绝缘工器具文件
+    */
+    public function editInsulatingequipment($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -50,9 +49,9 @@ class EmergencyreviseModel extends Model
     }
 
     /*
-     * 删除应急修订文件
-     */
-    public function delEmergencyrevise($id)
+     * 删除绝缘工器具文件
+    */
+    public function delInsulatingequipment($id)
     {
         try{
             $this->where('id', $id)->delete();
@@ -64,23 +63,17 @@ class EmergencyreviseModel extends Model
     }
 
     /*
-     * 获取一条应急修订文件
-     */
-    /**
-     * @param $id
-     * @return array|false|\PDOStatement|string|Model
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
+     * 获取一条绝缘工器具文件
+    */
     public function getOne($id)
     {
+
         return $this->where('id', $id)->find();
+
     }
 
     /*
-     * 批量导出选中的数组
-     *
+     * 批量导出时候的数组处理
      */
     public  function getList($idArr)
     {
@@ -97,5 +90,14 @@ class EmergencyreviseModel extends Model
     public  function getallid()
     {
         return $this->group('id')->column('id');
+    }
+
+    /*
+     * 获取绝缘工器具文件的版本日期,excel的导入日期
+     */
+    public function getVersion($param)
+    {
+//        return $this->field('input_time')->order('id desc')->select();
+        return $this->where('selfid',$param)->group('input_time')->column('input_time');
     }
 }

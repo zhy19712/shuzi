@@ -45,6 +45,79 @@ class Emergencyrevise extends Base
     }
 
     /**
+     * [versionnumberpathPreview 原有版本文件预览]
+     */
+
+    public function versionnumberpathPreview()
+    {
+        $emergencyrevise = new EmergencyreviseModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $code = 1;
+            $msg = '预览成功';
+            $data = $emergencyrevise->getOne($param['id']);
+                $path = $data['version_number_path'];
+                $extension = strtolower(get_extension(substr($path,1)));
+                $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+                if(!file_exists($pdf_path)){
+                    if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
+                        doc_to_pdf($path);
+                    }else if($extension === 'xls' || $extension === 'xlsx'){
+                        excel_to_pdf($path);
+                    }else if($extension === 'ppt' || $extension === 'pptx'){
+                        ppt_to_pdf($path);
+                    }else if($extension === 'pdf'){
+                        $pdf_path = $path;
+                    }else{
+                        $code = 0;
+                        $msg = '不支持的文件格式';
+                    }
+                    return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
+                }else{
+                    return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
+                }
+
+        }
+    }
+
+    /**
+     * [alternativeversionpathPreview 替换版本文件预览]
+     */
+
+    public function alternativeversionpathPreview()
+    {
+        $emergencyrevise = new EmergencyreviseModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $code = 1;
+            $msg = '预览成功';
+            $data = $emergencyrevise->getOne($param['id']);
+                $path = $data['alternative_version_path'];
+                $extension = strtolower(get_extension(substr($path,1)));
+                $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+                if(!file_exists($pdf_path)){
+                    if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
+                        doc_to_pdf($path);
+                    }else if($extension === 'xls' || $extension === 'xlsx'){
+                        excel_to_pdf($path);
+                    }else if($extension === 'ppt' || $extension === 'pptx'){
+                        ppt_to_pdf($path);
+                    }else if($extension === 'pdf'){
+                        $pdf_path = $path;
+                    }else{
+                        $code = 0;
+                        $msg = '不支持的文件格式';
+                    }
+                    return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
+                }else{
+                    return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
+                }
+
+
+        }
+    }
+
+    /**
      * 批量导出
      * @return \think\response\Json
      * @throws \PHPExcel_Exception
@@ -56,9 +129,14 @@ class Emergencyrevise extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('param.idarr');
-        $name = '应急评估'.date('Y-m-d H:i:s'); // 导出的文件名
+        $idArr = input('param.idarr/a');
         $emergencyrevise = new EmergencyreviseModel();
+        if($idArr['0'] == "all")
+        {
+            $idArr = $emergencyrevise ->getallid();
+        }
+        $name = '应急评估'.date('Y-m-d H:i:s'); // 导出的文件名
+
         $list = $emergencyrevise->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
@@ -101,6 +179,53 @@ class Emergencyrevise extends Base
         ob_end_clean();  //清除缓冲区,避免乱码
         header('Content-Type: application/vnd.ms-excel'); //文件类型
         header('Content-Disposition: attachment;filename="'.$name.'.xls"'); //文件名
+        header('Cache-Control: max-age=0');
+        header('Content-Type: text/html; charset=utf-8'); //编码
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003
+        $objWriter->save('php://output');
+        exit;
+    }
+
+    /**
+     * 导出模板
+     * @return \think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     */
+    public function exportExcelTemplete()
+    {
+        if(request()->isAjax()){
+            return json(['code'=>1]);
+        }
+        $newName = '应急评估 - '.date('Y-m-d H:i:s'); // 导出的文件名
+        header("Content-type:text/html;charset=utf-8");
+        Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+        //实例化
+        $objPHPExcel = new \PHPExcel();
+        /*右键属性所显示的信息*/
+        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
+        ->setLastModifiedBy("zxf")  //最后一次保存者
+        ->setTitle('数据EXCEL导出')  //标题
+        ->setSubject('数据EXCEL导出') //主题
+        ->setDescription('导出数据')  //描述
+        ->setKeywords("excel")   //标记
+        ->setCategory("result file");  //类别
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        // 设置表格第一行显示内容
+        $objPHPExcel->getActiveSheet()
+            ->setCellValue('A1', '序号')
+            ->setCellValue('B1', '文件名称')
+            ->setCellValue('C1', '原有版本号')
+            ->setCellValue('D1', '替换版本号')
+            ->setCellValue('E1', '替换时间')
+            ->setCellValue('F1', '上传人');
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        ob_end_clean();  //清除缓冲区,避免乱码
+        header('Content-Type: application/vnd.ms-excel'); //文件类型
+        header('Content-Disposition: attachment;filename="'.$newName.'.xls"'); //文件名
         header('Cache-Control: max-age=0');
         header('Content-Type: text/html; charset=utf-8'); //编码
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003

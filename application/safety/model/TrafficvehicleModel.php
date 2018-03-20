@@ -71,4 +71,25 @@ class TrafficvehicleModel extends Model
         return $this->where('id', $id)->find();
 
     }
+
+
+    /*
+     * 批量导出时候的数组处理
+     */
+    public  function getList($idArr)
+    {
+        $data = [];
+        foreach($idArr as $v){
+            $data[] = $this->getOne($v);
+        }
+        return $data;
+    }
+
+    /*
+     * 查看所有的id值
+     */
+    public  function getallid()
+    {
+        return $this->group('id')->column('id');
+    }
 }

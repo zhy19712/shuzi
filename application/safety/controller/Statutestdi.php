@@ -293,6 +293,11 @@ class Statutestdi extends Base
                 $PHPReader->setDelimiter(',');
                 //载入文件
                 $obj_PHPExcel = $PHPReader->load($file_name);
+            }else{
+                return  json(['code' => 1,'data' => '','msg' => '请选择正确的模板文件']);
+            }
+            if(!is_object($obj_PHPExcel)){
+                return  json(['code' => 1,'data' => '','msg' => '请选择正确的模板文件']);
             }
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
             // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
@@ -322,11 +327,12 @@ class Statutestdi extends Base
                 $evaluation_index == -1 || $sdi_user_index == -1 ||
                 $sdi_date_index == -1 || $remark_index == -1){
                 $json_data['code'] = 0;
-                $json_data['info'] = '文件内容格式不对';
+                $json_data['info'] = '请检查标题名称';
                 return json($json_data);
             }
             $insertData = [];
-            foreach($excel_array as $k=>$v){
+            $new_excel_array = delArrayNull($excel_array); // 删除空数据
+            foreach($new_excel_array as $k=>$v){
                 if($k > 0){
                     $insertData[$k]['number'] = $v[$number_index];
                     $insertData[$k]['sdi_name'] = $v[$sdi_name_index];
@@ -366,13 +372,13 @@ class Statutestdi extends Base
         }
         $idArr = input('id/a');
         if(count($idArr) == 0){
-            return json(['code' => 1 ,'msg' => '请选择需要下载的编号']);
+            return json(['code' => -1 ,'msg' => '请选择需要下载的编号']);
         }
         $name = '法规标准识别 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $sdi = new StatutestdiModel();
         $list = $sdi->getList($idArr);
         if(count($list) == 0){
-            return json(['code' => 1 ,'msg' => '数据为空']);
+            return json(['code' => -1 ,'msg' => '数据为空']);
         }
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);

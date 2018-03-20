@@ -47,6 +47,7 @@
     #btn_upload{
         display: none;
     }
+
     #file_upload>div:nth-child(2){
         position: absolute;
         left: 0 !important;
@@ -190,6 +191,8 @@
 <div id="formDown" style="display: none"></div>
 <!--导出的文件-->
 <div id="form_container" style="display: none;"></div>
+<!--导出模版-->
+<div id="form_ExportMold" style="display: none;"></div>
 <!--右边表格的新增与编辑-->
 <div id="education_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
     <div class="row">
@@ -269,7 +272,9 @@
                                     <input type="text" required="required" id="trainerRecords" class="form-control" name="trainerRecords" placeholder="此处为必填项！请上传文件或填写">
                                     <span class="input-group-btn">
                                         <div class="btn btn-upload" id="pickerRecords">上传</div>
-
+                                            <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
+                                            <div id="file_upload1" style="display: inline-block;vertical-align: middle;"></div>
+                                            <div id="file_list1" style="display: inline-block;vertical-align: middle;"></div>
                                     </span>
                                 </div>
                             </div>
@@ -525,7 +530,7 @@
     //在点击弹出模态框的时候再初始化WebUploader，解决点击上传无反应问题
     $("#education_modal").on("shown.bs.modal",function(){
         uploaderMaterials = WebUploader.create({
-            auto: false,
+            auto: true,
             // swf文件路径
             swf:  '/static/admin/js/webupload/Uploader.swf',
 
@@ -545,17 +550,17 @@
         var $list = $("#trainerMaterials");
         uploaderMaterials.on( 'fileQueued', function( file ) {
             $list.val(file.name);
-            $("#pickerMaterials").append('<span class="pickerCon">等待上传...</span>')
+//            $("#pickerMaterials").append('<span class="pickerCon">等待上传...</span>')
         });
 
         uploaderMaterials.on( 'uploadSuccess', function( file ) {
-            $list.val(file.name);
-            $("#pickerMaterials").after('<span class="pickerCon">+file.name+"已上传成功"</span>')
+            $list.val(file.name+"上传成功！");
+//            $("#pickerMaterials").after('<span class="pickerCon">+file.name+"已上传成功"</span>')
         });
 
         uploaderMaterials.on( 'uploadError', function( file ) {
             // $list.val('上传出错');
-            $("#pickerMaterials").after('<span class="pickerCon">上传出错...</span>')
+//            $("#pickerMaterials").after('<span class="pickerCon">上传出错...</span>')
         });
     });
     //关闭模态框销毁WebUploader
@@ -566,7 +571,7 @@
     //在点击弹出模态框的时候再初始化WebUploader，解决点击上传无反应问题
     $("#education_modal").on("shown.bs.modal",function(){
         uploaderRecords = WebUploader.create({
-            auto: false,
+            auto: true,
             // swf文件路径
             swf:  '/static/admin/js/webupload/Uploader.swf',
 
@@ -584,27 +589,53 @@
             resize: false
 
         });
+        //点击新增出现--上传文件
+//        uploaderRecords.on( 'fileQueued', function( file ) {
+//            aname2 = file.name;
+//            $("#file_per1").append('<div id="' + file.id + '" class="item">' +
+//                '</div>');
+//            $("#file_list1").append('<div style="display: inline-block;vertical-align: middle;width: 100%;height: 100%;" class="' + file.id + '" class="item">' +
+//                '<span class="info" style="padding-left: 10px;"> ' + file.name + '</span>&nbsp' +
+//                '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;padding-left: 5px;">删除</span>' +
+//                '</div>' );
+//        });
+        $("#pickerRecords").on("click", ".webuploadDelbtn", function () {
+            var $ele = $(this);
+            var id = $ele.parent().attr("class");
+            var file = uploaderRecords.getFile(id);
+            uploaderRecords.removeFile(file,true);
+        });
+        uploaderRecords.on('fileDequeued', function (file) {
+            $(file.id).remove();
+            $('.'+file.id).remove();
+            console.log("remove");
+        });
         var $list = $('#trainerRecords');
         uploaderRecords.on( 'fileQueued', function( file ) {
             $list.val(file.name);
-            $("#pickerRecords").append('<span class="pickerCon">等待上传...</span>')
+//            $("#pickerRecords").append('<span class="pickerCon">'+file.name+'</span>')
         });
 
         uploaderRecords.on( 'uploadSuccess', function( file ,res ) {
             $list.val(file.name);
-            $("#pickerRecords").after('<span class="pickerCon">+file.name+"已上传成功"</span>')
+//            $("#pickerRecords").after('<span class="pickerCon">+file.name+"已上传成功"</span>')
+            $("#file_per1").append('<div id="' + file.id + '" class="item">' +
+                '</div>');
+            $("#pickerRecords").append('<div style="display: inline-block;vertical-align: middle;width: 100%;height: 100%;" class="' + file.id + '" class="item">' +
+                '<span class="info" style="padding-left: 10px;"> ' + file.name + '</span>&nbsp' +
+                '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;padding-left: 5px;">删除</span>' +
+                '</div>' );
             completeSuccess(res)
         });
         function completeSuccess(data){
             console.log(data);
-            if(data.code === 1){
+//            if(data.code === 1){
                 console.log(groupid+77777777)
-                layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
-                // admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
-            }else {
-                layer.msg('上传数据失败!',{time:1500});
-                return false;
-            }
+                layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+//            }else {
+//                layer.msg('上传数据失败!',{time:1500});
+//                return false;
+//            }
         }
         uploaderRecords.on( 'uploadError', function( file ) {
             $list.val('上传出错');
@@ -684,10 +715,10 @@
                     if (res.code === 1) {
                         flag = 1;
                         $("#education_modal").modal('hide');
-                        admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+idParent+"&pid=" + groupid).load();
+                        admin_table.ajax.url("__SCRIPT__/safety_education.php?pid="+idParent+"&zid=" + groupid).load();
                         layer.msg(res.msg, {time: 1500, shade: 0.1});
-                        uploaderRecords.upload();
-                        uploaderMaterials.upload();
+//                        uploaderRecords.upload();
+//                        uploaderMaterials.upload();
                         return true; //阻止表单默认提交
                     } else {
                         layer.msg(res.msg);
@@ -719,7 +750,7 @@
                         $("#education_modal").modal('hide');
                         uploaderRecords.upload();
                         uploaderMaterials.upload();
-                        admin_table.ajax.url("__SCRIPT__/safety_education.php?zid="+idParent+"&pid=" + groupid).load();
+                        admin_table.ajax.url("__SCRIPT__/safety_education.php?pid="+idParent+"&zid=" + groupid).load();
                         layer.msg(res.msg, {time: 1500, shade: 0.1});
                     } else {
                         layer.msg(res.msg);
@@ -855,7 +886,7 @@
                     var str = "";
                     str += ""
                         + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-                        + "<form name=download"+ id +" action="+ url&typeNum +" method='get' target=downloadFrame"+ id + ">"
+                        + "<form name=download"+ id +" action="+ url +" method='get' target=downloadFrame"+ id + ">"
                         + "<span class='file_name' style='color: #000;'>"+str+"</span>"
                         + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
                         + "<button type='submit' class=btn" + id +"></button>"
@@ -916,6 +947,11 @@
             multiple: false,
             id: "#excelImport",
             innerHTML: "导入"
+        },
+        accept: {
+            title: 'excel',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx'
         }
     });
     importExcel.on( 'uploadSuccess', function( file ,res) {
@@ -1042,7 +1078,24 @@
     });
     //导出excel模版 moldPlate
     $("#moldPlate").click(function () {
-        alert(88999999999999999)
+        $.ajax({
+            url: "./exportExcelTemplete",
+            type: "post",
+            dataType: "json",
+            success: function (res) {
+                if(res.code ==1){
+                    $("#form_ExportMold").empty();
+                    var str = '<iframe name="ExcelFrame" style="display:none;"></iframe>'
+                        +'<form action="./exportExcelTemplete" method="get" target="ExcelFrame">';
+                    str += '<button type="submit" id="ExcelBtnMold"></button></form>';
+                    $("#form_ExportMold").append(str);
+                    $("#form_ExportMold").find("#ExcelBtnMold").click();
+                    layer.msg('导出成功！', {icon: 1});
+                }else{
+                    alert("获取数据失败！")
+                }
+            }
+        })
     });
     //点击查看历史版本
     $("#down_excel").click(function () {

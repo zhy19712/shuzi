@@ -86,8 +86,21 @@
         line-height: 24px;
         text-align: center;
     }
+    .webuploader-pick{
+        padding: 6px 12px;
+        background: none;
+        color: #1ab394;
+    }
+    .webuploader-pick-hover{
+        background: none;
+        color: #FFF;
+    }
+    #import{
+        padding: 0;
+    }
 </style>
 <div class="revised-record">
+    <input type="hidden" name="fileId">
     <h2>修编记录</h2>
     <div class="table-info">
         <table id="tableItem" class="table table-striped" cellspacing="0"  width="100%">
@@ -130,14 +143,14 @@
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">标段：</label>
-                                <div class="myblock col-xs-6 col-sm-6 input-group">
-                                    <input id="standardNumr" type="text" class="form-control" name="standardNumr" >
+                                <div class="col-xs-6 col-sm-6 input-group">
+                                    <input id="segmentv" type="text" class="form-control" name="segmentv" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">部位：</label>
-                                <div class="myblock col-xs-6 col-sm-6 input-group">
-                                    <input id="dataImple" type="text" class="form-control" name="dataImple" >
+                                <div class="col-xs-6 col-sm-6 input-group">
+                                    <input id="position" type="text" class="form-control" name="position" >
                                 </div>
                             </div>
                         </div>
@@ -145,14 +158,14 @@
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">作业内容：</label>
-                                <div class="myblock col-xs-6 col-sm-6 input-group">
-                                    <input id="alternativeStandard" type="text" class="form-control" name="alternativeStandardReadonly" readonly>
+                                <div class="col-xs-6 col-sm-6 input-group">
+                                    <input id="job_content" type="text" class="form-control" name="job_content" readonly>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-xs-offset-0">风险因素：</label>
-                                <div class="myblock col-xs-6 col-sm-6 input-group">
-                                    <select name="sex" id="psex" class="form-control" >
+                                <div class="col-xs-6 col-sm-6 input-group">
+                                    <select name="risk_factor" id="risk_factor" class="form-control" >
                                         <option value="0" selected>适用</option>
                                         <option value="-1">过期</option>
                                     </select>
@@ -163,54 +176,53 @@
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-3 col-sm-4 control-label"><span>存在的风险：</span><br /><span>(风险名称)</span></label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <input id="addName" type="text" class="form-control" name="addName" >
+                                <div class="col-xs-6 input-group">
+                                    <input id="riskname" type="text" class="form-control" name="riskname" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-3 col-sm-4 control-label">风险等级：</label>
-                                <div class="myblock col-xs-6 input-group">
-                                    <div class="btn btn-upload" id="picker">上传</div>
-                                    <div id="fileUpload" style="display: inline-block;vertical-align: middle;"></div>
+                                <div class="col-xs-6 input-group">
+                                    <input id="risk_grade" type="text" class="form-control" name="risk_grade" >
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-2 control-label">施工单位责任人：</label>
-                                <div class="myblock col-xs-6 col-sm-9 input-group">
-                                    <input id="pdivision" type="text" class="form-control" name="division">
+                                <label class="col-xs-6 col-sm-4 control-label">施工单位责任人：</label>
+                                <div class="col-xs-6 input-group">
+                                    <input id="construction_user" type="text" class="form-control" name="construction_user">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-2 control-label">联系电话：</label>
-                                <div class="myblock col-xs-6 col-sm-9 input-group">
-                                    <input id="pdivision" type="text" class="form-control" name="division">
+                                <label class="col-xs-6 col-sm-4 control-label">联系电话：</label>
+                                <div class="col-xs-6 input-group">
+                                    <input id="c_iphone" type="text" class="form-control" name="c_iphone">
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-2 control-label">监理单位责任人：</label>
-                                <div class="myblock col-xs-6 col-sm-9 input-group">
-                                    <input id="pdivision" type="text" class="form-control" name="division">
+                                <label class="col-xs-6 col-sm-4 control-label">监理单位责任人：</label>
+                                <div class="col-xs-6 input-group">
+                                    <input id="supervision_user" type="text" class="form-control" name="supervision_user">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-2 control-label">联系电话：</label>
-                                <div class="myblock col-xs-6 col-sm-9 input-group">
-                                    <input id="iphone" type="text" class="form-control" name="iphone">
+                                <label class="col-xs-6 col-sm-4 control-label">联系电话：</label>
+                                <div class="col-xs-6 input-group">
+                                    <input id="s_iphone" type="text" class="form-control" name="s_iphone">
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-2 col-sm-2 control-label">预控措施：</label>
-                                <div class="myblock col-xs-6 col-sm-9 input-group">
-                                    <textarea name="rulesDesc" id="rulesDesc" style="width: 100%;min-height: 100px;"></textarea>
+                                <label class="col-xs-2 col-sm-4 control-label">预控措施：</label>
+                                <div class="col-xs-6 input-group">
+                                    <textarea name="measures" id="measures" style="width: 100%;min-height: 100px;"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -218,14 +230,14 @@
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-3 col-sm-4 control-label">年度风险辨识文件：</label>
-                                <div class="myblock col-xs-6 input-group">
+                                <div class="col-xs-6 input-group">
                                     <div class="btn btn-upload" id="yearUpload">上传</div>
                                     <div id="yearUploadList" style="display: inline-block;vertical-align: middle;"></div>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-3 col-sm-4 control-label">季度风险辨识文件：</label>
-                                <div class="myblock col-xs-6 input-group">
+                                <div class="col-xs-6 input-group">
                                     <div class="btn btn-upload" id="quarterUpload">上传</div>
                                     <div id="quarterUploadList" style="display: inline-block;vertical-align: middle;"></div>
                                 </div>
@@ -235,14 +247,14 @@
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-3 col-sm-4 control-label">风险复测单：</label>
-                                <div class="myblock col-xs-6 input-group">
+                                <div class="col-xs-6 input-group">
                                     <div class="btn btn-upload" id="listUpload">上传</div>
                                     <div id="listUploadList" style="display: inline-block;vertical-align: middle;"></div>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-3 col-sm-4 control-label">风险控制卡：</label>
-                                <div class="myblock col-xs-6 input-group">
+                                <div class="col-xs-6 input-group">
                                     <div class="btn btn-upload" id="cardUpload">上传</div>
                                     <div id="cardUploadList" style="display: inline-block;vertical-align: middle;"></div>
                                 </div>
@@ -252,7 +264,7 @@
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-3 col-sm-4 control-label">施工作业票：</label>
-                                <div class="myblock col-xs-6 input-group">
+                                <div class="col-xs-6 input-group">
                                     <div class="btn btn-upload" id="ticketUpload">上传</div>
                                     <div id="ticketUploadList" style="display: inline-block;vertical-align: middle;"></div>
                                 </div>
@@ -272,6 +284,150 @@
         </div>
     </div>
 </div>
+
+<div id="view_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5>文件上传</h5>
+                </div>
+                <input type="text" name="uid" id="id1" style="display: none;" value="">
+                <div class="ibox-content">
+                    <!--新增用户信息开始-->
+                    <form class="form-horizontal" name="memberAdd" id="viewForm" method="post">
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">标段：</label>
+                                <div class="col-xs-6 col-sm-6 input-group">
+                                    <p class="form-control-static" id="viewSegmentv"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">部位：</label>
+                                <div class="col-xs-6 col-sm-6 input-group">
+                                    <p class="form-control-static" id="viewPosition"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">作业内容：</label>
+                                <div class="col-xs-6 col-sm-6 input-group">
+                                    <p class="form-control-static" id="view_job_content"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-xs-offset-0">风险因素：</label>
+                                <div class="col-xs-6 col-sm-6 input-group">
+                                    <p class="form-control-static" id="view_risk_factor"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label"><span>存在的风险：</span><br /><span>(风险名称)</span></label>
+                                <div class="col-xs-6 input-group">
+                                    <p class="form-control-static" id="viewRiskname"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label">风险等级：</label>
+                                <div class="col-xs-6 input-group">
+                                    <p class="form-control-static" id="view_risk_grade"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">施工单位责任人：</label>
+                                <div class="col-xs-6 input-group">
+                                    <p class="form-control-static" id="viewConstruction_user"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">联系电话：</label>
+                                <div class="col-xs-6 input-group">
+                                    <p class="form-control-static" id="view_c_iphone"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">监理单位责任人：</label>
+                                <div class="col-xs-6 input-group">
+                                    <p class="form-control-static" id="view_supervision_user"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">联系电话：</label>
+                                <div class="col-xs-6 input-group">
+                                    <p class="form-control-static" id="view_s_iphone"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-2 col-sm-4 control-label">预控措施：</label>
+                                <div class="col-xs-6 input-group">
+                                    <p class="form-control-static" id="viewMeasures"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label">年度风险辨识文件：</label>
+                                <div class="col-xs-6 input-group">
+                                    <button type="button" class="preview btn" fileType="1">预览</button>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label">季度风险辨识文件：</label>
+                                <div class="col-xs-6 input-group">
+                                    <button type="button" class="preview btn" fileType="2">预览</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label">风险复测单：</label>
+                                <div class="col-xs-6 input-group">
+                                    <button type="button" class="preview btn" fileType="3">预览</button>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label">风险控制卡：</label>
+                                <div class="col-xs-6 input-group">
+                                    <button type="button" class="preview btn" fileType="4">预览</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-3 col-sm-4 control-label">施工作业票：</label>
+                                <div class="col-xs-6 input-group">
+                                    <button type="button" class="preview btn" fileType="5">预览</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!--新增用户信息结束-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="form_container" style="display: none;"></div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 
@@ -282,6 +438,11 @@
 <script src="__JS__/jquery.jedate.js"></script>
 <script src="__JS__/pdf.js"></script>
 <script src="__JS__/mypdf.js"></script>
+<script src="__JS__/plugins/validate/jquery.validate.min.js"></script>
+</body>
+</html>
+
+
 <script>
     //表格
     var tableItem = $('#tableItem').DataTable({
@@ -306,7 +467,7 @@
                 "orderable": false,
                 "targets": [11],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
+                    var html = "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showData(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
@@ -342,7 +503,7 @@
         var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
-                url: "{:url('Revisionrecord/recordDel')}",
+                url: "{:url('Riskmanage/manageDel')}",
                 data: {
                     id : id
                 },
@@ -351,7 +512,7 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        tableItem.ajax.url("__SCRIPT__/safety_record.php?id="+id).load();
+                        tableItem.ajax.url("__SCRIPT__/safety_riskmanage.php?id="+id).load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -387,7 +548,7 @@
     var idArr = [];
     function getId(that) {
         var isChecked = $(that).prop('checked');
-        var id = $(that).parents('tr').find('td:eq(0)').text();
+        var id = $(that).parents('tr').find('td:eq(1)').text();
         if(isChecked){
             idArr.push(id);
             idArr.removalArray();
@@ -426,26 +587,446 @@
         $('#addRules_modal').modal('show');
     });
 
-    //导出
-    $('.export').click(function(){
-        /*var isChecked = $(this).attr('isChecked');
-        if(isChecked){
-            return;
-        }*/
+    //关闭新增弹层
+    $('#addRules_modal').on('hide.bs.modal', function () {
+        //uploader.destroy();//重置上传插件
+        validator.resetForm();//重置form表单
+    });
+
+    //表单验证提交
+    var validator = $("#memberAdd").validate({
+        submitHandler: function(form) {
+            //获取表单数据
+            var id = $('#sid').val();
+            var group_id = $('input[type="hidden"][name="groupId"]').val();
+            var segmentv = $('#segmentv').val();
+            var position = $('#position').val();
+            var job_content = $('#job_content').val();
+            var risk_factor = $('#risk_factor').val();
+            var riskname = $('#riskname').val();
+            var risk_grade = $('#risk_grade').val();
+            var construction_user = $('#construction_user').val();
+            var c_iphone = $('#c_iphone').val();
+            var supervision_user = $('#supervision_user').val();
+            var s_iphone = $('#s_iphone').val();
+            var measures = $('#measures').val();
+            //表单提交
+            if(!newFileNmae||newFileNmae===oldFileName){
+                //修改
+                $(form).ajaxSubmit({
+                    url: "{:url('Statutestdi/sdiEdit')}",
+                    type: "post",
+                    dataType: 'json',
+                    data:{
+                        id:id,
+                        group_id:group_id,
+                        segmentv:segmentv,
+                        position:position,
+                        job_content:job_content,
+                        risk_factor:risk_factor,
+                        riskname:riskname,
+                        risk_grade:risk_grade,
+                        construction_user:construction_user,
+                        c_iphone:c_iphone,
+                        supervision_user:supervision_user,
+                        s_iphone:s_iphone,
+                        measures:measures
+                    },
+                    success: complete
+                });
+            }else{
+                //上传文件
+                uploader.upload();
+            }
+        },
+        rules: {
+            segmentv: "required",
+            position: "required",
+            job_content: "required",
+            risk_factor: "required",
+            riskname: "required",
+            risk_grade: "required",
+            construction_user: "required",
+            c_iphone: "required",
+            supervision_user: "required",
+            s_iphone: "required",
+            measures: "required",
+        },
+        messages: {
+            segmentv: "不能为空",
+            position: "不能为空",
+            job_content: "不能为空",
+            risk_factor: "不能为空",
+            riskname: "不能为空",
+            risk_grade: "不能为空",
+            construction_user: "不能为空",
+            c_iphone: "不能为空",
+            supervision_user: "不能为空",
+            s_iphone: "不能为空",
+            measures: "不能为空",
+        }
+    });
+
+    //预览表格数据
+    function showData(that) {
+        $('#view_modal').modal('show');
+        var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
+        $('input[type="hidden"][name="fileId"]').val(id);
         $.ajax({
-            url: "{:url('Revisionrecord/recordDownload')}",
+            url: "{:url('Riskmanage/index')}",
             type: "post",
-            dataType: 'json',
+            dataType: "json",
             data:{
-                id:idArr,
+                id:id
             },
-            success: function (data) {
-                if(data.code==1){
-                    layer.msg('导出成功！');
+            success: function (res) {
+                $('#viewSegmentv').html(res.segmentv);
+                $('#viewPosition').html(res.position);
+                $('#view_job_content').html(res.job_content);
+                $('#view_risk_factor').html(res.risk_factor);
+                $('#viewRiskname').html(res.riskname);
+                $('#view_risk_grade').html(res.risk_grade);
+                $('#viewConstruction_user').html(res.construction_user);
+                $('#view_c_iphone').html(res.c_iphone);
+                $('#view_supervision_user').html(res.supervision_user);
+                $('#view_s_iphone').html(res.s_iphone);
+                $('#viewMeasures').html(res.measures);
+            }
+        });
+    }
+
+    //预览文件方法
+    function showPdf(fileId,fileType,url) {
+        $.ajax({
+            url: url,
+            type: "post",
+            data: {
+                id:fileId,
+                type:fileType
+            },
+            success: function (res) {
+                console.log(res);
+                if(res.code === 1){
+                    var path = res.path;
+                    window.open("__JS__/web/viewer.html?file=" + path,"_blank");
+                }else {
+                    layer.msg(res.msg);
                 }
             }
         });
+    }
+
+    //预览文件事件
+    $('.preview').click(function(){
+        var fileId = $('input[type="hidden"][name="fileId"]').val();
+        var fileType = $(this).attr('fileType');
+        showPdf(fileId,fileType,"{:url('Riskmanage/managePreview')}");
+    });
+
+    //关闭预览弹层
+    $('#view_modal').on('hide.bs.modal', function () {
+        $('input[type="hidden"][name="fileId"]').val('');
+    });
+
+    //导入
+    var importExcel = WebUploader.create({
+        auto: true,
+        // swf文件路径
+        swf:  '/static/admin/js/webupload/Uploader.swf',
+
+        // 文件接收服务端。
+        server: "{:url('Riskmanage/importExcel')}",
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: {
+            multiple: false,
+            id: "#import",
+            innerHTML: "导入"
+        },
+        formData:{
+            group_id:'',
+        },
+        accept: {
+            title: 'excel',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx'
+        },
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false
+
+    });
+
+    importExcel.on( 'uploadSuccess', function( file ,res) {
+        layer.alert('导入成功');
+        complete(res);
+    });
+
+    importExcel.on( 'uploadError', function( file ) {
+        layer.alert('导入出错');
+    });
+
+    //导出excel
+    $("#export").click(function () {
+        $.ajax({
+            url: "./exportExcel",
+            type: "post",
+            data: {
+                'id':idArr
+            },
+            dataType: "json",
+            success: function (res) {
+                if(res.code ==1){
+                    $("#form_container").empty();
+                    var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
+                        +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
+                    for (var i = 0; i < idArr.length; i++)
+                    {
+                        str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
+                    }
+                    str += '<button type="submit" id="exportExcelBtn"></button></form>';
+                    $("#form_container").append(str);
+                    $("#form_container").find("#exportExcelBtn").click();
+                }else{
+                    alert("获取数据失败！")
+                }
+            }
+        })
+    });
+
+    //导出excel模板
+    $("#exportExcel").click(function () {
+        $.ajax({
+            url: "./exportExcelTemplete",
+            type: "post",
+            data: {
+                'id':idArr
+            },
+            dataType: "json",
+            success: function (res) {
+                if(res.code ==1){
+                    $("#form_container").empty();
+                    var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
+                        +'<form action="./exportExcelTemplete" method="get" target="exportExcelFrame">';
+                    for (var i = 0; i < idArr.length; i++)
+                    {
+                        str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
+                    }
+                    str += '<button type="submit" id="exportExcelBtn"></button></form>';
+                    $("#form_container").append(str);
+                    $("#form_container").find("#exportExcelBtn").click();
+                }else{
+                    alert("获取数据失败！")
+                }
+            }
+        })
+    });
+
+    //数据返回
+    function complete(data){
+        var groupid = $('input[type="hidden"][name="groupId"]').val();
+        console.log(data);
+        if(data.code==1){
+            layer.msg(data.msg);
+            tableItem.ajax.url("__SCRIPT__/safety_riskmanage.php").load();
+            $("#addRules_modal").modal('hide');
+        }else{
+            layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+            return false;
+        }
+    }
+
+    /**
+     * 文件上传
+     */
+    var yearUpload = WebUploader.create({
+        auto: true,
+        // swf文件路径
+        swf:  '/static/admin/js/webupload/Uploader.swf',
+
+        // 文件接收服务端。
+        server: "{:url('Eduemployee/importExcel')}",
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: {
+            multiple: false,
+            id: "#yearUpload",
+            innerHTML: "上传"
+        },
+        formData:{
+            pid:'',
+            zid:''
+        },
+        accept: {
+            title: 'excel',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx'
+        },
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false
+    });
+
+    yearUpload.on( 'uploadSuccess', function( file ,res) {
+        complete(res);
+    });
+
+    yearUpload.on("uploadStart",function () {
+        yearUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+        yearUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
+    });
+
+    var quarterUpload = WebUploader.create({
+        auto: true,
+        // swf文件路径
+        swf:  '/static/admin/js/webupload/Uploader.swf',
+
+        // 文件接收服务端。
+        server: "{:url('Eduemployee/importExcel')}",
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: {
+            multiple: false,
+            id: "#quarterUpload",
+            innerHTML: "上传"
+        },
+        formData:{
+            pid:'',
+            zid:''
+        },
+        accept: {
+            title: 'excel',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx'
+        },
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false
+    });
+
+    quarterUpload.on( 'uploadSuccess', function( file ,res) {
+        complete(res);
+    });
+
+    quarterUpload.on("uploadStart",function () {
+        quarterUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+        quarterUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
+    });
+
+    var listUpload = WebUploader.create({
+        auto: true,
+        // swf文件路径
+        swf:  '/static/admin/js/webupload/Uploader.swf',
+
+        // 文件接收服务端。
+        server: "{:url('Eduemployee/importExcel')}",
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: {
+            multiple: false,
+            id: "#listUpload",
+            innerHTML: "上传"
+        },
+        formData:{
+            pid:'',
+            zid:''
+        },
+        accept: {
+            title: 'excel',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx'
+        },
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false
+    });
+
+    listUpload.on( 'uploadSuccess', function( file ,res) {
+        complete(res);
+    });
+
+    listUpload.on("uploadStart",function () {
+        listUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+        listUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
+    });
+
+    var cardUpload = WebUploader.create({
+        auto: true,
+        // swf文件路径
+        swf:  '/static/admin/js/webupload/Uploader.swf',
+
+        // 文件接收服务端。
+        server: "{:url('Eduemployee/importExcel')}",
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: {
+            multiple: false,
+            id: "#cardUpload",
+            innerHTML: "上传"
+        },
+        formData:{
+            pid:'',
+            zid:''
+        },
+        accept: {
+            title: 'excel',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx'
+        },
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false
+    });
+
+    cardUpload.on( 'uploadSuccess', function( file ,res) {
+        complete(res);
+    });
+
+    cardUpload.on("uploadStart",function () {
+        cardUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+        cardUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
+    });
+
+    var ticketUpload = WebUploader.create({
+        auto: true,
+        // swf文件路径
+        swf:  '/static/admin/js/webupload/Uploader.swf',
+
+        // 文件接收服务端。
+        server: "{:url('Eduemployee/importExcel')}",
+
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: {
+            multiple: false,
+            id: "#ticketUpload",
+            innerHTML: "上传"
+        },
+        formData:{
+            pid:'',
+            zid:''
+        },
+        accept: {
+            title: 'excel',
+            extensions: 'xls,xlsx',
+            mimeTypes: '.xls,.xlsx'
+        },
+
+        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+        resize: false
+    });
+
+    ticketUpload.on( 'uploadSuccess', function( file ,res) {
+        complete(res);
+    });
+
+    ticketUpload.on("uploadStart",function () {
+        ticketUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+        ticketUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
     });
 </script>
-</body>
-</html>
