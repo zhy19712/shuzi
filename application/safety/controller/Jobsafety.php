@@ -9,14 +9,22 @@
 namespace app\safety\controller;
 
 use app\admin\controller\Base;
+use app\safety\model\JobsafetyModel;
+use app\safety\model\EquipmentCheckAcceptModel;
 
 class Jobsafety extends Base
 {
     /*
-     * 获取一条特种作业人员
-    */
+     * 作业安全左边的树状结构
+     */
     public function index()
     {
-        return $this->fetch();
+        if(request()->isAjax()){
+            $node = new JobsafetyModel();
+            $nodeStr = $node->getNodeInfo();
+            return json($nodeStr);
+        }
+        else
+            return $this->fetch();
     }
 }
