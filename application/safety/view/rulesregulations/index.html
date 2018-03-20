@@ -473,16 +473,14 @@
     $("#options>i:nth-child(3)").click(function () {
         if(mytree_node){
             layer.confirm("警告！你将会删除"+  mytree_node.name  +"！确认删除?", {icon: 3, title:'提示'}, function(index){
-                var id = mytree_node.id;
+                var idDel = mytree_node.id;
+                console.log(idDel)
                 $.ajax({
                     url: "nodeDel",
                     type: "post",
-                    data: {id:id},
+                    data: {id:idDel},
                     dataType: "json",
                     success: function (res) {
-//                        if(mytree_node.level === 3){
-//                            admin_table.ajax.url("__SCRIPT__/project_table.php").load();
-//                        }
                         mytree_node = "";
                         layer.msg(res.msg,{time:1500,shade: 0.1});
                         zTreeObj.reAsyncChildNodes(null, "refresh");
@@ -601,8 +599,6 @@
         }
     };
     zTreeRecogner = $.fn.zTree.init($("#tree_recogner"), setting1, mytree_node1);
-
-
     //保存tree节点按钮
     $("#level2 .btn-primary").click(function () {
         if(!$("#companyName").val()){
@@ -636,7 +632,6 @@
             return false;
         }
     }
-
     //点击时间插件
     $("#dataImple").jeDate({
         format: "YYYY-MM-DD"
@@ -687,7 +682,7 @@
             uploader1.on("uploadStart",function () {
                 console.log(groupid)
                 console.log($("#rulesid").val())
-                uploader1.options.formData.id = $("#rulesid").val();//id
+                uploader1.options.formData.major_key = $("#rulesid").val();//id
                 uploader1.options.formData.group_id = groupid;//group_id
                 uploader1.options.formData.number = $("#standardNumr").val();//标准号
                 uploader1.options.formData.rul_name = $("#file_list1 .info .infoText").val();//名称
@@ -782,7 +777,7 @@
                             url: "./rulesEdit",
                             type: "post",
                             data: {
-                                id : $("#rulesid").val(),//id
+                                major_key : $("#rulesid").val(),//id
                                 group_id : groupid,//group_id
                                 number : $("#standardNumr").val(),//标准号
                                 rul_name : $("#file_list1 .info").text(),//名称
@@ -829,7 +824,7 @@
         $.ajax({
             url: "./getRules",
             type: "post",
-            data: {id:id},
+            data: {major_key:id},
             dataType: "json",
             success: function (res) {
                 console.log(res);
@@ -1011,7 +1006,7 @@
                         + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
                         + "<form name=download"+ id +" action="+ url +" method='get' target=downloadFrame"+ id +">"
                         + "<span class='file_name' style='color: #000;'>"+str+"</span>"
-                        + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+                        + "<input class='file_url' style='display: none;' name='major_key' value="+ id +">"
                         + "<button type='submit' class=btn" + id +"></button>"
                         + "</form>"
                     $("#formDown").append(str);
@@ -1031,7 +1026,7 @@
         $.ajax({
             url: url,
             type: "post",
-            data: {id:id},
+            data: {major_key:id},
             success: function (res) {
                 if(res.code === 1){
                     var path = res.path;
@@ -1055,14 +1050,13 @@
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
                 url: "./rulesDel",
-                data: {'id' : id},
+                data: {'major_key' : id},
                 type: "post",
                 dataType: "json",
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
-//                        cid = "";
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -1204,7 +1198,7 @@
             url: "./exportExcel",
             type: "post",
             data: {
-                'id':dataArr
+                'major_key':dataArr
             },
             dataType: "json",
             success: function (res) {
@@ -1213,7 +1207,7 @@
                     var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
                         +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
                     for (var i = 0; i < dataArr.length; i++) {
-                        str += '<input style="display: none;" name="id[]" value="'+ dataArr[i] +'">';
+                        str += '<input style="display: none;" name="major_key[]" value="'+ dataArr[i] +'">';
                     }
                     str += '<button type="submit" id="exportExcelBtn"></button></form>';
                     $("#form_container").append(str);

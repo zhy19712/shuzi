@@ -159,6 +159,22 @@ class Education extends Base
     }
 
     /**
+     * 删除上传的文件
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function delUploadFile()
+    {
+        if(request()->isAjax()){
+            $major_key = input('param.major_key');
+            $types= input('param.types'); // types 1 培训材料文件 2 培训记录文件
+            $edu = new EducationModel();
+            $flag = $edu->delEduFile($major_key,$types);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    /**
      * 导入
      * @return array|\think\response\Json
      * @throws \PHPExcel_Exception

@@ -1,22 +1,23 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: sir
- * Date: 2018/3/7
- * Time: 14:01
+ * User: admin
+ * Date: 2018/3/20
+ * Time: 11:00
  */
-
+//车辆管理维修记录
 namespace app\safety\model;
-
-
 use think\exception\PDOException;
 use think\Model;
 
-class RevisionrecordModel extends Model
+class RepairrecordModel extends Model
 {
-    protected $name = 'safety_record';
+    protected $name = 'safety_repair_record';
 
-    public function insertRecord($param)
+    /*
+     * 添加新的车辆管理维修记录
+     */
+    public function insertRepairrecord($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -30,10 +31,13 @@ class RevisionrecordModel extends Model
         }
     }
 
-    public function editRecord($param)
+    /*
+     * 编辑车辆管理维修记录
+     */
+    public function editRepairrecord($param)
     {
         try{
-            $result =  $this->allowField(true)->save($param, ['major_key' => $param['major_key']]);
+            $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
@@ -44,28 +48,41 @@ class RevisionrecordModel extends Model
         }
     }
 
-    public function delRecord($major_key)
+    /*
+     * 删除车辆管理维修记录
+     */
+    public function delRepairrecord($id)
     {
         try{
-            $this->where('major_key', $major_key)->delete();
+            $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
+
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
 
-    public function getOne($major_key)
+    /*
+     * 批量删除同一pid的车辆管理维修记录
+     */
+    public function delPid($id)
     {
-        return $this->where('major_key', $major_key)->find();
-    }
+        try{
+            $this->where('pid', $id)->delete();
+            return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
 
-    public function getList($majorKeyArr)
-    {
-        $list = [];
-        foreach ($majorKeyArr as $v){
-            $list[] = $this->find($v);
+        }catch( PDOException $e){
+            return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
-        return $list;
     }
 
+    /*
+     * 获取一条车辆管理维修记录
+     */
+    public function getOne($id)
+    {
+
+        return $this->where('id', $id)->find();
+
+    }
 }
