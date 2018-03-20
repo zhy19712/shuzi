@@ -30,7 +30,7 @@ class Revisionrecord extends Base
         if(request()->isAjax()){
             $record = new RevisionrecordModel();
             $param = input('post.');
-            $flag = $record->delRecord($param['id']);
+            $flag = $record->delRecord($param['major_key']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -48,10 +48,10 @@ class Revisionrecord extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('id/a');
+        $majorKeyArr = input('majorKeyArr/a');
         $name = '修编记录 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $record = new RevisionrecordModel();
-        $list = $record->getList($idArr);
+        $list = $record->getList($majorKeyArr);
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -82,7 +82,7 @@ class Revisionrecord extends Base
             $key++;
             $objPHPExcel->getActiveSheet()
                 //Excel的第A列，name是你查出数组的键值字段，下面以此类推
-                ->setCellValue('A'.$key, $v['id'])
+                ->setCellValue('A'.$key, $v['major_key'])
                 ->setCellValue('B'.$key, $v['record_name'])
                 ->setCellValue('C'.$key, $v['original_number'])
                 ->setCellValue('D'.$key, $v['replace_number'])

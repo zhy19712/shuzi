@@ -505,7 +505,7 @@
             $.ajax({
                 url: "{:url('Riskmanage/manageDel')}",
                 data: {
-                    id : id
+                    major_key : id
                 },
                 type: "post",
                 dataType: "json",
@@ -618,7 +618,7 @@
                     type: "post",
                     dataType: 'json',
                     data:{
-                        id:id,
+                        major_key:id,
                         group_id:group_id,
                         segmentv:segmentv,
                         position:position,
@@ -677,7 +677,7 @@
             type: "post",
             dataType: "json",
             data:{
-                id:id
+                major_key:id
             },
             success: function (res) {
                 $('#viewSegmentv').html(res.segmentv);
@@ -701,7 +701,7 @@
             url: url,
             type: "post",
             data: {
-                id:fileId,
+                major_key:fileId,
                 type:fileType
             },
             success: function (res) {
@@ -773,7 +773,7 @@
             url: "./exportExcel",
             type: "post",
             data: {
-                'id':idArr
+                'majorKeyArr':idArr
             },
             dataType: "json",
             success: function (res) {
@@ -801,7 +801,7 @@
             url: "./exportExcelTemplete",
             type: "post",
             data: {
-                'id':idArr
+                'majorKeyArr':idArr
             },
             dataType: "json",
             success: function (res) {

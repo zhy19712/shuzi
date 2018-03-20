@@ -912,7 +912,7 @@
                     type: "post",
                     dataType: 'json',
                     data:{
-                        id:id,
+                        major_key:id,
                         zid:zid,
                         pid:pid,
                         edu_name:edu_name,
@@ -969,7 +969,7 @@
             layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
                 $.ajax({
                     url: "{:url('Edupeople/eduDel')}",
-                    data: {'id' : id},
+                    data: {'major_key' : id},
                     type: "get",
                     dataType: "json",
                     success: function (res) {
@@ -995,7 +995,7 @@
                 type: "post",
                 dataType: "json",
                 data:{
-                    id:id
+                    major_key:id
                 },
                 success: function (res) {
                     $('#name').val(res.edu_name);
@@ -1018,7 +1018,7 @@
                 url: url,
                 type: "post",
                 data: {
-                    'id':idArr
+                    'majorKeyArr':idArr
                 },
                 dataType: "json",
                 success: function (res) {
@@ -1047,7 +1047,7 @@
                 url: manageUrlExcel,
                 type: "post",
                 data: {
-                    'id':idArr
+                    'majorKeyArr':idArr
                 },
                 dataType: "json",
                 success: function (res) {
@@ -1136,7 +1136,7 @@
                     type: "post",
                     dataType: 'json',
                     data:{
-                        id:id,
+                        major_key:id,
                         zid:zid,
                         pid:pid,
                         edu_name:edu_name,
@@ -1200,7 +1200,7 @@
             layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
                 $.ajax({
                     url: "{:url('Eduemployee/eduDel')}",
-                    data: {'id' : id},
+                    data: {'major_key' : id},
                     type: "get",
                     dataType: "json",
                     success: function (res) {
@@ -1226,7 +1226,7 @@
                 type: "post",
                 dataType: "json",
                 data:{
-                    id:id
+                    major_key:id
                 },
                 success: function (res) {
                     $('#practName').val(res.edu_name);
@@ -1252,7 +1252,7 @@
                 url: practUrl,
                 type: "post",
                 data: {
-                    'id':idArr
+                    'majorKeyArr':idArr
                 },
                 dataType: "json",
                 success: function (res) {
@@ -1281,7 +1281,7 @@
                 url: practUrlExcel,
                 type: "post",
                 data: {
-                    'id':idArr
+                    'majorKeyArr':idArr
                 },
                 dataType: "json",
                 success: function (res) {
@@ -1370,7 +1370,7 @@
                         type: "post",
                         dataType: 'json',
                         data:{
-                            id:id,
+                            major_key:id,
                             zid:zid,
                             pid:pid,
                             edu_name:edu_name,
@@ -1436,7 +1436,7 @@
             layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
                 $.ajax({
                     url: "{:url('Eduforeignpersonnel/eduDel')}",
-                    data: {'id' : id},
+                    data: {'major_key' : id},
                     type: "get",
                     dataType: "json",
                     success: function (res) {
@@ -1462,7 +1462,7 @@
                 type: "post",
                 dataType: "json",
                 data:{
-                    id:id
+                    major_key:id
                 },
                 success: function (res) {
                     $('#foreignName').val(res.edu_name);
@@ -1488,7 +1488,7 @@
                 url: "./exportExcel",
                 type: "post",
                 data: {
-                    'id':idArr
+                    'majorKeyArr':idArr
                 },
                 dataType: "json",
                 success: function (res) {
@@ -1517,7 +1517,7 @@
                 url: foreignUrlExcel,
                 type: "post",
                 data: {
-                    'id':idArr
+                    'majorKeyArr':idArr
                 },
                 dataType: "json",
                 success: function (res) {

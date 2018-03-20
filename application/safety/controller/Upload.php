@@ -283,7 +283,7 @@ class Upload extends Base
     public function uploadRules(){
         $rules = new RulesregulationsModel();
         // 前台提交的数据
-        $id = request()->param('id'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
+        $major_key = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
         $group_id = request()->param('group_id'); // 必须  文件所属分组的编号 也就是当前选择的节点id编号
         $number = request()->param('number'); // 标准号
         $rul_name = request()->param('rul_name'); // 名称
@@ -324,14 +324,13 @@ class Upload extends Base
                 'path' => $path,
                 'remark' => $remark
             ];
-            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
-            $is_add = explode('_',$id);
-            if(empty($id) || $is_add[0] == 'WU')
+
+            if(empty($major_key))
             {
                 $flag = $rules->insertRules($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
-                $data_older = $rules->getOne($id);
+                $data_older = $rules->getOne($major_key);
                 if(empty($data_older)){
                     return json(['code' => '0', 'msg' => '无效的编号']);
                 }
@@ -357,7 +356,7 @@ class Upload extends Base
                 if(file_exists(unlink($data_older['path']))){
                     unlink($data_older['path']);
                 }
-                $data['id'] = $id;
+                $data['major_key'] = $major_key;
                 $flag = $rules->editRules($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
@@ -1073,8 +1072,8 @@ class Upload extends Base
     public function uploadEval(){
         $eval = new EvaluationModel();
         // 前台 页面提交的数据
-        $id = request()->param('id'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
-        $type = request()->param('type'); // 必填 type 是1 绩效评定  2评估报告 3工作总结
+        $major_key = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
+        $type = request()->param('types'); // 必填 type 是1 绩效评定  2评估报告 3工作总结
         $eval_name = request()->param('eval_name'); // 可选 文件名称 用户输入的文件名称 不传 默认和原文件名称一致
         $years = $quarter = '';
         if($type == '1'){ //  一岗双责绩效评定
@@ -1133,20 +1132,19 @@ class Upload extends Base
                     'remark' => $remark
                 ];
             }
-            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
-            $is_add = explode('_',$id);
-            if(empty($id) || $is_add[0] == 'WU'){
+
+            if(empty($major_key)){
                 $flag = $eval->insertEval($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
-                $data_older = $eval->getOne($id);
+                $data_older = $eval->getOne($major_key);
                 if(empty($data_older)){
                     return json(['code' => '0', 'msg' => '无效的编号']);
                 }
                 if(file_exists($data_older['path'])){
                     unlink($data_older['path']);
                 }
-                $data['id'] = $id;
+                $data['major_key'] = $major_key;
                 $flag = $eval->editEval($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
@@ -1163,7 +1161,7 @@ class Upload extends Base
     public function uploadImprovement(){
         $improve = new ImprovementModel();
         // 前台 页面提交的数据
-        $id = request()->param('id'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
+        $major_key = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
         $ment_name = request()->param('ment_name'); // 可选 文件名称 用户输入的文件名称 不传 默认和原文件名称一致
         $years = request()->param('years'); // 必填 年度
         $remark = request()->param('remark'); // 可选 备注
@@ -1191,20 +1189,19 @@ class Upload extends Base
                 'ment_date' => $ment_date,
                 'remark' => $remark
             ];
-            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
-            $is_add = explode('_',$id);
-            if(empty($id) || $is_add[0] == 'WU'){
+
+            if(empty($major_key)){
                 $flag = $improve->insertImprovement($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
-                $data_older = $improve->getOne($id);
+                $data_older = $improve->getOne($major_key);
                 if(empty($data_older)){
                     return json(['code' => '0', 'msg' => '无效的编号']);
                 }
                 if(file_exists($data_older['path'])){
                     unlink($data_older['path']);
                 }
-                $data['id'] = $id;
+                $data['major_key'] = $major_key;
                 $flag = $improve->editImprovement($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
