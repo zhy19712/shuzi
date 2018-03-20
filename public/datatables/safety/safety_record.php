@@ -19,7 +19,7 @@ include('../conn.php');
  * Easy set variables
  */
 
-// DB table to use 法规标准识别
+// DB table to use 修编记录
 $table = 'think_safety_record';
 
 // Table's primary key
@@ -38,10 +38,6 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
     array( 'db' => 'owner',  'dt' => 6 ),
     array( 'db' => 'record_type',  'dt' => 7 )
 );
-
-
-
-
 
 
 // $_GET = "SELECT * FROM people WHERE 'uid' = '105625886366281950'";
