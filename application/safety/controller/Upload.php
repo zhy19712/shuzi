@@ -250,6 +250,7 @@ class Upload extends Base
                     $record_type = Db::name('safety_sdi_node')->where('id',$data_older['group_id'])->value('pname');
                     $record = new RevisionrecordModel();
                     $re_data = [
+                        'correlation_number' => $major_key,
                         'record_name' => $data_older['sdi_name'],
                         'original_number' => $data_older['number'],
                         'replace_number' => $standard,
@@ -257,8 +258,8 @@ class Upload extends Base
                         'owner' => session('username'),
                         'record_type' => '法规标准识别'.$record_type
                     ];
-                    // 根据 原来的版本号 和 替换版本号 查询是否 存在记录
-                    $is_exist_record = $record->getOneByNumber($data_older['number'],$data_older['standard']);
+                    // 根据 关联编号 查询是否 存在记录
+                    $is_exist_record = $record->isExist($major_key);
                     // 不存在就新增,存在就修改
                     if(empty($is_exist_record)){
                         $re_flag = $record->insertRecord($re_data);
@@ -348,6 +349,7 @@ class Upload extends Base
                     $pname = Db::name('safety_sdi_node')->where('id',$data_older['group_id'])->value('pname');
                     $record = new RevisionrecordModel();
                     $re_data = [
+                        'correlation_number' => $major_key,
                         'record_name' => $data_older['rul_name'],
                         'original_number' => $data_older['number'],
                         'replace_number' => $standard,
@@ -356,8 +358,8 @@ class Upload extends Base
                         'record_type' => '规章制度'.$pname
                     ];
 
-                    // 根据 原来的版本号 和 替换版本号 查询是否 存在记录
-                    $is_exist_record = $record->getOneByNumber($data_older['number'],$data_older['standard']);
+                    // 根据 关联编号 查询是否 存在记录
+                    $is_exist_record = $record->isExist($major_key);
                     // 不存在就新增,存在就修改
                     if(empty($is_exist_record)){
                         $re_flag = $record->insertRecord($re_data);
@@ -626,17 +628,12 @@ class Upload extends Base
      */
     public function uploadEdu(){
         $file = request()->file('file');
-//        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/education');
-//        if($info){
-//            echo $info->getSaveName();
-//        }else{
-//            echo $file->getError();
-//        }
         $module_directory_name = request()->param('module_directory_name'); // 当前模块名称
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/' . $module_directory_name . '/');
         if($info){
-            $path = './uploads/'.$module_directory_name.'/' . str_replace("\\","/",$info->getSaveName());
-            return json(['code' => 1,'msg' => '上传成功','path' => $path]);
+            $data['path'] = './uploads/'.$module_directory_name.'/' . str_replace("\\","/",$info->getSaveName());
+            $data['filename'] = $file->getInfo('name');
+            return json(['code' => 1,'msg' => '上传成功','data' => $data]);
         }else{
             return json(['code' => -1,'msg' => '上传失败']);
         }
