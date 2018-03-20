@@ -325,7 +325,7 @@ class Upload extends Base
                 'remark' => $remark
             ];
 
-            if(empty($id))
+            if(empty($major_key))
             {
                 $flag = $rules->insertRules($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
@@ -1161,7 +1161,7 @@ class Upload extends Base
     public function uploadImprovement(){
         $improve = new ImprovementModel();
         // 前台 页面提交的数据
-        $id = request()->param('id'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
+        $major_key = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
         $ment_name = request()->param('ment_name'); // 可选 文件名称 用户输入的文件名称 不传 默认和原文件名称一致
         $years = request()->param('years'); // 必填 年度
         $remark = request()->param('remark'); // 可选 备注
@@ -1189,20 +1189,19 @@ class Upload extends Base
                 'ment_date' => $ment_date,
                 'remark' => $remark
             ];
-            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
-            $is_add = explode('_',$id);
-            if(empty($id) || $is_add[0] == 'WU'){
+
+            if(empty($major_key)){
                 $flag = $improve->insertImprovement($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
-                $data_older = $improve->getOne($id);
+                $data_older = $improve->getOne($major_key);
                 if(empty($data_older)){
                     return json(['code' => '0', 'msg' => '无效的编号']);
                 }
                 if(file_exists($data_older['path'])){
                     unlink($data_older['path']);
                 }
-                $data['id'] = $id;
+                $data['major_key'] = $major_key;
                 $flag = $improve->editImprovement($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
