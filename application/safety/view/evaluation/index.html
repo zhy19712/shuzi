@@ -556,7 +556,7 @@
             uploader2.on("uploadStart",function () {
 //                console.log($("#rulesid2").val())
                 uploader2.options.formData.types = 2;//类型
-                uploader2.options.formData.id = $("#rulesid2").val();//id
+                uploader2.options.formData.major_key= $("#rulesid2").val();//id
                 uploader2.options.formData.eval_name = $("#file_list_standards .info .infoText").val();//文件名称
                 uploader2.options.formData.remark = $("#rulesDesc_standards").val()//备注
             });
@@ -622,8 +622,8 @@
                     url: "./evalEdit",
                     type: "post",
                     data: {
-                        id : $("#rulesid2").val(),//
-//                        id : editId,//
+                        major_key : $("#rulesid2").val(),//
+//                        major_key : editId,//
                         eval_name : $("#file_list_aPairOf .info .infoText").val(),//文件名称
                         remark : $("#rulesDesc_standards").val()//备注
                     },
@@ -661,11 +661,11 @@
         $.ajax({
             url:"./index",
             type: "post",
-            data: {id:id},
+            data: {major_key:id},
             success: function (res) {
                 console.log(res)
                 if(res.code ==1) {
-                    id = $("#rulesid2").val(res.data.id);//id
+                    major_key = $("#rulesid2").val(res.data.major_key);//id
                     eval_name = $("#file_list_standards .info .infoText").val(res.data.eval_name);//文件名称
                     remark = $("#rulesDesc_standards").val(res.data.remark)//备注
                     standards1 = res.data.eval_name
@@ -695,7 +695,7 @@
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
                 url: "./evalDel",
-                data: {'id' : id},
+                data: {'major_key' : id},
                 type: "post",
                 dataType: "json",
                 success: function (res) {
@@ -800,7 +800,7 @@
                 uploader3.on("uploadStart",function () {
     //                console.log($("#rulesid3").val())
                     uploader3.options.formData.types = 3;//类型
-                    uploader3.options.formData.id = $("#rulesid3").val();//id
+                    uploader3.options.formData.major_key = $("#rulesid3").val();//id
                     uploader3.options.formData.years = $("#civilYear").val();//年度
                     uploader3.options.formData.eval_name = $("#file_list_civil .info .infoText").val();//文件名称
                     uploader3.options.formData.remark = $("#rulesDesc_civil").val()//备注
@@ -868,8 +868,8 @@
                         url: "./evalEdit",
                         type: "post",
                         data: {
-                            id : $("#rulesid3").val(),//
-    //                        id : editId,//
+                            major_key : $("#rulesid3").val(),//
+    //                        major_key : editId,//
                             years : $("#civilYear").val(),//年度
                             eval_name : $("#file_list_civil .info .infoText").val(),//文件名称
                             remark : $("#rulesDesc_civil").val()//备注
@@ -908,11 +908,11 @@
             $.ajax({
                 url:"./index",
                 type: "post",
-                data: {id:id},
+                data: {major_key:id},
                 success: function (res) {
                     console.log(res)
                     if(res.code ==1) {
-                        id = $("#rulesid3").val(res.data.id);//id
+                        major_key = $("#rulesid3").val(res.data.major_key);//id
                         years = $("#civilYear").val(res.data.years);//年度
                         eval_name = $("#file_list_civil .info .infoText").val(res.data.eval_name);//文件名称
                         remark = $("#rulesDesc_civil").val(res.data.remark)//备注
@@ -943,7 +943,7 @@
             layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
                 $.ajax({
                     url: "./evalDel",
-                    data: {'id' : id},
+                    data: {'major_key' : id},
                     type: "post",
                     dataType: "json",
                     success: function (res) {
@@ -1102,7 +1102,7 @@
             uploader1.on("uploadStart",function () {
                 console.log($("#rulesid").val())
                 uploader1.options.formData.types = 1;//类型
-                uploader1.options.formData.id = $("#rulesid1").val();//id
+                uploader1.options.formData.major_key = $("#rulesid1").val();//id
                 uploader1.options.formData.years = $("#aPairOfYear").val();//年度
                 uploader1.options.formData.eval_name = $("#file_list_aPairOf .info .infoText").val();//文件名称
 //                uploader1.options.formData.username = $("#aPairOfPerson").val();//上传人
@@ -1171,8 +1171,8 @@
                     url: "./evalEdit",
                     type: "post",
                     data: {
-                        id : $("#rulesid1").val(),//
-//                        id : editId,//
+                        major_key : $("#rulesid1").val(),//
+//                        major_key : editId,//
                         years : $("#aPairOfYear").val(),//年度
                         eval_name : $("#file_list_aPairOf .info .infoText").val(),//文件名称
 //                        username : $("#aPairOfPerson").val(),//上传人
@@ -1214,11 +1214,11 @@
         $.ajax({
             url:"./index",
             type: "post",
-            data: {id:id},
+            data: {major_key:id},
             success: function (res) {
                 console.log(res)
                 if(res.code ==1) {
-                    id = $("#rulesid1").val(res.data.id);//id
+                    major_key = $("#rulesid1").val(res.data.major_key);//id
                     years = $("#aPairOfYear").val(res.data.years);//年度
                     eval_name = $("#file_list_aPairOf .info .infoText").val(res.data.eval_name);//文件名称
                     username = $("#aPairOfPerson").val(res.data.owner);//上传人
@@ -1251,7 +1251,7 @@
             layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
                 $.ajax({
                     url: "./evalDel",
-                    data: {'id' : id},
+                    data: {'major_key' : id},
                     type: "post",
                     dataType: "json",
                     success: function (res) {
@@ -1271,7 +1271,7 @@
     function download(id,url) {
             $.ajax({
                 url: url,
-                data:{id:id},
+                data:{major_key:id},
                 success: function (res) {
                     console.log(2121212121212121)
                     if(res.code != 1){
@@ -1312,7 +1312,7 @@
         $.ajax({
             url: url,
             type: "post",
-            data: {id:id},
+            data: {major_key:id},
             success: function (res) {
                 if(res.code === 1){
                     var path = res.path;
