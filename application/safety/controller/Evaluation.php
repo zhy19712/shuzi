@@ -44,6 +44,7 @@ class Evaluation extends Base
             if(empty($is_exist)){
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
+            $param['type'] = $param['types'];
             $flag = $eval->editEval($param);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
