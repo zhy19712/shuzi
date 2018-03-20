@@ -15,6 +15,21 @@ use think\Loader;
 
 class Repairrecord extends Base
 {
+
+    /*
+     * 获取一条车辆管理维修记录
+     */
+    public function getindex()
+    {
+        if(request()->isAjax()){
+            $repairrecord = new RepairrecordModel();
+            $param = input('post.');
+            $data = $repairrecord->getOne($param['id']);
+            return json(['code'=> 1, 'data' => $data]);
+        }
+        return $this->fetch();
+    }
+
     /*
      * 新增/编辑一条车辆管理维修记录
      */
