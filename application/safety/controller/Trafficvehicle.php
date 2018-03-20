@@ -232,9 +232,14 @@ class Trafficvehicle extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('param.idarr');
-        $name = '交通车辆'.date('Y-m-d H:i:s'); // 导出的文件名
         $traffic = new TrafficvehicleModel();
+        $idArr = input('param.idarr/a');
+        if($idArr['0'] == "all")
+        {
+            $idArr = $traffic ->getallid();
+        }
+        $name = '交通车辆'.date('Y-m-d H:i:s'); // 导出的文件名
+
         $list = $traffic->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
