@@ -2,22 +2,22 @@
 /**
  * Created by PhpStorm.
  * User: admin
- * Date: 2018/3/18
- * Time: 17:44
+ * Date: 2018/3/20
+ * Time: 11:00
  */
-//交通车辆
+//车辆管理加油记录表
 namespace app\safety\model;
 use think\exception\PDOException;
 use think\Model;
 
-class TrafficvehicleModel extends Model
+class RefuelingrecordModel extends Model
 {
-    protected $name = 'safety_vehicle';
+    protected $name = 'safety_refueling_record';
 
     /*
-      * 添加新的交通车辆文件
+     * 添加新的车辆管理加油记录表
      */
-    public function insertTrafficvehicle($param)
+    public function insertRefuelingrecord($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -32,9 +32,9 @@ class TrafficvehicleModel extends Model
     }
 
     /*
-     * 编辑交通车辆文件
-    */
-    public function editTrafficvehicle($param)
+     * 编辑车辆管理加油记录表
+     */
+    public function editRefuelingrecord($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -49,9 +49,9 @@ class TrafficvehicleModel extends Model
     }
 
     /*
-     * 删除交通车辆文件
-    */
-    public function delTrafficvehicle($id)
+     * 删除车辆管理加油记录表
+     */
+    public function delRefuelingrecord($id)
     {
         try{
             $this->where('id', $id)->delete();
@@ -63,41 +63,26 @@ class TrafficvehicleModel extends Model
     }
 
     /*
-     * 获取一条交通车辆文件
-    */
+     * 批量删除同一pid的车辆管理加油记录表
+     */
+    public function delPid($id)
+    {
+        try{
+            $this->where('pid', $id)->delete();
+            return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
+
+        }catch( PDOException $e){
+            return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
+        }
+    }
+
+    /*
+     * 获取一条车辆管理加油记录表
+     */
     public function getOne($id)
     {
 
         return $this->where('id', $id)->find();
 
-    }
-
-
-    /*
-     * 批量导出时候的数组处理
-     */
-    public  function getList($idArr)
-    {
-        $data = [];
-        foreach($idArr as $v){
-            $data[] = $this->getOne($v);
-        }
-        return $data;
-    }
-
-    /*
-     * 查看所有的id值
-     */
-    public  function getallid()
-    {
-        return $this->group('id')->column('id');
-    }
-
-    /*
-     * 获取交通车辆文件的版本日期,excel的导入日期
-     */
-    public function getVersion($param)
-    {
-        return $this->where('selfid',$param)->group('input_time')->column('input_time');
     }
 }
