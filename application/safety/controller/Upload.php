@@ -1219,7 +1219,7 @@ class Upload extends Base
     public function uploadSources(){
         $sources = new RiskSourcesModel();
         // 前台 页面提交的数据
-        $id = request()->param('id'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
+        $major_key = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
         $pid = request()->param('pid'); // 必须 文件归属的父级节点编号 新增时 一定要有   修改时可以不传
         $zid = request()->param('zid'); // 必须 文件归属的子级节点编号 新增时 一定要有   修改时可以不传
         $risk_name = request()->param('risk_name'); // 可选 文件名称 用户输入的文件名称 不传 默认和原文件名称一致
@@ -1251,20 +1251,19 @@ class Upload extends Base
                 'path' => $path,
                 'remark' => $remark
             ];
-            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
-            $is_add = explode('_',$id);
-            if(empty($id) || $is_add[0] == 'WU'){
+
+            if(empty($major_key)){
                 $flag = $sources->insertRiskSources($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
-                $data_older = $sources->getOne($id);
+                $data_older = $sources->getOne($major_key);
                 if(empty($data_older)){
                     return json(['code' => '0', 'msg' => '无效的编号']);
                 }
                 if(file_exists($data_older['path'])){
                     unlink($data_older['path']);
                 }
-                $data['id'] = $id;
+                $data['major_key'] = $major_key;
                 $flag = $sources->editRiskSources($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
