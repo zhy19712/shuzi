@@ -10,6 +10,7 @@ namespace app\safety\controller;
 use app\admin\controller\Base;
 use app\admin\model\UserModel;
 use app\admin\model\UserType;
+use app\safety\model\RevisionrecordModel;
 use app\safety\model\RulesregulationsModel;
 use app\safety\model\SafetySdiNodeModel;
 use think\Db;
@@ -83,13 +84,42 @@ class Rulesregulations extends Base
                 'years' => date('Y'),
                 'group_id' =>  $param['group_id'],
                 'number' => $param['number'],
-                'rul_name' => $param['rul_name'],
+                'rul_name' => empty($param['rul_name']) ? $is_exist['filename'] : $param['rul_name'],
                 'go_date' => $param['go_date'],
                 'standard' => $param['standard'],
                 'evaluation' => $param['evaluation'],
                 'rul_user' => $param['rul_user'],
                 'remark' => $param['remark']
             ];
+
+            // 替代标准不为空并且适用性评价 状态为 : 过期  时 新增或修改 修编记录表
+            if(!empty($data['standard']) && $data['evaluation'] == '过期'){
+                $pname = Db::name('safety_sdi_node')->where('id',$data['group_id'])->value('pname');
+                $record = new RevisionrecordModel();
+                $re_data = [
+                    'correlation_number' => $data['major_key'],
+                    'record_name' => $data['rul_name'],
+                    'original_number' => $data['number'],
+                    'replace_number' => $data['standard'],
+                    'replace_time' => date("Y-m-d H:i:s"),
+                    'owner' => session('username'),
+                    'record_type' => '规章制度'.$pname
+                ];
+                // 根据 关联编号 查询是否 存在记录
+                $is_exist_record = $record->isExist($data['major_key']);
+                // 不存在就新增,存在就修改
+                if(empty($is_exist_record)){
+                    $re_flag = $record->insertRecord($re_data);
+                }else{
+                    $re_data['major_key'] = $is_exist_record;
+                    $re_flag = $record->editRecord($re_data);
+                }
+
+                if($re_flag['code'] == '-1'){
+                    return json($re_flag);
+                }
+            }
+
             $flag = $rules->editRules($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }

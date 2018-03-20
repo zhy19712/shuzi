@@ -7,65 +7,6 @@
 {include file="public/header" /}
 <body>
 <style>
-    #tableItem_wrapper{
-        visibility: hidden;
-    }
-    .mycontent{
-        margin: 0 10px;
-        padding-top: 20px;
-        padding-right: 10px;
-        width: 20%;
-        height: 98%;
-        display: inline-block;
-        background-color: #fff;
-        border-right: 1px solid #ccc;
-    }
-    .mycontent h2{
-        margin: 0;
-        text-align: center;
-        line-height: 30px;
-        font-size: 13px;
-        border-bottom: 1px solid #ccc;
-        background: #19aa8d;
-        color: #FFF;
-    }
-    #operate{
-        font-size: 0;
-        border: 1px solid #ccc;
-        border-top: 0;
-    }
-    #operate i {
-        display: inline-block;
-        width: 33.33%;
-        font-size: 16px;
-        line-height: 30px;
-        text-align: center;
-        color: #000;
-        cursor: pointer;
-    }
-    #ztree{
-        height: 98%;
-        overflow-x: scroll;
-    }
-    .ztree li span.button.add {
-        margin-left:2px;
-        margin-right: -1px;
-        background-position:-144px 0;
-        vertical-align:top;
-        *vertical-align:middle;
-    }
-    .wrapper {
-        display: inline-block;
-        width: 78%;
-        vertical-align: top;
-        padding: 0;
-    }
-    #path{
-        line-height: 30px;
-        font-weight: 700;
-        border-bottom: 1px solid #ccc;
-    }
-
     .dt-buttons{
         float: right;
         margin-top: 5px;
@@ -101,9 +42,6 @@
     }
     #add{
         float: none;
-    }
-    #years{
-        width: 100px;
     }
     #tableItem .btn{
         margin-right: 2px;
@@ -168,19 +106,13 @@
 
     }
 </style>
-<div id="mycontent" class="mycontent">
-    <h2>重大危险源识别与管理</h2>
-    <ul id="tree_container" class="ztree"></ul>
-    <input type="hidden" name="groupId">
-    <input type="hidden" name="zId">
-    <input type="hidden" name="id">
-</div>
-
+<input type="hidden" name="groupId">
+<input type="hidden" name="zId">
+<input type="hidden" name="id">
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox float-e-margins">
         <div class="ibox-content">
             <div class="row">
-                <div id="path">当前路径:</div>
                 <div id="table_info">
                     <div id="level">
                         <table id="tableItem" class="table table-striped table-bordered" cellspacing="0"  width="100%">
@@ -188,9 +120,9 @@
                             <tr>
                                 <th>序号</th>
                                 <th>文件名称</th>
-                                <th>文件编号</th>
-                                <th>上传人</th>
+                                <th>年度</th>
                                 <th>上传时间</th>
+                                <th>上传人</th>
                                 <th>备注</th>
                                 <th>操作</th>
                             </tr>
@@ -220,16 +152,16 @@
                             <div class="col-lg-12 col-xs-12">
                                 <label class="col-xs-6 col-sm-2 control-label">文件名称：</label>
                                 <div class="myblock col-xs-6 col-sm-10 input-group">
-                                    <input id="risk_name" type="text" class="form-control" name="risk_name" >
+                                    <input id="ment_name" type="text" class="form-control" name="ment_name" >
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-6 col-sm-2 control-label">文件编号：</label>
+                                <label class="col-xs-6 col-sm-2 control-label">年度：</label>
                                 <div class="myblock col-xs-6 col-sm-10 input-group">
-                                    <input id="number" type="text" class="form-control" name="number" >
+                                    <input id="years" type="text" class="form-control" name="years" >
                                 </div>
                             </div>
                         </div>
@@ -280,43 +212,12 @@
 <script src="__JS__/plugins/validate/jquery.validate.min.js"></script>
 
 <script>
-    //左侧菜单
-    var setting = {
-        async: {
-            enable : true,
-            autoParam: ["pId"],
-            type : "post",
-            url : "./getSegment",
-            dataType :"json"
-        },
-        edit:{
-            enable:true,
-            showRemoveBtn:false,
-            showRenameBtn:false,
-            drag:{
-                isMove: true
-            }
-        },
-        data:{
-            simpleData : {
-                enable:true,
-                idkey: "id",
-                pIdKey: "pId"
-            }
-        },
-        callback: {
-            onClick: zTreeOnClick,
-        }
-    };
-
-    zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null).expandAll(true);
-
     //表格
     var tableItem = $('#tableItem').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            "url": "__SCRIPT__/safety_risksources.php"
+            "url": "__SCRIPT__/safety_improvement.php"
         },
         dom: 'lf<"#add.add btn-outline btn-primary">rtip',
         columnDefs: [
@@ -351,38 +252,6 @@
 
     $('div#add').html('新增');
 
-    //点击节点
-    function zTreeOnClick(event, treeId, treeNode) {
-        console.log(treeNode);
-        $('input[type="hidden"][name="groupId"]').val(treeNode.pId);
-        $('input[type="hidden"][name="zId"]').val(treeNode.id);
-
-        if(treeNode.isParent){
-            $('#tableItem_wrapper').css("visibility","hidden");
-        }else{
-            $('#tableItem_wrapper').css("visibility","visible");
-            tableItem.ajax.url("__SCRIPT__/safety_risksources.php?pid=" + treeNode.id).load();
-            console.log(tableItem.rows().count());
-        }
-
-        //获取路径
-        /*$.ajax({
-            url: "./getParents",
-            type: "post",
-            data: {id:treeNode.id},
-            dataType: "json",
-            success: function (res) {
-                if(res.msg === "success"){
-                    $("#path").text("当前路径:" + res.path)
-                }
-            }
-        })*/
-
-        //构建按版本查询
-        //viewHistoryVer(treeNode.id);
-
-    };
-
     //新增弹层
     $('#add').on('click',function(){
         $('#addRules_modal').modal('show');
@@ -394,7 +263,7 @@
             swf:  '/static/admin/js/webupload/Uploader.swf',
 
             // 文件接收服务端。
-            server: "{:url('Upload/uploadSources')}",
+            server: "{:url('Upload/uploadImprovement')}",
 
             // 选择文件的按钮。可选。
             // 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -407,8 +276,8 @@
                 id:'',
                 pid:'',
                 zid:'',
-                risk_name:'',
-                number:'',
+                ment_name:'',
+                years:'',
                 remark:'',
             },
 
@@ -479,10 +348,8 @@
 
         uploader.on("uploadStart",function () {
             uploader.options.formData.major_key = $('input[type="hidden"][name="id"]').val();
-            uploader.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
-            uploader.options.formData.zid = $('input[type="hidden"][name="zId"]').val();
-            uploader.options.formData.risk_name = $("#risk_name").val();
-            uploader.options.formData.number = $("#number").val();
+            uploader.options.formData.ment_name = $("#ment_name").val();
+            uploader.options.formData.years = $("#years").val();
             uploader.options.formData.remark = $("#remark").val();
         });
     });
@@ -500,10 +367,8 @@
         submitHandler: function(form) {
             //获取表单数据
             var  id = $('input[type="hidden"][name="id"]').val();
-            var pid = $('input[type="hidden"][name="groupId"]').val();
-            var zid =  $('input[type="hidden"][name="zId"]').val();
-            var risk_name = $('#risk_name').val();
-            var number = $('#number').val();
+            var ment_name = $('#ment_name').val();
+            var years = $('#years').val();
             var remark = $('#remark').val();
             var oldFileName = $('#oldFileName').val();
             var newFileNmae = $('#newFileName').val();
@@ -515,15 +380,13 @@
             if(!newFileNmae||newFileNmae===oldFileName){
                 //修改
                 $(form).ajaxSubmit({
-                    url: "{:url('Risksources/sourcesEdit')}",
+                    url: "{:url('Improvement/improveEdit')}",
                     type: "post",
                     dataType: 'json',
                     data:{
                         major_key:id,
-                        pid:pid,
-                        zid:zid,
-                        risk_name:risk_name,
-                        number:number,
+                        ment_name:ment_name,
+                        years:years,
                         remark:remark
                     },
                     success: complete
@@ -532,6 +395,12 @@
                 //上传文件
                 uploader.upload();
             }
+        },
+        rules: {
+            years: "required"
+        },
+        messages: {
+            years:'年度不能为空'
         }
     });
 
@@ -541,18 +410,19 @@
         var id = $(that).parents('tr').find('td:eq(0)').text();
         $('input[type="hidden"][name="id"]').val(id);
         $.ajax({
-            url: "{:url('Risksources/index')}",
+            url: "{:url('Improvement/index')}",
             type: "post",
             dataType: "json",
             data:{
                 major_key:id
             },
             success: function (res) {
-                $('#risk_name').val(res.risk_name);
-                $('#number').val(res.number);
+                var res = res.data;
+                $('#ment_name').val(res.ment_name);
+                $('#years').val(res.years);
                 $('#remark').val(res.remark);
                 var fileList = '<div style="display: inline-block;vertical-align: middle;">' +
-                    '<span class="info">' + res.risk_name + '</span>&nbsp' +
+                    '<span class="info">' + res.ment_name + '</span>&nbsp' +
                     '<span class="DelFilebtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
                     '</div>';
                 $('#fileUpload').append(fileList);
@@ -570,14 +440,14 @@
         var groupid = $('input[type="hidden"][name="groupId"]').val();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
-                url: "{:url('Risksources/sourcesDel')}",
+                url: "{:url('Improvement/improveDel')}",
                 data: {'major_key' : id},
-                type: "get",
+                type: "post",
                 dataType: "json",
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        tableItem.ajax.url("__SCRIPT__/safety_risksources.php?pid="+ groupid).load();
+                        tableItem.ajax.url("__SCRIPT__/safety_improvement.php?pid="+ groupid).load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -607,14 +477,14 @@
 
     function showpdf1(that) {
         var id = $(that).parent("td").parent("tr").children("td:eq('1')").text();
-        showPdf(id,"{:url('Risksources/sourcesPreview')}");
+        showPdf(id,"{:url('Improvement/improvePreview')}");
     }
 
     //文件下载
     function download(that) {
         var id = $(that).parents('tr').find('td:eq(0)').text();
         $.ajax({
-            url: "{:url('Risksources/sourcesDownload')}",
+            url: "{:url('Improvement/improveDownload')}",
             type: "post",
             dataType: "json",
             data:{
@@ -628,7 +498,7 @@
                     var str = "";
                     str += ""
                         + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
-                        + "<form id=download"+ id +" action='{:url('Risksources/sourcesDownload')}' method='get' target=downloadFrame"+ id +">"
+                        + "<form id=download"+ id +" action='{:url('Improvement/improveDownload')}' method='get' target=downloadFrame"+ id +">"
                         + "<span class='file_name' style='color: #000;'>"+str+"</span>"
                         + "<input class='file_url' style='display: none;' name='major_key' value="+ id +">"
                         + "<button type='submit' class=btn" + id +"></button>"
@@ -646,13 +516,22 @@
         console.log(data);
         if(data.code==1){
             layer.msg(data.msg);
-            tableItem.ajax.url("__SCRIPT__/safety_risksources.php?pid=" + groupid).load();
+            tableItem.ajax.url("__SCRIPT__/safety_improvement.php?pid=" + groupid).load();
             $("#addRules_modal").modal('hide');
         }else{
             layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
             return false;
         }
     }
+
+    //年度
+    $('#years').jeDate({
+        isinitVal:true,
+        format:"YYYY",
+        okfun:function (obj) {
+            filterData();
+        }
+    });
 </script>
 </body>
 </html>

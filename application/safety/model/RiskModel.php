@@ -16,31 +16,6 @@ use think\Model;
 class RiskModel extends Model
 {
     protected $name = 'safety_risk';
-
-    /**
-     * 发现人
-     */
-    public function fouder()
-    {
-        return $this->hasOne('User', 'id', 'founder_id')->field('nickname');
-    }
-
-    /**
-     * 责任人
-     */
-    public function workduty()
-    {
-        return $this->hasOne('User', 'id', 'workduty_id')->field('nickname');
-    }
-
-    /**
-     * 验收人
-     */
-    public function acceptor()
-    {
-        return $this->hasOne('User', 'id', 'acceptor_id')->field('nickname');
-    }
-
     /**
      * 未治理图片
      */
@@ -87,14 +62,11 @@ class RiskModel extends Model
             $item = $this->where('id', $_id)->find();
 
             foreach (explode('', $risk['']) as $img) {
-                $riskImgs[] = array('path' => $img, 'cat' => 1);
+                $riskImgs[] = array('path' => $img, 'cat' => '排查');
             }
             foreach (explode('', $risk['']) as $img) {
-                $riskAfterImgs[] = array('path' => $img, 'cat' => 2);
+                $riskAfterImgs[] = array('path' => $img, 'cat' => '验收');
             }
-//            $item->riskImg()->delete();
-//            $item->riskAfterImg()->delete();
-
             Db::table('safety_risk_img')->where('risk_id', $item['id'])->delete();
             $item->riskImg()->saveAll($riskImgs);
             $item->riskAfterImg()->saveAll($riskAfterImgs);

@@ -33,11 +33,11 @@ class Riskmanage extends Base
     }
 
     /**
-     * 无文件上传的编辑
+     * 新增或者编辑
      * @return \think\response\Json
      * @author hutao
      */
-    public function manageEdit()
+    public function manageAddOrEdit()
     {
         if(request()->isAjax()){
             $manage = new RiskManageModel();
@@ -47,6 +47,46 @@ class Riskmanage extends Base
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
             $flag = $manage->editManage($param);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    /**
+     * 当新增时，文件还未保存时，点击删除文件
+     * 前台需要给我  path 文件路径 根据路径删除文件
+     * 删除上传的文件
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function delAddFile()
+    {
+        if(request()->isAjax()){
+            $path = input('param.path');
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(file_exists($path)){
+                unlink($path); //删除文件 培训材料文件
+            }
+            if(file_exists($pdf_path)){
+                unlink($pdf_path); //删除生成的预览pdf
+            }
+            return json(['code' => 1, 'msg' => '删除成功']);
+        }
+    }
+
+    /**
+     * 编辑时 删除文件
+     * 前台 只需要给我  主键 和要删除的文件
+     * 类别 type 1 年度风险辨识文件 2 季度风险辨识文件3 风险复测单 4风险管控卡 5施工作业票
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function delEditFile()
+    {
+        if(request()->isAjax()){
+            $major_key = input('param.major_key');
+            $types= input('param.type'); // type 1 年度风险辨识文件 2 季度风险辨识文件3 风险复测单 4风险管控卡 5施工作业票
+            $edu = new RiskManageModel();
+            $flag = $edu->removeEditFile($major_key,$types);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }

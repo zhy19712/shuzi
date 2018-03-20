@@ -77,7 +77,7 @@ class RulesregulationsModel extends Model
     public function delRulesByGroupId($groupId)
     {
         $flag = [];
-        $idArr = $this->where('group_id',$groupId)->column('id');
+        $idArr = $this->where('group_id',$groupId)->column('major_key');
         if(count($idArr) == 0){
             return ['code' => 1, 'data' => '', 'msg' => '不包含Rules文件'];
         }

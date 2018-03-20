@@ -10,6 +10,7 @@ namespace app\safety\controller;
 use app\admin\controller\Base;
 use app\admin\model\UserModel;
 use app\admin\model\UserType;
+use app\safety\model\RevisionrecordModel;
 use app\safety\model\SafetySdiNodeModel;
 use app\safety\model\StatutestdiModel;
 use think\Db;
@@ -77,18 +78,48 @@ class Statutestdi extends Base
             if(empty($is_exist)){
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
+
             $data = [
                 'major_key' => $param['major_key'],
                 'years' => date('Y'),
                 'group_id' => $param['group_id'],
                 'number' => $param['number'],
-                'sdi_name' => $param['sdi_name'],
+                'sdi_name' => empty($param['sdi_name']) ? $is_exist['filename'] : $param['sdi_name'],
                 'go_date' => $param['go_date'],
                 'standard' => $param['standard'],
-                'evaluation' => $param['evaluation'],
+                'evaluation' => ($param['evaluation'] == '0') ? '适用' : '过期',
                 'sdi_user' => $param['sdi_user'],
                 'remark' => $param['remark']
             ];
+
+            // 替代标准不为空并且适用性评价 状态为 : 过期  时 新增或修改 修编记录表
+            if(!empty($data['standard']) && $data['evaluation'] == '过期'){
+                $pname = Db::name('safety_sdi_node')->where('id',$data['group_id'])->value('pname');
+                $record = new RevisionrecordModel();
+                $re_data = [
+                    'correlation_number' => $data['major_key'],
+                    'record_name' => $data['sdi_name'],
+                    'original_number' => $data['number'],
+                    'replace_number' => $data['standard'],
+                    'replace_time' => date("Y-m-d H:i:s"),
+                    'owner' => session('username'),
+                    'record_type' => '法规标准识别'.$pname
+                ];
+                // 根据 关联编号 查询是否 存在记录
+                $is_exist_record = $record->isExist($data['major_key']);
+                // 不存在就新增,存在就修改
+                if(empty($is_exist_record)){
+                    $re_flag = $record->insertRecord($re_data);
+                }else{
+                    $re_data['major_key'] = $is_exist_record;
+                    $re_flag = $record->editRecord($re_data);
+                }
+
+                if($re_flag['code'] == '-1'){
+                    return json($re_flag);
+                }
+            }
+
             $flag = $sdi->editSdi($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }

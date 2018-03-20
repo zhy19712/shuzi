@@ -59,6 +59,12 @@ class RevisionrecordModel extends Model
         return $this->where('major_key', $major_key)->find();
     }
 
+    public function isExist($correlation_number)
+    {
+        $data = $this->where('correlation_number',$correlation_number)->value('major_key');
+        return $data;
+    }
+
     public function getList($majorKeyArr)
     {
         $list = [];
@@ -66,11 +72,6 @@ class RevisionrecordModel extends Model
             $list[] = $this->find($v);
         }
         return $list;
-    }
-
-    public function getYears()
-    {
-        return $this->where('improt_time is not null')->group('years')->column('years');
     }
 
 }

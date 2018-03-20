@@ -590,6 +590,11 @@
         }
     });
 
+    //翻页事件
+    tableItem.on('page.dt',function () {
+        console.log('翻页');
+    })
+
     var selectDom = '<input type="text" id="years">';
 
     $("div#upload").html('<div>上传文件</div>');
@@ -901,7 +906,7 @@
                         + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
                         + "<form id=download"+ id +" action='{:url('Statutestdi/sdiDownload')}' method='get' target=downloadFrame"+ id +">"
                         + "<span class='file_name' style='color: #000;'>"+str+"</span>"
-                        + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+                        + "<input class='file_url' style='display: none;' name='major_key' value="+ id +">"
                         + "<button type='submit' class=btn" + id +"></button>"
                         + "</form>"
                     $("#form_container").append(str);
@@ -924,6 +929,12 @@
                 major_key:id
             },
             success: function (res) {
+                if(res.evaluation=='过期'){
+                    res.evaluation=-1;
+                }else if(res.evaluation=='适用'){
+                    res.evaluation=0;
+                }
+
                 $('#oldFileName').val(res.filename);
                 $('#standardNumr').val(res.number);
                 $('#dataImple').val(res.go_date);
@@ -1006,7 +1017,7 @@
                         +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
                     for (var i = 0; i < idArr.length; i++)
                     {
-                        str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
+                        str += '<input style="display: none;" name="majorKeyArr[]" value="'+ idArr[i] +'">';
                     }
                     str += '<button type="submit" id="exportExcelBtn"></button></form>';
                     $("#form_container").append(str);
