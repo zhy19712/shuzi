@@ -211,7 +211,6 @@
                     <div class="ibox-title">
                         <h5></h5>
                     </div>
-                    <input type="text" name="uid" id="id1" style="display: none;" value="">
                     <div class="ibox-content">
                         <!--新增用户信息开始-->
                         <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post"  action="#" onsubmit="return false">
@@ -383,13 +382,14 @@
             }
         }
     } );
-    $("div.mybtn").html('<div>新增</div>');
+    $("div.mybtn").html('<div id="xz">新增</div>');
     $("thead th:first-child").unbind();
     //组织结构树
     var zTreeObj;
     var mytree_node;
     var zTreeRecogner;
     var mytree_node1;
+    var groupid;
     //树结构添加节点
     $("#options>i:first-child").click(function () {
         $("#level2 input").val("");
@@ -496,9 +496,6 @@
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
         mytree_node = treeNode;
-        $("#groupname").val(treeNode.name);
-        $("#mycontent>p").text(treeNode.name);
-        $("#groupid").val(treeNode.id);
         groupid = treeNode.id;
         console.log(groupid)
         if(treeNode.level == 0){
@@ -680,7 +677,7 @@
                 console.log("remove");
             });
             uploader1.on("uploadStart",function () {
-                console.log(groupid)
+//                console.log(groupid)
                 console.log($("#rulesid").val())
                 uploader1.options.formData.major_key = $("#rulesid").val();//id
                 uploader1.options.formData.group_id = groupid;//group_id
@@ -752,10 +749,12 @@
     //新增的保存
     // $("#addRules_modal .btn-primary").click(function () {
         $("#memberAdd").submit(function (){
-            console.log($("#rulesid").val())
 
+            console.log($("#rulesid").val())
             if($("#file_list1").html()){
+
                 if($("#rulesid").val() == ''){
+                    console.log(6666666)
                     if($("#appEvaluation").val() == '过期'){
                         if($("#alternativeStandard").val() != ''){
                             console.log("新增")
@@ -768,7 +767,8 @@
                         uploader1.upload();
                     }
                 }else if($("#rulesid").val() != ''){
-                        console.log($("#file_list1 .info").text())
+                    console.log(7777777)
+                    console.log($("#file_list1 .info .infoText").val())
                     console.log("编辑BAO")
                     if(aname1 === aname2){
                         console.log(333333333333333)
@@ -780,7 +780,7 @@
                                 major_key : $("#rulesid").val(),//id
                                 group_id : groupid,//group_id
                                 number : $("#standardNumr").val(),//标准号
-                                rul_name : $("#file_list1 .info").text(),//名称
+                                rul_name : $("#file_list1 .info .infoText").val(),//名称
                                 go_date : $("#dataImple").val(),//施行日期
                                 standard : $("#alternativeStandard").val(),//替代标准
                                 evaluation : $("#appEvaluation").val(),//适用性评价
@@ -791,8 +791,8 @@
                             success: function (res) {
                                 if(res.code === 1){
                                     layer.msg(res.msg);
-                                    admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
                                     $("#addRules_modal").modal('hide');
+                                    admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
                                 }else {
                                     layer.msg(res.msg);
                                 }
@@ -813,11 +813,14 @@
     $("#addRules_modal .btn-danger").click(function () {
         standard_uploader = null;
     });
+        var editRulId;
     //编辑
     function edit(that) {
         var id = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
         $("#addRules_modal input").val("");
         $("#rulesid").val(id);
+        editRulId = id;
+        console.log($("#rulesid").val()+89898)
         $("#file_list1").empty();
         $("#addRules_modal h5").text("编辑");
         $("#addRules_modal").modal("show");
@@ -828,12 +831,10 @@
             dataType: "json",
             success: function (res) {
                 console.log(res);
-//                if(res.code === 1){
-                console.log(12345678+"获取一条数据");
                 console.log(res.number);
-                $("#rulesid").val(res.id);//id
+                $("#rulesid").val(res.major_key);//id
                 $("#standardNumr").val(res.number);//标准号
-                $("#file_list1 .info").text(res.rul_name);//名称
+                $("#file_list1 .info .infoText").val(res.rul_name);//名称
                 $("#dataImple").val(res.go_date);//施行日期
                 $("#appEvaluation").val(res.evaluation);//适用性评价
                 $("#recogner").val(res.rul_user);//识别人
@@ -842,14 +843,10 @@
                 aname2 = res.rul_name;
                 uploader1 = null;
                 upload1();
-//                    if(res.data.path){
                 $("#file_list1").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.id + '" class="item">' +
-                    '<span class="info">' + res.rul_name + '</span>&nbsp' +
+                    '<span class="info"><input id="inputText" class="infoText" style="height: 38px;" type="text" value="' + res.rul_name + '"/></span>&nbsp' +
                     '<span onclick="fdelatt1(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
                     '</div>' );
-//                    }
-//                    $("#addRules_modal").modal('show');
-//                }
             }
         })
     }
@@ -858,140 +855,6 @@
         var id = $(that).parent("div").attr("id");
         $("#"+id).remove();
     }
-    //规章制度-点击编辑
-    //    var standard_uploader;
-    //    function edit(that) {
-    //        var id = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
-    //        $("#addRules_modal input").val("");
-    //        $("#id1").val(id);
-    //        $("#standard_list").empty();
-    //        $("#addRules_modal h5").text("编辑");
-    //        console.log(standard_uploader+0000)
-    //        if(!standard_uploader){
-    //            standard_uploader = WebUploader.create({
-    //
-    //                auto: false,// 选完文件后，是否自动上传。
-    //                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-    //                server: "{:url('Upload/uploadRules')}",// 文件接收服务端。
-    //                chunked: false,
-    //                fileSizeLimit: 1000 *1024 *1024,
-    //                fileNumLimit: 1,
-    //                formData: {"id":"","group_id":"","number":"","rul_name":"","go_date":"","evaluation":"","rul_user":"","remark":""},
-    //                duplicate :true,// 重复上传图片，true为可重复false为不可重复
-    //                pick: {
-    //                    multiple: false,
-    //                    id: "#standard_upload",
-    //                    innerHTML: "上传文件"
-    //                }
-    //            });
-    //
-    //            standard_uploader.on( 'fileQueued', function( file ) {
-    //                file_name2 = file.name;
-    //                $("#standard_per").append('<div id="' + file.id + '" class="item">' +
-    //                    '</div>');
-    //                $("#standard_list").empty().append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
-    //                    '<span class="info">' + file.name + '</span>&nbsp' +
-    //                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-    //                    '</div>' );
-    //            });
-    //            $("#file_list").on("click", ".webuploadDelbtn", function () {
-    //                var $ele = $(this);
-    //                var id = $ele.parent().attr("class");
-    //                var file = uploader.getFile(id);
-    //                uploader.removeFile(file,true);
-    //            });
-    //            standard_uploader.on('fileDequeued', function (file) {
-    //                $(file.id).remove();
-    //                $('.'+file.id).remove();
-    //                console.log("remove");
-    //            });
-    //            standard_uploader.on("uploadStart",function () {
-    //                console.log(groupid)
-    //                standard_uploader.options.formData.id = $("#rulesid").val();//id
-    //                standard_uploader.options.formData.group_id = groupid;//group_id
-    //                standard_uploader.options.formData.number = $("#standardNumr").val();//标准号
-    //                standard_uploader.options.formData.rul_name = $("#file_list1 .info").text();//名称
-    //                standard_uploader.options.formData.go_date = $("#dataImple").val();//施行日期alternativeStandard
-    ////                standard_uploader.options.formData.standard = $("#alternativeStandard").val();//替代标准
-    //                standard_uploader.options.formData.evaluation = $("#appEvaluation").val();//适用性评价
-    //                standard_uploader.options.formData.rul_user = $("#recogner").val();//识别人
-    //                standard_uploader.options.formData.remark = $("#rulesDesc").val()//备注
-    //            });
-    //            standard_uploader.on('beforeFileQueued', function (file) {
-    //                if($("#standard_list").html()){
-    //                    alert("请先删除文件");
-    //                    return false;
-    //                }else {
-    //                    return true;
-    //                }
-    //            });
-    //            // 文件上传过程中创建进度条实时显示。
-    //            standard_uploader.on('uploadProgress', function (file, percentage) {
-    //                var $li = $('#' + file.id),
-    //                    $percent = $li.find('.progress .progress-bar');
-    //                // 避免重复创建
-    //                if (!$percent.length) {
-    //                    $percent = $('<div class="progress progress-striped active">' +
-    //                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-    //                        '</div>' +
-    //                        '</div>').appendTo($li).find('.progress-bar');
-    //                }
-    //                $li.find('p.state').text('上传中');
-    //                $percent.css('width', percentage * 100 + '%');
-    //            });
-    //            // 文件上传成功
-    //            standard_uploader.on( 'uploadSuccess', function( file,data, response ) {
-    //                console.log(file)
-    //                console.log(data)
-    //                if(data.code === 1){
-    //                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
-    //                    standard_uploader = null;
-    //                    standard_table.ajax.url("__SCRIPT__/prototype.php").load();
-    //                    ss_table.ajax.url("__SCRIPT__/prototype_list.php").load();
-    //                    cid = "";
-    //                    $("#addRules_modal").modal('hide');
-    //                    $("#standard_per").empty();
-    //                }else {
-    //                    layer.msg("抱歉，您没有此权限");
-    //                }
-    //            });
-    //
-    //            // 文件上传失败，显示上传出错。
-    //            standard_uploader.on( 'uploadError', function( file ) {
-    //                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-    //                $("#standard_per").empty();
-    //                $("#standard_upload").empty();
-    //            });
-    //        }
-    //        $("#addRules_modal").modal("show");
-    //        $.ajax({
-    //            url: "./index",
-    //            type: "post",
-    //            data: {id:id},
-    //            dataType: "json",
-    //            success: function (res) {
-    //                console.log(12345678);
-    //                console.log(res);
-    //                $("#rulesid").val();//id
-    //                $("#standardNumr").val();//标准号
-    //                $("#file_list1 .info").text();//名称
-    //                $("#dataImple").val();//施行日期
-    //                $("#appEvaluation").val();//适用性评价
-    //                $("#recogner").val();//识别人
-    //                $("#rulesDesc").val()//备注
-    //
-    //
-    ////                file_name1 = res.data.filename;
-    ////                file_name2 = res.data.filename;
-    ////                if(res.data.path){
-    ////                    $("#standard_list").append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
-    ////                        '<span class="info">' + res.data.filename + '</span>&nbsp' +
-    ////                        '<span onclick="delatt(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-    ////                        '</div>' );
-    ////                }
-    //            }
-    //        })
-    //    }
     //规章制度-下载方法
     function download(id,url) {
         $.ajax({
@@ -1011,6 +874,9 @@
                         + "</form>"
                     $("#formDown").append(str);
                     $("#formDown").find(".btn" + id).click();
+                }
+                if(res.code == -1){
+                    layer.msg(res.msg)
                 }
             }
         })
@@ -1132,6 +998,7 @@
 
     var uploaderExcel;
     //导入excelImport
+    console.log(groupid)
     uploaderExcel = WebUploader.create({
         auto: true,// 选完文件后，是否自动上传。
         swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
@@ -1160,7 +1027,7 @@
     function complete(data){
         console.log(data);
         if(data.code === 1){
-            console.log(groupid+77777777)
+//            console.log(groupid+77777777)
             layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
             admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
         }else {
@@ -1198,7 +1065,7 @@
             url: "./exportExcel",
             type: "post",
             data: {
-                'major_key':dataArr
+                majorKeyArr:dataArr
             },
             dataType: "json",
             success: function (res) {
@@ -1207,7 +1074,7 @@
                     var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
                         +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
                     for (var i = 0; i < dataArr.length; i++) {
-                        str += '<input style="display: none;" name="major_key[]" value="'+ dataArr[i] +'">';
+                        str += '<input style="display: none;" name="majorKeyArr[]" value="'+ dataArr[i] +'">';
                     }
                     str += '<button type="submit" id="exportExcelBtn"></button></form>';
                     $("#form_container").append(str);
@@ -1215,6 +1082,9 @@
                     layer.msg('导出成功！', {icon: 1});
                 }else{
                     alert("获取数据失败！")
+                }
+                if(res.code == -1){
+                    layer.msg(res.msg);
                 }
             }
         })
@@ -1234,8 +1104,6 @@
     //点击查看历史版本
     $("#down_excel").click(function () {
         var time = $('#down_excel option:selected').val();//选中的值
-//        console.log($('#down_excel option:selected').val())
-//        console.log($('#down_excel option:selected').text())
         admin_table.ajax.url("__SCRIPT__/safety_rules.php?times="+time+"&pid=" + groupid).load();
     })
 </script>

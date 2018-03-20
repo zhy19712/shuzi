@@ -201,7 +201,7 @@ class Upload extends Base
         $go_date = request()->param('go_date'); // 施行日期
         $standard = request()->param('standard'); // 替代标准
         $evaluation = request()->param('evaluation'); // 适用性评价
-        $evaluation = $evaluation == '0' ? '适用' : '过期';
+        $evaluation = ($evaluation == '0') ? '适用' : '过期';
         $sdi_user = request()->param('sdi_user'); // 识别人
         $remark = request()->param('remark'); // 备注
 

@@ -16,7 +16,7 @@
     .ztree li a.level0 span {display: block; color: white; padding-top:3px; font-size:12px; font-weight: bold;word-spacing: 2px;}
     .ztree li a.level0 span.button {	float:right; margin-left: 10px; visibility: visible;display:none;}
     .ztree li span.button.switch.level0 {display:none;}
-    #mytable1_wrapper,#mytable2_wrapper,#mytable3_wrapper,#mytable5_wrapper{
+    #mytable1_wrapper,#mytable2_wrapper,#mytable3_wrapper,#mytable5_wrapper,#tools_container{
         display: none;
     }
     .mybtn{
@@ -24,7 +24,7 @@
         margin-right: 20px;
         margin-top: 5px;
     }
-    .selectyear1,.selectyear2,.selectyear3,.selectyear5,.selectyear6,.selectyear7,.selectyear8{
+    .selectyear1,.selectyear2,.selectyear3,.selectyear5,.selectyear6,.selectyear7,.selectyear8,.selectyear9{
         float: left;
         margin-left: 20px;
         margin-top: 10px;
@@ -56,6 +56,15 @@
     .tab-pane{
         position:relative;
     }
+    .msg{
+        font-weight: 400;
+        line-height: 30px;
+        padding: 8px 0;
+        position: absolute;
+        text-align: center;
+        width: 96%;
+        color: red;
+    }
 </style>
 <body class="gray-bg animated fadeInRight" style="background-color:#fff;">
 
@@ -70,6 +79,9 @@
         <div class="ibox-content">
             <div class="row">
                 <div id="path">当前路径:</div>
+                <div id="msg" style="height: 50px; display: none">
+                    <p class="msg">选择当前页面信息或者<a herf="javascript:void(0)" onclick="selectAll(this)">全部信息</a></p>
+                </div>
                 <div class="tab-content">
                     <div class="tab-pane active" id="mytable1_wrapper">
                         <table id="table1" width="100%" class="table table-striped table-bordered ">
@@ -106,7 +118,7 @@
                             <div class="excelImport btn btn-outline btn-primary">导入</div>
                             <div class="excelExport btn btn-outline btn-primary">导出</div>
                             <div class="excelExportModel btn btn-outline btn-primary">导出Excel模板</div>
-                            版本：<select name="down_excel" id="down_excel1">
+                            版本：<select name="down_excel" class="down_excel" id="down_excel1">
                             </select>
                         </div>
                         <table id="table3" width="100%" class="table table-striped table-bordered ">
@@ -133,9 +145,9 @@
                     <div class="tab-pane active" id="mytable5_wrapper">
                         <div class="excel">
                             <div class="excelImport btn btn-outline btn-primary">导入</div>
-                            <div class="excelExport btn btn-outline btn-primary">导出</div>
+                            <div class="excelExport btn btn-outline btn-primary" >导出</div>
                             <div class="excelExportModel btn btn-outline btn-primary">导出Excel模板</div>
-                            版本：<select name="down_excel" id="down_excel2">
+                            版本：<select name="down_excel" class="down_excel" id="down_excel2">
                             </select>
                         </div>
                         <table id="table5" width="100%" class="table table-striped table-bordered ">
@@ -170,7 +182,7 @@
                                     <div class="excelImport btn btn-outline btn-primary">导入</div>
                                     <div class="excelExport btn btn-outline btn-primary">导出</div>
                                     <div class="excelExportModel btn btn-outline btn-primary">导出Excel模板</div>
-                                    版本：<select name="down_excel" id="down_excel2">
+                                    版本：<select name="down_excel" class="down_excel" id="down_excel3">
                                     </select>
                                 </div>
                                 <table id="table6" width="100%" class="table table-striped table-bordered ">
@@ -198,7 +210,7 @@
                                     <div class="excelImport btn btn-outline btn-primary">导入</div>
                                     <div class="excelExport btn btn-outline btn-primary">导出</div>
                                     <div class="excelExportModel btn btn-outline btn-primary">导出Excel模板</div>
-                                    版本：<select name="down_excel2" id="down_excel2">
+                                    版本：<select name="down_excel4" class="down_excel" id="down_excel4">
                                     </select>
                                 </div>
                                 <table id="table7" width="100%" class="table table-striped table-bordered ">
@@ -226,7 +238,7 @@
                                     <div class="excelImport btn btn-outline btn-primary">导入</div>
                                     <div class="excelExport btn btn-outline btn-primary">导出</div>
                                     <div class="excelExportModel btn btn-outline btn-primary">导出Excel模板</div>
-                                    版本：<select name="down_excel3" id="down_excel3">
+                                    版本：<select name="down_excel5" class="down_excel" id="down_excel5">
                                     </select>
                                 </div>
                                 <table id="table8" width="100%" class="table table-striped table-bordered ">
@@ -250,6 +262,32 @@
                                 </table>
                             </div>
                         </div>
+                    </div>
+                    <div class="tab-pane active" id="mytable9_wrapper">
+                        <div class="excel">
+                            <div class="excelImport btn btn-outline btn-primary">导入</div>
+                            <div class="excelExport btn btn-outline btn-primary" >导出</div>
+                            <div class="excelExportModel btn btn-outline btn-primary">导出Excel模板</div>
+                            版本：<select name="down_excel" class="down_excel" id="down_excel6">
+                        </select>
+                        </div>
+                        <table id="table9" width="100%" class="table table-striped table-bordered ">
+                            <thead>
+                            <tr>
+                                <th>全选<input type="checkbox" class="checkall"/></th>
+                                <th>序号</th>
+                                <th>车牌号</th>
+                                <th>固定资产编号</th>
+                                <th>车辆类型</th>
+                                <th>年审有效期</th>
+                                <th>保险有限期</th>
+                                <th>车辆状态</th>
+                                <th>驾驶员</th>
+                                <th>备注</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -749,8 +787,181 @@
         </div>
     </div>
 </div>
+<div id="fname7" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>车辆管理</h5>
+                </div>
+                <div class="ibox-content">
+                    <input id="did" type="text" class="form-control" value="" style="display: none;">
+                    <form class="form-horizontal" id="vehicleform" method="post" action="#" onsubmit="return false">
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">车牌号：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="passcheck_nb" type="text" class="form-control" name="equip_name" required="required" placeholder="此处为必填项">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">车辆类型：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <select name="primary" id="vehicle_type" class="form-control" >
+                                        <option value="越野车">越野车</option>
+                                        <option value="中型客车">中型客车</option>
+                                        <option value="大型客车">大型客车</option>
+                                        <option value="小型轿车">小型轿车</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">固定资产编号：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="plate_number" type="text" class="form-control" name="equip_num">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">行驶证号：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="plate_number" type="text" class="form-control" name="equip_num">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">年审有效期：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="annual_verification" type="text" class="form-control" required="required" placeholder="此处为必填项" name="date_production" placeholder="请选择日期"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">保险有效期：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="insurance" type="text" required="required" placeholder="此处为必填项" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">进场时间：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="person_in_charge" type="text" class="form-control" name="safety_inspection_num" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">车辆状态：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="approach_date" type="text" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">驾驶员：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="vehicle_state" type="text" class="form-control" readonly name="equip_state" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">驾驶证号：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="vehicle_state" type="text" class="form-control" readonly name="equip_state" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-6 col-sm-6 control-label col-sm-offset-2 col-xs-offset-0">备注：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input type="text" id="remark5" class="form-control datepicker" name="remark" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <div class="tab-pane active" id="mytable10_wrapper">
+                                    <table id="table1" width="100%" class="table table-striped table-bordered ">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>文件名称</th>
+                                            <th>验收时间</th>
+                                            <th>上传人</th>
+                                            <th>上传时间</th>
+                                            <th>备注</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <div class="tab-pane active" id="mytable10_wrapper">
+                                    <table id="table1" width="100%" class="table table-striped table-bordered ">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>文件名称</th>
+                                            <th>验收时间</th>
+                                            <th>上传人</th>
+                                            <th>上传时间</th>
+                                            <th>备注</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <div class="tab-pane active" id="mytable10_wrapper">
+                                    <table id="table1" width="100%" class="table table-striped table-bordered ">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>文件名称</th>
+                                            <th>验收时间</th>
+                                            <th>上传人</th>
+                                            <th>上传时间</th>
+                                            <th>备注</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12" style="text-align: center;">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
+<div id="form_container_excel" style="display: none;"></div>
+<div id="form_container_model" style="display: none;"></div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 
@@ -759,18 +970,23 @@
 <script src="__JS__/jquery.jedate.js"></script>
 
 <script type="text/javascript">
+    //获取选中行ID
+    var dataArr=[];
+    var $check_table; //全选的表格
     //
     $("thead tr th:first-child").unbind();
     // var curMenu = null, zTree_Menu = null;
     //组织结构
     var zTreeObj;
-    var selfid ;
+    var selfid;
 
     //点击获取路径
     function onClick(e, treeId, node) {
         $("#mytable1_wrapper").css("display","none");
         $("#mytable2_wrapper").css("display","none");
         $("#mytable3_wrapper").css("display","none");
+        $("#mytable5_wrapper").css("display","none");
+        checkinit();
         $("#path").text("");
         var sNodes = zTreeObj.getSelectedNodes();//选中节点
         selfid = zTreeObj.getSelectedNodes()[0].id
@@ -803,24 +1019,13 @@
                     $("#mytable2_wrapper").css("display","block");
                     break;
                 case 131:
-                    $.ajax({
-                    url:'../Specialequipmentmanagement/getversion',
-                    dataType:'JSON',
-                    type:'POST',
-                    data:{"selfid":selfid},
-                    success:function (data) {
-                        var optionStr='';
-                        for(var i=0;i<data.length;i++){
-                            optionStr += '<option value="'+data[i]+'">' + data[i] + '</option>'
-                        }
-                        $("#down_excel1").append(optionStr);
-                    }
-                });
+                    vision_getinit('../Specialequipmentmanagement/getversion');
                     table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid=" + selfid).load();
                     $("#mytable3_wrapper").css("display","block");
                     break;
                 case 132:
-                    // table5.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid=" + selfid).load();
+                    vision_getinit('../Trafficvehicle/getversion');
+                    table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?selfid=" + selfid).load();
                     $("#mytable5_wrapper").css("display","block");
                 case 133:
             }
@@ -990,9 +1195,17 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
-                        table2.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
-                        table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid).load();
+                        if(url===""){
+                            table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
+                        }else if(url===""){
+                            table2.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
+                        }else if(url===""){
+                            table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid).load();
+                        }else if(url===""){
+
+                        }else if(url==="../Trafficvehicle/trafficDel"){
+                            table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?selfid="+selfid).load();
+                        }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -1506,21 +1719,11 @@
 
     //特种设备-表格
     var table3 = $("#table3").DataTable({
-        // "paging": false,
         "processing": true,//是否显示处理状态
         "serverSide":true,//是否开启服务器模式
+        "order":[1,"asc"],
         "ajax":{
-            "url": "__SCRIPT__/safety_special_equipment_management.php",
-            // "dataSrc":function (json) {
-            //     //后台数据来过来处理 unshift一项
-            //     var dataset = new Array();
-            //     dataset = json.data;
-            //     var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
-            //     for(var i = 0; i<dataset.length;i++){
-            //         dataset[i].unshift(html)
-            //     }
-            //     return dataset;
-            // }
+            "url": "__SCRIPT__/safety_special_equipment_management.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear3">frtip',
         "columnDefs":[ //设置列定义初始化属性
@@ -1549,6 +1752,7 @@
                 }
             },
             {
+                "orderable":false,
                 "targets":[0],
                 "render":function (data,type,row) {
                     var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
@@ -1567,18 +1771,23 @@
                 "previous": "上一页",
                 "next": "下一页"
             }
+        },
+        "drawCallback": function( settings ) {
+            if(dataArr[0]==="all"){
+                $(".checkchild").prop("checked", true); //全部选中
+            }else{
+                $(".checkchild").each(function () {
+                    if(dataArr.indexOf($(this).parents('tr').find('td:eq(1)').text())!==-1){
+                        $(this).prop("checked", true)
+                    }
+                })
+            }
         }
     });
     //阻止表第一项点击事件
     $("thead tr th:first-child").click(function () {
             $("thead tr th:first-child").unbind();
     });
-    // 分页事件
-    table3.on( 'draw', function () {
-        console.log("***********");
-        console.log(dataArr);
-        console.log("***********");
-    } );
     //特种设备-初始化
     function upload3() {
         if(!uploader3){
@@ -1915,317 +2124,17 @@
             }
         })
     };
-
-    var uploaderExcel;
-    //导入excelImport
-    $(".excelImport").click(function () {
-        uploaderExcel = null;
-        $("#fname4 input").val("");
-        $("#file_list4").empty();
-        $("#fname4").modal('show');
-        upload4();
-    });
-    //特种设备导入文件-初始化
-    function upload4() {
-        if(!uploaderExcel){
-            uploaderExcel = WebUploader.create({
-                auto: false,// 选完文件后，是否自动上传。
-                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Specialequipmentmanagement/importExcel')}",// 文件接收服务端。
-                fileSizeLimit: 1000 *1024 *1024,
-                fileNumLimit: 1,
-                chunked: false,
-                formData: {"selfid":""},
-                duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                pick: {
-                    multiple: false,
-                    id: "#file_upload4",
-                    innerHTML: "上传文件"
-                }
-            });
-
-            uploaderExcel.on( 'fileQueued', function( file ) {
-                $("#file_per4").append('<div id="' + file.id + '" class="item">' +
-                    '</div>');
-                $("#file_list4").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
-                    '<span class="info4">' + file.name + '</span>&nbsp' +
-                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                    '</div>' );
-            });
-            $("#file_list4").on("click", ".webuploadDelbtn", function () {
-                var $ele = $(this);
-                var id = $ele.parent().attr("class");
-                var file = uploaderExcel.getFile(id);
-                uploaderExcel.removeFile(file,true);
-            });
-            uploaderExcel.on('fileDequeued', function (file) {
-                $(file.id).remove();
-                $('.'+file.id).remove();
-                console.log("remove");
-            });
-            uploaderExcel.on("uploadStart",function () {
-                uploaderExcel.options.formData.selfid = selfid;
-            });
-            uploaderExcel.on('beforeFileQueued', function (file) {
-                if($("#file_list4").html()){
-                    alert("只能上传一个文件,请先删除文件");
-                    return false;
-                }else {
-                    return true;
-                }
-            });
-            // 文件上传过程中创建进度条实时显示。
-            uploaderExcel.on('uploadProgress', function (file, percentage) {
-                var $li = $('#' + file.id),
-                    $percent = $li.find('.progress .progress-bar');
-                // 避免重复创建
-                if (!$percent.length) {
-                    $percent = $('<div class="progress progress-striped active">' +
-                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                        '</div>' +
-                        '</div>').appendTo($li).find('.progress-bar');
-                }
-                $li.find('p.state').text('上传中');
-                $percent.css('width', percentage * 100 + '%');
-            });
-            // 文件上传成功
-            uploaderExcel.on( 'uploadSuccess', function( file,data, response ) {
-                if(data.code === 1){
-                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
-                    $("#file_upload4").empty();
-                    $("#file_per4").empty();
-                    $("#file_list4").empty();
-                    $("#fname4").modal('hide');
-                    table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid).load();
-                }else {
-                    layer.msg(data.info);
-                }
-            });
-
-            // 文件上传失败，显示上传出错。
-            uploaderExcel.on( 'uploadError', function( file ) {
-                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                $("#file_per2").empty();
-            });
-        }
-    };
-    //提交导入
-    $("#fname4 .btn-primary").click(function () {
-        if($("#file_list4").html()){
-            uploaderExcel.upload();
-
-        }else {
-            alert("请选择上传文件");
-        }
-    });
-
-
-    //获取选中行ID
-    var dataArr=[];
-    function getDataId(that) {
-        var isChecked = $(that).prop('checked');
-        var id = $(that).parents('tr').find('td:eq(0)').text();//获取id
-        if(isChecked){ //选中判断有没有 没有就push id
-            if(dataArr.indexOf(id)==-1){
-                dataArr.push(id);
-            }
-            var allTrue = $(".checkchild").each(function(){
-                if(!$(this).prop('checked')){
-                    return "all"
-                }
-            });
-            if(allTrue!=="all"){
-                $(".checkall").prop("checked",true);
-            }
-        }else{
-            //没选中验证数组有没有 有就删除掉
-            //有未选项就取消全选
-            $(".checkall").prop("checked",false);
-            if(dataArr.indexOf(id)!==-1){
-                dataArr.splice(dataArr.indexOf(id),1)
-            }
-        }
-    };
-
-
-    //单选
-    function getRadioId(that) {
-        getDataId(that);
-    };
-
-    //checkbox全选
-    $(".checkall").on("click", function () {
-        var check = $(this).prop("checked");
-        if (check === true) {
-            $(".checkchild").prop("checked", true); //全部选中
-            $(".checkchild").each(function(){
-                getDataId(this);
-            });
-        } else {
-            $(".checkchild").prop("checked", false); //全部不选中
-            $(".checkchild").each(function(){
-                getDataId(this);
-            });
-        }
-        console.log(dataArr);
-    });
-    //导出excelExport
-    $(".excelExport").click(function () {
-        $.ajax({
-            url: "../Specialequipmentmanagement/exportExcel",
-            type: "post",
-            data: {
-                'id':dataArr
-            },
-            dataType: "json",
-            success: function (res) {
-                if(res.code ==1){
-                    $("#form_container").empty();
-                    var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
-                        +'<form action="../Specialequipmentmanagement/exportExcel" method="get" target="exportExcelFrame">';
-                    for (var i = 0; i < dataArr.length; i++)
-                    {
-                        str += '<input style="display: none;" name="id[]" value="'+ dataArr[i] +'">';
-                    }
-                    str += '<button type="submit" id="exportExcelBtn"><button></form>';
-                    $("#form_container").append(str);
-                    $("#form_container").find("#exportExcelBtn").click();
-                }else{
-                    alert("获取数据失败！")
-                }
-            }
-        })
-    });
-
-    //导出
-    // var idTmr;
-    // function  getExplorer() {
-    //     var explorer = window.navigator.userAgent ;
-    //     //ie
-    //     if (explorer.indexOf("MSIE") >= 0) {
-    //         return 'ie';
-    //     }
-    //     //firefox
-    //     else if (explorer.indexOf("Firefox") >= 0) {
-    //         return 'Firefox';
-    //     }
-    //     //Chrome
-    //     else if(explorer.indexOf("Chrome") >= 0){
-    //         return 'Chrome';
-    //     }
-    //     //Opera
-    //     else if(explorer.indexOf("Opera") >= 0){
-    //         return 'Opera';
-    //     }
-    //     //Safari
-    //     else if(explorer.indexOf("Safari") >= 0){
-    //         return 'Safari';
-    //     }
-    // }
-    // function method1(tableid) {
-    //     //整个表格拷贝到EXCEL中
-    //     if(getExplorer()=='ie'){
-    //         var curTbl = document.getElementById(tableid);
-    //         var oXL = new ActiveXObject("Excel.Application");
-    //
-    //         //创建AX对象excel
-    //         var oWB = oXL.Workbooks.Add();
-    //         //获取workbook对象
-    //         var xlsheet = oWB.Worksheets(1);
-    //         //激活当前sheet
-    //         var sel = document.body.createTextRange();
-    //         sel.moveToElementText(curTbl);
-    //         //把表格中的内容移到TextRange中
-    //         sel.select();
-    //         //全选TextRange中内容
-    //         sel.execCommand("Copy");
-    //         //复制TextRange中内容
-    //         xlsheet.Paste();
-    //         //粘贴到活动的EXCEL中
-    //         oXL.Visible = true;
-    //         //设置excel可见属性
-    //
-    //         try {
-    //             var fname = oXL.Application.GetSaveAsFilename("Excel.xls", "Excel Spreadsheets (*.xls), *.xls");
-    //         } catch (e) {
-    //             print("Nested catch caught " + e);
-    //         } finally {
-    //             oWB.SaveAs(fname);
-    //
-    //             oWB.Close(savechanges = false);
-    //             //xls.visible = false;
-    //             oXL.Quit();
-    //             oXL = null;
-    //             //结束excel进程，退出完成
-    //             //window.setInterval("Cleanup();",1);
-    //             idTmr = window.setInterval("Cleanup();", 1);
-    //
-    //         }
-    //
-    //     }
-    //     else
-    //     {
-    //         tableToExcel('table3');
-    //     }
-    // }
-    // function Cleanup() {
-    //     window.clearInterval(idTmr);
-    //     CollectGarbage();
-    // }
-    // var tableToExcel = (function() {
-    //     var uri = 'data:application/vnd.ms-excel;base64,',
-    //         template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
-    //         base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
-    //         format = function(s, c) {
-    //             return s.replace(/{(\w+)}/g,
-    //                 function(m, p) { return c[p]; }) }
-    //     return function(table, name) {
-    //         if (!table.nodeType) table = document.getElementById(table)
-    //         var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
-    //         window.location.href = uri + base64(format(template, ctx))
-    //     }
-    // })();
-
-    //点击查看历史版本
-    $("#down_excel1").click(function () {
-        var time  = $('#down_excel option:selected').val();
-        var history_version = time===undefined?"":time ;//选中的值
-        table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid+"&history_version="+history_version).load();
-    });
+    </script>
+<!--交通车辆-->
+<script>
     //交通车辆-表格
-    var dataset = [
-        [
-            "",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1",
-            "1"
-        ]
-    ];
     var table5 = $("#table5").DataTable({
-        // "paging": false, //分页
         "processing": true,//是否显示处理状态
-        // "serverSide":true,//是否开启服务器模式
-        // "ajax":{
-        //     "url": "__SCRIPT__/safety_special_equipment_management.php",
-        //     "dataSrc":function (json) {
-        //         var dataset = new Array();
-        //         dataset = json.data;
-        //         var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
-        //         for(var i = 0; i<dataset.length;i++){
-        //             dataset[i].unshift(html)
-        //         }
-        //         return dataset;
-        //     }
-        // },
-        "data":dataset,
+        "serverSide":true,//是否开启服务器模式
+        'order' : [1,'asc'],
+        "ajax":{
+            "url": "__SCRIPT__/safety_trafficvehicle.php"
+        },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear5">frtip',
         "columnDefs":[ //设置列定义初始化属性
             {
@@ -2239,20 +2148,23 @@
                     return html;
                 }
             },
-            // {
-            //     "targets":[10],
-            //     "render":function (data,type,row) {
-            //         var state;
-            //         if(!row[12]){
-            //             state = row[10];
-            //         }else{
-            //             state = getNowFormatDate()<=row[12]?"正常":"过期";
-            //         }
-            //         var html = "<div>"+state+"</div>";
-            //         return  html;
-            //     }
-            // },
-
+            {
+                "targets":[10],
+                "render":function (data,type,row) {
+                    var state;
+                        state = getNowFormatDate()<=row[6]?(getNowFormatDate()<=row[7]?"正常":"保险过期"):"年审过期";
+                    var html = "<div>"+state+"</div>";
+                    return  html;
+                }
+            },
+            {
+                "orderable":false,
+                "targets":[0],
+                "render":function (data,type,row) {
+                    var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
+                    return  html;
+                }
+            }
         ],
         "language": {
             "lengthMenu": "每页_MENU_ 条记录",
@@ -2265,7 +2177,22 @@
                 "previous": "上一页",
                 "next": "下一页"
             }
+        },
+        "drawCallback": function( settings ) {
+            if(dataArr[0]==="all"){
+                $(".checkchild").prop("checked", true); //全部选中
+            }else{
+                $(".checkchild").each(function () {
+                    if(dataArr.indexOf($(this).parents('tr').find('td:eq(1)').text())!==-1){
+                        $(this).prop("checked", true)
+                    }
+                })
+            }
         }
+    });
+    //禁止表头全部点击事件
+    $("thead tr th:first-child").click(function () {
+        $("thead tr th:first-child").unbind();
     });
     //交通车辆-新增
     $("div.mybtn").html("新增")
@@ -2280,75 +2207,77 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            // table5.ajax.url("__SCRIPT__/safety_special_equipment_management.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
+            table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
             console.log(obj.date.YYYY);
         }
     });
     $("#yeardu5").val("");
 
     //交通车辆-提交
-    $("#fname5 .btn-primary").click(function () {
-        $("#specialform").submit(function () {
+        $("#trafficform").submit(function () {
+            var url = $("#did").val()===""?"../Trafficvehicle/trafficInsert":"../Trafficvehicle/trafficEdit"
                         $.ajax({
-                            url: "../Specialequipmentmanagement/equipmentEdit",
+                            url:url,
                             type: "post",
                             data: {
                                 id:$("#did").val(),
                                 selfid:selfid,
                                 remark:$("#remark5").val(),
-                                passcheck_nb:$("#passcheck_nb").val(),
-                                subordinate_unit:$("#subordinate_unit ").val(),
-                                plate_number:$("#plate_number ").val(),
-                                vehicle_type:$("#vehicle_type").val(),
-                                annual_verification:$("#annual_verification ").val(),
-                                insurance:$("#insurance ").val(),
-                                person_in_charge:$("#person_in_charge ").val(),
-                                approach_date:$("#approach_date").val(),
-                                vehicle_state:$("#vehicle_state ").val()
+                                number_pass:$("#passcheck_nb").val(),//通行证编号
+                                subord_unit:$("#subordinate_unit").val(),//单位
+                                car_number:$("#plate_number").val(),//车牌号
+                                vehicle_type:$("#vehicle_type").val(),//车辆类型
+                                year_limit:$("#annual_verification").val(),//年审有效期
+                                insurance_limit:$("#insurance").val(),//保险有效期
+                                charage_person:$("#person_in_charge").val(),//负责人/驾驶员
+                                entry_time:$("#approach_date").val(),//进场时间
+                                car_state:$("#vehicle_state ").val(),//车辆状态
+                                input_time:$("#down_excel2").val() //版本号
                             },
                             datatype: "json",
                             success: function (res) {
                                 if(res.code === 1){
                                     layer.msg(res.msg);
-                                    table5.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid).load();
+                                    table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?selfid="+selfid).load();
                                     $("#fname5").modal('hide');
                                 }else {
                                     layer.msg(res.msg);
                                 }
                             }
                         })
-        })
-    });
+        });
     //交通车辆-删除
     function del5(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        del(id,"../Specialequipmentmanagement/equipmentDel");
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
+        del(id,"../Trafficvehicle/trafficDel");
     };
     //交通车辆-编辑
     function edit5(that) {
         $("#fname5 .btn-primary").show();
         $("#fname5 input").removeAttr("disabled");
         $("#fname5 select").removeAttr("disabled");
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
         $("#fname5").modal('show');
         $.ajax({
-            url: "../Specialequipmentmanagement/index",
+            url: "../Trafficvehicle/getindex",
             type: "post",
             data: {id:id},
             dataType: "json",
             success: function (res) {
                 console.log(res);
                 if(res.code === 1){
+                    var state = getNowFormatDate()<=res.data.year_limit?(getNowFormatDate()<=res.data.insurance_limit?"正常":"保险过期"):"年审过期";
                     $("#did").val(res.data.id);
                     $("#remark5").val(res.data.remark);
-                    $("#passcheck_nb").val(res.data.passcheck_nb);
-                    $("#subordinate_unit").val(res.data.subordinate_unit);
-                    $("#plate_number").val(res.data.plate_number);
+                    $("#passcheck_nb").val(res.data.number_pass);
+                    $("#subordinate_unit").val(res.data.subord_unit);
+                    $("#plate_number").val(res.data.car_number);
                     $("#vehicle_type").val(res.data.vehicle_type);
-                    $("#insurance").val(res.data.insurance);
-                    $("#person_in_charge").val(res.data.person_in_charge);
-                    $("#approach_date").val(res.data.approach_date);
-                    $("#vehicle_state").val(res.data.vehicle_state);
+                    $("#insurance").val(res.data.insurance_limit);
+                    $("#annual_verification").val(res.data.year_limit);
+                    $("#person_in_charge").val(res.data.charage_person);
+                    $("#approach_date").val(res.data.entry_time);
+                    $("#vehicle_state").val(state);
                     $("#fname5").modal('show');
                 }
             }
@@ -2356,13 +2285,13 @@
     };
     //交通车辆-查看
     function show5(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
         $("#fname5").modal('show');
         $("#fname5 input").attr("disabled","disabled");
         $("#fname5 select").attr("disabled","disabled");
         $("#fname5 .btn-primary").hide();
         $.ajax({
-            url: "../Specialequipmentmanagement/index",
+            url: "../Trafficvehicle/getindex",
             type: "post",
             data: {id:id},
             dataType: "json",
@@ -2370,14 +2299,15 @@
                 if(res.code === 1){
                     $("#did").val(res.data.id);
                     $("#remark5").val(res.data.remark);
-                    $("#passcheck_nb").val(res.data.passcheck_nb);
-                    $("#subordinate_unit").val(res.data.subordinate_unit);
-                    $("#plate_number").val(res.data.plate_number);
+                    $("#passcheck_nb").val(res.data.number_pass);
+                    $("#subordinate_unit").val(res.data.subord_unit);
+                    $("#plate_number").val(res.data.car_number);
                     $("#vehicle_type").val(res.data.vehicle_type);
-                    $("#insurance").val(res.data.insurance);
-                    $("#person_in_charge").val(res.data.person_in_charge);
-                    $("#approach_date").val(res.data.approach_date);
-                    $("#vehicle_state").val(res.data.vehicle_state);
+                    $("#annual_verification").val(res.data.year_limit);
+                    $("#insurance").val(res.data.insurance_limit);
+                    $("#person_in_charge").val(res.data.charage_person);
+                    $("#approach_date").val(res.data.entry_time);
+                    $("#vehicle_state").val(res.data.car_state);
                     $("#fname5").modal('show');
                     $("#fname5 input").attr("disabled","disabled");
                     $("#fname5 select").attr("disabled","disabled");
@@ -2386,6 +2316,11 @@
             }
         })
     }
+
+    </script>
+<!--交通车辆结束-->
+<!--安全工器具-->
+<script>
     //
     var dataset1 = [
         [
@@ -2633,6 +2568,393 @@
         console.log($(this).text());
     });
 </script>
+<!--安全工器具结束-->
+<!--****************************************************内部设备************************************-->
+<!--车辆管理-->
+<script>
+    var table9 = $("#table9").DataTable({
+        "processing": true,//是否显示处理状态
+        "serverSide":true,//是否开启服务器模式
+        'order' : [1,'asc'],
+        "ajax":{
+            "url": "__SCRIPT__/safety_trafficvehicle.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear9">frtip',
+        "columnDefs":[ //设置列定义初始化属性
+            {
+                "searchable":false,  //禁止搜索
+                "orderable":false,   //禁止排序
+                "targets":[10],         //指定列
+                "render": function (data,type,row) {
+                    var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit5(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='show5(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del5(this)' value='删除'/>" ;
+                    return html;
+                }
+            },
+            {
+                "targets":[10],
+                "render":function (data,type,row) {
+                    var state;
+                    state = getNowFormatDate()<=row[6]?(getNowFormatDate()<=row[7]?"正常":"保险过期"):"年审过期";
+                    var html = "<div>"+state+"</div>";
+                    return  html;
+                }
+            },
+            {
+                "orderable":false,
+                "targets":[0],
+                "render":function (data,type,row) {
+                    var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
+                    return  html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        },
+        "drawCallback": function( settings ) {
+            if(dataArr[0]==="all"){
+                $(".checkchild").prop("checked", true); //全部选中
+            }else{
+                $(".checkchild").each(function () {
+                    if(dataArr.indexOf($(this).parents('tr').find('td:eq(1)').text())!==-1){
+                        $(this).prop("checked", true)
+                    }
+                })
+            }
+        }
+    });
+    //禁止表头全部点击事件
+    $("thead tr th:first-child").click(function () {
+        $("thead tr th:first-child").unbind();
+    });
+    //交通车辆-新增
+    $("div.mybtn").html("新增")
+    $("#table9_wrapper .mybtn").click(function () {
+        $("#fname7 input").val("");
+        $("#fname7").modal('show');
+    });
+    //交通车辆-年度
+    var selectyear9 ='<input id="yeardu9" />';
+    $("div.selectyear9").html("年度："+selectyear9)
+    $("#yeardu9").jeDate({
+        isinitVal:true,
+        format:"YYYY年",
+        okfun:function (obj) {
+            table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
+            console.log(obj.date.YYYY);
+        }
+    });
+    $("#yeardu9").val("");
 
+</script>
+<!--选择框 导出-->
+<script>
+    var uploaderExcel;
+    //获取id
+    function getDataId(that) {
+        var allTrue;
+        var isChecked = $(that).prop('checked');
+        var id = $(that).parents('tr').find('td:eq(1)').text();//获取id
+        if(isChecked){ //选中判断有没有 没有就push id
+            if(dataArr.indexOf(id)==-1){
+                dataArr.push(id);
+            }
+            $(".checkchild").each(function(){
+                if(!$(this).prop('checked')){
+                    allTrue = "noall"
+                    return
+                }
+            });
+            if(allTrue!=="noall"){
+                $("#msg").show("fast");
+                $(".msg").html('选择当前页面信息或者<a herf="javascript:void(0)" onclick="selectAll(this)">全部信息</a>');
+                $check_table.find(".checkall").prop("checked",true);
+            }
+        }else{
+            //没选中验证数组有没有 有就删除掉
+            //有未选项就取消全选
+            $check_table.find(".checkall").prop("checked",false);
+            $("#msg").hide("fast");
+            if(dataArr[0]==="all"){
+                dataArr.shift();
+                //把选择的存起来
+                $check_table.find(".checkchild").each(function(){
+                    if($(this).prop('checked')){
+                        var id = $(this).parents('tr').find('td:eq(1)').text();
+                        dataArr.push(id);
+                    }
+                });
+            }
+            if(dataArr.indexOf(id)!==-1){
+                dataArr.splice(dataArr.indexOf(id),1)
+            }
+        }
+    };
+    //全部信息
+    function selectAll(that) {
+        console.log($(that).parent());
+        $(that).parent().html("已选择全部");
+        dataArr = ["all"];
+        $check_table.find(".checkchild").prop("checked", true); //全部选中
+    }
+
+    //单选
+    function getRadioId(that) {
+        getDataId(that);
+    };
+    //选择框初始化
+    function checkinit(){
+        dataArr=[];
+        $("#msg").hide();
+        $(".msg").html('选择当前页面信息或者<a herf="javascript:void(0)" onclick="selectAll(this)">全部信息</a>');
+        $(".checkchild").prop("checked", false); //全部不选中
+        $(".checkall").prop("checked", false);
+        $(".down_excel").empty();
+    };
+    //checkbox全选
+    $(".checkall").on("click", function () {
+        $check_table = $(this).parents("table");
+        dataArr=[];
+        $(".msg").html('选择当前页面信息或者<a herf="javascript:void(0)" onclick="selectAll(this)">全部信息</a>');
+        var check = $(this).prop("checked");
+        if (check === true) {
+            $("#msg").show("fast");
+            $(this).parents("table").find(".checkchild").prop("checked", true); //全部选中
+            $(this).parents("table").find(".checkchild").each(function(){
+                getDataId(this);
+            });
+        } else {
+            $("#msg").hide("fast");
+            $(this).parents("table").find(".checkchild").prop("checked", false); //全部不选中
+            $(this).parents("table").find(".checkchild").each(function(){
+                getDataId(this);
+            });
+        }
+        console.log(dataArr);
+    });
+
+    //导出excelExport
+    function excel_out(id) {
+        var url;
+        if(dataArr.length<1){
+            layer.msg("选定导出的项");
+            return
+        };
+        switch (Number(id)){
+            case 1322:
+                url = "../Trafficvehicle/exportExcel";
+                break;
+        };
+            $.ajax({
+                url: url,
+                type: "post",
+                data: {
+                    'idarr':dataArr
+                },
+                dataType: "json",
+                success: function (res) {
+                    if(res.code ==1){
+                        $("#form_container_excel").empty();
+                        var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
+                            +'<form action='+url+' method="get" target="exportExcelFrame">';
+                        for (var i = 0; i < dataArr.length; i++)
+                        {
+                            str += '<input style="display: none;" name="idarr[]" value="'+ dataArr[i] +'">';
+                        }
+                        str += '<button type="submit" id="exportExcelBtn"></button></form>';
+                        $("#form_container_excel").append(str);
+                        $("#form_container_excel").find("#exportExcelBtn").click();
+                    }else{
+                        alert("获取数据失败！");
+                    }
+                }
+            });
+    }
+
+    //导出excelExport模板
+    function excelModel_out(id) {
+        var url;
+        switch (Number(id)){
+            case 1322:
+                url = "../Trafficvehicle/exportExcelTemplete";
+                break;
+        };
+            $.ajax({
+                url: url,
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code ==1){
+                        $("#form_container_model").empty();
+                        var str = '<iframe name="exportExcelFrameModel" style="display:none;"></iframe>'
+                            +'<form action='+url+' method="get" target="exportExcelFrameModel">';
+                        str += '<button type="submit" id="exportExcelModelBtn"></button></form>';
+                        $("#form_container_model").append(str);
+                        $("#form_container_model").find("#exportExcelModelBtn").click();
+                    }else{
+                        alert("获取数据失败！")
+                    }
+                }
+            });
+    }
+
+    //导出点击事件
+    $(".excelExport").click(function () {
+        excel_out(selfid);
+    });
+    //导出模板点击事件
+    $(".excelExportModel").click(function () {
+        excelModel_out(selfid);
+    });
+    //导入文件-初始化
+    function upload4() {
+        var server;
+        switch (Number(selfid)){
+            case 1322 :
+                server = "../Trafficvehicle/importExcel";
+                break;
+        }
+        if(!uploaderExcel){
+            uploaderExcel = WebUploader.create({
+                auto: false,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('"+server+"')}",// 文件接收服务端。
+                fileSizeLimit: 1000 *1024 *1024,
+                fileNumLimit: 1,
+                chunked: false,
+                formData: {"selfid":""},
+                duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: false,
+                    id: "#file_upload4",
+                    innerHTML: "上传文件"
+                }
+            });
+
+            uploaderExcel.on( 'fileQueued', function( file ) {
+                $("#file_per4").append('<div id="' + file.id + '" class="item">' +
+                    '</div>');
+                $("#file_list4").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                    '<span class="info4">' + file.name + '</span>&nbsp' +
+                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>' );
+            });
+            $("#file_list4").on("click", ".webuploadDelbtn", function () {
+                var $ele = $(this);
+                var id = $ele.parent().attr("class");
+                var file = uploaderExcel.getFile(id);
+                uploaderExcel.removeFile(file,true);
+            });
+            uploaderExcel.on('fileDequeued', function (file) {
+                $(file.id).remove();
+                $('.'+file.id).remove();
+                console.log("remove");
+            });
+            uploaderExcel.on("uploadStart",function () {
+                uploaderExcel.options.formData.selfid = selfid;
+            });
+            uploaderExcel.on('beforeFileQueued', function (file) {
+                if($("#file_list4").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
+            // 文件上传过程中创建进度条实时显示。
+            uploaderExcel.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            uploaderExcel.on( 'uploadSuccess', function( file,data, response ) {
+                if(data.code === 1){
+                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    $("#file_upload4").empty();
+                    $("#file_per4").empty();
+                    $("#file_list4").empty();
+                    $("#fname4").modal('hide');
+                    if(Number(selfid) === 1322){
+                        table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?selfid="+selfid).load();
+                    }
+                }else {
+                    layer.msg(data.info);
+                }
+            });
+
+            // 文件上传失败，显示上传出错。
+            uploaderExcel.on( 'uploadError', function( file ) {
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                $("#file_per2").empty();
+            });
+        }
+    };
+    //提交导入
+    $("#fname4 .btn-primary").click(function () {
+        if($("#file_list4").html()){
+            uploaderExcel.upload();
+
+        }else {
+            alert("请选择上传文件");
+        }
+    });
+    //导入excelImport点击事件
+    $(".excelImport").click(function () {
+        uploaderExcel = null;
+        $("#fname4 input").val("");
+        $("#file_list4").empty();
+        $("#fname4").modal('show');
+        upload4();
+    });
+    //获取版本初始化
+    function vision_getinit(url) {
+        $.ajax({
+            url:url,
+            dataType:'JSON',
+            type:'POST',
+            data:{"selfid":selfid},
+            success:function (res) {
+                var optionStr='<option value="0">全部</option>';
+                for(var i=0;i<res.data.length;i++){
+                    if($.trim(res.data[i])===""||res.data[i]==="null"){
+                        continue;
+                    }
+                    optionStr += '<option value="'+res.data[i]+'">' + res.data[i] + '</option>'
+                }
+                $(".down_excel").append(optionStr);
+            }
+        });
+    }
+    //点击查看历史版本
+    $(".down_excel").click(function () {
+        var time  = $(this).find('option:selected').val();
+        var history_version = (time===undefined||time==="0"||time==="null")?"":time ;//选中的值
+        switch (Number(selfid)){
+            case 1322:
+                table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?selfid="+selfid+"&history_version="+history_version).load();
+                break;
+        }
+    });
+</script>
 </body>
 </html>
