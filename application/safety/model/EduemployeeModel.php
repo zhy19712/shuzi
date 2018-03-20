@@ -33,7 +33,7 @@ class EduemployeeModel extends Model
     public function editEdu($param)
     {
         try{
-            $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
+            $result =  $this->allowField(true)->save($param, ['major_key' => $param['major_key']]);
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
@@ -44,30 +44,30 @@ class EduemployeeModel extends Model
         }
     }
 
-    public function delEdu($id)
+    public function delEdu($major_key)
     {
         try{
-            $data = $this->getOne($id);
+            $data = $this->getOne($major_key);
             $path = $data['path'];
             if(file_exists($path)){
                 unlink($path); //删除 导入文件
             }
-            $this->where('id', $id)->delete();
+            $this->where('major_key', $major_key)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
 
-    public function getOne($id)
+    public function getOne($major_key)
     {
-        return $this->where('id', $id)->find();
+        return $this->where('major_key', $major_key)->find();
     }
 
-    public  function getList($idArr)
+    public  function getList($majorKeyArr)
     {
         $data = [];
-        foreach($idArr as $v){
+        foreach($majorKeyArr as $v){
             $data[] = $this->getOne($v);
         }
         return $data;

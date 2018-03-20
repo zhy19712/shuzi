@@ -33,7 +33,7 @@ class RiskManageModel extends Model
     public function editManage($param)
     {
         try{
-            $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
+            $result =  $this->allowField(true)->save($param, ['major_key' => $param['major_key']]);
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
@@ -44,10 +44,10 @@ class RiskManageModel extends Model
         }
     }
 
-    public function delManage($id)
+    public function delManage($major_key)
     {
         try{
-            $data = $this->getOne($id);
+            $data = $this->getOne($major_key);
             $path[0] = $data['year_path']; // 年度风险辨识文件
             $path[1] = $data['quarter_path']; // 年度风险辨识文件
             $path[2] = $data['sheet_path']; // 年度风险辨识文件
@@ -68,22 +68,22 @@ class RiskManageModel extends Model
                 unlink($import_path); //  删除文件
             }
 
-            $this->where('id', $id)->delete();
+            $this->where('major_key', $major_key)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
         }catch(PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
 
-    public function getOne($id)
+    public function getOne($major_key)
     {
-        return $this->where('id', $id)->find();
+        return $this->where('major_key', $major_key)->find();
     }
 
-    public  function getList($idArr)
+    public  function getList($majorKeyArr)
     {
         $data = [];
-        foreach($idArr as $v){
+        foreach($majorKeyArr as $v){
             $data[] = $this->getOne($v);
         }
         return $data;

@@ -33,7 +33,7 @@ class StatutestdiModel extends Model
     public function editSdi($param)
     {
         try{
-            $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
+            $result =  $this->allowField(true)->save($param, ['major_key' => $param['major_key']]);
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
@@ -44,10 +44,10 @@ class StatutestdiModel extends Model
         }
     }
 
-    public function delSdi($id)
+    public function delSdi($major_key)
     {
         try{
-            $data = $this->getOne($id);
+            $data = $this->getOne($major_key);
             $path = $data['path'];
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
             if(file_exists($path)){
@@ -62,22 +62,22 @@ class StatutestdiModel extends Model
                 unlink($import_path); //删除文件
             }
 
-            $this->where('id', $id)->delete();
+            $this->where('major_key', $major_key)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
 
-    public function getOne($id)
+    public function getOne($major_key)
     {
-        return $this->where('id', $id)->find();
+        return $this->where('major_key', $major_key)->find();
     }
 
     public function delSdiByGroupId($groupId)
     {
         $flag = [];
-        $idArr = $this->where('group_id',$groupId)->column('id');
+        $idArr = $this->where('group_id',$groupId)->column('major_key');
         if(count($idArr) == 0){
             return ['code' => 1, 'data' => '', 'msg' => '不包含Sdi文件'];
         }
@@ -90,10 +90,10 @@ class StatutestdiModel extends Model
         return ['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']];
     }
 
-    public function getList($idArr)
+    public function getList($majorKeyArr)
     {
         $data = [];
-        foreach($idArr as $v){
+        foreach($majorKeyArr as $v){
             $data[] = $this->getOne($v);
         }
         return $data;
