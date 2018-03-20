@@ -82,7 +82,7 @@ class Statutestdi extends Base
                 'years' => date('Y'),
                 'group_id' => $param['group_id'],
                 'number' => $param['number'],
-                'sdi_name' => $param['sdi_name'],
+                'sdi_name' => empty($param['sdi_name']) ? $is_exist['filename'] : $param['sdi_name'],
                 'go_date' => $param['go_date'],
                 'standard' => $param['standard'],
                 'evaluation' => $param['evaluation'],

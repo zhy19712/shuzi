@@ -83,7 +83,7 @@ class Rulesregulations extends Base
                 'years' => date('Y'),
                 'group_id' =>  $param['group_id'],
                 'number' => $param['number'],
-                'rul_name' => $param['rul_name'],
+                'rul_name' => empty($param['rul_name']) ? $is_exist['filename'] : $param['rul_name'],
                 'go_date' => $param['go_date'],
                 'standard' => $param['standard'],
                 'evaluation' => $param['evaluation'],
