@@ -260,7 +260,7 @@
             url: "./recordDownload",
             type: "post",
             data: {
-                'id':idArr
+                'majorKeyArr':idArr
             },
             dataType: "json",
             success: function (res) {
@@ -270,7 +270,7 @@
                         +'<form action="./recordDownload" method="get" target="exportExcelFrame">';
                     for (var i = 0; i < idArr.length; i++)
                     {
-                        str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
+                        str += '<input style="display: none;" name="majorKeyArr[]" value="'+ idArr[i] +'">';
                     }
                     str += '<button type="submit" id="exportExcelBtn"></button></form>';
                     $("#form_container").append(str);

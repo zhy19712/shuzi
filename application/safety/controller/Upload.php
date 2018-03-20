@@ -246,7 +246,7 @@ class Upload extends Base
                     return json(['code' => '0', 'msg' => '无效的编号']);
                 }
                 // 当 存在替代标准 适用性评价 状态为 : 过期  时 新增一条 修编记录
-                if(!empty($standard) && $evaluation == -1){
+                if(!empty($standard) && $evaluation == '过期'){
                     $pname = Db::name('safety_sdi_node')->where('id',$data_older['group_id'])->value('pname');
                     $record = new RevisionrecordModel();
                     $re_data = [
@@ -603,16 +603,25 @@ class Upload extends Base
     }
 
     /**
-     * 专题教育培训 文件上传
+     * 专题教育培训  多文件 异步上传
+     * 安全风险管理  多文件 异步上传
      * @author hutao
      */
     public function uploadEdu(){
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/education');
+//        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/education');
+//        if($info){
+//            echo $info->getSaveName();
+//        }else{
+//            echo $file->getError();
+//        }
+        $module_directory_name = request()->param('module_directory_name'); // 当前模块名称
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/' . $module_directory_name . '/');
         if($info){
-            echo $info->getSaveName();
+            $path = './uploads/'.$module_directory_name.'/' . str_replace("\\","/",$info->getSaveName());
+            return json(['code' => 1,'msg' => '上传成功','path' => $path]);
         }else{
-            echo $file->getError();
+            return json(['code' => -1,'msg' => '上传失败']);
         }
     }
 

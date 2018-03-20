@@ -52,6 +52,10 @@ class Edupeople extends Base
                 $param['years'] = date("Y");
                 $flag = $edu->insertEdu($param);
             }else{
+                $is_exist = $edu->getOne($param['major_key']);
+                if(empty($is_exist)){
+                    return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
+                }
                 $flag = $edu->editEdu($param);
             }
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
