@@ -98,6 +98,7 @@ class Trafficvehicle extends Base
                 'entry_time' => $param['entry_time'],//进场时间
                 'car_state' => $param['car_state'],//车辆状态
                 'date' => date("Y-m-d H:i:s"),
+                'input_time' => $param['input_time'],
                 'remark' => $param['remark']
             ];
             $flag = $traffic->insertTrafficvehicle($data);
