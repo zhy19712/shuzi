@@ -10,6 +10,7 @@ namespace app\safety\controller;
 use app\admin\controller\Base;
 use app\admin\model\UserModel;
 use app\admin\model\UserType;
+use app\safety\model\RevisionrecordModel;
 use app\safety\model\RulesregulationsModel;
 use app\safety\model\SafetySdiNodeModel;
 use think\Db;
@@ -90,6 +91,25 @@ class Rulesregulations extends Base
                 'rul_user' => $param['rul_user'],
                 'remark' => $param['remark']
             ];
+
+            // 当 存在替代标准 适用性评价 状态为 : 过期  时 新增一条 修编记录
+            if(!empty($data['standard']) && $data['evaluation'] == '过期'){
+                $pname = Db::name('safety_sdi_node')->where('id',$data['group_id'])->value('pname');
+                $record = new RevisionrecordModel();
+                $re_data = [
+                    'record_name' => $data['sdi_name'],
+                    'original_number' => $data['number'],
+                    'replace_number' => $data['standard'],
+                    'replace_time' => date("Y-m-d H:i:s"),
+                    'owner' => session('username'),
+                    'record_type' => '规章制度'.$pname
+                ];
+                $re_flag = $record->insertRecord($re_data);
+                if($re_flag['code'] == '-1'){
+                    return json($re_flag);
+                }
+            }
+
             $flag = $rules->editRules($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
