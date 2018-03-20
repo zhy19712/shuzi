@@ -77,7 +77,7 @@ class StatutestdiModel extends Model
     public function delSdiByGroupId($groupId)
     {
         $flag = [];
-        $idArr = $this->where('group_id',$groupId)->column('id');
+        $idArr = $this->where('group_id',$groupId)->column('major_key');
         if(count($idArr) == 0){
             return ['code' => 1, 'data' => '', 'msg' => '不包含Sdi文件'];
         }
