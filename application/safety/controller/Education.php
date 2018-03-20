@@ -76,7 +76,7 @@ class Education extends Base
             return json(['code' => 1]);
         }
         $major_key = input('param.major_key');
-        $type = input('param.type');
+        $type = input('param.types');
         $edu = new EducationModel();
         $param = $edu->getOne($major_key);
         if($type == '1'){ // type 1 表示的是 培训材料文件 2 表示培训记录文件
