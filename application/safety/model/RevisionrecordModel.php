@@ -59,9 +59,9 @@ class RevisionrecordModel extends Model
         return $this->where('major_key', $major_key)->find();
     }
 
-    public function getOneByNumber($original_number,$standard)
+    public function isExist($correlation_number)
     {
-        $data = $this->where(['original_number' => $original_number,'replace_number' => $standard])->value('major_key');
+        $data = $this->where('correlation_number',$correlation_number)->value('major_key');
         return $data;
     }
 

@@ -97,6 +97,7 @@ class Statutestdi extends Base
                 $pname = Db::name('safety_sdi_node')->where('id',$data['group_id'])->value('pname');
                 $record = new RevisionrecordModel();
                 $re_data = [
+                    'correlation_number' => $data['major_key'],
                     'record_name' => $data['sdi_name'],
                     'original_number' => $data['number'],
                     'replace_number' => $data['standard'],
@@ -104,9 +105,9 @@ class Statutestdi extends Base
                     'owner' => session('username'),
                     'record_type' => '法规标准识别'.$pname
                 ];
-                // 根据 原来的版本号 和 替换版本号 查询是否 存在记录
+                // 根据 关联编号 查询是否 存在记录
+                $is_exist_record = $record->isExist($data['major_key']);
                 // 不存在就新增,存在就修改
-                $is_exist_record = $record->getOneByNumber($is_exist['number'],$is_exist['standard']);
                 if(empty($is_exist_record)){
                     $re_flag = $record->insertRecord($re_data);
                 }else{
