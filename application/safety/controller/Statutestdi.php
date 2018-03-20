@@ -58,7 +58,7 @@ class Statutestdi extends Base
     {
         if(request()->isAjax()){
             $sdi = new StatutestdiModel();
-            $data = $sdi->getOne(input('param.id'));
+            $data = $sdi->getOne(input('param.major_key'));
             return json($data);
         }
     }
@@ -73,12 +73,12 @@ class Statutestdi extends Base
         if(request()->isAjax()){
             $sdi = new StatutestdiModel();
             $param = input('post.');
-            $is_exist = $sdi->getOne($param['id']);
+            $is_exist = $sdi->getOne($param['major_key']);
             if(empty($is_exist)){
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
             $data = [
-                'id' => $param['id'],
+                'major_key' => $param['major_key'],
                 'years' => date('Y'),
                 'group_id' => $param['group_id'],
                 'number' => $param['number'],
@@ -104,9 +104,9 @@ class Statutestdi extends Base
         if(request()->isAjax()){
             return json(['code' => 1]);
         }
-        $id = input('param.id');
+        $major_key = input('param.major_key');
         $sdi = new StatutestdiModel();
-        $param = $sdi->getOne($id);
+        $param = $sdi->getOne($major_key);
         $filePath = $param['path'];
         $fileName = $param['sdi_name'];
         // 如果是手动输入的名称，就有可能没有文件后缀
@@ -141,7 +141,7 @@ class Statutestdi extends Base
         if(request()->isAjax()) {
             $sdi = new StatutestdiModel();
             $param = input('param.');
-            $flag = $sdi->delSdi($param['id']);
+            $flag = $sdi->delSdi($param['major_key']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -158,7 +158,7 @@ class Statutestdi extends Base
             $param = input('post.');
             $code = 1;
             $msg = '预览成功';
-            $data = $sdi->getOne($param['id']);
+            $data = $sdi->getOne($param['major_key']);
             $path = $data['path'];
             $extension = strtolower(get_extension(substr($path,1)));
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
@@ -370,13 +370,13 @@ class Statutestdi extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('id/a');
-        if(count($idArr) == 0){
+        $majorKeyArr = input('majorKeyArr/a');
+        if(count($majorKeyArr) == 0){
             return json(['code' => -1 ,'msg' => '请选择需要下载的编号']);
         }
         $name = '法规标准识别 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $sdi = new StatutestdiModel();
-        $list = $sdi->getList($idArr);
+        $list = $sdi->getList($majorKeyArr);
         if(count($list) == 0){
             return json(['code' => -1 ,'msg' => '数据为空']);
         }
@@ -412,7 +412,7 @@ class Statutestdi extends Base
             $key++;
             $objPHPExcel->getActiveSheet()
                 //Excel的第A列，name是你查出数组的键值字段，下面以此类推
-                ->setCellValue('A'.$key, $v['id'])
+                ->setCellValue('A'.$key, $v['major_key'])
                 ->setCellValue('B'.$key, $v['number'])
                 ->setCellValue('C'.$key, $v['sdi_name'])
                 ->setCellValue('D'.$key, $v['go_date'])

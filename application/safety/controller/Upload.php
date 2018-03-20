@@ -194,7 +194,7 @@ class Upload extends Base
     public function uploadSdi(){
         $sdi = new StatutestdiModel();
         // 前台提交的数据
-        $id = request()->param('id'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
+        $major_key = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传，如果传了 就赋值为空 注意 修改的时候一定要传
         $group_id = request()->param('group_id'); // 必须  文件所属分组的编号 也就是当前选择的节点id编号
         $number = request()->param('number'); // 标准号
         $sdi_name = request()->param('sdi_name'); // 文件名称
@@ -236,14 +236,12 @@ class Upload extends Base
                 'path' => $path,
                 'remark' => $remark
             ];
-            // 解决前台新增时老是把id赋值为 WU_FILE_ 的问题
-            $is_add = explode('_',$id);
-            if(empty($id) || $is_add[0] == 'WU')
+            if(empty($major_key))
             {
                 $flag = $sdi->insertSdi($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
-                $data_older = $sdi->getOne($id);
+                $data_older = $sdi->getOne($major_key);
                 if(empty($data_older)){
                     return json(['code' => '0', 'msg' => '无效的编号']);
                 }
@@ -268,7 +266,7 @@ class Upload extends Base
                 if(file_exists($data_older['path'])){
                     unlink($data_older['path']);
                 }
-                $data['id'] = $id;
+                $data['major_key'] = $major_key;
                 $flag = $sdi->editSdi($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }

@@ -30,7 +30,7 @@ $primaryKey = 'major_key';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 
-$type = isset($_GET["type"]) ? $_GET["type"] : ''; // type 是1 绩效评定  2评估报告 3工作总结
+$type = isset($_GET["types"]) ? $_GET["types"] : ''; // type 是1 绩效评定  2评估报告 3工作总结
 
 //定义数据库中查看的字段与表格中的哪一列相对应
 if($type == '1'){
