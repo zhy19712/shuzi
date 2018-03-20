@@ -76,6 +76,35 @@ class EducationModel extends Model
         }
     }
 
+    public function delEduFile($major_key,$types)
+    {
+        try{
+            $data = $this->getOne($major_key);
+            if($types == '1'){
+                $path = $data['ma_path'];
+                $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+                if(file_exists($path)){
+                    unlink($path); //删除文件 培训材料文件
+                }
+                if(file_exists($pdf_path)){
+                    unlink($pdf_path); //删除生成的预览pdf
+                }
+            }else{
+                $path2 = $data['re_path'];
+                $pdf_path2 = './uploads/temp/' . basename($path2) . '.pdf';
+                if(file_exists($path2)){
+                    unlink($path2); //删除文件 培训记录文件
+                }
+                if(file_exists($pdf_path2)){
+                    unlink($pdf_path2); //删除生成的预览pdf
+                }
+            }
+            return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
+        }catch(PDOException $e){
+            return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
+        }
+    }
+
     public function getOne($major_key)
     {
         return $this->where('major_key', $major_key)->find();
