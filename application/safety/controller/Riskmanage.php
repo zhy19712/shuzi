@@ -61,7 +61,7 @@ class Riskmanage extends Base
     public function delAddFile()
     {
         if(request()->isAjax()){
-            $path = $param = input('param.path');
+            $path = input('param.path');
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
             if(file_exists($path)){
                 unlink($path); //删除文件 培训材料文件
