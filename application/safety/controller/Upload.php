@@ -628,17 +628,12 @@ class Upload extends Base
      */
     public function uploadEdu(){
         $file = request()->file('file');
-//        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/education');
-//        if($info){
-//            echo $info->getSaveName();
-//        }else{
-//            echo $file->getError();
-//        }
         $module_directory_name = request()->param('module_directory_name'); // 当前模块名称
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/' . $module_directory_name . '/');
         if($info){
-            $path = './uploads/'.$module_directory_name.'/' . str_replace("\\","/",$info->getSaveName());
-            return json(['code' => 1,'msg' => '上传成功','path' => $path]);
+            $data['path'] = './uploads/'.$module_directory_name.'/' . str_replace("\\","/",$info->getSaveName());
+            $data['filename'] = $file->getInfo('name');
+            return json(['code' => 1,'msg' => '上传成功','data' => $data]);
         }else{
             return json(['code' => -1,'msg' => '上传失败']);
         }
