@@ -552,15 +552,18 @@
         if(isChecked){
             idArr.push(id);
             idArr.removalArray();
+            $('#all_checked').prop('checked',true);
         }else{
             idArr.remove(id);
             idArr.removalArray();
+            $('#all_checked').prop('checked',false);
         }
     }
 
     //单选
     function getSelectId(that) {
         getId(that);
+        delCheckedAllTips();
         console.log(idArr);
     }
 
@@ -572,15 +575,57 @@
             $('input[name="checkList"]').each(function(){
                 getId(this);
             });
+            addCheckedAllTips('勾选"收件箱"中全部 1119 封邮件');
         } else {
             $("input[name='checkList']").prop("checked", false);
             $('#tableItem tbody tr').removeClass('selected');
             $('input[name="checkList"]').each(function(){
                 getId(this);
             });
+            delCheckedAllTips();
         }
         console.log(idArr);
     });
+
+    //勾选表全部数据
+    function checkedAlls(that) {
+        var state = $(that).attr('state');
+        if(state!=='false'){
+            $(that).html('勾选"收件箱"中全部 1119 封邮件');
+            $(that).attr('state',false);
+            tableItem.on('draw',function () {
+                $('input[type="checkbox"][name="checkList"]').prop("checked",false);
+                delCheckedAllTips();
+            })
+            return false;
+        }else{
+            $(that).html('取消勾选');
+            $(that).attr('state',true);
+            //翻页事件
+            tableItem.on('draw',function () {
+                $('input[type="checkbox"][name="checkList"]').prop("checked",true);
+                addCheckedAllTips('取消勾选');
+            });
+        }
+    }
+
+    //插入全选提示
+    function addCheckedAllTips(msg) {
+        if($('.graytip').length>0){
+            return false;
+        }
+        var trDom = '<tr class="graytip">' +
+            '<td colspan="11" class="div_mail_info">已勾选本页 50 封邮件，' +
+            '<a onclick="checkedAlls(this)" state="false">'+msg+'</a>' +
+            '</td>' +
+            '</tr>';
+        $('#tableItem tbody').prepend(trDom);
+    }
+
+    //删除全选提示
+    function delCheckedAllTips() {
+        $('.graytip').remove();
+    }
 
     //打开新增弹层
     $('.add').on('click',function(){
@@ -773,7 +818,7 @@
             url: "./exportExcel",
             type: "post",
             data: {
-                'majorKeyArr':idArr
+                'id':idArr
             },
             dataType: "json",
             success: function (res) {
@@ -783,7 +828,7 @@
                         +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
                     for (var i = 0; i < idArr.length; i++)
                     {
-                        str += '<input style="display: none;" name="majorKeyArr[]" value="'+ idArr[i] +'">';
+                        str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
                     }
                     str += '<button type="submit" id="exportExcelBtn"></button></form>';
                     $("#form_container").append(str);
@@ -801,7 +846,7 @@
             url: "./exportExcelTemplete",
             type: "post",
             data: {
-                'majorKeyArr':idArr
+                'id':idArr
             },
             dataType: "json",
             success: function (res) {
@@ -811,7 +856,7 @@
                         +'<form action="./exportExcelTemplete" method="get" target="exportExcelFrame">';
                     for (var i = 0; i < idArr.length; i++)
                     {
-                        str += '<input style="display: none;" name="majorKeyArr[]" value="'+ idArr[i] +'">';
+                        str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
                     }
                     str += '<button type="submit" id="exportExcelBtn"></button></form>';
                     $("#form_container").append(str);

@@ -75,6 +75,83 @@ class RiskManageModel extends Model
         }
     }
 
+    public function removeEditFile($major_key,$types)
+    {
+        try{
+            $data = $this->getOne($major_key);
+            $edit_data['major_key'] = $major_key;
+            // type 1 年度风险辨识文件 2 季度风险辨识文件3 风险复测单 4风险管控卡 5施工作业票
+            if($types == '1'){
+                $path = $data['year_path'];
+                $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+                if(file_exists($path)){
+                    unlink($path); //删除文件 年度风险辨识文件
+                }
+                if(file_exists($pdf_path)){
+                    unlink($pdf_path); //删除生成的预览pdf
+                }
+                $edit_data['year_name'] = '';
+                $edit_data['year_filename'] = '';
+                $edit_data['year_path'] = '';
+            }else if($types == '2'){
+                $path2 = $data['quarter_path'];
+                $pdf_path2 = './uploads/temp/' . basename($path2) . '.pdf';
+                if(file_exists($path2)){
+                    unlink($path2); //删除文件 季度风险辨识文件3
+                }
+                if(file_exists($pdf_path2)){
+                    unlink($pdf_path2); //删除生成的预览pdf
+                }
+                $edit_data['quarter_name'] = '';
+                $edit_data['quarter_filename'] = '';
+                $edit_data['quarter_path'] = '';
+            }else if($types == '3'){
+                $path2 = $data['sheet_path'];
+                $pdf_path2 = './uploads/temp/' . basename($path2) . '.pdf';
+                if(file_exists($path2)){
+                    unlink($path2); //删除文件 风险复测单
+                }
+                if(file_exists($pdf_path2)){
+                    unlink($pdf_path2); //删除生成的预览pdf
+                }
+                $edit_data['sheet_name'] = '';
+                $edit_data['sheet_filename'] = '';
+                $edit_data['sheet_path'] = '';
+            }else if($types == '4'){
+                $path2 = $data['card_path'];
+                $pdf_path2 = './uploads/temp/' . basename($path2) . '.pdf';
+                if(file_exists($path2)){
+                    unlink($path2); //删除文件 4风险管控卡
+                }
+                if(file_exists($pdf_path2)){
+                    unlink($pdf_path2); //删除生成的预览pdf
+                }
+                $edit_data['card_name'] = '';
+                $edit_data['card_filename'] = '';
+                $edit_data['card_path'] = '';
+            }else if($types == '5'){
+                $path2 = $data['work_path'];
+                $pdf_path2 = './uploads/temp/' . basename($path2) . '.pdf';
+                if(file_exists($path2)){
+                    unlink($path2); //删除文件 5施工作业票
+                }
+                if(file_exists($pdf_path2)){
+                    unlink($pdf_path2); //删除生成的预览pdf
+                }
+                $edit_data['work_name'] = '';
+                $edit_data['work_filename'] = '';
+                $edit_data['work_path'] = '';
+            }
+
+            // 文件删除后，修改数据库字段值
+            $this->editManage($edit_data);
+
+            return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
+        }catch(PDOException $e){
+            return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
+        }
+    }
+
     public function getOne($major_key)
     {
         return $this->where('major_key', $major_key)->find();

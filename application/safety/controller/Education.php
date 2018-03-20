@@ -166,17 +166,40 @@ class Education extends Base
     }
 
     /**
+     * 当新增时，文件还未保存时，点击删除文件
+     * 前台需要给我  path 文件路径 根据路径删除文件
      * 删除上传的文件
      * @return \think\response\Json
      * @author hutao
      */
-    public function delUploadFile()
+    public function delAddFile()
+    {
+        if(request()->isAjax()){
+            $path = input('param.path');
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(file_exists($path)){
+                unlink($path); //删除文件 培训材料文件
+            }
+            if(file_exists($pdf_path)){
+                unlink($pdf_path); //删除生成的预览pdf
+            }
+            return json(['code' => 1, 'msg' => '删除成功']);
+        }
+    }
+
+    /**
+     * 编辑时 删除文件
+     * 前台 只需要给我  主键 和要删除的文件 类别 types 1 培训材料文件 2 培训记录文件
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function delEditFile()
     {
         if(request()->isAjax()){
             $major_key = input('param.major_key');
             $types= input('param.types'); // types 1 培训材料文件 2 培训记录文件
             $edu = new EducationModel();
-            $flag = $edu->delEduFile($major_key,$types);
+            $flag = $edu->removeEditFile($major_key,$types);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
