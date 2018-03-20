@@ -62,14 +62,11 @@ class RiskModel extends Model
             $item = $this->where('id', $_id)->find();
 
             foreach (explode('', $risk['']) as $img) {
-                $riskImgs[] = array('path' => $img, 'cat' => 1);
+                $riskImgs[] = array('path' => $img, 'cat' => '排查');
             }
             foreach (explode('', $risk['']) as $img) {
-                $riskAfterImgs[] = array('path' => $img, 'cat' => 2);
+                $riskAfterImgs[] = array('path' => $img, 'cat' => '验收');
             }
-//            $item->riskImg()->delete();
-//            $item->riskAfterImg()->delete();
-
             Db::table('safety_risk_img')->where('risk_id', $item['id'])->delete();
             $item->riskImg()->saveAll($riskImgs);
             $item->riskAfterImg()->saveAll($riskAfterImgs);
