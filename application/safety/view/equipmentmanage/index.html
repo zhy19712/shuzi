@@ -16,7 +16,7 @@
     .ztree li a.level0 span {display: block; color: white; padding-top:3px; font-size:12px; font-weight: bold;word-spacing: 2px;}
     .ztree li a.level0 span.button {	float:right; margin-left: 10px; visibility: visible;display:none;}
     .ztree li span.button.switch.level0 {display:none;}
-    #mytable1_wrapper,#mytable2_wrapper,#mytable3_wrapper,#mytable5_wrapper,#tools_container{
+    #mytable1_wrapper,#mytable2_wrapper,#mytable3_wrapper,#mytable5_wrapper,#tools_container,#mytable9_wrapper{
         display: none;
     }
     .mybtn{
@@ -64,6 +64,16 @@
         text-align: center;
         width: 96%;
         color: red;
+    }
+    .myp{
+        background-color: #bae2f3;
+        font-weight: 700;
+        line-height: 30px;
+        padding: 8px 0;
+        position: absolute;
+        text-align: center;
+        width: 78%;
+        left: 11%;
     }
 </style>
 <body class="gray-bg animated fadeInRight" style="background-color:#fff;">
@@ -649,7 +659,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">车辆状态：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="vehicle_state" type="text" class="form-control" readonly name="equip_state" >
+                                    <input id="vehicle_state" type="text" class="form-control" readonly name="vehicle_state" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
@@ -795,19 +805,22 @@
                     <h5>车辆管理</h5>
                 </div>
                 <div class="ibox-content">
-                    <input id="did" type="text" class="form-control" value="" style="display: none;">
+                    <input id="eid" type="text" class="form-control" value="" style="display: none;">
                     <form class="form-horizontal" id="vehicleform" method="post" action="#" onsubmit="return false">
+                        <div style="height: 50px;">
+                            <p class="myp">车辆基本信息</p>
+                        </div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">车牌号：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="passcheck_nb" type="text" class="form-control" name="equip_name" required="required" placeholder="此处为必填项">
+                                    <input id="car_number" type="text" class="form-control" name="car_number" required="required" placeholder="此处为必填项">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">车辆类型：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="primary" id="vehicle_type" class="form-control" >
+                                    <select name="vehicle_category" id="vehicle_category" class="form-control" >
                                         <option value="越野车">越野车</option>
                                         <option value="中型客车">中型客车</option>
                                         <option value="大型客车">大型客车</option>
@@ -821,13 +834,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">固定资产编号：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="plate_number" type="text" class="form-control" name="equip_num">
+                                    <input id="fixed_assets_number" type="text" class="form-control" name="fixed_assets_number">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">行驶证号：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="plate_number" type="text" class="form-control" name="equip_num">
+                                    <input id="driving_license" type="text" class="form-control" name="driving_license">
                                 </div>
                             </div>
                         </div>
@@ -836,13 +849,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">年审有效期：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="annual_verification" type="text" class="form-control" required="required" placeholder="此处为必填项" name="date_production" placeholder="请选择日期"/>
+                                    <input id="year_limit" type="text" class="form-control" required="required" placeholder="此处为必填项" name="year_limit" placeholder="请选择日期"/>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">保险有效期：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="insurance" type="text" required="required" placeholder="此处为必填项" class="form-control"/>
+                                    <input id="insurance_limit" type="text" required="required" placeholder="此处为必填项" class="form-control"/>
                                 </div>
                             </div>
                         </div>
@@ -851,13 +864,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">进场时间：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="person_in_charge" type="text" class="form-control" name="safety_inspection_num" />
+                                    <input id="entry_time_1" type="text" class="form-control" name="entry_time_1" />
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">车辆状态：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="approach_date" type="text" class="form-control"/>
+                                    <input id="vehicle_state_1" type="text" readonly class="form-control"/>
                                 </div>
                             </div>
                         </div>
@@ -866,38 +879,90 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">驾驶员：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="vehicle_state" type="text" class="form-control" readonly name="equip_state" >
+                                    <input id="driver" type="text" class="form-control"  name="driver" >
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">驾驶证号：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="vehicle_state" type="text" class="form-control" readonly name="equip_state" >
+                                    <input id="driver_license_number" type="text" class="form-control" name="driver_license_number" >
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
-                            <div class="col-lg-12 col-xs-12">
-                                <label class="col-xs-6 col-sm-6 control-label col-sm-offset-2 col-xs-offset-0">备注：</label>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">备注：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input type="text" id="remark5" class="form-control datepicker" name="remark" />
+                                    <input type="text" id="remark9" class="form-control datepicker" name="remark" />
                                 </div>
                             </div>
                         </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group">
-                            <div class="col-lg-6 col-xs-12">
-                                <div class="tab-pane active" id="mytable10_wrapper">
-                                    <table id="table1" width="100%" class="table table-striped table-bordered ">
+                        <div class="hide_1" style="height: 50px;">
+                            <p class="myp">维修记录</p>
+                        </div>
+                        <div class="form-group hide_1">
+                            <div class="col-lg-10 col-xs-10 col-sm-offset-1">
+                                <div class="tab-pane active" id="mytable10_wrapper" style="max-height: 300px;overflow-y: scroll">
+                                    <table id="table10" width="100%" class="table table-striped table-bordered ">
                                         <thead>
                                         <tr>
                                             <th>序号</th>
-                                            <th>文件名称</th>
-                                            <th>验收时间</th>
-                                            <th>上传人</th>
-                                            <th>上传时间</th>
-                                            <th>备注</th>
+                                            <th>维修时间</th>
+                                            <th>维修时公里数</th>
+                                            <th>维修内容及更换的配件情况</th>
+                                            <th>维修地点及厂家名称</th>
+                                            <th>经办人</th>
+                                            <th>批准人</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hide_1" style="height: 50px;">
+                            <p class="myp">保养记录</p>
+                        </div>
+                        <div class="form-group hide_1">
+                            <div class="10 col-xs-10 col-sm-offset-1">
+                                <div class="tab-pane active" id="mytable11_wrapper" style="max-height: 300px;overflow-y: scroll">
+                                    <table id="table11" width="100%" class="table table-striped table-bordered ">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>保养时间</th>
+                                            <th>保养时公里数</th>
+                                            <th>保养内容及更换的配件情况</th>
+                                            <th>保养地点及厂家名称</th>
+                                            <th>经办人</th>
+                                            <th>批准人</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hide_1" style="height: 50px;">
+                            <p class="myp">加油记录</p>
+                        </div>
+                        <div class="form-group hide_1">
+                            <div class="col-lg-10 col-xs-10 col-sm-offset-1">
+                                <div class="tab-pane active" id="mytable12_wrapper" style="max-height: 300px;overflow-y: scroll">
+                                    <table id="table12" width="100%" class="table table-striped table-bordered ">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>当前公里数</th>
+                                            <th>本次与上次公里差</th>
+                                            <th>本次加油时间</th>
+                                            <th>上次加油时间</th>
+                                            <th>加油类型</th>
+                                            <th>所加油量（升）</th>
+                                            <th>单价（元）</th>
+                                            <th>合计（元）</th>
+                                            <th>百公里耗油</th>
                                             <th>操作</th>
                                         </tr>
                                         </thead>
@@ -907,45 +972,235 @@
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
+                            <div class="col-xs-12" style="text-align: center;">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="fname8" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>新增</h5>
+                </div>
+                <div class="ibox-content">
+                    <input id="fid" type="text" class="form-control" value="" style="display: none;">
+                    <form class="form-horizontal" id="repairform" method="post" action="#" onsubmit="return false">
+                        <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <div class="tab-pane active" id="mytable10_wrapper">
-                                    <table id="table1" width="100%" class="table table-striped table-bordered ">
-                                        <thead>
-                                        <tr>
-                                            <th>序号</th>
-                                            <th>文件名称</th>
-                                            <th>验收时间</th>
-                                            <th>上传人</th>
-                                            <th>上传时间</th>
-                                            <th>备注</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">维修时间：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="repair_time" type="date" class="form-control" placeholder="请选择日期" name="repair_time" required="required" placeholder="此处为必填项">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">维修时公里数：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="mileage_repair" type="text" class="form-control" name="mileage_repair">
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <div class="tab-pane active" id="mytable10_wrapper">
-                                    <table id="table1" width="100%" class="table table-striped table-bordered ">
-                                        <thead>
-                                        <tr>
-                                            <th>序号</th>
-                                            <th>文件名称</th>
-                                            <th>验收时间</th>
-                                            <th>上传人</th>
-                                            <th>上传时间</th>
-                                            <th>备注</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                    </table>
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">维修内容及更换的配件情况：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="replacement_parts" type="text" class="form-control" name="replacement_parts">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">维修地点及厂家名称：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="repair_place" type="text" class="form-control" name="repair_place">
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">经办人：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="agent_person" type="text" class="form-control" name="agent_person" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">批准人：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="approver_person" type="text" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12" style="text-align: center;">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="fname9" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>新增</h5>
+                </div>
+                <div class="ibox-content">
+                    <input id="gid" type="text" class="form-control" value="" style="display: none;">
+                    <form class="form-horizontal" id="maintenanceform" method="post" action="#" onsubmit="return false">
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">保养时间：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="maintenance_time" type="date" class="form-control" placeholder="请选择日期" name="maintenance_time" required="required" placeholder="此处为必填项">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">保养时公里数：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="mileage_maintenance" type="text" class="form-control" name="mileage_maintenance">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">保养内容及更换的配件情况：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="replacement_parts_1" type="text" class="form-control" name="replacement_parts_1">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">保养地点及厂家名称：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="repair_place_1" type="text" class="form-control" name="repair_place_1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">经办人：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="agent_person_1" type="text" class="form-control" name="agent_person_1" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">批准人：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="approver_person_1" type="text" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12" style="text-align: center;">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="fname10" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>新增</h5>
+                </div>
+                <div class="ibox-content">
+                    <input id="hid" type="text" class="form-control" value="" style="display: none;">
+                    <form class="form-horizontal" id="kilometreform" method="post" action="#" onsubmit="return false">
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">当前公里数：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="kilometre_number"  class="form-control" name="kilometre_number" required="required" placeholder="此处为必填项">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">本次与上次公里差：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="kilometre_difference" type="text" class="form-control" name="kilometre_difference">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">本次加油时间：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="refueling_time" type="date"  class="form-control" name="refueling_time">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">上次加油时间：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="last_refueling_time" type="date" class="form-control" name="last_refueling_time">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">加油类型：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="refueling_type" type="text" class="form-control" name="refueling_type" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">加油量(升)：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="fuel_quantity" type="text" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">单价(元)：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="price" type="text" class="form-control" name="price" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">合计(元)：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="total" type="text" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">单价(元)：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="price" type="text" class="form-control" name="price" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">百公里耗油：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="kilometer_oil" type="text" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="col-xs-12" style="text-align: center;">
                                 <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
@@ -986,6 +1241,7 @@
         $("#mytable2_wrapper").css("display","none");
         $("#mytable3_wrapper").css("display","none");
         $("#mytable5_wrapper").css("display","none");
+        $("#mytable9_wrapper").css("display","none");
         checkinit();
         $("#path").text("");
         var sNodes = zTreeObj.getSelectedNodes();//选中节点
@@ -1026,8 +1282,16 @@
                 case 132:
                     vision_getinit('../Trafficvehicle/getversion');
                     table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?selfid=" + selfid).load();
-                    $("#mytable5_wrapper").css("display","block");
+                    $("#mytable5_wrapper").css("display","block")
+                    break;
                 case 133:
+                case 2 :
+                    if(selfid==21){
+                        vision_getinit('../Vehiclemanagement/getversion');
+                        table9.ajax.url("__SCRIPT__/safety_vehiclemanagement.php?selfid=" + selfid).load();
+                        $("#mytable9_wrapper").css("display","block");
+                    }
+                    break;
             }
         }
         $("#path").text("当前路径:"+path)
@@ -1151,6 +1415,22 @@
         isinitVal:false,
         format:"YYYY-MM-DD"
     });
+    $("#entry_time_1").jeDate({
+        isinitVal:false,
+        format:"YYYY-MM-DD"
+    });
+    $("#insurance_limit").jeDate({
+        isinitVal:false,
+        format:"YYYY-MM-DD"
+    });
+    $("#year_limit").jeDate({
+        isinitVal:false,
+        format:"YYYY-MM-DD"
+    });
+    $("#repair_time").jeDate({
+        isinitVal:false,
+        format:"YYYY-MM-DD"
+    });
     //获取当前时间，格式YYYY-MM-DD
     function getNowFormatDate() {
         var date = new Date();
@@ -1195,16 +1475,21 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        if(url===""){
+                        if(url==="./equipmentDel"){
                             table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
-                        }else if(url===""){
                             table2.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
-                        }else if(url===""){
+                        }else if(url==="../Repairrecord/repairrecordDel"){
+                            table10.ajax.url("__SCRIPT__/safety_repairrecord.php?pid="+$("#eid").val()).load();
+                        }else if(url==="../Specialequipmentmanagement/equipmentDel"){
                             table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid).load();
-                        }else if(url===""){
-
+                        }else if(url==="../Maintenancerecord/maintenancerecordDel"){
+                            table11.ajax.url("__SCRIPT__/safety_maintenancerecord.php?pid="+$("#eid").val()).load();
                         }else if(url==="../Trafficvehicle/trafficDel"){
                             table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?selfid="+selfid).load();
+                        }else if(url==="../Vehiclemanagement/vehiclemanagementDel"){
+                            table9.ajax.url("__SCRIPT__/safety_vehiclemanagement.php?selfid="+selfid).load();
+                        }else if(url==="../Refuelingrecord/refuelingrecordDel"){
+                            table12.ajax.url("__SCRIPT__/safety_refuelingrecord.php?pid="+$("#eid").val()).load();
                         }
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
@@ -2287,9 +2572,6 @@
     function show5(that) {
         var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
         $("#fname5").modal('show');
-        $("#fname5 input").attr("disabled","disabled");
-        $("#fname5 select").attr("disabled","disabled");
-        $("#fname5 .btn-primary").hide();
         $.ajax({
             url: "../Trafficvehicle/getindex",
             type: "post",
@@ -2577,7 +2859,7 @@
         "serverSide":true,//是否开启服务器模式
         'order' : [1,'asc'],
         "ajax":{
-            "url": "__SCRIPT__/safety_trafficvehicle.php"
+            "url": "__SCRIPT__/safety_vehiclemanagement.php"
         },
         "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear9">frtip',
         "columnDefs":[ //设置列定义初始化属性
@@ -2586,9 +2868,9 @@
                 "orderable":false,   //禁止排序
                 "targets":[10],         //指定列
                 "render": function (data,type,row) {
-                    var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit5(this)' value='编辑'/>" ;
-                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='show5(this)' value='预览'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del5(this)' value='删除'/>" ;
+                    var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit9(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='show9(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del9(this)' value='删除'/>" ;
                     return html;
                 }
             },
@@ -2638,25 +2920,437 @@
     $("thead tr th:first-child").click(function () {
         $("thead tr th:first-child").unbind();
     });
-    //交通车辆-新增
+    //车辆-新增
     $("div.mybtn").html("新增")
     $("#table9_wrapper .mybtn").click(function () {
         $("#fname7 input").val("");
         $("#fname7").modal('show');
+        $(".hide_1").hide();
     });
-    //交通车辆-年度
+    //车辆-年度
     var selectyear9 ='<input id="yeardu9" />';
     $("div.selectyear9").html("年度："+selectyear9)
     $("#yeardu9").jeDate({
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
+            table9.ajax.url("__SCRIPT__/safety_vehiclemanagement.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
             console.log(obj.date.YYYY);
         }
     });
     $("#yeardu9").val("");
-
+    //车辆-提交
+    $("#vehicleform").submit(function () {
+        $.ajax({
+            url:"../Vehiclemanagement/vehiclemanagementEdit",
+            type: "post",
+            data: {
+                id:$("#eid").val(),
+                selfid:selfid,
+                remark:$("#remark9").val(),
+                fixed_assets_number:$("#fixed_assets_number").val(),//固定资产编号
+                car_number:$("#car_number").val(),//车牌号
+                vehicle_category:$("#vehicle_category").val(),//车辆类型
+                year_limit:$("#year_limit").val(),//年审有效期
+                insurance_limit:$("#insurance_limit").val(),//保险有效期
+                driver:$("#driver").val(),//驾驶员
+                entry_time:$("#entry_time_1").val(),//进场时间
+                driving_license:$("#driving_license").val(),//行驶证号
+                driver_license_number:$("#driver_license_number").val(),//驾驶证号
+                input_time:$("#down_excel6").val()//版本号
+            },
+            datatype: "json",
+            success: function (res) {
+                if(res.code === 1){
+                    layer.msg(res.msg);
+                    table9.ajax.url("__SCRIPT__/safety_vehiclemanagement.php?selfid="+selfid).load();
+                    $("#fname7").modal('hide');
+                }else {
+                    layer.msg(res.msg);
+                }
+            }
+        })
+    });
+    //车辆-删除
+    function del9(that) {
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
+        del(id,"../Vehiclemanagement/vehiclemanagementDel");
+    };
+    //车辆-编辑
+    function edit9(that) {
+        $(".hide_1").show();
+        $("#fname7 .btn-primary").show();
+        $("#fname7 input").removeAttr("disabled");
+        $("#fname7 select").removeAttr("disabled");
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
+        $.ajax({
+            url: "../Vehiclemanagement/getindex",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.code === 1){
+                    var state = getNowFormatDate()<=res.data.year_limit?(getNowFormatDate()<=res.data.insurance_limit?"正常":"保险过期"):"年审过期";
+                    $("#eid").val(res.data.id);
+                    $("#remark9").val(res.data.remark);
+                    $("#fixed_assets_number").val(res.data.fixed_assets_number);
+                    $("#car_number").val(res.data.car_number);
+                    $("#vehicle_category").val(res.data.vehicle_category);
+                    $("#year_limit").val(res.data.year_limit);
+                    $("#driver").val(res.data.driver);
+                    $("#insurance_limit").val(res.data.insurance_limit);
+                    $("#vehicle_state_1").val(res.data.vehicle_state);
+                    $("#driving_license").val(res.data.driving_license);
+                    $("#driver_license_number").val(res.data.driver_license_number);
+                    $("#entry_time_1").val(res.data.entry_time);
+                    $("#fname7").modal('show');
+                }
+            }
+        })
+    };
+    //车辆-查看
+    function show9(that) {
+        $(".hide_1").show();
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
+        $.ajax({
+            url: "../Vehiclemanagement/getindex",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                if(res.code === 1){
+                    $("#eid").val(res.data.id);
+                    $("#remark9").val(res.data.remark);
+                    $("#fixed_assets_number").val(res.data.fixed_assets_number);
+                    $("#car_number").val(res.data.car_number);
+                    $("#vehicle_category").val(res.data.vehicle_category);
+                    $("#year_limit").val(res.data.year_limit);
+                    $("#driver").val(res.data.driver);
+                    $("#insurance_limit").val(res.data.insurance_limit);
+                    $("#vehicle_state_1").val(res.data.vehicle_state);
+                    $("#driving_license").val(res.data.driving_license);
+                    $("#driver_license_number").val(res.data.driver_license_number);
+                    $("#entry_time_1").val(res.data.entry_time);
+                    $("#fname7").modal('show');
+                    $("#fname7 input").attr("disabled","disabled");
+                    $("#fname7 select").attr("disabled","disabled");
+                    $("#fname7 .btn-primary").hide();
+                }
+            }
+        })
+    }
+    //*********************************************维修
+    var table10 = $("#table10").DataTable({
+        "paging":false,
+        "processing": true,//是否显示处理状态
+        "serverSide":true,//是否开启服务器模式
+        "ajax":{
+            "url": "__SCRIPT__/safety_repairrecord.php?pid="+$("#eid").val()
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "columnDefs":[ //设置列定义初始化属性
+            {
+                "searchable":false,  //禁止搜索
+                "orderable":false,   //禁止排序
+                "targets":[7],         //指定列
+                "render": function (data,type,row) {
+                    var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit10(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del10(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    });
+    $("div.mybtn").html("新增")
+    $("#table10_wrapper .mybtn").click(function () {
+        $("#fname8 input").val("");
+        $("#fname8").modal('show');
+        $("#fid").val("");
+    });
+    //维修-提交
+    $("#repairform").submit(function () {
+        $.ajax({
+            url:"../Repairrecord/repairrecordEdit",
+            type: "post",
+            data: {
+                id:$("#fid").val(),
+                pid:$("#eid").val(),
+                repair_time:$("#repair_time").val(),//维修时间
+                mileage_repair:$("#mileage_repair").val(),//维修时公里数
+                replacement_parts:$("#replacement_parts").val(),//维修内容及更换的配件情况
+                repair_place:$("#repair_place").val(),//维修地点及厂家名称
+                agent_person:$("#agent_person").val(),//经办人
+                approver_person:$("#approver_person").val()//批准人
+            },
+            datatype: "json",
+            success: function (res) {
+                if(res.code === 1){
+                    layer.msg(res.msg);
+                    table10.ajax.url("__SCRIPT__/safety_repairrecord.php?pid="+$("#eid").val()).load();
+                    $("#fname8").modal('hide');
+                }else {
+                    layer.msg(res.msg);
+                }
+            }
+        })
+    });
+    //维修-删除
+    function del10(that) {
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(1)").text();
+        del(id,"../Repairrecord/repairrecordDel");
+    };
+    //维修-编辑
+    function edit10(that) {
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(1)").text();
+        $.ajax({
+            url: "../Repairrecord/getindex",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.code === 1){
+                    $("#fid").val(res.data.id);
+                    $("#repair_time").val(res.data.repair_time);//维修时间
+                    $("#mileage_repair").val(res.data.repair_time);//维修时公里数
+                    $("#replacement_parts").val(res.data.replacement_parts);//维修内容及更换的配件情况
+                    $("#repair_place").val(res.data.repair_place);//维修地点及厂家名称
+                    $("#agent_person").val(res.data.agent_person);//经办人
+                    $("#approver_person").val(res.data.approver_person);//批准人
+                    $("#fname8").modal('show');
+                }
+            }
+        })
+    };
+    //****************************************************保养
+    var table11 = $("#table11").DataTable({
+        "paging":false,
+        "processing": true,//是否显示处理状态
+        "serverSide":true,//是否开启服务器模式
+        "ajax":{
+            "url": "__SCRIPT__/safety_maintenancerecord.php?pid"+$("#eid").val()
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "columnDefs":[ //设置列定义初始化属性
+            {
+                "searchable":false,  //禁止搜索
+                "orderable":false,   //禁止排序
+                "targets":[7],         //指定列
+                "render": function (data,type,row) {
+                    var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit11(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del11(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    });
+    $("div.mybtn").html("新增")
+    $("#table11_wrapper .mybtn").click(function () {
+        $("#fname9 input").val("");
+        $("#fname9").modal('show');
+        $("#gid").val("");
+    });
+    //保养-提交
+    $("#maintenanceform").submit(function () {
+        $.ajax({
+            url:"../Maintenancerecord/maintenancerecordEdit",
+            type: "post",
+            data: {
+                id:$("#gid").val(),
+                pid:$("#eid").val(),
+                maintenance_time:$("#maintenance_time").val(),//保养时间
+                mileage_maintenance:$("#mileage_maintenance").val(),//保养时公里数
+                replacement_parts:$("#replacement_parts_1").val(),//保养内容及更换的配件情况
+                repair_place:$("#repair_place_1").val(),//保养地点及厂家名称
+                agent_person:$("#agent_person_1").val(),//经办人
+                approver_person:$("#approver_person_1").val()//批准人
+            },
+            datatype: "json",
+            success: function (res) {
+                if(res.code === 1){
+                    layer.msg(res.msg);
+                    table11.ajax.url("__SCRIPT__/safety_maintenancerecord.php?pid="+$("#eid").val()).load();
+                    $("#fname9").modal('hide');
+                }else {
+                    layer.msg(res.msg);
+                }
+            }
+        })
+    });
+    //保养-删除
+    function del11(that) {
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(1)").text();
+        del(id,"../Maintenancerecord/maintenancerecordDel");
+    };
+    //保养-编辑
+    function edit11(that) {
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(1)").text();
+        $.ajax({
+            url: "../Maintenancerecord/getindex",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.code === 1){
+                    $("#gid").val(res.data.id);
+                    $("#maintenance_time").val(res.data.maintenance_time);//保养时间
+                    $("#mileage_maintenance").val(res.data.mileage_maintenance);//保养时公里数
+                    $("#replacement_parts_1").val(res.data.replacement_parts);//保养内容及更换的配件情况
+                    $("#repair_place_1").val(res.data.repair_place);//保养地点及厂家名称
+                    $("#agent_person_1").val(res.data.agent_person);//经办人
+                    $("#approver_person_1").val(res.data.approver_person);//批准人
+                    $("#fname9").modal('show');
+                }
+            }
+        })
+    };
+    $("#maintenance_time").jeDate({
+        isinitVal:false,
+        format:"YYYY-MM-DD"
+    });
+    //*********************************************加油
+    var table12 = $("#table12").DataTable({
+        "paging":false,
+        "processing": true,//是否显示处理状态
+        "serverSide":true,//是否开启服务器模式
+        "ajax":{
+            "url": "__SCRIPT__/safety_refuelingrecord.php?pid="+$("#eid").val()
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        "columnDefs":[ //设置列定义初始化属性
+            {
+                "searchable":false,  //禁止搜索
+                "orderable":false,   //禁止排序
+                "targets":[10],         //指定列
+                "render": function (data,type,row) {
+                    var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit12(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del12(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    });
+    $("div.mybtn").html("新增")
+    $("#table12_wrapper .mybtn").click(function () {
+        $("#fname10 input").val("");
+        $("#fname10").modal('show');
+        $("#hid").val("");
+    });
+    //加油-提交
+    $("#kilometreform").submit(function () {
+        $.ajax({
+            url:"../Refuelingrecord/refuelingrecordEdit",
+            type: "post",
+            data: {
+                id:$("#hid").val(),
+                pid:$("#eid").val(),
+                kilometre_number:$("#kilometre_number").val(),//当前公里数
+                kilometre_difference:$("#kilometre_difference").val(),//本次与上次公里差
+                refueling_time:$("#refueling_time").val(),//本次加油时间
+                last_refueling_time:$("#last_refueling_time").val(),//上次加油时间
+                refueling_type:$("#refueling_type").val(),//加油类型
+                fuel_quantity:$("#fuel_quantity").val(),//加油量(升)
+                price:$("#price").val(),//单价(元)
+                total:$("#total").val(),//合计(元)
+                kilometer_oil:$("#kilometer_oil").val()//百公里耗油
+            },
+            datatype: "json",
+            success: function (res) {
+                if(res.code === 1){
+                    layer.msg(res.msg);
+                    table12.ajax.url("__SCRIPT__/safety_refuelingrecord.php?pid="+$("#eid").val()).load();
+                    $("#fname10").modal('hide');
+                }else {
+                    layer.msg(res.msg);
+                }
+            }
+        })
+    });
+    //加油-删除
+    function del12(that) {
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(1)").text();
+        del(id,"../Refuelingrecord/refuelingrecordDel");
+    };
+    //加油-编辑
+    function edit12(that) {
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(1)").text();
+        $.ajax({
+            url: "../Refuelingrecord/getindex",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.code === 1){
+                    $("#hid").val(res.data.id);
+                    $("#kilometre_number").val(res.data.kilometre_number);//当前公里数
+                    $("#kilometre_difference").val(res.data.kilometre_difference);//本次与上次公里差
+                    $("#refueling_time").val(res.data.refueling_time);//本次加油时间
+                    $("#last_refueling_time").val(res.data.last_refueling_time);//上次加油时间
+                    $("#refueling_type").val(res.data.refueling_type);//加油类型
+                    $("#fuel_quantity").val(res.data.fuel_quantity);//加油量(升)
+                    $("#price").val(res.data.price);//单价(元)
+                    $("#total").val(res.data.total);//合计(元)
+                    $("#kilometer_oil").val(res.data.kilometer_oil);//百公里耗油
+                    $("#fname9").modal('show');
+                }
+            }
+        })
+    };
+    $("#last_refueling_time").jeDate({
+        isinitVal:false,
+        format:"YYYY-MM-DD"
+    });
+    $("#refueling_time").jeDate({
+        isinitVal:false,
+        format:"YYYY-MM-DD"
+    });
+    //Bootstrap中，模态框嵌套模态框时，关闭第二个模态框时，导致第一个模态框的滚动条消失
+    $('#fname8,#fname9,#fname10').on('hidden.bs.modal', function() {
+        $('#fname7').show();
+        $('#fname7').css({'overflow-y':'scroll'});
+    });
+    $('#fname8,#fname9,#fname10').on('show.bs.modal', function() {
+        $('#fname7').hide();
+    });
 </script>
 <!--选择框 导出-->
 <script>
