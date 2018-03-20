@@ -16,6 +16,20 @@ use think\Loader;
 class Maintenancerecord extends Base
 {
     /*
+     * 获取一条车辆管理保养记录
+     */
+    public function getindex()
+    {
+        if(request()->isAjax()){
+            $maintenancerecord = new MaintenancerecordModel();
+            $param = input('post.');
+            $data = $maintenancerecord->getOne($param['id']);
+            return json(['code'=> 1, 'data' => $data]);
+        }
+        return $this->fetch();
+    }
+
+    /*
      * 新增/编辑一条车辆管理保养记录
      */
     public function  maintenancerecordEdit()

@@ -76,7 +76,7 @@ class Education extends Base
             return json(['code' => 1]);
         }
         $major_key = input('param.major_key');
-        $type = input('param.type');
+        $type = input('param.types');
         $edu = new EducationModel();
         $param = $edu->getOne($major_key);
         if($type == '1'){ // type 1 表示的是 培训材料文件 2 表示培训记录文件
@@ -175,7 +175,7 @@ class Education extends Base
     public function delAddFile()
     {
         if(request()->isAjax()){
-            $path = $param = input('param.path');
+            $path = input('param.path');
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
             if(file_exists($path)){
                 unlink($path); //删除文件 培训材料文件

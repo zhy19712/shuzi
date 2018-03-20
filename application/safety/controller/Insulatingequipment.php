@@ -204,7 +204,7 @@ class Insulatingequipment extends Base
             return json(['code'=>1]);
         }
         $insulatingequipment = new InsulatingequipmentModel();
-        $idArr = input('param.idarr');
+        $idArr = input('param.idarr/a');
         if($idArr['0'] == "all")
         {
             $idArr = $insulatingequipment ->getallid();

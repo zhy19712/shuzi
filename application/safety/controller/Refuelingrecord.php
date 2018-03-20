@@ -15,6 +15,21 @@ use think\Loader;
 
 class Refuelingrecord extends Base
 {
+
+    /*
+     * 获取一条车辆管理加油记录表
+     */
+    public function getindex()
+    {
+        if(request()->isAjax()){
+            $refuelingrecord = new RefuelingrecordModel();
+            $param = input('post.');
+            $data = $refuelingrecord->getOne($param['id']);
+            return json(['code'=> 1, 'data' => $data]);
+        }
+        return $this->fetch();
+    }
+
     /*
      * 新增/编辑一条车辆管理加油记录表
      */
