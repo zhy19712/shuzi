@@ -63,10 +63,13 @@ class Vehiclemanagement extends Base
                     'car_number' => $param['car_number'],//车牌号
                     'fixed_assets_number' => $param['fixed_assets_number'],//固定资产编号
                     'vehicle_category' => $param['vehicle_category'],//车辆类别
+                    'driving_license' => $param['driving_license'],//行驶证号
                     'year_limit' => $param['year_limit'],//年审有效期
                     'insurance_limit' => $param['insurance_limit'],//保险有效期
+                    'entry_time' => $param['entry_time'],//进场时间
                     'vehicle_state' => $vehicle_state,//车辆状态
                     'driver' => $param['driver'],//驾驶员
+                    'driver_license_number' => $param['driver_license_number'],//驾驶证号
                     'input_time' => $param['input_time'],//导入时间
                     'date' => date('Y-m-d H:i:s'),
                     'remark' => $param['remark']//备注
@@ -79,10 +82,13 @@ class Vehiclemanagement extends Base
                     'car_number' => $param['car_number'],//车牌号
                     'fixed_assets_number' => $param['fixed_assets_number'],//固定资产编号
                     'vehicle_category' => $param['vehicle_category'],//车辆类别
+                    'driving_license' => $param['driving_license'],//行驶证号
                     'year_limit' => $param['year_limit'],//年审有效期
                     'insurance_limit' => $param['insurance_limit'],//保险有效期
-                    'vehicle_state' => $param['vehicle_state'],//车辆状态
+                    'entry_time' => $param['entry_time'],//进场时间
+                    'vehicle_state' => $vehicle_state,//车辆状态
                     'driver' => $param['driver'],//驾驶员
+                    'driver_license_number' => $param['driver_license_number'],//驾驶证号
                     'remark' => $param['remark']//备注
                 ];
                 $flag = $vehiclemanagement->editVehiclemanagement($data);
