@@ -2,22 +2,22 @@
 /**
  * Created by PhpStorm.
  * User: admin
- * Date: 2018/3/18
- * Time: 17:44
+ * Date: 2018/3/20
+ * Time: 11:00
  */
-//交通车辆
+//车辆管理
 namespace app\safety\model;
 use think\exception\PDOException;
 use think\Model;
 
-class TrafficvehicleModel extends Model
+class VehiclemanagementModel extends Model
 {
-    protected $name = 'safety_vehicle';
+    protected $name = 'safety_vehicle_management';
 
     /*
-      * 添加新的交通车辆文件
+     * 添加新的车辆管理信息
      */
-    public function insertTrafficvehicle($param)
+    public function insertVehiclemanagement($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -32,9 +32,9 @@ class TrafficvehicleModel extends Model
     }
 
     /*
-     * 编辑交通车辆文件
-    */
-    public function editTrafficvehicle($param)
+     * 编辑车辆管理信息
+     */
+    public function editVehiclemanagement($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -49,9 +49,9 @@ class TrafficvehicleModel extends Model
     }
 
     /*
-     * 删除交通车辆文件
-    */
-    public function delTrafficvehicle($id)
+     * 删除车辆管理信息
+     */
+    public function delVehiclemanagement($id)
     {
         try{
             $this->where('id', $id)->delete();
@@ -63,15 +63,14 @@ class TrafficvehicleModel extends Model
     }
 
     /*
-     * 获取一条交通车辆文件
-    */
+     * 获取一条车辆管理信息
+     */
     public function getOne($id)
     {
 
         return $this->where('id', $id)->find();
 
     }
-
 
     /*
      * 批量导出时候的数组处理
@@ -94,10 +93,10 @@ class TrafficvehicleModel extends Model
     }
 
     /*
-     * 获取交通车辆文件的版本日期,excel的导入日期
+     * 获取登高工器具文件的版本日期,excel的导入日期
      */
-    public function getVersion($param)
+    public function getVersion()
     {
-        return $this->where('selfid',$param)->group('input_time')->column('input_time');
+        return $this->group('input_time')->column('input_time');
     }
 }

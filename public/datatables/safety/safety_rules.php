@@ -19,7 +19,7 @@ include('../conn.php');
  * Easy set variables
  */
 
-// DB table to use 法规标准识别
+// DB table to use 规章制度
 $table = 'think_safety_rules';
 
 // Table's primary key
@@ -29,7 +29,7 @@ $primaryKey = 'major_key';
 // The `db` parameter represents the column name in the database, while the `dt`
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
-$columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
+$columns = array( // 定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'major_key',  'dt' => 1 ),
     array( 'db' => 'number',  'dt' => 2 ),
     array( 'db' => 'rul_name',  'dt' => 3 ),
@@ -40,10 +40,6 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
     array( 'db' => 'rul_date',  'dt' => 8 ),
     array( 'db' => 'remark',  'dt' => 9)
 );
-
-
-
-
 
 
 // $_GET = "SELECT * FROM people WHERE 'uid' = '105625886366281950'";

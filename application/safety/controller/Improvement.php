@@ -24,7 +24,7 @@ class Improvement extends Base
         if(request()->isAjax()){
             $improve = new ImprovementModel();
             $param = input('post.');
-            $data = $improve->getOne($param['id']);
+            $data = $improve->getOne($param['major_key']);
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
@@ -40,7 +40,7 @@ class Improvement extends Base
         $improve = new ImprovementModel();
         $param = input('post.');
         if(request()->isAjax()){
-            $is_exist = $improve->getOne($param['id']);
+            $is_exist = $improve->getOne($param['major_key']);
             if(empty($is_exist)){
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
@@ -59,7 +59,7 @@ class Improvement extends Base
         if(request()->isAjax()){
             $improve = new ImprovementModel();
             $param = input('post.');
-            $flag = $improve->delImprovement($param['id']);
+            $flag = $improve->delImprovement($param['major_key']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -74,9 +74,9 @@ class Improvement extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $id = input('param.id');
+        $major_key = input('param.major_key');
         $improve = new ImprovementModel();
-        $param = $improve->getOne($id);
+        $param = $improve->getOne($major_key);
         $filePath = $param['path'];
         $fileName = $param['ment_name'];
         // 如果是手动输入的名称，就有可能没有文件后缀
@@ -113,7 +113,7 @@ class Improvement extends Base
             $param = input('post.');
             $code = 1;
             $msg = '预览成功';
-            $data = $improve->getOne($param['id']);
+            $data = $improve->getOne($param['major_key']);
             $path = $data['path'];
             $extension = strtolower(get_extension(substr($path,1)));
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';

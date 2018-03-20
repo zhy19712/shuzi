@@ -627,6 +627,7 @@
                 innerHTML: "上传"
             },
             formData:{
+                major_key:'',
                 group_id:'',
                 number:'',
                 go_date:'',
@@ -789,7 +790,7 @@
                     type: "post",
                     dataType: 'json',
                     data:{
-                        id:id,
+                        major_key:id,
                         group_id:group_id,
                         sdi_name:sdi_name,
                         number:sdi_number,  //标准号
@@ -841,7 +842,7 @@
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
                 url: "{:url('Statutestdi/sdiDel')}",
-                data: {'id' : id},
+                data: {'major_key' : id},
                 type: "get",
                 dataType: "json",
                 success: function (res) {
@@ -862,7 +863,7 @@
         $.ajax({
             url: url,
             type: "post",
-            data: {id:id},
+            data: {major_key:id},
             success: function (res) {
                 console.log(res);
                 if(res.code === 1){
@@ -888,7 +889,7 @@
             type: "post",
             dataType: "json",
             data:{
-                id:id
+                major_key:id
             },
             success: function (res) {
                 if(res.code != 1){
@@ -920,7 +921,7 @@
             type: "post",
             dataType: "json",
             data:{
-                id:id
+                major_key:id
             },
             success: function (res) {
                 $('#oldFileName').val(res.filename);
@@ -931,9 +932,18 @@
                 $('#pdivision').val(res.sdi_user);
                 $('#addName').val(res.sdi_name);
                 $('#rulesDesc').val(res.remark);
+                var fileList = '<div style="display: inline-block;vertical-align: middle;">' +
+                    '<span class="info">' + res.sdi_name + '</span>&nbsp' +
+                    '<span class="DelFilebtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>';
+                $('#fileUpload').append(fileList);
             }
         })
     }
+
+    $("#fileUpload").on("click", ".DelFilebtn", function () {
+        $("#fileUpload").empty();
+    });
 
 
     //导入
@@ -986,7 +996,7 @@
             url: "./exportExcel",
             type: "post",
             data: {
-                'id':idArr
+                'majorKeyArr':idArr
             },
             dataType: "json",
             success: function (res) {
