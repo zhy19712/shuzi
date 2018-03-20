@@ -1,22 +1,23 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: sir
- * Date: 2018/3/7
- * Time: 14:01
+ * User: admin
+ * Date: 2018/3/20
+ * Time: 15:56
  */
-
+//设备管理
 namespace app\safety\model;
-
-
 use think\exception\PDOException;
 use think\Model;
 
-class RevisionrecordModel extends Model
+class DevicemanagementModel extends Model
 {
-    protected $name = 'safety_record';
+    protected $name = 'safety_device_management';
 
-    public function insertRecord($param)
+    /*
+      * 添加新的设备管理文件
+     */
+    public function insertDevicemanagement($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -30,10 +31,13 @@ class RevisionrecordModel extends Model
         }
     }
 
-    public function editRecord($param)
+    /*
+     * 编辑设备管理文件
+    */
+    public function editDevicemanagement($param)
     {
         try{
-            $result =  $this->allowField(true)->save($param, ['major_key' => $param['major_key']]);
+            $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
@@ -44,34 +48,48 @@ class RevisionrecordModel extends Model
         }
     }
 
-    public function delRecord($major_key)
+    /*
+     * 删除设备管理文件
+    */
+    public function delDevicemanagement($id)
     {
         try{
-            $this->where('major_key', $major_key)->delete();
+            $this->where('id', $id)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
+
         }catch( PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
 
-    public function getOne($major_key)
+    /*
+     * 获取一条设备管理文件
+    */
+    public function getOne($id)
     {
-        return $this->where('major_key', $major_key)->find();
+
+        return $this->where('id', $id)->find();
+
     }
 
-    public function getOneByNumber($original_number,$standard)
+    /*
+     * 批量导出时候的数组处理
+     */
+    public  function getList($idArr)
     {
-        $data = $this->where(['original_number' => $original_number,'replace_number' => $standard])->value('major_key');
+        $data = [];
+        foreach($idArr as $v){
+            $data[] = $this->getOne($v);
+        }
         return $data;
     }
 
-    public function getList($majorKeyArr)
+    /*
+     * 查看所有的id值
+     */
+    public  function getallid()
     {
-        $list = [];
-        foreach ($majorKeyArr as $v){
-            $list[] = $this->find($v);
-        }
-        return $list;
+        return $this->group('id')->column('id');
     }
 
 }
