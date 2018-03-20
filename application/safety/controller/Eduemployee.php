@@ -176,7 +176,7 @@ class Eduemployee extends Base
                     $insertData[$k]['pid'] = $pid;
                     $insertData[$k]['zid'] = $zid;
                     $insertData[$k]['years'] = date('Y');
-                    $insertData[$k]['improt_time'] = date('Y-m-d H:i:s');
+                    $insertData[$k]['import_time'] = date('Y-m-d H:i:s');
                     $insertData[$k]['owner'] = session('username');
                     $insertData[$k]['filename'] = $file->getInfo('name');
                     $insertData[$k]['path'] = './uploads/safety/import/eduemployee/' . str_replace("\\","/",$exclePath);

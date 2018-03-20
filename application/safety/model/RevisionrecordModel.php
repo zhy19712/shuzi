@@ -68,9 +68,4 @@ class RevisionrecordModel extends Model
         return $list;
     }
 
-    public function getYears()
-    {
-        return $this->where('improt_time is not null')->group('years')->column('years');
-    }
-
 }
