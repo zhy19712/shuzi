@@ -33,7 +33,7 @@ class ImprovementModel extends Model
     public function editImprovement($param)
     {
         try{
-            $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
+            $result =  $this->allowField(true)->save($param, ['major_key' => $param['major_key']]);
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
@@ -44,10 +44,10 @@ class ImprovementModel extends Model
         }
     }
 
-    public function delImprovement($id)
+    public function delImprovement($major_key)
     {
         try{
-            $data = $this->getOne($id);
+            $data = $this->getOne($major_key);
             $path = $data['path'];
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
             if(file_exists($path)){
@@ -57,16 +57,16 @@ class ImprovementModel extends Model
                 unlink($pdf_path); //删除生成的预览pdf
             }
 
-            $this->where('id', $id)->delete();
+            $this->where('major_key', $major_key)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
         }catch(PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
 
-    public function getOne($id)
+    public function getOne($major_key)
     {
         // find 方法查询结果不存在，返回 null
-        return $this->where('id', $id)->find();
+        return $this->where('major_key', $major_key)->find();
     }
 }

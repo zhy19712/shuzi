@@ -23,7 +23,7 @@ include('../conn.php');
 $table = 'think_safety_riskmanage';
 
 // Table's primary key
-$primaryKey = 'id';
+$primaryKey = 'major_key';
 
 // Array of database columns which should be read and sent back to DataTables.
 // The `db` parameter represents the column name in the database, while the `dt`
@@ -32,7 +32,7 @@ $primaryKey = 'id';
 
 //定义数据库中查看的字段与表格中的哪一列相对应
 $columns = array(
-    array( 'db' => 'id',  'dt' => 1 ),
+    array( 'db' => 'major_key',  'dt' => 1 ),
     array( 'db' => 'segmentv',  'dt' => 2 ),
     array( 'db' => 'position',  'dt' => 3 ),
     array( 'db' => 'riskname',  'dt' => 4 ),

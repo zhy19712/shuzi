@@ -26,7 +26,7 @@ class Risksources extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $sources = new RiskSourcesModel();
-            $data = $sources->getOne($param['id']);
+            $data = $sources->getOne($param['major_key']);
             return json($data);
         }
         return $this ->fetch();
@@ -42,8 +42,8 @@ class Risksources extends Base
         if(request()->isAjax()){
             $sources = new RiskSourcesModel();
             $param = input('post.');
-            $is_exist = $sources->getOne($param['id']);
-            if(isNull($is_exist)){
+            $is_exist = $sources->getOne($param['major_key']);
+            if(empty($is_exist)){
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
             $flag = $sources->editRiskSources($param);
@@ -62,9 +62,9 @@ class Risksources extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $id = input('param.id');
+        $major_key = input('param.major_key');
         $sources = new RiskSourcesModel();
-        $param = $sources->getOne($id);
+        $param = $sources->getOne($major_key);
         $filePath = $param['path'];
         $fileName = $param['risk_name'];
         // 如果是手动输入的名称，就有可能没有文件后缀
@@ -101,7 +101,7 @@ class Risksources extends Base
             $param = input('post.');
             $code = 1;
             $msg = '预览成功';
-            $data = $sources->getOne($param['id']);
+            $data = $sources->getOne($param['major_key']);
             $path = $data['path'];
             $extension = strtolower(get_extension(substr($path,1)));
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
@@ -135,7 +135,7 @@ class Risksources extends Base
         if(request()->isAjax()){
             $param = input('param.');
             $sources = new RiskSourcesModel();
-            $flag = $sources->delRiskSources($param['id']);
+            $flag = $sources->delRiskSources($param['major_key']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }

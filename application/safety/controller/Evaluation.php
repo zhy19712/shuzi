@@ -24,7 +24,7 @@ class Evaluation extends Base
         if(request()->isAjax()){
             $eval= new EvaluationModel();
             $param = input('post.');
-            $data = $eval->getOne($param['id']);
+            $data = $eval->getOne($param['major_key']);
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
@@ -40,8 +40,8 @@ class Evaluation extends Base
         $eval = new EvaluationModel();
         $param = input('post.');
         if(request()->isAjax()){
-            $is_exist = $eval->getOne($param['id']);
-            if(isNull($is_exist)){
+            $is_exist = $eval->getOne($param['major_key']);
+            if(empty($is_exist)){
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
             $flag = $eval->editEval($param);
@@ -59,7 +59,7 @@ class Evaluation extends Base
         if(request()->isAjax()){
             $eval = new EvaluationModel();
             $param = input('post.');
-            $flag = $eval->delEval($param['id']);
+            $flag = $eval->delEval($param['major_key']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -74,9 +74,9 @@ class Evaluation extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $id = input('param.id');
+        $major_key = input('param.major_key');
         $eval = new EvaluationModel();
-        $param = $eval->getOne($id);
+        $param = $eval->getOne($major_key);
         $filePath = $param['path'];
         $fileName = $param['eval_name'];
         // 如果是手动输入的名称，就有可能没有文件后缀
@@ -113,7 +113,7 @@ class Evaluation extends Base
             $param = input('post.');
             $code = 1;
             $msg = '预览成功';
-            $data = $eval->getOne($param['id']);
+            $data = $eval->getOne($param['major_key']);
             $path = $data['path'];
             $extension = strtolower(get_extension(substr($path,1)));
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';

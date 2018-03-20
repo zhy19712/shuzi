@@ -33,7 +33,7 @@ class RiskSourcesModel extends Model
     public function editRiskSources($param)
     {
         try{
-            $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
+            $result =  $this->allowField(true)->save($param, ['major_key' => $param['major_key']]);
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
@@ -44,10 +44,10 @@ class RiskSourcesModel extends Model
         }
     }
 
-    public function delRiskSources($id)
+    public function delRiskSources($major_key)
     {
         try{
-            $data = $this->getOne($id);
+            $data = $this->getOne($major_key);
             $path = $data['path'];
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
             if(file_exists($path)){
@@ -56,24 +56,16 @@ class RiskSourcesModel extends Model
             if(file_exists($pdf_path)){
                 unlink($pdf_path); // 删除生成的预览pdf
             }
-            $this->where('id', $id)->delete();
+            $this->where('major_key', $major_key)->delete();
             return ['code' => 1, 'data' => '', 'msg' => '删除成功'];
         }catch(PDOException $e){
             return ['code' => 0, 'data' => '', 'msg' => $e->getMessage()];
         }
     }
 
-    public function getOne($id)
+    public function getOne($major_key)
     {
-        return $this->where('id', $id)->find();
+        return $this->where('major_key', $major_key)->find();
     }
 
-    public  function getList($idArr)
-    {
-        $data = [];
-        foreach($idArr as $v){
-            $data[] = $this->getOne($v);
-        }
-        return $data;
-    }
 }

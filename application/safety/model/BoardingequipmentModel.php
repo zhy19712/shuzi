@@ -5,19 +5,19 @@
  * Date: 2018/3/18
  * Time: 17:44
  */
-//交通车辆
+//登高工器具
 namespace app\safety\model;
 use think\exception\PDOException;
 use think\Model;
 
-class TrafficvehicleModel extends Model
+class BoardingequipmentModel extends Model
 {
-    protected $name = 'safety_vehicle';
+    protected $name = 'safety_boarding_equipment';
 
     /*
-      * 添加新的交通车辆文件
+      * 添加新的登高工器具文件
      */
-    public function insertTrafficvehicle($param)
+    public function insertBoardingequipment($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -32,9 +32,9 @@ class TrafficvehicleModel extends Model
     }
 
     /*
-     * 编辑交通车辆文件
+     * 编辑登高工器具文件
     */
-    public function editTrafficvehicle($param)
+    public function editBoardingequipment($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -49,9 +49,9 @@ class TrafficvehicleModel extends Model
     }
 
     /*
-     * 删除交通车辆文件
+     * 删除登高工器具文件
     */
-    public function delTrafficvehicle($id)
+    public function delBoardingequipment($id)
     {
         try{
             $this->where('id', $id)->delete();
@@ -63,7 +63,7 @@ class TrafficvehicleModel extends Model
     }
 
     /*
-     * 获取一条交通车辆文件
+     * 获取一条登高工器具文件
     */
     public function getOne($id)
     {
@@ -71,7 +71,6 @@ class TrafficvehicleModel extends Model
         return $this->where('id', $id)->find();
 
     }
-
 
     /*
      * 批量导出时候的数组处理
@@ -91,5 +90,14 @@ class TrafficvehicleModel extends Model
     public  function getallid()
     {
         return $this->group('id')->column('id');
+    }
+
+    /*
+     * 获取登高工器具文件的版本日期,excel的导入日期
+     */
+    public function getVersion($param)
+    {
+//        return $this->field('input_time')->order('id desc')->select();
+        return $this->where('selfid',$param)->group('input_time')->column('input_time');
     }
 }

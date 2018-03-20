@@ -26,7 +26,7 @@ class Riskmanage extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $manage = new RiskManageModel();
-            $data = $manage->getOne($param['id']);
+            $data = $manage->getOne($param['major_key']);
             return json($data);
         }
         return $this ->fetch();
@@ -42,8 +42,8 @@ class Riskmanage extends Base
         if(request()->isAjax()){
             $manage = new RiskManageModel();
             $param = input('post.');
-            $is_exist = $manage->getOne($param['id']);
-            if(isNull($is_exist)){
+            $is_exist = $manage->getOne($param['major_key']);
+            if(empty($is_exist)){
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
             $flag = $manage->editManage($param);
@@ -62,10 +62,10 @@ class Riskmanage extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $id = input('param.id');
+        $major_key = input('param.major_key');
         $type = input('param.type');
         $manage = new RiskManageModel();
-        $param = $manage->getOne($id);
+        $param = $manage->getOne($major_key);
         $filePath = $fileName = '';
         if($type == '1'){ // type 1 年度风险辨识文件 2 季度风险辨识文件3 风险复测单 4风险管控卡 5施工作业票
             $filePath = $param['year_path'];
@@ -119,7 +119,7 @@ class Riskmanage extends Base
             $param = input('post.');
             $code = 1;
             $msg = '预览成功';
-            $data = $manage->getOne($param['id']);
+            $data = $manage->getOne($param['major_key']);
             $path = '';
             if($param['type'] == '1'){ // type 1 年度风险辨识文件 2 季度风险辨识文件3 风险复测单 4风险管控卡 5施工作业票
                 $path = $data['year_path'];
@@ -165,7 +165,7 @@ class Riskmanage extends Base
         if(request()->isAjax()){
             $param = input('param.');
             $manage = new RiskManageModel();
-            $flag = $manage->delManage($param['id']);
+            $flag = $manage->delManage($param['major_key']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -301,13 +301,13 @@ class Riskmanage extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('id/a');
-        if(count($idArr) == 0){
+        $majorKeyArr = input('majorKeyArr/a');
+        if(count($majorKeyArr) == 0){
             return json(['code' => -1 ,'msg' => '请选择需要下载的编号']);
         }
         $name = '安全风险管理 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $manage = new RiskManageModel();
-        $list = $manage->getList($idArr);
+        $list = $manage->getList($majorKeyArr);
         if(count($list) == 0){
             return json(['code' => -1 ,'msg' => '数据为空']);
         }
@@ -349,7 +349,7 @@ class Riskmanage extends Base
             $key++;
             $objPHPExcel->getActiveSheet()
                 //Excel的第A列，name是你查出数组的键值字段，下面以此类推
-                ->setCellValue('A'.$key, $v['id'])
+                ->setCellValue('A'.$key, $v['major_key'])
                 ->setCellValue('B'.$key, $v['segmentv'])
                 ->setCellValue('C'.$key, $v['position'])
                 ->setCellValue('D'.$key, $v['riskname'])

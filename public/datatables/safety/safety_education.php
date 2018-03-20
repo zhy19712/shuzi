@@ -23,14 +23,14 @@ include('../conn.php');
 $table = 'think_safety_education';
 
 // Table's primary key
-$primaryKey = 'id';
+$primaryKey = 'major_key';
 
 // Array of database columns which should be read and sent back to DataTables.
 // The `db` parameter represents the column name in the database, while the `dt`
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
-    array( 'db' => 'id',  'dt' => 1 ),
+    array( 'db' => 'major_key',  'dt' => 1 ),
     array( 'db' => 'content',  'dt' => 2 ),
     array( 'db' => 'edu_time',  'dt' => 3 ),
     array( 'db' => 'address',  'dt' => 4 ),
