@@ -27,7 +27,7 @@ class Edupeople extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $edu = new EdupeopleModel();
-            $data = $edu->getOne($param['id']);
+            $data = $edu->getOne($param['major_key']);
             return json($data);
         }
         return $this ->fetch();
@@ -44,9 +44,9 @@ class Edupeople extends Base
         if(request()->isAjax()){
             $edu = new EdupeopleModel();
             $param = input('post.');
-            if(empty($param['id'])){
-                if(isset($param['id'])){
-                    unset($param['id']); // 避免提交的id是0 或者 空 的时候的赋值
+            if(empty($param['major_key'])){
+                if(isset($param['major_key'])){
+                    unset($param['major_key']); // 避免提交的major_key是0 或者 空 的时候的赋值
                 }
                 $param['owner'] = session('username');
                 $param['years'] = date("Y");
@@ -68,7 +68,7 @@ class Edupeople extends Base
         if(request()->isAjax()){
             $param = input('param.');
             $edu = new EdupeopleModel();
-            $flag = $edu->delEdu($param['id']);
+            $flag = $edu->delEdu($param['major_key']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -194,13 +194,13 @@ class Edupeople extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('id/a');
-        if(count($idArr) == 0){
+        $majorKeyArr = input('majorKeyArr/a');
+        if(count($majorKeyArr) == 0){
             return json(['code' => -1 ,'msg' => '请选择需要下载的编号']);
         }
         $name = '人员教育培训 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $edu = new EdupeopleModel();
-        $list = $edu->getList($idArr);
+        $list = $edu->getList($majorKeyArr);
         if(count($list) == 0){
             return json(['code' => -1 ,'msg' => '数据为空']);
         }
@@ -237,7 +237,7 @@ class Edupeople extends Base
             $key++;
             $objPHPExcel->getActiveSheet()
                 //Excel的第A列，name是你查出数组的键值字段，下面以此类推
-                ->setCellValue('A'.$key, $v['id'])
+                ->setCellValue('A'.$key, $v['major_key'])
                 ->setCellValue('B'.$key, $v['edu_name'])
                 ->setCellValue('C'.$key, $v['job'])
                 ->setCellValue('D'.$key, $v['certificate_name'])

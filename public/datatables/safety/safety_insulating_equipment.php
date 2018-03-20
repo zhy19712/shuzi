@@ -1,11 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: admin
- * Date: 2018/3/18
- * Time: 14:43
- */
-//交通车辆
+//绝缘工器具
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
@@ -26,7 +20,7 @@ include('../conn.php');
  */
 
 // DB table to use
-$table = 'think_safety_vehicle';
+$table = 'think_safety_insulating_equipment';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -36,16 +30,16 @@ $primaryKey = 'id';
 // parameter represents the DataTables column identifier. In this case simple
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
-    array( 'db' => 'id',  'dt' => 1 ),//交通车辆表自增id
-    array( 'db' => 'number_pass',  'dt' => 2 ),//通行证编号
-    array( 'db' => 'subord_unit',  'dt' => 3 ),//所属单位
-    array( 'db' => 'car_number',  'dt' => 4 ),//车牌号
-    array( 'db' => 'vehicle_type',  'dt' => 5 ),//车辆类型
-    array( 'db' => 'year_limit',  'dt' => 6 ),//年审有效期
-    array( 'db' => 'insurance_limit',  'dt' => 7 ),//保险有效期
-    array( 'db' => 'charage_person',  'dt' => 8 ),//负责人/驾驶员
-    array( 'db' => 'entry_time',  'dt' => 9 ),//进场时间
-    array( 'db' => 'car_state',  'dt' => 10 ),//车辆状态
+    array( 'db' => 'id',  'dt' => 1 ),//序号
+    array( 'db' => 'tool_name',  'dt' => 2 ),//工器具名称
+    array( 'db' => 'type_model',  'dt' => 3 ),//规格型号
+    array( 'db' => 'number',  'dt' => 4 ),//数量
+    array( 'db' => 'batch',  'dt' => 5 ),//批次
+    array( 'db' => 'manufacture',  'dt' => 6 ),//生产厂家
+    array( 'db' => 'date_product',  'dt' => 7 ),//出厂日期
+    array( 'db' => 'check_round',  'dt' => 8 ),//定检周期
+    array( 'db' => 'first_check_date',  'dt' => 9 ),//首检日期
+    array( 'db' => 'use_position',  'dt' => 10 ),//使用位置
     array( 'db' => 'remark',  'dt' => 11 )//备注
 );
 
@@ -63,6 +57,10 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
  */
 
 require( '../ssp.class.php' );
+
+//echo json_encode(
+//    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
+//);
 
 if(!empty($_GET["year"]) && !empty($_GET["selfid"]) && !empty($_GET["history_version"]))
 {
@@ -99,4 +97,8 @@ else{
         SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
     );
 }
+
+
+
+
 

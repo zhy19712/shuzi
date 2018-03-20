@@ -41,7 +41,7 @@ class Evaluation extends Base
         $param = input('post.');
         if(request()->isAjax()){
             $is_exist = $eval->getOne($param['id']);
-            if(isNull($is_exist)){
+            if(empty($is_exist)){
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
             $flag = $eval->editEval($param);

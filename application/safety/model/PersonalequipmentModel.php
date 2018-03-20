@@ -83,4 +83,21 @@ class PersonalequipmentModel extends Model
         }
         return $data;
     }
+
+    /*
+     * 查看所有的id值
+     */
+    public  function getallid()
+    {
+        return $this->group('id')->column('id');
+    }
+
+    /*
+     * 获取个人防护设备文件的版本日期,excel的导入日期
+     */
+    public function getVersion($param)
+    {
+//        return $this->field('input_time')->order('id desc')->select();
+        return $this->where('selfid',$param)->group('input_time')->column('input_time');
+    }
 }
