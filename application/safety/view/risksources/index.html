@@ -532,6 +532,35 @@
         }
     });
 
+    //编辑
+    function zedit(that) {
+        $('#addRules_modal').modal('show');
+        var id = $(that).parents('tr').find('td:eq(0)').text();
+        $('#sid').val(id);
+        $.ajax({
+            url: "{:url('Risksources/index')}",
+            type: "post",
+            dataType: "json",
+            data:{
+                id:id
+            },
+            success: function (res) {
+                $('#risk_name').val(res.risk_name);
+                $('#number').val(res.number);
+                $('#remark').val(res.remark);
+                var fileList = '<div style="display: inline-block;vertical-align: middle;">' +
+                    '<span class="info">' + res.risk_name + '</span>&nbsp' +
+                    '<span class="DelFilebtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>';
+                $('#fileUpload').append(fileList);
+            }
+        })
+    }
+
+    $("#fileUpload").on("click", ".DelFilebtn", function () {
+        $("#fileUpload").empty();
+    });
+
     //数据返回
     function complete(data){
         var groupid = $('input[type="hidden"][name="groupId"]').val();
