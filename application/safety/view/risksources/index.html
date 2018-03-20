@@ -173,6 +173,7 @@
     <ul id="tree_container" class="ztree"></ul>
     <input type="hidden" name="groupId">
     <input type="hidden" name="zId">
+    <input type="hidden" name="id">
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -213,7 +214,6 @@
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
-                        <input type="hidden" name="id" id="sid">
                         <input type="hidden" name="oldFileName" id="oldFileName">
                         <input type="hidden" name="newFileName" id="newFileName">
                         <div class="form-group">
@@ -393,7 +393,7 @@
             swf:  '/static/admin/js/webupload/Uploader.swf',
 
             // 文件接收服务端。
-            server: "{:url('Upload/uploadSdi')}",
+            server: "{:url('Upload/uploadSources')}",
 
             // 选择文件的按钮。可选。
             // 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -403,12 +403,12 @@
                 innerHTML: "上传"
             },
             formData:{
-                group_id:'',
+                id:'',
+                pid:'',
+                zid:'',
+                risk_name:'',
                 number:'',
-                go_date:'',
-                standard:'',
-                evaluation:'',
-                sdi_user:'',
+                remark:'',
             },
 
             // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
@@ -477,14 +477,12 @@
         });
 
         uploader.on("uploadStart",function () {
-            uploader.options.formData.group_id = $('input[type="hidden"][name="groupId"]').val();
-            uploader.options.formData.number = $("#standardNumr").val();
-            uploader.options.formData.sdi_name = $("#addName").val();
-            uploader.options.formData.go_date = $("#dataImple").val();
-            uploader.options.formData.standard = $("#alternativeStandard").val();
-            uploader.options.formData.evaluation = $("#psex").val();
-            uploader.options.formData.sdi_user = $("#pdivision").val();
-            uploader.options.formData.remark = $("#rulesDesc").text();
+            uploader.options.formData.id = $('input[type="hidden"][name="id"]').val();
+            uploader.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+            uploader.options.formData.zid = $('input[type="hidden"][name="zId"]').val();
+            uploader.options.formData.risk_name = $("#risk_name").val();
+            uploader.options.formData.number = $("#number").val();
+            uploader.options.formData.remark = $("#remark").val();
         });
     });
 
@@ -499,15 +497,22 @@
     var validator = $("#memberAdd").validate({
         submitHandler: function(form) {
             //获取表单数据
-            var pid = $('input[type="hidden"][name="groupId"]').val();
+            var  id = $('input[type="hidden"][name="id"]').val();
+            var pid = $('input[type="hidden"][id]').val();
             var zid =  $('input[type="hidden"][name="zId"]').val();
             var risk_name = $('#risk_name').val();
             var number = $('#number').val();
+            var oldFileName = $('#oldFileName').val();
+            var newFileNmae = $('#newFileName').val();
+            if(!$('.info').html()){
+                layer.msg('请上传文件');
+                return false;
+            }
             //表单提交
             if(!newFileNmae||newFileNmae===oldFileName){
                 //修改
                 $(form).ajaxSubmit({
-                    url: "{:url('Statutestdi/sdiEdit')}",
+                    url: "{:url('Risksources/sourcesEdit')}",
                     type: "post",
                     dataType: 'json',
                     data:{
@@ -533,7 +538,7 @@
         console.log(data);
         if(data.code==1){
             layer.msg(data.msg);
-            tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php?pid=" + groupid).load();
+            tableItem.ajax.url("__SCRIPT__/safety_risksources.php?pid=" + groupid).load();
             $("#addRules_modal").modal('hide');
         }else{
             layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});

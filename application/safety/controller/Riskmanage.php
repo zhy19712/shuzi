@@ -43,7 +43,7 @@ class Riskmanage extends Base
             $manage = new RiskManageModel();
             $param = input('post.');
             $is_exist = $manage->getOne($param['id']);
-            if(isNull($is_exist)){
+            if(empty($is_exist)){
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
             $flag = $manage->editManage($param);
