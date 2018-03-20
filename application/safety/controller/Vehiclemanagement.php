@@ -39,6 +39,22 @@ class Vehiclemanagement extends Base
     {
         $vehiclemanagement = new VehiclemanagementModel();
         $param = input('post.');
+
+        $year_limit = strtotime($param['year_limit']);//年审有效期
+        $insurance_limit = strtotime($param['insurance_limit']);//保险有效期
+        $now = strtotime("now");
+
+        if($now > $year_limit)
+        {
+            $vehicle_state = "年审过期";
+        }else if($now > $insurance_limit)
+        {
+            $vehicle_state = "保险过期";
+        }else
+        {
+            $vehicle_state = "正常";
+        }
+
         if(request()->isAjax()){
             if(empty($param['id']))//id为空的时候为新增
             {
@@ -49,7 +65,7 @@ class Vehiclemanagement extends Base
                     'vehicle_category' => $param['vehicle_category'],//车辆类别
                     'year_limit' => $param['year_limit'],//年审有效期
                     'insurance_limit' => $param['insurance_limit'],//保险有效期
-                    'vehicle_state' => $param['vehicle_state'],//车辆状态
+                    'vehicle_state' => $vehicle_state,//车辆状态
                     'driver' => $param['driver'],//驾驶员
                     'input_time' => $param['input_time'],//导入时间
                     'date' => date('Y-m-d H:i:s'),

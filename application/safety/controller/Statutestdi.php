@@ -10,6 +10,7 @@ namespace app\safety\controller;
 use app\admin\controller\Base;
 use app\admin\model\UserModel;
 use app\admin\model\UserType;
+use app\safety\model\RevisionrecordModel;
 use app\safety\model\SafetySdiNodeModel;
 use app\safety\model\StatutestdiModel;
 use think\Db;
@@ -77,18 +78,38 @@ class Statutestdi extends Base
             if(empty($is_exist)){
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
+
             $data = [
                 'major_key' => $param['major_key'],
                 'years' => date('Y'),
                 'group_id' => $param['group_id'],
                 'number' => $param['number'],
-                'sdi_name' => $param['sdi_name'],
+                'sdi_name' => empty($param['sdi_name']) ? $is_exist['filename'] : $param['sdi_name'],
                 'go_date' => $param['go_date'],
                 'standard' => $param['standard'],
-                'evaluation' => $param['evaluation'],
+                'evaluation' => ($param['evaluation'] == '0') ? '适用' : '过期',
                 'sdi_user' => $param['sdi_user'],
                 'remark' => $param['remark']
             ];
+
+            // 当 存在替代标准 适用性评价 状态为 : 过期  时 新增一条 修编记录
+            if(!empty($data['standard']) && $data['evaluation'] == '过期'){
+                $pname = Db::name('safety_sdi_node')->where('id',$data['group_id'])->value('pname');
+                $record = new RevisionrecordModel();
+                $re_data = [
+                    'record_name' => $data['sdi_name'],
+                    'original_number' => $data['number'],
+                    'replace_number' => $data['standard'],
+                    'replace_time' => date("Y-m-d H:i:s"),
+                    'owner' => session('username'),
+                    'record_type' => '法规标准识别'.$pname
+                ];
+                $re_flag = $record->insertRecord($re_data);
+                if($re_flag['code'] == '-1'){
+                    return json($re_flag);
+                }
+            }
+
             $flag = $sdi->editSdi($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }

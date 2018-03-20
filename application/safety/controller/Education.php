@@ -51,6 +51,13 @@ class Education extends Base
                 $param['years'] = date("Y");
                 $flag = $edu->insertEdu($param);
             }else{
+                $is_exist = $edu->getOne($param['major_key']);
+                if(empty($is_exist)){
+                    return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
+                }
+                // 解决名称为空时，默认还等于原来的文件名称，这样下载和预览时候名称不为空
+                $param['material_name'] = empty($param['material_name']) ? $is_exist['ma_filename'] : $param['material_name'];
+                $param['record_name'] = empty($param['record_name']) ? $is_exist['re_filename'] : $param['record_name'];
                 $flag = $edu->editEdu($param);
             }
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
