@@ -2,39 +2,39 @@
 /**
  * Created by PhpStorm.
  * User: admin
- * Date: 2018/3/19
- * Time: 16:28
+ * Date: 2018/3/20
+ * Time: 9:26
  */
-//个人防护装备
+//登高工器具
 namespace app\safety\controller;
 
 use app\admin\controller\Base;
-use app\safety\model\PersonalequipmentModel;
+use app\safety\model\BoardingequipmentModel;
 use think\Db;
 use think\Loader;
 
-class Personalequipment extends Base
+class Boardingequipment extends Base
 {
     /*
-     * 获取一条个人防护装备信息
+     * 获取一条登高工器具信息
      */
     public function getindex()
     {
         if(request()->isAjax()){
-            $personal = new PersonalequipmentModel();
+            $boardingequipment = new BoardingequipmentModel();
             $param = input('post.');
-            $data = $personal->getOne($param['id']);
+            $data = $boardingequipment->getOne($param['id']);
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
 
     /*
-     * 编辑一条个人防护装备信息
+     * 编辑一条登高工器具信息
      */
-    public function  personalEdit()
+    public function  boardingequipmentEdit()
     {
-        $personal = new PersonalequipmentModel();
+        $boardingequipment = new BoardingequipmentModel();
         $param = input('post.');
         if(request()->isAjax()){
             $data = [
@@ -50,20 +50,20 @@ class Personalequipment extends Base
                 'use_position' => $param['use_position'],//使用位置
                 'remark' => $param['remark']//备注
             ];
-            $flag = $personal->editPersonalequipment($data);
+            $flag = $boardingequipment->editBoardingequipment($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
 
     /*
-     * 删除一条个人防护装备信息
+     * 删除一条登高工器具信息
      */
-    public function personalDel()
+    public function boardingequipmentDel()
     {
-        $personal = new PersonalequipmentModel();
+        $boardingequipment = new BoardingequipmentModel();
         if(request()->isAjax()) {
             $param = input('post.');
-            $data = $personal->getOne($param['id']);
+            $data = $boardingequipment->getOne($param['id']);
             $path = $data['path'];
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
             if(file_exists($path)){
@@ -72,13 +72,13 @@ class Personalequipment extends Base
             if(file_exists($pdf_path)){
                 unlink($pdf_path); //删除生成的预览pdf
             }
-            $flag = $personal->delPersonalequipment($param['id']);
+            $flag = $boardingequipment->delBoardingequipment($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
 
     /*
-     * 获取个人防护设备信息,excel导入时间
+     * 获取登高工器具信息,excel导入时间
      * @return mixed|\think\response\Json
      */
     public function getversion()
@@ -86,15 +86,15 @@ class Personalequipment extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $selfid = $param['selfid'];
-            $personal= new PersonalequipmentModel();
-            $data = $personal->getVersion($selfid);
+            $boardingequipment = new BoardingequipmentModel();
+            $data = $boardingequipment->getVersion($selfid);
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
 
     /**
-     * 个人防护装备excel表格导入
+     * 登高工器具excel表格导入
      * @return array|\think\response\Json
      * @throws \PHPExcel_Exception
      * @throws \PHPExcel_Reader_Exception
@@ -106,12 +106,12 @@ class Personalequipment extends Base
             return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
         }
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/personalequipment');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/boardingequipment');
         if($info){
             // 调用插件PHPExcel把excel文件导入数据库
             Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
             $exclePath = $info->getSaveName();  //获取文件名
-            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/personalequipment' . DS . $exclePath;   //上传文件的地址
+            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/boardingequipment' . DS . $exclePath;   //上传文件的地址
             // 当文件后缀是xlsx 或者 csv 就会报：the filename xxx is not recognised as an OLE file错误
             $extension = get_extension($file_name);
             if ($extension =='xlsx') {
@@ -182,7 +182,7 @@ class Personalequipment extends Base
 
                 }
             }
-            $success = Db::name('safety_personal_equipment')->insertAll($insertData);
+            $success = Db::name('safety_boarding_equipment')->insertAll($insertData);
             if($success !== false){
                 return  json(['code' => 1,'data' => '','msg' => '导入成功']);
             }else{
@@ -203,15 +203,15 @@ class Personalequipment extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $personalequipment = new PersonalequipmentModel();
+        $boardingequipment = new BoardingequipmentModel();
         $idArr = input('param.idarr/a');
         if($idArr['0'] == "all")
         {
-            $idArr = $personalequipment ->getallid();
+            $idArr = $boardingequipment ->getallid();
         }
-        $name = '个人防护装备'.date('Y-m-d H:i:s'); // 导出的文件名
+        $name = '登高工器具'.date('Y-m-d H:i:s'); // 导出的文件名
 
-        $list = $personalequipment->getList($idArr);
+        $list = $boardingequipment->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -283,7 +283,7 @@ class Personalequipment extends Base
             return json(['code'=>1]);
         }
         $name = input('param.name');
-        $newName = '个人防护装备 - '.$name.date('Y-m-d H:i:s'); // 导出的文件名
+        $newName = '登高工器具 - '.$name.date('Y-m-d H:i:s'); // 导出的文件名
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -322,6 +322,5 @@ class Personalequipment extends Base
         $objWriter->save('php://output');
         exit;
     }
-
 
 }
