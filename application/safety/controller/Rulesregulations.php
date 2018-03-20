@@ -42,7 +42,7 @@ class Rulesregulations extends Base
         if(request()->isAjax()){
             $param = input('post.');
             $rules = new RulesregulationsModel();
-            $data = $rules->getOne($param['id']);
+            $data = $rules->getOne($param['major_key']);
             return json($data);
         }
     }
@@ -74,12 +74,12 @@ class Rulesregulations extends Base
         if(request()->isAjax()){
             $rules = new RulesregulationsModel();
             $param = input('post.');
-            $is_exist = $rules->getOne($param['id']);
+            $is_exist = $rules->getOne($param['major_key']);
             if(empty($is_exist)){
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
             $data = [
-                'id' => $param['id'],
+                'major_key' => $param['major_key'],
                 'years' => date('Y'),
                 'group_id' =>  $param['group_id'],
                 'number' => $param['number'],
@@ -105,9 +105,9 @@ class Rulesregulations extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $id = input('param.id');
+        $major_key = input('param.major_key');
         $rules = new RulesregulationsModel();
-        $param = $rules->getOne($id);
+        $param = $rules->getOne($major_key);
         $filePath = $param['path'];
         $fileName = $param['rul_name'];
         // 如果是手动输入的名称，就有可能没有文件后缀
@@ -142,7 +142,7 @@ class Rulesregulations extends Base
         if(request()->isAjax()){
             $rules = new RulesregulationsModel();
             $param = input('post.');
-            $flag = $rules->delRules($param['id']);
+            $flag = $rules->delRules($param['major_key']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -159,7 +159,7 @@ class Rulesregulations extends Base
             $param = input('post.');
             $code = 1;
             $msg = '预览成功';
-            $data = $rules->getOne($param['id']);
+            $data = $rules->getOne($param['major_key']);
             $path = $data['path'];
             $extension = strtolower(get_extension(substr($path,1)));
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
@@ -385,19 +385,19 @@ class Rulesregulations extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('id/a');
-        if(count($idArr) == 0){
+        $majorKeyArr = input('majorKeyArr/a');
+        if(count($majorKeyArr) == 0){
             return json(['code' => -1 ,'msg' => '请选择需要下载的编号']);
         }
         $name = '规章制度 - '.date('Y-m-d H:i:s'); // 导出的文件名 可以指定是哪个节点下的那个节点.xls 例如:规章制度-国家电网公司.xls
         $sdi = new RulesregulationsModel();
-        $list = $sdi->getList($idArr);
+        $list = $sdi->getList($majorKeyArr);
         if(count($list) == 0){
             return json(['code' => -1 ,'msg' => '数据为空']);
         }
         $i=0;
         foreach ($list as $v){
-            $v['id'] = iconv("utf-8","gb2312",$v['id']);
+            $v['major_key'] = iconv("utf-8","gb2312",$v['major_key']);
             $v['number'] = iconv("utf-8","gb2312",$v['number']);
             $v['rul_name'] = iconv("utf-8","gb2312",$v['rul_name']);
             $v['go_date'] = iconv("utf-8","gb2312",$v['go_date']);
@@ -441,7 +441,7 @@ class Rulesregulations extends Base
             $key++;
             $objPHPExcel->getActiveSheet()
                 //Excel的第A列，name是你查出数组的键值字段，下面以此类推
-                ->setCellValue('A'.$key, $v['id'])
+                ->setCellValue('A'.$key, $v['major_key'])
                 ->setCellValue('B'.$key, $v['number'])
                 ->setCellValue('C'.$key, $v['rul_name'])
                 ->setCellValue('D'.$key, $v['go_date'])
