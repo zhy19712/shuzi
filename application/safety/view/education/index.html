@@ -429,7 +429,7 @@
         $.ajax({
             url: "./getParents",
             type: "post",
-            data: {id:groupid,pid:idParent},
+            data: {major_key:groupid,pid:idParent},
             dataType: "json",
             success: function (res) {
                 console.log(res)
@@ -656,7 +656,7 @@
             data: {
                 pid : groupid,//group_id
                 zid:idParent,//id
-                id: $("#edId").val(),//id
+                major_key: $("#edId").val(),//id
                 lecturer: $("#trainer").val(),//培训人
                 edu_time: $("#trainingTime").val(),//培训时间
                 trainee: $("#trainers").val(),//培训人员
@@ -698,7 +698,7 @@
                 data: {
                     pid : groupid,//group_id
                     zid:idParent,//id
-                    id: $("#edId").val(),//id
+                    major_key: $("#edId").val(),//id
                     lecturer: $("#trainer").val(),//培训人
                     edu_time: $("#trainingTime").val(),//培训时间
                     trainee: $("#trainers").val(),//培训人员
@@ -732,7 +732,7 @@
                 url: "./eduAdd",
                 type: "post",
                 data: {
-                    id: editId,//id
+                    major_key: editId,//id
                     lecturer: $("#trainer").val(),//培训人
                     edu_time: $("#trainingTime").val(),//培训时间
                     trainee: $("#trainers").val(),//培训人员
@@ -783,7 +783,7 @@
         $.ajax({
             url:"./index",
             type: "post",
-            data: {id:id},
+            data: {major_key:id},
             success: function (res) {
                 console.log(res)
                 // id = $("#edId").val(res.id);//id
@@ -829,10 +829,10 @@
         $.ajax({
             url:"./index",
             type: "post",
-            data: {id:id},
+            data: {major_key:id},
             success: function (res) {
                 console.log(res)
-                id = $("#edId").val();//id
+                major_key = $("#edId").val();//id
                 // group_id = groupid;//group_id
                 lecturer = $("#trainer").val(res.lecturer);//培训人
                 edu_time = $("#trainingTime").val(res.edu_time);//培训时间
@@ -853,7 +853,7 @@
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
             $.ajax({
                 url: "./eduDel",
-                data: {'id' : id},
+                data: {'major_key' : id},
                 type: "post",
                 dataType: "json",
                 success: function (res) {
@@ -874,7 +874,7 @@
             url: url,
             data:{
                 type:typeNum,
-                id:id
+                major_key:id
             },
             success: function (res) {
                 console.log(2121212121212121)
@@ -910,7 +910,7 @@
         $.ajax({
             url: url,
             type: "post",
-            data: {id:id,type:typeNum},
+            data: {major_key:id,type:typeNum},
             success: function (res) {
                 if(res.code === 1){
                     var path = res.path;
@@ -1055,7 +1055,7 @@
             url: "./exportExcel",
             type: "post",
             data: {
-                'id':dataArr
+                'major_key':dataArr
             },
             dataType: "json",
             success: function (res) {
