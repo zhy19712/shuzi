@@ -23,7 +23,7 @@ include('../conn.php');
 $table = 'think_safety_risksources';
 
 // Table's primary key
-$primaryKey = 'id';
+$primaryKey = 'major_key';
 
 // Array of database columns which should be read and sent back to DataTables.
 // The `db` parameter represents the column name in the database, while the `dt`
@@ -35,7 +35,7 @@ $zid = isset($_GET["zid"]) ? $_GET["zid"] : ''; // 文件归属的子级节点�
 
 //定义数据库中查看的字段与表格中的哪一列相对应
 $columns = array(
-    array( 'db' => 'id',  'dt' => 0 ),
+    array( 'db' => 'major_key',  'dt' => 0 ),
     array( 'db' => 'risk_name',  'dt' => 1 ),
     array( 'db' => 'number',  'dt' => 2 ),
     array( 'db' => 'owner',  'dt' => 3 ),
