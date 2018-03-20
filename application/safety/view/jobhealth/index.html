@@ -239,7 +239,7 @@
                             <!--<div class="col-xs-3">姓名：</div>-->
                             <div class="myblock col-xs-8 input-group">
 
-                                <input id="remark1" type="text" class="form-control" name="remark" >
+                                <input id="fullname" type="text" class="form-control" name="fullname" >
                             </div>
                         </div>
                       <div  class="col-lg-6 col-xs-6">
@@ -247,7 +247,7 @@
                           <!--<div class="col-xs-3">性别：</div>-->
                           <div class="myblock col-xs-8 input-group">
                               <!--<input id="remark1" type="text" class="form-control" name="remark" >-->
-                              <select name="" id="" class="form-control">
+                              <select name="" id="sex" class="form-control">
                                   <option value="">男</option>
                                   <option value="">女</option>
                               </select>
@@ -261,14 +261,14 @@
                             <!--<div class="col-xs-3">岗位</div>-->
                             <div class="myblock col-xs-8 input-group">
 
-                                <input id="remark1" type="text" class="form-control" name="remark" >
+                                <input id="age" type="text" class="form-control" name="age" >
                             </div>
                         </div>
                         <div  class="col-lg-6 col-xs-6">
                             <label class="col-xs-2 control-label" style="margin:0;padding: 0;text-align: left;line-height: 44px;">岗位：</label>
                             <!--<div class="col-xs-3">备注：</div>-->
                             <div class="myblock col-xs-8 input-group">
-                                <input id="remark1" type="text" class="form-control" name="remark" >
+                                <input id="station" type="text" class="form-control" name="station" >
                             </div>
                         </div>
 
@@ -358,6 +358,37 @@
                 $("#table2_wrapper2").css("display","block");
                 table2.ajax.url("__SCRIPT__/safety_jobhealthmanage.php?selfid="+selfid).load();
             };
+            $.ajax({
+                url:"__SCRIPT__/safety_jobhealthmanage.php?selfid="+selfid,
+                type:"get",
+                dataType:"json",
+                success:function(res){
+                    console.log(res)
+                     $.each(res.data,function(index,item){
+                        var aa=item[4];
+                        // alert(aa.parent);
+                        $("document").on("click",aa,function(){
+                            alert("s")
+                        })
+                        // alert(aa);
+                        // aa.click(function(){
+                        //     alert("a")
+                        // })
+                        // item[5].click(function(){
+                        //     alert("aa")
+                        // })
+                        //  var aa=item[5];
+                        //  aa.click(function(){
+                        //      alert("22")
+                        //  })
+
+                     })
+
+                }
+
+
+            });
+
 
         };
         var setting={
@@ -508,9 +539,13 @@
                 uploader1.on("uploadStart",function () {
                     uploader1.options.formData.aid = $("#aid").val();
                     uploader1.options.formData.remark = $("#remark1").val();
-                    uploader1.options.formData.filenumber = $("#filenumber").val();
-                    uploader1.options.formData.checktime = $("#checktime").val();
+                    // uploader1.options.formData.filenumber = $("#filenumber").val();
+                    // uploader1.options.formData.checktime = $("#checktime").val();
                     uploader1.options.formData.selfid =selfid;
+                    uploader1.options.formData.sex =$("#sex").val();
+                    uploader1.options.formData.age =$("#age").val();
+                    uploader1.options.formData.fullname =$("#fullname").val();
+                    uploader1.options.formData.station =$("#station").val();
                 });
                 uploader1.on('beforeFileQueued', function (file) {
                     if($("#file_list1").html()){
@@ -714,7 +749,7 @@
             // $("#file_list2").empty();
             $("#fname2").modal('show');
             upload2();
-            upload3();
+            // upload3();
         });
         var uploader2;          //初始化三个upload按钮
         //总体目标
@@ -727,8 +762,8 @@
                     server: "{:url('Upload/uploadHealthmanage')}",// 文件接收服务端。
                     chunked: false,
                     fileSizeLimit: 1000 *1024 *1024,
-                    fileNumLimit: 1,
-                    formData: {"remark":"","aid":"","checktime":"","ai":"","selfid":"","filenumber":""},
+                    fileNumLimit: 8,
+                    formData: {"remark":"","aid":"","checktime":"","selfid":"","filenumber":"","owner":"","filename":""},
                     duplicate :true,// 重复上传图片，true为可重复false为不可重复
                     pick: {
                         multiple: false,
@@ -760,9 +795,12 @@
                 uploader2.on("uploadStart",function () {
                     uploader2.options.formData.aid = $("#aid").val();
                     uploader2.options.formData.remark = $("#remark1").val();
-                    uploader2.options.formData.filenumber = $("#filenumber").val();
-                    uploader2.options.formData.checktime = $("#checktime").val();
+                    uploader2.options.formData.station = $("#station").val();
+                    uploader2.options.formData.fullname = $("#fullname").val();
+                    uploader2.options.formData.sex = $("#sex").val();
                     uploader2.options.formData.selfid =selfid;
+
+                    // uploader2.options.formData.filename =filename;
                 });
                 uploader2.on('beforeFileQueued', function (file) {
                     if($("#file_list1").html()){
@@ -867,132 +905,139 @@
                 }
             })
         };
+        // -------------------------------
+
+      // $("#sex").change(function(){
+      //      alert($(this).val());
+      //     alert($("#sex option:selected").val());
+      //
+      // })
         // -----------------------------------------------
-        var uploader3;          //初始化三个upload按钮
-        //总体目标
-        var aname1,aname2;           //用于区分 编辑时是否修改了文件
-        function upload3() {
-            if(!uploader3){
-                uploader3 = WebUploader.create({
-                    auto: false,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadHealthmanage')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    fileNumLimit: 1,
-                    formData: {"remark":"","aid":"","checktime":"","ai":"","selfid":"","filenumber":""},
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: {
-                        multiple: false,
-                        id: "#file_upload3",
-                        innerHTML: "上传文件"
-                    }
-                });
-
-                uploader3.on( 'fileQueued', function( file ) {
-                    aname2 = file.name;
-                    $("#file_per3").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                    $("#file_list3").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
-                        '<span class="info">' + file.name + '</span>&nbsp' +
-                        '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                        '</div>' );
-                });
-                $("#file_list3").on("click", ".webuploadDelbtn", function () {
-                    var $ele = $(this);
-                    var id = $ele.parent().attr("class");
-                    var file = uploader3.getFile(id);
-                    uploader3.removeFile(file,true);
-                });
-                uploader3.on('fileDequeued', function (file) {
-                    $(file.id).remove();
-                    $('.'+file.id).remove();
-                    console.log("remove");
-                });
-                uploader3.on("uploadStart",function () {
-                    uploader3.options.formData.aid = $("#aid").val();
-                    uploader3.options.formData.remark = $("#remark1").val();
-                    uploader3.options.formData.filenumber = $("#filenumber").val();
-                    uploader3.options.formData.checktime = $("#checktime").val();
-                    uploader3.options.formData.selfid =selfid;
-                });
-                uploader3.on('beforeFileQueued', function (file) {
-                    if($("#file_list3").html()){
-                        alert("只能上传一个文件,请先删除文件");
-                        return false;
-                    }else {
-                        return true;
-                    }
-                });
-                // 文件上传过程中创建进度条实时显示。
-                uploader3.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
-                });
-                // 文件上传成功
-                uploader3.on( 'uploadSuccess', function( file,data, response ) {
-                    console.log(file)
-                    console.log(data)
-                    if(data.code === 1){
-                        layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
-                        $("#file_upload1").empty();
-                        $("#file_per1").empty();
-                        $("#file_list1").empty();
-                        $("#fname1").modal('hide');
-                        console.log(selfid)
-                        table1.ajax.url("__SCRIPT__/safety_jobhealthmanage.php?selfid="+selfid).load();
-                    }else {
-                        layer.msg("抱歉，您没有此权限");
-                    }
-                });
-
-                // 文件上传失败，显示上传出错。
-                uploader3.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#file_per1").empty();
-                });
-            }
-        }
-        $("#fname2 .btn-primary").click(function () {
-            if($("#file_list1").html()){
-                if(!$("#aid").val()){
-                    uploader3.upload();
-                    uploader2.upload();
-                }else {
-                    if(aname1 === aname2){
-                        $.ajax({
-                            url: "./jobhealthEdit",
-                            type: "post",
-                            data: {id:$("#aid").val(),remark:$("#remark1").val(),filenumber:$("#filenumber").val(),checktime:$("#checktime").val()},
-                            datatype: "json",
-                            success: function (res) {
-                                if(res.code === 1){
-                                    layer.msg(res.msg);
-                                    table1.ajax.url("__SCRIPT__/safety_jobhealth.php?selfid="+selfid).load();
-                                    $("#fname1").modal('hide');
-                                }else {
-                                    layer.msg(res.msg);
-                                }
-                            }
-                        })
-                    }else {
-                        uploader2.upload();
-                        uploader3.upload();
-                    }
-                }
-            }else {
-                alert("请选择上传文件");
-            }
-        })
+        // var uploader3;          //初始化三个upload按钮
+        // //总体目标
+        // var aname1,aname2;           //用于区分 编辑时是否修改了文件
+        // function upload3() {
+        //     if(!uploader3){
+        //         uploader3 = WebUploader.create({
+        //             auto: false,// 选完文件后，是否自动上传。
+        //             swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+        //             server: "{:url('Upload/uploadHealthmanage')}",// 文件接收服务端。
+        //             chunked: false,
+        //             fileSizeLimit: 1000 *1024 *1024,
+        //             fileNumLimit: 1,
+        //             formData: {"remark":"","aid":"","checktime":"","ai":"","selfid":"","filenumber":""},
+        //             duplicate :true,// 重复上传图片，true为可重复false为不可重复
+        //             pick: {
+        //                 multiple: false,
+        //                 id: "#file_upload3",
+        //                 innerHTML: "上传文件"
+        //             }
+        //         });
+        //
+        //         uploader3.on( 'fileQueued', function( file ) {
+        //             aname2 = file.name;
+        //             $("#file_per3").append('<div id="' + file.id + '" class="item">' +
+        //                 '</div>');
+        //             $("#file_list3").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+        //                 '<span class="info">' + file.name + '</span>&nbsp' +
+        //                 '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+        //                 '</div>' );
+        //         });
+        //         $("#file_list3").on("click", ".webuploadDelbtn", function () {
+        //             var $ele = $(this);
+        //             var id = $ele.parent().attr("class");
+        //             var file = uploader3.getFile(id);
+        //             uploader3.removeFile(file,true);
+        //         });
+        //         uploader3.on('fileDequeued', function (file) {
+        //             $(file.id).remove();
+        //             $('.'+file.id).remove();
+        //             console.log("remove");
+        //         });
+        //         uploader3.on("uploadStart",function () {
+        //             uploader3.options.formData.aid = $("#aid").val();
+        //             uploader3.options.formData.remark = $("#remark1").val();
+        //             uploader3.options.formData.filenumber = $("#filenumber").val();
+        //             uploader3.options.formData.checktime = $("#checktime").val();
+        //             uploader3.options.formData.selfid =selfid;
+        //         });
+        //         uploader3.on('beforeFileQueued', function (file) {
+        //             if($("#file_list3").html()){
+        //                 alert("只能上传一个文件,请先删除文件");
+        //                 return false;
+        //             }else {
+        //                 return true;
+        //             }
+        //         });
+        //         // 文件上传过程中创建进度条实时显示。
+        //         uploader3.on('uploadProgress', function (file, percentage) {
+        //             var $li = $('#' + file.id),
+        //                 $percent = $li.find('.progress .progress-bar');
+        //             // 避免重复创建
+        //             if (!$percent.length) {
+        //                 $percent = $('<div class="progress progress-striped active">' +
+        //                     '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+        //                     '</div>' +
+        //                     '</div>').appendTo($li).find('.progress-bar');
+        //             }
+        //             $li.find('p.state').text('上传中');
+        //             $percent.css('width', percentage * 100 + '%');
+        //         });
+        //         // 文件上传成功
+        //         uploader3.on( 'uploadSuccess', function( file,data, response ) {
+        //             console.log(file)
+        //             console.log(data)
+        //             if(data.code === 1){
+        //                 layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+        //                 $("#file_upload1").empty();
+        //                 $("#file_per1").empty();
+        //                 $("#file_list1").empty();
+        //                 $("#fname1").modal('hide');
+        //                 console.log(selfid)
+        //                 table1.ajax.url("__SCRIPT__/safety_jobhealthmanage.php?selfid="+selfid).load();
+        //             }else {
+        //                 layer.msg("抱歉，您没有此权限");
+        //             }
+        //         });
+        //
+        //         // 文件上传失败，显示上传出错。
+        //         uploader3.on( 'uploadError', function( file ) {
+        //             layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+        //             $("#file_per1").empty();
+        //         });
+        //     }
+        // }
+        // $("#fname2 .btn-primary").click(function () {
+        //     if($("#file_list1").html()){
+        //         if(!$("#aid").val()){
+        //             uploader3.upload();
+        //             uploader2.upload();
+        //         }else {
+        //             if(aname1 === aname2){
+        //                 $.ajax({
+        //                     url: "./jobhealthEdit",
+        //                     type: "post",
+        //                     data: {id:$("#aid").val(),remark:$("#remark1").val(),filenumber:$("#filenumber").val(),checktime:$("#checktime").val()},
+        //                     datatype: "json",
+        //                     success: function (res) {
+        //                         if(res.code === 1){
+        //                             layer.msg(res.msg);
+        //                             table1.ajax.url("__SCRIPT__/safety_jobhealth.php?selfid="+selfid).load();
+        //                             $("#fname1").modal('hide');
+        //                         }else {
+        //                             layer.msg(res.msg);
+        //                         }
+        //                     }
+        //                 })
+        //             }else {
+        //                 uploader2.upload();
+        //                 uploader3.upload();
+        //             }
+        //         }
+        //     }else {
+        //         alert("请选择上传文件");
+        //     }
+        // })
     </script>
 </body>
 </html>
