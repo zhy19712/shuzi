@@ -28,6 +28,7 @@ use app\safety\model\EmergencyimagedataModel;
 use app\safety\model\EmergencyrehearsalModel;
 use app\safety\model\EmergencydisposalModel;
 use app\safety\model\EmergencyreviseModel;
+use app\safety\model\ChemistrymanagementModel;
 use think\Db;
 
 class Upload extends Base
@@ -1775,7 +1776,8 @@ class Upload extends Base
 
          */
         $chemistry = new ChemistrymanagementModel();
-        $id = request()->param('aid');
+        $id = request()->param('cid');
+        $chemistry_file_name = request()->param('chemistry_file_name');
         $remark = request()->param('remark');
         $file = request()->file('file');
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/chemistrymanagement');
@@ -1786,6 +1788,7 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
+                    'chemistry_file_name' =>$chemistry_file_name,
                     'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
@@ -1800,6 +1803,7 @@ class Upload extends Base
                 unlink($data_older['path']);
                 $data = [
                     'id' => $id,
+                    'chemistry_file_name' => $chemistry_file_name,
                     'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),

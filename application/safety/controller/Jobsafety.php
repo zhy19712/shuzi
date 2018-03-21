@@ -685,7 +685,8 @@ class Jobsafety extends Base
         if(request()->isAjax()){
             $data = [
                 'id' => $param['aid'],
-                'remark' => $param['remark']
+                'chemistry_file_name'=>$param['chemistry_file_name'],//文件名称
+                'remark' => $param['remark']//备注
             ];
             $flag = $chemistry->editChemistrymanagement($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
