@@ -233,7 +233,7 @@ class Education extends Base
                 $obj_PHPExcel = $objReader->load($file_name);
             } else if ($extension =='xls') {
                 $objReader = new \PHPExcel_Reader_Excel5();
-                $obj_PHPExcel = $objReader->load($file_name,'GBK');
+                $obj_PHPExcel = $objReader->load($file_name);
             } else if ($extension=='csv') {
                 $PHPReader = new \PHPExcel_Reader_CSV();
                 //默认输入字符集
@@ -331,14 +331,6 @@ class Education extends Base
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
         $objPHPExcel = new \PHPExcel();
-        /*右键属性所显示的信息*/
-        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
-        ->setLastModifiedBy("zxf")  //最后一次保存者
-        ->setTitle('数据EXCEL导出')  //标题
-        ->setSubject('数据EXCEL导出') //主题
-        ->setDescription('导出数据')  //描述
-        ->setKeywords("excel")   //标记
-        ->setCategory("result file");  //类别
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
         // 设置表格第一行显示内容
@@ -349,7 +341,8 @@ class Education extends Base
             ->setCellValue('D1', '培训地点')
             ->setCellValue('E1', '培训人')
             ->setCellValue('F1', '培训人员')
-            ->setCellValue('G1', '培训人数');
+            ->setCellValue('G1', '培训人数')
+            ->setCellValue('H1', '备注');
         $key = 1;
         /*以下就是对处理Excel里的数据，横着取数据*/
         foreach($list as $v){
@@ -363,7 +356,8 @@ class Education extends Base
                 ->setCellValue('D'.$key, $v['address'])
                 ->setCellValue('E'.$key, $v['lecturer'])
                 ->setCellValue('F'.$key, $v['trainee'])
-                ->setCellValue('G'.$key, $v['num']);
+                ->setCellValue('G'.$key, $v['num'])
+                ->setCellValue('G'.$key, $v['remark']);
         }
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
@@ -395,14 +389,6 @@ class Education extends Base
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
         $objPHPExcel = new \PHPExcel();
-        /*右键属性所显示的信息*/
-        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
-        ->setLastModifiedBy("zxf")  //最后一次保存者
-        ->setTitle('数据EXCEL导出')  //标题
-        ->setSubject('数据EXCEL导出') //主题
-        ->setDescription('导出数据')  //描述
-        ->setKeywords("excel")   //标记
-        ->setCategory("result file");  //类别
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
         // 设置表格第一行显示内容
