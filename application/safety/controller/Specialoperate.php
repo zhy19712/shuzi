@@ -24,6 +24,9 @@ class Specialoperate extends Base
             $special = new SpecialoperateModel();
             $param = input('post.');
             $data = $special->getOne($param['id']);
+
+            $data['filename'] = explode("*",$data['filename']);//拆解拼接的文件、图片名
+            $data['path'] = explode("*",$data['path']);//拆解拼接的文件、图片名
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
