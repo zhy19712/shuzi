@@ -132,10 +132,13 @@ class RiskModel extends Model
      * @param $id
      * @return \think\response\Json
      */
-    public function del($id)
+    public function delRisk($id)
     {
         try {
             $m = new RiskModel();
+            //清理分数
+            $this->proessScore($m['founder'],$m['cat'],'删除',date('Y-m-d',time()),true);
+            $this->proessScore($m['acceptor'],$m['cat'],'删除',date('Y-m-d',time()),true);
             $m = $m->where('id', $id);
             $m->riskImg()->delete();
             $m->delete();
