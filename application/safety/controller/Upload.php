@@ -1890,15 +1890,19 @@ class Upload extends Base
     }
 
     /**
+     * 公用函数
      * 全选获取总条数
      * @return \think\response\Json
      * @author hutao
      */
     public function getCheckAllNum()
     {
-        $tableName = request()->param('tableName');
-        $total = Db::name('"'.$tableName.'"')->count('major_key');
-        return json(['code' => 1,'total' => $total]);
+        $tableName = request()->param('tableName'); // 要查询的数据库表名称
+        if(empty($tableName)){
+            return json(['code' => -1,'msg' => '请输入要查询的表名称']);
+        }
+        $total = Db::name('"'.$tableName.'"')->count();
+        return json(['code' => 1,'total' => $total,'msg' => '查询成功']);
     }
 
 }
