@@ -12,6 +12,8 @@ use app\admin\controller\Base;
 use app\safety\model\JobsafetyModel;//树状结构
 use app\safety\model\ViolationrecordModel;//反违章记录
 use app\safety\model\FiremanagementModel;//消防安全管理
+use think\Db;
+use think\Loader;
 
 class Jobsafety extends Base
 {
