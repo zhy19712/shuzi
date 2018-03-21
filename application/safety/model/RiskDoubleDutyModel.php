@@ -23,6 +23,15 @@ class RiskDoubleDutyModel extends Model
     {
         return $this->hasMany('RiskDoubleDutyInfoModel','duty_id','id');
     }
+
+    /**
+     * @param $id
+     */
+    public function getOne($id)
+    {
+        return $this->where('id',$id)->find();
+    }
+
     /**
      * @param $user
      * @return int|string
