@@ -24,24 +24,24 @@ class RiskDoubleDutyModel extends Model
      * @param $user
      * @return int|string
      */
-    public function getbyid($userId)
+    public function getbyusername($user)
     {
         try {
-            $item = $this->where('user_id', $userId)->find();
+            $item = $this->where('username', $user)->find();
         } catch (Exception $e) {
             $item = null;
         }
         if (!empty($item)) {
             return $item;
         }
-        $item = ['user_id' => $userId];
+        $item = ['user' =>$user ];
         $id = $this->insertGetId($item);
         return $this->where('user_id', $id)->find();
     }
 
-    public function prossScore($userId,$score,$cat,$context,$time)
+    public function prossScore($user,$score,$cat,$context,$time)
     {
-        $item = $this->getbyid($userId);
+        $item = $this->getbyusername($user);
         Db::transaction();
         try
         {
