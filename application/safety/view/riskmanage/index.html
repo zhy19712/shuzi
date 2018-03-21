@@ -611,7 +611,6 @@
             tableItem.on('draw',function () {
                 $('input[type="checkbox"][name="checkList"]').prop("checked",false);
                 delCheckedAllTips();
-                $('#all_checked').prop('checked',false);
             });
         }
     }
@@ -625,9 +624,10 @@
 
     //checkbox全选
     $("#all_checked").on("click", function () {
+        var that = $(this);
         var total = $('input[type="hidden"][name="total"]').val();
-        if ($(this).prop("checked") === true) {
-            $("input[name='checkList']").prop("checked", $(this).prop("checked"));
+        if (that.prop("checked") === true) {
+            $("input[name='checkList']").prop("checked", that.prop("checked"));
             $('#tableItem tbody tr').addClass('selected');
             $('input[name="checkList"]').each(function(){
                 getId(this);
@@ -662,6 +662,15 @@
     }
     getDataTotal();
 
+    function isTrue() {
+        var state = $('#isSelect').attr('state');
+        tableItem.on('draw',function () {
+            if(state!=='false'){
+                $('input[type="checkbox"][name="all_checked"]').prop("checked",false);
+            }
+        });
+    }
+    isTrue();
     //勾选表全部数据
     function checkedAlls(that) {
         var total = $('input[type="hidden"][name="total"]').val();
@@ -671,6 +680,7 @@
             $(that).attr('state',false);
             tableItem.on('draw',function () {
                 $('input[type="checkbox"][name="checkList"]').prop("checked",false);
+                $('input[type="checkbox"][name="all_checked"]').prop("checked",false);
                 delCheckedAllTips();
             });
             return false;
@@ -684,6 +694,7 @@
             //翻页事件
             tableItem.on('draw',function () {
                 $('input[type="checkbox"][name="checkList"]').prop("checked",true);
+                $('input[type="checkbox"][name="all_checked"]').prop("checked",true);
                 addCheckedAllTips('取消勾选');
             });
             console.log(idArr);
@@ -697,7 +708,7 @@
         }
         var trDom = '<tr class="graytip">' +
             '<td colspan="11" class="div_mail_info">已勾选本页 50 封邮件，' +
-            '<a onclick="checkedAlls(this)" state="false">'+msg+'</a>' +
+            '<a id="isSelect" onclick="checkedAlls(this)" state="false">'+msg+'</a>' +
             '</td>' +
             '</tr>';
         $('#tableItem tbody').prepend(trDom);
