@@ -473,11 +473,11 @@ class Jobsafety extends Base
             }
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
             // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
-            $type_index = $specification_model_index = $placement_position_index = $number_index = $date_manufacture_index = $date_investment_index = $next_check_time_index = $serial_number_index = $remark_index =  -1;
+            $model_type_index = $specification_model_index = $placement_position_index = $number_index = $date_manufacture_index = $date_investment_index = $next_check_time_index = $serial_number_index = $remark_index =  -1;
             foreach ($excel_array[0] as $k=>$v){
                 $str = preg_replace('/[ ]/', '', $v);
                 if ($str == '类型'){
-                    $type_index = $k;
+                    $model_type_index = $k;
                 }else if ($str == '规格型号'){
                     $specification_model_index = $k;
                 }else if($str == '安放位置'){
@@ -496,9 +496,9 @@ class Jobsafety extends Base
                     $remark_index = $k;
                 }
             }
-            return json(['1'=>'111','2'=>$specification_model_index,'3'=>$placement_position_index,'4'=>$number_index,'5'=>$date_manufacture_index,'6'=>$date_investment_index,'7'=>$next_check_time_index,'8'=>$serial_number_index,'9'=>$remark_index]);
+//            return json(['1'=>'111','2'=>$specification_model_index,'3'=>$placement_position_index,'4'=>$number_index,'5'=>$date_manufacture_index,'6'=>$date_investment_index,'7'=>$next_check_time_index,'8'=>$serial_number_index,'9'=>$remark_index]);
 
-            if($type_index == -1 || $specification_model_index == -1 || $placement_position_index == -1 || $number_index == -1 || $date_manufacture_index == -1 || $date_investment_index == -1 || $next_check_time_index == -1 || $serial_number_index || $remark_index == -1 ){
+            if($model_type_index == -1 || $specification_model_index == -1 || $placement_position_index == -1 || $number_index == -1 || $date_manufacture_index == -1 || $date_investment_index == -1 || $next_check_time_index == -1 || $serial_number_index || $remark_index == -1 ){
                 $json_data['code'] = 0;
                 $json_data['info'] = '文件内容格式不对';
                 return json($json_data);
@@ -507,7 +507,7 @@ class Jobsafety extends Base
             foreach($excel_array as $k=>$v){
                 if($k > 0){
 
-                    $insertData[$k]['type'] = $v[$type_index];
+                    $insertData[$k]['model_type'] = $v[$model_type_index];
                     $insertData[$k]['specification_model'] = $v[$specification_model_index];
                     $insertData[$k]['placement_position'] = $v[$placement_position_index];
                     $insertData[$k]['number'] = $v[$number_index];
