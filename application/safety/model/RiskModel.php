@@ -53,7 +53,7 @@ class RiskModel extends Model
                 $_id = $risk['id'];
             }
             $item = $this->where('id', $_id)->find();
-
+            $riskImgs = array();
             if (array_key_exists('risk_img', $risk)) {
                 foreach (explode('※', $risk['risk_img']) as $img) {
                     $riskImgs[] = array('path' => $img, 'cat' => '排查');
@@ -162,9 +162,9 @@ class RiskModel extends Model
     public function getOne($id)
     {
         $mod = $data = RiskModel::with('RiskImg')->where('id', $id)->find();   //select([$id]);
-        if (count( ($mod['risk_img']))>0) {
-            $risk_img_after=array();
-            $risk_img_before=array();
+        if (count(($mod['risk_img'])) > 0) {
+            $risk_img_after = array();
+            $risk_img_before = array();
             foreach ($mod['risk_img'] as $item) {
                 if ($item['cat'] == '排查') {
                     $risk_img_before[] = $item;
@@ -172,8 +172,8 @@ class RiskModel extends Model
                     $risk_img_after[] = $item;
                 }
             }
-            $mod['risk_img_before'] =$risk_img_before;
-            $mod['risk_img_after'] =$risk_img_after;
+            $mod['risk_img_before'] = $risk_img_before;
+            $mod['risk_img_after'] = $risk_img_after;
         }
         return $mod;
     }
