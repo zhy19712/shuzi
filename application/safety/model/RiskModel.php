@@ -57,11 +57,10 @@ class RiskModel extends Model
                 $riskImgs[] = array('path' => $img, 'cat' => '排查');
             }
             foreach (explode('※', $risk['risk_after_img']) as $img) {
-                $riskAfterImgs[] = array('path' => $img, 'cat' => '验收');
+                $riskImgs[] = array('path' => $img, 'cat' => '验收');
             }
             RiskImgModel::where('risk_id', $item['id'])->delete();
             $item->riskImg()->saveAll($riskImgs);
-            $item->riskAfterImg()->saveAll($riskAfterImgs);
             if ($res) {
                 return ['code' => 1, 'data' => '', 'msg' => '操作成功'];
             } else {
