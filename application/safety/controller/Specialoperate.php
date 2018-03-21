@@ -119,7 +119,7 @@ class Specialoperate extends Base
     /*
      * 删除一条特种作业人员管理信息
      */
-    public function personalDel()
+    public function delSpecialoperateDel()
     {
         $special = new SpecialoperateModel();
         if(request()->isAjax()) {
