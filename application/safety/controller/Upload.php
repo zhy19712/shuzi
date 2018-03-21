@@ -1081,7 +1081,8 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/normal/');
         if($info){
             $path = './uploads/normal/' . str_replace("\\","/",$info->getSaveName());
-            return json(['code'=>1,'msg'=>'上传成功','data'=>$path]);
+            $filename = $file->getInfo('name');
+            return json(['code'=>1,'msg'=>'上传成功','data'=>$path,'filename'=>$filename]);
         }else{
             return json(['code'=>-1,'msg'=>'上传失败']);
         }
