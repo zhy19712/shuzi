@@ -21,7 +21,7 @@ class RiskModel extends Model
      */
     public function riskImg()
     {
-        return $this->hasMany('RiskImg', 'risk_id', 'id');
+        return $this->hasMany('RiskImgModel', 'risk_id', 'id');
     }
 
     /**
@@ -29,7 +29,7 @@ class RiskModel extends Model
      */
     public function riskAfterImg()
     {
-        return $this->hasMany('RiskImg', 'risk_id', 'id');
+        return $this->hasMany('RiskImgModel', 'risk_id', 'id');
     }
 //    /**
 //     * 标段

@@ -58,6 +58,14 @@ class Risk extends Base
         }
     }
 
+    public function getRisk()
+    {
+        if (!request()->isAjax()) {
+            $id = input('id');
+            $data =RiskModel::with('RiskImg')->select([$id]);
+            return json($data);
+        }
+    }
 
     /**
      * 下载
