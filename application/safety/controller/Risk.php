@@ -11,6 +11,7 @@ namespace app\safety\controller;
 // 安全风险管理
 use app\admin\controller\Base;
 use app\admin\model\ContractModel;
+use app\safety\model\RiskDoubleDutyModel;
 use app\safety\model\RiskModel;
 use think\Db;
 use think\Loader;
@@ -60,11 +61,8 @@ class Risk extends Base
 
     public function getRisk()
     {
-        if (!request()->isAjax()) {
-            $id = input('id');
-            $m=new RiskModel();
-            return json($m->getOne($id));
-        }
+       $m=new RiskDoubleDutyModel();
+      return json( $m->getbyusername('test'));
     }
 
     /**
