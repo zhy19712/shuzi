@@ -23,14 +23,6 @@ class RiskModel extends Model
     {
         return $this->hasMany('RiskImgModel', 'risk_id', 'id');
     }
-
-    /**
-     * 治理后
-     */
-    public function riskAfterImg()
-    {
-        return $this->hasMany('RiskImgModel', 'risk_id', 'id');
-    }
 //    /**
 //     * 标段
 //     */
