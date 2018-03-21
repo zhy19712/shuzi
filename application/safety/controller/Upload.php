@@ -1911,4 +1911,20 @@ class Upload extends Base
         return json(['code' => 1,'total' => $total,'major_key' => $major_key,'msg' => '查询成功']);
     }
 
+    /**
+     * 特种作业人员管理
+     */
+    public function uploadSpecialoperate()
+    {
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/specialoperate');
+        if($info){
+            $path = './uploads/safety/specialoperate/' . str_replace("\\","/",$info->getSaveName());
+            $filename = $file->getInfo('name');
+            return json(['code'=>1,'msg'=>'上传成功','data'=>$path,'filename'=>$filename]);
+        }else{
+            return json(['code'=>-1,'msg'=>'上传失败']);
+        }
+    }
+
 }

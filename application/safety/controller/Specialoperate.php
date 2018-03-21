@@ -25,8 +25,9 @@ class Specialoperate extends Base
             $param = input('post.');
             $data = $special->getOne($param['id']);
 
-            $data['filename'] = explode("*",$data['filename']);//拆解拼接的文件、图片名
-            $data['path'] = explode("*",$data['path']);//拆解拼接的文件、图片名
+            $data['filename'] = explode("☆",$data['filename']);//拆解拼接的文件、图片名
+            $data['path'] = explode("☆",$data['path']);//拆解拼接的文件、图片名
+
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
@@ -72,8 +73,8 @@ class Specialoperate extends Base
                     'advance_retreat_time' => $param['advance_retreat_time'],//进退场时间
                     'document_status' => $param['document_status'],//证件状态
 
-                    'filename' => implode("*",$pathImgName),//上传所有文件图片的拼接名
-                    'path' => implode("*",$pathImgArr),//上传所有文件、图片拼接路径
+                    'filename' => implode("☆",$pathImgName),//上传所有文件图片的拼接名
+                    'path' => implode("☆",$pathImgArr),//上传所有文件、图片拼接路径
 
                     'remark' => $param['remark'],//备注
                     'date' => date("Y-m-d H:i:s")//添加时间
@@ -112,6 +113,25 @@ class Specialoperate extends Base
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
 
+        }
+    }
+
+    /*
+     * 删除一条特种作业人员管理信息
+     */
+    public function delSpecialoperateDel()
+    {
+        $special = new SpecialoperateModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $data = $special->getOne($param['id']);
+            $path = explode("☆",$data['path']);
+            foreach ((array)$path as $v)
+            {
+                unlink($v); //删除文件、图片
+            }
+            $flag = $special->delSpecialoperate($param['id']);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
 }
