@@ -28,6 +28,11 @@ class Emergencyplan extends Base
             {
                 $data['path'] = '';
             }
+
+            if(empty($data['filename']))
+            {
+                $data['filename'] = '';
+            }
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
@@ -104,7 +109,7 @@ class Emergencyplan extends Base
 
             if($param['preplan_state'] == "未上传")
             {
-                $path = " ";
+                $path = "";
             }else if($param['preplan_state'] == "已上传")
             {
                 $path = $emergency_revise['path'];

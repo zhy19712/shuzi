@@ -966,7 +966,7 @@
         //判断是不是新增
       if( !$("#file_list2").html() || filename1 === $(".info").html() ){
             //判断有无文件变化
-          if(filename1 ===" "){
+          if(filename1 ===""){
               $("#preplan_state").val("未上传");
           }else{
               $("#preplan_state").val("已上传");
@@ -981,7 +981,7 @@
                     preplan_number:$("#preplan_number").val(),
                     version_number:$("#version_number").val(),
                     alternative_version:$("#alternative_version").val(),
-                    applicability:filename1===" "?"不适用":$("#applicability").val(),
+                    applicability:filename1===""?"不适用":$("#applicability").val(),
                     preplan_state:$("#preplan_state").val(),
                     path:""
                 },

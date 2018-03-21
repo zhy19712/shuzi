@@ -447,7 +447,7 @@
         </div>
     </div>
 </div>
-<!--新增与编辑-->
+<!--一岗双责查看-->
 <div id="level2" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="level2" aria-hidden="true" data-keyboard="false" data-backdrop="static" style="width: 60%;margin: 0 auto;margin-top: 40px;">
     <div class="row">
         <div class="col-sm-12">
@@ -590,7 +590,12 @@
     var $btn =$("#ctlBtn");	 //开始上传
     var thumbnailWidth = 100;   //缩略图高度和宽度 （单位是像素），当宽高度是0~1的时候，是按照百分比计算，具体可以看api文档
     var thumbnailHeight = 100;
-    var pathImg;
+    var pathImg;//后台返回的图片路径
+    var pathImgArr = [];//后台返回的图片路径的数组
+    var arrBefore;//给后台传的值隐患
+    var pathImgAfter;//存后台的路径
+    var pathImgArrAfter = [];//整改后的图片路径的数组
+    var arrAfter;//给后台传的值整理后的
     var uploaderImg = WebUploader.create({
         // 选完文件后，是否自动上传。
         auto: true,
@@ -658,7 +663,12 @@
 //        if(res.code ==1){
 //            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
 
-            pathImg += res.data;//图片路径
+            pathImg = res.data;//图片路径
+            pathImgArr.push(pathImg);
+            arrBefore = pathImgArr.join("※");
+            console.log(arrBefore)
+            console.log(pathImg)
+            console.log(pathImgArr)
 //        }else {
 //            layer.msg(res.msg,{time:1500});
 //            return false;
@@ -697,7 +707,7 @@
 //    var $btn =$("#ctlBtn");	 //开始上传
     var thumbnailWidth = 100;   //缩略图高度和宽度 （单位是像素），当宽高度是0~1的时候，是按照百分比计算，具体可以看api文档
     var thumbnailHeight = 100;
-    var pathImgAfter;
+
     var uploaderImgAfter = WebUploader.create({
         // 选完文件后，是否自动上传。
         auto: true,
@@ -765,7 +775,12 @@
 //        if(res.code ==1){
 //            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
 
-            pathImgAfter += res.data;//图片路径
+            pathImgAfter = res.data;//图片路径
+            pathImgArrAfter.push(pathImgAfter);
+            arrAfter = pathImgArrAfter.join("※");
+            console.log(arrAfter)
+            console.log(pathImgAfter)
+            console.log(pathImgArrAfter)
 //        }else {
 //            layer.msg(res.msg,{time:1500});
 //            return false;
@@ -850,11 +865,11 @@
                     governdate:$("#timeLimit").val(),//治理时限
                     workdutyer:$("#personLiable").val(),//施工责任人
                     completedate:$("#completionTime").val(),//治理完成时间
-                    risk_img:pathImg,//隐患治理前照片
+                    risk_img:arrBefore,//隐患治理前照片
 //                    risk_img:$("#riskText").val(),//隐患治理前照片
                     acceptor_id:$("#acceptor").val(),//验收人
 //                    risk_after_img:$("#riskText").val()//隐患治理后照片
-                    risk_after_img:pathImgAfter//隐患治理后照片
+                    risk_after_img:arrAfter//隐患治理后照片
                 },
                 datatype: "json",
                 success: function (res) {
@@ -873,7 +888,61 @@
     $("#risk_modal .btn-danger").click(function () {
         standard_uploader = null;
     });
+    //驱虫
+    Array.prototype.removal = function(){
+        var newArr = [];
+        for (var i = 0; i < this.length; i++) {
+            if(newArr.indexOf(this[i]) == -1){  //判断在newArr数组中是否存在，不存在则push到newArr数组中 indexOf 不兼容IE8及以下
+                newArr.push(this[i]);
+            }
+        }
+        return newArr;
+    }
+    //删除数组中的指定元素
+    Array.prototype.remove = function(val){
+        for (var i = 0; i < this.length; i++) {
+            if(this[i] === val){
+                this.splice(i,1);
+                break;
+            }
+        }
+        return this;
+    }
+    var dataArr=[];
+    //获取选中行ID
+    function getDataId(that) {
+        var isChecked = $(that).prop('checked');
+        var id = $(that).parents('tr').find('td:eq(1)').text();
+        if(isChecked){
+            dataArr.push(id);
+            dataArr.removal(id);
+        }else {
+            dataArr.remove(id);
+            dataArr.removal(id);
+        }
+    }
+    //单选
+    function getRadioId(that) {
+        getDataId(that);
+        console.log(dataArr);
+    }
 
+    //checkbox全选
+    $(".checkall").on("click", function () {
+        if ($(this).prop("checked") == true) {
+            var check = $(this).prop("checked");
+            $(".checkchild").prop("checked", check);
+            $(".checkchild").each(function(){
+                getDataId(this);
+            });
+        } else {
+            $(".checkchild").prop("checked", false);
+            $(".checkchild").each(function(){
+                getDataId(this);
+            });
+        }
+        console.log(dataArr);
+    });
 
 
 

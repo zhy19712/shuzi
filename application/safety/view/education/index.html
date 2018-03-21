@@ -591,10 +591,6 @@
     });
 
 
-
-
-
-
     var uploaderRecords;
     //在点击弹出模态框的时候再初始化WebUploader，解决点击上传无反应问题
     $("#education_modal").on("shown.bs.modal",function(){
@@ -851,8 +847,12 @@
                     address: $("#trainingPlace").val(),//培训地点
                     num: $("#numTraining").val(),//培训人数
                     content: $("#trainerCon").val(),//培训内容
-                    material_name: $("#trainerMaterials").val(),//培训材料
-                    record_name: $("#trainerRecords").val(),//培训记录
+                    material_name: $("#trainerMaterials").val(),//培训材料手动输入名
+                    ma_filename: fileNameMa,//培训材料原文件名
+                    ma_path:filePathMa,//培训材料路径
+                    record_name: $("#trainerRecords").val(),//培训记录手动输入名
+                    re_filename :fileName,   //培训记录原文件名
+                    re_path : filePath,     //培训记录文件路径
                     remark: $("#edDesc").val()//备注
                 },
                 dataType: "json",
@@ -862,8 +862,6 @@
                         $("#education_modal").modal('hide');
                         admin_table.ajax.url("__SCRIPT__/safety_education.php?pid="+idParent+"&zid=" + groupid).load();
                         layer.msg(res.msg, {time: 1500, shade: 0.1});
-//                        uploaderRecords.upload();
-//                        uploaderMaterials.upload();
                         return true; //阻止表单默认提交
                     } else {
                         layer.msg(res.msg);
@@ -883,8 +881,12 @@
                     address: $("#trainingPlace").val(),//培训地点
                     num: $("#numTraining").val(),//培训人数
                     content: $("#trainerCon").val(),//培训内容
-                    material_name: $("#trainerMaterials").val(),//培训材料
-                    record_name: $("#trainerRecords").val(),//培训记录
+                    material_name: $("#trainerMaterials").val(),//培训材料手动输入名
+                    ma_filename: fileNameMa,//培训材料原文件名
+                    ma_path:filePathMa,//培训材料路径
+                    record_name: $("#trainerRecords").val(),//培训记录手动输入名
+                    re_filename :fileName,   //培训记录原文件名
+                    re_path : filePath,     //培训记录文件路径
                     remark: $("#edDesc").val()//备注
                 },
                 datatype: "json",
@@ -892,8 +894,6 @@
                     console.log(res);
                     if (res.code === 1) {
                         $("#education_modal").modal('hide');
-                        uploaderRecords.upload();
-                        uploaderMaterials.upload();
                         admin_table.ajax.url("__SCRIPT__/safety_education.php?pid="+idParent+"&zid=" + groupid).load();
                         layer.msg(res.msg, {time: 1500, shade: 0.1});
                     } else {
@@ -919,9 +919,6 @@
         $("#edId").val(id)
         $("#education_modal h5").text("编辑");
         $("#education_modal").modal('show');
-        $("#pickerMaterials").css('display',"block");
-        $("#pickerRecords").css('display',"block");
-        $(".edParent").css('display',"none");
         console.log(idParent)
         console.log(groupid)
         $.ajax({
@@ -945,6 +942,56 @@
                 remark = $("#edDesc").val(res.remark)//备注
                 edamid1 = res.id
                 edamid2 = res.id
+
+
+                //培训材料 class="' + file.id + '"
+                $("#pickerMaterials").append('<div style="display: inline-block;vertical-align: middle;width: 100%;height: 100%;"  class="item">' +
+                    '<span class="info" style="padding-left: 10px;"> ' + res.ma_filename + '</span>&nbsp' +
+                    '<span class="webuploadDelbtn" id="shan" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;padding-left: 5px;">bianji删除</span>' +
+                    '</div>' );
+                $("#pickerMaterials .webuploadDelbtn").click(function () {
+                    $.ajax({
+                        url: "./delEditFile",
+                        type: "post",
+                        data: {
+                            major_key:id,
+                            types:1
+                        },
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                        }
+                    })
+                    $("#pickerMaterials").off("click")
+                    $("#trainerMaterials").val('');
+                    $("#file_perMa").html('');
+                    $("#shan").text('');
+
+                })
+
+                //培训记录 class="' + file.id + '"
+                $("#pickerRecords").append('<div style="display: inline-block;vertical-align: middle;width: 100%;height: 100%;"  class="item">' +
+                    '<span class="info" style="padding-left: 10px;"> ' + res.ma_filename + '</span>&nbsp' +
+                    '<span class="webuploadDelbtn" id="shan2" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;padding-left: 5px;">删除</span>' +
+                    '</div>' );
+                $("#pickerRecords .webuploadDelbtn").click(function () {
+                    $.ajax({
+                        url: "./delEditFile",
+                        type: "post",
+                        data: {
+                            major_key:id,
+                            types:2
+                        },
+                        dataType: "json",
+                        success: function (res) {
+                            console.log(res);
+                        }
+                    })
+                    $("#pickerRecords").off("click")
+                    $("#trainerRecords").val('');
+                    $("#file_per1").html('');
+                    $("#shan2").text('');
+                })
             }
         })
     }
