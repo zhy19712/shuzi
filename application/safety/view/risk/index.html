@@ -223,46 +223,39 @@
                             <div class="form-group myLine">
                                 <label for="sel1">责任标段</label>
                                 <select class="form-control" id="sel1">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                    <option value="">c1标</option>
+                                    <option value="">c2标</option>
+                                    <option value="">EM1标</option>
                                 </select>
                             </div>
                             <div class="form-group myLine">
                                 <label for="sel1">隐患类型</label>
                                 <select class="form-control" id="sel2">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+
                                 </select>
                             </div>
                             <div class="form-group myLine">
                                 <label for="sel1">隐患来源</label>
                                 <select class="form-control" id="sel3">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                    <option value="">专项检查</option>
+                                    <option value="">日常巡查</option>
+                                    <option value="">其他</option>
                                 </select>
                             </div>
                             <div class="form-group myLine">
                                 <label for="sel1">发现人</label>
                                 <select class="form-control" id="sel4">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                    <option>user1</option>
+                                    <option>user2</option>
+                                    <option>user3</option>
+                                    <option>user4</option>
                                 </select>
                             </div>
                             <div class="form-group myLine">
                                 <label for="sel1">隐患等级</label>
                                 <select class="form-control" id="sel5">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
+                                    <option>一般事故隐患</option>
+                                    <option>重大事故隐患</option>
                                 </select>
                             </div>
                             <div class="form-group myLine"><span id="aPairOf"></span></div>
@@ -347,21 +340,35 @@
                                         <select name="liabilitySection" id="liabilitySection">
                                             <option value="">c1标</option>
                                             <option value="">c2标</option>
-                                            <option value="">eM1标</option>
+                                            <option value="">EM1标</option>
                                         </select>
                                     </td>
                                     <td>
                                         <select name="hiddenCategory" id="hiddenCategory">
                                             <option value="">脚手架</option>
-                                            <option value="">c2标</option>
-                                            <option value="">eM1标</option>
+                                            <option value="">安全文明施工</option>
+                                            <option value="">环水保</option>
+                                            <option value="">施工用电</option>
+                                            <option value="">反违章</option>
+                                            <option value="">施工机具</option>
+                                            <option value="">交通安全</option>
+                                            <option value="">警示标示</option>
+                                            <option value="">地质灾害</option>
+                                            <option value="">爆破作业</option>
+                                            <option value="">火工品管理</option>
+                                            <option value="">消防安全</option>
+                                            <option value="">风险管控</option>
+                                            <option value="">职业健康</option>
+                                            <option value="">起重作业</option>
+                                            <option value="">特种设备</option>
+                                            <option value="">其他</option>
                                         </select>
                                     </td>
                                     <td>
                                         <select name="sourceDanger" id="sourceDanger">
                                             <option value="">专项检查</option>
-                                            <option value="">c2标</option>
-                                            <option value="">eM1标</option>
+                                            <option value="">日常巡查</option>
+                                            <option value="">其他</option>
                                         </select>
                                     </td>
                                     <td>
@@ -390,9 +397,8 @@
                                 <tr>
                                     <td colspan="6">
                                         <select name="hiddenGrade" id="hiddenGrade">
-                                            <option value="">c1标</option>
-                                            <option value="">c2标</option>
-                                            <option value="">eM1标</option>
+                                            <option value="">一般事故隐患</option>
+                                            <option value="">重大事故隐患</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -758,7 +764,30 @@
 
 
 <script type="text/javascript">
-
+    //js拼接options
+    var data=[
+        '脚手架',
+        '安全文明施工',
+        '环水保',
+        '施工用电',
+        '反违章',
+        '施工机具',
+        '交通安全',
+        '警示标示',
+        '地质灾害',
+        '爆破作业',
+        '火工品管理',
+        '消防安全',
+        '风险管控',
+        '职业健康',
+        '起重作业',
+        '特种设备',
+        '其他',]
+    var optionStr='';
+    for(var i=0;i<data.length;i++){
+        optionStr += '<option value="'+data[i]+'">' + data[i] + '</option>'
+    }
+    $("#sel2").append(optionStr);
     //点击时间插件
     //发现人时间
     $("#dateDiscovery").jeDate({
@@ -793,7 +822,7 @@
                 "orderable": false,
                 "targets": [15],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='preview(this)' value='查看'/>" ;
+                    var html = "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='riskSee(this)' value='查看'/>" ;
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='riskEdit(this)' value='编辑'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
@@ -817,12 +846,17 @@
     $("div.mybtn").html('<div id="xz">新增</div>');
     //点击新增按钮
     $(".mybtn").click(function () {
+        $("#thelist").html('');
+        $("#thelistAfter").html('');
         $("#risk_modal input").val("");
         $("#file_list1").empty();
         $("#riskText").empty();
         $("#risk_modal h5").text("新增");
         $("#risk_modal").modal('show');
-        console.log($("#riskId").val())
+        $("#filePicker").css("display",'block');
+        $("#filePickerAfter").css("display",'block');
+        $("#risk_modal button[type='submit']").css("display",'inline-block');
+        console.log($("#riskId").val());
         console.log($("#liabilitySection option:selected").text())//标段
         console.log($("#hiddenCategory option:selected").text())//隐患类别
         console.log($("#sourceDanger option:selected").text())//隐患来源
@@ -1128,16 +1162,68 @@
     $("#risk_modal .btn-danger").click(function () {
         standard_uploader = null;
     });
+    //查看
+    function riskSee(that){
+        var id = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
+        console.log(id);
+        $("#thelist").html('');
+        $("#thelistAfter").html('');
+        $("#risk_modal input").val("");
+        $("#file_list1").empty();
+        $("#risk_modal h5").text("查看");
+        $("#risk_modal").modal("show");
+        $("#filePicker").css("display",'none');
+        $("#filePickerAfter").css("display",'none');
+        $("#risk_modal button[type='submit']").css("display",'none');
+        $.ajax({
+            url: "./index",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                console.log(12345678+"获取一条数据");
+                $("#riskId").val(res.id);
+                $("#riskText").val(res.context);//隐患内容
+                $("#hiddenPart").val(res.part);//隐患部位
+                $("#liabilitySection option:selected").text(res.section);//标段
+                $("#hiddenCategory option:selected").text(res.cat);//隐患类别
+                $("#sourceDanger option:selected").text(res.source);//隐患来源
+                $("#dateDiscovery").val(res.founddate);//发现日期
+                $("#discovery").val(res.founder);//发现人
+                $("#hiddenGrade option:selected").text(res.level);//隐患等级
+                $("#goveMeasures").val(res.govern);//治理措施;
+                $("#timeLimit").val(res.governdate);//治理时限
+                $("#personLiable").val(res.workdutyer);//施工责任人
+                $("#completionTime").val(res.completedate);//治理完成时间
+                $("#acceptor").val(res.acceptor);//验收人
+                console.log(res.risk_img_before[0].path + '666666')
+                var strImgBefore = res.risk_img_before[0].path;
+                var strImgAfter = res.risk_img_after[0].path;
+                $("#thelist").append('<div class="file-item thumbnail">' +
+                    '<img style="width: 50px;height: 50px;" src="'+strImgBefore.substring(1)+'">' +
+                    '</div>');
 
+                //整理后的
+                $("#thelistAfter").append('<div class="file-item thumbnail">' +
+                    '<img style="width: 50px;height: 50px;" src="'+strImgAfter.substring(1)+'">' +
+                    '</div>');
+            }
+        })
+    }
     //编辑
     function riskEdit(that) {
         var id = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
         console.log(id);
+        $("#thelist").html('');
+        $("#thelistAfter").html('');
         $("#risk_modal input").val("");
-//        $("#id1").val(id);
         $("#file_list1").empty();
         $("#risk_modal h5").text("编辑");
         $("#risk_modal").modal("show");
+        $("#filePicker").css("display",'block');
+        $("#filePickerAfter").css("display",'block');
+        $("#risk_modal button[type='submit']").css("display",'inline-block');
         $.ajax({
             url: "./index",
             type: "post",
@@ -1161,9 +1247,18 @@
                     $("#personLiable").val(res.workdutyer);//施工责任人
                     $("#completionTime").val(res.completedate);//治理完成时间
                     $("#acceptor").val(res.acceptor);//验收人
-                    console.log(res.risk_img_before[0].path)
-                    var strImgBefore = res.risk_img_before[0].path;
-                    var strImgAfter = res.risk_img_after[0].path;
+                    console.log(res.risk_img_before[0].path +'  22222222')
+                    if(res.risk_img_before.length !=0){
+                        var strImgBefore = res.risk_img_before[0].path;
+                    }else{
+                        alert("无隐患图片路径！")
+                    }
+                    if(res.risk_img_after.length !=0){
+                        var strImgAfter = res.risk_img_after[0].path;
+                    }else{
+                        alert("无整理后的图片路径！")
+                    }
+
                     $("#thelist").append('<div class="file-item thumbnail">' +
                         '<img style="width: 50px;height: 50px;" src="'+strImgBefore.substring(1)+'">' +
                         '<div class="info"></div>' +
