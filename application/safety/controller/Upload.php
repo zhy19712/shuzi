@@ -1779,6 +1779,7 @@ class Upload extends Base
          */
         $chemistry = new ChemistrymanagementModel();
         $id = request()->param('cid');
+        $selfid = request()->param('selfid');
         $chemistry_file_name = request()->param('chemistry_file_name');
         $remark = request()->param('remark');
         $file = request()->file('file');
@@ -1790,6 +1791,7 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
+                    'selfid' => $selfid,
                     'chemistry_file_name' =>$chemistry_file_name,
                     'name' => $filename,
                     'filename' => $filename,
@@ -1840,7 +1842,8 @@ class Upload extends Base
          */
         $crossoperation = new CrossoperationModel();
         $id = request()->param('bid');
-        $chemistry_file_name = request()->param('chemistry_file_name');
+        $selfid = request()->param('selfid');
+        $cross_file_name = request()->param('cross_file_name');
         $category = request()->param('category');//类别
         $remark = request()->param('remark');
         $file = request()->file('file');
@@ -1852,8 +1855,9 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
+                    'selfid' => $selfid,
                     'category' =>$category,
-                    'chemistry_file_name' =>$chemistry_file_name,
+                    'cross_file_name' =>$cross_file_name,
                     'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
@@ -1869,7 +1873,7 @@ class Upload extends Base
                 $data = [
                     'id' => $id,
                     'category' => $category,
-                    'chemistry_file_name' => $chemistry_file_name,
+                    'cross_file_name' => $cross_file_name,
                     'name' => $filename,
                     'filename' => $filename,
                     'owner' => session('username'),
