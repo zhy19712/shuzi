@@ -24,7 +24,7 @@
         margin-right: 20px;
         margin-top: 5px;
     }
-    .selectyear1,.selectyear2,.selectyear3,.selectyear5,.selectyear6,.selectyear7,.selectyear8,.selectyear9{
+    .selectyear{
         float: left;
         margin-left: 20px;
         margin-top: 10px;
@@ -74,6 +74,13 @@
         text-align: center;
         width: 78%;
         left: 11%;
+    }
+    .category{
+        position: absolute;
+        right: 250px;
+        top: 12px;
+        font-weight: 700;
+        color: black;
     }
 </style>
 <body class="gray-bg animated fadeInRight" style="background-color:#fff;">
@@ -205,78 +212,138 @@
         </div>
     </div>
 </div>
-
-<div id="fname4" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+<div id="fname1" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
     <div class="row">
         <div class="col-sm-12" style="background-color:#fff;">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>反违章记录</h5>
+                    <h5>特种作业人员详情</h5>
                 </div>
                 <div class="ibox-content">
-                    <input id="eid" type="text" class="form-control" value="" style="display: none;">
-                    <form class="form-horizontal" id="violationform" method="post" action="#" onsubmit="return false">
+                    <input id="aid" type="text" class="form-control" value="" style="display: none;">
+                    <form class="form-horizontal" id="specialform" method="post" action="#" onsubmit="return false">
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">姓名：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="full_name" type="text" class="form-control" name="full_name" required="required" placeholder="此处为必填项">
+                                    <input id="special_name" type="text" class="form-control" name="special_name" required="required" placeholder="此处为必填项">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">违章情况：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">分包单位/作业队：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="violation_situation" type="text" class="form-control" name="violation_situation">
+                                    <input id="job_name" type="text" class="form-control" name="job_name">
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">违章类别：</label>
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">性别：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="violation_situation" id="violation_situation" class="form-control" >
-                                        <option value="管理违章">管理违章</option>
-                                        <option value="行为违章">行为违章</option>
-                                        <option value="装置违章">装置违章</option>
+                                    <select name="sex" id="sex" class="form-control" >
+                                        <option value="男">男</option>
+                                        <option value="女">女</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">违章时间：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">年龄：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="violation_time" type="date" class="form-control" name="violation_time">
+                                    <input id="age" type="number" class="form-control" name="age">
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">记分情况：</label>
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">特殊工种：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="scoring_situation" type="text" class="form-control" required="required" placeholder="此处为必填项" name="date_production" />
+                                    <input id="special_type_work" type="text" class="form-control"  name="special_type_work" />
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">经济处罚：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">职业资格证书名称：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="economic_punishment" type="text" class="form-control"/>
+                                    <input id="job_certificate" type="text" class="form-control"  name="job_certificate"/>
                                 </div>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">处置结果：</label>
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">身份证号：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="disposal_results" type="text" class="form-control" name="disposal_results" />
+                                    <input id="card_number" type="text" class="form-control" name="card_number" />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">发证单位：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="issuing_unit" type="text" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">取证日期：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="date_evidence" type="text" class="form-control" name="date_evidence" />
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">整改情况：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">有效日期：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="rectify_rectify" type="text" class="form-control"/>
+                                    <input id="effective_date" type="text" class="form-control" name="effective_date" />
                                 </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">证书编号：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="certificate_number" type="text" class="form-control"  name="certificate_number" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">进场退场时间：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="advance_retreat_time" type="date" class="form-control"  name="advance_retreat_time" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">证件状态：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="document_status" type="text" class="form-control" name="document_status" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">备注：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input type="text" id="remark1" class="form-control datepicker" name="remark1" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 col-sm-offset-2 col-xs-offset-0 control-label" id="file1" style="text-align: right;line-height: 44px;">职业资格证书：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <div id="file_per1" style="display: inline-block;vertical-align: middle;"></div>
+                                    <div id="file_upload1" style="display: inline-block;vertical-align: middle;"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div id="file_list1" class="col-xs-12 col-xs-10 col-sm-offset-2" style="height: 300px; overflow-y: scroll; margin-top: 20px;">
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -292,7 +359,196 @@
         </div>
     </div>
 </div>
+<div id="fname2" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>交叉作业管理</h5>
+                </div>
+                <div class="ibox-content">
+                    <input id="bid" type="text" class="form-control" value="" style="display: none;">
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">文件名称：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="cross_file_name" type="text" class="form-control" name="cross_file_name" >
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">类别：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <select name="category_select" id="category_select" class="form-control">
+                                <option value="互保协议">互保协议</option>
+                                <option value="相邻标段爆破作业通知单 ">相邻标段爆破作业通知单 </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">备注：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="remark2" type="text" class="form-control" name="remark3" >
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" id="file2" style="text-align: right;line-height: 44px;">文件：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <div id="file_per2" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_upload2" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_list2" style="display: inline-block;vertical-align: middle;"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="text-align: center;">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="fname3" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>危险化学品管理</h5>
+                </div>
+                <div class="ibox-content">
+                    <input id="cid" type="text" class="form-control" value="" style="display: none;">
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">文件名称：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="chemistry_file_name" type="text" class="form-control" name="chemistry_file_name" >
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" style="text-align: right;line-height: 44px;">备注：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <input id="remark3" type="text" class="form-control" name="remark3" >
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" id="file3" style="text-align: right;line-height: 44px;">文件：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <div id="file_pe3r" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_upload3" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_list3" style="display: inline-block;vertical-align: middle;"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="text-align: center;">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="fname4" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>消防安全管理</h5>
+                </div>
+                <div class="ibox-content">
+                    <input id="eid" type="text" class="form-control" value="" style="display: none;">
+                    <form class="form-horizontal" id="fireform" method="post" action="#" onsubmit="return false">
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">类型：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <select name="fire_type" id="fire_type" class="form-control" >
+                                        <option value="泡沫灭火器">泡沫灭火器</option>
+                                        <option value="二氧化碳灭火器">二氧化碳灭火器</option>
+                                        <option value="干粉灭火器">干粉灭火器</option>
+                                        <option value="1211灭火器">1211灭火器</option>
+                                        <option value="消防栓">消防栓</option>
+                                        <option value="消防沙池">消防沙池</option>
+                                        <option value="消防斧头">消防斧头</option>
+                                        <option value="消防铁锹">消防铁锹</option>
+                                        <option value="消防面具">消防面具</option>
+                                        <option value="消防站">消防站</option>
+                                        <option value="消防安全绳">消防安全绳</option>
+                                        <option value="烟雾报警器">烟雾报警器</option>
+                                        <option value="其他">其他</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">规格型号：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="specification_model" type="text" class="form-control" name="specification_model">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">安放位置：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="placement_position" type="text" class="form-control" name="placement_position">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">数量：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="fire_number" type="text" class="form-control" name="frie_number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">生产日期：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="date_manufacture" type="date" class="form-control" name="date_manufacture" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">投用日期：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="date_investment" type="date" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">下次换检时间：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="next_check_time" type="date" class="form-control" name="next_check_time" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">编号：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="serial_number" type="text" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">备注：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input id="remark4" type="text" class="form-control" name="remark4" />
+                                </div>
+                            </div>
 
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12" style="text-align: center;">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="fname5" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
     <div class="row">
         <div class="col-sm-12" style="background-color:#fff;">
@@ -322,7 +578,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">违章类别：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="violation_situation" id="violation_situation" class="form-control" >
+                                    <select name="category_violation" id="category_violation" class="form-control" >
                                         <option value="管理违章">管理违章</option>
                                         <option value="行为违章">行为违章</option>
                                         <option value="装置违章">装置违章</option>
@@ -379,8 +635,47 @@
         </div>
     </div>
 </div>
+<div id="fname6" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                </div>
+                <div class="ibox-content">
+                    <div class="col-lg-12 col-xs-12">
+                        <label class="col-xs-3 control-label" id="file6" style="text-align: right;line-height: 44px;">文件：</label>
+                        <div class="myblock col-xs-8 input-group">
+                            <div id="file_per6" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_upload6" style="display: inline-block;vertical-align: middle;"></div>
+                            <div id="file_list6" style="display: inline-block;vertical-align: middle;"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12" style="text-align: center;">
+                        <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="fname7" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 90%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12" style="background-color:#fff;">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div class="col-xs-12" style="text-align: center;">
+                        <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i></a>
+                    </div>
+                    <img src="" alt="" width="100%">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
+<div id="form_container" style="display: none;"></div>
 <div id="form_container_excel" style="display: none;"></div>
 <div id="form_container_model" style="display: none;"></div>
 {include file="public/footer" /}
@@ -400,16 +695,21 @@
     // var curMenu = null, zTree_Menu = null;
     //组织结构
     var zTreeObj;
-    var selfid;
+    var selfid,groupid;
 
     //点击获取路径
     function onClick(e, treeId, node) {
+        checkinit();
         $("#path").text("");
         var sNodes = zTreeObj.getSelectedNodes();//选中节点
-        selfid = zTreeObj.getSelectedNodes()[0].id
+        selfid = zTreeObj.getSelectedNodes()[0].id;
         var path = sNodes[0].name; //选中节点的名字
         node = sNodes[0].getParentNode();//获取父节点
-
+        $("#mytable1_wrapper").css("display","none");
+        $("#mytable2_wrapper").css("display","none");
+        $("#mytable3_wrapper").css("display","none");
+        $("#mytable4_wrapper").css("display","none");
+        $("#mytable5_wrapper").css("display","none");
         //判断是否还有父节点
         if (node) {
             //判断是否还有父节点
@@ -421,37 +721,30 @@
             $("#path").text(sNodes[0].name);
         }
         //判断是否拉数据
-        var groupid = sNodes[0].pId //父节点的id
-        if (!sNodes[0].children && groupid !== 1 && groupid !== 12 && groupid !== 13){
-            alert(groupid)
+        groupid = sNodes[0].pId //父节点的id
+        //选中的节点没有子节点 且 选中的父节点 不能未 1 和 2
+        if (!sNodes[0].children && groupid !== 1 && groupid !== 2){
             switch (Number(groupid)){
                 case 11 :
-                    table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid=" + selfid).load();
+                    vision_getinit('./getfireversion');
+                    table1.ajax.url("__SCRIPT__/safety_special_operate.php?selfid=" + selfid).load();
                     $("#mytable1_wrapper").css("display","block");
                     break;
-                case 121:
-                case 122:
-                case 123:
-                case 124:
-                    table2.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid=" + selfid).load();
-                    $("#mytable2_wrapper").css("display","block");
+                case 12:
+                    table2.ajax.url("__SCRIPT__/safety_crossoperation.php?selfid=" + selfid).load();
+                    $("#mytable2_wrapper").css("display","block")
                     break;
-                case 131:
-                    vision_getinit('../Specialequipmentmanagement/getversion');
-                    table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid=" + selfid).load();
-                    $("#mytable3_wrapper").css("display","block");
-                    break;
-                case 132:
-                    vision_getinit('../Trafficvehicle/getversion');
-                    table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?selfid=" + selfid).load();
-                    $("#mytable5_wrapper").css("display","block")
+                case 13:
+                    table3.ajax.url("__SCRIPT__/safety_chemistry_management.php?selfid="+selfid).load();
+                    $("#mytable3_wrapper").css("display","block")
                     break;
                 case 14 :
-                    vision_getinit('../Vehiclemanagement/getversion');
-                    // table4.ajax.url("__SCRIPT__/safety_violation_record.php?selfid=" + selfid).load();
+                    vision_getinit('./getfireversion');
+                    table4.ajax.url("__SCRIPT__/safety_firemanagement.php?selfid=" + selfid).load();
                     $("#mytable4_wrapper").css("display","block");
+                    break;
                 case 21 :
-                        vision_getinit('../Vehiclemanagement/getversion');
+                        vision_getinit('./getversion');
                         table5.ajax.url("__SCRIPT__/safety_violation_record.php?selfid=" + selfid).load();
                         $("#mytable5_wrapper").css("display","block");
                     break;
@@ -564,14 +857,13 @@
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         if(url==="./equipmentDel"){
                             table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
-                            table2.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
-                        }else if(url==="../Repairrecord/repairrecordDel"){
-                            table10.ajax.url("__SCRIPT__/safety_repairrecord.php?pid="+$("#eid").val()).load();
-                        }else if(url==="../Specialequipmentmanagement/equipmentDel"){
-                            table3.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid).load();
-                        }else if(url==="../Maintenancerecord/maintenancerecordDel"){
-                            table11.ajax.url("__SCRIPT__/safety_maintenancerecord.php?pid="+$("#eid").val()).load();
-                        }else if(url==="../Trafficvehicle/trafficDel"){
+                        }else if(url==="./crossoperationDel"){
+                            table2.ajax.url("__SCRIPT__/safety_crossoperation.php?selfid="+selfid).load();
+                        }else if(url==="./chemistryDel"){
+                            table3.ajax.url("__SCRIPT__/safety_chemistry_management.php?selfid="+selfid).load();
+                        }else if(url==="./firemanagementDel"){
+                            table4.ajax.url("__SCRIPT__/safety_firemanagement.php?selfid="+selfid).load();
+                        }else if(url==="./violationrecordDel"){
                             table5.ajax.url("__SCRIPT__/safety_violation_record.php?selfid="+selfid).load();
                         }
                     }else{
@@ -607,6 +899,752 @@
         })
     }
 </script>
+
+<!--table1特种作业人员管理-->
+<script>
+    var table1 = $("#table1").DataTable({
+        "processing": true,//是否显示处理状态
+        "serverSide":true,//是否开启服务器模式
+        'order' : [1,'asc'],
+        "ajax":{
+            "url": "__SCRIPT__/safety_special_operate.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear1 selectyear">frtip',
+        "columnDefs":[ //设置列定义初始化属性
+            {
+                "searchable":false,  //禁止搜索
+                "orderable":false,   //禁止排序
+                "targets":[10],         //指定第六列
+                "render": function (data,type,row) {
+                    var html = "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit1(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='show1(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del1(this)' value='删除'/>" ;
+                    return html;
+                }
+            },
+            {
+                "orderable":false,
+                "targets":[0],
+                "render":function (data,type,row) {
+                    var html = "<input type='checkbox' class='checkchild' onclick='getRadioId(this)'/>"
+                    return  html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        },
+        "drawCallback": function( settings ) {
+            if(dataArr[0]==="all"){
+                $(".checkchild").prop("checked", true); //全部选中
+            }else{
+                $(".checkchild").each(function () {
+                    if(dataArr.indexOf($(this).parents('tr').find('td:eq(1)').text())!==-1){
+                        $(this).prop("checked", true)
+                    }
+                })
+            }
+        }
+    });
+    //特种作业-新增
+    $("div.mybtn").html("新增")
+    $("#table1_wrapper .mybtn").click(function () {
+        uploader1 = null;
+        $("#fname1 input").val("");
+        $("#file_list1").empty();
+        $("#fname1").modal('show');
+        upload1();
+    });
+    var selectyear1 ='<input id="yeardu1" />';
+    $("div.selectyear1").html("年度："+selectyear1)
+    $("#yeardu1").jeDate({
+        isinitVal:true,
+        format:"YYYY年",
+        okfun:function (obj) {
+            table5.ajax.url("__SCRIPT__/safety_special_operate.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
+            console.log(obj.date.YYYY);
+        }
+    });
+    $("#yeardu1").val("");
+
+    var pathImg;//后台返回的图片路径
+    var pathImgArr = [];//后台返回的图片路径的数组
+    var pathArrDel = []; //需要sha'chuang
+    var uploader1;
+    //特种作业-初始化
+    function upload1() {
+        if(!uploader1){
+            uploader1 = WebUploader.create({
+                auto: true,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('Upload/upload')}",// 文件接收服务端。
+                chunked: false, //分片
+                comress:null, //图片不压缩
+                fileSizeLimit: 1000 *1024 *1024,
+                // fileNumLimit: 6,
+                duplicate :false,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: true,
+                    id: "#file_upload1",
+                    innerHTML: "上传图片"
+                },
+                // 只允许选择图片文件。
+                accept: {
+                    title: 'Images',
+                    extensions: 'gif,jpg,jpeg,bmp,png',
+                    mimeTypes: 'image/*'
+                }
+            });
+
+            uploader1.on( 'fileQueued', function( file ) {
+                //创建图片节点 预览图片
+                var $li = $(
+                    '<div id="' + file.id + '" class="file-item thumbnail">' +
+                    '<img>' +
+                    '<div class="info1">' + file.name + '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
+                    '</div>'
+                    ),
+                    $img = $li.find('img');
+                $("#file_list1").append( $li );
+                uploader1.makeThumb( file, function( error, src ) {
+                    if ( error ) {
+                        $img.replaceWith('<span>不能预览</span>');
+                        return;
+                    }
+                    $img.attr( 'src', src );
+                }, 100, 100 );
+            });
+            //删除文件
+            $("#file_list1").on("click", ".webuploadDelbtn", function () {
+                var $ele = $(this);
+                var id = $ele.parent().parent().attr("id");
+                var file = uploader1.getFile(id);
+                uploader1.removeFile(file,true);
+            });
+            uploader1.on('fileDequeued', function (file) {
+                $(file.id).remove();
+                $('#'+file.id).remove();
+                console.log("remove");
+            });
+            uploader1.on("uploadStart",function () {
+                uploader1.options.formData.aid =$("#aid").val();
+                uploader1.options.formData.selfid = selfid;
+            });
+            // 文件上传过程中创建进度条实时显示。
+            uploader1.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            uploader1.on( 'uploadSuccess', function( file,res ) {
+                // console.log(file)
+                // console.log(data)
+                if(res.code === 1){
+                    layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                    // $("#file_upload1").empty();
+                    // $("#file_per1").empty();
+                    // $("#file_list1").empty();
+                    // $("#fname1").modal('hide');
+                    // table1.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid).load();
+                    console.log(res.data);
+                    console.log(res.filename);
+                    $( '#'+file.id ).find('.progress').remove();//删除进度条
+                }else {
+                    layer.msg("抱歉，您没有此权限");
+                }
+            });
+
+            // 文件上传失败，显示上传出错。
+            uploader1.on( 'uploadError', function( file ) {
+                $( '#'+file.id ).find('.progress').remove();//删除进度条
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                $("#file_per1").empty();
+            });
+            uploader1.on("error",function (type){
+                if(type == "F_DUPLICATE"){
+                    layer.msg("请不要重复选择文件！");
+                }else if(type == "Q_EXCEED_SIZE_LIMIT"){
+                    layer.msg("系统提示","<span class='C6'>所选附件总大小</span>不可超过<span class='C6'>" + allMaxSize + "M</span>哦！<br>换个小点的文件吧！");
+                }
+
+            });
+        }
+    };
+    $("#file_list1").delegate("img","click",function () {
+        var src = $(this).attr("src");
+        $("#fname7 img").attr("src",src);
+        $("#fname7").modal('show');
+    });
+    $('#fname7').on('hidden.bs.modal', function() {
+        $('#fname1').show();
+        $('#fname1').css({'overflow-y':'scroll'});
+    });
+    $('#fname7').on('show.bs.modal', function() {
+        $('#fname1').hide();
+    });
+    //特种作业-提交
+        $("#specialform").submit(function () {
+
+                $.ajax({
+                    url: "../Specialequipmentmanagement/equipmentAdd",
+                    type: "post",
+                    data: {
+                        id:$("#aid").val(),
+                        selfid:selfid,
+                        remark:$("#remark1").val(),
+                        name:$("#special_name").val(),//姓名
+                        job_name:$("#job_name").val(),//分包单位/作业队
+                        sex:$("#sex").val(),//性别
+                        age:$("#age").val(),//年龄
+                        special_type_work:$("#special_type_work").val(),//特殊工种
+                        job_certificate:$("#job_certificate").val(),//职业资格证书名称
+                        card_number:$("#card_number").val(),//身份证号
+                        issuing_unit:$("#issuing_unit").val(),//发证单位
+                        date_evidence:$("#date_evidence").val(),//取证日期
+                        effective_date:$("#effective_date").val(),//有效日期
+                        certificate_number:$("#certificate_number").val(),//证书编号
+                        advance_retreat_time:$("#advance_retreat_time").val(),//进退场时间
+                        document_status:$("#document_status").val(),//证件状态
+                        input_time:$("#down_excel1").val()
+                    },
+                    datatype: "json",
+                    success: function (res) {
+                        if(res.code === 1){
+                            table1.ajax.url("__SCRIPT__/safety_special_operate.php?selfid="+selfid).load();
+                            $("#fname3").modal('hide');
+                        }else {
+                            layer.msg(res.msg);
+                        }
+                    }
+                });
+        });
+</script>
+<!--table2交叉作业-->
+<script>
+    var uploader2;          //初始化upload按钮
+
+    var bname1,bname2,bname3,bname4;         //用于区分 编辑时是否修改了文件
+
+    //初始化
+    function upload2() {
+        if(!uploader2){
+            uploader2 = WebUploader.create({
+                auto: false,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('Upload/uploadCrossoperation')}",// 文件接收服务端。
+                chunked: false,
+                fileSizeLimit: 1000 *1024 *1024,
+                fileNumLimit: 1,
+                formData: {"remark2":"","bid":""},
+                duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: false,
+                    id: "#file_upload2",
+                    innerHTML: "上传文件"
+                }
+            });
+
+            uploader2.on( 'fileQueued', function( file ) {
+                $("#file_per2").append('<div id="' + file.id + '" class="item">' +
+                    '</div>');
+                $("#file_list2").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                    '<span class="info">' + file.name + '</span>&nbsp' +
+                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>' );
+            });
+            $("#file_list2").on("click", ".webuploadDelbtn", function () {
+                var $ele = $(this);
+                var id = $ele.parent().attr("class");
+                var file = uploader.getFile(id);
+                uploader2.removeFile(file,true);
+            });
+            uploader2.on('fileDequeued', function (file) {
+                $(file.id).remove();
+                $('.'+file.id).remove();
+                console.log("remove");
+            });
+            uploader2.on("uploadStart",function () {
+                uploader2.options.formData.bid = $("#bid").val();
+                uploader2.options.formData.remark = $("#remark2").val();
+                uploader2.options.formData.selfid = selfid;
+                uploader2.options.formData.cross_file_name = $("#cross_file_name").val();
+                uploader2.options.formData.category = $("#category_select").val();
+            });
+            uploader2.on('beforeFileQueued', function (file) {
+                if($("#file_list2").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
+            // 文件上传过程中创建进度条实时显示。
+            uploader2.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            uploader2.on( 'uploadSuccess', function( file,data, response ) {
+                // console.log(file)
+                // console.log(data)
+                if(data.code === 1){
+                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    $("#file_upload2").empty();
+                    $("#file_per2").empty();
+                    $("#file_list2").empty();
+                    $("#fname2").modal('hide');
+                    table2.ajax.url("__SCRIPT__/safety_crossoperation.php?selfid="+selfid).load();
+                }else {
+                    layer.msg("抱歉，您没有此权限");
+                }
+            });
+
+            // 文件上传失败，显示上传出错。
+            uploader2.on( 'uploadError', function( file ) {
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                $("#file_per2").empty();
+            });
+        }
+    }
+
+    //交叉作业-预览
+    function showpdf2(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        showPdf(id,"./crossoperationPreview");
+    }
+
+    //交叉作业-删除
+    function del2(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        del(id,"./crossoperationDel");
+    }
+
+    //交叉作业-编辑-删除文件
+    function fdelatt2(that) {
+        var id = $(that).parent("div").attr("id");
+        $("#"+id).remove();
+    }
+
+    //交叉作业-编辑
+    function edit2(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $.ajax({
+            url: "./getcrossindex",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                if(res.code === 1){
+                    $("#bid").val(res.data.id);
+                    $("#remark2").val(res.data.remark);
+                    $("#category_select").val(res.data.category);
+                    $("#cross_file_name").val(res.data.cross_file_name);
+                    bname1 = res.data.remark;
+                    bname2 = res.data.name;
+                    bname3 = res.data.category;
+                    bname4 = res.data.cross_file_name;
+                    uploader2 = null;
+                    upload2();
+                    if(res.data.path){
+                        $("#file_list2").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                            '<span class="info">' + res.data.name + '</span>&nbsp' +
+                            '<span onclick="fdelatt1(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '</div>' );
+                    }
+                    $("#fname2").modal('show');
+                }
+            }
+        })
+    }
+
+    //交叉作业-下载
+    function download2(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        download(id,"./crossoperationDownload");
+    }
+
+    //提交
+    $("#fname2 .btn-primary").click(function () {
+        if($("#file_list2").html()){
+            if(!$("#bid").val()){
+                uploader2.upload();
+            }else {
+                if(bname2 !== $(".info").html()){
+                    uploader2.upload();
+                }else if(bname1 !== $("#remark2").val()||bname3 !== $("#category_select").val()|| bname4 !== $("#cross_file_name").val()){
+                    $.ajax({
+                        url: "./crossoperationEdit",
+                        type: "post",
+                        data: {
+                            id:$("#bid").val(),
+                            remark:$("#remark2").val(),
+                            category:$("#category_select").val(),
+                            cross_file_name:$("#cross_file_name").val()
+                        },
+                        datatype: "json",
+                        success: function (res) {
+                            if(res.code === 1){
+                                layer.msg(res.msg);
+                                table2.ajax.url("__SCRIPT__/safety_crossoperation.php?selfid="+selfid).load();
+                                $("#fname2").modal('hide');
+                            }else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    });
+                }else {
+                    layer.msg("未发生更改");
+                    $("#fname2").modal('hide');
+                }
+            }
+        }else {
+            alert("请选择上传文件");
+        }
+    });
+
+
+    //交叉作业表格
+    var table2= $("#table2").DataTable({
+        "processing": true,//是否显示处理状态
+        "serverSide":true,//是否开启服务器模式
+        "ajax":{
+            "url": "__SCRIPT__/safety_crossoperation.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear2 selectyear"><"category">frtip',
+        "columnDefs":[ //设置列定义初始化属性
+            {
+                "searchable":false,  //禁止搜索
+                "orderable":false,   //禁止排序
+                "targets":[5],         //指定第六列
+                "render": function (data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download2(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit2(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf2(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del2(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    })
+
+    //选择年度
+    var selectyear2 ='<input id="year2" />';
+    $("div.selectyear2").html("年度："+selectyear2)
+    //
+    $("#year2").jeDate({
+        isinitVal:true,
+        format:"YYYY年",
+        okfun:function (obj) {
+            table2.ajax.url("__SCRIPT__/safety_crossoperation.php?selfid="+selfid+"&year="+obj.date.YYYY+"&category="+$(this).val()).load();
+            console.log(obj.date.YYYY);
+        }
+    });
+    //
+    $("#year2").val("");
+    var category ='<select name="category" id="category">\n' +
+        '                                        <option value="">全部</option>\n' +
+        '                                        <option value="互保协议">互保协议</option>\n' +
+        '                                        <option value="相邻标段爆破作业通知单 ">相邻标段爆破作业通知单 </option>\n' +
+        '                                    </select>';
+
+    $("div.category").html("类别："+category);
+    $("#category").change(function () {
+        table2.ajax.url("__SCRIPT__/safety_crossoperation.php?selfid="+selfid+"&category="+$(this).val()).load();
+    });
+    //新增
+    $("div.mybtn").html("新增")
+    $("#table2_wrapper .mybtn").click(function () {
+        uploader2 = null;
+        $("#fname2 input").val("");
+        $("#file_list2").empty();
+        $("#fname2").modal('show');
+        upload2();
+    })
+</script>
+<!--table3危险化学品-->
+<script>
+    var uploader3;          //初始化upload按钮
+
+    var cname1,cname2,cname3;         //用于区分 编辑时是否修改了文件
+
+    //初始化
+    function upload3() {
+        if(!uploader3){
+            uploader3 = WebUploader.create({
+                auto: false,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('Upload/uploadChemistrymanagement')}",// 文件接收服务端。
+                chunked: false,
+                fileSizeLimit: 1000 *1024 *1024,
+                fileNumLimit: 1,
+                formData: {"remark3":"","cid":""},
+                duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: false,
+                    id: "#file_upload3",
+                    innerHTML: "上传文件"
+                }
+            });
+
+            uploader3.on( 'fileQueued', function( file ) {
+                $("#file_per3").append('<div id="' + file.id + '" class="item">' +
+                    '</div>');
+                $("#file_list3").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                    '<span class="info">' + file.name + '</span>&nbsp' +
+                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>' );
+            });
+            $("#file_list3").on("click", ".webuploadDelbtn", function () {
+                var $ele = $(this);
+                var id = $ele.parent().attr("class");
+                var file = uploader.getFile(id);
+                uploader3.removeFile(file,true);
+            });
+            uploader3.on('fileDequeued', function (file) {
+                $(file.id).remove();
+                $('.'+file.id).remove();
+                console.log("remove");
+            });
+            uploader3.on("uploadStart",function () {
+                uploader3.options.formData.cid = $("#cid").val();
+                uploader3.options.formData.remark = $("#remark3").val();
+                uploader3.options.formData.selfid = selfid;
+                uploader3.options.formData.chemistry_file_name = $("#chemistry_file_name").val();
+            });
+            uploader3.on('beforeFileQueued', function (file) {
+                if($("#file_list3").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
+            // 文件上传过程中创建进度条实时显示。
+            uploader3.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            uploader3.on( 'uploadSuccess', function( file,data, response ) {
+                // console.log(file)
+                // console.log(data)
+                if(data.code === 1){
+                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    $("#file_upload3").empty();
+                    $("#file_per3").empty();
+                    $("#file_list3").empty();
+                    $("#fname3").modal('hide');
+                    table3.ajax.url("__SCRIPT__/safety_chemistry_management.php?selfid="+selfid).load();
+                }else {
+                    layer.msg("抱歉，您没有此权限");
+                }
+            });
+
+            // 文件上传失败，显示上传出错。
+            uploader3.on( 'uploadError', function( file ) {
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                $("#file_per3").empty();
+            });
+        }
+    }
+
+    //危险化学品-预览
+    function showpdf3(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        showPdf(id,"./chemistryPreview");
+    }
+
+    //危险化学品-删除
+    function del3(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        del(id,"./chemistryDel");
+    }
+
+    //危险化学品-编辑-删除文件
+    function fdelatt3(that) {
+        var id = $(that).parent("div").attr("id");
+        $("#"+id).remove();
+    }
+
+    //危险化学品-编辑
+    function edit3(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $.ajax({
+            url: "./getchemistryindex",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                if(res.code === 1){
+                    $("#cid").val(res.data.id);
+                    $("#remark3").val(res.data.remark);
+                    $("#chemistry_file_name").val(res.data.chemistry_file_name);
+                    cname1 = res.data.remark;
+                    cname2 = res.data.name;
+                    cname3 = res.data.chemistry_file_name;
+                    uploader3 = null;
+                    upload3();
+                    if(res.data.path){
+                        $("#file_list3").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                            '<span class="info">' + res.data.name + '</span>&nbsp' +
+                            '<span onclick="fdelatt1(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '</div>' );
+                    }
+                    $("#fname3").modal('show');
+                }
+            }
+        })
+    }
+
+    //危险化学品-下载
+    function download3(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        download(id,"./chemistryDownload");
+    }
+
+    //提交
+    $("#fname3 .btn-primary").click(function () {
+        if($("#file_list3").html()){
+            if(!$("#cid").val()){
+                uploader3.upload();
+            }else {
+                if(cname2 !== $(".info").html()){
+                    uploader3.upload();
+                }else if(cname1 !== $("#remark3").val() || cname3 !== $("#chemistry_file_name").val()){
+                    $.ajax({
+                        url: "./chemistryEdit",
+                        type: "post",
+                        data: {id:$("#cid").val(),remark:$("#remark3").val(),chemistry_file_name:$("#chemistry_file_name").val()},
+                        datatype: "json",
+                        success: function (res) {
+                            if(res.code === 1){
+                                layer.msg(res.msg);
+                                table3.ajax.url("__SCRIPT__/safety_chemistry_management.php?selfid="+selfid).load();
+                                $("#fname3").modal('hide');
+                            }else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    });
+                }else {
+                    layer.msg("未发生更改");
+                    $("#fname3").modal('hide');
+                }
+            }
+        }else {
+            alert("请选择上传文件");
+        }
+    });
+
+
+    //危险化学品表格
+    var table3= $("#table3").DataTable({
+        "processing": true,//是否显示处理状态
+        "serverSide":true,//是否开启服务器模式
+        "ajax":{
+            "url": "__SCRIPT__/safety_chemistry_management.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear3 selectyear">frtip',
+        "columnDefs":[ //设置列定义初始化属性
+            {
+                "searchable":false,  //禁止搜索
+                "orderable":false,   //禁止排序
+                "targets":[5],         //指定第六列
+                "render": function (data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download3(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit3(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf3(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del3(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    })
+
+    //选择年度
+    var selectyear3 ='<input id="year3" />';
+    $("div.selectyear3").html("年度："+selectyear3)
+    //
+    $("#year3").jeDate({
+        isinitVal:true,
+        format:"YYYY年",
+        okfun:function (obj) {
+            table.ajax.url("__SCRIPT__/safety_chemistry_management.php?selfid="+selfid+"&year="+obj.date.YYYY).load();
+            console.log(obj.date.YYYY);
+        }
+    });
+    $("#year3").val("");
+    //新增
+    $("div.mybtn").html("新增")
+    $("#table3_wrapper .mybtn").click(function () {
+        uploader3 = null;
+        $("#fname3 input").val("");
+        $("#file_list3").empty();
+        $("#fname3").modal('show');
+        upload3();
+    })
+</script>
+
 <!--table4消防安全管理-->
 <script>
     //消防安全管理-表格
@@ -615,9 +1653,9 @@
         "serverSide":true,//是否开启服务器模式
         'order' : [1,'asc'],
         "ajax":{
-            "url": "__SCRIPT__/safety_violation_record.php"
+            "url": "__SCRIPT__/safety_firemanagement.php"
         },
-        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear5">frtip',
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear4 selectyear">frtip',
         "columnDefs":[ //设置列定义初始化属性
             {
                 "searchable":false,  //禁止搜索
@@ -680,36 +1718,36 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
+            table4.ajax.url("__SCRIPT__/safety_firemanagement.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
             console.log(obj.date.YYYY);
         }
     });
     $("#yeardu4").val("");
 
     //消防安全管理-提交
-    $("#violationform").submit(function () {
-        var url = $("#did").val()===""?"../Trafficvehicle/trafficInsert":"../Trafficvehicle/trafficEdit"
+    $("#fireform").submit(function () {
         $.ajax({
-            url:url,
+            url:"./firemanagementEdit",
             type: "post",
             data: {
                 id:$("#did").val(),
                 selfid:selfid,
-                full_name:$("#full_name").val(),//姓名
-                violation_situation:$("#violation_situation").val(),//违章情况
-                category_violation:$("#category_violation").val(),//违章类别
-                violation_time:$("#violation_time").val(),//违章时间
-                scoring_situation:$("#vehicle_type").val(),//记分情况
-                economic_punishment:$("#annual_verification").val(),//经济处罚
-                disposal_results:$("#insurance").val(),//处置结果
-                rectify_rectify:$("#person_in_charge").val(),//整改情况
+                type:$("#fire_type").val(),//类型
+                specification_model:$("#specification_model").val(),//规格型号
+                placement_position:$("#placement_position").val(),//安放位置
+                number:$("#fire_number").val(),//数量
+                date_manufacture:$("#date_manufacture").val(),//生产日期
+                date_investment:$("#date_investment").val(),//投用日期
+                next_check_time:$("#next_check_time").val(),//投用日期
+                serial_number:$("#serial_number").val(),//编号
+                remark:$("#remark4").val(),//编号
                 input_time:$("#down_excel2").val() //版本号
             },
             datatype: "json",
             success: function (res) {
                 if(res.code === 1){
                     layer.msg(res.msg);
-                    table4.ajax.url("__SCRIPT__/safety_trafficvehicle.php?selfid="+selfid).load();
+                    table4.ajax.url("__SCRIPT__/safety_firemanagement.php?selfid="+selfid).load();
                     $("#fname4").modal('hide');
                 }else {
                     layer.msg(res.msg);
@@ -717,10 +1755,22 @@
             }
         })
     });
+    $("#date_manufacture").jeDate({
+        isinitVal:false,
+        format: "YYYY-MM-DD"
+    });
+    $("#date_investment").jeDate({
+        isinitVal:false,
+        format: "YYYY-MM-DD"
+    });
+    $("#next_check_time").jeDate({
+        isinitVal:false,
+        format: "YYYY-MM-DD"
+    });
     //消防安全管理-删除
     function del4(that) {
         var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
-        del(id,"../Trafficvehicle/trafficDel");
+        del(id,"./firemanagementDel");
     };
     //消防安全管理-编辑
     function edit4(that) {
@@ -728,25 +1778,24 @@
         $("#fname4 input").removeAttr("disabled");
         $("#fname4 select").removeAttr("disabled");
         var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
-        $("#fname4").modal('show');
         $.ajax({
-            url: "../Trafficvehicle/getindex",
+            url: "./getfireindex",
             type: "post",
             data: {id:id},
             dataType: "json",
             success: function (res) {
                 console.log(res);
                 if(res.code === 1){
-                    var state = getNowFormatDate()<=res.data.year_limit?(getNowFormatDate()<=res.data.insurance_limit?"正常":"保险过期"):"年审过期";
                     $("#did").val(res.data.id);
-                    $("#full_name").val(res.data.full_name);
-                    $("#violation_situation").val(res.data.violation_situation);
-                    $("#category_violation").val(res.data.category_violation);
-                    $("#violation_time").val(res.data.violation_time);
-                    $("#scoring_situation").val(res.data.scoring_situation);
-                    $("#economic_punishment").val(res.data.economic_punishment);
-                    $("#disposal_results").val(res.data.disposal_results);
-                    $("#rectify_rectify").val(res.data.rectify_rectify);
+                    $("#fire_type").val(res.data.type);
+                    $("#specification_model").val(res.data.specification_model);
+                    $("#placement_position").val(res.data.placement_position);
+                    $("#fire_number").val(res.data.number);
+                    $("#date_manufacture").val(res.data.date_manufacture);
+                    $("#date_investment").val(res.data.date_investment);
+                    $("#next_check_time").val(res.data.next_check_time);
+                    $("#serial_number").val(res.data.serial_number);
+                    $("#remark4").val(res.data.remark);
                     $("#fname4").modal('show');
                 }
             }
@@ -756,20 +1805,22 @@
     function show4(that) {
         var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
         $.ajax({
-            url: "../Trafficvehicle/getindex",
+            url: "./getfireindex",
             type: "post",
             data: {id:id},
             dataType: "json",
             success: function (res) {
                 if(res.code === 1){
-                    $("#full_name").val(res.data.full_name);
-                    $("#violation_situation").val(res.data.violation_situation);
-                    $("#category_violation").val(res.data.category_violation);
-                    $("#violation_time").val(res.data.violation_time);
-                    $("#scoring_situation").val(res.data.scoring_situation);
-                    $("#economic_punishment").val(res.data.economic_punishment);
-                    $("#disposal_results").val(res.data.disposal_results);
-                    $("#rectify_rectify").val(res.data.rectify_rectify);
+                    $("#did").val(res.data.id);
+                    $("#fire_type").val(res.data.type);
+                    $("#specification_model").val(res.data.specification_model);
+                    $("#placement_position").val(res.data.placement_position);
+                    $("#fire_number").val(res.data.number);
+                    $("#date_manufacture").val(res.data.date_manufacture);
+                    $("#date_investment").val(res.data.date_investment);
+                    $("#next_check_time").val(res.data.next_check_time);
+                    $("#serial_number").val(res.data.serial_number);
+                    $("#remark4").val(res.data.remark);
                     $("#fname4").modal('show');
                     $("#fname4 input").attr("disabled","disabled");
                     $("#fname4 select").attr("disabled","disabled");
@@ -794,7 +1845,7 @@
         "ajax":{
             "url": "__SCRIPT__/safety_violation_record.php"
         },
-        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear5">frtip',
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l><"selectyear5 selectyear">frtip',
         "columnDefs":[ //设置列定义初始化属性
             {
                 "searchable":false,  //禁止搜索
@@ -865,9 +1916,8 @@
 
     //反违章记录-提交
     $("#violationform").submit(function () {
-        var url = $("#eid").val()===""?"../Trafficvehicle/trafficInsert":"../Trafficvehicle/trafficEdit"
         $.ajax({
-            url:url,
+            url:'./violationrecordEdit',
             type: "post",
             data: {
                 id:$("#eid").val(),
@@ -876,10 +1926,10 @@
                 violation_situation:$("#violation_situation").val(),//违章情况
                 category_violation:$("#category_violation").val(),//违章类别
                 violation_time:$("#violation_time").val(),//违章时间
-                scoring_situation:$("#vehicle_type").val(),//记分情况
-                economic_punishment:$("#annual_verification").val(),//经济处罚
-                disposal_results:$("#insurance").val(),//处置结果
-                rectify_rectify:$("#person_in_charge").val(),//整改情况
+                scoring_situation:$("#scoring_situation").val(),//记分情况
+                economic_punishment:$("#economic_punishment").val(),//经济处罚
+                disposal_results:$("#disposal_results").val(),//处置结果
+                rectify_rectify:$("#rectify_rectify").val(),//整改情况
                 input_time:$("#down_excel3").val() //版本号
             },
             datatype: "json",
@@ -897,7 +1947,7 @@
     //反违章记录-删除
     function del5(that) {
         var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
-        del(id,"../Trafficvehicle/trafficDel");
+        del(id,"./violationrecordDel");
     };
     //反违章记录-编辑
     function edit5(that) {
@@ -907,14 +1957,13 @@
         var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
         $("#fname5").modal('show');
         $.ajax({
-            url: "../Trafficvehicle/getindex",
+            url: "./getindex",
             type: "post",
             data: {id:id},
             dataType: "json",
             success: function (res) {
                 console.log(res);
                 if(res.code === 1){
-                    var state = getNowFormatDate()<=res.data.year_limit?(getNowFormatDate()<=res.data.insurance_limit?"正常":"保险过期"):"年审过期";
                     $("#eid").val(res.data.id);
                     $("#full_name").val(res.data.full_name);
                     $("#violation_situation").val(res.data.violation_situation);
@@ -933,7 +1982,7 @@
     function show5(that) {
         var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
         $.ajax({
-            url: "../Trafficvehicle/getindex",
+            url: "./getindex",
             type: "post",
             data: {id:id},
             dataType: "json",
@@ -960,6 +2009,7 @@
 <!--选择框 导出-->
 <script>
     //获取选中行ID
+    var uploader6;
     var dataArr=[];
     var $check_table; //全选的表格
 
@@ -1054,9 +2104,15 @@
             layer.msg("选定导出的项");
             return
         };
-        switch (Number(id)){
-            case 1322:
-                url = "../Trafficvehicle/exportExcel";
+        switch (Number(groupid)){
+            case 21:
+                url = "./exportExcel";
+                break;
+            case 14:
+                url = "./fireexportExcel";
+                break;
+            case 11:
+                url = "./fireexportExcel";
                 break;
         };
         $.ajax({
@@ -1088,9 +2144,15 @@
     //导出excelExport模板
     function excelModel_out(id) {
         var url;
-        switch (Number(id)){
-            case 1322:
-                url = "../Trafficvehicle/exportExcelTemplete";
+        switch (Number(groupid)){
+            case 21:
+                url = "./exportExcelTemplete";
+                break;
+            case 14:
+                url = "./fireexportExcelTemplete";
+                break;
+            case 11:
+                url = "./fireexportExcelTemplete";
                 break;
         };
         $.ajax({
@@ -1106,7 +2168,7 @@
                     $("#form_container_model").append(str);
                     $("#form_container_model").find("#exportExcelModelBtn").click();
                 }else{
-                    alert("获取数据失败！")
+                    alert("获取数据失败！");
                 }
             }
         });
@@ -1121,11 +2183,17 @@
         excelModel_out(selfid);
     });
     //导入文件-初始化
-    function upload4() {
+    function upload6() {
         var server;
-        switch (Number(selfid)){
-            case 1322 :
-                server = "../Trafficvehicle/importExcel";
+        switch (Number(groupid)){
+            case 21 :
+                server = "./importExcel";
+                break;
+            case 14 :
+                server = "./fireimportExcel";
+                break;
+            case 11 :
+                server = "./fireimportExcel";
                 break;
         }
         if(!uploaderExcel){
@@ -1140,20 +2208,20 @@
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
                     multiple: false,
-                    id: "#file_upload4",
+                    id: "#file_upload6",
                     innerHTML: "上传文件"
                 }
             });
 
             uploaderExcel.on( 'fileQueued', function( file ) {
-                $("#file_per4").append('<div id="' + file.id + '" class="item">' +
+                $("#file_per6").append('<div id="' + file.id + '" class="item">' +
                     '</div>');
-                $("#file_list4").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                $("#file_list6").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
                     '<span class="info4">' + file.name + '</span>&nbsp' +
                     '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
                     '</div>' );
             });
-            $("#file_list4").on("click", ".webuploadDelbtn", function () {
+            $("#file_list6").on("click", ".webuploadDelbtn", function () {
                 var $ele = $(this);
                 var id = $ele.parent().attr("class");
                 var file = uploaderExcel.getFile(id);
@@ -1168,7 +2236,7 @@
                 uploaderExcel.options.formData.selfid = selfid;
             });
             uploaderExcel.on('beforeFileQueued', function (file) {
-                if($("#file_list4").html()){
+                if($("#file_list6").html()){
                     alert("只能上传一个文件,请先删除文件");
                     return false;
                 }else {
@@ -1193,12 +2261,16 @@
             uploaderExcel.on( 'uploadSuccess', function( file,data, response ) {
                 if(data.code === 1){
                     layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
-                    $("#file_upload4").empty();
-                    $("#file_per4").empty();
-                    $("#file_list4").empty();
-                    $("#fname4").modal('hide');
-                    if(Number(selfid) === 1322){
-                        table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?selfid="+selfid).load();
+                    $("#file_upload6").empty();
+                    $("#file_per6").empty();
+                    $("#file_list6").empty();
+                    $("#fname6").modal('hide');
+                    if(Number(groupid) === 21){
+                        table5.ajax.url("__SCRIPT__/safety_violation_record.php?selfid="+selfid).load();
+                        vision_getinit('./getversion');
+                    }else if(Number(groupid) === 14){
+                        table4.ajax.url("__SCRIPT__/safety_firemanagement.php?selfid="+selfid).load();
+                        vision_getinit('./getfireversion');
                     }
                 }else {
                     layer.msg(data.info);
@@ -1208,13 +2280,13 @@
             // 文件上传失败，显示上传出错。
             uploaderExcel.on( 'uploadError', function( file ) {
                 layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                $("#file_per2").empty();
+                $("#file_per6").empty();
             });
         }
     };
     //提交导入
-    $("#fname4 .btn-primary").click(function () {
-        if($("#file_list4").html()){
+    $("#fname6 .btn-primary").click(function () {
+        if($("#file_list6").html()){
             uploaderExcel.upload();
 
         }else {
@@ -1224,13 +2296,14 @@
     //导入excelImport点击事件
     $(".excelImport").click(function () {
         uploaderExcel = null;
-        $("#fname4 input").val("");
-        $("#file_list4").empty();
-        $("#fname4").modal('show');
-        upload4();
+        $("#fname6 input").val("");
+        $("#file_list6").empty();
+        $("#fname6").modal('show');
+        upload6();
     });
     //获取版本初始化
     function vision_getinit(url) {
+        $(".down_excel").empty();
         $.ajax({
             url:url,
             dataType:'JSON',
@@ -1249,12 +2322,18 @@
         });
     }
     //点击查看历史版本
-    $(".down_excel").click(function () {
+    $(".down_excel").change(function () {
         var time  = $(this).find('option:selected').val();
         var history_version = (time===undefined||time==="0"||time==="null")?"":time ;//选中的值
-        switch (Number(selfid)){
-            case 1322:
-                table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?selfid="+selfid+"&history_version="+history_version).load();
+        switch (Number(groupid)){
+            case 21:
+                table5.ajax.url("__SCRIPT__/safety_violation_record.php?selfid="+selfid+"&history_version="+history_version).load();
+                break;
+            case 14:
+                table4.ajax.url("__SCRIPT__/safety_firemanagement.php?selfid="+selfid+"&history_version="+history_version).load();
+                break;
+            case 11:
+                table1.ajax.url("__SCRIPT__/safety_firemanagement.php?selfid="+selfid+"&history_version="+history_version).load();
                 break;
         }
     });

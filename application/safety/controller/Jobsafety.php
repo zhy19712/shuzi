@@ -12,6 +12,8 @@ use app\admin\controller\Base;
 use app\safety\model\JobsafetyModel;//树状结构
 use app\safety\model\ViolationrecordModel;//反违章记录
 use app\safety\model\FiremanagementModel;//消防安全管理
+use app\safety\model\ChemistrymanagementModel;//危险化学品管理
+use app\safety\model\CrossoperationModel;//交叉作业管理
 use think\Db;
 use think\Loader;
 
@@ -206,7 +208,7 @@ class Jobsafety extends Base
 
                 }
             }
-            $success = Db::name('think_safety_violation_record')->insertAll($insertData);
+            $success = Db::name('safety_violation_record')->insertAll($insertData);
             if($success !== false){
                 return  json(['code' => 1,'data' => '','msg' => '导入成功']);
             }else{
@@ -419,7 +421,7 @@ class Jobsafety extends Base
     }
 
     /*
-     * 获取反违章记录信息,excel导入时间
+     * 获取消防安全管理信息,excel导入时间
      * @return mixed|\think\response\Json
      */
     public function getfireversion()
@@ -435,7 +437,7 @@ class Jobsafety extends Base
     }
 
     /**
-     * 反违章记录excel表格导入
+     * 消防安全管理excel表格导入
      * @return array|\think\response\Json
      * @throws \PHPExcel_Exception
      * @throws \PHPExcel_Reader_Exception
@@ -495,8 +497,9 @@ class Jobsafety extends Base
                     $remark_index = $k;
                 }
             }
+//            return json(['1'=>$model_type_index,'2'=>$specification_model_index,'3'=>$placement_position_index,'4'=>$number_index,'5'=>$date_manufacture_index,'6'=>$date_investment_index,'7'=>$next_check_time_index,'8'=>$serial_number_index,'9'=>$remark_index]);
 
-            if($type_index == -1 || $specification_model_index == -1 || $placement_position_index == -1 || $number_index == -1 || $date_manufacture_index == -1 || $date_investment_index == -1 || $next_check_time_index == -1 || $serial_number_index || $remark_index == -1 ){
+            if($type_index == -1 || $specification_model_index == -1 || $placement_position_index == -1 || $number_index == -1 || $date_manufacture_index == -1 || $date_investment_index == -1 || $next_check_time_index == -1 || $serial_number_index == -1 || $remark_index == -1 ){
                 $json_data['code'] = 0;
                 $json_data['info'] = '文件内容格式不对';
                 return json($json_data);
@@ -519,7 +522,7 @@ class Jobsafety extends Base
 
                 }
             }
-            $success = Db::name('think_safety_fire_management')->insertAll($insertData);
+            $success = Db::name('safety_fire_management')->insertAll($insertData);
             if($success !== false){
                 return  json(['code' => 1,'data' => '','msg' => '导入成功']);
             }else{
@@ -655,6 +658,241 @@ class Jobsafety extends Base
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003
         $objWriter->save('php://output');
         exit;
+    }
+
+    /***************************************************危险化学品管理********************************************************************/
+
+    /*
+     * 获取一条危险化学品管理信息
+     */
+    public function getchemistryindex()
+    {
+        if(request()->isAjax()){
+            $chemistry = new ChemistrymanagementModel();
+            $param = input('post.');
+            $data = $chemistry->getOne($param['id']);
+            return json(['code'=> 1, 'data' => $data]);
+        }
+        return $this->fetch();
+    }
+
+    /*
+     * 编辑一条危险化学品管理信息
+     */
+    public function chemistryEdit()
+    {
+        $chemistry = new ChemistrymanagementModel();
+        $param = input('post.');
+        if(request()->isAjax()){
+            $data = [
+                'id' => $param['id'],
+                'chemistry_file_name'=>$param['chemistry_file_name'],//文件名称
+                'remark' => $param['remark']//备注
+            ];
+            $flag = $chemistry->editChemistrymanagement($data);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    /*
+     * 下载一条危险化学品管理信息
+     */
+    public function chemistryDownload()
+    {
+        if(request()->isAjax()){
+            return json(['code' => 1]);
+        }
+        $id = input('param.id');
+        $chemistry = new ChemistrymanagementModel();
+        $param = $chemistry->getOne($id);
+        $filePath = $param['path'];
+        $fileName = $param['name'];
+        $file = fopen($filePath, "r"); //   打开文件
+        //输入文件标签
+        $fileName = iconv("utf-8","gb2312",$fileName);
+        Header("Content-type:application/octet-stream ");
+        Header("Accept-Ranges:bytes ");
+        Header("Accept-Length:   " . filesize($filePath));
+        Header("Content-Disposition:   attachment;   filename= " . $fileName);
+
+        //   输出文件内容
+        echo fread($file, filesize($filePath));
+        fclose($file);
+        exit;
+    }
+
+    /*
+     * 删除一条危险化学品管理信息
+     */
+    public function chemistryDel()
+    {
+        $chemistry = new ChemistrymanagementModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $data = $chemistry->getOne($param['id']);
+            $path = $data['path'];
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
+            if(file_exists($pdf_path)){
+                unlink($pdf_path); //删除生成的预览pdf
+            }
+            $flag = $chemistry->delChemistrymanagement($param['id']);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    /*
+     * 预览一条危险化学品管理信息
+     */
+    public function chemistryPreview()
+    {
+        $chemistry = new ChemistrymanagementModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $code = 1;
+            $msg = '预览成功';
+            $data = $chemistry->getOne($param['id']);
+            $path = $data['path'];
+            $extension = strtolower(get_extension(substr($path,1)));
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(!file_exists($pdf_path)){
+                if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
+                    doc_to_pdf($path);
+                }else if($extension === 'xls' || $extension === 'xlsx'){
+                    excel_to_pdf($path);
+                }else if($extension === 'ppt' || $extension === 'pptx'){
+                    ppt_to_pdf($path);
+                }else if($extension === 'pdf'){
+                    $pdf_path = $path;
+                }else{
+                    $code = 0;
+                    $msg = '不支持的文件格式';
+                }
+                return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
+            }else{
+                return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
+            }
+        }
+    }
+
+    /***************************************************交叉作业管理********************************************************************/
+
+    /*
+     * 获取一条交叉作业信息
+     */
+    public function getcrossindex()
+    {
+        if(request()->isAjax()){
+            $cross = new CrossoperationModel();
+            $param = input('post.');
+            $data = $cross->getOne($param['id']);
+            return json(['code'=> 1, 'data' => $data]);
+        }
+        return $this->fetch();
+    }
+
+    /*
+     * 编辑一条交叉作业管理信息
+     */
+    public function crossoperationEdit()
+    {
+        $crossoperation = new CrossoperationModel();
+        $param = input('post.');
+        if(request()->isAjax()){
+            $data = [
+                'id' => $param['id'],
+                'cross_file_name'=>$param['cross_file_name'],//文件名称
+                'category' => $param['category'],//类别
+                'remark' => $param['remark']//备注
+            ];
+            $flag = $crossoperation->editCrossoperation($data);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    /*
+     * 下载一条交叉作业管理信息
+     */
+    public function crossoperationDownload()
+    {
+        if(request()->isAjax()){
+            return json(['code' => 1]);
+        }
+        $id = input('param.id');
+        $crossoperation = new CrossoperationModel();
+        $param = $crossoperation->getOne($id);
+        $filePath = $param['path'];
+        $fileName = $param['name'];
+        $file = fopen($filePath, "r"); //   打开文件
+        //输入文件标签
+        $fileName = iconv("utf-8","gb2312",$fileName);
+        Header("Content-type:application/octet-stream ");
+        Header("Accept-Ranges:bytes ");
+        Header("Accept-Length:   " . filesize($filePath));
+        Header("Content-Disposition:   attachment;   filename= " . $fileName);
+
+        //   输出文件内容
+        echo fread($file, filesize($filePath));
+        fclose($file);
+        exit;
+    }
+
+    /*
+     * 删除一条交叉作业管理信息
+     */
+    public function crossoperationDel()
+    {
+        $crossoperation = new CrossoperationModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $data = $crossoperation->getOne($param['id']);
+            $path = $data['path'];
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
+            if(file_exists($pdf_path)){
+                unlink($pdf_path); //删除生成的预览pdf
+            }
+            $flag = $crossoperation->delCrossoperation($param['id']);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    /*
+     * 预览一条交叉作业管理信息
+     */
+    public function crossoperationPreview()
+    {
+        $crossoperation = new CrossoperationModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $code = 1;
+            $msg = '预览成功';
+            $data = $crossoperation->getOne($param['id']);
+            $path = $data['path'];
+            $extension = strtolower(get_extension(substr($path,1)));
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(!file_exists($pdf_path)){
+                if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
+                    doc_to_pdf($path);
+                }else if($extension === 'xls' || $extension === 'xlsx'){
+                    excel_to_pdf($path);
+                }else if($extension === 'ppt' || $extension === 'pptx'){
+                    ppt_to_pdf($path);
+                }else if($extension === 'pdf'){
+                    $pdf_path = $path;
+                }else{
+                    $code = 0;
+                    $msg = '不支持的文件格式';
+                }
+                return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
+            }else{
+                return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
+            }
+        }
     }
 
 }

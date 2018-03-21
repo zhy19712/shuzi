@@ -1,5 +1,5 @@
 <?php
-//作业安全，危险化学品管理
+//作业安全，交叉作业管理
 include('../conn.php');
 /*
  * DataTables example server-side processing script.
@@ -20,7 +20,7 @@ include('../conn.php');
  */
 
 // DB table to use
-$table = 'think_safety_chemistry_management';
+$table = 'think_safety_cross_operation';
 
 // Table's primary key
 $primaryKey = 'id';
@@ -31,7 +31,7 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'chemistry_file_name',  'dt' => 1 ),//文件名称（主题）
+    array( 'db' => 'cross_file_name',  'dt' => 1 ),//文件名称（主题）
     array( 'db' => 'date',  'dt' => 2 ),//时间
     array( 'db' => 'owner',  'dt' => 3 ),//上传人
     array( 'db' => 'remark',  'dt' => 4 )//备注
@@ -52,23 +52,39 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
 
 require( '../ssp.class.php' );
 
-if(!empty($_GET["year"]) && !empty($_GET["selfid"]))
+if(!empty($_GET["year"]) && !empty($_GET["selfid"]) && !empty($_GET["category"]))
+{
+    $selfid = $_GET["selfid"];
+    $year = $_GET["year"];
+    $category = $_GET["category"];
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and date like '%" .$year. "%' and category = '$category'" )
+    );
+}
+else if(empty($_GET["year"]) && !empty($_GET["selfid"]) && empty($_GET["category"]))
+{
+    $selfid = $_GET["selfid"];
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid'" )
+    );
+}else if(!empty($_GET["year"]) && !empty($_GET["selfid"]) && empty($_GET["category"]))
 {
     $selfid = $_GET["selfid"];
     $year = $_GET["year"];
     echo json_encode(
         SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and date like '%" .$year. "%'" )
     );
-}
-else if(empty($_GET["year"]) && !empty($_GET["selfid"]))
+}else if(empty($_GET["year"]) && !empty($_GET["selfid"]) && !empty($_GET["category"]))
 {
     $selfid = $_GET["selfid"];
+    $category = $_GET["category"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and category = '$category'" )
     );
-}else{
+}
+else{
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
     );
 }
 

@@ -10,6 +10,7 @@ namespace app\safety\model;
 
 
 use think\Db;
+use think\Exception;
 use think\exception\PDOException;
 use think\Model;
 
@@ -46,31 +47,31 @@ class RiskModel extends Model
                     $this->proessScore($risk['founder'], $risk['cat'], '排查', $risk['founddate']);
                 }
                 if (!$item_old['acceptor'] == $risk['acceptor']) {
-                    $this->proessScore($item_old['acceptor'], $item_old['cat'], '修改', $risk['acceptor_id'], true);
-                    $this->proessScore($risk['acceptor'], $risk['cat'], '验收', $risk['acceptor_id']);
+                    $this->proessScore($item_old['acceptor'], $item_old['cat'], '修改', $risk['acceptor'], true);
+                    $this->proessScore($risk['acceptor'], $risk['cat'], '验收', $risk['acceptor']);
                 }
                 $res = $this->allowField(true)->save($risk, ['id' => $risk['id']]);
                 $_id = $risk['id'];
             }
-            $item = $this->where('id', $_id)->find();
-
-            if (array_key_exists('risk_img', $risk)) {
-                foreach (explode('※', $risk['risk_img']) as $img) {
-                    $riskImgs[] = array('path' => $img, 'cat' => '排查');
+            try {
+                $item = $this->where('id', $_id)->find();
+                $riskImgs = array();
+                if (array_key_exists('risk_img', $risk)) {
+                    foreach (explode('※', $risk['risk_img']) as $img) {
+                        $riskImgs[] = array('path' => $img, 'cat' => '排查');
+                    }
                 }
-            }
-            if (array_key_exists('risk_after_img', $risk)) {
-                foreach (explode('※', $risk['risk_after_img']) as $img) {
-                    $riskImgs[] = array('path' => $img, 'cat' => '验收');
+                if (array_key_exists('risk_after_img', $risk)) {
+                    foreach (explode('※', $risk['risk_after_img']) as $img) {
+                        $riskImgs[] = array('path' => $img, 'cat' => '验收');
+                    }
                 }
+                RiskImgModel::where('risk_id', $item['id'])->delete();
+                $item->riskImg()->saveAll($riskImgs);
+            } catch (Exception $e) {
+                return ['code' => -1, 'data' => '', 'msg' => $e->getMessage()];
             }
-            RiskImgModel::where('risk_id', $item['id'])->delete();
-            $item->riskImg()->saveAll($riskImgs);
-            if ($res) {
-                return ['code' => 1, 'data' => '', 'msg' => '操作成功'];
-            } else {
-                return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
-            }
+            return ['code' => 1, 'data' => '', 'msg' => '操作成功'];
         } catch (PDOException $e) {
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
         }
@@ -126,6 +127,27 @@ class RiskModel extends Model
         }
     }
 
+    /**
+     * 删除
+     * @param $id
+     * @return \think\response\Json
+     */
+    public function delRisk($id)
+    {
+        try {
+            $m = new RiskModel();
+            //清理分数
+            $this->proessScore($m['founder'],$m['cat'],'删除',date('Y-m-d',time()),true);
+            $this->proessScore($m['acceptor'],$m['cat'],'删除',date('Y-m-d',time()),true);
+            $m = $m->where('id', $id);
+            $m->riskImg()->delete();
+            $m->delete();
+            return json(['code' => 1,'msg'=>'']);
+        } catch (Exception $e) {
+            return json(['code' => -1, 'msg' => $e->getMessage()]);
+        }
+    }
+
 
     public function delEdu($id)
     {
@@ -162,9 +184,9 @@ class RiskModel extends Model
     public function getOne($id)
     {
         $mod = $data = RiskModel::with('RiskImg')->where('id', $id)->find();   //select([$id]);
-        if (count( ($mod['risk_img']))>0) {
-            $risk_img_after=array();
-            $risk_img_before=array();
+        if (count(($mod['risk_img'])) > 0) {
+            $risk_img_after = array();
+            $risk_img_before = array();
             foreach ($mod['risk_img'] as $item) {
                 if ($item['cat'] == '排查') {
                     $risk_img_before[] = $item;
@@ -172,8 +194,8 @@ class RiskModel extends Model
                     $risk_img_after[] = $item;
                 }
             }
-            $mod['risk_img_before'] =$risk_img_before;
-            $mod['risk_img_after'] =$risk_img_after;
+            $mod['risk_img_before'] = $risk_img_before;
+            $mod['risk_img_after'] = $risk_img_after;
         }
         return $mod;
     }
