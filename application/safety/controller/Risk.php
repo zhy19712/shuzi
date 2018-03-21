@@ -120,7 +120,7 @@ class Risk extends Base
             $param = input('id');
             $edu = new RiskModel();
             $flag = $edu->del($param);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            return json($flag);
         }
     }
 

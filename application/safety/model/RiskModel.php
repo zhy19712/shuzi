@@ -139,7 +139,7 @@ class RiskModel extends Model
             $m = $m->where('id', $id);
             $m->riskImg()->delete();
             $m->delete();
-            return json(['code' => 1]);
+            return json(['code' => 1,'msg'=>'']);
         } catch (Exception $e) {
             return json(['code' => -1, 'msg' => $e->getMessage()]);
         }
