@@ -52,29 +52,39 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
 
 require( '../ssp.class.php' );
 
-if(!empty($_GET["year"]) && !empty($_GET["category"]))
+if(!empty($_GET["year"]) && !empty($_GET["selfid"]) && !empty($_GET["category"]))
 {
-    $category = $_GET["category"];
+    $selfid = $_GET["selfid"];
     $year = $_GET["year"];
+    $category = $_GET["category"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "category = '$category' and date like '%" .$year. "%'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and date like '%" .$year. "%' and category = '$category'" )
     );
 }
-else if(empty($_GET["year"]) && !empty($_GET["category"]))
+else if(empty($_GET["year"]) && !empty($_GET["selfid"]) && empty($_GET["category"]))
 {
-    $category = $_GET["category"];
+    $selfid = $_GET["selfid"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "category = '$category'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid'" )
     );
-}else if(!empty($_GET["year"]) && empty($_GET["category"]))
+}else if(!empty($_GET["year"]) && !empty($_GET["selfid"]) && empty($_GET["category"]))
 {
+    $selfid = $_GET["selfid"];
     $year = $_GET["year"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "date like '%" .$year. "%'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and date like '%" .$year. "%'" )
     );
-}else{
+}else if(empty($_GET["year"]) && !empty($_GET["selfid"]) && !empty($_GET["category"]))
+{
+    $selfid = $_GET["selfid"];
+    $category = $_GET["category"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and category = '$category'" )
+    );
+}
+else{
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
     );
 }
 
