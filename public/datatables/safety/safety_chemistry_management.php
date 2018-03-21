@@ -31,7 +31,7 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'filename',  'dt' => 1 ),//文件名称（主题）
+    array( 'db' => 'chemistry_file_name',  'dt' => 1 ),//文件名称（主题）
     array( 'db' => 'date',  'dt' => 2 ),//时间
     array( 'db' => 'owner',  'dt' => 3 ),//上传人
     array( 'db' => 'remark',  'dt' => 4 )//备注
