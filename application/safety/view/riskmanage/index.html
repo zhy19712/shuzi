@@ -159,7 +159,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">作业内容：</label>
                                 <div class="col-xs-6 col-sm-6 input-group">
-                                    <input id="job_content" type="text" class="form-control" name="job_content" readonly>
+                                    <input id="job_content" type="text" class="form-control" name="job_content">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
@@ -656,33 +656,36 @@
             var s_iphone = $('#s_iphone').val();
             var measures = $('#measures').val();
             //表单提交
-            if(!newFileNmae||newFileNmae===oldFileName){
-                //修改
-                $(form).ajaxSubmit({
-                    url: "{:url('Statutestdi/sdiEdit')}",
-                    type: "post",
-                    dataType: 'json',
-                    data:{
-                        major_key:id,
-                        group_id:group_id,
-                        segmentv:segmentv,
-                        position:position,
-                        job_content:job_content,
-                        risk_factor:risk_factor,
-                        riskname:riskname,
-                        risk_grade:risk_grade,
-                        construction_user:construction_user,
-                        c_iphone:c_iphone,
-                        supervision_user:supervision_user,
-                        s_iphone:s_iphone,
-                        measures:measures
-                    },
-                    success: complete
-                });
-            }else{
-                //上传文件
-                uploader.upload();
-            }
+            $(form).ajaxSubmit({
+                url: "{:url('Riskmanage/manageAddOrEdit')}",
+                type: "post",
+                dataType: 'json',
+                data:{
+                    group_id:group_id,
+                    segmentv:segmentv,
+                    position:position,
+                    job_content:job_content,
+                    risk_factor:risk_factor,
+                    riskname:riskname,
+                    risk_grade:risk_grade,
+                    construction_user:construction_user,
+                    c_iphone:c_iphone,
+                    supervision_user:supervision_user,
+                    s_iphone:s_iphone,
+                    measures:measures,
+                    /*year_filename:year_filename,
+                    year_path:year_path,
+                    quarter_filename:quarter_filename,
+                    quarter_path:quarter_path,
+                    sheet_filename:sheet_filename,
+                    sheet_path:sheet_path,
+                    card_filename:card_filename,
+                    card_path:card_path,
+                    work_filename:work_filename,
+                    work_path:work_path,*/
+                },
+                success: complete
+            });
         },
         rules: {
             segmentv: "required",
@@ -818,7 +821,7 @@
             url: "./exportExcel",
             type: "post",
             data: {
-                'id':idArr
+                'majorKeyArr':idArr
             },
             dataType: "json",
             success: function (res) {
@@ -828,7 +831,7 @@
                         +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
                     for (var i = 0; i < idArr.length; i++)
                     {
-                        str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
+                        str += '<input style="display: none;" name="majorKeyArr[]" value="'+ idArr[i] +'">';
                     }
                     str += '<button type="submit" id="exportExcelBtn"></button></form>';
                     $("#form_container").append(str);
@@ -846,7 +849,7 @@
             url: "./exportExcelTemplete",
             type: "post",
             data: {
-                'id':idArr
+                'majorKeyArr':idArr
             },
             dataType: "json",
             success: function (res) {
@@ -856,7 +859,7 @@
                         +'<form action="./exportExcelTemplete" method="get" target="exportExcelFrame">';
                     for (var i = 0; i < idArr.length; i++)
                     {
-                        str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
+                        str += '<input style="display: none;" name="majorKeyArr[]" value="'+ idArr[i] +'">';
                     }
                     str += '<button type="submit" id="exportExcelBtn"></button></form>';
                     $("#form_container").append(str);

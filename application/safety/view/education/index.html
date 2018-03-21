@@ -17,6 +17,17 @@
         /*line-height: 48px;*/
         cursor: pointer;
         /*background-color: #00a2d4;*/
+
+        /*position: absolute;*/
+        /*top: -7px;*/
+        /*right: 265px;*/
+        /*width: 69px;*/
+        /*!* height: 48px; *!*/
+        /*text-align: center;*/
+        /*color: #fff;*/
+        /*!* line-height: 48px; *!*/
+        /*cursor: pointer;*/
+        /*background-color: #00a2d4;*/
     }
     #path{
         height: 34px;
@@ -259,7 +270,9 @@
                                     <input type="text" id="trainerMaterials" required="required" class="form-control" name="trainerMaterials" placeholder="此处为必填项！请上传文件或填写">
                                     <span class="input-group-btn">
                                         <div class="btn btn-upload" id="pickerMaterials">上传</div>
-
+                                            <div id="file_perMa" style="display: inline-block;vertical-align: middle;"></div>
+                                            <div id="file_uploadMa" style="display: inline-block;vertical-align: middle;"></div>
+                                            <div id="file_listMa" style="display: inline-block;vertical-align: middle;"></div>
                                     </span>
                                 </div>
                             </div>
@@ -359,7 +372,7 @@
                 "targets": [0],
                 "data":null,
                 "render": function (data, type, full, meta) {
-                    return '<input type="checkbox"  class="checkchild"  value="' + data + '" />';
+                    return '<input type="checkbox"  class="checkchild" onclick="getRadioId(this)"  value="' + data + '" />';
                 }
             },
             {
@@ -429,7 +442,7 @@
         $.ajax({
             url: "./getParents",
             type: "post",
-            data: {major_key:groupid,pid:idParent},
+            data: {id:groupid,pid:idParent},
             dataType: "json",
             success: function (res) {
                 console.log(res)
@@ -473,57 +486,18 @@
 
     //点击新增出现modal
     $(".mybtn").click(function () {
-        console.log($("#edDesc").html())
+
         $("#education_modal input").val("");
         $("#edId").val("")
         $("#edDesc").empty();
         $("#education_modal h5").text("新增");
         $("#education_modal").modal('show');
-        $("#pickerMaterials").css('display',"block");
-        $("#pickerRecords").css('display',"block");
-        $(".edParent").css('display',"none");
     });
 
-    var uploader;
-    function uploaderPicker(moadlName,picker,listName) {
-        $('+moadlName+').on("shown.bs.modal",function(){
-            uploader = WebUploader.create({
-                auto: true,
-                // swf文件路径
-                swf:  '/static/admin/js/webupload/Uploader.swf',
-
-                // 文件接收服务端。
-                server: "{:url('Upload/uploadRules')}",
-
-                // 选择文件的按钮。可选。
-                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-                pick: {
-                    multiple: false,
-                    id: picker,
-                    innerHTML: "上传"
-                },
-                // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-                resize: false
-
-            });
-            var $list = $('+listName+');
-            uploader.on( 'fileQueued', function( file ) {
-                $list.val('等待上传...');
-            });
-
-            uploader.on( 'uploadSuccess', function( file ) {
-                $list.val(file.name+'已上传成功');
-            });
-
-            uploader.on( 'uploadError', function( file ) {
-                $list.val('上传出错');
-            });
-        });
-        //关闭模态框销毁WebUploader
-        $('+moadlName+').on('hide.bs.modal', function () {
-            uploader.destroy();
-        });
-    }
+    var fileNameMa;//培训材料
+    var filePathMa;//培训材料
+    var fileName;//培训记录
+    var filePath;//培训记录
 
     //点击新增里面的 培训材料上传
     var uploaderMaterials;
@@ -547,26 +521,80 @@
             resize: false
 
         });
+        $("#pickerMaterials").on("click", ".webuploadDelbtn", function () {
+            var $ele = $(this);
+            var id = $ele.parent().attr("class");
+            console.log(id)
+            var file = uploaderMaterials.getFile(id);
+            console.log(file)
+            uploaderMaterials.removeFile(file,true);
+            $("#trainerMaterials").val('');
+            $("#file_perMa").html('');
+            $.ajax({
+                url: "./delAddFile",
+                type: "post",
+                data: {
+                    path:filePath
+                },
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                }
+            })
+        });
+        uploaderMaterials.on('fileDequeued', function (file) {
+            $(file.id).remove();
+            $('.'+file.id).remove();
+            console.log("remove");
+        });
         var $list = $("#trainerMaterials");
         uploaderMaterials.on( 'fileQueued', function( file ) {
             $list.val(file.name);
 //            $("#pickerMaterials").append('<span class="pickerCon">等待上传...</span>')
         });
-
-        uploaderMaterials.on( 'uploadSuccess', function( file ) {
-            $list.val(file.name+"上传成功！");
-//            $("#pickerMaterials").after('<span class="pickerCon">+file.name+"已上传成功"</span>')
+        uploaderMaterials.on('beforeFileQueued', function (file) {
+            if($("#file_perMa").html()){
+                alert("只能上传一个文件,请先删除文件");
+                return false;
+            }else {
+                return true;
+            }
+        });
+        uploaderMaterials.on( 'uploadSuccess', function( file ,res) {
+            $list.val(file.name);
+            $("#file_perMa").append('<div id="' + file.id + '" class="item">' +
+                '</div>');
+            $("#pickerMaterials").append('<div style="display: inline-block;vertical-align: middle;width: 100%;height: 100%;" class="' + file.id + '" class="item">' +
+                '<span class="info" style="padding-left: 10px;"> ' + file.name + '</span>&nbsp' +
+                '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;padding-left: 5px;">删除</span>' +
+                '</div>' );
+            console.log(res);
+            if(res.code === 1){
+                fileNameMa =res.data.filename;
+                filePathMa =res.data.path;
+                console.log(77777777)
+                layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
+            }else {
+                layer.msg(res.msg,{time:1500});
+                return false;
+            }
         });
 
         uploaderMaterials.on( 'uploadError', function( file ) {
-            // $list.val('上传出错');
-//            $("#pickerMaterials").after('<span class="pickerCon">上传出错...</span>')
+             $list.val('上传出错');
+            $("#pickerMaterials").after('<span class="pickerCon">上传出错...</span>')
         });
     });
     //关闭模态框销毁WebUploader
     $('#education_modal').on('hide.bs.modal', function () {
         uploaderMaterials.destroy();
     });
+
+
+
+
+
+
     var uploaderRecords;
     //在点击弹出模态框的时候再初始化WebUploader，解决点击上传无反应问题
     $("#education_modal").on("shown.bs.modal",function(){
@@ -594,7 +622,7 @@
 //            aname2 = file.name;
 //            $("#file_per1").append('<div id="' + file.id + '" class="item">' +
 //                '</div>');
-//            $("#file_list1").append('<div style="display: inline-block;vertical-align: middle;width: 100%;height: 100%;" class="' + file.id + '" class="item">' +
+//            $("#pickerRecords").append('<div style="display: inline-block;vertical-align: middle;width: 100%;height: 100%;" class="' + file.id + '" class="item">' +
 //                '<span class="info" style="padding-left: 10px;"> ' + file.name + '</span>&nbsp' +
 //                '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;padding-left: 5px;">删除</span>' +
 //                '</div>' );
@@ -602,8 +630,23 @@
         $("#pickerRecords").on("click", ".webuploadDelbtn", function () {
             var $ele = $(this);
             var id = $ele.parent().attr("class");
+            console.log(id)
             var file = uploaderRecords.getFile(id);
+            console.log(file)
             uploaderRecords.removeFile(file,true);
+            $("#trainerRecords").val('');
+            $("#file_per1").html('');
+            $.ajax({
+                url: "./delAddFile",
+                type: "post",
+                data: {
+                    path:filePath
+                },
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                }
+            })
         });
         uploaderRecords.on('fileDequeued', function (file) {
             $(file.id).remove();
@@ -615,7 +658,14 @@
             $list.val(file.name);
 //            $("#pickerRecords").append('<span class="pickerCon">'+file.name+'</span>')
         });
-
+        uploaderRecords.on('beforeFileQueued', function (file) {
+            if($("#file_per1").html()){
+                alert("只能上传一个文件,请先删除文件");
+                return false;
+            }else {
+                return true;
+            }
+        });
         uploaderRecords.on( 'uploadSuccess', function( file ,res ) {
             $list.val(file.name);
 //            $("#pickerRecords").after('<span class="pickerCon">+file.name+"已上传成功"</span>')
@@ -627,16 +677,20 @@
                 '</div>' );
             completeSuccess(res)
         });
-        function completeSuccess(data){
-            console.log(data);
-//            if(data.code === 1){
-                console.log(groupid+77777777)
+        //文件培训记录上传成功的回调
+        function completeSuccess(res){
+            console.log(res);
+            if(res.code === 1){
+                fileName =res.data.filename;
+                filePath =res.data.path;
+                console.log(77777777)
                 layer.msg("上传成功",{icon:1,time:1500,shade: 0.1});
-//            }else {
-//                layer.msg('上传数据失败!',{time:1500});
-//                return false;
-//            }
+            }else {
+                layer.msg(res.msg,{time:1500});
+                return false;
+            }
         }
+
         uploaderRecords.on( 'uploadError', function( file ) {
             $list.val('上传出错');
             $("#pickerRecords").after('<span class="pickerCon">上传出错...</span>')
@@ -646,6 +700,98 @@
     $('#education_modal').on('hide.bs.modal', function () {
         uploaderRecords.destroy();
     });
+
+
+    /*var uploader3;
+    function upload3() {
+        if(!uploader3){
+            uploader3 = WebUploader.create({
+                auto: true,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('Upload/uploadEdu')}",// 文件接收服务端。
+                chunked: false,
+                fileSizeLimit: 1000 *1024 *1024,
+                fileNumLimit: 1,
+//                formData: {"remark":"","aid":""},
+                duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: false,
+                    id: "#file_upload1",
+                    innerHTML: "上传文件"
+                }
+            });
+            //点击新增出现--上传文件
+            uploader3.on( 'fileQueued', function( file ) {
+                $("#file_per1").append('<div id="' + file.id + '" class="item">' +
+                    '</div>');
+                $("#file_list1").append('<div style="display: inline-block;vertical-align: middle;width: 100%;height: 100%;" class="' + file.id + '" class="item">' +
+                    '<span class="info" style="padding-left: 10px;"><input id="inputText" class="infoText" style="height: 38px;" type="text" value="' + file.name + '"/></span>&nbsp' +
+                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;padding-left: 5px;">删除</span>' +
+                    '</div>' );
+            });
+            $("#file_list1").on("click", ".webuploadDelbtn", function () {
+                var $ele = $(this);
+                var id = $ele.parent().attr("class");
+                var file = uploader3.getFile(id);
+                uploader3.removeFile(file,true);
+            });
+            uploader3.on('fileDequeued', function (file) {
+                $(file.id).remove();
+                $('.'+file.id).remove();
+                console.log("remove");
+            });
+//            uploader3.on("uploadStart",function () {
+//                uploader3.options.formData.types = 3;//类型
+//                uploader3.options.formData.major_key = $("#rulesid3").val();//id
+//                uploader3.options.formData.years = $("#civilYear").val();//年度
+//                uploader3.options.formData.eval_name = $("#file_list1 .info .infoText").val();//文件名称
+//                uploader3.options.formData.remark = $("#rulesDesc1").val()//备注
+//            });
+            uploader3.on('beforeFileQueued', function (file) {
+                if($("#file_list1").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
+            // 文件上传过程中创建进度条实时显示。
+            uploader3.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            uploader3.on( 'uploadSuccess', function( file,data ) {
+                console.log(file)
+                console.log(data)
+                if(data.code === 1){
+                    console.log(8888888)
+                    layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
+                    $("#file_upload1").empty();
+                    $("#file_per1").empty();
+                    $("#file_list1").empty();
+                    $("#safetyCivilization_modal").modal('hide');
+                    safetyCivilization_table.ajax.url("__SCRIPT__/safety_evaluation.php?types=3").load();
+                }else {
+                    layer.msg("抱歉，您没有此权限");
+                }
+            });
+            // 文件上传失败，显示上传出错。
+            uploader3.on( 'uploadError', function( file ) {
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                $("#file_per1").empty();
+            });
+        }
+    }*/
 
     var edamid1,edamid2;
     function flager() {
@@ -696,8 +842,8 @@
                 url: "./eduAdd",
                 type: "post",
                 data: {
-                    pid : groupid,//group_id
-                    zid:idParent,//id
+                    pid : idParent,//group_id
+                    zid : groupid,//id
                     major_key: $("#edId").val(),//id
                     lecturer: $("#trainer").val(),//培训人
                     edu_time: $("#trainingTime").val(),//培训时间
@@ -713,7 +859,6 @@
                 success: function (res) {
                     console.log(res);
                     if (res.code === 1) {
-                        flag = 1;
                         $("#education_modal").modal('hide');
                         admin_table.ajax.url("__SCRIPT__/safety_education.php?pid="+idParent+"&zid=" + groupid).load();
                         layer.msg(res.msg, {time: 1500, shade: 0.1});
@@ -722,7 +867,6 @@
                         return true; //阻止表单默认提交
                     } else {
                         layer.msg(res.msg);
-                        flag = 0;
                     }
                 }
             })
@@ -811,8 +955,12 @@
         var id = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
         console.log(id)
         edSeeId=id
+        $("#edId").val(id)
         $("#education_modal h5").text("查看");
         $("#education_modal").modal('show');
+//        if($("#edId").val() != ''){
+//            $("#education_modal .btn-primary").hide();
+//        }
         //记录
         $("#trainerMaterials").after('<div class="edParent">' +
             '    <input type="button" class="btn btn-primary btn-outline btn-xs" id="edPreviewMa" style="margin-left: 5px;" onclick="edViewMa(this)" value="预览"/>' +
@@ -859,7 +1007,7 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        admin_table.ajax.url("__SCRIPT__/safety_education.php?pid=" + groupid).load();
+                        admin_table.ajax.url("__SCRIPT__/safety_education.php?pid="+idParent+"&zid=" + groupid).load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -873,7 +1021,7 @@
         $.ajax({
             url: url,
             data:{
-                type:typeNum,
+                types:typeNum,
                 major_key:id
             },
             success: function (res) {
@@ -888,11 +1036,16 @@
                         + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
                         + "<form name=download"+ id +" action="+ url +" method='get' target=downloadFrame"+ id + ">"
                         + "<span class='file_name' style='color: #000;'>"+str+"</span>"
-                        + "<input class='file_url' style='display: none;' name='id' value="+ id +">"
+                        + "<input class='file_url' style='display: none;' name='types' value="+ typeNum +">"
+                        + "<input class='file_url' style='display: none;' name='major_key' value="+ id +">"
                         + "<button type='submit' class=btn" + id +"></button>"
                         + "</form>"
                     $("#formDown").append(str);
                     $("#formDown").find(".btn" + id).click();
+                }
+                if(res.code == -1){
+                    layer.msg(res.msg)
+                    console.log(res.msg)
                 }
             }
         })
@@ -1051,11 +1204,12 @@
     });
     //导出excelExport
     $("#excelExport").click(function () {
-        $.ajax({
+        if(dataArr.length != ''){
+            $.ajax({
             url: "./exportExcel",
             type: "post",
             data: {
-                'major_key':dataArr
+                majorKeyArr:dataArr
             },
             dataType: "json",
             success: function (res) {
@@ -1064,17 +1218,23 @@
                     var str = '<iframe name="exportExcelFrame" style="display:none;"></iframe>'
                         +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
                     for (var i = 0; i < dataArr.length; i++) {
-                        str += '<input style="display: none;" name="id[]" value="'+ dataArr[i] +'">';
+                        str += '<input style="display: none;" name="majorKeyArr[]" value="'+ dataArr[i] +'">';
                     }
                     str += '<button type="submit" id="exportExcelBtn"></button></form>';
                     $("#form_container").append(str);
                     $("#form_container").find("#exportExcelBtn").click();
-                    layer.msg('导出成功！', {icon: 1});
+                    layer.msg('导出成功！', {icon: 1,time: 1500});
+                }else if(res.code == -1){
+                    layer.msg(res.msg);
+                    console.log(res.msg)
                 }else{
                     alert("获取数据失败！")
                 }
             }
         })
+        }else {
+            layer.msg('请选择要导出的数据！', {time: 1000})
+        }
     });
     //导出excel模版 moldPlate
     $("#moldPlate").click(function () {

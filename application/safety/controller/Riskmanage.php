@@ -42,11 +42,26 @@ class Riskmanage extends Base
         if(request()->isAjax()){
             $manage = new RiskManageModel();
             $param = input('post.');
-            $is_exist = $manage->getOne($param['major_key']);
-            if(empty($is_exist)){
-                return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
+            if(empty($param['year_name'])){
+                $param['year_name'] = $param['year_filename'];
+            }if(empty($param['quarter_name'])){
+                $param['quarter_name'] = $param['quarter_filename'];
+            }if(empty($param['sheet_name'])){
+                $param['sheet_name'] = $param['sheet_filename'];
+            }if(empty($param['card_name'])){
+                $param['card_name'] = $param['card_filename'];
+            }if(empty($param['work_name'])){
+                $param['work_name'] = $param['work_filename'];
             }
-            $flag = $manage->editManage($param);
+            if(empty($param['major_key'])){
+                $flag =$manage->insertManage($param);
+            }else{
+                $is_exist = $manage->getOne($param['major_key']);
+                if(empty($is_exist)){
+                    return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
+                }
+                $flag = $manage->editManage($param);
+            }
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
