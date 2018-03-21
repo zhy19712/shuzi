@@ -101,6 +101,7 @@
 </style>
 <div class="revised-record">
     <input type="hidden" name="fileId">
+    <input type="hidden" name="major_key">
     <h2>修编记录</h2>
     <div class="table-info">
         <table id="tableItem" class="table table-striped" cellspacing="0"  width="100%">
@@ -137,7 +138,6 @@
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="memberAdd" id="memberAdd" method="post">
-                        <input type="hidden" name="id" id="sid">
                         <input type="hidden" name="oldFileName" id="oldFileName">
                         <input type="hidden" name="newFileName" id="newFileName">
                         <div class="form-group">
@@ -683,8 +683,7 @@
     var validator = $("#memberAdd").validate({
         submitHandler: function(form) {
             //获取表单数据
-            var id = $('#sid').val();
-            var group_id = $('input[type="hidden"][name="groupId"]').val();
+            var major_key = $('input[type="hidden"][name="major_key"]').val();
             var segmentv = $('#segmentv').val();
             var position = $('#position').val();
             var job_content = $('#job_content').val();
@@ -704,7 +703,7 @@
                 type: "post",
                 dataType: 'json',
                 data:{
-                    group_id:group_id,
+                    major_key:major_key,
                     segmentv:segmentv,
                     position:position,
                     job_content:job_content,
@@ -767,14 +766,14 @@
     //编辑
     function zedit(that) {
         $('#addRules_modal').modal('show');
-        var id = $(that).parents('tr').find('td:eq(1)').text();
-        $('#sid').val(id);
+        var major_key = $(that).parents('tr').find('td:eq(1)').text();
+        $('input[type="hidden"][name="major_key"]').val(major_key);
         $.ajax({
             url: "{:url('Riskmanage/index')}",
             type: "post",
             dataType: "json",
             data:{
-                major_key:id
+                major_key:major_key
             },
             success: function (res) {
                 if(res.evaluation=='过期'){
@@ -797,35 +796,9 @@
                 $('#s_iphone').val(res.s_iphone);
                 $('#measures').val(res.measures);
 
-                /*var yearFileList = '<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '">' +
-                    '<span class="info">' + res.year_filename + '</span>&nbsp' +
-                    '<span class="'+delBtn+'" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                    '</div>';
-                var quarterFileList = '<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '">' +
-                    '<span class="info">' + res.quarter_filename + '</span>&nbsp' +
-                    '<span class="'+delBtn+'" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                    '</div>';
-                var listFileList = '<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '">' +
-                    '<span class="info">' + res.sheet_filename + '</span>&nbsp' +
-                    '<span class="'+delBtn+'" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                    '</div>';
-                var cardFileList = '<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '">' +
-                    '<span class="info">' + res.card_filename + '</span>&nbsp' +
-                    '<span class="'+delBtn+'" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                    '</div>';
-                var ticketFileList = '<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '">' +
-                    '<span class="info">' + res.work_filename + '</span>&nbsp' +
-                    '<span class="'+delBtn+'" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                    '</div>';
-                $('#yearUploadList').append(yearFileList);
-                $('#quarterUploadList').append(quarterFileList);
-                $('#listUploadList').append(listFileList);
-                $('#cardUploadList').append(cardFileList);
-                $('#ticketUploadList').append(ticketFileList);*/
-
-                var fileNameArr = [res.year_filename,res.card_filename,res.quarter_filename,res.sheet_filename,res.work_filename];
+                var fileNameArr = [res.year_filename,res.quarter_filename,res.sheet_filename,res.card_filename,res.work_filename];
                 var parentDomArr = ['yearUploadList','quarterUploadList','listUploadList','cardUploadList','ticketUploadList'];
-                var delBtn = ['yearDelbtn','quarterDelbtn','listDelbtn','cardDelbtn','ticketDelbtn'];
+                var delBtn = ['yearEditDelbtn','quarterEditDelbtn','listEditDelbtn','cardEditDelbtn','ticketEditDelbtn'];
                 editList(fileNameArr,parentDomArr,delBtn);
             }
         })
@@ -833,15 +806,48 @@
 
     //编辑预览文件名称
     function editList(fileNameArr,parentDomArr,delBtn) {
-        for(var j = 0;j<parentDomArr.length;j++){
-            var fileList = '<div style="display: inline-block;vertical-align: middle;">';
-            for (var i=0;i<fileNameArr[j].length;i++){
-                fileList += '<span class="info">' + fileNameArr[j][i] + '</span>';
-            }
-            fileList += '<span class="'+delBtn+'" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>';
-            fileList += '</div>';
-            $('#'+parentDomArr[j]).append(fileList);
+        var fileList = [];
+        var btnArr = [];
+        for (var i=0;i<fileNameArr.length;i++){
+            fileList.push('<span class="info">' + fileNameArr[i]);
         }
+        for (var k = 0; k < delBtn.length;k++){
+            btnArr.push('<span class="'+delBtn[k]+'" type="'+(k+1)+'" onclick="delEditFile(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>');
+        }
+        console.log(fileList);
+        for(var j = 0;j<parentDomArr.length;j++){
+            $('#'+parentDomArr[j]).append(fileList[j],btnArr[j]);
+        }
+    }
+
+    //编辑时删除已上传的文件
+    function delEditFile(that) {
+        var delBtn = $(that).attr('class');
+        var parentDom = $(that).parent().attr('id');
+        $("#"+parentDom).bind("click",delBtn, function () {
+            var fileName = $(that).prev().text();
+            var fileType = $(that).attr('type');
+            var id = $('input[type="hidden"][name="major_key"]').val();
+            layer.confirm('警告！确定永久删除'+ fileName +'文件?',{
+                btn:['确定','取消'],
+                icon:3
+            },function(){
+                $.ajax({
+                    url:'{:url("Riskmanage/delEditFile")}',
+                    dataType:'JSON',
+                    type:'POST',
+                    data:{
+                        major_key:id,
+                        type:fileType
+                    },
+                    success:function(){
+                        layer.msg('删除成功！', {icon: 1});
+                        console.log(parentDom);
+                        $("#"+parentDom).empty();
+                    }
+                });
+            });
+        });
     }
 
     //预览表格数据
@@ -908,13 +914,12 @@
 
     //预览文件名称
     function viewFileName(fileNameArr,parentDomArr) {
+        var newFileNameArr = [];
+        for (var i=0;i<fileNameArr.length;i++){
+            newFileNameArr.push(fileNameArr[i]);
+        }
         for(var j = 0;j<parentDomArr.length;j++){
-            var fileList = '<div style="display: inline-block;vertical-align: middle;">';
-            for (var i=0;i<fileNameArr[j].length;i++){
-                fileList += '<span class="info">' + fileNameArr[j][i] + '</span>';
-            }
-            fileList += '</div>';
-            $('#'+parentDomArr[j]).append(fileList);
+            $('#'+parentDomArr[j]).append(newFileNameArr[j]);
         }
     }
 
@@ -1266,7 +1271,7 @@
         $('#'+pEm).append(fileList);
     }
 
-    //删除文件
+    //新增时删除已上传的文件
     function delFile(res,em,pEm) {
         var path = res.data.path;
         $("#"+pEm).on("click", "."+em, function () {
