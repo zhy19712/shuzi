@@ -31,7 +31,7 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 1 ),//序号
-    array( 'db' => 'type',  'dt' => 2 ),//类型
+    array( 'db' => 'model_type',  'dt' => 2 ),//类型
     array( 'db' => 'specification_model',  'dt' => 3 ),//规格型号
     array( 'db' => 'placement_position',  'dt' => 4 ),//安放位置
     array( 'db' => 'number',  'dt' => 5 ),//数量
