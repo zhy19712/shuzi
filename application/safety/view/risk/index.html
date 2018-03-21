@@ -871,24 +871,32 @@
 
     //上传图片隐患照片
     var $list=$("#thelist");   //初始化全局
-    var thumbnailWidth = 50;   //缩略图高度和宽度 （单位是像素），当宽高度是0~1的时候，是按照百分比计算
-    var thumbnailHeight = 50;
+    var thumbnailWidth = 80;   //缩略图高度和宽度 （单位是像素），当宽高度是0~1的时候，是按照百分比计算
+    var thumbnailHeight = 80;
     var uploaderImg = WebUploader.create({
         // 选完文件后，是否自动上传。
         auto: true,
+        method:'POST',
         swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
         server: "{:url('Upload/upload')}",// 文件接收服务端。
-        // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
         pick: '#filePicker',
-
         // 只允许选择图片文件。
         accept: {
             title: 'Images',
             extensions: 'gif,jpg,jpeg,bmp,png',
             mimeTypes: 'image/*'
         },
-        method:'POST',
+        // 设置缩略图。
+        thumb: {
+            // 图片质量，只有type为`image/jpeg`的时候才有效。
+            quality: 70,
+            // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
+            allowMagnify: false,
+            // 是否允许裁剪。是否采用裁剪模式。如果采用这样可以避免空白内容。
+            crop: true,
+        },
+        compress:false,
     });
     // 当有文件添加进来的时候
     uploaderImg.on( 'fileQueued', function( file ) {  // webuploaderImg事件.当选择文件后，文件被加载到文件队列中，触发该事件。等效于 uploaderImg.onFileueued = function(file){...} ，类似js的事件定义。
@@ -912,8 +920,58 @@
                 return;
             }
             $img.attr( 'src', src );
+            console.log(src)
+//            var img;
+//            var $wrap = $(".thumbnail");
+//            if ( error ) {
+//                $img.replaceWith('<span>不能预览</span>');
+//                return;
+//            }
+//            $img.attr( 'src', src );
+//            if( isSupportBase64 ) {
+//                $img.attr( 'src', src );
+//            } else {
+//                $.ajax({
+//                    url:"",
+//                    method: 'POST',
+//                    data: src,
+//                    dataType:'json'
+//                }).done(function( response ) {
+//                    if (response.result) {
+//                        img = $('<img src="'+response.result+'">');
+//                        $wrap.empty().append( img );
+//                    } else {
+//                        $wrap.text("预览出错");
+//                    }
+//                });
+//            }
         }, thumbnailWidth, thumbnailHeight );
     });
+    //点击照片预览
+    $("#thelist img").click(function () {
+        layer.open({
+            type: 1
+            ,title: false //不显示标题栏
+            ,closeBtn: false
+            ,area: '700px;'
+            ,shade: 0.8
+            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            ,resize: false
+            ,btn: ['顶上', '返回']
+            ,btnAlign: 'c'
+            ,moveType: 1 //拖拽模式，0或者1
+            ,content: '<div style="width: 200px;height: 200px;border: 1px solid red;padding: 50px; line-height: 22px; background-color: #787091; color: #fff; font-weight: 300;">' +
+            '<img src="'+pathImg.substring(1)+'"/>' +
+            '</div>'
+            ,success: function(layero){
+                var btn = layero.find('.layui-layer-btn');
+                btn.find('.layui-layer-btn0').attr({
+                    href: 'http://www.layui.com/'
+                    ,target: '_blank'
+                });
+            }
+        });
+    })
     function delFileName(that) {
         var id = $(that).parent("div").attr("id");
         $("#"+id).remove();
@@ -969,8 +1027,8 @@
 
     //整理后的图片
     var $listAfter=$("#thelistAfter");   //初始化全局
-    var thumbnailWidth = 50;   //缩略图高度和宽度 （单位是像素），当宽高度是0~1的时候，是按照百分比计算，
-    var thumbnailHeight = 50;
+    var thumbnailWidth = 80;   //缩略图高度和宽度 （单位是像素），当宽高度是0~1的时候，是按照百分比计算，
+    var thumbnailHeight = 80;
     var uploaderImgAfter = WebUploader.create({
         // 选完文件后，是否自动上传。
         auto: true,
