@@ -1,5 +1,5 @@
 {include file="public/header" /}
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<!--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
 <link rel="stylesheet" type="text/css" href="/static/admin/webupload/webuploader.css">
 <link rel="stylesheet" type="text/css" href="/static/admin/webupload/style.css">
 <link rel="stylesheet" href="/static/admin/css/zTreeStyle/zTreeStyle.css">
@@ -162,7 +162,7 @@
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
-                        <div class="form-group">
+                        <div class="form-group" style="display: block">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0" id="file2" style="text-align: right;line-height: 44px;">文件：</label>
                                 <div class="myblock col-xs-6 input-group">
@@ -190,7 +190,7 @@
                                     <input type="text" id="remark2" class="form-control datepicker" name="remark" />
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-xs-12" style="display: none">
+                            <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">状态：</label>
                                 <div class="myblock col-xs-6 input-group">
                                     <input id="preplan_state" type="text" class="form-control" name="preplan_state">
@@ -217,10 +217,10 @@
 <script src="__JS__/jquery.jedate.js"></script>
 <!--应急预案开始-->
 <script>
-    //应急预案
+    //应急处置
     var current_id=""; //修订的id
     var filename1,fname2;
-    //应急预案-初始化upload
+    //应急处置-初始化upload
     function upload2() {
         var server = current_id===""?"uploadEmergencydisposaledit":"uploadEmergencydisposal";
         if(!uploader2){
@@ -355,7 +355,7 @@
         del(id,"../Emergencydisposal/emergencydisposalDel");
     }
 
-    //应急预案-下载
+    //应急处置-下载
     function download2(that) {
         var val = $(that).parent("td").parent("tr").children("td:nth-child(10)").text();
         // alert(val)
@@ -419,7 +419,7 @@
                     filename1 = res.data.filename;
                     uploader2 = null;
                     upload2();
-                    if(res.data.path){
+                    if(res.data.path.trim()){
                         $("#file_list2").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
                             '<span class="info">' + res.data.name + '</span>&nbsp' +
                             '<span onclick="fdelatt2(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
@@ -494,8 +494,8 @@
                         $("#alternative_version").val("");
                         $("#applicability").val(res.data.applicability);
                         $("#preplan_state").val(res.data.preplan_state);
-                        filename1 = res.data.filename;
-                        if(res.data.path){
+                        filename1 = res.data.filename.trim();
+                        if(res.data.path.trim()){
                             $("#file_list2").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
                                 '<span class="info">' + res.data.name + '</span>&nbsp' +
                                 '<span onclick="fdelatt2(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
@@ -514,7 +514,6 @@
         }
 
     });
-
     //选择年度
     var selectyear2 ='<input id="year2"/>';
     $("div.selectyear2").html("年度："+selectyear2);
@@ -560,7 +559,7 @@
         //判断是不是新增
         if( !$("#file_list2").html() || filename1 === $(".info").html() ){
             //判断有无文件变化
-            if(filename1 ===" "){
+            if(filename1 ===""){
                 $("#preplan_state").val("未上传");
             }else{
                 $("#preplan_state").val("已上传");
