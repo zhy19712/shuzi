@@ -52,6 +52,9 @@ class Revisionrecord extends Base
         $name = '修编记录 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $record = new RevisionrecordModel();
         $list = $record->getList($majorKeyArr);
+        if(count($list) == 0){
+            return json(['code' => -1 ,'msg' => '数据为空']);
+        }
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
