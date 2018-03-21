@@ -1081,7 +1081,8 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/normal/');
         if($info){
             $path = './uploads/normal/' . str_replace("\\","/",$info->getSaveName());
-            return json(['code'=>1,'msg'=>'上传成功','data'=>$path]);
+            $filename = $file->getInfo('name');
+            return json(['code'=>1,'msg'=>'上传成功','data'=>$path,'filename'=>$filename]);
         }else{
             return json(['code'=>-1,'msg'=>'上传失败']);
         }
@@ -1901,7 +1902,7 @@ class Upload extends Base
         if(empty($tableName)){
             return json(['code' => -1,'msg' => '请输入要查询的表名称']);
         }
-        $total = Db::name('"'.$tableName.'"')->count();
+        $total = Db::name($tableName)->count();
         return json(['code' => 1,'total' => $total,'msg' => '查询成功']);
     }
 

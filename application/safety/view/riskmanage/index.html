@@ -86,14 +86,17 @@
         line-height: 24px;
         text-align: center;
     }
-    .webuploader-pick{
+    #tableItem_wrapper .webuploader-pick{
         padding: 6px 12px;
         background: none;
         color: #1ab394;
     }
-    .webuploader-pick-hover{
+    #tableItem_wrapper .webuploader-pick-hover{
         background: none;
         color: #FFF;
+    }
+    .form-group .webuploader-pick{
+        padding: 6px 15px;
     }
     #import{
         padding: 0;
@@ -102,6 +105,18 @@
 <div class="revised-record">
     <input type="hidden" name="fileId">
     <input type="hidden" name="major_key">
+
+    <input type="hidden" name="yearUploadList_name">
+    <input type="hidden" name="yearUploadList_path">
+    <input type="hidden" name="quarterUploadList_name">
+    <input type="hidden" name="quarterUploadList_path">
+    <input type="hidden" name="listUploadList_name">
+    <input type="hidden" name="listUploadList_path">
+    <input type="hidden" name="cardUploadList_name">
+    <input type="hidden" name="cardUploadList_path">
+    <input type="hidden" name="ticketUploadList_name">
+    <input type="hidden" name="ticketUploadList_path">
+
     <h2>修编记录</h2>
     <div class="table-info">
         <table id="tableItem" class="table table-striped" cellspacing="0"  width="100%">
@@ -634,6 +649,17 @@
             })
             return false;
         }else{
+            $.ajax({
+                url: "{:url('Upload/getCheckAllNum')}",
+                type: "post",
+                data: {
+                    tableName:'safety_riskmanage'
+                },
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                }
+            })
             $(that).html('取消勾选');
             $(that).attr('state',true);
             //翻页事件
@@ -678,7 +704,6 @@
     });
 
 
-    var param = {};
     //表单验证提交
     var validator = $("#memberAdd").validate({
         submitHandler: function(form) {
@@ -697,6 +722,18 @@
             var supervision_user = $('#supervision_user').val();
             var s_iphone = $('#s_iphone').val();
             var measures = $('#measures').val();
+
+            var yearUploadList_name = $('input[type="hidden"][name="yearUploadList_name"]').val();
+            var yearUploadList_path = $('input[type="hidden"][name="yearUploadList_path"]').val();
+            var quarterUploadList_name = $('input[type="hidden"][name="quarterUploadList_name"]').val();
+            var quarterUploadList_path = $('input[type="hidden"][name="quarterUploadList_path"]').val();
+            var listUploadList_name = $('input[type="hidden"][name="listUploadList_name"]').val();
+            var listUploadList_path = $('input[type="hidden"][name="listUploadList_path"]').val();
+            var cardUploadList_name = $('input[type="hidden"][name="cardUploadList_name"]').val();
+            var cardUploadList_path = $('input[type="hidden"][name="cardUploadList_path"]').val();
+            var ticketUploadList_name = $('input[type="hidden"][name="ticketUploadList_name"]').val();
+            var ticketUploadList_path = $('input[type="hidden"][name="ticketUploadList_path"]').val();
+
             //表单提交
             $(form).ajaxSubmit({
                 url: "{:url('Riskmanage/manageAddOrEdit')}",
@@ -717,16 +754,16 @@
                     supervision_user:supervision_user,
                     s_iphone:s_iphone,
                     measures:measures,
-                    year_filename:param.year_filename,
-                    year_path:param.year_path,
-                    quarter_filename:param.quarter_filename,
-                    quarter_path:param.quarter_path,
-                    sheet_filename:param.sheet_filename,
-                    sheet_path:param.sheet_path,
-                    card_filename:param.card_filename,
-                    card_path:param.card_path,
-                    work_filename:param.work_filename,
-                    work_path:param.work_path,
+                    year_filename:yearUploadList_name,
+                    year_path:yearUploadList_path,
+                    quarter_filename:quarterUploadList_name,
+                    quarter_path:quarterUploadList_path,
+                    sheet_filename:listUploadList_name,
+                    sheet_path:listUploadList_path,
+                    card_filename:cardUploadList_name,
+                    card_path:cardUploadList_path,
+                    work_filename:ticketUploadList_name,
+                    work_path:ticketUploadList_path,
                 },
                 success: complete
             });
@@ -812,12 +849,18 @@
             fileList.push('<span class="info">' + fileNameArr[i]);
         }
         for (var k = 0; k < delBtn.length;k++){
-            btnArr.push('<span class="'+delBtn[k]+'" type="'+(k+1)+'" onclick="delEditFile(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>');
+            btnArr.push('<span class="'+delBtn[k]+'" type="'+(k+1)+'" onclick="delEditFile(this)" id="" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>');
         }
         console.log(fileList);
         for(var j = 0;j<parentDomArr.length;j++){
             $('#'+parentDomArr[j]).append(fileList[j],btnArr[j]);
         }
+        $('.info').each(function (i,n) {
+            if(!$(n).text()){
+                $(n).siblings().remove();
+                $(n).remove();
+            }
+        })
     }
 
     //编辑时删除已上传的文件
@@ -842,7 +885,9 @@
                     },
                     success:function(){
                         layer.msg('删除成功！', {icon: 1});
-                        console.log(parentDom);
+                        var parentId = $(that).parent().attr('id');
+                        $('input[type="hidden"][name="'+parentId+'_name"]').val('');
+                        $('input[type="hidden"][name="'+parentId+'_path"]').val('');
                         $("#"+parentDom).empty();
                     }
                 });
@@ -877,7 +922,7 @@
                 $('#view_s_iphone').html(res.s_iphone);
                 $('#viewMeasures').html(res.measures);
 
-                var fileNameArr = [res.year_filename,res.card_filename,res.quarter_filename,res.sheet_filename,res.work_filename];
+                var fileNameArr = [res.year_filename,res.quarter_filename,res.sheet_filename,res.card_filename,res.work_filename];
                 var parentDomArr = ['viewYearUploadList','viewQuarterUploadList','viewListUploadList','viewCardUploadList','viewTicketUploadList']
                 viewFileName(fileNameArr,parentDomArr);
             }
@@ -1041,226 +1086,239 @@
         }
     }
 
-    /**
-     * 年度风险辨识文件
-     */
-    var yearUpload = WebUploader.create({
-        auto: true,
-        // swf文件路径
-        swf:  '/static/admin/js/webupload/Uploader.swf',
 
-        // 文件接收服务端。
-        server: "{:url('Upload/uploadEdu')}",
 
-        // 选择文件的按钮。可选。
-        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-        pick: {
-            multiple: false,
-            id: "#yearUpload",
-            innerHTML: "上传"
-        },
-        formData:{
-            pid:'',
-            zid:''
-        },
-        accept: {
-            title: 'excel',
-            extensions: 'xls,xlsx',
-            mimeTypes: '.xls,.xlsx'
-        },
+    $("#addRules_modal").on("shown.bs.modal",function(){
+        /**
+         * 年度风险辨识文件
+         */
+        var yearUpload = WebUploader.create({
+            auto: true,
+            // swf文件路径
+            swf:  '/static/admin/js/webupload/Uploader.swf',
 
-        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-        resize: false
+            // 文件接收服务端。
+            server: "{:url('Upload/uploadEdu')}",
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: {
+                multiple: false,
+                id: "#yearUpload",
+                innerHTML: "上传"
+            },
+            formData:{
+                pid:'',
+                zid:'',
+                module_directory_name:'riskmanage',
+            },
+            accept: {
+                title: 'excel',
+                extensions: 'xls,xlsx',
+                mimeTypes: '.xls,.xlsx'
+            },
+
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false
+        });
+
+        yearUpload.on( 'uploadSuccess', function( file ,res) {
+            $('input[type="hidden"][name="yearUploadList_name"]').val(res.data.filename);
+            $('input[type="hidden"][name="yearUploadList_path"]').val(res.data.path);
+            
+            uploadList(file ,res ,'yearUploadList' ,'yearDelbtn');
+            delFile(res,'yearDelbtn' ,'yearUploadList');
+        });
+
+        yearUpload.on("uploadStart",function () {
+            yearUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+            yearUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
+        });
+
+        /**
+         * 季度风险辨识文件
+         */
+        var quarterUpload = WebUploader.create({
+            auto: true,
+            // swf文件路径
+            swf:  '/static/admin/js/webupload/Uploader.swf',
+
+            // 文件接收服务端。
+            server: "{:url('Upload/uploadEdu')}",
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: {
+                multiple: false,
+                id: "#quarterUpload",
+                innerHTML: "上传"
+            },
+            formData:{
+                pid:'',
+                zid:'',
+                module_directory_name:'riskmanage',
+            },
+            accept: {
+                title: 'excel',
+                extensions: 'xls,xlsx',
+                mimeTypes: '.xls,.xlsx'
+            },
+
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false
+        });
+
+        quarterUpload.on( 'uploadSuccess', function( file ,res) {
+            $('input[type="hidden"][name="quarterUploadList_name"]').val(res.data.filename);
+            $('input[type="hidden"][name="quarterUploadList_path"]').val(res.data.path);
+            uploadList(file ,res ,'quarterUploadList' ,'quarterDelbtn');
+            delFile(res,'quarterDelbtn' ,'quarterUploadList');
+        });
+
+        quarterUpload.on("uploadStart",function () {
+            quarterUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+            quarterUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
+        });
+
+        /**
+         * 风险复测单
+         */
+        var listUpload = WebUploader.create({
+            auto: true,
+            // swf文件路径
+            swf:  '/static/admin/js/webupload/Uploader.swf',
+
+            // 文件接收服务端。
+            server: "{:url('Upload/uploadEdu')}",
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: {
+                multiple: false,
+                id: "#listUpload",
+                innerHTML: "上传"
+            },
+            formData:{
+                pid:'',
+                zid:'',
+                module_directory_name:'riskmanage',
+            },
+            accept: {
+                title: 'excel',
+                extensions: 'xls,xlsx',
+                mimeTypes: '.xls,.xlsx'
+            },
+
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false
+        });
+
+        listUpload.on( 'uploadSuccess', function( file ,res) {
+            $('input[type="hidden"][name="listUploadList_name"]').val(res.data.filename);
+            $('input[type="hidden"][name="listUploadList_path"]').val(res.data.path);
+            uploadList(file ,res ,'listUploadList' ,'listDelbtn');
+            delFile(res,'listDelbtn' ,'listUploadList');
+        });
+
+        listUpload.on("uploadStart",function () {
+            listUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+            listUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
+        });
+
+        /**
+         * 风险控制卡
+         */
+        var cardUpload = WebUploader.create({
+            auto: true,
+            // swf文件路径
+            swf:  '/static/admin/js/webupload/Uploader.swf',
+
+            // 文件接收服务端。
+            server: "{:url('Upload/uploadEdu')}",
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: {
+                multiple: false,
+                id: "#cardUpload",
+                innerHTML: "上传"
+            },
+            formData:{
+                pid:'',
+                zid:'',
+                module_directory_name:'riskmanage',
+            },
+            accept: {
+                title: 'excel',
+                extensions: 'xls,xlsx',
+                mimeTypes: '.xls,.xlsx'
+            },
+
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false
+        });
+
+        cardUpload.on( 'uploadSuccess', function( file ,res) {
+            $('input[type="hidden"][name="cardUploadList_name"]').val(res.data.filename);
+            $('input[type="hidden"][name="cardUploadList_path"]').val(res.data.path);
+            uploadList(file ,res ,'cardUploadList' ,'cardDelbtn');
+            delFile(res,'cardDelbtn' ,'cardUploadList');
+        });
+
+        cardUpload.on("uploadStart",function () {
+            cardUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+            cardUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
+        });
+
+        /**
+         * 施工作业票
+         */
+        var ticketUpload = WebUploader.create({
+            auto: true,
+            // swf文件路径
+            swf:  '/static/admin/js/webupload/Uploader.swf',
+
+            // 文件接收服务端。
+            server: "{:url('Upload/uploadEdu')}",
+
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: {
+                multiple: false,
+                id: "#ticketUpload",
+                innerHTML: "上传"
+            },
+            formData:{
+                pid:'',
+                zid:'',
+                module_directory_name:'riskmanage',
+            },
+            accept: {
+                title: 'excel',
+                extensions: 'xls,xlsx',
+                mimeTypes: '.xls,.xlsx'
+            },
+
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            resize: false
+        });
+
+        ticketUpload.on( 'uploadSuccess', function( file ,res) {
+            $('input[type="hidden"][name="ticketUploadList_name"]').val(res.data.filename);
+            $('input[type="hidden"][name="ticketUploadList_path"]').val(res.data.path);
+            
+            uploadList(file ,res ,'ticketUploadList' ,'ticketDelbtn');
+            delFile(res,'ticketDelbtn' ,'ticketUploadList');
+        });
+
+        ticketUpload.on("uploadStart",function () {
+            ticketUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
+            ticketUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
+        });
     });
 
-    yearUpload.on( 'uploadSuccess', function( file ,res) {
-        param.year_filename = res.data.filename;
-        param.year_path = res.data.path;
-        uploadList(file ,res ,'yearUploadList' ,'yearDelbtn');
-        delFile(res,'yearDelbtn' ,'yearUploadList');
-    });
 
-    yearUpload.on("uploadStart",function () {
-        yearUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
-        yearUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
-    });
 
-    /**
-     * 季度风险辨识文件
-     */
-    var quarterUpload = WebUploader.create({
-        auto: true,
-        // swf文件路径
-        swf:  '/static/admin/js/webupload/Uploader.swf',
-
-        // 文件接收服务端。
-        server: "{:url('Upload/uploadEdu')}",
-
-        // 选择文件的按钮。可选。
-        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-        pick: {
-            multiple: false,
-            id: "#quarterUpload",
-            innerHTML: "上传"
-        },
-        formData:{
-            pid:'',
-            zid:''
-        },
-        accept: {
-            title: 'excel',
-            extensions: 'xls,xlsx',
-            mimeTypes: '.xls,.xlsx'
-        },
-
-        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-        resize: false
-    });
-
-    quarterUpload.on( 'uploadSuccess', function( file ,res) {
-        param.quarter_filename = res.data.filename;
-        param.quarter_path = res.data.path;
-        uploadList(file ,res ,'quarterUploadList' ,'quarterDelbtn');
-        delFile(res,'quarterDelbtn' ,'quarterUploadList');
-    });
-
-    quarterUpload.on("uploadStart",function () {
-        quarterUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
-        quarterUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
-    });
-
-    /**
-     * 风险复测单
-     */
-    var listUpload = WebUploader.create({
-        auto: true,
-        // swf文件路径
-        swf:  '/static/admin/js/webupload/Uploader.swf',
-
-        // 文件接收服务端。
-        server: "{:url('Upload/uploadEdu')}",
-
-        // 选择文件的按钮。可选。
-        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-        pick: {
-            multiple: false,
-            id: "#listUpload",
-            innerHTML: "上传"
-        },
-        formData:{
-            pid:'',
-            zid:''
-        },
-        accept: {
-            title: 'excel',
-            extensions: 'xls,xlsx',
-            mimeTypes: '.xls,.xlsx'
-        },
-
-        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-        resize: false
-    });
-
-    listUpload.on( 'uploadSuccess', function( file ,res) {
-        param.sheet_filename = res.data.filename;
-        param.sheet_path = res.data.path;
-        uploadList(file ,res ,'listUploadList' ,'listDelbtn');
-        delFile(res,'listDelbtn' ,'listUploadList');
-    });
-
-    listUpload.on("uploadStart",function () {
-        listUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
-        listUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
-    });
-
-    /**
-     * 风险控制卡
-     */
-    var cardUpload = WebUploader.create({
-        auto: true,
-        // swf文件路径
-        swf:  '/static/admin/js/webupload/Uploader.swf',
-
-        // 文件接收服务端。
-        server: "{:url('Upload/uploadEdu')}",
-
-        // 选择文件的按钮。可选。
-        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-        pick: {
-            multiple: false,
-            id: "#cardUpload",
-            innerHTML: "上传"
-        },
-        formData:{
-            pid:'',
-            zid:''
-        },
-        accept: {
-            title: 'excel',
-            extensions: 'xls,xlsx',
-            mimeTypes: '.xls,.xlsx'
-        },
-
-        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-        resize: false
-    });
-
-    cardUpload.on( 'uploadSuccess', function( file ,res) {
-        param.card_filename = res.data.filename;
-        param.card_path = res.data.path;
-        uploadList(file ,res ,'cardUploadList' ,'cardDelbtn');
-        delFile(res,'cardDelbtn' ,'cardUploadList');
-    });
-
-    cardUpload.on("uploadStart",function () {
-        cardUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
-        cardUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
-    });
-
-    /**
-     * 施工作业票
-     */
-    var ticketUpload = WebUploader.create({
-        auto: true,
-        // swf文件路径
-        swf:  '/static/admin/js/webupload/Uploader.swf',
-
-        // 文件接收服务端。
-        server: "{:url('Upload/uploadEdu')}",
-
-        // 选择文件的按钮。可选。
-        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-        pick: {
-            multiple: false,
-            id: "#ticketUpload",
-            innerHTML: "上传"
-        },
-        formData:{
-            pid:'',
-            zid:''
-        },
-        accept: {
-            title: 'excel',
-            extensions: 'xls,xlsx',
-            mimeTypes: '.xls,.xlsx'
-        },
-
-        // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-        resize: false
-    });
-
-    ticketUpload.on( 'uploadSuccess', function( file ,res) {
-        param.work_filename = res.data.filename;
-        param.work_path = res.data.path;
-        console.log(param);
-        uploadList(file ,res ,'ticketUploadList' ,'ticketDelbtn');
-        delFile(res,'ticketDelbtn' ,'ticketUploadList');
-    });
-
-    ticketUpload.on("uploadStart",function () {
-        ticketUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
-        ticketUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
-    });
 
     //上传文件列表
     function uploadList(file ,res ,pEm ,delBtn) {
@@ -1275,6 +1333,7 @@
     function delFile(res,em,pEm) {
         var path = res.data.path;
         $("#"+pEm).on("click", "."+em, function () {
+            var that = $(this);
             layer.confirm('警告！确定删除'+res.data.filename+'文件?',{
                 btn:['确定','取消'],
                 icon:3
@@ -1287,6 +1346,10 @@
                         path:path,
                     },
                     success:function(){
+                        var id = that.parent().parent().attr('id');
+                        console.log(that);
+                        $('input[type="hidden"][name="'+id+'_name"]').val('');
+                        $('input[type="hidden"][name="'+id+'_path"]').val('');
                         layer.msg('删除成功！', {icon: 1});
                         $("#"+pEm).empty();
                     }
