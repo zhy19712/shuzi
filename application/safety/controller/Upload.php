@@ -631,9 +631,12 @@ class Upload extends Base
     public function uploadEdu(){
         $file = request()->file('file');
         $module_directory_name = request()->param('module_directory_name'); // 当前模块名称
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/' . $module_directory_name . '/');
+        if(empty($module_directory_name)){
+            return json(['code' => -1,'msg' => '请传递模块名称','data' => '']);
+        }
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/' . $module_directory_name . '/');
         if($info){
-            $data['path'] = './uploads/'.$module_directory_name.'/' . str_replace("\\","/",$info->getSaveName());
+            $data['path'] = './uploads/safety/'.$module_directory_name.'/' . str_replace("\\","/",$info->getSaveName());
             $data['filename'] = $file->getInfo('name');
             return json(['code' => 1,'msg' => '上传成功','data' => $data]);
         }else{
@@ -1768,7 +1771,6 @@ class Upload extends Base
     public function uploadChemistrymanagement(){
         /**
          * id 危险化学品管理自增id
-         * chemistry_file_name 危险化学品文件名称
          * name 危险化学品管理上传原文件名
          * filename 危险化学品管理上传文件名
          * date 上传时间
@@ -1779,7 +1781,6 @@ class Upload extends Base
          */
         $chemistry = new ChemistrymanagementModel();
         $id = request()->param('cid');
-        $selfid = request()->param('selfid');
         $chemistry_file_name = request()->param('chemistry_file_name');
         $remark = request()->param('remark');
         $file = request()->file('file');
@@ -1791,7 +1792,6 @@ class Upload extends Base
             if(empty($id))
             {
                 $data = [
-                    'selfid' => $selfid,
                     'chemistry_file_name' =>$chemistry_file_name,
                     'name' => $filename,
                     'filename' => $filename,
@@ -1889,6 +1889,20 @@ class Upload extends Base
         }
     }
 
-
+    /**
+     * 公用函数
+     * 全选获取总条数
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getCheckAllNum()
+    {
+        $tableName = request()->param('tableName'); // 要查询的数据库表名称
+        if(empty($tableName)){
+            return json(['code' => -1,'msg' => '请输入要查询的表名称']);
+        }
+        $total = Db::name('"'.$tableName.'"')->count();
+        return json(['code' => 1,'total' => $total,'msg' => '查询成功']);
+    }
 
 }
