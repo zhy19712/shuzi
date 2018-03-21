@@ -114,12 +114,12 @@ class Risk extends Base
      * @return \think\response\Json
      * @author hutao
      */
-    public function eduDel()
+    public function riskDel()
     {
         if (request()->isAjax()) {
-            $param = input('param.');
-            $edu = new EducationModel();
-            $flag = $edu->delEdu($param['id']);
+            $param = input('id');
+            $edu = new RiskModel();
+            $flag = $edu->del($param);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }

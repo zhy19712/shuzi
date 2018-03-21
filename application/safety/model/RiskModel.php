@@ -68,9 +68,8 @@ class RiskModel extends Model
                 }
                 RiskImgModel::where('risk_id', $item['id'])->delete();
                 $item->riskImg()->saveAll($riskImgs);
-            }catch (Exception $e)
-            {
-                return ['code' => -1, 'data' => '', 'msg' =>$e->getMessage()];
+            } catch (Exception $e) {
+                return ['code' => -1, 'data' => '', 'msg' => $e->getMessage()];
             }
             return ['code' => 1, 'data' => '', 'msg' => '操作成功'];
         } catch (PDOException $e) {
@@ -125,6 +124,24 @@ class RiskModel extends Model
             }
             $duty = new RiskDoubleDutyModel();
             return $duty->prossScore($user, $score, $cat, $act, $time);
+        }
+    }
+
+    /**
+     * 删除
+     * @param $id
+     * @return \think\response\Json
+     */
+    public function del($id)
+    {
+        try {
+            $m = new RiskModel();
+            $m = $m->where('id', $id);
+            $m->riskImg()->delete();
+            $m->delete();
+            return json(['code' => 1]);
+        } catch (Exception $e) {
+            return json(['code' => -1, 'msg' => $e->getMessage()]);
         }
     }
 
