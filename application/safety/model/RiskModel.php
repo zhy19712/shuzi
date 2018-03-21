@@ -34,20 +34,20 @@ class RiskModel extends Model
         try {
             if (empty($risk['id'])) {
 //            新增，直接计算分数
-                $this->proessScore($risk['founder_id'], $risk['cat'], '排查', $risk['founddate']);
-                $this->proessScore($risk['acceptor_id'], $risk['cat'], '验收', $risk['completedate']);
+                $this->proessScore($risk['founder'], $risk['cat'], '排查', $risk['founddate']);
+                $this->proessScore($risk['acceptor'], $risk['cat'], '验收', $risk['completedate']);
                 $res = $this->allowField(true)->save($risk);
                 $_id = $this->getLastInsID();
             } else {
 //            修改，对比发现人与验收人
                 $item_old = $this->where('id', $risk['id'])->find();
-                if (!$item_old['founder_id'] == $risk['founder_id']) {
-                    $this->proessScore($item_old['founder_id'], $item_old['cat'], '修改', $item_old['founddate'], true);
-                    $this->proessScore($risk['founder_id'], $risk['cat'], '排查', $risk['founddate']);
+                if (!$item_old['founder'] == $risk['founder']) {
+                    $this->proessScore($item_old['founder'], $item_old['cat'], '修改', $item_old['founddate'], true);
+                    $this->proessScore($risk['founder'], $risk['cat'], '排查', $risk['founddate']);
                 }
-                if (!$item_old['acceptor_id'] == $risk['acceptor_id']) {
-                    $this->proessScore($item_old['acceptor_id'], $item_old['cat'], '修改', $risk['acceptor_id'], true);
-                    $this->proessScore($risk['acceptor_id'], $risk['cat'], '验收', $risk['acceptor_id']);
+                if (!$item_old['acceptor'] == $risk['acceptor']) {
+                    $this->proessScore($item_old['acceptor'], $item_old['cat'], '修改', $risk['acceptor_id'], true);
+                    $this->proessScore($risk['acceptor'], $risk['cat'], '验收', $risk['acceptor_id']);
                 }
                 $res = $this->allowField(true)->save($risk, ['id' => $risk['id']]);
                 $_id = $risk['id'];
@@ -85,7 +85,7 @@ class RiskModel extends Model
      * @param bool $isEdit 是否编辑修改
      * @return bool
      */
-    function proessScore($userId, $cat, $act, $time, $isEdit = false)
+    function proessScore($user, $cat, $act, $time, $isEdit = false)
     {
         $score = 0;
         switch ($cat) {
@@ -122,7 +122,7 @@ class RiskModel extends Model
                 $score = 0 - $score;
             }
             $duty = new RiskDoubleDutyModel();
-            return $duty->prossScore($userId, $score, $cat, $act, $time);
+            return $duty->prossScore($user, $score, $cat, $act, $time);
         }
     }
 
