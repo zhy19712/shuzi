@@ -496,7 +496,7 @@ class Jobsafety extends Base
                     $remark_index = $k;
                 }
             }
-            return(['type_index'=>$type_index,'specification_model_index'=>$specification_model_index,'placement_position_index'=>$placement_position_index,'number_index'=>$number_index,'date_manufacture_index'=>$date_manufacture_index,'date_investment_index'=>$date_investment_index,'next_check_time_index'=>$next_check_time_index,'serial_number_index'=>$serial_number_index,'remark_index'=>$remark_index]);
+            return json(['1'=>$type_index,'2'=>$specification_model_index,'3'=>$placement_position_index,'4'=>$number_index,'5'=>$date_manufacture_index,'6'=>$date_investment_index,'7'=>$next_check_time_index,'8'=>$serial_number_index,'9'=>$remark_index]);
             if($type_index == -1 || $specification_model_index == -1 || $placement_position_index == -1 || $number_index == -1 || $date_manufacture_index == -1 || $date_investment_index == -1 || $next_check_time_index == -1 || $serial_number_index || $remark_index == -1 ){
                 $json_data['code'] = 0;
                 $json_data['info'] = '文件内容格式不对';
