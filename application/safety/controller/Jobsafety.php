@@ -9,11 +9,13 @@
 namespace app\safety\controller;
 
 use app\admin\controller\Base;
-use app\safety\model\JobsafetyModel;
-use app\safety\model\ViolationrecordModel;
+use app\safety\model\JobsafetyModel;//树状结构
+use app\safety\model\ViolationrecordModel;//反违章记录
+use app\safety\model\FiremanagementModel;//消防安全管理
 
 class Jobsafety extends Base
 {
+
     /*
      * 作业安全左边的树状结构
      */
@@ -27,6 +29,9 @@ class Jobsafety extends Base
         else
             return $this->fetch();
     }
+
+
+    /********************************************************反违章记录***************************************************************/
 
     /*
      * 获取一条反违章记录信息
@@ -234,13 +239,13 @@ class Jobsafety extends Base
         //实例化
         $objPHPExcel = new \PHPExcel();
         /*右键属性所显示的信息*/
-        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
-        ->setLastModifiedBy("zxf")  //最后一次保存者
-        ->setTitle('数据EXCEL导出')  //标题
-        ->setSubject('数据EXCEL导出') //主题
-        ->setDescription('导出数据')  //描述
-        ->setKeywords("excel")   //标记
-        ->setCategory("result file");  //类别
+//        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
+//        ->setLastModifiedBy("zxf")  //最后一次保存者
+//        ->setTitle('数据EXCEL导出')  //标题
+//        ->setSubject('数据EXCEL导出') //主题
+//        ->setDescription('导出数据')  //描述
+//        ->setKeywords("excel")   //标记
+//        ->setCategory("result file");  //类别
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
         // 设置表格第一行显示内容
@@ -302,13 +307,13 @@ class Jobsafety extends Base
         //实例化
         $objPHPExcel = new \PHPExcel();
         /*右键属性所显示的信息*/
-        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
-        ->setLastModifiedBy("zxf")  //最后一次保存者
-        ->setTitle('数据EXCEL导出')  //标题
-        ->setSubject('数据EXCEL导出') //主题
-        ->setDescription('导出数据')  //描述
-        ->setKeywords("excel")   //标记
-        ->setCategory("result file");  //类别
+//        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
+//        ->setLastModifiedBy("zxf")  //最后一次保存者
+//        ->setTitle('数据EXCEL导出')  //标题
+//        ->setSubject('数据EXCEL导出') //主题
+//        ->setDescription('导出数据')  //描述
+//        ->setKeywords("excel")   //标记
+//        ->setCategory("result file");  //类别
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
         // 设置表格第一行显示内容
@@ -333,4 +338,321 @@ class Jobsafety extends Base
         $objWriter->save('php://output');
         exit;
     }
+
+    /***************************************************消防安全管理********************************************************************/
+    /*
+     * 获取一条消防安全管理信息
+     */
+    public function getfireindex()
+    {
+        if(request()->isAjax()){
+            $firemanagement = new FiremanagementModel();
+            $param = input('post.');
+            $data = $firemanagement->getOne($param['id']);
+            return json(['code'=> 1, 'data' => $data]);
+        }
+        return $this->fetch();
+    }
+
+    /*
+     * 新增/编辑一条消防安全管理信息
+     */
+    public function  firemanagementEdit()
+    {
+        $firemanagement = new FiremanagementModel();
+        $param = input('post.');
+        if(request()->isAjax()){
+            if(empty($param['id']))//id为空时表示新增
+            {
+                $data = [
+//                    'id' => $param['id'],
+                    'selfid' => $param['selfid'],//区别类别
+                    'type' => $param['type'],//类型
+                    'specification_model' => $param['specification_model'],//规格型号
+                    'placement_position' => $param['placement_position'],//安放位置
+                    'number' => $param['number'],//数量
+                    'date_manufacture' => $param['date_manufacture'],//生产日期
+                    'date_investment' => $param['date_investment'],//投用日期
+                    'next_check_time' => $param['next_check_time'],//下次换检时间
+                    'serial_number' => $param['serial_number'],//编号
+                    'remark' => $param['remark'],//备注
+                    'date' => date("Y-m-d H:i:s")//添加时间
+                ];
+                $flag = $firemanagement->insertFiremanagement($data);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }else
+            {
+                $data = [
+                    'id' => $param['id'],
+//                    'selfid' => $param['selfid'],//区别类别
+                    'type' => $param['type'],//类型
+                    'specification_model' => $param['specification_model'],//规格型号
+                    'placement_position' => $param['placement_position'],//安放位置
+                    'number' => $param['number'],//数量
+                    'date_manufacture' => $param['date_manufacture'],//生产日期
+                    'date_investment' => $param['date_investment'],//投用日期
+                    'next_check_time' => $param['next_check_time'],//下次换检时间
+                    'serial_number' => $param['serial_number'],//编号
+                    'remark' => $param['remark'],//备注
+//                    'date' => date("Y-m-d H:i:s")//添加时间
+                ];
+                $flag = $firemanagement->editFiremanagement($data);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
+
+        }
+    }
+
+    /*
+     * 删除一条消防安全管理信息
+     */
+    public function firemanagementDel()
+    {
+        $firemanagement = new FiremanagementModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $flag = $firemanagement->delFiremanagement($param['id']);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    /*
+     * 获取反违章记录信息,excel导入时间
+     * @return mixed|\think\response\Json
+     */
+    public function getfireversion()
+    {
+        if(request()->isAjax()){
+            $param = input('post.');
+            $selfid = $param['selfid'];
+            $firemanagement = new FiremanagementModel();
+            $data = $firemanagement->getVersion($selfid);
+            return json(['code'=> 1, 'data' => $data]);
+        }
+        return $this->fetch();
+    }
+
+    /**
+     * 反违章记录excel表格导入
+     * @return array|\think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     */
+    public function fireimportExcel()
+    {
+        $selfid = input('param.selfid');
+        if(empty($selfid)){
+            return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
+        }
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/firemanagement');
+        if($info){
+            // 调用插件PHPExcel把excel文件导入数据库
+            Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+            $exclePath = $info->getSaveName();  //获取文件名
+            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/firemanagement' . DS . $exclePath;   //上传文件的地址
+            // 当文件后缀是xlsx 或者 csv 就会报：the filename xxx is not recognised as an OLE file错误
+            $extension = get_extension($file_name);
+            if ($extension =='xlsx') {
+                $objReader = new \PHPExcel_Reader_Excel2007();
+                $obj_PHPExcel = $objReader->load($file_name);
+            } else if ($extension =='xls') {
+                $objReader = new \PHPExcel_Reader_Excel5();
+                $obj_PHPExcel = $objReader->load($file_name);
+            } else if ($extension=='csv') {
+                $PHPReader = new \PHPExcel_Reader_CSV();
+                //默认输入字符集
+                $PHPReader->setInputEncoding('GBK');
+                //默认的分隔符
+                $PHPReader->setDelimiter(',');
+                //载入文件
+                $obj_PHPExcel = $PHPReader->load($file_name);
+            }
+            $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
+            // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
+            $type_index = $specification_model_index = $placement_position_index = $number_index = $date_manufacture_index = $date_investment_index = $next_check_time_index = $serial_number_index = $remark_index =  -1;
+            foreach ($excel_array[0] as $k=>$v){
+                $str = preg_replace('/[ ]/', '', $v);
+                if ($str == '类型'){
+                    $type_index = $k;
+                }else if ($str == '规格型号'){
+                    $specification_model_index = $k;
+                }else if($str == '安放位置'){
+                    $placement_position_index = $k;
+                }else if($str == '数量'){
+                    $number_index = $k;
+                }else if($str == '生产日期'){
+                    $date_manufacture_index = $k;
+                }else if($str == '投用时间'){
+                    $date_investment_index = $k;
+                }else if($str == '下次换检时间'){
+                    $next_check_time_index = $k;
+                }else if($str == '编号'){
+                    $serial_number_index = $k;
+                }else if($str == '备注'){
+                    $remark_index = $k;
+                }
+            }
+
+            if($type_index == -1 || $specification_model_index == -1 || $placement_position_index == -1 || $number_index == -1 || $date_manufacture_index == -1 || $date_investment_index == -1 || $next_check_time_index == -1 || $serial_number_index || $remark_index == -1 ){
+                $json_data['code'] = 0;
+                $json_data['info'] = '文件内容格式不对';
+                return json($json_data);
+            }
+            $insertData = [];
+            foreach($excel_array as $k=>$v){
+                if($k > 0){
+
+                    $insertData[$k]['type'] = $v[$type_index];
+                    $insertData[$k]['specification_model'] = $v[$specification_model_index];
+                    $insertData[$k]['placement_position'] = $v[$placement_position_index];
+                    $insertData[$k]['number'] = $v[$number_index];
+                    $insertData[$k]['date_manufacture'] = $v[$date_manufacture_index];
+                    $insertData[$k]['date_investment'] = $v[$date_investment_index];
+                    $insertData[$k]['next_check_time'] = $v[$next_check_time_index];
+                    $insertData[$k]['serial_number'] = $v[$serial_number_index];
+                    $insertData[$k]['remark'] = $v[$remark_index];
+                    $insertData[$k]['input_time'] = date('Y-m-d H:i:s');
+                    $insertData[$k]['selfid'] = $selfid;
+
+                }
+            }
+            $success = Db::name('think_safety_fire_management')->insertAll($insertData);
+            if($success !== false){
+                return  json(['code' => 1,'data' => '','msg' => '导入成功']);
+            }else{
+                return json(['code' => -1,'data' => '','msg' => '导入失败']);
+            }
+        }
+    }
+
+    /**
+     * 批量导出
+     * @return \think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     */
+    public function fireexportExcel()
+    {
+        if(request()->isAjax()){
+            return json(['code'=>1]);
+        }
+        $firemanagement = new FiremanagementModel();
+        $idArr = input('param.idarr/a');
+        if($idArr['0'] == "all")
+        {
+            $idArr = $firemanagement ->getallid();
+        }
+        $name = '消防安全管理'.date('Y-m-d H:i:s'); // 导出的文件名
+
+        $list = $firemanagement->getList($idArr);
+        header("Content-type:text/html;charset=utf-8");
+        Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+        //实例化
+        $objPHPExcel = new \PHPExcel();
+        /*右键属性所显示的信息*/
+//        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
+//        ->setLastModifiedBy("zxf")  //最后一次保存者
+//        ->setTitle('数据EXCEL导出')  //标题
+//        ->setSubject('数据EXCEL导出') //主题
+//        ->setDescription('导出数据')  //描述
+//        ->setKeywords("excel")   //标记
+//        ->setCategory("result file");  //类别
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        // 设置表格第一行显示内容
+        $objPHPExcel->getActiveSheet()
+            ->setCellValue('A1', '序号')
+            ->setCellValue('B1', '类型')
+            ->setCellValue('C1', '规格型号')
+            ->setCellValue('D1', '安放位置')
+            ->setCellValue('E1', '数量')
+            ->setCellValue('F1', '生产日期')
+            ->setCellValue('G1', '投用时间')
+            ->setCellValue('H1', '下次换检时间')
+            ->setCellValue('I1', '编号')
+            ->setCellValue('J1', '备注');
+        $key = 1;
+        /*以下就是对处理Excel里的数据，横着取数据*/
+        foreach($list as $v){
+            //设置循环从第二行开始
+            $key++;
+            $objPHPExcel->getActiveSheet()
+                //Excel的第A列，name是你查出数组的键值字段，下面以此类推
+                ->setCellValue('A'.$key, $v['id'])
+                ->setCellValue('B'.$key, $v['type'])
+                ->setCellValue('C'.$key, $v['specification_model'])
+                ->setCellValue('D'.$key, $v['placement_position'])
+                ->setCellValue('E'.$key, $v['number'])
+                ->setCellValue('F'.$key, $v['date_manufacture'])
+                ->setCellValue('G'.$key, $v['date_investment'])
+                ->setCellValue('H'.$key, $v['next_check_time'])
+                ->setCellValue('I'.$key, $v['serial_number'])
+                ->setCellValue('J'.$key, $v['remark']);
+        }
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        ob_end_clean();  //清除缓冲区,避免乱码
+        header('Content-Type: application/vnd.ms-excel'); //文件类型
+        header('Content-Disposition: attachment;filename="'.$name.'.xls"'); //文件名
+        header('Cache-Control: max-age=0');
+        header('Content-Type: text/html; charset=utf-8'); //编码
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003
+        $objWriter->save('php://output');
+        exit;
+    }
+
+    /**
+     * 导出模板
+     * @return \think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     */
+    public function fireexportExcelTemplete()
+    {
+        if(request()->isAjax()){
+            return json(['code'=>1]);
+        }
+        $name = input('param.name');
+        $newName = '消防安全管理 - '.$name.date('Y-m-d H:i:s'); // 导出的文件名
+        header("Content-type:text/html;charset=utf-8");
+        Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+        //实例化
+        $objPHPExcel = new \PHPExcel();
+//        /*右键属性所显示的信息*/
+//        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
+//        ->setLastModifiedBy("zxf")  //最后一次保存者
+//        ->setTitle('数据EXCEL导出')  //标题
+//        ->setSubject('数据EXCEL导出') //主题
+//        ->setDescription('导出数据')  //描述
+//        ->setKeywords("excel")   //标记
+//        ->setCategory("result file");  //类别
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        // 设置表格第一行显示内容
+        $objPHPExcel->getActiveSheet()
+            ->setCellValue('A1', '序号')
+            ->setCellValue('B1', '类型')
+            ->setCellValue('C1', '规格型号')
+            ->setCellValue('D1', '安放位置')
+            ->setCellValue('E1', '数量')
+            ->setCellValue('F1', '生产日期')
+            ->setCellValue('G1', '投用时间')
+            ->setCellValue('H1', '下次换检时间')
+            ->setCellValue('I1', '编号')
+            ->setCellValue('J1', '备注');
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        ob_end_clean();  //清除缓冲区,避免乱码
+        header('Content-Type: application/vnd.ms-excel'); //文件类型
+        header('Content-Disposition: attachment;filename="'.$newName.'.xls"'); //文件名
+        header('Cache-Control: max-age=0');
+        header('Content-Type: text/html; charset=utf-8'); //编码
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003
+        $objWriter->save('php://output');
+        exit;
+    }
+
 }
