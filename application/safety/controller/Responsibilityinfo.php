@@ -15,7 +15,7 @@ class Responsibilityinfo extends Base
 {
 
     /*
-     *获取一条安全生产信息化建设信息
+     * 获取一条安全生产信息化建设信息
     */
     public function index()
     {
@@ -28,7 +28,7 @@ class Responsibilityinfo extends Base
         return $this->fetch();
     }
     /*
-     *编辑一条安全生产信息化建设
+     * 编辑一条安全生产信息化建设
     */
     public function infoEdit()
     {
@@ -44,7 +44,7 @@ class Responsibilityinfo extends Base
         }
     }
     /*
-     *下载一条安全生产信息化建设
+     * 下载一条安全生产信息化建设
     */
     public function infoDownload()
     {
@@ -70,7 +70,7 @@ class Responsibilityinfo extends Base
         exit;
     }
     /*
-     *删除一条安全生产信息化建设
+     * 删除一条安全生产信息化建设
     */
     public function infoDel()
     {
@@ -91,7 +91,7 @@ class Responsibilityinfo extends Base
         }
     }
     /*
-     *预览一条安全生产信息化建设
+     * 预览一条安全生产信息化建设
     */
     public function infoPreview()
     {
