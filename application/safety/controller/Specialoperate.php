@@ -44,13 +44,14 @@ class Specialoperate extends Base
         $pathImgArr = input('post.pathImgArr/a');//获取post传过来的多个文件、图片的路径，包含在一个一维数组中。
         $pathImgDel = input('post.pathImgDel/a');//获取post传过来要删除的多个文件、图片的路径，包含在一个一维数组中。
 
-        halt($pathImgName);
-        halt($pathImgArr);
-        halt($pathImgDel);
-//        foreach ((array)$pathImgName as $k=>$v)
-//        {
-//
-//        }
+//        halt($pathImgName);
+//        halt($pathImgArr);
+//        halt($pathImgDel);
+        foreach ((array)$pathImgName as $k=>$v)
+        {
+            $str_img .= "*".$v;
+        }
+        halt($str_img);
 
 
 
