@@ -664,10 +664,10 @@
         <div class="col-sm-12" style="background-color:#fff;">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <div class="col-xs-12" style="text-align: center;">
+                    <div class="col-xs-12" style="text-align: right;">
                         <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i></a>
                     </div>
-                    <img src="" alt="" width="100%">
+                    <img src="" alt="" width="80%">
                 </div>
             </div>
         </div>
@@ -978,7 +978,8 @@
 
     var pathImg;//后台返回的图片路径
     var pathImgArr = [];//后台返回的图片路径的数组
-    var pathArrDel = []; //需要sha'chuang
+    var pathImgDel = []; //需要删除的
+    var pathImgName = []; //图片名
     var uploader1;
     //特种作业-初始化
     function upload1() {
@@ -1059,13 +1060,10 @@
                 // console.log(data)
                 if(res.code === 1){
                     layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                    // $("#file_upload1").empty();
-                    // $("#file_per1").empty();
-                    // $("#file_list1").empty();
-                    // $("#fname1").modal('hide');
-                    // table1.ajax.url("__SCRIPT__/safety_special_equipment_management.php?selfid="+selfid).load();
                     console.log(res.data);
                     console.log(res.filename);
+                    pathImgArr.push(res.data);
+                    pathImgName.push(res.filename);
                     $( '#'+file.id ).find('.progress').remove();//删除进度条
                 }else {
                     layer.msg("抱歉，您没有此权限");
@@ -1100,11 +1098,11 @@
     $('#fname7').on('show.bs.modal', function() {
         $('#fname1').hide();
     });
+
     //特种作业-提交
         $("#specialform").submit(function () {
-
                 $.ajax({
-                    url: "../Specialequipmentmanagement/equipmentAdd",
+                    url: "../Specialoperate/specialoperateEdit",
                     type: "post",
                     data: {
                         id:$("#aid").val(),
@@ -1123,19 +1121,124 @@
                         certificate_number:$("#certificate_number").val(),//证书编号
                         advance_retreat_time:$("#advance_retreat_time").val(),//进退场时间
                         document_status:$("#document_status").val(),//证件状态
+                        pathImgArr : pathImgArr,// 路径数组
+                        pathImgDel : pathImgDel, //需要删除的
+                        pathImgName : pathImgName, //图片名
                         input_time:$("#down_excel1").val()
                     },
                     datatype: "json",
                     success: function (res) {
                         if(res.code === 1){
                             table1.ajax.url("__SCRIPT__/safety_special_operate.php?selfid="+selfid).load();
-                            $("#fname3").modal('hide');
+                            $("#fname1").modal('hide');
                         }else {
                             layer.msg(res.msg);
                         }
                     }
                 });
         });
+    //特种作业-编辑
+    function edit1(that) {
+        $("#fname3 .btn-primary").show();
+        $("#file_upload3").show();
+        $("#fname3 input").removeAttr("disabled","disabled");
+        $("#fname3 select").removeAttr("disabled","disabled");
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
+        $.ajax({
+            url: "../Specialequipmentmanagement/index",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.code === 1){
+                    $("#cid").val(res.data.id);
+                    $("#remark3").val(res.data.remark);
+                    $("#equip_name").val(res.data.equip_name);
+                    $("#model").val(res.data.model);
+                    $("#equip_num").val(res.data.equip_num);
+                    $("#manufactur_unit").val(res.data.manufactur_unit);
+                    $("#date_production").val(res.data.date_production);
+                    $("#current_state").val(res.data.current_state);
+                    $("#equip_manage_department").val(res.data.equip_manage_department);
+                    $("#safety_machinery_time").val(res.data.safety_machinery_time);
+                    $("#safety_inspection_num").val(res.data.safety_inspection_num);
+                    $("#inspection_unit").val(res.data.inspection_unit);
+                    $("#safety_inspecte_certificate_time").val(res.data.safety_inspecte_certificate_time);
+                    $("#equipmen_overhaul").val(res.data.equipmen_overhaul);
+                    $("#date_overhaul").val(res.data.date_overhaul);
+                    $("#entry_time").val(res.data.entry_time);
+                    $("#equip_state").val(equip_state(res.data.equip_state,res.data.safety_inspecte_certificate_time));
+                    uploader3= null;
+                    upload3();
+                    if(res.data.path){
+                        $("#file_list3").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
+                            '<span class="info2">' + res.data.name + '</span>&nbsp' +
+                            '<span onclick="fdelatt3(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                            '</div>' );
+                    }
+                    $("#fname3").modal('show');
+                }
+            }
+        })
+    };
+    //特种作业-查看
+    function show1(that) {
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
+        $.ajax({
+            url: "../Specialoperate/getindex",
+            type: "post",
+            data: {id:id},
+            dataType: "json",
+            success: function (res) {
+                if(res.code === 1){
+                    $("#aid").val(res.data.id);
+                    $("#remark3").val(res.data.remark);
+                    $("#equip_name").val(res.data.equip_name);
+                    $("#model").val(res.data.model);
+                    $("#equip_num").val(res.data.equip_num);
+                    $("#manufactur_unit").val(res.data.manufactur_unit);
+                    $("#date_production").val(res.data.date_production);
+                    $("#current_state").val(res.data.current_state);
+                    $("#equip_manage_department").val(res.data.equip_manage_department);
+                    $("#safety_machinery_time").val(res.data.safety_machinery_time);
+                    $("#safety_inspection_num").val(res.data.safety_inspection_num);
+                    $("#inspection_unit").val(res.data.inspection_unit);
+                    $("#safety_inspecte_certificate_time").val(res.data.safety_inspecte_certificate_time);
+                    $("#equipmen_overhaul").val(res.data.equipmen_overhaul);
+                    $("#date_overhaul").val(res.data.date_overhaul);
+                    $("#entry_time").val(res.data.entry_time);
+                    $("#equip_state").val(equip_state(res.data.equip_state,res.data.safety_inspecte_certificate_time));
+                    var pathArr = res.data.pathImgArr;
+                    var imgName = res.data.pathImgName;
+                    if(pathImgArr.length!==0){
+                        var $li = $(
+                            '<div id="' + file.id + '" class="file-item thumbnail">' +
+                            '<img>' +
+                            '<div class="info1">' + file.name + '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
+                            '</div>'
+                        );
+                        for(var i = 0;i<pathArr.length;i++){
+                            var $li = $(
+                                '<div id="' + file.id + '" class="file-item thumbnail">' +
+                                '<img>' +
+                                '<div class="info1">' + imgName[i] + '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
+                                '</div>'
+                            );
+                            $img.attr( 'src', pathArr[i].slice(1));
+                            $("#file_list1").append( $li );
+                        }
+
+                    }
+                    $("#fname1").modal('show');
+                    $("#fname1 input").attr("disabled","disabled");
+                    $("#fname1 select").attr("disabled","disabled");
+                    $("#fname1 .btn-primary").hide();
+                    $("#file_upload1").hide();
+                }
+            }
+        })
+    };
 </script>
 <!--table2交叉作业-->
 <script>
