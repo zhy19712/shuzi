@@ -29,6 +29,7 @@ use app\safety\model\EmergencyrehearsalModel;
 use app\safety\model\EmergencydisposalModel;
 use app\safety\model\EmergencyreviseModel;
 use app\safety\model\ChemistrymanagementModel;
+use app\safety\model\CrossoperationModel;
 use think\Db;
 
 class Upload extends Base
@@ -630,9 +631,12 @@ class Upload extends Base
     public function uploadEdu(){
         $file = request()->file('file');
         $module_directory_name = request()->param('module_directory_name'); // 当前模块名称
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/' . $module_directory_name . '/');
+        if(empty($module_directory_name)){
+            return json(['code' => -1,'msg' => '请传递模块名称','data' => '']);
+        }
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/' . $module_directory_name . '/');
         if($info){
-            $data['path'] = './uploads/'.$module_directory_name.'/' . str_replace("\\","/",$info->getSaveName());
+            $data['path'] = './uploads/safety/'.$module_directory_name.'/' . str_replace("\\","/",$info->getSaveName());
             $data['filename'] = $file->getInfo('name');
             return json(['code' => 1,'msg' => '上传成功','data' => $data]);
         }else{
@@ -1077,7 +1081,8 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/normal/');
         if($info){
             $path = './uploads/normal/' . str_replace("\\","/",$info->getSaveName());
-            return json(['code'=>1,'msg'=>'上传成功','data'=>$path]);
+            $filename = $file->getInfo('name');
+            return json(['code'=>1,'msg'=>'上传成功','data'=>$path,'filename'=>$filename]);
         }else{
             return json(['code'=>-1,'msg'=>'上传失败']);
         }
@@ -1819,6 +1824,86 @@ class Upload extends Base
         }
     }
 
+    /*
+     * 交叉作业管理上传
+     * @return \think\response\Json
+     */
+    public function uploadCrossoperation(){
+        /**
+         * id 交叉作业管理表自增id
+         * cross_file_name 交叉作业管理文件名称
+         * category 类别
+         * name 危险化学品管理上传原文件名
+         * filename 危险化学品管理上传文件名
+         * date 上传时间
+         * owner 上传人
+         * remark 备注
+         * path 文件路径
 
+         */
+        $crossoperation = new CrossoperationModel();
+        $id = request()->param('bid');
+        $selfid = request()->param('selfid');
+        $cross_file_name = request()->param('cross_file_name');
+        $category = request()->param('category');//类别
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/chemistrymanagement');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/chemistrymanagement/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'selfid' => $selfid,
+                    'category' =>$category,
+                    'cross_file_name' =>$cross_file_name,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $crossoperation->insertCrossoperation($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $crossoperation->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'category' => $category,
+                    'cross_file_name' => $cross_file_name,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $crossoperation->editCrossoperation($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /**
+     * 公用函数
+     * 全选获取总条数
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getCheckAllNum()
+    {
+        $tableName = request()->param('tableName'); // 要查询的数据库表名称
+        if(empty($tableName)){
+            return json(['code' => -1,'msg' => '请输入要查询的表名称']);
+        }
+        $total = Db::name('"'.$tableName.'"')->count();
+        return json(['code' => 1,'total' => $total,'msg' => '查询成功']);
+    }
 
 }
