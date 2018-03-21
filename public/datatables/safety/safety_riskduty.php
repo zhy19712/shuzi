@@ -32,11 +32,11 @@ $primaryKey = 'id';
 
 //定义数据库中查看的字段与表格中的哪一列相对应
 $columns = array(
-    array( 'db' => 'id',  'dt' => 1 ),
-    array( 'db' => 'user',  'dt' => 2 ),
-    array( 'db' => 'dep',  'dt' => 3 ),
-    array( 'db' => 'score',  'dt' => 4 ),
-    array( 'db' => 'context',  'dt' => 5 )
+    array( 'db' => 'id',  'dt' => 0 ),
+    array( 'db' => 'user',  'dt' => 1 ),
+    array( 'db' => 'dep',  'dt' => 2 ),
+    array( 'db' => 'score',  'dt' => 3 ),
+    array( 'db' => 'context',  'dt' => 4 )
 );
 
 

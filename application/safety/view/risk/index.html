@@ -16,7 +16,7 @@
         cursor: pointer;
         background-color: #00a2d4;
     }
-    #path{
+    #path,#aPairOfPath{
         line-height: 30px;
         font-weight: 700;
         border-bottom: 1px solid #000;
@@ -157,7 +157,8 @@
     #aPairOf_wrapper .rePath{
         text-align: center;
         margin-right: 240px;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
+        margin-top: 5px;
     }
     #risk_table_model thead input{
         border: 1px solid;
@@ -193,16 +194,23 @@
         margin-left: 5px;
     }
     #aPairOf_reduce_table_model input[type="number"],#aPairOf_reduce_table_model input[type="text"]{
-        width:55%;
+        width:100%;
+    }
+    .table_td{
+        width:15%;
+    }
+    #aPairOfPathSpan,#spanPath{
+        display: inline-block;
+        float: left;
     }
 </style>
 <body>
 <!--表格-->
-<div class="wrapper wrapper-content animated fadeInRight" style="width: 100%;vertical-align: top;padding: 0;margin-top: 20px;margin-left: 20px;text-align: center">
+<div class="wrapper wrapper-content animated fadeInRight" style="width: 98%;vertical-align: top;padding: 0;margin-top: 20px;margin-left: 20px;text-align: center">
     <div class="ibox float-e-margins">
         <div class="ibox-content">
             <div class="row">
-                <div id="path">当前路径:</div>
+                <div id="path"><span id="spanPath">隐患排查治理</span><div style="clear: both;"></div></div>
                 <div id="mytable1_wrapper">
                     <div id="excel">
                         <div class='btn' id="excelImport"></div>
@@ -451,12 +459,11 @@
 </div>
 
 <!--一岗双责-->
-<div class="aPairOf_risk animated fadeInRight" style="display:none;width: 100%;vertical-align: top;padding: 0;margin-top: 20px;margin-left: 20px;text-align: center">
+<div class="aPairOf_risk animated fadeInRight" style="display:none;width: 98%;vertical-align: top;padding: 0;margin-top: 20px;margin-left: 20px;text-align: center">
     <div class="ibox">
         <div class="ibox-content">
             <div class="row">
-                <div id="aPairOfPath">路径:</div>
-                <div id="aPairOfPathJian">设置</div>
+                <div id="aPairOfPath"><span id="aPairOfPathSpan">隐患排查治理 一岗双责</span><div style="clear: both;"></div></div>
                 <div id="aPairOf_wrapper">
                     <div class="rePath">返回</div>
                     <table id="aPairOf_table" width="100%" class="table table-striped table-bordered">
@@ -619,106 +626,106 @@
                                 <td rowspan="7" class="colorSee"></td>
                                 <td rowspan="7" class="colorSee"></td>
                                 <td class="colorSee">现场隐患未发现</td>
-                                <td class="colorSee">
+                                <td class="colorSee table_td">
                                     <input type="number" id="numSee1">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <input type="text" name="reduce1" id="reduce1">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <input type="text" value="内容">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <textarea name="reduceRemark1" id="reduceRemark1"></textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="colorSee">隐患未整改闭环</td>
-                                <td class="colorSee">
+                                <td class="colorSee table_td">
                                     <input type="number" id="numSee2">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <input type="text" name="reduce2" id="reduce2">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <input type="text" value="内容">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <textarea name="reduceRemark2" id="reduceRemark2"></textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="colorSee">安全记录不规范</td>
-                                <td class="colorSee">
+                                <td class="colorSee table_td">
                                     <input type="number" id="numSee3">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <input type="text" name="reduce3" id="reduce3">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <input type="text" value="内容">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <textarea name="reduceRemark3" id="reduceRemark3"></textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="colorSee">未落实风险管控责任</td>
-                                <td class="colorSee">
+                                <td class="colorSee table_td">
                                     <input type="number" id="numSee4">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <input type="text" name="reduce4" id="reduce4">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <input type="text" value="内容">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <textarea name="reduceRemark4" id="reduceRemark4"></textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="colorSee">安全措施验收不负责</td>
-                                <td class="colorSee">
+                                <td class="colorSee table_td">
                                     <input type="number" id="numSee5">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <input type="text" name="reduce5" id="reduce5">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <input type="text" value="内容">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <textarea name="reduceRemark5" id="reduceRemark5"></textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="colorSee">现场未执行方案</td>
-                                <td class="colorSee">
+                                <td class="colorSee table_td">
                                     <input type="number" id="numSee6">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <input type="text" name="reduce6" id="reduce6">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <input type="text" value="内容">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <textarea name="reduceRemark6" id="reduceRemark6"></textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="colorSee">无方案施工且未制止</td>
-                                <td class="colorSee">
+                                <td class="colorSee table_td">
                                     <input type="number" id="numSee7">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <input type="text" name="reduce7" id="reduce7">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <input type="text" value="内容">
                                 </td>
-                                <td>
+                                <td class="table_td">
                                     <textarea name="reduceRemark7" id="reduceRemark7"></textarea>
                                 </td>
                             </tr>
@@ -1390,7 +1397,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/safety_rules.php"
+            "url": "__SCRIPT__/safety_riskduty.php"
         },
         "dom": '<"selectyear"><"myl"l><"float_left"f>tip',
         "columnDefs": [
@@ -1399,10 +1406,8 @@
                 "orderable": false,
                 "targets": [5],
                 "render" :  function(data,type,row) {
-                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='downloadFile(this)' value='下载'/>";
-                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='preview(this)' value='预览'/>" ;
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
-                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='riskreduceSee(this)' value='查看'/>";
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='riskreduceSetUp(this)' value='设置'/>" ;
                     return html;
                 }
             }
@@ -1422,19 +1427,19 @@
     } );
 
     //得分查看
-    $("#aPairOfPath").click(function () {
+    function riskreduceSee() {
         $("#aPairOf_modal h5").text("查看");
         $("#aPairOf_modal").modal('show');
-    })
+    }
     //得分查看返回
     $("#aPairOf_modal .btn-danger").click(function () {
         standard_uploader = null;
     });
     //减分设置
-    $("#aPairOfPathJian").click(function () {
+    function riskreduceSetUp() {
         $("#aPairOf_reduce_modal h5").text("设置");
         $("#aPairOf_reduce_modal").modal('show');
-    })
+    }
     //减分时间插件
     $("#reduce1").jeDate({format: "YYYY-MM-DD"});
     $("#reduce2").jeDate({format: "YYYY-MM-DD"});
