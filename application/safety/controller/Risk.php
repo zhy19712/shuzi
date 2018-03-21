@@ -55,6 +55,7 @@ class Risk extends Base
             $flag = $edu->insertOrEdit($param);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
+
     }
 
     public function getRisk()
