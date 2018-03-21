@@ -47,8 +47,8 @@ class RiskModel extends Model
                     $this->proessScore($risk['founder'], $risk['cat'], '排查', $risk['founddate']);
                 }
                 if (!$item_old['acceptor'] == $risk['acceptor']) {
-                    $this->proessScore($item_old['acceptor'], $item_old['cat'], '修改', $risk['acceptor_id'], true);
-                    $this->proessScore($risk['acceptor'], $risk['cat'], '验收', $risk['acceptor_id']);
+                    $this->proessScore($item_old['acceptor'], $item_old['cat'], '修改', $risk['acceptor'], true);
+                    $this->proessScore($risk['acceptor'], $risk['cat'], '验收', $risk['acceptor']);
                 }
                 $res = $this->allowField(true)->save($risk, ['id' => $risk['id']]);
                 $_id = $risk['id'];
