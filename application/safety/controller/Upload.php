@@ -1902,7 +1902,7 @@ class Upload extends Base
         if(empty($tableName)){
             return json(['code' => -1,'msg' => '请输入要查询的表名称']);
         }
-        $total = Db::name('"'.$tableName.'"')->count();
+        $total = Db::name($tableName)->count();
         return json(['code' => 1,'total' => $total,'msg' => '查询成功']);
     }
 
