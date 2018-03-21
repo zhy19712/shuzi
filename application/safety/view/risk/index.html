@@ -813,18 +813,18 @@
                             id:$("#riskId").val(),
                             context:$("#riskText").val(),//隐患内容
                             part:$("#hiddenPart").val(),//隐患部位
-                            section_id:$("#liabilitySection option:selected").text(),//标段
+                            section:$("#liabilitySection option:selected").text(),//标段
                             cat:$("#hiddenCategory option:selected").text(),//隐患类别
                             source:$("#sourceDanger option:selected").text(),//隐患来源
                             founddate:$("#dateDiscovery").val(),//发现日期
-                            founder_id:$("#discovery").val(),//发现人
+                            founder:$("#discovery").val(),//发现人
                             level:$("#hiddenGrade option:selected").text(),//隐患等级
                             govern:$("#goveMeasures").val(),//治理措施,
                             governdate:$("#timeLimit").val(),//治理时限
                             workdutyer:$("#personLiable").val(),//施工责任人
                             completedate:$("#completionTime").val(),//治理完成时间
                             risk_img:arrBefore,//隐患治理前照片
-                            acceptor_id:$("#acceptor").val(),//验收人
+                            acceptor:$("#acceptor").val(),//验收人
                             risk_after_img:arrAfter//隐患治理后照片
                         },
                         datatype: "json",
@@ -848,11 +848,11 @@
                         id : $("#riskId").val(),//id
                         context:$("#riskText").val(),//隐患内容
                         part:$("#hiddenPart").val(),//隐患部位
-                        section_id:$("#liabilitySection option:selected").text(),//标段
+                        section:$("#liabilitySection option:selected").text(),//标段
                         cat:$("#hiddenCategory option:selected").text(),//隐患类别
                         source:$("#sourceDanger option:selected").text(),//隐患来源
                         founddate:$("#dateDiscovery").val(),//发现日期
-                        founder_id:$("#discovery").val(),//发现人
+                        founder:$("#discovery").val(),//发现人
                         level:$("#hiddenGrade option:selected").text(),//隐患等级
                         govern:$("#goveMeasures").val(),//治理措施,
                         governdate:$("#timeLimit").val(),//治理时限
@@ -860,7 +860,7 @@
                         completedate:$("#completionTime").val(),//治理完成时间
                         risk_img:arrBefore,//隐患治理前照片
     //                    risk_img:$("#riskText").val(),//隐患治理前照片
-                        acceptor_id:$("#acceptor").val(),//验收人
+                        acceptor:$("#acceptor").val(),//验收人
     //                    risk_after_img:$("#riskText").val()//隐患治理后照片
                         risk_after_img:arrAfter//隐患治理后照片
 
