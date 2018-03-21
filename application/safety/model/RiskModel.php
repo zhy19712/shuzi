@@ -10,6 +10,7 @@ namespace app\safety\model;
 
 
 use think\Db;
+use think\Exception;
 use think\exception\PDOException;
 use think\Model;
 
@@ -52,25 +53,26 @@ class RiskModel extends Model
                 $res = $this->allowField(true)->save($risk, ['id' => $risk['id']]);
                 $_id = $risk['id'];
             }
-            $item = $this->where('id', $_id)->find();
-            $riskImgs = array();
-            if (array_key_exists('risk_img', $risk)) {
-                foreach (explode('※', $risk['risk_img']) as $img) {
-                    $riskImgs[] = array('path' => $img, 'cat' => '排查');
+            try {
+                $item = $this->where('id', $_id)->find();
+                $riskImgs = array();
+                if (array_key_exists('risk_img', $risk)) {
+                    foreach (explode('※', $risk['risk_img']) as $img) {
+                        $riskImgs[] = array('path' => $img, 'cat' => '排查');
+                    }
                 }
-            }
-            if (array_key_exists('risk_after_img', $risk)) {
-                foreach (explode('※', $risk['risk_after_img']) as $img) {
-                    $riskImgs[] = array('path' => $img, 'cat' => '验收');
+                if (array_key_exists('risk_after_img', $risk)) {
+                    foreach (explode('※', $risk['risk_after_img']) as $img) {
+                        $riskImgs[] = array('path' => $img, 'cat' => '验收');
+                    }
                 }
+                RiskImgModel::where('risk_id', $item['id'])->delete();
+                $item->riskImg()->saveAll($riskImgs);
+            }catch (Exception $e)
+            {
+                return ['code' => -1, 'data' => '', 'msg' =>$e->getMessage()];
             }
-            RiskImgModel::where('risk_id', $item['id'])->delete();
-            $item->riskImg()->saveAll($riskImgs);
-            if ($res) {
-                return ['code' => 1, 'data' => '', 'msg' => '操作成功'];
-            } else {
-                return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
-            }
+            return ['code' => 1, 'data' => '', 'msg' => '操作成功'];
         } catch (PDOException $e) {
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
         }
