@@ -47,10 +47,12 @@ class Specialoperate extends Base
 //        halt($pathImgName);
 //        halt($pathImgArr);
 //        halt($pathImgDel);
-        foreach ((array)$pathImgName as $k=>$v)
-        {
-            $str_img .= "*".$v;
-        }
+//        foreach ((array)$pathImgName as $k=>$v)
+//        {
+//            $str_img .= "*".$v;
+//        }
+        $str_img = implode("*",$pathImgName);
+
         halt($str_img);
 
 
