@@ -165,10 +165,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-xs-offset-0">风险因素：</label>
                                 <div class="col-xs-6 col-sm-6 input-group">
-                                    <select name="risk_factor" id="risk_factor" class="form-control" >
-                                        <option value="0" selected>适用</option>
-                                        <option value="-1">过期</option>
-                                    </select>
+                                    <input id="risk_factor" type="text" class="form-control" name="risk_factor">
                                 </div>
                             </div>
                         </div>
@@ -184,6 +181,21 @@
                                 <label class="col-xs-3 col-sm-4 control-label">风险等级：</label>
                                 <div class="col-xs-6 input-group">
                                     <input id="risk_grade" type="text" class="form-control" name="risk_grade" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">开工时间：</label>
+                                <div class="col-xs-6 col-sm-6 input-group">
+                                    <input id="on_stream_time" type="text" class="form-control" name="on_stream_time" >
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">完工时间：</label>
+                                <div class="col-xs-6 col-sm-6 input-group">
+                                    <input id="completion_time" type="text" class="form-control" name="completion_time" >
                                 </div>
                             </div>
                         </div>
@@ -344,6 +356,21 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">开工时间：</label>
+                                <div class="col-xs-6 col-sm-6 input-group">
+                                    <p class="form-control-static" id="view_on_stream_time"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">完工时间：</label>
+                                <div class="col-xs-6 col-sm-6 input-group">
+                                    <p class="form-control-static" id="view_completion_time"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">施工单位责任人：</label>
                                 <div class="col-xs-6 input-group">
                                     <p class="form-control-static" id="viewConstruction_user"></p>
@@ -385,12 +412,14 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-3 col-sm-4 control-label">年度风险辨识文件：</label>
                                 <div class="col-xs-6 input-group">
+                                    <div id="viewYearUploadList" style="display: inline-block;vertical-align: middle;"></div>
                                     <button type="button" class="preview btn" fileType="1">预览</button>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-3 col-sm-4 control-label">季度风险辨识文件：</label>
                                 <div class="col-xs-6 input-group">
+                                    <div id="viewQuarterUploadList" style="display: inline-block;vertical-align: middle;"></div>
                                     <button type="button" class="preview btn" fileType="2">预览</button>
                                 </div>
                             </div>
@@ -400,12 +429,14 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-3 col-sm-4 control-label">风险复测单：</label>
                                 <div class="col-xs-6 input-group">
+                                    <div id="viewListUploadList" style="display: inline-block;vertical-align: middle;"></div>
                                     <button type="button" class="preview btn" fileType="3">预览</button>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-3 col-sm-4 control-label">风险控制卡：</label>
                                 <div class="col-xs-6 input-group">
+                                    <div id="viewCardUploadList" style="display: inline-block;vertical-align: middle;"></div>
                                     <button type="button" class="preview btn" fileType="4">预览</button>
                                 </div>
                             </div>
@@ -415,6 +446,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-3 col-sm-4 control-label">施工作业票：</label>
                                 <div class="col-xs-6 input-group">
+                                    <div id="viewTicketUploadList" style="display: inline-block;vertical-align: middle;"></div>
                                     <button type="button" class="preview btn" fileType="5">预览</button>
                                 </div>
                             </div>
@@ -444,6 +476,9 @@
 
 
 <script>
+    //日期插件
+    $('#on_stream_time').jeDate();
+    $('#completion_time').jeDate();
     //表格
     var tableItem = $('#tableItem').DataTable({
         processing: true,
@@ -634,10 +669,16 @@
 
     //关闭新增弹层
     $('#addRules_modal').on('hide.bs.modal', function () {
-        //uploader.destroy();//重置上传插件
         validator.resetForm();//重置form表单
+        $('#yearUploadList').empty();
+        $('#quarterUploadList').empty();
+        $('#listUploadList').empty();
+        $('#cardUploadList').empty();
+        $('#ticketUploadList').empty();
     });
 
+
+    var param = {};
     //表单验证提交
     var validator = $("#memberAdd").validate({
         submitHandler: function(form) {
@@ -650,6 +691,8 @@
             var risk_factor = $('#risk_factor').val();
             var riskname = $('#riskname').val();
             var risk_grade = $('#risk_grade').val();
+            var on_stream_time = $('#on_stream_time').val();
+            var completion_time = $('#completion_time').val();
             var construction_user = $('#construction_user').val();
             var c_iphone = $('#c_iphone').val();
             var supervision_user = $('#supervision_user').val();
@@ -668,21 +711,23 @@
                     risk_factor:risk_factor,
                     riskname:riskname,
                     risk_grade:risk_grade,
+                    on_stream_time:on_stream_time,
+                    completion_time:completion_time,
                     construction_user:construction_user,
                     c_iphone:c_iphone,
                     supervision_user:supervision_user,
                     s_iphone:s_iphone,
                     measures:measures,
-                    /*year_filename:year_filename,
-                    year_path:year_path,
-                    quarter_filename:quarter_filename,
-                    quarter_path:quarter_path,
-                    sheet_filename:sheet_filename,
-                    sheet_path:sheet_path,
-                    card_filename:card_filename,
-                    card_path:card_path,
-                    work_filename:work_filename,
-                    work_path:work_path,*/
+                    year_filename:param.year_filename,
+                    year_path:param.year_path,
+                    quarter_filename:param.quarter_filename,
+                    quarter_path:param.quarter_path,
+                    sheet_filename:param.sheet_filename,
+                    sheet_path:param.sheet_path,
+                    card_filename:param.card_filename,
+                    card_path:param.card_path,
+                    work_filename:param.work_filename,
+                    work_path:param.work_path,
                 },
                 success: complete
             });
@@ -694,6 +739,8 @@
             risk_factor: "required",
             riskname: "required",
             risk_grade: "required",
+            on_stream_time: "required",
+            completion_time: "required",
             construction_user: "required",
             c_iphone: "required",
             supervision_user: "required",
@@ -707,6 +754,8 @@
             risk_factor: "不能为空",
             riskname: "不能为空",
             risk_grade: "不能为空",
+            on_stream_time: "不能为空",
+            completion_time: "不能为空",
             construction_user: "不能为空",
             c_iphone: "不能为空",
             supervision_user: "不能为空",
@@ -714,6 +763,84 @@
             measures: "不能为空",
         }
     });
+
+    //编辑
+    function zedit(that) {
+        $('#addRules_modal').modal('show');
+        var id = $(that).parents('tr').find('td:eq(1)').text();
+        $('#sid').val(id);
+        $.ajax({
+            url: "{:url('Riskmanage/index')}",
+            type: "post",
+            dataType: "json",
+            data:{
+                major_key:id
+            },
+            success: function (res) {
+                if(res.evaluation=='过期'){
+                    res.evaluation=-1;
+                }else if(res.evaluation=='适用'){
+                    res.evaluation=0;
+                }
+
+                $('#segmentv').val(res.segmentv);
+                $('#position').val(res.position);
+                $('#job_content').val(res.job_content);
+                $('#risk_factor').val(res.risk_factor);
+                $('#riskname').val(res.riskname);
+                $('#risk_grade').val(res.risk_grade);
+                $('#on_stream_time').val(res.on_stream_time);
+                $('#completion_time').val(res.completion_time);
+                $('#construction_user').val(res.construction_user);
+                $('#c_iphone').val(res.c_iphone);
+                $('#supervision_user').val(res.supervision_user);
+                $('#s_iphone').val(res.s_iphone);
+                $('#measures').val(res.measures);
+                /*var yearFileList = '<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '">' +
+                    '<span class="info">' + res.year_filename + '</span>&nbsp' +
+                    '<span class="'+delBtn+'" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>';
+                var quarterFileList = '<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '">' +
+                    '<span class="info">' + res.quarter_filename + '</span>&nbsp' +
+                    '<span class="'+delBtn+'" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>';
+                var listFileList = '<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '">' +
+                    '<span class="info">' + res.sheet_filename + '</span>&nbsp' +
+                    '<span class="'+delBtn+'" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>';
+                var cardFileList = '<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '">' +
+                    '<span class="info">' + res.card_filename + '</span>&nbsp' +
+                    '<span class="'+delBtn+'" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>';
+                var ticketFileList = '<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '">' +
+                    '<span class="info">' + res.work_filename + '</span>&nbsp' +
+                    '<span class="'+delBtn+'" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>';
+                $('#yearUploadList').append(yearFileList);
+                $('#quarterUploadList').append(quarterFileList);
+                $('#listUploadList').append(listFileList);
+                $('#cardUploadList').append(cardFileList);
+                $('#ticketUploadList').append(ticketFileList);*/
+
+                var fileNameArr = [res.year_filename,res.card_filename,res.quarter_filename,res.sheet_filename,res.work_filename];
+                var parentDomArr = ['yearUploadList','quarterUploadList','listUploadList','cardUploadList','ticketUploadList'];
+                var delBtn = ['yearDelbtn','quarterDelbtn','listDelbtn','cardDelbtn','ticketDelbtn'];
+                editList(fileNameArr,parentDomArr,delBtn);
+            }
+        })
+    }
+
+    function editList(fileNameArr,parentDomArr,delBtn) {
+        for(var j = 0;j<parentDomArr.length;j++){
+            var fileList = '<div style="display: inline-block;vertical-align: middle;">';
+            for (var i=0;i<fileNameArr[j].length;i++){
+                fileList += '<span class="info">' + fileNameArr[j][i] + '</span>';
+            }
+            fileList += '<span class="'+delBtn+'" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>';
+            fileList += '</div>';
+            $('#'+parentDomArr[j]).append(fileList);
+        }
+    }
 
     //预览表格数据
     function showData(that) {
@@ -734,11 +861,17 @@
                 $('#view_risk_factor').html(res.risk_factor);
                 $('#viewRiskname').html(res.riskname);
                 $('#view_risk_grade').html(res.risk_grade);
+                $('#view_on_stream_time').html(res.on_stream_time);
+                $('#view_completion_time').html(res.completion_time);
                 $('#viewConstruction_user').html(res.construction_user);
                 $('#view_c_iphone').html(res.c_iphone);
                 $('#view_supervision_user').html(res.supervision_user);
                 $('#view_s_iphone').html(res.s_iphone);
                 $('#viewMeasures').html(res.measures);
+
+                var fileNameArr = [res.year_filename,res.card_filename,res.quarter_filename,res.sheet_filename,res.work_filename];
+                var parentDomArr = ['viewYearUploadList','viewQuarterUploadList','viewListUploadList','viewCardUploadList','viewTicketUploadList']
+                viewFileName(fileNameArr,parentDomArr);
             }
         });
     }
@@ -771,9 +904,25 @@
         showPdf(fileId,fileType,"{:url('Riskmanage/managePreview')}");
     });
 
+    //预览文件名称
+    function viewFileName(fileNameArr,parentDomArr) {
+        for(var j = 0;j<parentDomArr.length;j++){
+            var fileList = '<div style="display: inline-block;vertical-align: middle;">';
+            for (var i=0;i<fileNameArr[j].length;i++){
+                fileList += '<span class="info">' + fileNameArr[j][i] + '</span>';
+            }
+            fileList += '</div>';
+            $('#'+parentDomArr[j]).append(fileList);
+        }
+    }
+
     //关闭预览弹层
     $('#view_modal').on('hide.bs.modal', function () {
         $('input[type="hidden"][name="fileId"]').val('');
+        var parentDomArr = ['viewYearUploadList','viewQuarterUploadList','viewListUploadList','viewCardUploadList','viewTicketUploadList']
+        for(var i = 0;i < parentDomArr.length;i++){
+            $('#'+parentDomArr[i]).empty();
+        }
     });
 
     //导入
@@ -878,6 +1027,7 @@
         if(data.code==1){
             layer.msg(data.msg);
             tableItem.ajax.url("__SCRIPT__/safety_riskmanage.php").load();
+            $("#addRules_modal").modal('hide');
         }else{
             layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
             return false;
@@ -917,7 +1067,8 @@
     });
 
     yearUpload.on( 'uploadSuccess', function( file ,res) {
-        complete(res);
+        param.year_filename = res.data.filename;
+        param.year_path = res.data.path;
         uploadList(file ,res ,'yearUploadList' ,'yearDelbtn');
         delFile(res,'yearDelbtn' ,'yearUploadList');
     });
@@ -960,7 +1111,8 @@
     });
 
     quarterUpload.on( 'uploadSuccess', function( file ,res) {
-        complete(res);
+        param.quarter_filename = res.data.filename;
+        param.quarter_path = res.data.path;
         uploadList(file ,res ,'quarterUploadList' ,'quarterDelbtn');
         delFile(res,'quarterDelbtn' ,'quarterUploadList');
     });
@@ -1003,7 +1155,8 @@
     });
 
     listUpload.on( 'uploadSuccess', function( file ,res) {
-        complete(res);
+        param.sheet_filename = res.data.filename;
+        param.sheet_path = res.data.path;
         uploadList(file ,res ,'listUploadList' ,'listDelbtn');
         delFile(res,'listDelbtn' ,'listUploadList');
     });
@@ -1046,7 +1199,8 @@
     });
 
     cardUpload.on( 'uploadSuccess', function( file ,res) {
-        complete(res);
+        param.card_filename = res.data.filename;
+        param.card_path = res.data.path;
         uploadList(file ,res ,'cardUploadList' ,'cardDelbtn');
         delFile(res,'cardDelbtn' ,'cardUploadList');
     });
@@ -1089,7 +1243,9 @@
     });
 
     ticketUpload.on( 'uploadSuccess', function( file ,res) {
-        complete(res);
+        param.work_filename = res.data.filename;
+        param.work_path = res.data.path;
+        console.log(param);
         uploadList(file ,res ,'ticketUploadList' ,'ticketDelbtn');
         delFile(res,'ticketDelbtn' ,'ticketUploadList');
     });
