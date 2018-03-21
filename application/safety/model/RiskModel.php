@@ -16,18 +16,11 @@ use think\Model;
 class RiskModel extends Model
 {
     protected $name = 'safety_risk';
+
     /**
      * 未治理图片
      */
     public function riskImg()
-    {
-        return $this->hasMany('RiskImgModel', 'risk_id', 'id');
-    }
-
-    /**
-     * 治理后
-     */
-    public function riskAfterImg()
     {
         return $this->hasMany('RiskImgModel', 'risk_id', 'id');
     }
@@ -61,15 +54,18 @@ class RiskModel extends Model
             }
             $item = $this->where('id', $_id)->find();
 
-            foreach (explode('※', $risk['risk_img']) as $img) {
-                $riskImgs[] = array('path' => $img, 'cat' => '排查');
+            if (array_key_exists('risk_img', $risk)) {
+                foreach (explode('※', $risk['risk_img']) as $img) {
+                    $riskImgs[] = array('path' => $img, 'cat' => '排查');
+                }
             }
-            foreach (explode('※', $risk['risk_after_img']) as $img) {
-                $riskAfterImgs[] = array('path' => $img, 'cat' => '验收');
+            if (array_key_exists('risk_after_img', $risk)) {
+                foreach (explode('※', $risk['risk_after_img']) as $img) {
+                    $riskImgs[] = array('path' => $img, 'cat' => '验收');
+                }
             }
-            Db::table('safety_risk_img')->where('risk_id', $item['id'])->delete();
+            RiskImgModel::where('risk_id', $item['id'])->delete();
             $item->riskImg()->saveAll($riskImgs);
-            $item->riskAfterImg()->saveAll($riskAfterImgs);
             if ($res) {
                 return ['code' => 1, 'data' => '', 'msg' => '操作成功'];
             } else {
