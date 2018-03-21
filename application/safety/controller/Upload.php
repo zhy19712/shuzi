@@ -630,9 +630,12 @@ class Upload extends Base
     public function uploadEdu(){
         $file = request()->file('file');
         $module_directory_name = request()->param('module_directory_name'); // 当前模块名称
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/' . $module_directory_name . '/');
+        if(empty($module_directory_name)){
+            return json(['code' => -1,'msg' => '请传递模块名称','data' => '']);
+        }
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/' . $module_directory_name . '/');
         if($info){
-            $data['path'] = './uploads/'.$module_directory_name.'/' . str_replace("\\","/",$info->getSaveName());
+            $data['path'] = './uploads/safety/'.$module_directory_name.'/' . str_replace("\\","/",$info->getSaveName());
             $data['filename'] = $file->getInfo('name');
             return json(['code' => 1,'msg' => '上传成功','data' => $data]);
         }else{
@@ -1819,6 +1822,16 @@ class Upload extends Base
         }
     }
 
-
+    /**
+     * 全选获取总条数
+     * @return \think\response\Json
+     * @author hutao
+     */
+    public function getCheckAllNum()
+    {
+        $tableName = request()->param('tableName');
+        $total = Db::name('"'.$tableName.'"')->count('major_key');
+        return json(['code' => 1,'total' => $total]);
+    }
 
 }
