@@ -16,20 +16,13 @@ use think\Model;
 class RiskModel extends Model
 {
     protected $name = 'safety_risk';
+
     /**
      * 未治理图片
      */
     public function riskImg()
     {
-        return $this->hasMany('RiskImg', 'risk_id', 'id');
-    }
-
-    /**
-     * 治理后
-     */
-    public function riskAfterImg()
-    {
-        return $this->hasMany('RiskImg', 'risk_id', 'id');
+        return $this->hasMany('RiskImgModel', 'risk_id', 'id');
     }
 //    /**
 //     * 标段
@@ -61,15 +54,18 @@ class RiskModel extends Model
             }
             $item = $this->where('id', $_id)->find();
 
-            foreach (explode('', $risk['']) as $img) {
-                $riskImgs[] = array('path' => $img, 'cat' => '排查');
+            if (array_key_exists('risk_img', $risk)) {
+                foreach (explode('※', $risk['risk_img']) as $img) {
+                    $riskImgs[] = array('path' => $img, 'cat' => '排查');
+                }
             }
-            foreach (explode('', $risk['']) as $img) {
-                $riskAfterImgs[] = array('path' => $img, 'cat' => '验收');
+            if (array_key_exists('risk_after_img', $risk)) {
+                foreach (explode('※', $risk['risk_after_img']) as $img) {
+                    $riskImgs[] = array('path' => $img, 'cat' => '验收');
+                }
             }
-            Db::table('safety_risk_img')->where('risk_id', $item['id'])->delete();
+            RiskImgModel::where('risk_id', $item['id'])->delete();
             $item->riskImg()->saveAll($riskImgs);
-            $item->riskAfterImg()->saveAll($riskAfterImgs);
             if ($res) {
                 return ['code' => 1, 'data' => '', 'msg' => '操作成功'];
             } else {
@@ -165,7 +161,21 @@ class RiskModel extends Model
 
     public function getOne($id)
     {
-        return $this->where('id', $id)->find();
+        $mod = $data = RiskModel::with('RiskImg')->where('id', $id)->find();   //select([$id]);
+        if (count( ($mod['risk_img']))>0) {
+            $risk_img_after=array();
+            $risk_img_before=array();
+            foreach ($mod['risk_img'] as $item) {
+                if ($item['cat'] == '排查') {
+                    $risk_img_before[] = $item;
+                } else {
+                    $risk_img_after[] = $item;
+                }
+            }
+            $mod['risk_img_before'] =$risk_img_before;
+            $mod['risk_img_after'] =$risk_img_after;
+        }
+        return $mod;
     }
 
     public function getList($idArr)

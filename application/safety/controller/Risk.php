@@ -25,10 +25,9 @@ class Risk extends Base
     public function index()
     {
         if (request()->isAjax()) {
-            $param = input('post.');
-            $risk = new RiskModel();
-            $data = $risk->getOne($param['id']);
-            return json($data);
+            $id = input('id');
+            $m=new RiskModel();
+            return json($m->getOne($id));
         }
         return $this->fetch();
     }
@@ -58,6 +57,14 @@ class Risk extends Base
         }
     }
 
+    public function getRisk()
+    {
+        if (!request()->isAjax()) {
+            $id = input('id');
+            $m=new RiskModel();
+            return json($m->getOne($id));
+        }
+    }
 
     /**
      * 下载

@@ -18,7 +18,7 @@ class RiskDoubleDutyModel extends Model
 
     public function infos()
     {
-        return $this->hasMany('RiskDoubleDutyInfo','duty_id','id');
+        return $this->hasMany('RiskDoubleDutyInfoModel','duty_id','id');
     }
     /**
      * @param $user
