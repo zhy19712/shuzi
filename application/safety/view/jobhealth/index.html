@@ -248,8 +248,8 @@
                           <div class="myblock col-xs-8 input-group">
                               <!--<input id="remark1" type="text" class="form-control" name="remark" >-->
                               <select name="" id="sex" class="form-control">
-                                  <option value="">男</option>
-                                  <option value="">女</option>
+                                  <option value="男">男</option>
+                                  <option value="女">女</option>
                               </select>
                           </div>
                       </div>
@@ -317,13 +317,77 @@
         </div>
     </div>
 </div>
+div class="lightbox" id="lightbox"></div>
+<div id="pop" class="pop" style="display: none;">
+    <a href="javascript:close()" style="
+            position: absolute;
+            right: -90px;
+            display: inline-block;
+            width: 80px;
+            height: 30px;
+        " id="close">关闭</a>
+    <iframe src="" frameborder="0" id="pdfContainer" name="pdfContainer"></iframe>
+</div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 <script src="__JS__/jquery.ztree.all.js"></script>
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/jquery.jedate.js"></script>
+<script src="__JS__/pdf.js"></script>
+<script src="__JS__/pdf.worker.js"></script>
+<script src="__JS__/mypdf.js"></script>
 
     <script type="text/javascript">
+        $("#table2").on("click",'tr td:nth-child(6)',function(id,url){
+        //     function showPdf(isShow) {
+        //         var state = "";
+        //         if (isShow) {
+        //             state = "block";
+        //         } else {
+        //             state = "none";
+        //         }
+        //         var pop = document.getElementById("pop");
+        //         pop.style.display = state;
+        //         var lightbox = document.getElementById("lightbox");
+        //         lightbox.style.display = state;
+        //     }
+        //     function close() {
+        //         showPdf(false);
+        //     }
+             var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+                 $.ajax({
+                     url: "./fullpartDownload",
+                     type: "post",
+                     data: {id:id},
+                     success: function (res) {
+                         if(res.code === 1){
+                             var path = res.path;
+                             window.open("__JS__/web/viewer.html?file=" + path,"_blank");
+                         }else {
+                             layer.msg(res.msg);
+                         }
+                     }
+                 })
+
+
+        });
+        $("#table2").on("click",'tr td:nth-child(7)',function(){
+            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            $.ajax({
+                url: "./fullpartDownload",
+                type: "post",
+                data: {id:id},
+                success: function (res) {
+                    if(res.code === 1){
+                        var path = res.path;
+                        window.open("__JS__/web/viewer.html?file=" + path,"_blank");
+                    }else {
+                        layer.msg(res.msg);
+                    }
+                }
+            })
+        });
+
         $("#table2_wrapper2").css("display","none");
         $("#checktime").jeDate({
             isinitVal:true,
@@ -358,39 +422,30 @@
                 $("#table2_wrapper2").css("display","block");
                 table2.ajax.url("__SCRIPT__/safety_jobhealthmanage.php?selfid="+selfid).load();
             };
-            $.ajax({
-                url:"__SCRIPT__/safety_jobhealthmanage.php?selfid="+selfid,
-                type:"get",
-                dataType:"json",
-                success:function(res){
-                    console.log(res)
-                     $.each(res.data,function(index,item){
-                        var aa=item[4];
-                        // alert(aa.parent);
-                        $("document").on("click",aa,function(){
-                            alert("s")
-                        })
-                        // alert(aa);
-                        // aa.click(function(){
-                        //     alert("a")
-                        // })
-                        // item[5].click(function(){
-                        //     alert("aa")
-                        // })
-                        //  var aa=item[5];
-                        //  aa.click(function(){
-                        //      alert("22")
-                        //  })
-
-                     })
-
-                }
-
-
-            });
-
-
         };
+        // $.ajax({
+        //     url:"__SCRIPT__/safety_jobhealthmanage.php?selfid="+selfid,
+        //     type:"get",
+        //     dataType:"json",
+        //     success:function(res){
+        //         console.log(res)
+        //         $.each(res.data,function(index,item){
+        //             var aa=item[4];
+        //             alert(aa);
+        //
+        //
+        //         })
+        //
+        //     }
+        //
+        //
+        // });
+        // $('#table2 tbody').on('click','tr td:nth-child(3)', function (e) {
+        //     alert("aa");
+        //     var name = $(this).text();
+        //     alert(name);
+        // } );
+
         var setting={
             view:{
                 showLine:true,
@@ -907,11 +962,10 @@
         };
         // -------------------------------
 
-      // $("#sex").change(function(){
-      //      alert($(this).val());
-      //     alert($("#sex option:selected").val());
-      //
-      // })
+      $("#sex").change(function(){
+        alert($(this).val())
+
+      })
         // -----------------------------------------------
         // var uploader3;          //初始化三个upload按钮
         // //总体目标

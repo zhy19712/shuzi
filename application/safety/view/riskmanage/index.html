@@ -159,7 +159,7 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">作业内容：</label>
                                 <div class="col-xs-6 col-sm-6 input-group">
-                                    <input id="job_content" type="text" class="form-control" name="job_content" readonly>
+                                    <input id="job_content" type="text" class="form-control" name="job_content">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
@@ -656,33 +656,36 @@
             var s_iphone = $('#s_iphone').val();
             var measures = $('#measures').val();
             //表单提交
-            if(!newFileNmae||newFileNmae===oldFileName){
-                //修改
-                $(form).ajaxSubmit({
-                    url: "{:url('Statutestdi/sdiEdit')}",
-                    type: "post",
-                    dataType: 'json',
-                    data:{
-                        major_key:id,
-                        group_id:group_id,
-                        segmentv:segmentv,
-                        position:position,
-                        job_content:job_content,
-                        risk_factor:risk_factor,
-                        riskname:riskname,
-                        risk_grade:risk_grade,
-                        construction_user:construction_user,
-                        c_iphone:c_iphone,
-                        supervision_user:supervision_user,
-                        s_iphone:s_iphone,
-                        measures:measures
-                    },
-                    success: complete
-                });
-            }else{
-                //上传文件
-                uploader.upload();
-            }
+            $(form).ajaxSubmit({
+                url: "{:url('Riskmanage/manageAddOrEdit')}",
+                type: "post",
+                dataType: 'json',
+                data:{
+                    group_id:group_id,
+                    segmentv:segmentv,
+                    position:position,
+                    job_content:job_content,
+                    risk_factor:risk_factor,
+                    riskname:riskname,
+                    risk_grade:risk_grade,
+                    construction_user:construction_user,
+                    c_iphone:c_iphone,
+                    supervision_user:supervision_user,
+                    s_iphone:s_iphone,
+                    measures:measures,
+                    /*year_filename:year_filename,
+                    year_path:year_path,
+                    quarter_filename:quarter_filename,
+                    quarter_path:quarter_path,
+                    sheet_filename:sheet_filename,
+                    sheet_path:sheet_path,
+                    card_filename:card_filename,
+                    card_path:card_path,
+                    work_filename:work_filename,
+                    work_path:work_path,*/
+                },
+                success: complete
+            });
         },
         rules: {
             segmentv: "required",
@@ -818,7 +821,7 @@
             url: "./exportExcel",
             type: "post",
             data: {
-                'id':idArr
+                'majorKeyArr':idArr
             },
             dataType: "json",
             success: function (res) {
@@ -828,7 +831,7 @@
                         +'<form action="./exportExcel" method="get" target="exportExcelFrame">';
                     for (var i = 0; i < idArr.length; i++)
                     {
-                        str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
+                        str += '<input style="display: none;" name="majorKeyArr[]" value="'+ idArr[i] +'">';
                     }
                     str += '<button type="submit" id="exportExcelBtn"></button></form>';
                     $("#form_container").append(str);
@@ -846,7 +849,7 @@
             url: "./exportExcelTemplete",
             type: "post",
             data: {
-                'id':idArr
+                'majorKeyArr':idArr
             },
             dataType: "json",
             success: function (res) {
@@ -856,7 +859,7 @@
                         +'<form action="./exportExcelTemplete" method="get" target="exportExcelFrame">';
                     for (var i = 0; i < idArr.length; i++)
                     {
-                        str += '<input style="display: none;" name="id[]" value="'+ idArr[i] +'">';
+                        str += '<input style="display: none;" name="majorKeyArr[]" value="'+ idArr[i] +'">';
                     }
                     str += '<button type="submit" id="exportExcelBtn"></button></form>';
                     $("#form_container").append(str);
@@ -875,7 +878,6 @@
         if(data.code==1){
             layer.msg(data.msg);
             tableItem.ajax.url("__SCRIPT__/safety_riskmanage.php").load();
-            $("#addRules_modal").modal('hide');
         }else{
             layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
             return false;
@@ -883,7 +885,7 @@
     }
 
     /**
-     * 文件上传
+     * 年度风险辨识文件
      */
     var yearUpload = WebUploader.create({
         auto: true,
@@ -891,7 +893,7 @@
         swf:  '/static/admin/js/webupload/Uploader.swf',
 
         // 文件接收服务端。
-        server: "{:url('Eduemployee/importExcel')}",
+        server: "{:url('Upload/uploadEdu')}",
 
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -916,6 +918,8 @@
 
     yearUpload.on( 'uploadSuccess', function( file ,res) {
         complete(res);
+        uploadList(file ,res ,'yearUploadList' ,'yearDelbtn');
+        delFile(res,'yearDelbtn' ,'yearUploadList');
     });
 
     yearUpload.on("uploadStart",function () {
@@ -923,13 +927,16 @@
         yearUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
     });
 
+    /**
+     * 季度风险辨识文件
+     */
     var quarterUpload = WebUploader.create({
         auto: true,
         // swf文件路径
         swf:  '/static/admin/js/webupload/Uploader.swf',
 
         // 文件接收服务端。
-        server: "{:url('Eduemployee/importExcel')}",
+        server: "{:url('Upload/uploadEdu')}",
 
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -954,6 +961,8 @@
 
     quarterUpload.on( 'uploadSuccess', function( file ,res) {
         complete(res);
+        uploadList(file ,res ,'quarterUploadList' ,'quarterDelbtn');
+        delFile(res,'quarterDelbtn' ,'quarterUploadList');
     });
 
     quarterUpload.on("uploadStart",function () {
@@ -961,13 +970,16 @@
         quarterUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
     });
 
+    /**
+     * 风险复测单
+     */
     var listUpload = WebUploader.create({
         auto: true,
         // swf文件路径
         swf:  '/static/admin/js/webupload/Uploader.swf',
 
         // 文件接收服务端。
-        server: "{:url('Eduemployee/importExcel')}",
+        server: "{:url('Upload/uploadEdu')}",
 
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -992,6 +1004,8 @@
 
     listUpload.on( 'uploadSuccess', function( file ,res) {
         complete(res);
+        uploadList(file ,res ,'listUploadList' ,'listDelbtn');
+        delFile(res,'listDelbtn' ,'listUploadList');
     });
 
     listUpload.on("uploadStart",function () {
@@ -999,13 +1013,16 @@
         listUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
     });
 
+    /**
+     * 风险控制卡
+     */
     var cardUpload = WebUploader.create({
         auto: true,
         // swf文件路径
         swf:  '/static/admin/js/webupload/Uploader.swf',
 
         // 文件接收服务端。
-        server: "{:url('Eduemployee/importExcel')}",
+        server: "{:url('Upload/uploadEdu')}",
 
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -1030,6 +1047,8 @@
 
     cardUpload.on( 'uploadSuccess', function( file ,res) {
         complete(res);
+        uploadList(file ,res ,'cardUploadList' ,'cardDelbtn');
+        delFile(res,'cardDelbtn' ,'cardUploadList');
     });
 
     cardUpload.on("uploadStart",function () {
@@ -1037,13 +1056,16 @@
         cardUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
     });
 
+    /**
+     * 施工作业票
+     */
     var ticketUpload = WebUploader.create({
         auto: true,
         // swf文件路径
         swf:  '/static/admin/js/webupload/Uploader.swf',
 
         // 文件接收服务端。
-        server: "{:url('Eduemployee/importExcel')}",
+        server: "{:url('Upload/uploadEdu')}",
 
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -1068,10 +1090,46 @@
 
     ticketUpload.on( 'uploadSuccess', function( file ,res) {
         complete(res);
+        uploadList(file ,res ,'ticketUploadList' ,'ticketDelbtn');
+        delFile(res,'ticketDelbtn' ,'ticketUploadList');
     });
 
     ticketUpload.on("uploadStart",function () {
         ticketUpload.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
         ticketUpload.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
     });
+
+    //上传文件列表
+    function uploadList(file ,res ,pEm ,delBtn) {
+        var fileList = '<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '">' +
+            '<span class="info">' + file.name + '</span>&nbsp' +
+            '<span class="'+delBtn+'" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+            '</div>';
+        $('#'+pEm).append(fileList);
+    }
+
+    //删除文件
+    function delFile(res,em,pEm) {
+        var path = res.data.path;
+        $("#"+pEm).on("click", "."+em, function () {
+            layer.confirm('警告！确定删除'+res.data.filename+'文件?',{
+                btn:['确定','取消'],
+                icon:3
+            },function(){
+                $.ajax({
+                    url:'{:url("Riskmanage/delAddFile")}',
+                    dataType:'JSON',
+                    type:'POST',
+                    data:{
+                        path:path,
+                    },
+                    success:function(){
+                        layer.msg('删除成功！', {icon: 1});
+                        $("#"+pEm).empty();
+                    }
+                });
+            });
+        });
+    }
+
 </script>
