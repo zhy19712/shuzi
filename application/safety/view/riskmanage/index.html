@@ -796,6 +796,7 @@
                 $('#supervision_user').val(res.supervision_user);
                 $('#s_iphone').val(res.s_iphone);
                 $('#measures').val(res.measures);
+
                 /*var yearFileList = '<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '">' +
                     '<span class="info">' + res.year_filename + '</span>&nbsp' +
                     '<span class="'+delBtn+'" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
@@ -830,6 +831,7 @@
         })
     }
 
+    //编辑预览文件名称
     function editList(fileNameArr,parentDomArr,delBtn) {
         for(var j = 0;j<parentDomArr.length;j++){
             var fileList = '<div style="display: inline-block;vertical-align: middle;">';
