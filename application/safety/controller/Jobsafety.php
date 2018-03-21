@@ -226,7 +226,7 @@ class Jobsafety extends Base
         {
             $idArr = $violationrecord ->getallid();
         }
-        $name = '个人防护装备'.date('Y-m-d H:i:s'); // 导出的文件名
+        $name = '反违章记录'.date('Y-m-d H:i:s'); // 导出的文件名
 
         $list = $violationrecord->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
@@ -296,7 +296,7 @@ class Jobsafety extends Base
             return json(['code'=>1]);
         }
         $name = input('param.name');
-        $newName = '个人防护装备 - '.$name.date('Y-m-d H:i:s'); // 导出的文件名
+        $newName = '反违章记录 - '.$name.date('Y-m-d H:i:s'); // 导出的文件名
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -314,16 +314,14 @@ class Jobsafety extends Base
         // 设置表格第一行显示内容
         $objPHPExcel->getActiveSheet()
             ->setCellValue('A1', '序号')
-            ->setCellValue('B1', '工器具名称')
-            ->setCellValue('C1', '规格型号')
-            ->setCellValue('D1', '数量')
-            ->setCellValue('E1', '批次')
-            ->setCellValue('F1', '生产厂家')
-            ->setCellValue('G1', '出厂日期')
-            ->setCellValue('H1', '定检周期')
-            ->setCellValue('I1', '首检日期')
-            ->setCellValue('J1', '使用位置')
-            ->setCellValue('K1', '备注');
+            ->setCellValue('B1', '姓名')
+            ->setCellValue('C1', '违章情况')
+            ->setCellValue('D1', '违章类别')
+            ->setCellValue('E1', '违章时间')
+            ->setCellValue('F1', '记分情况')
+            ->setCellValue('G1', '经济处罚')
+            ->setCellValue('H1', '处置结果')
+            ->setCellValue('I1', '整改情况');
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
         ob_end_clean();  //清除缓冲区,避免乱码
