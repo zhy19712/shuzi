@@ -28,6 +28,7 @@ use app\safety\model\EmergencyimagedataModel;
 use app\safety\model\EmergencyrehearsalModel;
 use app\safety\model\EmergencydisposalModel;
 use app\safety\model\EmergencyreviseModel;
+use app\safety\model\ChemistrymanagementModel;
 use think\Db;
 
 class Upload extends Base
@@ -1720,10 +1721,10 @@ class Upload extends Base
         $number = request()->param('number');
         $remark = request()->param('remark');
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/$emergencyrehearsal');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/emergencyrehearsal');
         if($info){
             $temp = $info->getSaveName();
-            $path = './uploads/safety/$emergencyrehearsal/' . str_replace("\\","/",$temp);
+            $path = './uploads/safety/emergencyrehearsal/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             if(empty($id))
             {
@@ -1752,6 +1753,65 @@ class Upload extends Base
                     'remark' => $remark
                 ];
                 $flag = $emergencyrehearsal->editEmergencyrehearsal($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /*
+     * 危险化学品管理上传
+     * @return \think\response\Json
+     */
+    public function uploadChemistrymanagement(){
+        /**
+         * id 危险化学品管理自增id
+         * name 危险化学品管理上传原文件名
+         * filename 危险化学品管理上传文件名
+         * date 上传时间
+         * owner 上传人
+         * remark 备注
+         * path 文件路径
+
+         */
+        $chemistry = new ChemistrymanagementModel();
+        $id = request()->param('cid');
+        $chemistry_file_name = request()->param('chemistry_file_name');
+        $remark = request()->param('remark');
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/chemistrymanagement');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/safety/chemistrymanagement/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            if(empty($id))
+            {
+                $data = [
+                    'chemistry_file_name' =>$chemistry_file_name,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $chemistry->insertChemistrymanagement($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $chemistry->getOne($id);
+                unlink($data_older['path']);
+                $data = [
+                    'id' => $id,
+                    'chemistry_file_name' => $chemistry_file_name,
+                    'name' => $filename,
+                    'filename' => $filename,
+                    'owner' => session('username'),
+                    'date' => date("Y-m-d H:i:s"),
+                    'path' => $path,
+                    'remark' => $remark
+                ];
+                $flag = $chemistry->editChemistrymanagement($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{
