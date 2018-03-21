@@ -1898,12 +1898,17 @@ class Upload extends Base
      */
     public function getCheckAllNum()
     {
-        $tableName = request()->param('tableName'); // 要查询的数据库表名称
+        // 前台需要传递的数据
+        $tableName = request()->param('tableName'); // 要查询的数据库表名称，注意不需要表前缀think_
+        $id_name = request()->param('id_name'); // 要查询的数据库表的主键名称 如果不传，默认是 $major_key
+        $id_name = empty($id_name) ? 'major_key' : $id_name;
         if(empty($tableName)){
             return json(['code' => -1,'msg' => '请输入要查询的表名称']);
         }
-        $total = Db::name('"'.$tableName.'"')->count();
-        return json(['code' => 1,'total' => $total,'msg' => '查询成功']);
+        $total = Db::name($tableName)->count();
+        $major_key = Db::name($tableName)->column($id_name);
+        // total 是 总的数据条数，major_key 是 全选的所有 id 编号 数组
+        return json(['code' => 1,'total' => $total,'major_key' => $major_key,'msg' => '查询成功']);
     }
 
 }

@@ -425,21 +425,7 @@ class Rulesregulations extends Base
         if(count($list) == 0){
             return json(['code' => -1 ,'msg' => '数据为空']);
         }
-        $i=0;
-        foreach ($list as $v){
-            $v['major_key'] = iconv("utf-8","gb2312",$v['major_key']);
-            $v['number'] = iconv("utf-8","gb2312",$v['number']);
-            $v['rul_name'] = iconv("utf-8","gb2312",$v['rul_name']);
-            $v['go_date'] = iconv("utf-8","gb2312",$v['go_date']);
-            $v['standard'] = iconv("utf-8","gb2312",$v['standard']);
-            $v['evaluation'] = iconv("utf-8","gb2312",$v['evaluation']);
-            $v['rul_user'] = iconv("utf-8","gb2312",$v['rul_user']);
-            $v['rul_date'] = iconv("utf-8","gb2312",$v['rul_date']);
-            $v['remark'] = iconv("utf-8","gb2312",$v['remark']);
-            $list[$i] = $v;
-            $i++;
-        }
-        header("Content-type:text/html;charset=gb2312");
+        header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
         $objPHPExcel = new \PHPExcel();

@@ -526,6 +526,12 @@
             console.log(obj.date.YYYY);
         }
     });
+    $("#selectfile").change(function () {
+        table2.search($(this).val()).draw();
+    })
+    $("#selectyear2").change(function(){
+        alert("aa")
+    })
 
     $(".selectyear input").val("");
     //选择文件名
@@ -551,7 +557,8 @@
     $("div.selectfile").html(selectfile);
     $("#selectfile").change(function () {
         table2.search($(this).val()).draw();
-    })
+    });
+
 
     //应急处置-提交
     $("#fname2").submit(function () {

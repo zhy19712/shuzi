@@ -58,21 +58,15 @@ class RiskDoubleDutyModel extends Model
     public function prossScore($user, $score, $cat, $context, $time)
     {
         $item = $this->getbyusername($user);
-        if ($item) {
+        if (!$item) {
             return false;
         }
-        Db::transaction();
-        try {
-            //插入增减分记录
-            $info = new RiskDoubleDutyInfoModel();
-            $info->insert(['score' => $score, 'context' => $context, 'cat' => $cat, 'date' => $time, 'duty_id' => $item['id']]);
+        //插入增减分记录
+        $info = new RiskDoubleDutyInfoModel();
+        $info->insert(['score' => $score, 'context' => $context, 'cat' => $cat, 'date' => $time, 'duty_id' => $item['id']]);
 
-            $item['score'] += $item['score'];
-            $item->save();
-            return true;
-        } catch (Exception $e) {
-            Db::rollback();
-            return false;
-        }
+        $item['score'] += $score;
+        $item->save();
+        return true;
     }
 }

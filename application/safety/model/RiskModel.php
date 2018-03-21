@@ -42,13 +42,13 @@ class RiskModel extends Model
             } else {
 //            修改，对比发现人与验收人
                 $item_old = $this->where('id', $risk['id'])->find();
-                if (!$item_old['founder'] == $risk['founder']) {
+                if (!($item_old['founder'] == $risk['founder'])) {
                     $this->proessScore($item_old['founder'], $item_old['cat'], '修改', $item_old['founddate'], true);
                     $this->proessScore($risk['founder'], $risk['cat'], '排查', $risk['founddate']);
                 }
-                if (!$item_old['acceptor'] == $risk['acceptor']) {
-                    $this->proessScore($item_old['acceptor'], $item_old['cat'], '修改', $risk['acceptor_id'], true);
-                    $this->proessScore($risk['acceptor'], $risk['cat'], '验收', $risk['acceptor_id']);
+                if (!($item_old['acceptor'] == $risk['acceptor'])) {
+                    $this->proessScore($item_old['acceptor'], $item_old['cat'], '修改', $risk['acceptor'], true);
+                    $this->proessScore($risk['acceptor'], $risk['cat'], '验收', $risk['acceptor']);
                 }
                 $res = $this->allowField(true)->save($risk, ['id' => $risk['id']]);
                 $_id = $risk['id'];
@@ -68,9 +68,8 @@ class RiskModel extends Model
                 }
                 RiskImgModel::where('risk_id', $item['id'])->delete();
                 $item->riskImg()->saveAll($riskImgs);
-            }catch (Exception $e)
-            {
-                return ['code' => -1, 'data' => '', 'msg' =>$e->getMessage()];
+            } catch (Exception $e) {
+                return ['code' => -1, 'data' => '', 'msg' => $e->getMessage()];
             }
             return ['code' => 1, 'data' => '', 'msg' => '操作成功'];
         } catch (PDOException $e) {
@@ -125,6 +124,27 @@ class RiskModel extends Model
             }
             $duty = new RiskDoubleDutyModel();
             return $duty->prossScore($user, $score, $cat, $act, $time);
+        }
+    }
+
+    /**
+     * 删除
+     * @param $id
+     * @return \think\response\Json
+     */
+    public function delRisk($id)
+    {
+        try {
+            $m = new RiskModel();
+            //清理分数
+            $this->proessScore($m['founder'],$m['cat'],'删除',date('Y-m-d',time()),true);
+            $this->proessScore($m['acceptor'],$m['cat'],'删除',date('Y-m-d',time()),true);
+            $m = $m->where('id', $id);
+            $m->riskImg()->delete();
+            $m->delete();
+            return json(['code' => 1,'msg'=>'']);
+        } catch (Exception $e) {
+            return json(['code' => -1, 'msg' => $e->getMessage()]);
         }
     }
 

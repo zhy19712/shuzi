@@ -573,12 +573,12 @@
                 "next": "下一页"
             }
         },
-        // accept: {
-        //         title: 'Images',
-        //         extensions: 'gif,jpg,jpeg,bmp,png',
-        //          mimeTypes: 'image/*'
-        //
-        //      }
+        accept: {
+                title: 'Images',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                 mimeTypes: 'image/*'
+
+             }
 
     });
     var selectyear ='<input id="year" />';
@@ -656,7 +656,7 @@
                 server: "{:url('Upload/uploadWarningsign')}",// 文件接收服务端。
                 chunked: false,
                 fileSizeLimit: 1000 *1024 *1024,
-                fileNumLimit: 3,
+                fileNumLimit: 100,
                 formData: {"remark":"","warn_name":"","aid":"","standard_number":"","structure_size":"","measurement_unit":"",},
                 duplicate :true,// 重复上传图片，true为可重复false为不可重复
                 pick: {
@@ -696,9 +696,7 @@
 
                         $img.attr('src', src);
                     }, thumbnailWidth, thumbnailHeight);
-                if($("#file_list1").length==3){
-                    alert("sfda")
-                }
+
 
             });
 
@@ -729,11 +727,8 @@
                             uploader1.options.formData.selfid =selfid;
             });
             // uploader1.on('beforeFileQueued', function (file) {
-            //     if($("#file_list1").html()){
-            //         alert("只能上传一个文件,请先删除文件");
-            //         return false;
-            //     }else {
-            //         return true;
+            //     if($(".cp_img").length>=8){
+            //         alert("最大限度只允许上传八张图片")
             //     }
             // });
             // 文件上传过程中创建进度条实时显示。
