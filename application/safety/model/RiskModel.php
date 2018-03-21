@@ -16,6 +16,7 @@ use think\Model;
 class RiskModel extends Model
 {
     protected $name = 'safety_risk';
+
     /**
      * 未治理图片
      */
@@ -53,11 +54,15 @@ class RiskModel extends Model
             }
             $item = $this->where('id', $_id)->find();
 
-            foreach (explode('※', $risk['risk_img']) as $img) {
-                $riskImgs[] = array('path' => $img, 'cat' => '排查');
+            if (array_key_exists('risk_img', $risk)) {
+                foreach (explode('※', $risk['risk_img']) as $img) {
+                    $riskImgs[] = array('path' => $img, 'cat' => '排查');
+                }
             }
-            foreach (explode('※', $risk['risk_after_img']) as $img) {
-                $riskImgs[] = array('path' => $img, 'cat' => '验收');
+            if (array_key_exists('risk_after_img', $risk)) {
+                foreach (explode('※', $risk['risk_after_img']) as $img) {
+                    $riskImgs[] = array('path' => $img, 'cat' => '验收');
+                }
             }
             RiskImgModel::where('risk_id', $item['id'])->delete();
             $item->riskImg()->saveAll($riskImgs);
