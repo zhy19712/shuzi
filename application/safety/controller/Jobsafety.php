@@ -746,12 +746,12 @@ class Jobsafety extends Base
      */
     public function chemistryPreview()
     {
-        $info = new SafetyResponsibilityinfoModel();
+        $chemistry = new ChemistrymanagementModel();
         if(request()->isAjax()) {
             $param = input('post.');
             $code = 1;
             $msg = '预览成功';
-            $data = $info->getOne($param['id']);
+            $data = $chemistry->getOne($param['id']);
             $path = $data['path'];
             $extension = strtolower(get_extension(substr($path,1)));
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
