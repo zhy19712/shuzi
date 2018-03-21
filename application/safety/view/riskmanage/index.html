@@ -105,6 +105,7 @@
 <div class="revised-record">
     <input type="hidden" name="fileId">
     <input type="hidden" name="major_key">
+    <input type="hidden" name="total">
 
     <input type="hidden" name="yearUploadList_name">
     <input type="hidden" name="yearUploadList_path">
@@ -607,6 +608,11 @@
             idArr.remove(id);
             idArr.removalArray();
             $('#all_checked').prop('checked',false);
+            tableItem.on('draw',function () {
+                $('input[type="checkbox"][name="checkList"]').prop("checked",false);
+                delCheckedAllTips();
+                $('#all_checked').prop('checked',false);
+            });
         }
     }
 
@@ -619,13 +625,14 @@
 
     //checkbox全选
     $("#all_checked").on("click", function () {
+        var total = $('input[type="hidden"][name="total"]').val();
         if ($(this).prop("checked") === true) {
             $("input[name='checkList']").prop("checked", $(this).prop("checked"));
             $('#tableItem tbody tr').addClass('selected');
             $('input[name="checkList"]').each(function(){
                 getId(this);
             });
-            addCheckedAllTips('勾选"收件箱"中全部 1119 封邮件');
+            addCheckedAllTips('勾选"收件箱"中全部 '+ total +' 封邮件');
         } else {
             $("input[name='checkList']").prop("checked", false);
             $('#tableItem tbody tr').removeClass('selected');
@@ -637,29 +644,41 @@
         console.log(idArr);
     });
 
+    //获取数据总条数
+    var majorKeyArr = [];
+    function getDataTotal() {
+        $.ajax({
+            url: "{:url('Upload/getCheckAllNum')}",
+            type: "post",
+            data: {
+                tableName:'safety_riskmanage'
+            },
+            dataType: "json",
+            success: function (res) {
+                $('input[type="hidden"][name="total"]').val(res.total);
+                majorKeyArr.push(res.major_key);
+            }
+        });
+    }
+    getDataTotal();
+
     //勾选表全部数据
     function checkedAlls(that) {
+        var total = $('input[type="hidden"][name="total"]').val();
         var state = $(that).attr('state');
         if(state!=='false'){
-            $(that).html('勾选"收件箱"中全部 1119 封邮件');
+            $(that).html('勾选"收件箱"中全部 '+ total +' 封邮件');
             $(that).attr('state',false);
             tableItem.on('draw',function () {
                 $('input[type="checkbox"][name="checkList"]').prop("checked",false);
                 delCheckedAllTips();
-            })
+            });
             return false;
         }else{
-            $.ajax({
-                url: "{:url('Upload/getCheckAllNum')}",
-                type: "post",
-                data: {
-                    tableName:'safety_riskmanage'
-                },
-                dataType: "json",
-                success: function (res) {
-                    console.log(res);
-                }
-            })
+            idArr.length=0;
+            for(var i = 0;i<majorKeyArr[0].length;i++){
+                idArr.push(majorKeyArr[0][i]);
+            }
             $(that).html('取消勾选');
             $(that).attr('state',true);
             //翻页事件
@@ -667,6 +686,7 @@
                 $('input[type="checkbox"][name="checkList"]').prop("checked",true);
                 addCheckedAllTips('取消勾选');
             });
+            console.log(idArr);
         }
     }
 
