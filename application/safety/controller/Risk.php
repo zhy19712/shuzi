@@ -11,6 +11,7 @@ namespace app\safety\controller;
 // 安全风险管理
 use app\admin\controller\Base;
 use app\admin\model\ContractModel;
+use app\safety\model\RiskDoubleDutyModel;
 use app\safety\model\RiskModel;
 use think\Db;
 use think\Loader;
@@ -32,18 +33,18 @@ class Risk extends Base
         return $this->fetch();
     }
 
-    public function riskGet()
+    public function riskDuty()
     {
         if (request()->isAjax()) {
-            $param = input('post.');
-            $risk = new RiskModel();
+            $id = input('id');
+            $risk = new RiskDoubleDutyModel();
             $data = $risk->getOne($param['id']);
             return json($data);
         }
     }
 
     /**
-     * 新增或者修改
+     * 新增或修改
      * @return \think\response\Json
      * @author hutao
      */
@@ -60,11 +61,8 @@ class Risk extends Base
 
     public function getRisk()
     {
-        if (!request()->isAjax()) {
-            $id = input('id');
-            $m=new RiskModel();
-            return json($m->getOne($id));
-        }
+       $m=new RiskDoubleDutyModel();
+      return json( $m->getbyusername('test'));
     }
 
     /**
@@ -110,45 +108,6 @@ class Risk extends Base
         }
     }
 
-    /**
-     * 预览
-     * @return \think\response\Json
-     * @author hutao
-     */
-    public function riskPreview()
-    {
-        $edu = new RiskModel();
-        if (request()->isAjax()) {
-            $param = input('post.');
-            $code = 1;
-            $msg = '预览成功';
-            $data = $edu->getOne($param['id']);
-            if ($param['type'] == '1') { // type 1 表示的是 培训材料文件 2 表示培训记录文件
-                $path = $data['ma_path'];
-            } else {
-                $path = $data['re_path'];
-            }
-            $extension = strtolower(get_extension(substr($path, 1)));
-            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-            if (!file_exists($pdf_path)) {
-                if ($extension === 'doc' || $extension === 'docx' || $extension === 'txt') {
-                    doc_to_pdf($path);
-                } else if ($extension === 'xls' || $extension === 'xlsx') {
-                    excel_to_pdf($path);
-                } else if ($extension === 'ppt' || $extension === 'pptx') {
-                    ppt_to_pdf($path);
-                } else if ($extension === 'pdf') {
-                    $pdf_path = $path;
-                } else {
-                    $code = 0;
-                    $msg = '文不支持的件格式';
-                }
-                return json(['code' => $code, 'path' => substr($pdf_path, 1), 'msg' => $msg]);
-            } else {
-                return json(['code' => $code, 'path' => substr($pdf_path, 1), 'msg' => $msg]);
-            }
-        }
-    }
 
     /**
      * 删除
