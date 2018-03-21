@@ -119,7 +119,7 @@ class Risk extends Base
         if (request()->isAjax()) {
             $param = input('id');
             $edu = new RiskModel();
-            $flag = $edu->del($param);
+            $flag = $edu->delRisk($param);
             return json($flag);
         }
     }

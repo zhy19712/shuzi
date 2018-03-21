@@ -42,11 +42,11 @@ class RiskModel extends Model
             } else {
 //            修改，对比发现人与验收人
                 $item_old = $this->where('id', $risk['id'])->find();
-                if (!$item_old['founder'] == $risk['founder']) {
+                if (!($item_old['founder'] == $risk['founder'])) {
                     $this->proessScore($item_old['founder'], $item_old['cat'], '修改', $item_old['founddate'], true);
                     $this->proessScore($risk['founder'], $risk['cat'], '排查', $risk['founddate']);
                 }
-                if (!$item_old['acceptor'] == $risk['acceptor']) {
+                if (!($item_old['acceptor'] == $risk['acceptor'])) {
                     $this->proessScore($item_old['acceptor'], $item_old['cat'], '修改', $risk['acceptor'], true);
                     $this->proessScore($risk['acceptor'], $risk['cat'], '验收', $risk['acceptor']);
                 }
@@ -132,10 +132,13 @@ class RiskModel extends Model
      * @param $id
      * @return \think\response\Json
      */
-    public function del($id)
+    public function delRisk($id)
     {
         try {
             $m = new RiskModel();
+            //清理分数
+            $this->proessScore($m['founder'],$m['cat'],'删除',date('Y-m-d',time()),true);
+            $this->proessScore($m['acceptor'],$m['cat'],'删除',date('Y-m-d',time()),true);
             $m = $m->where('id', $id);
             $m->riskImg()->delete();
             $m->delete();
