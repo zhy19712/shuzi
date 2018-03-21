@@ -13,6 +13,7 @@ use app\safety\model\JobsafetyModel;//树状结构
 use app\safety\model\ViolationrecordModel;//反违章记录
 use app\safety\model\FiremanagementModel;//消防安全管理
 use app\safety\model\ChemistrymanagementModel;//危险化学品管理
+use app\safety\model\CrossoperationModel;//交叉作业管理
 use think\Db;
 use think\Loader;
 
@@ -684,7 +685,7 @@ class Jobsafety extends Base
         $param = input('post.');
         if(request()->isAjax()){
             $data = [
-                'id' => $param['aid'],
+                'id' => $param['id'],
                 'chemistry_file_name'=>$param['chemistry_file_name'],//文件名称
                 'remark' => $param['remark']//备注
             ];
@@ -753,6 +754,124 @@ class Jobsafety extends Base
             $code = 1;
             $msg = '预览成功';
             $data = $chemistry->getOne($param['id']);
+            $path = $data['path'];
+            $extension = strtolower(get_extension(substr($path,1)));
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(!file_exists($pdf_path)){
+                if($extension === 'doc' || $extension === 'docx' || $extension === 'txt'){
+                    doc_to_pdf($path);
+                }else if($extension === 'xls' || $extension === 'xlsx'){
+                    excel_to_pdf($path);
+                }else if($extension === 'ppt' || $extension === 'pptx'){
+                    ppt_to_pdf($path);
+                }else if($extension === 'pdf'){
+                    $pdf_path = $path;
+                }else{
+                    $code = 0;
+                    $msg = '不支持的文件格式';
+                }
+                return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
+            }else{
+                return json(['code' => $code,  'path' => substr($pdf_path,1), 'msg' => $msg]);
+            }
+        }
+    }
+
+    /***************************************************交叉作业管理********************************************************************/
+
+    /*
+     * 获取一条交叉作业信息
+     */
+    public function getcrossindex()
+    {
+        if(request()->isAjax()){
+            $cross = new CrossoperationModel();
+            $param = input('post.');
+            $data = $cross->getOne($param['id']);
+            return json(['code'=> 1, 'data' => $data]);
+        }
+        return $this->fetch();
+    }
+
+    /*
+     * 编辑一条交叉作业管理信息
+     */
+    public function crossoperationEdit()
+    {
+        $crossoperation = new CrossoperationModel();
+        $param = input('post.');
+        if(request()->isAjax()){
+            $data = [
+                'id' => $param['id'],
+                'cross_file_name'=>$param['cross_file_name'],//文件名称
+                'category' => $param['category'],//类别
+                'remark' => $param['remark']//备注
+            ];
+            $flag = $crossoperation->editCrossoperation($data);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    /*
+     * 下载一条交叉作业管理信息
+     */
+    public function crossoperationDownload()
+    {
+        if(request()->isAjax()){
+            return json(['code' => 1]);
+        }
+        $id = input('param.id');
+        $crossoperation = new CrossoperationModel();
+        $param = $crossoperation->getOne($id);
+        $filePath = $param['path'];
+        $fileName = $param['name'];
+        $file = fopen($filePath, "r"); //   打开文件
+        //输入文件标签
+        $fileName = iconv("utf-8","gb2312",$fileName);
+        Header("Content-type:application/octet-stream ");
+        Header("Accept-Ranges:bytes ");
+        Header("Accept-Length:   " . filesize($filePath));
+        Header("Content-Disposition:   attachment;   filename= " . $fileName);
+
+        //   输出文件内容
+        echo fread($file, filesize($filePath));
+        fclose($file);
+        exit;
+    }
+
+    /*
+     * 删除一条交叉作业管理信息
+     */
+    public function crossoperationDel()
+    {
+        $crossoperation = new CrossoperationModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $data = $crossoperation->getOne($param['id']);
+            $path = $data['path'];
+            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
+            if(file_exists($path)){
+                unlink($path); //删除文件
+            }
+            if(file_exists($pdf_path)){
+                unlink($pdf_path); //删除生成的预览pdf
+            }
+            $flag = $crossoperation->delCrossoperation($param['id']);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    /*
+     * 预览一条交叉作业管理信息
+     */
+    public function crossoperationPreview()
+    {
+        $crossoperation = new CrossoperationModel();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $code = 1;
+            $msg = '预览成功';
+            $data = $crossoperation->getOne($param['id']);
             $path = $data['path'];
             $extension = strtolower(get_extension(substr($path,1)));
             $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
