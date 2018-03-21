@@ -25,6 +25,15 @@ class Emergencydisposal extends Base
             $emergencydisposal = new EmergencydisposalModel();
             $param = input('post.');
             $data = $emergencydisposal->getOne($param['id']);
+            if(empty($data['path']))
+            {
+                $data['path'] = '';
+            }
+
+            if(empty($data['filename']))
+            {
+                $data['filename'] = '';
+            }
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();

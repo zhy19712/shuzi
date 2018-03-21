@@ -28,6 +28,11 @@ class Emergencyplan extends Base
             {
                 $data['path'] = '';
             }
+
+            if(empty($data['filename']))
+            {
+                $data['filename'] = '';
+            }
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
