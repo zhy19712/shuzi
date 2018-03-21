@@ -42,15 +42,19 @@ class Riskmanage extends Base
         if(request()->isAjax()){
             $manage = new RiskManageModel();
             $param = input('post.');
-            if(empty($param['year_name'])){
+            if(isset($param['year_filename']) && empty($param['year_name'])){
                 $param['year_name'] = $param['year_filename'];
-            }if(empty($param['quarter_name'])){
+            }
+            if(isset($param['quarter_filename']) && empty($param['quarter_name'])){
                 $param['quarter_name'] = $param['quarter_filename'];
-            }if(empty($param['sheet_name'])){
+            }
+            if(isset($param['sheet_filename']) && empty($param['sheet_name'])){
                 $param['sheet_name'] = $param['sheet_filename'];
-            }if(empty($param['card_name'])){
+            }
+            if(isset($param['card_filename']) && empty($param['card_name'])){
                 $param['card_name'] = $param['card_filename'];
-            }if(empty($param['work_name'])){
+            }
+            if(isset($param['work_filename']) && empty($param['work_name'])){
                 $param['work_name'] = $param['work_filename'];
             }
             if(empty($param['major_key'])){

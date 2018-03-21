@@ -8,6 +8,10 @@ class UserModel extends Model
 {
     protected $name = 'admin';
 
+    public function depName()
+    {
+        return $this->hasOne('UserType','id','groupid');
+    }
     /**
      * 根据搜索条件获取用户列表信息
      */

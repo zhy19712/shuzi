@@ -8,6 +8,9 @@
 
 namespace app\safety\model;
 
+
+
+use app\admin\model\UserModel;
 use think\Db;
 use think\Exception;
 use think\Model;
@@ -27,21 +30,31 @@ class RiskDoubleDutyModel extends Model
     public function getbyusername($user)
     {
         try {
-            $item = $this->where('username', $user)->find();
+            $item = $this->where('user', $user)->find();
         } catch (Exception $e) {
             $item = null;
         }
         if (!empty($item)) {
             return $item;
         }
-        $item = ['user' =>$user ];
+        try {
+            $m = UserModel::where('username', $user)->find();
+        }catch (Exception $e)
+        {
+            return false;
+        }
+        $item = ['user' =>$m['username'],'dep'=>$m->depName['title']];
         $id = $this->insertGetId($item);
-        return $this->where('user_id', $id)->find();
+        return $this->where('id', $id)->find();
     }
 
     public function prossScore($user,$score,$cat,$context,$time)
     {
         $item = $this->getbyusername($user);
+        if ($item)
+        {
+            return false;
+        }
         Db::transaction();
         try
         {
