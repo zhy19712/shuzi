@@ -564,9 +564,6 @@ class Upload extends Base
      *安全生产责任制文件上传
      * @return \think\response\Json
     */
-
-
-
     public function uploadFullparticipation(){
         /**
          * id 安全生产责任制文件上传id
@@ -702,75 +699,6 @@ class Upload extends Base
                     'remark' => $remark
                 ];
                 $flag = $equipment->editEquipmentCheckAccept($data);
-                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
-            }
-        }else{
-            echo $file->getError();
-        }
-    }
-
-    /*
-     *特种设备管理文件图片上传
-     * @return \think\response\Json
-    */
-    public function uploadSpecialequipmentmanagement(){
-        /**
-         * id 安全生产责任制文件上传id
-         * selfid 标记的节点id
-         * equip_name 设备名称
-         * model 型号
-         * equip_num 设备编号
-         * manufactur_unit 制造单位
-         * date_production 出厂日期
-         * current_state 当前状态
-         * equip_manage_department 设备管理部门
-         * safety_machinery_time 安全准用证挂牌时间
-         * safety_inspection_num 安全检验合格证书编号
-         * inspection_unit 检验单位
-         * safety_inspecte_certificate_time 安全检验合格证书有效截止日期
-         * date_overhaul 大修日期
-         * entry_time 进场时间
-         * equip_state 设备状态
-         * remark 备注
-         * input_time excel表格导入时间
-         * name 文件名
-         * filename 上传文件名
-         * owner 上传人
-         * create_time 新增/上传时间
-         * path 文件路径
-         */
-        $equipment = new SafetySpecialEquipmentManagementModel();
-
-        $id = request()->param('cid');//获取特种设备文件的id
-
-        $pid = request()->param('pid');//获取特种设备文件上传图片的uid
-
-        $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/specialequipmentmanagement');
-        if($info){
-            $temp = $info->getSaveName();
-            $path = './uploads/safety/specialequipmentmanagement/' . str_replace("\\","/",$temp);
-            $filename = $file->getInfo('name');
-            if(empty($pid))
-            {
-                $data = [
-                    'uid' => $id,
-                    'name' => $filename,
-                    'picture_name' => $filename,
-                    'path' => $path
-                ];
-                $flag = $equipment->insertSpecialEquipmentManagePic($data);
-                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
-            }else{
-                $data = [
-                    'id' => $id,
-                    'pid' => $pid,
-                    'name' => $filename,
-                    'picture_name' => $filename,
-                    'path' => $path
-
-                ];
-                $flag = $equipment->editSpecialEquipmentManagementPic($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{
@@ -1920,6 +1848,22 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/specialoperate');
         if($info){
             $path = './uploads/safety/specialoperate/' . str_replace("\\","/",$info->getSaveName());
+            $filename = $file->getInfo('name');
+            return json(['code'=>1,'msg'=>'上传成功','data'=>$path,'filename'=>$filename]);
+        }else{
+            return json(['code'=>-1,'msg'=>'上传失败']);
+        }
+    }
+
+    /**
+     * 特种设备
+     */
+    public function uploadSpecialequipmentmanagement()
+    {
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/specialequipmentmanagement');
+        if($info){
+            $path = './uploads/safety/specialequipmentmanagement/' . str_replace("\\","/",$info->getSaveName());
             $filename = $file->getInfo('name');
             return json(['code'=>1,'msg'=>'上传成功','data'=>$path,'filename'=>$filename]);
         }else{

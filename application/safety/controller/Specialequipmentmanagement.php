@@ -339,9 +339,14 @@ class Specialequipmentmanagement extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('param.idarr');
-        $name = '特种设备管理'.date('Y-m-d H:i:s'); // 导出的文件名
         $equipment = new SafetySpecialEquipmentManagementModel();
+        $idArr = input('param.idarr/a');
+        if($idArr['0'] == "all")
+        {
+            $idArr = $equipment ->getallid();
+        }
+        $name = '特种设备管理'.date('Y-m-d H:i:s'); // 导出的文件名
+
         $list = $equipment->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
