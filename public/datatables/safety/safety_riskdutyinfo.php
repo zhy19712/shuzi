@@ -19,7 +19,7 @@ include('../conn.php');
  * Easy set variables
  */
 
-// DB table to use 安全风险管理
+// DB table to use 安全风险管理 分数详情
 $table = 'think_safety_riskdoubleduty_info';
 
 // Table's primary key
