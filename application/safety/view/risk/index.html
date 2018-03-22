@@ -196,8 +196,11 @@
     #aPairOf_reduce_table_model input[type="number"],#aPairOf_reduce_table_model input[type="text"]{
         width:100%;
     }
-    .table_td{
-        width:15%;
+    .lastRemark{
+        width:25%;
+    }
+    .lastRemark textarea{
+        width:100%;
     }
     #aPairOfPathSpan,#spanPath{
         display: inline-block;
@@ -206,10 +209,17 @@
     #previewPhotos{
         width: 100%;
         height: 100%;
+        display: none;
     }
     #previewPhotos img{
         width: 100%;
         height: 100%;
+    }
+    #aPairOf_reduce_table_model thead tr td:nth-of-type(2),#aPairOf_reduce_table_model thead tr td:nth-of-type(3){
+        width:14%;
+    }
+    #aPairOf_reduce_table_model thead tr td:nth-of-type(1){
+        width:18%;
     }
 </style>
 <body>
@@ -471,8 +481,7 @@
         </div>
     </div>
 </div>
-<!--预览用的照片框-->
-<div id="previewPhotos"></div>
+
 <!--一岗双责-->
 <div class="aPairOf_risk animated fadeInRight" style="display:none;width: 98%;vertical-align: top;padding: 0;margin-top: 20px;margin-left: 20px;text-align: center">
     <div class="ibox">
@@ -514,89 +523,103 @@
                         <table id="aPairOf_table_model" width="100%" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <td class="colorSee">姓名</td>
+
                                     <td class="colorSee">隐患类别</td>
                                     <td class="colorSee">排查</td>
                                     <td class="colorSee">验收</td>
-                                    <td class="colorSee">总得分</td>
+                                    <td class="colorSee">时间</td>
                                 </tr>
                                 <tr>
-                                    <td rowspan="15" class="colorSee"></td>
+
                                     <td class="colorSee">脚手架</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
-                                    <td rowspan="15" class="colorSee"></td>
+                                    <td class="colorSee"></td>
                                 </tr>
                                 <tr>
                                     <td class="colorSee">安全文明施工</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
+                                    <td class="colorSee"></td>
                                 </tr>
 
                                 <tr>
                                     <td class="colorSee">环水保</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
+                                    <td class="colorSee"></td>
                                 </tr>
                                 <tr>
                                     <td class="colorSee">施工用电</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
+                                    <td class="colorSee"></td>
                                 </tr>
                                 <tr>
                                     <td class="colorSee">反违章</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
+                                    <td class="colorSee"></td>
                                 </tr>
                                 <tr>
                                     <td class="colorSee">施工机具</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
+                                    <td class="colorSee"></td>
                                 </tr>
                                 <tr>
                                     <td class="colorSee">交通安全</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
+                                    <td class="colorSee"></td>
                                 </tr>
                                 <tr>
                                     <td class="colorSee">警示标示</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
+                                    <td class="colorSee"></td>
                                 </tr>
                                 <tr>
                                     <td class="colorSee">地质灾害</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
+                                    <td class="colorSee"></td>
                                 </tr>
                                 <tr>
                                     <td class="colorSee">爆破作业</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
+                                    <td class="colorSee"></td>
                                 </tr>
                                 <tr>
                                     <td class="colorSee">消防安全</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
+                                    <td class="colorSee"></td>
                                 </tr>
                                 <tr>
                                     <td class="colorSee">职业健康</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
+                                    <td class="colorSee"></td>
                                 </tr>
                                 <tr>
                                     <td class="colorSee">起重作业</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
+                                    <td class="colorSee"></td>
                                 </tr>
                                 <tr>
                                     <td class="colorSee">特种设备</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
+                                    <td class="colorSee"></td>
                                 </tr>
                                 <tr>
                                     <td class="colorSee">重大事故隐患</td>
                                     <td class="colorSee">0.5</td>
                                     <td class="colorSee">0.5</td>
+                                    <td class="colorSee"></td>
                                 </tr>
                             </thead>
                         </table>
@@ -629,121 +652,105 @@
                         <table id="aPairOf_reduce_table_model" width="100%" class="table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <td class="colorSee">姓名</td>
-                                <td class="colorSee">部门</td>
                                 <td class="colorSee">扣分类别</td>
                                 <td class="colorSee">分数</td>
                                 <td class="colorSee">时间</td>
-                                <td class="colorSee">内容</td>
-                                <td class="colorSee">备注</td>
+                                <td class="colorSee">原因</td>
                             </tr>
                             <tr>
-                                <td rowspan="7" class="colorSee"></td>
-                                <td rowspan="7" class="colorSee"></td>
-                                <td class="colorSee">现场隐患未发现</td>
+                                <td class="colorSee">
+                                    <select name="deductingReasons" id="deductingReasons">
+                                        <option value="">现场隐患未发现</option>
+                                        <option value="">隐患未整改闭环</option>
+                                        <option value="">安全记录不规范</option>
+                                        <option value="">未落实风险管控责任</option>
+                                        <option value="">安全措施验收不负责</option>
+                                        <option value="">现场未执行方案</option>
+                                        <option value="">无方案施工且未制止</option>
+                                    </select>
+                                </td>
                                 <td class="colorSee table_td">
                                     <input type="number" id="numSee1">
                                 </td>
                                 <td class="table_td">
                                     <input type="text" name="reduce1" id="reduce1">
                                 </td>
-                                <td class="table_td">
-                                    <input type="text" value="内容">
-                                </td>
-                                <td class="table_td">
+                                <td class="table_td lastRemark">
                                     <textarea name="reduceRemark1" id="reduceRemark1"></textarea>
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="colorSee">隐患未整改闭环</td>
-                                <td class="colorSee table_td">
-                                    <input type="number" id="numSee2">
-                                </td>
-                                <td class="table_td">
-                                    <input type="text" name="reduce2" id="reduce2">
-                                </td>
-                                <td class="table_td">
-                                    <input type="text" value="内容">
-                                </td>
-                                <td class="table_td">
-                                    <textarea name="reduceRemark2" id="reduceRemark2"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="colorSee">安全记录不规范</td>
-                                <td class="colorSee table_td">
-                                    <input type="number" id="numSee3">
-                                </td>
-                                <td class="table_td">
-                                    <input type="text" name="reduce3" id="reduce3">
-                                </td>
-                                <td class="table_td">
-                                    <input type="text" value="内容">
-                                </td>
-                                <td class="table_td">
-                                    <textarea name="reduceRemark3" id="reduceRemark3"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="colorSee">未落实风险管控责任</td>
-                                <td class="colorSee table_td">
-                                    <input type="number" id="numSee4">
-                                </td>
-                                <td class="table_td">
-                                    <input type="text" name="reduce4" id="reduce4">
-                                </td>
-                                <td class="table_td">
-                                    <input type="text" value="内容">
-                                </td>
-                                <td class="table_td">
-                                    <textarea name="reduceRemark4" id="reduceRemark4"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="colorSee">安全措施验收不负责</td>
-                                <td class="colorSee table_td">
-                                    <input type="number" id="numSee5">
-                                </td>
-                                <td class="table_td">
-                                    <input type="text" name="reduce5" id="reduce5">
-                                </td>
-                                <td class="table_td">
-                                    <input type="text" value="内容">
-                                </td>
-                                <td class="table_td">
-                                    <textarea name="reduceRemark5" id="reduceRemark5"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="colorSee">现场未执行方案</td>
-                                <td class="colorSee table_td">
-                                    <input type="number" id="numSee6">
-                                </td>
-                                <td class="table_td">
-                                    <input type="text" name="reduce6" id="reduce6">
-                                </td>
-                                <td class="table_td">
-                                    <input type="text" value="内容">
-                                </td>
-                                <td class="table_td">
-                                    <textarea name="reduceRemark6" id="reduceRemark6"></textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="colorSee">无方案施工且未制止</td>
-                                <td class="colorSee table_td">
-                                    <input type="number" id="numSee7">
-                                </td>
-                                <td class="table_td">
-                                    <input type="text" name="reduce7" id="reduce7">
-                                </td>
-                                <td class="table_td">
-                                    <input type="text" value="内容">
-                                </td>
-                                <td class="table_td">
-                                    <textarea name="reduceRemark7" id="reduceRemark7"></textarea>
-                                </td>
-                            </tr>
+                            <!--<tr>-->
+                                <!--<td class="colorSee">隐患未整改闭环</td>-->
+                                <!--<td class="colorSee table_td">-->
+                                    <!--<input type="number" id="numSee2">-->
+                                <!--</td>-->
+                                <!--<td class="table_td">-->
+                                    <!--<input type="text" name="reduce2" id="reduce2">-->
+                                <!--</td>-->
+                                <!--<td class="table_td">-->
+                                    <!--<textarea name="reduceRemark2" id="reduceRemark2"></textarea>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                                <!--<td class="colorSee">安全记录不规范</td>-->
+                                <!--<td class="colorSee table_td">-->
+                                    <!--<input type="number" id="numSee3">-->
+                                <!--</td>-->
+                                <!--<td class="table_td">-->
+                                    <!--<input type="text" name="reduce3" id="reduce3">-->
+                                <!--</td>-->
+                                <!--<td class="table_td">-->
+                                    <!--<textarea name="reduceRemark3" id="reduceRemark3"></textarea>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                                <!--<td class="colorSee">未落实风险管控责任</td>-->
+                                <!--<td class="colorSee table_td">-->
+                                    <!--<input type="number" id="numSee4">-->
+                                <!--</td>-->
+                                <!--<td class="table_td">-->
+                                    <!--<input type="text" name="reduce4" id="reduce4">-->
+                                <!--</td>-->
+                                <!--<td class="table_td">-->
+                                    <!--<textarea name="reduceRemark4" id="reduceRemark4"></textarea>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                                <!--<td class="colorSee">安全措施验收不负责</td>-->
+                                <!--<td class="colorSee table_td">-->
+                                    <!--<input type="number" id="numSee5">-->
+                                <!--</td>-->
+                                <!--<td class="table_td">-->
+                                    <!--<input type="text" name="reduce5" id="reduce5">-->
+                                <!--</td>-->
+                                <!--<td class="table_td">-->
+                                    <!--<textarea name="reduceRemark5" id="reduceRemark5"></textarea>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                                <!--<td class="colorSee">现场未执行方案</td>-->
+                                <!--<td class="colorSee table_td">-->
+                                    <!--<input type="number" id="numSee6">-->
+                                <!--</td>-->
+                                <!--<td class="table_td">-->
+                                    <!--<input type="text" name="reduce6" id="reduce6">-->
+                                <!--</td>-->
+                                <!--<td class="table_td">-->
+                                    <!--<textarea name="reduceRemark6" id="reduceRemark6"></textarea>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--<tr>-->
+                                <!--<td class="colorSee">无方案施工且未制止</td>-->
+                                <!--<td class="colorSee table_td">-->
+                                    <!--<input type="number" id="numSee7">-->
+                                <!--</td>-->
+                                <!--<td class="table_td">-->
+                                    <!--<input type="text" name="reduce7" id="reduce7">-->
+                                <!--</td>-->
+                                <!--<td class="table_td">-->
+                                    <!--<textarea name="reduceRemark7" id="reduceRemark7"></textarea>-->
+                                <!--</td>-->
+                            <!--</tr>-->
 
                             </thead>
                         </table>
@@ -761,6 +768,9 @@
     </div>
 </div>
 
+<!--预览用的照片框-->
+
+<div id="previewPhotos"></div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 
@@ -960,11 +970,13 @@
     function previewFile() {
         console.log(arrBefore)
         $("#previewPhotos").html('');
+        $("#previewPhotos").css('display','none');
         $("#previewPhotos").append('<img src="'+arrBefore.substring(1)+'"/>')
+        $("#previewPhotos").css('display','block');
         layer.open({
             type: 1,
             title: false,
-            btn: ['按钮一', '按钮二', '按钮三'],
+            btn: ['放大', '缩小'],
             closeBtn: 0,
             area: ['960px','550px'],
             skin: 'layui-layer-nobg', //没有背景色
@@ -1583,8 +1595,9 @@
 
     //得分查看
     function riskreduceSee() {
-        $("#aPairOf_modal h5").text("查看");
+        $("#aPairOf_modal h5").text("查看扣分项");
         $("#aPairOf_modal").modal('show');
+        $("#aPairOf_modal button[type='submit']").css("display",'none');
     }
     //得分查看返回
     $("#aPairOf_modal .btn-danger").click(function () {

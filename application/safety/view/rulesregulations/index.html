@@ -906,6 +906,7 @@
         $.ajax({
             url: url,
             success: function (res) {
+                console.log(res.msg)
                 if(res.code != 1){
                     layer.msg(res.msg)
                 }else {
@@ -920,9 +921,7 @@
                         + "</form>"
                     $("#formDown").append(str);
                     $("#formDown").find(".btn" + id).click();
-                }
-                if(res.code == -1){
-                    layer.msg(res.msg)
+
                 }
             }
         })

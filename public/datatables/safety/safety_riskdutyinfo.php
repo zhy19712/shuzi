@@ -19,12 +19,12 @@ include('../conn.php');
  * Easy set variables
  */
 
-// DB table to use 安全风险管理
+// DB table to use 安全风险管理 分数详情
 $table = 'think_safety_riskdoubleduty_info';
 
 // Table's primary key
 $primaryKey = 'id';
-
+$id = $_GET['id'];
 // Array of database columns which should be read and sent back to DataTables.
 // The `db` parameter represents the column name in the database, while the `dt`
 // parameter represents the DataTables column identifier. In this case simple
@@ -32,10 +32,10 @@ $primaryKey = 'id';
 
 //定义数据库中查看的字段与表格中的哪一列相对应
 $columns = array(
-    array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'cat',  'dt' => 1 ),
-    array( 'db' => 'score',  'dt' => 2 ),
-    array( 'db' => 'context',  'dt' => 3 )
+    array('db' => 'id', 'dt' => 0),
+    array('db' => 'cat', 'dt' => 1),
+    array('db' => 'score', 'dt' => 2),
+    array('db' => 'context', 'dt' => 3)
 );
 
 
@@ -43,11 +43,14 @@ $columns = array(
  * If you just want to use the basic configuration for DataTables with PHP
  * server-side, there is no need to edit below this line.
  */
-require( '../ssp.class.php' );
-
-echo json_encode(
-    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
-);
+require('../ssp.class.php');
+if (empty($id)) {
+    echo json_encode(
+        SSP::simple($_GET, $sql_details, $table, $primaryKey, $columns)
+    );
+} else {
+    echo json_encode(SSP::complex($_GET,$sql_details,$table,$primaryKey,$columns,'duty_id='.$id));
+}
 
 
 
