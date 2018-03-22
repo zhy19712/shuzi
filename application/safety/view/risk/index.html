@@ -902,7 +902,7 @@
     uploaderImg.on( 'fileQueued', function( file ) {  // webuploaderImg事件.当选择文件后，文件被加载到文件队列中，触发该事件。等效于 uploaderImg.onFileueued = function(file){...} ，类似js的事件定义。
         var $li = $(
             '<div id="' + file.id + '" class="file-item thumbnail">' +
-            '<img>' +
+            '<img  onclick="previewFile(this)">' +
             '<div class="info">' + file.name + '</div>' +
             '<div class="infoDel"><span onclick="delFileName(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
             '</div>'
@@ -948,30 +948,17 @@
         }, thumbnailWidth, thumbnailHeight );
     });
     //点击照片预览
-    $("#thelist img").click(function () {
+    function previewFile() {
         layer.open({
-            type: 1
-            ,title: false //不显示标题栏
-            ,closeBtn: false
-            ,area: '700px;'
-            ,shade: 0.8
-            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-            ,resize: false
-            ,btn: ['顶上', '返回']
-            ,btnAlign: 'c'
-            ,moveType: 1 //拖拽模式，0或者1
-            ,content: '<div style="width: 200px;height: 200px;border: 1px solid red;padding: 50px; line-height: 22px; background-color: #787091; color: #fff; font-weight: 300;">' +
-            '<img src="'+pathImg.substring(1)+'"/>' +
-            '</div>'
-            ,success: function(layero){
-                var btn = layero.find('.layui-layer-btn');
-                btn.find('.layui-layer-btn0').attr({
-                    href: 'http://www.layui.com/'
-                    ,target: '_blank'
-                });
-            }
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: '516px',
+            skin: 'layui-layer-nobg', //没有背景色
+            shadeClose: true,
+            content: $('#tong')
         });
-    })
+    }
     function delFileName(that) {
         var id = $(that).parent("div").attr("id");
         $("#"+id).remove();
