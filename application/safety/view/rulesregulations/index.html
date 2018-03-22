@@ -1168,7 +1168,7 @@
             console.log(obj.date.YYYY);
             yearData = obj.date.YYYY
             //点击查看历史版本
-            $("#down_excel option").click(function () {
+            $("#down_excel").click(function () {
                 var time = $('#down_excel option:selected').val();//选中的值
                 admin_table.ajax.url("__SCRIPT__/safety_rules.php?times="+time+"&years=\"+obj.date.YYYY+\"&pid=" + groupid).load();
             })
