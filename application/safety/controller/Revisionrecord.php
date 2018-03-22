@@ -45,10 +45,13 @@ class Revisionrecord extends Base
      */
     public function recordDownload()
     {
+        $majorKeyArr = input('majorKeyArr/a');
+        if(count($majorKeyArr) == 0){
+            return json(['code' => -1 ,'msg' => '请选择需要导出的编号']);
+        }
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $majorKeyArr = input('majorKeyArr/a');
         $name = '修编记录 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $record = new RevisionrecordModel();
         $list = $record->getList($majorKeyArr);

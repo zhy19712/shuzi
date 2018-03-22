@@ -71,21 +71,22 @@ class Evaluation extends Base
      */
     public function evalDownload()
     {
-        if(request()->isAjax()){
-            return json(['code'=>1]);
-        }
         $major_key = input('param.major_key');
         $eval = new EvaluationModel();
         $param = $eval->getOne($major_key);
         $filePath = $param['path'];
-        $fileName = $param['eval_name'];
-        // 如果是手动输入的名称，就有可能没有文件后缀
-        $extension = get_extension($fileName);
-        if(empty($extension)){
-            $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
-        }
-        $file = fopen($filePath, "r"); //   打开文件
-        if(file_exists($filePath)){
+        if(!file_exists($filePath)){
+            return json(['code' => '-1','msg' => '文件不存在']);
+        }else if (request()->isAjax()){
+            return json(['code'=>1]);
+        }else{
+            $fileName = $param['eval_name'];
+            // 如果是手动输入的名称，就有可能没有文件后缀
+            $extension = get_extension($fileName);
+            if(empty($extension)){
+                $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
+            }
+            $file = fopen($filePath, "r"); //   打开文件
             //输入文件标签
             $fileName = iconv("utf-8","gb2312",$fileName);
             Header("Content-type:application/octet-stream ");
@@ -96,8 +97,6 @@ class Evaluation extends Base
             echo fread($file, filesize($filePath));
             fclose($file);
             exit;
-        }else{
-            return json(['code' => '-1','msg' => '文件不存在']);
         }
     }
 

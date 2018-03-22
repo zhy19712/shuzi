@@ -125,10 +125,11 @@ class Insulatingequipment extends Base
 //                    'date' => date("Y-m-d H:i:s"),//添加时间
                     'remark' => $param['remark']//备注
                 ];
+                $flag = $insulatingequipment->editInsulatingequipment($data);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
 
-            $flag = $insulatingequipment->editInsulatingequipment($data);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+
         }
     }
 
