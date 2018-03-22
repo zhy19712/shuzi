@@ -136,15 +136,16 @@ class RiskModel extends Model
     {
         try {
             $m = new RiskModel();
+            $m = $m->where('id', $id)->find();
+
             //清理分数
             $this->proessScore($m['founder'],$m['cat'],'删除',date('Y-m-d',time()),true);
             $this->proessScore($m['acceptor'],$m['cat'],'删除',date('Y-m-d',time()),true);
-            $m = $m->where('id', $id);
             $m->riskImg()->delete();
             $m->delete();
-            return json(['code' => 1,'msg'=>'']);
+            return  ['code' => 1,'msg'=>''];
         } catch (Exception $e) {
-            return json(['code' => -1, 'msg' => $e->getMessage()]);
+            return ['code' => -1, 'msg' => $e->getMessage()];
         }
     }
 
