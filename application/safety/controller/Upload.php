@@ -1935,4 +1935,52 @@ class Upload extends Base
         }
     }
 
+    /**
+     * 内部设备设施管理,登高工器具
+     */
+    public function uploadBoardinginner()
+    {
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/boardinginner');
+        if($info){
+            $path = './uploads/safety/boardinginner/' . str_replace("\\","/",$info->getSaveName());
+            $filename = $file->getInfo('name');
+            return json(['code'=>1,'msg'=>'上传成功','data'=>$path,'filename'=>$filename]);
+        }else{
+            return json(['code'=>-1,'msg'=>'上传失败']);
+        }
+    }
+
+    /**
+     * 内部设备设施管理,绝缘安全工器具
+     */
+    public function uploadInsulatinginner()
+    {
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/insulatinginner');
+        if($info){
+            $path = './uploads/safety/insulatinginner/' . str_replace("\\","/",$info->getSaveName());
+            $filename = $file->getInfo('name');
+            return json(['code'=>1,'msg'=>'上传成功','data'=>$path,'filename'=>$filename]);
+        }else{
+            return json(['code'=>-1,'msg'=>'上传失败']);
+        }
+    }
+
+    /**
+     * 内部设备设施管理,个人防护装备
+     */
+    public function uploadPersonalinner()
+    {
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/personalinner');
+        if($info){
+            $path = './uploads/safety/personalinner/' . str_replace("\\","/",$info->getSaveName());
+            $filename = $file->getInfo('name');
+            return json(['code'=>1,'msg'=>'上传成功','data'=>$path,'filename'=>$filename]);
+        }else{
+            return json(['code'=>-1,'msg'=>'上传失败']);
+        }
+    }
+
 }
