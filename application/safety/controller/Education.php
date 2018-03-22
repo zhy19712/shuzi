@@ -72,9 +72,6 @@ class Education extends Base
      */
     public function eduDownload()
     {
-        if(request()->isAjax()){
-            return json(['code' => 1]);
-        }
         $major_key = input('param.major_key');
         $type = input('param.types');
         $edu = new EducationModel();
@@ -87,13 +84,16 @@ class Education extends Base
             $fileName = $param['record_name'];
         }
 
-        // 如果是手动输入的名称，就有可能没有文件后缀
-        $extension = get_extension($fileName);
-        if(empty($extension)){
-            $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
-        }
-
-        if(file_exists($filePath)) {
+        if(!file_exists($filePath)){
+            return json(['code' => '-1','msg' => '文件不存在']);
+        }else if(request()->isAjax()){
+            return json(['code' => 1]);
+        }else {
+            // 如果是手动输入的名称，就有可能没有文件后缀
+            $extension = get_extension($fileName);
+            if(empty($extension)){
+                $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
+            }
             $file = fopen($filePath, "r"); //   打开文件
             //输入文件标签
             $fileName = iconv("utf-8","gb2312",$fileName);
@@ -105,8 +105,6 @@ class Education extends Base
             echo fread($file, filesize($filePath));
             fclose($file);
             exit;
-        }else{
-            return json(['code' => '-1','msg' => '文件不存在']);
         }
     }
 
@@ -141,7 +139,7 @@ class Education extends Base
                     $pdf_path = $path;
                 }else{
                     $code = 0;
-                    $msg = '文不支持的件格式';
+                    $msg = '不支持的文件格式';
                 }
                 return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
             }else{
@@ -314,12 +312,12 @@ class Education extends Base
      */
     public function exportExcel()
     {
-        if(request()->isAjax()){
-            return json(['code'=>1]);
-        }
         $majorKeyArr = input('majorKeyArr/a');
         if(count($majorKeyArr) == 0){
-            return json(['code' => -1 ,'msg' => '请选择需要下载的编号']);
+            return json(['code' => -1 ,'msg' => '请选择需要导出的编号']);
+        }
+        if(request()->isAjax()){
+            return json(['code'=>1]);
         }
         $name = '专题教育培训'.date('Y-m-d H:i:s'); // 导出的文件名
         $edu = new EducationModel();
@@ -357,7 +355,7 @@ class Education extends Base
                 ->setCellValue('E'.$key, $v['lecturer'])
                 ->setCellValue('F'.$key, $v['trainee'])
                 ->setCellValue('G'.$key, $v['num'])
-                ->setCellValue('G'.$key, $v['remark']);
+                ->setCellValue('H'.$key, $v['remark']);
         }
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);

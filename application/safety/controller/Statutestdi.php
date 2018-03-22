@@ -132,20 +132,21 @@ class Statutestdi extends Base
      */
     public function sdiDownload()
     {
-        if(request()->isAjax()){
-            return json(['code' => 1]);
-        }
         $major_key = input('param.major_key');
         $sdi = new StatutestdiModel();
         $param = $sdi->getOne($major_key);
         $filePath = $param['path'];
-        $fileName = $param['sdi_name'];
-        // 如果是手动输入的名称，就有可能没有文件后缀
-        $extension = get_extension($fileName);
-        if(empty($extension)){
-            $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
-        }
-        if(file_exists($filePath)){
+        if(!file_exists($filePath)){
+            return json(['code' => '-1','msg' => '文件不存在']);
+        }else if(request()->isAjax()){
+            return json(['code' => 1]); // 文件存在，告诉前台可以执行下载
+        }else{
+            $fileName = $param['sdi_name'];
+            // 如果是手动输入的名称，就有可能没有文件后缀
+            $extension = get_extension($fileName);
+            if(empty($extension)){
+                $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
+            }
             $file = fopen($filePath, "r"); //   打开文件
             //输入文件标签
             $fileName = iconv("utf-8","gb2312",$fileName);
@@ -157,8 +158,6 @@ class Statutestdi extends Base
             echo fread($file, filesize($filePath));
             fclose($file);
             exit;
-        }else{
-            return json(['code' => '-1','msg' => '文件不存在']);
         }
     }
 
@@ -398,16 +397,12 @@ class Statutestdi extends Base
      */
     public function exportExcel()
     {
-        if(request()->isAjax()){
-            $majorKeyArr = input('majorKeyArr/a');
-            if(count($majorKeyArr) == 0){
-                return json(['code' => -1 ,'msg' => '请选择需要下载的编号']);
-            }
-            return json(['code'=>1]);
-        }
         $majorKeyArr = input('majorKeyArr/a');
         if(count($majorKeyArr) == 0){
-            return json(['code' => -1 ,'msg' => '请选择需要下载的编号']);
+            return json(['code' => -1 ,'msg' => '请选择需要导出的编号']);
+        }
+        if(request()->isAjax()){
+            return json(['code'=>1]);
         }
         $name = '法规标准识别 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $sdi = new StatutestdiModel();

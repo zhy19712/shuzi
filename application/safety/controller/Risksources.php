@@ -59,20 +59,21 @@ class Risksources extends Base
      */
     public function sourcesDownload()
     {
-        if(request()->isAjax()){
-            return json(['code'=>1]);
-        }
         $major_key = input('param.major_key');
         $sources = new RiskSourcesModel();
         $param = $sources->getOne($major_key);
         $filePath = $param['path'];
-        $fileName = $param['risk_name'];
-        // 如果是手动输入的名称，就有可能没有文件后缀
-        $extension = get_extension($fileName);
-        if(empty($extension)){
-            $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
-        }
-        if(file_exists($filePath)) {
+        if(!file_exists($filePath)){
+            return json(['code' => '-1','msg' => '文件不存在']);
+        }else if(request()->isAjax()){
+            return json(['code'=>1]);
+        } else{
+            $fileName = $param['risk_name'];
+            // 如果是手动输入的名称，就有可能没有文件后缀
+            $extension = get_extension($fileName);
+            if(empty($extension)){
+                $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
+            }
             $file = fopen($filePath, "r"); //   打开文件
             //输入文件标签
             $fileName = iconv("utf-8","gb2312",$fileName);
@@ -84,8 +85,6 @@ class Risksources extends Base
             echo fread($file, filesize($filePath));
             fclose($file);
             exit;
-        }else{
-            return json(['code' => '-1','msg' => '文件不存在']);
         }
     }
 
@@ -116,7 +115,7 @@ class Risksources extends Base
                     $pdf_path = $path;
                 }else{
                     $code = 0;
-                    $msg = '文不支持的件格式';
+                    $msg = '不支持的文件格式';
                 }
                 return json(['code' => $code, 'path' => substr($pdf_path,1), 'msg' => $msg]);
             }else{
