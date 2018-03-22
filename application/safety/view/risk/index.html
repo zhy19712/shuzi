@@ -1100,17 +1100,27 @@
                 $("#personLiable").val(res.workdutyer);//施工责任人
                 $("#completionTime").val(res.completedate);//治理完成时间
                 $("#acceptor").val(res.acceptor);//验收人
-                console.log(res.risk_img_before[0].path + '666666')
-                var strImgBefore = res.risk_img_before[0].path;
-                var strImgAfter = res.risk_img_after[0].path;
-                $("#thelist").append('<div class="file-item thumbnail">' +
-                    '<img style="width: 50px;height: 50px;" src="'+strImgBefore.substring(1)+'">' +
-                    '</div>');
+                if(res.risk_img.length != 0) {
+                    console.log(res.risk_img_before[0].path + '666666')
+                    var strImgBefore = res.risk_img_before[0].path;
+
+                    $("#thelist").append('<div class="file-item thumbnail">' +
+                        '<img style="width: 50px;height: 50px;" src="' + strImgBefore.substring(1) + '">' +
+                        '</div>');
+                }else{
+                    $("#thelist").append('<h3 style="text-align: center">找不到隐患照片！</h3>');
+                }
 
                 //整理后的
-                $("#thelistAfter").append('<div class="file-item thumbnail">' +
-                    '<img style="width: 50px;height: 50px;" src="'+strImgAfter.substring(1)+'">' +
-                    '</div>');
+                if(res.risk_img.length != 0) {
+                    var strImgAfter = res.risk_img_after[0].path;
+                    console.log(res.risk_img_after[0].path + '777777')
+                    $("#thelistAfter").append('<div class="file-item thumbnail">' +
+                        '<img style="width: 50px;height: 50px;" src="' + strImgAfter.substring(1) + '">' +
+                        '</div>');
+                }else{
+                    $("#thelistAfter").append('<h3 style="text-align: center">找不到治理后的照片！</h3>');
+                }
             }
         })
     }
@@ -1150,30 +1160,32 @@
                     $("#personLiable").val(res.workdutyer);//施工责任人
                     $("#completionTime").val(res.completedate);//治理完成时间
                     $("#acceptor").val(res.acceptor);//验收人
-                    console.log(res.risk_img_before[0].path +'  22222222')
-                    if(res.risk_img_before.length !=0){
+                     //整理前的
+                    if(res.risk_img.length != 0){
                         var strImgBefore = res.risk_img_before[0].path;
-                    }else{
-                        alert("无隐患图片路径！")
-                    }
-                    if(res.risk_img_after.length !=0){
-                        var strImgAfter = res.risk_img_after[0].path;
-                    }else{
-                        alert("无整理后的图片路径！")
-                    }
 
-                    $("#thelist").append('<div class="file-item thumbnail">' +
-                        '<img style="width: 50px;height: 50px;" src="'+strImgBefore.substring(1)+'">' +
-                        '<div class="info"></div>' +
-                        '<div class="infoDel"><span onclick="delFileNameBefore(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
-                        '</div>');
+                        console.log(res.risk_img_before[0].path +'  22222222')
 
+                        $("#thelist").append('<div class="file-item thumbnail">' +
+                            '<img style="width: 50px;height: 50px;" src="'+strImgBefore.substring(1)+'">' +
+                            '<div class="info"></div>' +
+                            '<div class="infoDel"><span onclick="delFileNameBefore(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
+                            '</div>');
+                    }else{
+                        $("#thelist").append('<h3 style="text-align: center">找不到隐患照片！</h3>');
+                    }
                     //整理后的
-                    $("#thelistAfter").append('<div class="file-item thumbnail">' +
-                        '<img style="width: 50px;height: 50px;" src="'+strImgAfter.substring(1)+'">' +
-                        '<div class="info"></div>' +
-                        '<div class="infoDel"><span onclick="delFileNameAfter(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
-                        '</div>');
+                    if(res.risk_img.length != 0){
+                        var strImgAfter = res.risk_img_after[0].path;
+
+                        $("#thelistAfter").append('<div class="file-item thumbnail">' +
+                            '<img style="width: 50px;height: 50px;" src="'+strImgAfter.substring(1)+'">' +
+                            '<div class="info"></div>' +
+                            '<div class="infoDel"><span onclick="delFileNameAfter(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
+                            '</div>');
+                    }else{
+                        $("#thelistAfter").append('<h3 style="text-align: center">找不到治理后的照片！</h3>');
+                    }
             }
         })
     }
@@ -1195,10 +1207,10 @@
                 dataType: "json",
                 success: function (res) {
                     if(res.code == 1){
-                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        layer.msg("删除成功！",{icon:1,time:1500,shade: 0.1});
                         admin_table.ajax.url("__SCRIPT__/safety_risk.php").load();
                     }else{
-                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                        layer.msg("删除失败！",{icon:0,time:1500,shade: 0.1});
                     }
                 }
             })
@@ -1467,11 +1479,40 @@
     $("#aPairOf_modal .btn-danger").click(function () {
         standard_uploader = null;
     });
+    var userName;
     //减分设置
-    function riskreduceSetUp() {
+    function riskreduceSetUp(that) {
         $("#aPairOf_reduce_modal h5").text("设置");
         $("#aPairOf_reduce_modal").modal('show');
+        userName = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
     }
+    $("#deductingReasons").click(function () {
+        var reasons = $('#deductingReasons option:selected').text();//扣分分类
+        var reaData = $('#reduce1').val();//扣分时间
+        var reaRemark = $('#reduceRemark1').val();//扣分备注
+        console.log(reaData)
+
+        $.ajax({
+            url:'riskScore',
+            type:'post',
+            data:{
+                username: userName,//用户名
+                cat: reasons,//分类
+                time:reaData, //时间
+                context: reaRemark//备注
+            },
+            datatype: "json",
+            success: function (res) {
+                if(res.code === 1){
+                    layer.msg(res.msg);
+                    aPairOf_table.ajax.url("__SCRIPT__/safety_riskduty.php").load();
+                    $("#aPairOf_reduce_modal").modal('hide');
+                }else {
+                    layer.msg(res.msg);
+                }
+            }
+        });
+    });
     //减分时间插件
     $("#reduce1").jeDate({format: "YYYY-MM-DD"});
     $("#reduce2").jeDate({format: "YYYY-MM-DD"});

@@ -118,7 +118,7 @@ class Personalequipment extends Base
                     'check_round' => $param['check_round'],//定检周期
                     'first_check_date' => $param['first_check_date'],//首检日期
                     'use_position' => $param['use_position'],//使用位置
-                    'input_time' => $param['input_time'],
+//                    'input_time' => $param['input_time'],
 
                     'filename' => $pathImgName,//拼接文件名、图片名
 
