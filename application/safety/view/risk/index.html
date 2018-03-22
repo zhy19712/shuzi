@@ -926,7 +926,7 @@
         }, thumbnailWidth, thumbnailHeight );
     });
     //点击照片预览
-    $("#thelistAfter").on("img","click",function() {
+    $("#thelistAfter").delegate("img","click",function() {
         console.log(pathImgArrAfter)
         $("#previewPhotosAfter").html('');
         var idx = $(this).parent().index();
@@ -1135,7 +1135,7 @@
                     var strImgBefore = res.risk_img_before[0].path;
 
                     $("#thelist").append('<div class="file-item thumbnail">' +
-                        '<img style="width: 50px;height: 50px;" src="' + strImgBefore.substring(1) + '">' +
+                        '<img onclick="previewClick(this)" style="width: 50px;height: 50px;" src="' + strImgBefore.substring(1) + '">' +
                         '</div>');
 
                 }else{
@@ -1147,7 +1147,7 @@
                     var strImgAfter = res.risk_img_after[0].path;
                     console.log(res.risk_img_after[0].path + '777777')
                     $("#thelistAfter").append('<div class="file-item thumbnail">' +
-                        '<img style="width: 50px;height: 50px;" src="' + strImgAfter.substring(1) + '">' +
+                        '<img onclick="previewClick(this)" style="width: 50px;height: 50px;" src="' + strImgAfter.substring(1) + '">' +
                         '</div>');
 
 
@@ -1159,11 +1159,10 @@
     }
     //点击照片预览
     function previewClick(that) {
-        alert(3242423)
         console.log($(that).attr('src'))
+        var srcData = $(that).attr('src');
         $("#previewPhotosAfter").html('');
-        var idx = $(that).parent().index();
-        $("#previewPhotosAfter").append('<img src="'+$(that).attr('src')+'"/>')
+        $("#previewPhotosAfter").append('<img src="'+srcData+'"/>')
         $("#previewPhotosAfter").css('display','none');
         layer.open({
             type: 1,
@@ -1174,9 +1173,11 @@
             shadeClose: true,
             content: $('#previewPhotosAfter')
         });
+        $("#thelistAfter").undelegate("img","click")
     }
     //编辑
     function riskEdit(that) {
+
         var id = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
         console.log(id);
         $("#thelist").html('');
@@ -1230,10 +1231,26 @@
                         var strImgAfter = res.risk_img_after[0].path;
 
                         $("#thelistAfter").append('<div class="file-item thumbnail">' +
-                            '<img onclick="previewClick(this)" style="width: 50px;height: 50px;" src="'+strImgAfter.substring(1)+'">' +
+                            '<img style="width: 50px;height: 50px;" src="'+strImgAfter.substring(1)+'">' +
                             '<div class="info"></div>' +
                             '<div class="infoDel"><span onclick="delFileNameAfter(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
                             '</div>');
+                        $("#thelistAfter").delegate("img","click",function() {
+                            var srcData = $().attr('src');
+                            $("#previewPhotosAfter").html('');
+                            $("#previewPhotosAfter").append('<img src="'+srcData+'"/>')
+                            $("#previewPhotosAfter").css('display','none');
+                            layer.open({
+                                type: 1,
+                                title: false,
+                                closeBtn: 0,
+                                area: ['960px','550px'],
+                                skin: 'layui-layer-nobg', //没有背景色
+                                shadeClose: true,
+                                content: $('#previewPhotosAfter')
+                            });
+                            $("#thelistAfter").undelegate("img","click")
+                        })
                     }else{
                         $("#thelistAfter").append('<h3 style="text-align: center">找不到治理后的照片！</h3>');
                     }
@@ -1274,7 +1291,7 @@
     uploaderExcel = WebUploader.create({
         auto: true,// 选完文件后，是否自动上传。
         swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-        server: "{:url('Rulesregulations/importExcel')}",// 文件接收服务端。
+        server: "{:url('Risk/importExcel')}",// 文件接收服务端。
         chunked: false,
         fileSizeLimit: 1000 *1024 *1024,
         fileNumLimit: 1,
@@ -1294,9 +1311,8 @@
     function complete(data){
         console.log(data);
         if(data.code === 1){
-            console.log(groupid+77777777)
             layer.msg(data.msg,{icon:1,time:1500,shade: 0.1});
-            admin_table.ajax.url("__SCRIPT__/safety_rules.php?pid=" + groupid).load();
+            admin_table.ajax.url("__SCRIPT__/safety_risk.php").load();
         }else {
             layer.msg('导入数据失败!');
             return false;
@@ -1319,9 +1335,9 @@
         $li.find('p.state').text('上传中');
         $percent.css('width', percentage * 100 + '%');
     });
-    uploaderExcel.on("uploadStart",function () {
-        uploaderExcel.options.formData.group_id = groupid;
-    });
+    // uploaderExcel.on("uploadStart",function () {
+    //     uploaderExcel.options.formData.group_id = groupid;
+    // });
     uploaderExcel.on("uploadFinished", function () {
         uploaderExcel.reset();
     });
