@@ -577,6 +577,7 @@
             }
         ],
         language: {
+            "sProcessing": "数据加载中...",
             "lengthMenu": "每页_MENU_ 条记录",
             "zeroRecords": "没有找到记录",
             "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
@@ -707,6 +708,7 @@
         });
 
         uploader.on("uploadStart",function () {
+            uploader.options.formData.major_key = $('#sid').val();
             uploader.options.formData.group_id = $('input[type="hidden"][name="groupId"]').val();
             uploader.options.formData.number = $("#standardNumr").val();
             uploader.options.formData.sdi_name = $("#addName").val();
@@ -734,6 +736,7 @@
             $("#alternativeStandard").attr('readonly',true).val(' ').attr('name','alternativeStandardReadonly');
         }
     }
+
     $("#psex").change(function(){
         setStandard($(this));
     });
@@ -769,13 +772,6 @@
         }
     };
     zTreeObj = $.fn.zTree.init($("#siduserZtree"), setting,null);
-
-    $('#psex').change(function () {
-        var selectedVal = $(this).find('option:selected').val();
-        if(selectedVal==-1){
-
-        }
-    });
 
     //上传保存
     var validator = $("#memberAdd").validate({

@@ -374,7 +374,7 @@ class Upload extends Base
                     }
                 }
 
-                if(file_exists(unlink($data_older['path']))){
+                if(file_exists($data_older['path'])){
                     unlink($data_older['path']);
                 }
                 $data['major_key'] = $major_key;

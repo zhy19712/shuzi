@@ -115,6 +115,28 @@ class RiskModel extends Model
             case '重大事故隐患':
                 $score = 10;
                 break;
+            case  ' 现场隐患未发现':
+                $score = -1;
+                break;
+            case '隐患未整改闭环'    :
+                $score = -1;
+                break;
+            case '安全记录不规范'    :
+                $score = -1;
+                break;
+            case '未落实风险管控责任':
+                $score = -1;
+                break;
+            case '安全措施验收不负责':
+                $score = -5;
+                break;
+            case '现场未执行方案':
+                $score = -1;
+                break;
+            case '无方案施工且未制止':
+                $score = -5;
+                break;
+
             default:
                 $score = 0;
         }
@@ -139,11 +161,11 @@ class RiskModel extends Model
             $m = $m->where('id', $id)->find();
 
             //清理分数
-            $this->proessScore($m['founder'],$m['cat'],'删除',date('Y-m-d',time()),true);
-            $this->proessScore($m['acceptor'],$m['cat'],'删除',date('Y-m-d',time()),true);
+            $this->proessScore($m['founder'], $m['cat'], '删除', date('Y-m-d', time()), true);
+            $this->proessScore($m['acceptor'], $m['cat'], '删除', date('Y-m-d', time()), true);
             $m->riskImg()->delete();
             $m->delete();
-            return  ['code' => 1,'msg'=>''];
+            return ['code' => 1, 'msg' => ''];
         } catch (Exception $e) {
             return ['code' => -1, 'msg' => $e->getMessage()];
         }
