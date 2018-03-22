@@ -218,7 +218,7 @@ class Risk extends Base
         if (request()->isAjax()) {
             return json(['code' => 1]);
         }
-        $idArr = input('param.idarr');
+        $idArr = input('majorKeyArr/a');
         $name = '安全隐患排查' . date('Y-m-d H:i:s'); // 导出的文件名
         $risk = new RiskModel();
         $list = $risk->getList($idArr);
@@ -265,7 +265,7 @@ class Risk extends Base
                 ->setCellValue('D'.$key, $v['section'])
                 ->setCellValue('E'.$key, $v['cat'])
                 ->setCellValue('F'.$key, $v['source'])
-                ->setCellValue('G'.$key, $v['founderdate'])
+                ->setCellValue('G'.$key, $v['founddate'])
                 ->setCellValue('H'.$key, $v['founder'])
                 ->setCellValue('I'.$key, $v['level'])
                 ->setCellValue('J'.$key, $v['govern'])
