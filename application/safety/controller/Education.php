@@ -355,7 +355,7 @@ class Education extends Base
                 ->setCellValue('E'.$key, $v['lecturer'])
                 ->setCellValue('F'.$key, $v['trainee'])
                 ->setCellValue('G'.$key, $v['num'])
-                ->setCellValue('G'.$key, $v['remark']);
+                ->setCellValue('H'.$key, $v['remark']);
         }
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);

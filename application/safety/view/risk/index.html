@@ -206,12 +206,12 @@
         display: inline-block;
         float: left;
     }
-    #previewPhotos{
+    #previewPhotos,#previewPhotosAfter{
         width: 100%;
         height: 100%;
         display: none;
     }
-    #previewPhotos img{
+    #previewPhotosAfter img,#previewPhotos img{
         width: 100%;
         height: 100%;
     }
@@ -314,6 +314,10 @@
 </div>
 <!--下载的文件-->
 <div id="formDown" style="display: none"></div>
+
+<div id="form_container" style="display: none"></div>
+<!--导出模版-->
+<div id="form_ExportMold" style="display: none;"></div>
 <!--表格的新增与编辑-->
 <div id="risk_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="risk_modal" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
     <div class="row">
@@ -601,9 +605,12 @@
     </div>
 </div>
 
-<!--预览用的照片框-->
+<!--预览前用的照片框-->
+<div id="previewPhotos" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="level2" aria-hidden="true" data-keyboard="false" data-backdrop="static" style="width: 100%;margin: 0 auto;">
 
-<div id="previewPhotos"></div>
+<!--整理后的预览用的照片框-->
+<div id="previewPhotosAfter" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="level2" aria-hidden="true" data-keyboard="false" data-backdrop="static" style="width: 100%;margin: 0 auto;"></div>
+
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 
@@ -750,6 +757,7 @@
         },
         compress:false,
     });
+    var i = 0;
     // 当有文件添加进来的时候
     uploaderImg.on( 'fileQueued', function( file ) {  // webuploaderImg事件.当选择文件后，文件被加载到文件队列中，触发该事件。等效于 uploaderImg.onFileueued = function(file){...} ，类似js的事件定义。
         var $li = $(
@@ -762,6 +770,8 @@
             $img = $li.find('img');
         // $list为容器jQuery实例
         $list.append( $li );
+
+
 
         // 创建缩略图
         // 如果为非图片文件，可以不用调用此方法。
@@ -800,16 +810,15 @@
         }, thumbnailWidth, thumbnailHeight );
     });
     //点击照片预览
-    function previewFile() {
-        console.log(arrBefore)
+    function previewFile(that) {
+        console.log(pathImgArr)
         $("#previewPhotos").html('');
+        var idx = $(that).parent().index();
+        $("#previewPhotos").append('<img src="'+pathImgArr[idx].slice(1)+'"/>')
         $("#previewPhotos").css('display','none');
-        $("#previewPhotos").append('<img src="'+arrBefore.substring(1)+'"/>')
-        $("#previewPhotos").css('display','block');
         layer.open({
             type: 1,
             title: false,
-            btn: ['放大', '缩小'],
             closeBtn: 0,
             area: ['960px','550px'],
             skin: 'layui-layer-nobg', //没有背景色
@@ -848,6 +857,7 @@
         console.log(arrBefore)
         console.log(pathImg)
         console.log(pathImgArr)
+        $("#thelist h3").html('');
 //        }else {
 //            layer.msg(res.msg,{time:1500});
 //            return false;
@@ -915,6 +925,25 @@
             $img.attr( 'src', src );
         }, thumbnailWidth, thumbnailHeight );
     });
+    //点击照片预览
+    $("#thelistAfter").on("img","click",function() {
+        console.log(pathImgArrAfter)
+        $("#previewPhotosAfter").html('');
+        var idx = $(this).parent().index();
+        console.log(pathImgArrAfter[idx])
+        console.log(idx)
+        $("#previewPhotosAfter").append('<img src="'+pathImgArrAfter[idx].slice(1)+'"/>')
+        $("#previewPhotosAfter").css('display','none');
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['960px','550px'],
+            skin: 'layui-layer-nobg', //没有背景色
+            shadeClose: true,
+            content: $('#previewPhotosAfter')
+        });
+    })
     function delFileNameAfter(that) {
         var id = $(that).parent("div").attr("id");
         $("#"+id).remove();
@@ -946,6 +975,7 @@
         console.log(arrAfter)
         console.log(pathImgAfter)
         console.log(pathImgArrAfter)
+        $("#thelistAfter h3").html('');
 //        }else {
 //            layer.msg(res.msg,{time:1500});
 //            return false;
@@ -1107,6 +1137,7 @@
                     $("#thelist").append('<div class="file-item thumbnail">' +
                         '<img style="width: 50px;height: 50px;" src="' + strImgBefore.substring(1) + '">' +
                         '</div>');
+
                 }else{
                     $("#thelist").append('<h3 style="text-align: center">找不到隐患照片！</h3>');
                 }
@@ -1118,11 +1149,31 @@
                     $("#thelistAfter").append('<div class="file-item thumbnail">' +
                         '<img style="width: 50px;height: 50px;" src="' + strImgAfter.substring(1) + '">' +
                         '</div>');
+
+
                 }else{
                     $("#thelistAfter").append('<h3 style="text-align: center">找不到治理后的照片！</h3>');
                 }
             }
         })
+    }
+    //点击照片预览
+    function previewClick(that) {
+        alert(3242423)
+        console.log($(that).attr('src'))
+        $("#previewPhotosAfter").html('');
+        var idx = $(that).parent().index();
+        $("#previewPhotosAfter").append('<img src="'+$(that).attr('src')+'"/>')
+        $("#previewPhotosAfter").css('display','none');
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: ['960px','550px'],
+            skin: 'layui-layer-nobg', //没有背景色
+            shadeClose: true,
+            content: $('#previewPhotosAfter')
+        });
     }
     //编辑
     function riskEdit(that) {
@@ -1179,7 +1230,7 @@
                         var strImgAfter = res.risk_img_after[0].path;
 
                         $("#thelistAfter").append('<div class="file-item thumbnail">' +
-                            '<img style="width: 50px;height: 50px;" src="'+strImgAfter.substring(1)+'">' +
+                            '<img onclick="previewClick(this)" style="width: 50px;height: 50px;" src="'+strImgAfter.substring(1)+'">' +
                             '<div class="info"></div>' +
                             '<div class="infoDel"><span onclick="delFileNameAfter(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
                             '</div>');
@@ -1474,7 +1525,6 @@
         } );
 
     }
-
     //得分查看返回
     $("#aPairOf_modal .btn-danger").click(function () {
         standard_uploader = null;
@@ -1517,12 +1567,6 @@
     })
     //减分时间插件
     $("#reduce1").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce2").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce3").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce4").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce5").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce6").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce7").jeDate({format: "YYYY-MM-DD"});
     //减分设置返回
     $("#aPairOf_reduce_modal .btn-danger").click(function () {
         standard_uploader = null;

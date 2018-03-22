@@ -81,48 +81,6 @@ class Risk extends Base
         }
     }
 
-    /**
-     * 下载
-     * @return \think\response\Json
-     * @author hutao
-     */
-    public function eduDownload()
-    {
-        if (request()->isAjax()) {
-            return json(['code' => 1]);
-        }
-        $id = input('param.id');
-        $type = input('param.type');
-        $edu = new EducationModel();
-        $param = $edu->getOne($id);
-        if ($type == '1') { // type 1 表示的是 培训材料文件 2 表示培训记录文件
-            $filePath = $param['ma_path'];
-            $fileName = $param['material_name'];
-        } else {
-            $filePath = $param['re_path'];
-            $fileName = $param['record_name'];
-        }
-
-        // 如果是手动输入的名称，就有可能没有文件后缀
-        $extension = get_extension($fileName);
-        if (empty($extension)) {
-            $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
-        }
-
-        if (file_exists($filePath)) {
-            $file = fopen($filePath, "r"); //   打开文件
-            //输入文件标签
-            $fileName = iconv("utf-8", "gb2312", $fileName);
-            Header("Content-type:application/octet-stream ");
-            Header("Accept-Ranges:bytes ");
-            Header("Accept-Length:   " . filesize($filePath));
-            Header("Content-Disposition:   attachment;   filename= " . $fileName);
-            //   输出文件内容
-            echo fread($file, filesize($filePath));
-            fclose($file);
-            exit;
-        }
-    }
 
 
     /**
@@ -180,52 +138,66 @@ class Risk extends Base
             }
             $excel_array = $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
             // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
-            $content_index = $edu_time_index = $address_index = $lecturer_index = $trainee_index = $num_index = $remark_index = -1;
+            $context_index = $part_index = $section_index = $cat_index = $source_index = $founder_index = $founderdate_index=$level_index=$govern_index=$governdate_index=$workdutyer_index=$completedate_index=$acceptor_idnex = -1;
             foreach ($excel_array[0] as $k => $v) {
                 $str = preg_replace('/[ ]/', '', $v);
-                if ($str == '培训内容') {
-                    $content_index = $k;
-                } else if ($str == '培训时间') {
-                    $edu_time_index = $k;
-                } else if ($str == '培训地点') {
-                    $address_index = $k;
-                } else if ($str == '培训人') {
-                    $lecturer_index = $k;
-                } else if ($str == '培训人员') {
-                    $trainee_index = $k;
-                } else if ($str == '培训人数') {
-                    $num_index = $k;
-                } else if ($str == '备注') {
-                    $remark_index = $k;
+                if ($str == '隐患内容') {
+                    $context_index = $k;
+                } else if ($str == '隐患部位') {
+                    $part_index = $k;
+                } else if ($str == '责任标段') {
+                    $section_index = $k;
+                } else if ($str == '隐患类别') {
+                    $cat_index = $k;
+                } else if ($str == '隐患来源') {
+                    $source_index = $k;
+                } else if ($str == '发现人') {
+                    $founder_index = $k;
+                }else if ($str == '隐患等级') {
+                    $level_index = $k;
+                }else if ($str == '治理措施') {
+                    $govern_index = $k;
+                }else if ($str == '治理时限') {
+                    $governdate_index = $k;
+                }else if ($str == '施工单位治理责任人') {
+                    $workdutyer_index = $k;
+                }else if ($str == '治理完成时间') {
+                    $completedate_index = $k;
+                }else if ($str == '验收人') {
+                    $acceptor_idnex = $k;
+                } else if ($str == '发现日期') {
+                    $founderdate_index = $k;
                 }
             }
-            if ($content_index == -1 || $edu_time_index == -1 || $address_index == -1 || $lecturer_index == -1 || $trainee_index == -1 || $num_index == -1 || $remark_index == -1) {
+            if ($context_index == -1 || $part_index == -1 || $section_index == -1 || $cat_index == -1 || $source_index == -1 || $founder_index == -1 || $founderdate_index == -1) {
                 $json_data['code'] = -1;
                 $json_data['info'] = '文件内容格式不对';
                 return json($json_data);
             }
             $insertData = [];
+            $m=new RiskModel();
             foreach ($excel_array as $k => $v) {
                 if ($k > 0) {
-                    $insertData[$k]['content'] = $v[$content_index];
-                    $insertData[$k]['edu_time'] = $v[$edu_time_index];
-                    $insertData[$k]['address'] = $v[$address_index];
-                    $insertData[$k]['lecturer'] = $v[$lecturer_index];
-                    $insertData[$k]['trainee'] = $v[$trainee_index];
-                    $insertData[$k]['num'] = $v[$num_index];
-                    $insertData[$k]['remark'] = $v[$remark_index];
-                    // 非表格数据
-                    $insertData[$k]['pid'] = $pid;
-                    $insertData[$k]['zid'] = $zid;
-                    $insertData[$k]['years'] = date('Y');
-                    $insertData[$k]['import_time'] = date('Y-m-d H:i:s');
-                    $insertData[$k]['owner'] = session('username');
-                    $insertData[$k]['filename'] = $file->getInfo('name');
-                    $insertData[$k]['path'] = './uploads/safety/import/education/' . str_replace("\\", "/", $exclePath);
+                    $insertData[$k]['context'] = $v[$context_index];
+                    $insertData[$k]['part'] = $v[$part_index];
+                    $insertData[$k]['section'] = $v[$section_index];
+                    $insertData[$k]['cat'] = $v[$cat_index];
+                    $insertData[$k]['source'] = $v[$source_index];
+                    $insertData[$k]['founder'] = $v[$founder_index];
+                    $insertData[$k]['founderdate'] = $v[$founderdate_index];
+                    $insertData[$k]['level'] = $v[$level_index];
+                    $insertData[$k]['govern'] = $v[$govern_index];
+                    $insertData[$k]['governdate'] = $v[$governdate_index];
+                    $insertData[$k]['workdutyer'] = $v[$workdutyer_index];
+                    $insertData[$k]['completedate'] = $v[$completedate_index];
+                    $insertData[$k]['acceptor'] = $v[$acceptor_idnex];
                 }
             }
-            $success = Db::name('safety_education')->insertAll($insertData);
-            if ($success !== false) {
+            foreach ($insertData as $item)
+            {
+               $success= $m->insertOrEdit($item);
+            }
+            if ($success) {
                 return json(['code' => 1, 'data' => '', 'msg' => '导入成功']);
             } else {
                 return json(['code' => -1, 'data' => '', 'msg' => '导入失败']);
@@ -247,9 +219,9 @@ class Risk extends Base
             return json(['code' => 1]);
         }
         $idArr = input('param.idarr');
-        $name = '专题教育培训' . date('Y-m-d H:i:s'); // 导出的文件名
-        $edu = new EducationModel();
-        $list = $edu->getList($idArr);
+        $name = '安全隐患排查' . date('Y-m-d H:i:s'); // 导出的文件名
+        $risk = new RiskModel();
+        $list = $risk->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -267,12 +239,19 @@ class Risk extends Base
         // 设置表格第一行显示内容
         $objPHPExcel->getActiveSheet()
             ->setCellValue('A1', '序号')
-            ->setCellValue('B1', '培训内容')
-            ->setCellValue('C1', '培训时间')
-            ->setCellValue('D1', '培训地点')
-            ->setCellValue('E1', '培训人')
-            ->setCellValue('F1', '培训人员')
-            ->setCellValue('G1', '培训人数');
+            ->setCellValue('B1', '隐患内容')
+            ->setCellValue('C1', '隐患部位')
+            ->setCellValue('D1', '责任标段')
+            ->setCellValue('E1', '隐患类别')
+            ->setCellValue('F1', '隐患来源')
+            ->setCellValue('G1', '发现日期')
+            ->setCellValue('H1', '发现人')
+            ->setCellValue('I1', '隐患等级')
+            ->setCellValue('J1', '治理措施')
+            ->setCellValue('K1', '治理时限')
+            ->setCellValue('L1', '施工单位治理责任人')
+            ->setCellValue('M1', '治理完成时间')
+            ->setCellValue('N1', '验收人');
         $key = 1;
         /*以下就是对处理Excel里的数据，横着取数据*/
         foreach ($list as $v) {
@@ -280,13 +259,20 @@ class Risk extends Base
             $key++;
             $objPHPExcel->getActiveSheet()
                 //Excel的第A列，name是你查出数组的键值字段，下面以此类推
-                ->setCellValue('A' . $key, $v['id'])
-                ->setCellValue('B' . $key, $v['content'])
-                ->setCellValue('C' . $key, $v['edu_time'])
-                ->setCellValue('D' . $key, $v['address'])
-                ->setCellValue('E' . $key, $v['lecturer'])
-                ->setCellValue('F' . $key, $v['trainee'])
-                ->setCellValue('G' . $key, $v['num']);
+                ->setCellValue('A'.$key, $v['id'])
+                ->setCellValue('B'.$key, $v['context'])
+                ->setCellValue('C'.$key, $v['part'])
+                ->setCellValue('D'.$key, $v['section'])
+                ->setCellValue('E'.$key, $v['cat'])
+                ->setCellValue('F'.$key, $v['source'])
+                ->setCellValue('G'.$key, $v['founderdate'])
+                ->setCellValue('H'.$key, $v['founder'])
+                ->setCellValue('I'.$key, $v['level'])
+                ->setCellValue('J'.$key, $v['govern'])
+                ->setCellValue('K'.$key, $v['governdate'])
+                ->setCellValue('L'.$key, $v['workdutyer'])
+                ->setCellValue('M'.$key, $v['completedate'])
+                ->setCellValue('N'.$key, $v['acceptor']);
         }
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
@@ -314,7 +300,7 @@ class Risk extends Base
             return json(['code' => 1]);
         }
         $name = input('param.name');
-        $newName = '专题教育培训 - ' . $name . date('Y-m-d H:i:s'); // 导出的文件名
+        $newName = '安全隐患排查 - ' . $name . date('Y-m-d H:i:s'); // 导出的文件名
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -331,14 +317,19 @@ class Risk extends Base
         $objPHPExcel->setActiveSheetIndex(0);
         // 设置表格第一行显示内容
         $objPHPExcel->getActiveSheet()
-            ->setCellValue('A1', '序号')
-            ->setCellValue('B1', '培训内容')
-            ->setCellValue('C1', '培训时间')
-            ->setCellValue('D1', '培训地点')
-            ->setCellValue('E1', '培训人')
-            ->setCellValue('F1', '培训人员')
-            ->setCellValue('G1', '培训人数')
-            ->setCellValue('H1', '备注');
+            ->setCellValue('A1', '隐患内容')
+            ->setCellValue('B1', '隐患部位')
+            ->setCellValue('C1', '责任标段')
+            ->setCellValue('D1', '隐患类别')
+            ->setCellValue('E1', '隐患来源')
+            ->setCellValue('F1', '发现日期')
+            ->setCellValue('G1', '发现人')
+            ->setCellValue('H1', '隐患等级')
+            ->setCellValue('I1', '治理措施')
+            ->setCellValue('J1', '治理时限')
+            ->setCellValue('K1', '施工单位治理责任人')
+            ->setCellValue('L1', '治理完成时间')
+            ->setCellValue('M1', '验收人');
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
         ob_end_clean();  //清除缓冲区,避免乱码
