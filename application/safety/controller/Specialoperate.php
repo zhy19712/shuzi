@@ -24,9 +24,18 @@ class Specialoperate extends Base
             $special = new SpecialoperateModel();
             $param = input('post.');
             $data = $special->getOne($param['id']);
+            //文件名、图片名、文件路径，图片路径不为空时进行拆解
+            if(!empty($data['filename']))
+            {
+                $data['filename'] = explode("☆",$data['filename']);//拆解拼接的文件、图片名
+            }
 
-            $data['filename'] = explode("☆",$data['filename']);//拆解拼接的文件、图片名
-            $data['path'] = explode("☆",$data['path']);//拆解拼接的文件、图片路径
+            if(!empty($data['path']))
+            {
+                $data['path'] = explode("☆",$data['path']);//拆解拼接的文件、图片路径
+            }
+
+
 
             return json(['code'=> 1, 'data' => $data]);
         }
@@ -51,12 +60,12 @@ class Specialoperate extends Base
         if(!empty($pathImgName))
         {
             $pathImgName = implode("☆",$pathImgName);//上传所有文件图片的拼接名
-                    }
+        }
         if(!empty($pathImgArr))
         {
             $pathImgArr = implode("☆",$pathImgArr);//上传所有文件、图片拼接路径
 
-                    }
+        }
 
         //循环删除文件、图片
         foreach((array)$pathImgDel as $v)
