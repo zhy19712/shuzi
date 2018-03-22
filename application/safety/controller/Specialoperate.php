@@ -311,9 +311,9 @@ class Specialoperate extends Base
 
 
               $flag = $special->getallcount($where);
-              halt($flag);
+//              halt($flag);
 
-              return json(['code' => 1, 'data' => $flag['data'], 'msg' => $flag['msg']]);
+              return json(['code' => 1, 'data' => $flag, 'msg' => $flag['msg']]);
           }
       }
     /**
