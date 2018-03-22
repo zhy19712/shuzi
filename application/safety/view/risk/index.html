@@ -523,10 +523,11 @@
                         <table id="aPairOf_table_model" width="100%" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
+                                    <td class="colorSee">Id</td>
                                     <td class="colorSee">隐患类别</td>
-                                    <td class="colorSee">排查</td>
-                                    <td class="colorSee">验收</td>
+                                    <td class="colorSee">分数</td>
                                     <td class="colorSee">时间</td>
+                                    <td class="colorSee">备注</td>
                                 </tr>
                             </thead>
                         </table>
@@ -1433,19 +1434,19 @@
         riskreduceSeeId = $(that).parent("td").parent("tr").children("td:first-child").text();
         console.log(riskreduceSeeId)
     }
-    
+
     var aPairOf_table_model = $('#aPairOf_table_model').DataTable( {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/safety_riskdutyinfo.php?id=' + riskreduceSeeId + '"
+            "url": "__SCRIPT__/safety_riskdutyinfo.php?id=" + riskreduceSeeId + ""
         },
         "dom": '<"selectyear"><"myl"l><"float_left"f>tip',
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [3],
+                "targets": [5],
             }
         ],
         "language": {
