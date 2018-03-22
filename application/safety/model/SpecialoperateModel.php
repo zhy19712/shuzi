@@ -97,7 +97,7 @@ class SpecialoperateModel extends Model
     }
 
     /*
-     * 获取特种作业人员管理的版本日期,excel的导入日期
+     * 获取版本日期,excel的导入日期
      */
     public function getVersion($param)
     {

@@ -41,8 +41,6 @@ class Specialoperate extends Base
                 $data['path'] = array();//为空时返回一个空数组
             }
 
-
-
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
@@ -101,6 +99,7 @@ class Specialoperate extends Base
                     'certificate_number' => $param['certificate_number'],//证书编号
                     'advance_retreat_time' => $param['advance_retreat_time'],//进退场时间
                     'document_status' => $param['document_status'],//证件状态
+                    'input_time' => $param['input_time'],
 
                     'filename' => $pathImgName,//拼接文件名、图片名
 
@@ -156,7 +155,12 @@ class Specialoperate extends Base
         if(request()->isAjax()) {
             $param = input('post.');
             $data = $special->getOne($param['id']);
-            $path = explode("☆",$data['path']);//拆解拼接的文件、图片路径
+
+            if(!empty($data['path']))
+            {
+                $path = explode("☆",$data['path']);//拆解拼接的文件、图片路径
+            }
+
             foreach ((array)$path as $v)
             {
                 unlink($v); //删除文件、图片
@@ -309,7 +313,8 @@ class Specialoperate extends Base
 
               $flag = $special->getallcount($where);
 
-              return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+              return json(['code' => 1, 'data' => $flag, 'msg' => $flag['msg']]);
+
           }
       }
     /**

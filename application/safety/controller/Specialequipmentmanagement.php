@@ -22,9 +22,27 @@ class Specialequipmentmanagement extends Base
     public function index()
     {
         if(request()->isAjax()){
-            $equipment= new SafetySpecialEquipmentManagementModel();
+            $equipment = new SafetySpecialEquipmentManagementModel();
             $param = input('post.');
             $data = $equipment->getOne($param['id']);
+            //文件名、图片名、文件路径，图片路径不为空时进行拆解
+            if(!empty($data['filename']))
+            {
+                $data['filename'] = explode("☆",$data['filename']);//拆解拼接的文件、图片名
+            }else
+            {
+                $data['filename'] = array();//为空时返回一个空数组
+            }
+
+            if(!empty($data['path']))
+            {
+                $data['path'] = explode("☆",$data['path']);//拆解拼接的文件、图片路径
+            }else
+            {
+                $data['path'] = array();//为空时返回一个空数组
+            }
+
+
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
@@ -39,9 +57,34 @@ class Specialequipmentmanagement extends Base
         if(request()->isAjax()){
             $equipment = new SafetySpecialEquipmentManagementModel();
             $param = input('post.');
+
+            $pathImgName = input('post.pathImgName/a');//获取post传过来的多个文件、图片的名字，包含在一个一维数组中。
+            $pathImgArr = input('post.pathImgArr/a');//获取post传过来的多个文件、图片的路径，包含在一个一维数组中。
+            $pathImgDel = input('post.pathImgDel/a');//获取post传过来要删除的多个文件、图片的路径，包含在一个一维数组中。
+
+            //判断文件名、图片名、路径是否为空，为空的时候不拼接
+
+            if(!empty($pathImgName))
+            {
+                $pathImgName = implode("☆",$pathImgName);//上传所有文件图片的拼接名
+            }
+            if(!empty($pathImgArr))
+            {
+                $pathImgArr = implode("☆",$pathImgArr);//上传所有文件、图片拼接路径
+
+            }
+
+            //循环删除文件、图片
+            foreach((array)$pathImgDel as $v)
+            {
+                if(file_exists($v)){
+                    unlink($v); //删除上传的文件、路径
+                }
+            }
+
             if(empty($param['id'])){
                 $data = [
-                    'id' => $param['id'],//特种设备表id
+//                    'id' => $param['id'],//特种设备表id
                     'selfid' =>$param['selfid'],
                     'equip_name' => $param['equip_name'],//设备名称
                     'model' => $param['model'],//型号
@@ -61,12 +104,18 @@ class Specialequipmentmanagement extends Base
                     'remark' => $param['remark'],//备注
                     'owner' => session('username'),
                     'date' => date("Y-m-d H:i:s"),
+
+                    'filename' => $pathImgName,//拼接文件名、图片名
+
+                    'path' => $pathImgArr,//拼接文件路径、图片路径
+
                     'input_time' => $param['input_time']
 
                 ];
                 $flag = $equipment->insertSpecialEquipmentManagement($data);
             }else{
                 $data = [
+                    'id' => $param['id'],//特种设备表id
                     'equip_name' => $param['equip_name'],//设备名称
                     'model' => $param['model'],//型号
                     'equip_num' => $param['equip_num'],//设备编号
@@ -83,8 +132,12 @@ class Specialequipmentmanagement extends Base
                     'entry_time' => $param['entry_time'],//进场时间
                     'equip_state' => $param['equip_state'],//设备状态
                     'remark' => $param['remark'],//备注
-                    'owner' => session('username'),
-                    'date' => date("Y-m-d H:i:s")
+
+                    'filename' => $pathImgName,//拼接文件名、图片名
+
+                    'path' => $pathImgArr//拼接文件路径、图片路径
+//                    'owner' => session('username'),
+//                    'date' => date("Y-m-d H:i:s")
 
                 ];
                 $flag = $equipment->editSpecialEquipmentManagement($data);
@@ -93,39 +146,6 @@ class Specialequipmentmanagement extends Base
         }
     }
 
-    /*
-     * 编辑一条特种设备管理信息
-     * @return mixed|\think\response\Json
-    */
-//    public function  equipmentEdit()
-//    {
-//        $equipment = new SafetySpecialEquipmentManagementModel();
-//        $param = input('post.');
-//        if(request()->isAjax()){
-//            $data = [
-//                'id' => $param['id'],//特种设备表id
-//                'equip_name' => $param['equip_name'],//设备名称
-//                'model' => $param['model'],//型号
-//                'equip_num' => $param['equip_num'],//设备编号
-//                'manufactur_unit' => $param['manufactur_unit'],//制造单位
-//                'date_production' => $param['date_production'],//出厂日期
-//                'current_state' => $param['current_state'],//当前状态
-//                'equip_manage_department' => $param['equip_manage_department'],//设备管理部门
-//                'safety_machinery_time' => $param['safety_machinery_time'],//安全准用证挂牌时间
-//                'safety_inspection_num' => $param['safety_inspection_num'],//安全检验合格证书编号
-//                'inspection_unit' => $param['inspection_unit'],//检验单位
-//                'safety_inspecte_certificate_time' => $param['safety_inspecte_certificate_time'],//安全检验合格证书有效截止日期
-//                'equipmen_overhaul' => $param['equipmen_overhaul'],//设备是否经过大修
-//                'date_overhaul' => $param['date_overhaul'],//大修日期
-//                'entry_time' => $param['entry_time'],//进场时间
-//                'equip_state' => $param['equip_state'],//设备状态
-//                'remark' => $param['remark']//备注
-//
-//            ];
-//            $flag = $equipment->editSpecialEquipmentManagement($data);
-//            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-//        }
-//    }
 
     /*
      * 删除一条特种设备管理信息
@@ -133,10 +153,19 @@ class Specialequipmentmanagement extends Base
     */
     public function equipmentDel()
     {
-        $equipment = new SafetySpecialEquipmentManagementModel();
+        $equip = new SafetySpecialEquipmentManagementModel();
         if(request()->isAjax()) {
             $param = input('post.');
-            $flag = $equipment->delSpecialEquipmentManagement($param['id']);
+            $data = $equip->getOne($param['id']);
+            if(!empty($data['path']))
+            {
+                $path = explode("☆",$data['path']);//拆解拼接的文件、图片路径
+            }
+            foreach ((array)$path as $v)
+            {
+                unlink($v); //删除文件、图片
+            }
+            $flag = $equip->delSpecialEquipmentManagement($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
@@ -260,6 +289,45 @@ class Specialequipmentmanagement extends Base
         }
     }
 
+    /*
+     *
+     * 根据条件筛选选中的条数
+     */
+    public function getcount()
+    {
+        $equip = new SafetySpecialEquipmentManagementModel();
+
+        $where = "";//定义一个空数组
+
+        if(request()->isAjax()) {
+            $param = input('post.');
+
+            $selfid = $param['selfid'];//类别id
+            $year = $param['year'];//年份
+            $history_version = $param['history_version'];
+
+            if(!empty($selfid))
+            {
+                $where .= "selfid =  '$selfid' ";
+            }
+
+            if(!empty($year))
+            {
+                $where .= " and date like '%" .$year. "%' ";
+            }
+
+            if(!empty($history_version))
+            {
+                $where .= " and input_time like '%" .$history_version. "%' ";
+            }
+
+
+            $flag = $equip->getallcount($where);
+
+            return json(['code' => 1, 'data' => $flag, 'msg' => $flag['msg']]);
+        }
+    }
+
     /**
      * 批量导出
      * @return \think\response\Json
@@ -272,9 +340,14 @@ class Specialequipmentmanagement extends Base
         if(request()->isAjax()){
             return json(['code'=>1]);
         }
-        $idArr = input('param.idarr');
-        $name = '特种设备管理'.date('Y-m-d H:i:s'); // 导出的文件名
         $equipment = new SafetySpecialEquipmentManagementModel();
+        $idArr = input('param.idarr/a');
+        if($idArr['0'] == "all")
+        {
+            $idArr = $equipment ->getallid();
+        }
+        $name = '特种设备管理'.date('Y-m-d H:i:s'); // 导出的文件名
+
         $list = $equipment->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
