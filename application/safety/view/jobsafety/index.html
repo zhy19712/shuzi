@@ -296,13 +296,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">取证日期：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="date_evidence" type="text" class="form-control" name="date_evidence" />
+                                    <input id="date_evidence" type="date" class="form-control" name="date_evidence" />
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">有效日期：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="effective_date" type="text" class="form-control" name="effective_date" />
+                                    <input id="effective_date" type="date" class="form-control" name="effective_date" />
                                 </div>
                             </div>
                         </div>
@@ -732,7 +732,7 @@
         if (!sNodes[0].children && groupid !== 1 && groupid !== 2){
             switch (Number(groupid)){
                 case 11 :
-                    vision_getinit('./getfireversion');
+                    vision_getinit('../Specialoperate/getversion');
                     table1.ajax.url("__SCRIPT__/safety_special_operate.php?selfid=" + selfid).load();
                     $("#mytable1_wrapper").css("display","block");
                     break;
@@ -861,7 +861,7 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        if(url==="./equipmentDel"){
+                        if(url==="../Specialoperate/delSpecialoperateDel"){
                             table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
                         }else if(url==="./crossoperationDel"){
                             table2.ajax.url("__SCRIPT__/safety_crossoperation.php?selfid="+selfid).load();
@@ -908,6 +908,18 @@
 
 <!--table1特种作业人员管理-->
 <script>
+    $("#date_evidence").jeDate({
+        isinitVal:false,
+        format: "YYYY-MM-DD"
+    });
+    $("#effective_date").jeDate({
+        isinitVal:false,
+        format: "YYYY-MM-DD"
+    });
+    $("#advance_retreat_time").jeDate({
+        isinitVal:false,
+        format: "YYYY-MM-DD"
+    });
     var table1 = $("#table1").DataTable({
         "processing": true,//是否显示处理状态
         "serverSide":true,//是否开启服务器模式
@@ -982,7 +994,7 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table5.ajax.url("__SCRIPT__/safety_special_operate.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
+            table1.ajax.url("__SCRIPT__/safety_special_operate.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
             console.log(obj.date.YYYY);
         }
     });
@@ -1154,6 +1166,7 @@
     function edit1(that) {
         pathImgArr=[];
         pathImgName=[];
+        pathImgDel =[];
         uploader1 = null;
         $("#file_list1").empty();
         $("#fname1 .btn-primary").show();
@@ -1267,6 +1280,7 @@
         var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
         del(id,"../Specialoperate/delSpecialoperateDel");
     };
+
 </script>
 <!--table2交叉作业-->
 <script>
@@ -2243,7 +2257,7 @@
                 url = "./fireexportExcel";
                 break;
             case 11:
-                url = "./fireexportExcel";
+                url = "../Specialoperate/exportExcel";
                 break;
         };
         $.ajax({
@@ -2283,7 +2297,7 @@
                 url = "./fireexportExcelTemplete";
                 break;
             case 11:
-                url = "./fireexportExcelTemplete";
+                url = "../Specialoperate/exportExcelTemplete";
                 break;
         };
         $.ajax({
@@ -2324,7 +2338,7 @@
                 server = "./fireimportExcel";
                 break;
             case 11 :
-                server = "./fireimportExcel";
+                server = "../Specialoperate/importExcel";
                 break;
         }
         if(!uploaderExcel){
@@ -2402,6 +2416,9 @@
                     }else if(Number(groupid) === 14){
                         table4.ajax.url("__SCRIPT__/safety_firemanagement.php?selfid="+selfid).load();
                         vision_getinit('./getfireversion');
+                    }else if(Number(groupid)===11){
+                        table4.ajax.url("__SCRIPT__/safety_special_operate.php?selfid="+selfid).load();
+                        vision_getinit('../Specialoperate/getfireversion');
                     }
                 }else {
                     layer.msg(data.info);
@@ -2464,7 +2481,7 @@
                 table4.ajax.url("__SCRIPT__/safety_firemanagement.php?selfid="+selfid+"&history_version="+history_version).load();
                 break;
             case 11:
-                table1.ajax.url("__SCRIPT__/safety_firemanagement.php?selfid="+selfid+"&history_version="+history_version).load();
+                table1.ajax.url("__SCRIPT__/safety_special_operate.php?selfid="+selfid+"&history_version="+history_version).load();
                 break;
         }
     });
