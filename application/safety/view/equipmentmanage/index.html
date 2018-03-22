@@ -3695,24 +3695,30 @@
 
     //-提交
     $("#equipmentform").submit(function () {
-        var url;
+        var url,edition;
         switch (Number(groupid)){
             case 133 :
                 if(tab == 1){
                     url = '../Personalequipment/personalEdit';
+                    edition = $("#down_excel4").val()
                 }else if(tab ==2 ){
                     url = '../Insulatingequipment/insulatingequipmentEdit';
+                    edition = $("#down_excel5").val()
                 }else if(tab == 3){
                     url = '../Boardingequipment/boardingequipmentEdit';
+                    edition = $("#down_excel6").val()
                 }
                 break;
             case 2 :
                 if(tab == 1){
                     url = '../Personalinner/personalEdit';
+                    edition = $("#down_excel14").val()
                 }else if(tab ==2 ){
                     url = '../Insulatinginner/insulatinginnerEdit';
+                    edition = $("#down_excel15").val()
                 }else if(tab == 3){
                     url = '../Boardinginner/boardinginnerEdit';
+                    edition = $("#down_excel16").val()
                 }
                 break;
         }
@@ -3735,7 +3741,7 @@
                 pathImgArr : pathImgArr,// 路径数组
                 pathImgDel : pathImgDel, //需要删除的
                 pathImgName : pathImgName, //图片名
-                input_time:$("#down_excel1").val()
+                input_time:edition
             },
             datatype: "json",
             success: function (res) {
