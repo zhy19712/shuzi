@@ -2465,7 +2465,7 @@
                         vision_getinit('./getfireversion');
                     }else if(Number(groupid)===11){
                         table4.ajax.url("__SCRIPT__/safety_special_operate.php?selfid="+selfid).load();
-                        vision_getinit('../Specialoperate/getfireversion');
+                        vision_getinit('../Specialoperate/getversion');
                     }
                 }else {
                     layer.msg(data.info);
@@ -2505,7 +2505,7 @@
             type:'POST',
             data:{"selfid":selfid},
             success:function (res) {
-                var optionStr='<option value="0">全部</option>';
+                var optionStr='<option value="">全部</option>';
                 for(var i=0;i<res.data.length;i++){
                     if($.trim(res.data[i])===""||res.data[i]==="null"){
                         continue;
