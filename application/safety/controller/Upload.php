@@ -1760,8 +1760,22 @@ class Upload extends Base
         if(empty($tableName)){
             return json(['code' => -1,'msg' => '请输入要查询的表名称']);
         }
-        $total = Db::name($tableName)->count();
-        $major_key = Db::name($tableName)->column($id_name);
+        $pid = request()->param('pid'); // 要查询哪个一级节点下的数据总条数
+        $zid = request()->param('zid'); // 要查询哪个二级节点下的数据总条数
+
+        if(empty($pid) && empty($zid)){ // 没有节点时
+            $total = Db::name($tableName)->count();
+            $major_key = Db::name($tableName)->column($id_name);
+        }else if(!empty($pid) && empty($zid)){ // 只归属于一级节点时
+            $total = Db::name($tableName)->where('group_id',$pid)->count();
+            $major_key = Db::name($tableName)->where('group_id',$pid)->column($id_name);
+        }else if(!empty($pid) && !empty($zid)){ // 归属于二级节点时
+            $total = Db::name($tableName)->where(['pid'=>$pid,'zid'=>$zid])->count();
+            $major_key = Db::name($tableName)->where(['pid'=>$pid,'zid'=>$zid])->column($id_name);
+        }else{
+            return json(['code' => -1,'total' => 0,'major_key' => 0,'msg' => '参数不对,无法查询']);
+        }
+
         // total 是 总的数据条数，major_key 是 全选的所有 id 编号 数组
         return json(['code' => 1,'total' => $total,'major_key' => $major_key,'msg' => '查询成功']);
     }
@@ -1919,6 +1933,22 @@ class Upload extends Base
         $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/warningsign');
         if($info){
             $path = './uploads/safety/warningsign/' . str_replace("\\","/",$info->getSaveName());
+            $filename = $file->getInfo('name');
+            return json(['code'=>1,'msg'=>'上传成功','data'=>$path,'filename'=>$filename]);
+        }else{
+            return json(['code'=>-1,'msg'=>'上传失败']);
+        }
+    }
+
+    /**
+     * 监理部职业健康管理
+     */
+    public function uploadJobhealthManage()
+    {
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/healthmanage');
+        if($info){
+            $path = './uploads/safety/healthmanage/' . str_replace("\\","/",$info->getSaveName());
             $filename = $file->getInfo('name');
             return json(['code'=>1,'msg'=>'上传成功','data'=>$path,'filename'=>$filename]);
         }else{

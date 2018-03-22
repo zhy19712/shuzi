@@ -35,8 +35,8 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
     array( 'db' => 'sex',  'dt' => 2 ),
     array( 'db' => 'age',  'dt' => 3 ),
     array( 'db' => 'station',  'dt' => 4 ),
-    array( 'db' => 'inform_path',  'dt' => 5 ),
-    array( 'db' => 'physical_path',  'dt' => 6 ),
+    array( 'db' => 'harm_path',  'dt' => 5 ),
+    array( 'db' => 'healthy_path',  'dt' => 6 ),
     array( 'db' => 'remark',  'dt' => 7 )
 );
 

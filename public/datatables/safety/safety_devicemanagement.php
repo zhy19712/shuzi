@@ -58,28 +58,13 @@ require( '../ssp.class.php' );
 //    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
 //);
 
-if(!empty($_GET["year"]) && !empty($_GET["history_version"]))
-{
-    $year = $_GET["year"];
-    $history_version = $_GET["history_version"];
-    echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "date like '%" .$year. "%' and input_time like '%" .$history_version. "%'" )
-    );
-}
-else if(!empty($_GET["year"])  && empty($_GET["history_version"]))
+if(!empty($_GET["year"]))
 {
     $year = $_GET["year"];
     echo json_encode(
         SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "date like '%" .$year. "%'" )
     );
-}else if(empty($_GET["year"]) && !empty($_GET["history_version"]))
-{
-    $history_version = $_GET["history_version"];
-    echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "input_time like '%" .$history_version. "%'" )
-    );
-}
-else{
+}else{
     echo json_encode(
         SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns)
     );

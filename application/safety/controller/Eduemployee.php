@@ -170,7 +170,7 @@ class Eduemployee extends Base
                     $insertData[$k]['job'] = $v[$job_index];
                     $insertData[$k]['situation'] = $v[$situation_index];
                     $insertData[$k]['iphone'] = $v[$iphone_index];
-                    $insertData[$k]['approach_tiem'] = $v[$approach_tiem_index];
+                    $insertData[$k]['approach_time'] = $v[$approach_tiem_index];
                     $insertData[$k]['content'] = $v[$content_index];
                     $insertData[$k]['edu_time'] = $v[$edu_time_index];
                     $insertData[$k]['exam_performance'] = $v[$exam_performance_index];

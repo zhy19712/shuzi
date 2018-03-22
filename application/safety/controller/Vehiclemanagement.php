@@ -119,7 +119,7 @@ class Vehiclemanagement extends Base
 //            if(file_exists($pdf_path)){
 //                unlink($pdf_path); //删除生成的预览pdf
 //            }
-            $flag = $vehiclemanagement->delPersonalequipment($param['id']);
+            $flag = $vehiclemanagement->delVehiclemanagement($param['id']);
 
             $repair = $repairrecord->getOne($param['id']);
             if($repair)
@@ -271,7 +271,7 @@ class Vehiclemanagement extends Base
         {
             $idArr = $vehiclemanagement ->getallid();
         }
-        $name = '个人防护装备'.date('Y-m-d H:i:s'); // 导出的文件名
+        $name = '车辆管理'.date('Y-m-d H:i:s'); // 导出的文件名
 
         $list = $vehiclemanagement->getList($idArr);
         header("Content-type:text/html;charset=utf-8");
@@ -321,6 +321,57 @@ class Vehiclemanagement extends Base
         ob_end_clean();  //清除缓冲区,避免乱码
         header('Content-Type: application/vnd.ms-excel'); //文件类型
         header('Content-Disposition: attachment;filename="'.$name.'.xls"'); //文件名
+        header('Cache-Control: max-age=0');
+        header('Content-Type: text/html; charset=utf-8'); //编码
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003
+        $objWriter->save('php://output');
+        exit;
+    }
+
+    /**
+     * 导出模板
+     * @return \think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     */
+    public function exportExcelTemplete()
+    {
+        if(request()->isAjax()){
+            return json(['code'=>1]);
+        }
+        $name = input('param.name');
+        $newName = '车辆管理 - '.$name.date('Y-m-d H:i:s'); // 导出的文件名
+        header("Content-type:text/html;charset=utf-8");
+        Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+        //实例化
+        $objPHPExcel = new \PHPExcel();
+        /*右键属性所显示的信息*/
+//        $objPHPExcel->getProperties()->setCreator("zxf")  //作者
+//        ->setLastModifiedBy("zxf")  //最后一次保存者
+//        ->setTitle('数据EXCEL导出')  //标题
+//        ->setSubject('数据EXCEL导出') //主题
+//        ->setDescription('导出数据')  //描述
+//        ->setKeywords("excel")   //标记
+//        ->setCategory("result file");  //类别
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        // 设置表格第一行显示内容
+        $objPHPExcel->getActiveSheet()
+            ->setCellValue('A1', '序号')
+            ->setCellValue('B1', '车牌号')
+            ->setCellValue('C1', '固定资产编号')
+            ->setCellValue('D1', '车辆类别')
+            ->setCellValue('E1', '年审有效期')
+            ->setCellValue('F1', '保险有效期')
+            ->setCellValue('G1', '车辆状态')
+            ->setCellValue('H1', '驾驶员')
+            ->setCellValue('I1', '备注');
+        //设置当前的表格
+        $objPHPExcel->setActiveSheetIndex(0);
+        ob_end_clean();  //清除缓冲区,避免乱码
+        header('Content-Type: application/vnd.ms-excel'); //文件类型
+        header('Content-Disposition: attachment;filename="'.$newName.'.xls"'); //文件名
         header('Cache-Control: max-age=0');
         header('Content-Type: text/html; charset=utf-8'); //编码
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  //excel 2003
