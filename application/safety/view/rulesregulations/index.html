@@ -1157,20 +1157,23 @@
     });
     var selectyear ='<input id="year" />';
     $("div.selectyear").html("年度："+selectyear)
+    var yearData;
     //选择年度
     $("#year").jeDate({
-        isinitVal:true,
+        isinitVal:false,
         format:"YYYY年",
         okfun:function (obj) {
             admin_table.ajax.url("__SCRIPT__/safety_rules.php?years="+obj.date.YYYY+"&pid=" + groupid).load();
             console.log(groupid)
             console.log(obj.date.YYYY);
+            yearData = obj.date.YYYY
+            //点击查看历史版本
+            $("#down_excel option").click(function () {
+                var time = $('#down_excel option:selected').val();//选中的值
+                admin_table.ajax.url("__SCRIPT__/safety_rules.php?times="+time+"&years=\"+obj.date.YYYY+\"&pid=" + groupid).load();
+            })
         }
     });
-    //点击查看历史版本
-    $("#down_excel").click(function () {
-        var time = $('#down_excel option:selected').val();//选中的值
-        admin_table.ajax.url("__SCRIPT__/safety_rules.php?times="+time+"&pid=" + groupid).load();
-    })
+
 </script>
 </html>

@@ -74,7 +74,7 @@ class BoardingequipmentModel extends Model
 
     /*
      * 批量导出时候的数组处理
-     */
+    */
     public  function getList($idArr)
     {
         $data = [];
@@ -93,7 +93,15 @@ class BoardingequipmentModel extends Model
     }
 
     /*
-     * 获取登高工器具文件的版本日期,excel的导入日期
+     * 根据条件查询全选条数
+     */
+    public  function getallcount($param)
+    {
+        return $this->where($param)->count('id');
+    }
+
+    /*
+     * 获取版本日期,excel的导入日期
      */
     public function getVersion($param)
     {
