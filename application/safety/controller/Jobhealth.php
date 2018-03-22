@@ -176,9 +176,13 @@ class Jobhealth extends Base
             $param = input('post.');
 
             $harm_filename = $param['harm_filename'];
+
             $harm_path = $param['harm_path'];
+
             $healthy_filename = $param['healthy_filename'];
+
             $healthy_path = $param['healthy_path'];
+
 
             if(empty($param['id'])){
 
