@@ -1926,4 +1926,20 @@ class Upload extends Base
         }
     }
 
+    /**
+     * 监理部职业健康管理
+     */
+    public function uploadJobhealthManage()
+    {
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/healthmanage');
+        if($info){
+            $path = './uploads/safety/healthmanage/' . str_replace("\\","/",$info->getSaveName());
+            $filename = $file->getInfo('name');
+            return json(['code'=>1,'msg'=>'上传成功','data'=>$path,'filename'=>$filename]);
+        }else{
+            return json(['code'=>-1,'msg'=>'上传失败']);
+        }
+    }
+
 }
