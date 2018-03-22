@@ -2271,11 +2271,12 @@
         var history_version = $(this).parents(".tab-pane").find(".down_excel select option:selected").val();
         $check_table = $(this).parents("table");
         dataArr=[];
-        console.log(history_version,$(this).parents(".tab-pane").find(".down_excel").html())
+        console.log(history_version,$(this).parents(".tab-pane").find(".down_excel").html());
+        $(".msg").html('选择当前页面信息或者<a herf="javascript:void(0)" onclick="selectAll(this)">全部信息</a>');
         var check = $(this).prop("checked");
         if (check === true) {
-            getcount(year,history_version);
-
+            // getcount(year,history_version);
+            $("#msg").show("fast");
             $(this).parents("table").find(".checkchild").prop("checked", true); //全部选中
             $(this).parents("table").find(".checkchild").each(function(){
                 getDataId(this);
