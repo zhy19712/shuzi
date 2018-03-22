@@ -93,6 +93,14 @@ class PersonalequipmentModel extends Model
     }
 
     /*
+     * 根据条件查询全选条数
+     */
+    public  function getallcount($param)
+    {
+        return $this->where($param)->count('id');
+    }
+
+    /*
      * 获取个人防护设备文件的版本日期,excel的导入日期
      */
     public function getVersion($param)

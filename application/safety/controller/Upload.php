@@ -1871,4 +1871,20 @@ class Upload extends Base
         }
     }
 
+    /**
+     * 个人防护装备
+     */
+    public function uploadPersonalequipment()
+    {
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/personalequipment');
+        if($info){
+            $path = './uploads/safety/personalequipment/' . str_replace("\\","/",$info->getSaveName());
+            $filename = $file->getInfo('name');
+            return json(['code'=>1,'msg'=>'上传成功','data'=>$path,'filename'=>$filename]);
+        }else{
+            return json(['code'=>-1,'msg'=>'上传失败']);
+        }
+    }
+
 }
