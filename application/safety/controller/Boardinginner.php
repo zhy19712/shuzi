@@ -24,34 +24,108 @@ class Boardinginner extends Base
             $boarding = new BoardinginnerModel();
             $param = input('post.');
             $data = $boarding->getOne($param['id']);
+            //文件名、图片名、文件路径，图片路径不为空时进行拆解
+            if(!empty($data['filename']))
+            {
+                $data['filename'] = explode("☆",$data['filename']);//拆解拼接的文件、图片名
+            }else
+            {
+                $data['filename'] = array();//为空时返回一个空数组
+            }
+
+            if(!empty($data['path']))
+            {
+                $data['path'] = explode("☆",$data['path']);//拆解拼接的文件、图片路径
+            }else
+            {
+                $data['path'] = array();//为空时返回一个空数组
+            }
+
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
 
     /*
-     * 编辑一条登高工器具信息
+     * 新增/编辑一条登高工器具信息
      */
     public function  boardinginnerEdit()
     {
         $boarding = new BoardinginnerModel();
         $param = input('post.');
+
+        $pathImgName = input('post.pathImgName/a');//获取post传过来的多个文件、图片的名字，包含在一个一维数组中。
+        $pathImgArr = input('post.pathImgArr/a');//获取post传过来的多个文件、图片的路径，包含在一个一维数组中。
+        $pathImgDel = input('post.pathImgDel/a');//获取post传过来要删除的多个文件、图片的路径，包含在一个一维数组中。
+
+        //判断文件名、图片名、路径是否为空，为空的时候不拼接
+
+        if(!empty($pathImgName))
+        {
+            $pathImgName = implode("☆",$pathImgName);//上传所有文件图片的拼接名
+        }
+        if(!empty($pathImgArr))
+        {
+            $pathImgArr = implode("☆",$pathImgArr);//上传所有文件、图片拼接路径
+
+        }
+
+        //循环删除文件、图片
+        foreach((array)$pathImgDel as $v)
+        {
+            if(file_exists($v)){
+                unlink($v); //删除上传的文件、路径
+            }
+        }
         if(request()->isAjax()){
-            $data = [
-                'id' => $param['id'],
-                'tool_name' => $param['tool_name'],//工器具名称
-                'type_model' => $param['type_model'],//规格型号
-                'number' => $param['number'],//数量
-                'batch' => $param['batch'],//批次
-                'manufacture' => $param['manufacture'],//生产厂家
-                'date_product' => $param['date_product'],//出厂日期
-                'check_round' => $param['check_round'],//定检周期
-                'first_check_date' => $param['first_check_date'],//首检日期
-                'use_position' => $param['use_position'],//使用位置
-                'remark' => $param['remark']//备注
-            ];
-            $flag = $boarding->editBoardinginner($data);
-            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            if(empty($param['id']))
+            {
+                $data = [
+//                    'id' => $param['id'],
+                    'tool_name' => $param['tool_name'],//工器具名称
+                    'type_model' => $param['type_model'],//规格型号
+                    'number' => $param['number'],//数量
+                    'batch' => $param['batch'],//批次
+                    'manufacture' => $param['manufacture'],//生产厂家
+                    'date_product' => $param['date_product'],//出厂日期
+                    'check_round' => $param['check_round'],//定检周期
+                    'first_check_date' => $param['first_check_date'],//首检日期
+                    'use_position' => $param['use_position'],//使用位置
+                    'input_time' => $param['input_time'],
+
+                    'filename' => $pathImgName,//拼接文件名、图片名
+
+                    'path' => $pathImgArr,//拼接文件路径、图片路径
+                    'date' => date("Y-m-d H:i:s"),//添加时间
+                    'remark' => $param['remark']//备注
+                ];
+                $flag = $boarding->insertBoardinginner($data);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }else
+            {
+                $data = [
+                    'id' => $param['id'],
+                    'tool_name' => $param['tool_name'],//工器具名称
+                    'type_model' => $param['type_model'],//规格型号
+                    'number' => $param['number'],//数量
+                    'batch' => $param['batch'],//批次
+                    'manufacture' => $param['manufacture'],//生产厂家
+                    'date_product' => $param['date_product'],//出厂日期
+                    'check_round' => $param['check_round'],//定检周期
+                    'first_check_date' => $param['first_check_date'],//首检日期
+                    'use_position' => $param['use_position'],//使用位置
+//                    'input_time' => $param['input_time'],
+
+                    'filename' => $pathImgName,//拼接文件名、图片名
+
+                    'path' => $pathImgArr,//拼接文件路径、图片路径
+                    'remark' => $param['remark']//备注
+                ];
+                $flag = $boarding->editBoardinginner($data);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
+
+
         }
     }
 
@@ -64,16 +138,172 @@ class Boardinginner extends Base
         if(request()->isAjax()) {
             $param = input('post.');
             $data = $boarding->getOne($param['id']);
-            $path = $data['path'];
-            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-            if(file_exists($path)){
-                unlink($path); //删除文件
+
+            if(!empty($data['path']))
+            {
+                $path = explode("☆",$data['path']);//拆解拼接的文件、图片路径
             }
-            if(file_exists($pdf_path)){
-                unlink($pdf_path); //删除生成的预览pdf
+
+            foreach ((array)$path as $v)
+            {
+                unlink($v); //删除文件、图片
             }
             $flag = $boarding->delBoardinginner($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    /*
+     * 获取登高工器具信息,excel导入时间
+     * @return mixed|\think\response\Json
+     */
+    public function getversion()
+    {
+        if(request()->isAjax()){
+//            $param = input('post.');
+            $boarding = new BoardinginnerModel();
+            $data = $boarding->getVersion();
+            return json(['code'=> 1, 'data' => $data]);
+        }
+        return $this->fetch();
+    }
+
+    /**
+     * 登高工器具excel表格导入
+     * @return array|\think\response\Json
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     */
+    public function importExcel()
+    {
+//        $selfid = input('param.selfid');
+//        if(empty($selfid)){
+//            return  json(['code' => 1,'data' => '','msg' => '请选择分组']);
+//        }
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/boardinginner');
+        if($info){
+            // 调用插件PHPExcel把excel文件导入数据库
+            Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
+            $exclePath = $info->getSaveName();  //获取文件名
+            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/boardinginner' . DS . $exclePath;   //上传文件的地址
+            // 当文件后缀是xlsx 或者 csv 就会报：the filename xxx is not recognised as an OLE file错误
+            $extension = get_extension($file_name);
+            if ($extension =='xlsx') {
+                $objReader = new \PHPExcel_Reader_Excel2007();
+                $obj_PHPExcel = $objReader->load($file_name);
+            } else if ($extension =='xls') {
+                $objReader = new \PHPExcel_Reader_Excel5();
+                $obj_PHPExcel = $objReader->load($file_name);
+            } else if ($extension=='csv') {
+                $PHPReader = new \PHPExcel_Reader_CSV();
+                //默认输入字符集
+                $PHPReader->setInputEncoding('GBK');
+                //默认的分隔符
+                $PHPReader->setDelimiter(',');
+                //载入文件
+                $obj_PHPExcel = $PHPReader->load($file_name);
+            }
+            $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
+            // 验证格式 ---- 去除顶部菜单名称中的空格，并根据名称所在的位置确定对应列存储什么值
+            $tool_name_index = $type_model_index = $number_index = $batch_index = $manufacture_index = $date_product_index = $check_round_index = $first_check_date_index = $use_position_index = $remark_index = -1;
+            foreach ($excel_array[0] as $k=>$v){
+                $str = preg_replace('/[ ]/', '', $v);
+                if ($str == '工器具名称'){
+                    $tool_name_index = $k;
+                }else if ($str == '规格型号'){
+                    $type_model_index = $k;
+                }else if($str == '数量'){
+                    $number_index = $k;
+                }else if($str == '批次'){
+                    $batch_index = $k;
+                }else if($str == '生产厂家'){
+                    $manufacture_index = $k;
+                }else if($str == '出厂日期'){
+                    $date_product_index = $k;
+                }else if($str == '定检周期'){
+                    $check_round_index = $k;
+                }else if($str == '首检日期'){
+                    $first_check_date_index = $k;
+                }else if($str == '使用位置'){
+                    $use_position_index = $k;
+                }else if($str == '备注'){
+                    $remark_index = $k;
+                }
+            }
+//            return json(['1'=> $number_index, '2' => $equip_name_index,'3' =>$model_index,'4' => $equip_num_index,'5' => $manufactur_unit_index,'6' => $date_production_index,'7' => $current_state_index,'8' => $safety_inspection_num_index,'9' => $inspection_unit_index,'10' => $entry_time_index,'11' => $equip_state_index,'12' => $remark_index]);
+
+            if($tool_name_index == -1 || $type_model_index == -1 || $number_index == -1 || $batch_index == -1 || $manufacture_index == -1 || $date_product_index == -1 || $check_round_index == -1 || $first_check_date_index == -1 || $use_position_index == -1 || $remark_index == -1){
+                $json_data['code'] = 0;
+                $json_data['info'] = '文件内容格式不对';
+                return json($json_data);
+            }
+            $insertData = [];
+            foreach($excel_array as $k=>$v){
+                if($k > 0){
+
+                    $insertData[$k]['tool_name'] = $v[$tool_name_index];
+                    $insertData[$k]['type_model'] = $v[$type_model_index];
+                    $insertData[$k]['number'] = $v[$number_index];
+                    $insertData[$k]['batch'] = $v[$batch_index];
+                    $insertData[$k]['manufacture'] = $v[$manufacture_index];
+                    $insertData[$k]['date_product'] = $v[$date_product_index];
+                    $insertData[$k]['check_round'] = $v[$check_round_index];
+                    $insertData[$k]['first_check_date'] = $v[$first_check_date_index];
+                    $insertData[$k]['use_position'] = $v[$use_position_index];
+                    $insertData[$k]['remark'] = $v[$remark_index];
+                    $insertData[$k]['input_time'] = date('Y-m-d H:i:s');
+//                    $insertData[$k]['selfid'] = $selfid;
+
+                }
+            }
+            $success = Db::name('safety_boarding_equipment_inner')->insertAll($insertData);
+            if($success !== false){
+                return  json(['code' => 1,'data' => '','msg' => '导入成功']);
+            }else{
+                return json(['code' => -1,'data' => '','msg' => '导入失败']);
+            }
+        }
+    }
+
+
+    /*
+     *
+     * 根据条件筛选选中的条数
+     */
+    public function getcount()
+    {
+        $boarding = new BoardinginnerModel();
+
+        $where = "";//定义一个空数组
+
+        if(request()->isAjax()) {
+            $param = input('post.');
+
+            $selfid = $param['selfid'];//类别id
+            $year = $param['year'];//年份
+            $history_version = $param['history_version'];
+
+            if(!empty($selfid))
+            {
+                $where .= "selfid =  '$selfid' ";
+            }
+
+            if(!empty($year))
+            {
+                $where .= " and date like '%" .$year. "%' ";
+            }
+
+            if(!empty($history_version))
+            {
+                $where .= " and input_time like '%" .$history_version. "%' ";
+            }
+
+
+            $flag = $boarding->getallcount($where);
+
+            return json(['code' => 1, 'data' => $flag, 'msg' => $flag['msg']]);
+
         }
     }
 
