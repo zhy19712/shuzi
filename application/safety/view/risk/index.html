@@ -801,9 +801,10 @@
     });
     //点击照片预览
     function previewFile(that) {
-        console.log(arrBefore)
+        console.log(pathImgArr)
 //        $("#previewPhotos").html('');
-        var imgSrc = $(this).attr("src");
+        var imgSrc = $(that).attr("src");
+        console.log(imgSrc)
         $("#previewPhotos").css('display','none');
         $("#previewPhotos").append('<img src="'+imgSrc.substring(1)+'"/>')
         $("#previewPhotos").css('display','block');
