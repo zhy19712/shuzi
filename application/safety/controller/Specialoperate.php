@@ -274,6 +274,44 @@ class Specialoperate extends Base
         }
     }
 
+    /*
+     *
+     * 根据条件筛选选中的条数
+     */
+      public function getcount()
+      {
+          $special = new SpecialoperateModel();
+
+          $where = "";//定义一个空数组
+
+          if(request()->isAjax()) {
+              $param = input('post.');
+
+              $selfid = $param['selfid'];//类别id
+              $year = $param['year'];//年份
+              $history_version = $param['history_version'];
+
+              if(!empty($selfid))
+              {
+                  $where .= "selfid =  '$selfid' ";
+              }
+
+              if(!empty($year))
+              {
+                  $where .= " and date like '%" .$year. "%' ";
+              }
+
+              if(!empty($history_version))
+              {
+                  $where .= " and input_time like '%" .$history_version. "%' ";
+              }
+
+
+              $flag = $special->getallcount($where);
+
+              return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+          }
+      }
     /**
      * 批量导出
      * @return \think\response\Json
