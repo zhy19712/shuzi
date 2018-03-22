@@ -73,6 +73,7 @@ class Risk extends Base
                 $par = input('post.');
                 $m = new RiskModel();
                 $m->proessScore($par['username'], $par['cat'], $par['context'], $par['time']);
+                return json(['code'=>1,'msg'=>'操作成功']);
             }catch (Exception $e)
             {
                 return json(['code'=>-1,'msg'=>$e->getMessage()]);
