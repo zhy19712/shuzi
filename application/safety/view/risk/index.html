@@ -577,7 +577,7 @@
                                     </select>
                                 </td>
                                 <td class="table_td">
-                                    <input type="text" name="reduce1" id="reduce1">
+                                    <input type="text" name="reduce1" id="reduce1"  required="required" placeholder="此处为必填项">
                                 </td>
                                 <td class="table_td lastRemark">
                                     <textarea name="reduceRemark1" id="reduceRemark1"></textarea>
@@ -1486,12 +1486,14 @@
         $("#aPairOf_reduce_modal").modal('show');
         userName = $(that).parent("td").parent("tr").children("td:nth-of-type(2)").text();
     }
-    $("#deductingReasons").click(function () {
+    //点击减分保存
+    $("#aPairOf_reduce").submit(function () {
         var reasons = $('#deductingReasons option:selected').text();//扣分分类
+        console.log(reasons)
         var reaData = $('#reduce1').val();//扣分时间
-        var reaRemark = $('#reduceRemark1').val();//扣分备注
         console.log(reaData)
-
+        var reaRemark = $('#reduceRemark1').val();//扣分备注
+        console.log(reaRemark)
         $.ajax({
             url:'riskScore',
             type:'post',
@@ -1512,7 +1514,7 @@
                 }
             }
         });
-    });
+    })
     //减分时间插件
     $("#reduce1").jeDate({format: "YYYY-MM-DD"});
     $("#reduce2").jeDate({format: "YYYY-MM-DD"});
