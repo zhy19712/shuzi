@@ -115,6 +115,7 @@ class Specialequipmentmanagement extends Base
                 $flag = $equipment->insertSpecialEquipmentManagement($data);
             }else{
                 $data = [
+                    'id' => $param['id'],//特种设备表id
                     'equip_name' => $param['equip_name'],//设备名称
                     'model' => $param['model'],//型号
                     'equip_num' => $param['equip_num'],//设备编号
