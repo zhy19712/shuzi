@@ -800,11 +800,12 @@
         }, thumbnailWidth, thumbnailHeight );
     });
     //点击照片预览
-    function previewFile() {
+    function previewFile(that) {
         console.log(arrBefore)
-        $("#previewPhotos").html('');
+//        $("#previewPhotos").html('');
+        var imgSrc = $(this).attr("src");
         $("#previewPhotos").css('display','none');
-        $("#previewPhotos").append('<img src="'+arrBefore.substring(1)+'"/>')
+        $("#previewPhotos").append('<img src="'+imgSrc.substring(1)+'"/>')
         $("#previewPhotos").css('display','block');
         layer.open({
             type: 1,
@@ -1474,7 +1475,6 @@
         } );
 
     }
-
     //得分查看返回
     $("#aPairOf_modal .btn-danger").click(function () {
         standard_uploader = null;
@@ -1517,12 +1517,6 @@
     })
     //减分时间插件
     $("#reduce1").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce2").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce3").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce4").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce5").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce6").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce7").jeDate({format: "YYYY-MM-DD"});
     //减分设置返回
     $("#aPairOf_reduce_modal .btn-danger").click(function () {
         standard_uploader = null;
