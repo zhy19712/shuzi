@@ -74,7 +74,7 @@ class DevicemanagementModel extends Model
 
     /*
      * 批量导出时候的数组处理
-     */
+    */
     public  function getList($idArr)
     {
         $data = [];
@@ -90,6 +90,22 @@ class DevicemanagementModel extends Model
     public  function getallid()
     {
         return $this->group('id')->column('id');
+    }
+
+    /*
+     * 根据条件查询全选条数
+     */
+    public  function getallcount($param)
+    {
+        return $this->where($param)->count('id');
+    }
+
+    /*
+     * 获取版本日期,excel的导入日期
+     */
+    public function getVersion($param)
+    {
+        return $this->where('selfid',$param)->group('input_time')->column('input_time');
     }
 
 }
