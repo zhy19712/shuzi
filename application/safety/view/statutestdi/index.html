@@ -843,6 +843,7 @@
             layer.msg(data.msg);
             tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php?pid=" + groupid).load();
             importExcel.reset();
+            viewHistoryVer(groupid);
             $("#addRules_modal").modal('hide');
 
         }else{
@@ -1083,6 +1084,8 @@
         isinitVal:true,
         format:"YYYY",
         okfun:function (obj) {
+            var pid = $('input[type="hidden"][name="groupId"]').val();
+            viewHistoryVer(pid);
             filterData();
         }
     });
