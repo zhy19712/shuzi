@@ -399,6 +399,10 @@ class Statutestdi extends Base
     public function exportExcel()
     {
         if(request()->isAjax()){
+            $majorKeyArr = input('majorKeyArr/a');
+            if(count($majorKeyArr) == 0){
+                return json(['code' => -1 ,'msg' => '请选择需要下载的编号']);
+            }
             return json(['code'=>1]);
         }
         $majorKeyArr = input('majorKeyArr/a');

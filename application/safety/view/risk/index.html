@@ -1426,25 +1426,26 @@
     } );
     var riskreduceSeeId;
     //得分查看
-    function riskreduceSee() {
+    function riskreduceSee(that) {
         $("#aPairOf_modal h5").text("查看扣分项");
         $("#aPairOf_modal").modal('show');
         $("#aPairOf_modal button[type='submit']").css("display",'none');
-        riskreduceSeeId = $(this).parent("td").parent("tr").children("td:nth-of-type(1)").text();
+        riskreduceSeeId = $(that).parent("td").parent("tr").children("td:first-child").text();
         console.log(riskreduceSeeId)
     }
+    
     var aPairOf_table_model = $('#aPairOf_table_model').DataTable( {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "__SCRIPT__/safety_riskdutyinfo.php?id=" + riskreduceSeeId + ""
+            "url": "__SCRIPT__/safety_riskdutyinfo.php?id=' + riskreduceSeeId + '"
         },
         "dom": '<"selectyear"><"myl"l><"float_left"f>tip',
         "columnDefs": [
             {
                 "searchable": false,
                 "orderable": false,
-                "targets": [4],
+                "targets": [3],
             }
         ],
         "language": {
