@@ -28,11 +28,17 @@ class Specialoperate extends Base
             if(!empty($data['filename']))
             {
                 $data['filename'] = explode("☆",$data['filename']);//拆解拼接的文件、图片名
+            }else
+            {
+                $data['filename'] = array();
             }
 
             if(!empty($data['path']))
             {
                 $data['path'] = explode("☆",$data['path']);//拆解拼接的文件、图片路径
+            }else
+            {
+                $data['path'] = array();
             }
 
 
