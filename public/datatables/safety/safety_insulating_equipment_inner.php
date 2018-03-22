@@ -62,34 +62,27 @@ require( '../ssp.class.php' );
 //    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
 //);
 
-if(!empty($_GET["year"]) && !empty($_GET["selfid"]) && !empty($_GET["history_version"]))
+if(!empty($_GET["year"]) && !empty($_GET["history_version"]))
 {
-    $selfid = $_GET["selfid"];
     $year = $_GET["year"];
     $history_version = $_GET["history_version"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and date like '%" .$year. "%' and input_time like '%" .$history_version. "%'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "date like '%" .$year. "%' and input_time like '%" .$history_version. "%'" )
     );
 }
-else if(empty($_GET["year"]) && !empty($_GET["selfid"]) && empty($_GET["history_version"]))
+else if(!empty($_GET["year"]) && empty($_GET["history_version"]))
 {
-    $selfid = $_GET["selfid"];
-    echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid'" )
-    );
-}else if(!empty($_GET["year"]) && !empty($_GET["selfid"]) && empty($_GET["history_version"]))
-{
-    $selfid = $_GET["selfid"];
+
     $year = $_GET["year"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and date like '%" .$year. "%'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "date like '%" .$year. "%'" )
     );
-}else if(empty($_GET["year"]) && !empty($_GET["selfid"]) && !empty($_GET["history_version"]))
+}else if(empty($_GET["year"]) && !empty($_GET["history_version"]))
 {
-    $selfid = $_GET["selfid"];
+
     $history_version = $_GET["history_version"];
     echo json_encode(
-        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "selfid = '$selfid' and input_time like '%" .$history_version. "%'" )
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "input_time like '%" .$history_version. "%'" )
     );
 }
 else{
