@@ -470,7 +470,7 @@
     //树结构删除节点
     $("#options>i:nth-child(3)").click(function () {
         if(mytree_node){
-            layer.confirm("警告！你将会删除此节点将删除它的所有子节点以及所包含的文件"+  mytree_node.name  +"！确认删除?", {icon: 3, title:'提示'}, function(index){
+            layer.confirm("警告！删除"+  mytree_node.name  +"将会删除它所包含的所有子节点以及所包含的文件！确认删除?", {icon: 3, title:'提示'}, function(index){
                 var idDel = mytree_node.id;
                 console.log(idDel)
                 $.ajax({
