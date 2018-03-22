@@ -215,7 +215,7 @@ class Risk extends Base
      */
     public function exportExcel()
     {
-        if (!request()->isAjax()) {
+        if (request()->isAjax()) {
             return json(['code' => 1]);
         }
         $idArr = input('majorKeyArr/a');
