@@ -1054,7 +1054,7 @@
                 years:years
             },
             success:function (data) {
-                var dataViewDom = '<select name="" id="history" style="height: 32px" onchange="filterHistory(this)">';
+                var dataViewDom = '<select name="" id="history" style="height: 32px" onchange="filterHistory()">';
                 dataViewDom += '<option value="">请选择版本</option>';
                 for (var i=0;i<data.length;i++){
                     dataViewDom += '<option value="">'+data[i]+'</option>';
@@ -1065,8 +1065,16 @@
         });
     }
 
+    //筛选数据
+    function filterData() {
+        var years = $('#years').val();
+        var pid = $('input[type="hidden"][name="groupId"]').val();
+        var times = $('#history').find('option:selected').text();
+        tableItem.ajax.url("__SCRIPT__/safety_statutesdi.php?years="+ years +"&pid=" + pid +"&times=" + times).load();
+    }
+
     //按版本查看
-    function filterHistory(that) {
+    function filterHistory() {
         filterData();
     }
 
@@ -1075,8 +1083,7 @@
         isinitVal:true,
         format:"YYYY",
         okfun:function (obj) {
-            var groupid = $('input[type="hidden"][name="groupId"]').val();
-            tableItem.ajax.url("__SCRIPT__/safety_rules.php?years="+obj.date.YYYY+"&pid=" + groupid).load();
+            filterData();
         }
     });
 
