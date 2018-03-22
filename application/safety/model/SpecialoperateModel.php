@@ -70,7 +70,7 @@ class SpecialoperateModel extends Model
 
     /*
      * 批量导出时候的数组处理
-     */
+    */
     public  function getList($idArr)
     {
         $data = [];
@@ -86,6 +86,14 @@ class SpecialoperateModel extends Model
     public  function getallid()
     {
         return $this->group('id')->column('id');
+    }
+
+    /*
+     * 根据条件查询全选条数
+     */
+    public  function getallcount($param)
+    {
+        return $this->where($param)->count('id');
     }
 
     /*
