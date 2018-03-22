@@ -67,4 +67,34 @@ class SpecialoperateModel extends Model
     {
         return $this->where('id', $id)->find();
     }
+
+    /*
+     * 批量导出时候的数组处理
+     */
+    public  function getList($idArr)
+    {
+        $data = [];
+        foreach($idArr as $v){
+            $data[] = $this->getOne($v);
+        }
+        return $data;
+    }
+
+    /*
+     * 查看所有的id值
+     */
+    public  function getallid()
+    {
+        return $this->group('id')->column('id');
+    }
+
+    /*
+     * 获取特种作业人员管理的版本日期,excel的导入日期
+     */
+    public function getVersion($param)
+    {
+        return $this->where('selfid',$param)->group('input_time')->column('input_time');
+    }
+
+
 }

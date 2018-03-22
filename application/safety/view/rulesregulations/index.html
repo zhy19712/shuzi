@@ -102,25 +102,16 @@
     }
     #excel button:nth-of-type(1){
         outline: none;
-        border-radius: 24px;
-        border: none;
         background: white;
-        height: 27px;
+        margin-top: -4px;
     }
     #excel button:nth-of-type(2){
-        margin-left: 15px;
-        width: 60px;
-        height: 27px;
-        border-radius: 24px;
-        border: none;
-        background: orange;
-        color: white;
-        outline: none;
         margin-top: -9px;
     }
     #excel select{
         margin-left: 10px;
         width: 152px;
+        margin-top: -9px;
     }
     .float_left{
         margin-right: 400px;
@@ -135,14 +126,17 @@
     }
     #excelImport div:nth-of-type(1){
         width: 60px;
-        height: 27px;
+        height: 30px;
         line-height: 6px;
-        border-radius: 24px;
-        border: none;
-        background: orange;
-        color: white;
-        outline: none;
+        color: #1c84c6;
+        border:1px solid #1c84c6;
         display: block;
+        outline: none;
+        background: #FFFFFF;
+    }
+    #excelImport .webuploader-pick-hover{
+        background: #1c84c6;
+        color: #FFFFFF;
     }
     .dataTable thead  tr th:first-child:after{
         content: ""!important;
@@ -172,8 +166,8 @@
                     <div id="path">当前路径:</div>
                     <div id="mytable1_wrapper">
                         <div id="excel">
-                            <button id="excelImport"></button>
-                            <button id="excelExport">导出</button>
+                            <button class='btn' id="excelImport"></button>
+                            <button class='btn btn-success btn-outline btn-sm' id="excelExport">导出</button>
                             <select name="down_excel" id="down_excel">
                             </select>
                         </div>
@@ -476,7 +470,7 @@
     //树结构删除节点
     $("#options>i:nth-child(3)").click(function () {
         if(mytree_node){
-            layer.confirm("警告！你将会删除此节点将删除它的所有子节点以及所包含的文件"+  mytree_node.name  +"！确认删除?", {icon: 3, title:'提示'}, function(index){
+            layer.confirm("警告！删除"+  mytree_node.name  +"将会删除它所包含的所有子节点以及所包含的文件！确认删除?", {icon: 3, title:'提示'}, function(index){
                 var idDel = mytree_node.id;
                 console.log(idDel)
                 $.ajax({
@@ -1129,7 +1123,8 @@
 
     //导出excelExport
     $("#excelExport").click(function () {
-        $.ajax({
+        if(dataArr.length != ''){
+            $.ajax({
             url: "./exportExcel",
             type: "post",
             data: {
@@ -1147,12 +1142,19 @@
                     str += '<button type="submit" id="exportExcelBtn"></button></form>';
                     $("#form_container").append(str);
                     $("#form_container").find("#exportExcelBtn").click();
-                    layer.msg('导出成功！', {icon: 1,time:1500});
+                    if($("#form_container").html != ''){
+                        setTimeout(function () {
+                            layer.msg('导出成功！', {icon: 1,time:1500});
+                        },1000)
+                    }
                 }else if(res.code !=1){
-                    layer.msg(res.msg);
+                    layer.msg('导出失败！');
                 }
             }
         })
+        }else {
+            layer.msg('请选择要导出的数据！', {time: 1000})
+        }
     });
     var selectyear ='<input id="year" />';
     $("div.selectyear").html("年度："+selectyear)

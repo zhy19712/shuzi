@@ -64,9 +64,9 @@ class RiskDoubleDutyModel extends Model
         //插入增减分记录
         $info = new RiskDoubleDutyInfoModel();
         $info->insert(['score' => $score, 'context' => $context, 'cat' => $cat, 'date' => $time, 'duty_id' => $item['id']]);
-
-        $item['score'] += $score;
-        $item->save();
+        RiskDoubleDutyModel::update(['score' => $item['score'] + $score], ['id' => $item['id']]);
+//        $item->score+=$score;
+//        $item->save();
         return true;
     }
 }

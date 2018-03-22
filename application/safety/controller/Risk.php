@@ -38,7 +38,7 @@ class Risk extends Base
         if (request()->isAjax()) {
             $id = input('id');
             $risk = new RiskDoubleDutyModel();
-            $data = $risk->getOne($param['id']);
+            $data = $risk->getOne($id);
             return json($data);
         }
     }
