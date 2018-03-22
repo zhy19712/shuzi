@@ -14,6 +14,7 @@ use app\admin\model\ContractModel;
 use app\safety\model\RiskDoubleDutyModel;
 use app\safety\model\RiskModel;
 use think\Db;
+use think\Exception;
 use think\Loader;
 
 class Risk extends Base
@@ -27,7 +28,7 @@ class Risk extends Base
     {
         if (request()->isAjax()) {
             $id = input('id');
-            $m=new RiskModel();
+            $m = new RiskModel();
             return json($m->getOne($id));
         }
         return $this->fetch();
@@ -61,8 +62,23 @@ class Risk extends Base
 
     public function getRisk()
     {
-       $m=new RiskDoubleDutyModel();
-      return json( $m->getbyusername('test'));
+        $m = new RiskDoubleDutyModel();
+        return json($m->getbyusername('test'));
+    }
+
+    public function riskScore()
+    {
+        if (request()->isAjax()) {
+            try {
+                $par = input('post.');
+                $m = new RiskModel();
+                $m->proessScore($par['username'], $par['cat'], $par['context'], $par['time']);
+                return json(['code'=>1,'msg'=>'操作成功']);
+            }catch (Exception $e)
+            {
+                return json(['code'=>-1,'msg'=>$e->getMessage()]);
+            }
+        }
     }
 
     /**

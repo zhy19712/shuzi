@@ -24,32 +24,110 @@ class Personalequipment extends Base
             $personal = new PersonalequipmentModel();
             $param = input('post.');
             $data = $personal->getOne($param['id']);
+            //文件名、图片名、文件路径，图片路径不为空时进行拆解
+            if(!empty($data['filename']))
+            {
+                $data['filename'] = explode("☆",$data['filename']);//拆解拼接的文件、图片名
+            }else
+            {
+                $data['filename'] = array();//为空时返回一个空数组
+            }
+
+            if(!empty($data['path']))
+            {
+                $data['path'] = explode("☆",$data['path']);//拆解拼接的文件、图片路径
+            }else
+            {
+                $data['path'] = array();//为空时返回一个空数组
+            }
+
             return json(['code'=> 1, 'data' => $data]);
         }
         return $this->fetch();
     }
 
     /*
-     * 编辑一条个人防护装备信息
+     * 新增/编辑一条个人防护装备信息
      */
     public function  personalEdit()
     {
         $personal = new PersonalequipmentModel();
         $param = input('post.');
+
+        $pathImgName = input('post.pathImgName/a');//获取post传过来的多个文件、图片的名字，包含在一个一维数组中。
+        $pathImgArr = input('post.pathImgArr/a');//获取post传过来的多个文件、图片的路径，包含在一个一维数组中。
+        $pathImgDel = input('post.pathImgDel/a');//获取post传过来要删除的多个文件、图片的路径，包含在一个一维数组中。
+
+        //判断文件名、图片名、路径是否为空，为空的时候不拼接
+
+        if(!empty($pathImgName))
+        {
+            $pathImgName = implode("☆",$pathImgName);//上传所有文件图片的拼接名
+        }
+        if(!empty($pathImgArr))
+        {
+            $pathImgArr = implode("☆",$pathImgArr);//上传所有文件、图片拼接路径
+
+        }
+
+        //循环删除文件、图片
+        foreach((array)$pathImgDel as $v)
+        {
+            if(file_exists($v)){
+                unlink($v); //删除上传的文件、路径
+            }
+        }
+
         if(request()->isAjax()){
-            $data = [
-                'id' => $param['id'],
-                'tool_name' => $param['tool_name'],//工器具名称
-                'type_model' => $param['type_model'],//规格型号
-                'number' => $param['number'],//数量
-                'batch' => $param['batch'],//批次
-                'manufacture' => $param['manufacture'],//生产厂家
-                'date_product' => $param['date_product'],//出厂日期
-                'check_round' => $param['check_round'],//定检周期
-                'first_check_date' => $param['first_check_date'],//首检日期
-                'use_position' => $param['use_position'],//使用位置
-                'remark' => $param['remark']//备注
-            ];
+            if(empty($param['id']))
+            {
+                $data = [
+//                    'id' => $param['id'],
+                    'selfid' => $param['selfid'],//区别类别
+                    'tool_name' => $param['tool_name'],//工器具名称
+                    'type_model' => $param['type_model'],//规格型号
+                    'number' => $param['number'],//数量
+                    'batch' => $param['batch'],//批次
+                    'manufacture' => $param['manufacture'],//生产厂家
+                    'date_product' => $param['date_product'],//出厂日期
+                    'check_round' => $param['check_round'],//定检周期
+                    'first_check_date' => $param['first_check_date'],//首检日期
+                    'use_position' => $param['use_position'],//使用位置
+                    'input_time' => $param['input_time'],
+
+                    'filename' => $pathImgName,//拼接文件名、图片名
+
+                    'path' => $pathImgArr,//拼接文件路径、图片路径
+                    'date' => date("Y-m-d H:i:s"),//添加时间
+                    'remark' => $param['remark']//备注
+                ];
+
+                $flag = $personal->insertPersonalequipment($data);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }else
+            {
+                $data = [
+                    'id' => $param['id'],
+//                    'selfid' => $param['selfid'],//区别类别
+                    'tool_name' => $param['tool_name'],//工器具名称
+                    'type_model' => $param['type_model'],//规格型号
+                    'number' => $param['number'],//数量
+                    'batch' => $param['batch'],//批次
+                    'manufacture' => $param['manufacture'],//生产厂家
+                    'date_product' => $param['date_product'],//出厂日期
+                    'check_round' => $param['check_round'],//定检周期
+                    'first_check_date' => $param['first_check_date'],//首检日期
+                    'use_position' => $param['use_position'],//使用位置
+//                    'input_time' => $param['input_time'],
+
+                    'filename' => $pathImgName,//拼接文件名、图片名
+
+                    'path' => $pathImgArr,//拼接文件路径、图片路径
+//                    'date' => date("Y-m-d H:i:s"),//添加时间
+                    'remark' => $param['remark']//备注
+                ];
+            }
+
             $flag = $personal->editPersonalequipment($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
@@ -64,13 +142,15 @@ class Personalequipment extends Base
         if(request()->isAjax()) {
             $param = input('post.');
             $data = $personal->getOne($param['id']);
-            $path = $data['path'];
-            $pdf_path = './uploads/temp/' . basename($path) . '.pdf';
-            if(file_exists($path)){
-                unlink($path); //删除文件
+
+            if(!empty($data['path']))
+            {
+                $path = explode("☆",$data['path']);//拆解拼接的文件、图片路径
             }
-            if(file_exists($pdf_path)){
-                unlink($pdf_path); //删除生成的预览pdf
+
+            foreach ((array)$path as $v)
+            {
+                unlink($v); //删除文件、图片
             }
             $flag = $personal->delPersonalequipment($param['id']);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
@@ -188,6 +268,46 @@ class Personalequipment extends Base
             }else{
                 return json(['code' => -1,'data' => '','msg' => '导入失败']);
             }
+        }
+    }
+
+    /*
+     *
+     * 根据条件筛选选中的条数
+     */
+    public function getcount()
+    {
+        $personalequipment = new PersonalequipmentModel();
+
+        $where = "";//定义一个空数组
+
+        if(request()->isAjax()) {
+            $param = input('post.');
+
+            $selfid = $param['selfid'];//类别id
+            $year = $param['year'];//年份
+            $history_version = $param['history_version'];
+
+            if(!empty($selfid))
+            {
+                $where .= "selfid =  '$selfid' ";
+            }
+
+            if(!empty($year))
+            {
+                $where .= " and date like '%" .$year. "%' ";
+            }
+
+            if(!empty($history_version))
+            {
+                $where .= " and input_time like '%" .$history_version. "%' ";
+            }
+
+
+            $flag = $personalequipment->getallcount($where);
+
+            return json(['code' => 1, 'data' => $flag, 'msg' => $flag['msg']]);
+
         }
     }
 

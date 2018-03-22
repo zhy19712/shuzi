@@ -99,6 +99,7 @@ class Specialoperate extends Base
                     'certificate_number' => $param['certificate_number'],//证书编号
                     'advance_retreat_time' => $param['advance_retreat_time'],//进退场时间
                     'document_status' => $param['document_status'],//证件状态
+                    'input_time' => $param['input_time'],
 
                     'filename' => $pathImgName,//拼接文件名、图片名
 

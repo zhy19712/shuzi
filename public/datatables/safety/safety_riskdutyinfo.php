@@ -35,7 +35,8 @@ $columns = array(
     array('db' => 'id', 'dt' => 0),
     array('db' => 'cat', 'dt' => 1),
     array('db' => 'score', 'dt' => 2),
-    array('db' => 'context', 'dt' => 3)
+    array('db' => 'date', 'dt' => 3),
+    array('db' => 'context', 'dt' => 4)
 );
 
 
