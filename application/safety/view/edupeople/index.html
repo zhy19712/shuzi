@@ -825,9 +825,13 @@
         //点击节点
         function zTreeOnClick(event, treeId, treeNode) {
             idArr.length=0;
-            console.log(idArr);
             $('input[type="hidden"][name="zid"]').val(treeNode.id);
             $('input[type="hidden"][name="groupId"]').val(treeNode.pId);
+
+            $('.webuploader-pick').next().css({
+                width:'52px',
+                height:'32px'
+            });
 
             if(treeNode.pId==1){
                 isHidden('manageTableItem_wrapper',treeNode,'safety_edupeople',manageTableItem);
@@ -956,9 +960,11 @@
             if(data.code==1){
                 layer.msg(data.msg);
                 manageTableItem.ajax.url('__SCRIPT__/safety_edupeople.php?pid=' + pid +'&zid='+ zid).load();
+                manageImportExcel.reset();
                 $("#manage_addRules_modal").modal('hide');
             }else{
-                layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                layer.msg(data.info, {icon: 5});
+                manageImportExcel.reset();
                 return false;
             }
         }
@@ -1103,6 +1109,10 @@
             manageComplete(res);
         });
 
+        manageImportExcel.on( 'uploadError', function( file ) {
+            layer.msg('导入失败');
+        });
+
         manageImportExcel.on("uploadStart",function () {
             manageImportExcel.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
             manageImportExcel.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
@@ -1187,9 +1197,11 @@
             if(data.code==1){
                 layer.msg(data.msg);
                 practTableItem.ajax.url('__SCRIPT__/safety_eduployee.php?pid=' + pid +'&zid='+ zid).load();
+                practImportExcel.reset();
                 $("#pract_addRules_modal").modal('hide');
             }else{
-                layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                layer.msg(data.info, {icon: 5});
+                practImportExcel.reset();
                 return false;
             }
         }
@@ -1337,6 +1349,10 @@
             practComplete(res);
         });
 
+        practImportExcel.on( 'uploadError', function( file ) {
+            layer.msg('导入失败');
+        });
+
         practImportExcel.on("uploadStart",function () {
             practImportExcel.options.formData.pid = $('input[type="hidden"][name="groupId"]').val();
             practImportExcel.options.formData.zid = $('input[type="hidden"][name="zid"]').val();
@@ -1423,9 +1439,11 @@
             if(data.code==1){
                 layer.msg(data.msg);
                 foreignTableItem.ajax.url('__SCRIPT__/safety_eduforeignpersonnel.php?pid=' + pid +'&zid='+ zid).load();
+                foreignImportExcel.reset();
                 $("#foreign_addRules_modal").modal('hide');
             }else{
-                layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});
+                layer.msg(data.info, {icon: 5});
+                foreignImportExcel.reset();
                 return false;
             }
         }
@@ -1571,6 +1589,10 @@
 
         foreignImportExcel.on( 'uploadSuccess', function( file ,res) {
             foreignComplete(res);
+        });
+
+        foreignImportExcel.on( 'uploadError', function( file ) {
+            layer.msg('导入失败');
         });
 
         foreignImportExcel.on("uploadStart",function () {
