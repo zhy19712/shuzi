@@ -4893,6 +4893,7 @@
             case 132:
                 url = "../Trafficvehicle/exportExcel";
                 break;
+            case 133:
                 if(tab == 1){
                     url = "../Personalequipment/exportExcel";
                 }else if(tab ==2 ){
@@ -4903,9 +4904,9 @@
                 break;
             case 2 :
                 if(Number(selfid)==21){
-                    server = "../Vehiclemanagement/exportExcel";
+                    url = "../Vehiclemanagement/exportExcel";
                 }else if(Number(selfid)==22){
-                    server = "../Devicemanagement/exportExcel";
+                    url = "../Devicemanagement/exportExcel";
                 }else if((Number(selfid)==23)){
                     if(tab == 1){
                         url = '../Personalinner/exportExcel';
@@ -5105,6 +5106,26 @@
                     $("#fname4").modal('hide');
                     if(Number(groupid) === 132){
                         table5.ajax.url("__SCRIPT__/safety_trafficvehicle.php?selfid="+selfid).load();
+                    }else if(Number(groupid) === 133){
+                        if(tab == 1){
+                            table6.ajax.url("__SCRIPT__/safety_personalequipment.php?selfid="+selfid).load();
+                        }else if(tab ==2 ){
+                            table7.ajax.url("__SCRIPT__/safety_insulating_equipment.php?selfid="+selfid).load();
+                        }else if(tab == 3){
+                            table8.ajax.url("__SCRIPT__/safety_boarding_equipment.php?selfid="+selfid).load();
+                        }
+                    }else if(Number(groupid) === 2){
+                        if(Number(selfid)==21){
+                            table9.ajax.url("__SCRIPT__/safety_vehiclemanagement.php?selfid=" + selfid).load();
+                        }else if(Number(selfid)==23){
+                            if(tab == 1){
+                                table14.ajax.url("__SCRIPT__/safety_personal_equipment_inner.php").load();
+                            }else if(tab ==2 ){
+                                table15.ajax.url("__SCRIPT__/safety_insulating_equipment_inner.php").load();
+                            }else if(tab == 3){
+                                table16.ajax.url("__SCRIPT__/safety_boarding_equipment_inner.php").load();
+                            }
+                        }
                     }
                 }else {
                     layer.msg(data.info);
