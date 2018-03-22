@@ -225,11 +225,12 @@ class RiskModel extends Model
 
     public function getList($idArr)
     {
-        $data = [];
-        foreach ($idArr as $v) {
-            $data[] = $this->getOne($v);
-        }
-        return $data;
+//        $data = [];
+//        foreach ($idArr as $v) {
+//            $data[] = $this->getOne($v);
+//        }
+//        return $data;
+        return RiskModel::all($idArr);
     }
 
     public function getYears()
