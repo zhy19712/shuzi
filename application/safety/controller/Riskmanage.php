@@ -118,38 +118,47 @@ class Riskmanage extends Base
      */
     public function manageDownload()
     {
-        if(request()->isAjax()){
-            return json(['code'=>1]);
-        }
         $major_key = input('param.major_key');
         $type = input('param.type');
         $manage = new RiskManageModel();
         $param = $manage->getOne($major_key);
-        $filePath = $fileName = '';
-        if($type == '1'){ // type 1 年度风险辨识文件 2 季度风险辨识文件3 风险复测单 4风险管控卡 5施工作业票
-            $filePath = $param['year_path'];
-            $fileName = $param['year_name'];
-        }else if($type == '2'){
-            $filePath = $param['quarter_path'];
-            $fileName = $param['quarter_name'];
-        }else if($type == '3'){
-            $filePath = $param['sheet_path'];
-            $fileName = $param['sheet_name'];
-        }else if($type == '4'){
-            $filePath = $param['card_path'];
-            $fileName = $param['card_name'];
-        }else if($type == '5'){
-            $filePath = $param['work_path'];
-            $fileName = $param['work_name'];
+        // type 1 年度风险辨识文件 2 季度风险辨识文件3 风险复测单 4风险管控卡 5施工作业票
+        switch ($type){
+            case '1':
+                $filePath = $param['year_path'];
+                $fileName = $param['year_name'];
+                break;
+            case '2':
+                $filePath = $param['quarter_path'];
+                $fileName = $param['quarter_name'];
+                break;
+            case '3':
+                $filePath = $param['sheet_path'];
+                $fileName = $param['sheet_name'];
+                break;
+            case '4':
+                $filePath = $param['card_path'];
+                $fileName = $param['card_name'];
+                break;
+            case '5':
+                $filePath = $param['work_path'];
+                $fileName = $param['work_name'];
+                break;
+            default :
+                $filePath = '';
+                $fileName = '';
         }
 
-        // 如果是手动输入的名称，就有可能没有文件后缀
-        $extension = get_extension($fileName);
-        if(empty($extension)){
-            $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
-        }
-
-        if(file_exists($filePath)) {
+        if(!file_exists($filePath)){
+            return json(['code' => '-1','msg' => '文件不存在']);
+        }else if(request()->isAjax()){
+            return json(['code'=>1]);
+        }else{
+            // 如果是手动输入的名称，就有可能没有文件后缀
+            $extension = get_extension($fileName);
+            if(empty($extension)){
+                $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
+            }
             $file = fopen($filePath, "r"); //   打开文件
             //输入文件标签
             $fileName = iconv("utf-8","gb2312",$fileName);
@@ -161,8 +170,6 @@ class Riskmanage extends Base
             echo fread($file, filesize($filePath));
             fclose($file);
             exit;
-        }else{
-            return json(['code' => '-1','msg' => '文件不存在']);
         }
     }
 
@@ -357,12 +364,12 @@ class Riskmanage extends Base
      */
     public function exportExcel()
     {
-        if(request()->isAjax()){
-            return json(['code'=>1]);
-        }
         $majorKeyArr = input('majorKeyArr/a');
         if(count($majorKeyArr) == 0){
-            return json(['code' => -1 ,'msg' => '请选择需要下载的编号']);
+            return json(['code' => -1 ,'msg' => '请选择需要导出的编号']);
+        }
+        if(request()->isAjax()){
+            return json(['code'=>1]);
         }
         $name = '安全风险管理 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $manage = new RiskManageModel();

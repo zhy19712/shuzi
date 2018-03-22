@@ -204,12 +204,12 @@ class Eduforeignpersonnel extends Base
      */
     public function exportExcel()
     {
-        if(request()->isAjax()){
-            return json(['code'=>1]);
-        }
         $majorKeyArr = input('majorKeyArr/a');
         if(count($majorKeyArr) == 0){
-            return json(['code' => -1 ,'msg' => '请选择需要下载的编号']);
+            return json(['code' => -1 ,'msg' => '请选择需要导出的编号']);
+        }
+        if(request()->isAjax()){
+            return json(['code'=>1]);
         }
         $name = '外来人员 - '.date('Y-m-d H:i:s'); // 导出的文件名
         $edu = new EduforeignpersonnelModel();
