@@ -46,6 +46,18 @@ class Specialoperate extends Base
         $pathImgArr = input('post.pathImgArr/a');//获取post传过来的多个文件、图片的路径，包含在一个一维数组中。
         $pathImgDel = input('post.pathImgDel/a');//获取post传过来要删除的多个文件、图片的路径，包含在一个一维数组中。
 
+        //判断文件名、图片名、路径是否为空，为空的时候不拼接
+
+        if(!empty($pathImgName))
+        {
+            $pathImgName = implode("☆",$pathImgName);//上传所有文件图片的拼接名
+                    }
+        if(!empty($pathImgArr))
+        {
+            $pathImgArr = implode("☆",$pathImgArr);//上传所有文件、图片拼接路径
+
+                    }
+
         //循环删除文件、图片
         foreach((array)$pathImgDel as $v)
         {
@@ -75,8 +87,9 @@ class Specialoperate extends Base
                     'advance_retreat_time' => $param['advance_retreat_time'],//进退场时间
                     'document_status' => $param['document_status'],//证件状态
 
-                    'filename' => implode("☆",$pathImgName),//上传所有文件图片的拼接名
-                    'path' => implode("☆",$pathImgArr),//上传所有文件、图片拼接路径
+                    'filename' => $pathImgName,//拼接文件名、图片名
+
+                    'path' => $pathImgArr,//拼接文件路径、图片路径
 
                     'remark' => $param['remark'],//备注
                     'date' => date("Y-m-d H:i:s")//添加时间
@@ -105,8 +118,9 @@ class Specialoperate extends Base
                     'advance_retreat_time' => $param['advance_retreat_time'],//进退场时间
                     'document_status' => $param['document_status'],//证件状态
 
-                    'filename' => implode("☆",$pathImgName),//上传所有文件图片的拼接名
-                    'path' => implode("☆",$pathImgArr),//上传所有文件、图片拼接路径
+                    'filename' => $pathImgName,//拼接文件名、图片名
+
+                    'path' => $pathImgArr,//拼接文件路径、图片路径
 
                     'remark' => $param['remark'],//备注
 //                    'date' => date("Y-m-d H:i:s")//添加时间
