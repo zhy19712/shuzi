@@ -99,9 +99,9 @@ class StatutestdiModel extends Model
         return $data;
     }
 
-    public function getImportTime()
+    public function getImportTime($group_id,$years)
     {
-        return $this->where('import_time is not null')->group('import_time')->column('import_time');
+        return $this->where(['group_id' => $group_id,'years' => $years])->where('import_time is not null')->group('import_time')->column('import_time');
     }
 
 }
