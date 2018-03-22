@@ -82,12 +82,12 @@
         font-weight: 700;
         color: black;
     }
-    .info1{
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width:100px;
-    }
+    /*.info1{*/
+        /*overflow: hidden;*/
+        /*text-overflow: ellipsis;*/
+        /*white-space: nowrap;*/
+        /*width:100px;*/
+    /*}*/
 </style>
 <body class="gray-bg animated fadeInRight" style="background-color:#fff;">
 
@@ -862,7 +862,7 @@
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         if(url==="../Specialoperate/delSpecialoperateDel"){
-                            table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
+                            table1.ajax.url("__SCRIPT__/safety_special_operate.php?selfid="+selfid).load();
                         }else if(url==="./crossoperationDel"){
                             table2.ajax.url("__SCRIPT__/safety_crossoperation.php?selfid="+selfid).load();
                         }else if(url==="./chemistryDel"){
@@ -1052,11 +1052,34 @@
             $("#file_list1").on("click", ".webuploadDelbtn", function () {
                 var $ele = $(this);
                 var id = $ele.parent().parent().attr("id");
+                var src ="."+$('#'+id).find("img").attr("src");
+                if(src==".undefined"){
+                    return ;
+                }
+                var idx = $ele.parent().parent().index();
+                pathImgDel.push(src);
+                pathImgArr.splice(idx,1);
+                pathImgName.splice(idx,1);
                 var file = uploader1.getFile(id);
                 uploader1.removeFile(file,true);
-                console.log(file)
+            });
+            $("#file_list1").on("click", ".webuploadDelbtn2", function () {
+                var $ele = $(this);
+                var id = $ele.parent().parent().attr("id");
+                var src ="."+ $('#'+id).find("img").attr("src");
+                if(src==".undefined"){
+                    return ;
+                }
+                var idx = $ele.parent().parent().index();
+
+                pathImgDel.push(src);
+                pathImgArr.splice(idx,1);
+                pathImgName.splice(idx,1);
+                $(id).remove();
+                $('#'+id).remove();
             });
             uploader1.on('fileDequeued', function (file) {
+                console.log(file)
                 $(file.id).remove();
                 $('#'+file.id).remove();
                 console.log("remove");
@@ -1111,9 +1134,10 @@
             });
         }
     };
+    //展示图片
     $("#file_list1").delegate("img","click",function () {
-        var src = $(this).attr("src");
-        $("#fname7 img").attr("src",src);
+        var idx = $(this).parent().index();
+        $("#fname7 img").attr("src",pathImgArr[idx].slice(1));
         $("#fname7").modal('show');
     });
     $('#fname7').on('hidden.bs.modal', function() {
@@ -1167,10 +1191,8 @@
         pathImgArr=[];
         pathImgName=[];
         pathImgDel =[];
-        uploader1 = null;
         $("#file_list1").empty();
         $("#fname1 .btn-primary").show();
-        upload1();
         $("#fname1 .btn-primary").show();
         $("#file_upload1").show();
         $("#fname1 input").removeAttr("disabled","disabled");
@@ -1200,13 +1222,17 @@
                     $("#advance_retreat_time").val(res.data.advance_retreat_time);//进退场时间
                     $("#document_status").val(res.data.document_status);//证件状态
                     var pathArr = res.data.path;
+                    pathImgArr = pathArr;
                     var imgName = res.data.filename;
+                    pathImgName = imgName;
+                    uploader1 = null;
+                    upload1();
                     if(pathArr.length!==0){
                         for(var i = 0;i<pathArr.length;i++){
                             var $li = $(
-                                '<div  class="file-item thumbnail">' +
+                                '<div  class="file-item thumbnail" id="WU_FILE_' +(i+1) + '">' +
                                 '<img>' +
-                                '<div class="info1">' + imgName[i] + '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
+                                '<div class="info1">' + imgName[i] + '<span class="webuploadDelbtn2" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
                                 '</div>'
                             );
                             $img = $li.find('img');
@@ -1249,6 +1275,7 @@
                     $("#advance_retreat_time").val(res.data.advance_retreat_time);//进退场时间
                     $("#document_status").val(res.data.document_status);//证件状态
                     var pathArr = res.data.path;
+                    pathImgArr = pathArr;
                     var imgName = res.data.filename;
                     if(pathArr.length!==0){
                         for(var i = 0;i<pathArr.length;i++){
@@ -2153,12 +2180,29 @@
 </script>
 <!--选择框 导出-->
 <script>
+
     //获取选中行ID
     var uploader6;
     var dataArr=[];
     var $check_table; //全选的表格
 
     var uploaderExcel;
+    //获取数量
+    function getcount(year,history_version) {
+        $.ajax({
+            url: "../Specialoperate/getcount",
+            type: "post",
+            data: {selfid:selfid,history_version:history_version,year:year},
+            dataType: "json",
+            success: function (res) {
+                console.log(res);
+                if(res.code === 1){
+                    $("#msg").show("fast");
+                    $(".msg").html('选择当前页面信息或者<a herf="javascript:void(0)" onclick="selectAll(this)">全部信息'+res.data+'条</a>');
+                }
+            }
+        })
+    }
     //获取id
     function getDataId(that) {
         var allTrue;
@@ -2168,7 +2212,7 @@
             if(dataArr.indexOf(id)==-1){
                 dataArr.push(id);
             }
-            $(".checkchild").each(function(){
+            $check_table.find(".checkchild").each(function(){
                 if(!$(this).prop('checked')){
                     allTrue = "noall"
                     return
@@ -2176,7 +2220,6 @@
             });
             if(allTrue!=="noall"){
                 $("#msg").show("fast");
-                $(".msg").html('选择当前页面信息或者<a herf="javascript:void(0)" onclick="selectAll(this)">全部信息</a>');
                 $check_table.find(".checkall").prop("checked",true);
             }
         }else{
@@ -2209,6 +2252,7 @@
 
     //单选
     function getRadioId(that) {
+        $check_table = $(that).parents("table");
         getDataId(that);
     };
     //选择框初始化
@@ -2222,16 +2266,19 @@
     };
     //checkbox全选
     $(".checkall").on("click", function () {
+        var year = $(this).parents(".dataTables_wrapper").find(".selectyear input").val();
+        var history_version = $(this).parents(".tab-pane").find(".down_excel").val();
         $check_table = $(this).parents("table");
         dataArr=[];
-        $(".msg").html('选择当前页面信息或者<a herf="javascript:void(0)" onclick="selectAll(this)">全部信息</a>');
         var check = $(this).prop("checked");
         if (check === true) {
-            $("#msg").show("fast");
+            getcount(year,history_version);
+
             $(this).parents("table").find(".checkchild").prop("checked", true); //全部选中
             $(this).parents("table").find(".checkchild").each(function(){
                 getDataId(this);
             });
+
         } else {
             $("#msg").hide("fast");
             $(this).parents("table").find(".checkchild").prop("checked", false); //全部不选中
