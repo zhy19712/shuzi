@@ -314,6 +314,10 @@
 </div>
 <!--下载的文件-->
 <div id="formDown" style="display: none"></div>
+
+<div id="form_container" style="display: none"></div>
+<!--导出模版-->
+<div id="form_ExportMold" style="display: none;"></div>
 <!--表格的新增与编辑-->
 <div id="risk_modal" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="risk_modal" aria-hidden="true" style="width: 60%;margin: 0 auto;margin-top: 40px;">
     <div class="row">
@@ -602,8 +606,10 @@
 </div>
 
 <!--预览用的照片框-->
+<div id="previewPhotos" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="level2" aria-hidden="true" data-keyboard="false" data-backdrop="static" style="width: 80%;margin: 0 auto;margin-top: 40px;">
 
-<div id="previewPhotos"></div>
+</div>
+
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 
@@ -750,6 +756,7 @@
         },
         compress:false,
     });
+    var i = 0;
     // 当有文件添加进来的时候
     uploaderImg.on( 'fileQueued', function( file ) {  // webuploaderImg事件.当选择文件后，文件被加载到文件队列中，触发该事件。等效于 uploaderImg.onFileueued = function(file){...} ，类似js的事件定义。
         var $li = $(
@@ -762,6 +769,8 @@
             $img = $li.find('img');
         // $list为容器jQuery实例
         $list.append( $li );
+
+
 
         // 创建缩略图
         // 如果为非图片文件，可以不用调用此方法。
@@ -800,16 +809,16 @@
         }, thumbnailWidth, thumbnailHeight );
     });
     //点击照片预览
-    function previewFile() {
-        console.log(arrBefore)
+    function previewFile(that) {
+        console.log(pathImgArr)
         $("#previewPhotos").html('');
+        var idx = $(that).parent().index();
         $("#previewPhotos").css('display','none');
-        $("#previewPhotos").append('<img src="'+arrBefore.substring(1)+'"/>')
+        $("#previewPhotos").append('<img src="'+pathImgArr[idx].slice(1)+'"/>')
         $("#previewPhotos").css('display','block');
         layer.open({
             type: 1,
             title: false,
-            btn: ['放大', '缩小'],
             closeBtn: 0,
             area: ['960px','550px'],
             skin: 'layui-layer-nobg', //没有背景色
@@ -1474,7 +1483,6 @@
         } );
 
     }
-
     //得分查看返回
     $("#aPairOf_modal .btn-danger").click(function () {
         standard_uploader = null;
@@ -1517,12 +1525,6 @@
     })
     //减分时间插件
     $("#reduce1").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce2").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce3").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce4").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce5").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce6").jeDate({format: "YYYY-MM-DD"});
-    $("#reduce7").jeDate({format: "YYYY-MM-DD"});
     //减分设置返回
     $("#aPairOf_reduce_modal .btn-danger").click(function () {
         standard_uploader = null;
