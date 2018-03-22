@@ -81,48 +81,6 @@ class Risk extends Base
         }
     }
 
-    /**
-     * 下载
-     * @return \think\response\Json
-     * @author hutao
-     */
-    public function eduDownload()
-    {
-        if (request()->isAjax()) {
-            return json(['code' => 1]);
-        }
-        $id = input('param.id');
-        $type = input('param.type');
-        $edu = new EducationModel();
-        $param = $edu->getOne($id);
-        if ($type == '1') { // type 1 表示的是 培训材料文件 2 表示培训记录文件
-            $filePath = $param['ma_path'];
-            $fileName = $param['material_name'];
-        } else {
-            $filePath = $param['re_path'];
-            $fileName = $param['record_name'];
-        }
-
-        // 如果是手动输入的名称，就有可能没有文件后缀
-        $extension = get_extension($fileName);
-        if (empty($extension)) {
-            $fileName = $fileName . '.' . substr(strrchr($filePath, '.'), 1);
-        }
-
-        if (file_exists($filePath)) {
-            $file = fopen($filePath, "r"); //   打开文件
-            //输入文件标签
-            $fileName = iconv("utf-8", "gb2312", $fileName);
-            Header("Content-type:application/octet-stream ");
-            Header("Accept-Ranges:bytes ");
-            Header("Accept-Length:   " . filesize($filePath));
-            Header("Content-Disposition:   attachment;   filename= " . $fileName);
-            //   输出文件内容
-            echo fread($file, filesize($filePath));
-            fclose($file);
-            exit;
-        }
-    }
 
 
     /**
@@ -314,7 +272,7 @@ class Risk extends Base
             return json(['code' => 1]);
         }
         $name = input('param.name');
-        $newName = '专题教育培训 - ' . $name . date('Y-m-d H:i:s'); // 导出的文件名
+        $newName = '安全隐患排查 - ' . $name . date('Y-m-d H:i:s'); // 导出的文件名
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
@@ -331,14 +289,19 @@ class Risk extends Base
         $objPHPExcel->setActiveSheetIndex(0);
         // 设置表格第一行显示内容
         $objPHPExcel->getActiveSheet()
-            ->setCellValue('A1', '序号')
-            ->setCellValue('B1', '培训内容')
-            ->setCellValue('C1', '培训时间')
-            ->setCellValue('D1', '培训地点')
-            ->setCellValue('E1', '培训人')
-            ->setCellValue('F1', '培训人员')
-            ->setCellValue('G1', '培训人数')
-            ->setCellValue('H1', '备注');
+            ->setCellValue('A1', '隐患内容')
+            ->setCellValue('B1', '隐患部位')
+            ->setCellValue('C1', '责任标段')
+            ->setCellValue('D1', '隐患类别')
+            ->setCellValue('E1', '隐患来源')
+            ->setCellValue('F1', '发现日期')
+            ->setCellValue('G1', '发现人')
+            ->setCellValue('H1', '隐患等级')
+            ->setCellValue('I1', '治理措施')
+            ->setCellValue('J1', '治理时限')
+            ->setCellValue('K1', '施工单位治理责任人')
+            ->setCellValue('L1', '治理完成时间')
+            ->setCellValue('M1', '验收人');
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
         ob_end_clean();  //清除缓冲区,避免乱码
