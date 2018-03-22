@@ -522,8 +522,14 @@ class Rulesregulations extends Base
     public function getHistory()
     {
         if(request()->isAjax()){
+            // 前台需要传递的参数  group_id 哪个节点下的 和  years 哪个年度下的 导入版本
+            $group_id = input('param.group_id');
+            $years = input('param.years');
+            if(empty($group_id) || empty($years)){
+                return json(['code' => -1,'msg' => '请先选择年度']);
+            }
             $edu = new RulesregulationsModel();
-            $history = $edu->getImportTime();
+            $history = $edu->getImportTime($group_id,$years);
             return json($history);
         }
     }
