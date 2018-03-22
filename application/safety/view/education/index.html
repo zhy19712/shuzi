@@ -1272,11 +1272,9 @@
                     $("#form_container").append(str);
                     $("#form_container").find("#exportExcelBtn").click();
                     layer.msg('导出成功！', {icon: 1,time: 1500});
-                }else if(res.code == -1){
+                }else if(res.code != -1){
                     layer.msg(res.msg);
                     console.log(res.msg)
-                }else{
-                    alert("获取数据失败！")
                 }
             }
         })

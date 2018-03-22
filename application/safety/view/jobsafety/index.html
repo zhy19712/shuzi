@@ -82,6 +82,12 @@
         font-weight: 700;
         color: black;
     }
+    .info1{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width:100px;
+    }
 </style>
 <body class="gray-bg animated fadeInRight" style="background-color:#fff;">
 
@@ -290,13 +296,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">取证日期：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="date_evidence" type="text" class="form-control" name="date_evidence" />
+                                    <input id="date_evidence" type="date" class="form-control" name="date_evidence" />
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">有效日期：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="effective_date" type="text" class="form-control" name="effective_date" />
+                                    <input id="effective_date" type="date" class="form-control" name="effective_date" />
                                 </div>
                             </div>
                         </div>
@@ -726,7 +732,7 @@
         if (!sNodes[0].children && groupid !== 1 && groupid !== 2){
             switch (Number(groupid)){
                 case 11 :
-                    vision_getinit('./getfireversion');
+                    vision_getinit('../Specialoperate/getversion');
                     table1.ajax.url("__SCRIPT__/safety_special_operate.php?selfid=" + selfid).load();
                     $("#mytable1_wrapper").css("display","block");
                     break;
@@ -855,7 +861,7 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        if(url==="./equipmentDel"){
+                        if(url==="../Specialoperate/delSpecialoperateDel"){
                             table1.ajax.url("__SCRIPT__/safety_equipmentmanage.php?selfid="+selfid).load();
                         }else if(url==="./crossoperationDel"){
                             table2.ajax.url("__SCRIPT__/safety_crossoperation.php?selfid="+selfid).load();
@@ -902,6 +908,18 @@
 
 <!--table1特种作业人员管理-->
 <script>
+    $("#date_evidence").jeDate({
+        isinitVal:false,
+        format: "YYYY-MM-DD"
+    });
+    $("#effective_date").jeDate({
+        isinitVal:false,
+        format: "YYYY-MM-DD"
+    });
+    $("#advance_retreat_time").jeDate({
+        isinitVal:false,
+        format: "YYYY-MM-DD"
+    });
     var table1 = $("#table1").DataTable({
         "processing": true,//是否显示处理状态
         "serverSide":true,//是否开启服务器模式
@@ -958,10 +976,16 @@
     //特种作业-新增
     $("div.mybtn").html("新增")
     $("#table1_wrapper .mybtn").click(function () {
+        pathImgArr=[];
+        pathImgName=[];
         uploader1 = null;
         $("#fname1 input").val("");
         $("#file_list1").empty();
         $("#fname1").modal('show');
+        $("#fname1 input").removeAttr("disabled","disabled");
+        $("#fname1 select").removeAttr("disabled","disabled");
+        $("#fname1 .btn-primary").show();
+        $("#file_upload1").show();
         upload1();
     });
     var selectyear1 ='<input id="yeardu1" />';
@@ -970,7 +994,7 @@
         isinitVal:true,
         format:"YYYY年",
         okfun:function (obj) {
-            table5.ajax.url("__SCRIPT__/safety_special_operate.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
+            table1.ajax.url("__SCRIPT__/safety_special_operate.php?year="+obj.date.YYYY+"&selfid="+selfid).load();
             console.log(obj.date.YYYY);
         }
     });
@@ -987,7 +1011,7 @@
             uploader1 = WebUploader.create({
                 auto: true,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                server: "{:url('Upload/upload')}",// 文件接收服务端。
+                server: "{:url('Upload/uploadSpecialoperate')}",// 文件接收服务端。
                 chunked: false, //分片
                 comress:null, //图片不压缩
                 fileSizeLimit: 1000 *1024 *1024,
@@ -1030,6 +1054,7 @@
                 var id = $ele.parent().parent().attr("id");
                 var file = uploader1.getFile(id);
                 uploader1.removeFile(file,true);
+                console.log(file)
             });
             uploader1.on('fileDequeued', function (file) {
                 $(file.id).remove();
@@ -1139,45 +1164,60 @@
         });
     //特种作业-编辑
     function edit1(that) {
-        $("#fname3 .btn-primary").show();
-        $("#file_upload3").show();
-        $("#fname3 input").removeAttr("disabled","disabled");
-        $("#fname3 select").removeAttr("disabled","disabled");
+        pathImgArr=[];
+        pathImgName=[];
+        pathImgDel =[];
+        uploader1 = null;
+        $("#file_list1").empty();
+        $("#fname1 .btn-primary").show();
+        upload1();
+        $("#fname1 .btn-primary").show();
+        $("#file_upload1").show();
+        $("#fname1 input").removeAttr("disabled","disabled");
+        $("#fname1 select").removeAttr("disabled","disabled");
         var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
         $.ajax({
-            url: "../Specialequipmentmanagement/index",
+            url: "../Specialoperate/getindex",
             type: "post",
             data: {id:id},
             dataType: "json",
             success: function (res) {
                 console.log(res);
                 if(res.code === 1){
-                    $("#cid").val(res.data.id);
-                    $("#remark3").val(res.data.remark);
-                    $("#equip_name").val(res.data.equip_name);
-                    $("#model").val(res.data.model);
-                    $("#equip_num").val(res.data.equip_num);
-                    $("#manufactur_unit").val(res.data.manufactur_unit);
-                    $("#date_production").val(res.data.date_production);
-                    $("#current_state").val(res.data.current_state);
-                    $("#equip_manage_department").val(res.data.equip_manage_department);
-                    $("#safety_machinery_time").val(res.data.safety_machinery_time);
-                    $("#safety_inspection_num").val(res.data.safety_inspection_num);
-                    $("#inspection_unit").val(res.data.inspection_unit);
-                    $("#safety_inspecte_certificate_time").val(res.data.safety_inspecte_certificate_time);
-                    $("#equipmen_overhaul").val(res.data.equipmen_overhaul);
-                    $("#date_overhaul").val(res.data.date_overhaul);
-                    $("#entry_time").val(res.data.entry_time);
-                    $("#equip_state").val(equip_state(res.data.equip_state,res.data.safety_inspecte_certificate_time));
-                    uploader3= null;
-                    upload3();
-                    if(res.data.path){
-                        $("#file_list3").empty().append('<div style="display: inline-block;vertical-align: middle;" id="' + res.data.id + '" class="item">' +
-                            '<span class="info2">' + res.data.name + '</span>&nbsp' +
-                            '<span onclick="fdelatt3(this)" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                            '</div>' );
+                    $("#aid").val(res.data.id);
+                    $("#remark1").val(res.data.remark1);
+                    $("#special_name").val(res.data.name);//姓名
+                    $("#job_name").val(res.data.job_name);//分包单位/作业队
+                    $("#sex").val(res.data.sex);//性别
+                    $("#age").val(res.data.age);//年龄
+                    $("#special_type_work").val(res.data.special_type_work);//特殊工种
+                    $("#job_certificate").val(res.data.job_certificate);//职业资格证书名称
+                    $("#card_number").val(res.data.card_number);//身份证号
+                    $("#issuing_unit").val(res.data.issuing_unit);//发证单位
+                    $("#date_evidence").val(res.data.date_evidence);//取证日期
+                    $("#effective_date").val(res.data.effective_date);//有效日期
+                    $("#certificate_number").val(res.data.certificate_number);//证书编号
+                    $("#advance_retreat_time").val(res.data.advance_retreat_time);//进退场时间
+                    $("#document_status").val(res.data.document_status);//证件状态
+                    var pathArr = res.data.path;
+                    var imgName = res.data.filename;
+                    if(pathArr.length!==0){
+                        for(var i = 0;i<pathArr.length;i++){
+                            var $li = $(
+                                '<div  class="file-item thumbnail">' +
+                                '<img>' +
+                                '<div class="info1">' + imgName[i] + '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
+                                '</div>'
+                            );
+                            $img = $li.find('img');
+                            $img.attr( 'src', pathArr[i].slice(1)).css({
+                                "width":100,
+                                "height":100
+                            });
+                            $("#file_list1").append( $li );
+                        }
                     }
-                    $("#fname3").modal('show');
+                    $("#fname1").modal('show');
                 }
             }
         })
@@ -1185,6 +1225,7 @@
     //特种作业-查看
     function show1(that) {
         var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
+        $("#file_list1").empty();
         $.ajax({
             url: "../Specialoperate/getindex",
             type: "post",
@@ -1193,42 +1234,37 @@
             success: function (res) {
                 if(res.code === 1){
                     $("#aid").val(res.data.id);
-                    $("#remark3").val(res.data.remark);
-                    $("#equip_name").val(res.data.equip_name);
-                    $("#model").val(res.data.model);
-                    $("#equip_num").val(res.data.equip_num);
-                    $("#manufactur_unit").val(res.data.manufactur_unit);
-                    $("#date_production").val(res.data.date_production);
-                    $("#current_state").val(res.data.current_state);
-                    $("#equip_manage_department").val(res.data.equip_manage_department);
-                    $("#safety_machinery_time").val(res.data.safety_machinery_time);
-                    $("#safety_inspection_num").val(res.data.safety_inspection_num);
-                    $("#inspection_unit").val(res.data.inspection_unit);
-                    $("#safety_inspecte_certificate_time").val(res.data.safety_inspecte_certificate_time);
-                    $("#equipmen_overhaul").val(res.data.equipmen_overhaul);
-                    $("#date_overhaul").val(res.data.date_overhaul);
-                    $("#entry_time").val(res.data.entry_time);
-                    $("#equip_state").val(equip_state(res.data.equip_state,res.data.safety_inspecte_certificate_time));
-                    var pathArr = res.data.pathImgArr;
-                    var imgName = res.data.pathImgName;
-                    if(pathImgArr.length!==0){
-                        var $li = $(
-                            '<div id="' + file.id + '" class="file-item thumbnail">' +
-                            '<img>' +
-                            '<div class="info1">' + file.name + '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
-                            '</div>'
-                        );
+                    $("#remark1").val(res.data.remark1);
+                    $("#special_name").val(res.data.name);//姓名
+                    $("#job_name").val(res.data.job_name);//分包单位/作业队
+                    $("#sex").val(res.data.sex);//性别
+                    $("#age").val(res.data.age);//年龄
+                    $("#special_type_work").val(res.data.special_type_work);//特殊工种
+                    $("#job_certificate").val(res.data.job_certificate);//职业资格证书名称
+                    $("#card_number").val(res.data.card_number);//身份证号
+                    $("#issuing_unit").val(res.data.issuing_unit);//发证单位
+                    $("#date_evidence").val(res.data.date_evidence);//取证日期
+                    $("#effective_date").val(res.data.effective_date);//有效日期
+                    $("#certificate_number").val(res.data.certificate_number);//证书编号
+                    $("#advance_retreat_time").val(res.data.advance_retreat_time);//进退场时间
+                    $("#document_status").val(res.data.document_status);//证件状态
+                    var pathArr = res.data.path;
+                    var imgName = res.data.filename;
+                    if(pathArr.length!==0){
                         for(var i = 0;i<pathArr.length;i++){
                             var $li = $(
-                                '<div id="' + file.id + '" class="file-item thumbnail">' +
+                                '<div  class="file-item thumbnail">' +
                                 '<img>' +
-                                '<div class="info1">' + imgName[i] + '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span></div>' +
+                                '<div class="info1">' + imgName[i] + '</div>' +
                                 '</div>'
                             );
-                            $img.attr( 'src', pathArr[i].slice(1));
+                            $img = $li.find('img');
+                            $img.attr( 'src', pathArr[i].slice(1)).css({
+                                "width":100,
+                                "height":100
+                            });
                             $("#file_list1").append( $li );
                         }
-
                     }
                     $("#fname1").modal('show');
                     $("#fname1 input").attr("disabled","disabled");
@@ -1239,6 +1275,12 @@
             }
         })
     };
+    //删除
+    function del1(that) {
+        var id = $(that).parent("td").parent("tr").children("td:nth-child(2)").text();
+        del(id,"../Specialoperate/delSpecialoperateDel");
+    };
+
 </script>
 <!--table2交叉作业-->
 <script>
@@ -2215,7 +2257,7 @@
                 url = "./fireexportExcel";
                 break;
             case 11:
-                url = "./fireexportExcel";
+                url = "../Specialoperate/exportExcel";
                 break;
         };
         $.ajax({
@@ -2255,7 +2297,7 @@
                 url = "./fireexportExcelTemplete";
                 break;
             case 11:
-                url = "./fireexportExcelTemplete";
+                url = "../Specialoperate/exportExcelTemplete";
                 break;
         };
         $.ajax({
@@ -2296,7 +2338,7 @@
                 server = "./fireimportExcel";
                 break;
             case 11 :
-                server = "./fireimportExcel";
+                server = "../Specialoperate/importExcel";
                 break;
         }
         if(!uploaderExcel){
@@ -2374,6 +2416,9 @@
                     }else if(Number(groupid) === 14){
                         table4.ajax.url("__SCRIPT__/safety_firemanagement.php?selfid="+selfid).load();
                         vision_getinit('./getfireversion');
+                    }else if(Number(groupid)===11){
+                        table4.ajax.url("__SCRIPT__/safety_special_operate.php?selfid="+selfid).load();
+                        vision_getinit('../Specialoperate/getfireversion');
                     }
                 }else {
                     layer.msg(data.info);
@@ -2436,7 +2481,7 @@
                 table4.ajax.url("__SCRIPT__/safety_firemanagement.php?selfid="+selfid+"&history_version="+history_version).load();
                 break;
             case 11:
-                table1.ajax.url("__SCRIPT__/safety_firemanagement.php?selfid="+selfid+"&history_version="+history_version).load();
+                table1.ajax.url("__SCRIPT__/safety_special_operate.php?selfid="+selfid+"&history_version="+history_version).load();
                 break;
         }
     });
