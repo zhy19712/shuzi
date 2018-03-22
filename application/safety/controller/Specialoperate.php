@@ -49,7 +49,9 @@ class Specialoperate extends Base
         //循环删除文件、图片
         foreach((array)$pathImgDel as $v)
         {
-            unlink($v);
+            if(file_exists($v)){
+                unlink($v); //删除上传的文件、路径
+            }
         }
 
         if(request()->isAjax()){
