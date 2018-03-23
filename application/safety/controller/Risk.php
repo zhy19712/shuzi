@@ -300,14 +300,6 @@ class Risk extends Base
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
         $objPHPExcel = new \PHPExcel();
-        /*右键属性所显示的信息*/
-        $objPHPExcel->getProperties()->setCreator("zxf")//作者
-        ->setLastModifiedBy("zxf")//最后一次保存者
-        ->setTitle('数据EXCEL导出')//标题
-        ->setSubject('数据EXCEL导出')//主题
-        ->setDescription('导出数据')//描述
-        ->setKeywords("excel")//标记
-        ->setCategory("result file");  //类别
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
         // 设置表格第一行显示内容
