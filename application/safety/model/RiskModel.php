@@ -67,7 +67,10 @@ class RiskModel extends Model
                     }
                 }
                 RiskImgModel::where('risk_id', $item['id'])->delete();
-                $item->riskImg()->saveAll($riskImgs);
+                if (count($riskImgs)>0)
+                {
+                    $item->riskImg()->saveAll($riskImgs);
+                }
             } catch (Exception $e) {
                 return ['code' => -1, 'data' => '', 'msg' => $e->getMessage()];
             }

@@ -161,10 +161,10 @@ class Risk extends Base
                 }else if ($str == '验收人') {
                     $acceptor_idnex = $k;
                 } else if ($str == '发现日期') {
-                    $founderdate_index = $k;
+                    $founddate_index = $k;
                 }
             }
-            if ($context_index == -1 || $part_index == -1 || $section_index == -1 || $cat_index == -1 || $source_index == -1 || $founder_index == -1 || $founderdate_index == -1) {
+            if ($context_index == -1 || $part_index == -1 || $section_index == -1 || $cat_index == -1 || $source_index == -1 || $founder_index == -1 || $founddate_index == -1) {
                 $json_data['code'] = -1;
                 $json_data['info'] = '文件内容格式不对';
                 return json($json_data);
@@ -179,7 +179,7 @@ class Risk extends Base
                     $insertData[$k]['cat'] = $v[$cat_index];
                     $insertData[$k]['source'] = $v[$source_index];
                     $insertData[$k]['founder'] = $v[$founder_index];
-                    $insertData[$k]['founderdate'] = $v[$founderdate_index];
+                    $insertData[$k]['founddate'] = $v[$founddate_index];
                     $insertData[$k]['level'] = $v[$level_index];
                     $insertData[$k]['govern'] = $v[$govern_index];
                     $insertData[$k]['governdate'] = $v[$governdate_index];
