@@ -188,9 +188,9 @@ class Risk extends Base
                     $insertData[$k]['acceptor'] = $v[$acceptor_idnex];
                 }
             }
-            foreach ($insertData as $item)
+            foreach ($insertData as $d)
             {
-               $success= $m->insertOrEdit($item);
+               $success= $m->insertOrEdit($d);
             }
             if ($success) {
                 return json(['code' => 1, 'data' => '', 'msg' => '导入成功']);

@@ -37,8 +37,7 @@ class RiskModel extends Model
 //            新增，直接计算分数
                 $this->proessScore($risk['founder'], $risk['cat'], '排查', $risk['founddate']);
                 $this->proessScore($risk['acceptor'], $risk['cat'], '验收', $risk['completedate']);
-                $res = $this->allowField(true)->save($risk);
-                $_id = $this->getLastInsID();
+                $_id = RiskModel::allowField(true)->insertGetId($risk);
             } else {
 //            修改，对比发现人与验收人
                 $item_old = $this->where('id', $risk['id'])->find();
