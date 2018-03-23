@@ -107,18 +107,13 @@ class Risk extends Base
      */
     public function importExcel()
     {
-        $pid = input('param.pid');
-        $zid = input('param.zid');
-        if (empty($pid) || empty($zid)) {
-            return json(['code' => 1, 'data' => '', 'msg' => '请选择分组']);
-        }
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/education');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/risk');
         if ($info) {
             // 调用插件PHPExcel把excel文件导入数据库
             Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
             $exclePath = $info->getSaveName();  //获取文件名
-            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/education' . DS . $exclePath;   //上传文件的地址
+            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/risk' . DS . $exclePath;   //上传文件的地址
             // 当文件后缀是xlsx 或者 csv 就会报：the filename xxx is not recognised as an OLE file错误
             $extension = get_extension($file_name);
             if ($extension == 'xlsx') {
@@ -300,7 +295,7 @@ class Risk extends Base
             return json(['code' => 1]);
         }
         $name = input('param.name');
-        $newName = '安全隐患排查 - ' . $name . date('Y-m-d H:i:s'); // 导出的文件名
+        $newName = '安全隐患排查模板 - ' . $name . date('Y-m-d H:i:s'); // 导出的文件名
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
