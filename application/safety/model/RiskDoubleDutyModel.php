@@ -50,8 +50,11 @@ class RiskDoubleDutyModel extends Model
         } catch (Exception $e) {
             return false;
         }
-        $item = ['user' => $m['username'], 'dep' => $m->depName['title']];
-        $id = $this->insertGetId($item);
+
+        $item['user'] = $m['username'];
+        if (isset($m->depName)) {
+           $item['dep']= $m->depName['title'];
+        }$id = $this->insertGetId($item);
         return $this->where('id', $id)->find();
     }
 
