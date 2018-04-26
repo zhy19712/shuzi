@@ -231,8 +231,33 @@ class project extends Base
             Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
             $exclePath = $info->getSaveName();  //获取文件名
             $file_name = ROOT_PATH . 'public' . DS . 'uploads/excel' . DS . $exclePath;   //上传文件的地址
-            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
-            $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');  //加载文件内容,编码utf-8
+
+            // 当文件后缀是xlsx 或者 csv 就会报：the filename xxx is not recognised as an OLE file错误
+            $extension = get_extension($file_name);
+            if ($extension =='xlsx') {
+                $objReader = new \PHPExcel_Reader_Excel2007();
+                $obj_PHPExcel = $objReader->load($file_name);
+            } else if ($extension =='xls') {
+                $objReader = new \PHPExcel_Reader_Excel5();
+                $obj_PHPExcel = $objReader->load($file_name);
+            } else if ($extension=='csv') {
+                $PHPReader = new \PHPExcel_Reader_CSV();
+                //默认输入字符集
+                $PHPReader->setInputEncoding('GBK');
+                //默认的分隔符
+                $PHPReader->setDelimiter(',');
+                //载入文件
+                $obj_PHPExcel = $PHPReader->load($file_name);
+            }else{
+                return  json(['code' => 1,'data' => '','msg' => '请选择正确的模板文件']);
+            }
+            if(!is_object($obj_PHPExcel)){
+                return  json(['code' => 1,'data' => '','msg' => '请选择正确的模板文件']);
+            }
+
+//            $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+//            $obj_PHPExcel = $objReader->load($file_name, $encode = 'utf-8');  //加载文件内容,编码utf-8
+
             $excel_array= $obj_PHPExcel->getsheet(0)->toArray();   // 转换第一页为数组格式
             // 首先导入单位工程，根据单位工程设置根节点和二级节点
             $first_data['pid'] = 0;
