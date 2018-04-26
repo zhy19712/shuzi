@@ -148,9 +148,10 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">质量账台类型：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">工程类型：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <select name="cate" id="kind" class="form-control" >
+                                    <select name="cate" id="kind" class="form-control">
+                                        <option value="">请选择工程类型</option>
                                         <option value="开挖">开挖</option>
                                         <option value="支护">支护</option>
                                         <option value="混凝土">混凝土</option>
@@ -163,13 +164,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">开工日期：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="kaigong_date" type="text" class="form-control" required="required" placeholder="此处为必填项" name="kaigong_date" placeholder="请选择日期"/>
+                                    <input id="kaigong_date" type="text" class="form-control"  name="kaigong_date" placeholder="请选择日期" readonly/>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">完工日期：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input type="text" id="wangong_date" class="form-control datepicker" required="required" placeholder="此处为必填项" name="wangong_date" placeholder="请选择日期" />
+                                    <input type="text" id="wangong_date" class="form-control datepicker" name="wangong_date" placeholder="请选择日期" readonly/>
                                 </div>
                             </div>
                         </div>
@@ -178,13 +179,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">桩号(起)：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="zhuanghaoqi" type="text" class="form-control" name="zhuanghaoqi" >
+                                    <input id="zhuanghaoqi" type="text" class="form-control" name="zhuanghaoqi"  required="required">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">桩号(止)：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input type="text" id="zhuanghaozhi" class="form-control datepicker" name="zhuanghaozhi" />
+                                    <input type="text" id="zhuanghaozhi" class="form-control datepicker" name="zhuanghaozhi" required="required"/>
                                 </div>
                             </div>
                         </div>
@@ -193,13 +194,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">高程(起)：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="gaochengqi" type="text" class="form-control" name="gaochengqi" >
+                                    <input id="gaochengqi" type="text" class="form-control" name="gaochengqi" required="required">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">高程(止)：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input type="text" id="gaochengzhi" class="form-control datepicker" name="gaochengzhi" />
+                                    <input type="text" id="gaochengzhi" class="form-control datepicker" name="gaochengzhi" required="required"/>
                                 </div>
                             </div>
                         </div>
@@ -372,9 +373,10 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
-                                <label class="col-xs-6 col-sm-4 control-label">质量账台类型：</label>
+                                <label class="col-xs-6 col-sm-4 control-label">工程类型：</label>
                                 <div class="myblock col-xs-6 input-group">
                                     <select name="cate" id="kind4" class="form-control" >
+                                        <option value="">请选择工程类型</option>
                                         <option value="开挖">开挖</option>
                                         <option value="支护">支护</option>
                                         <option value="锚索">锚索</option>
@@ -410,13 +412,32 @@
 <script src="__JS__/jquery.jedate.js"></script>
 
 <script type="text/javascript">
-
-    $("#kaigong_date").jeDate({
-        format: "YYYY-MM-DD"
-    });
-    $("#wangong_date").jeDate({
-        format: "YYYY-MM-DD"
-    });
+    var start = {
+        format: 'YYYY-MM-DD',
+        minDate: '2014-06-16', //设定最小日期为当前日期
+        isinitVal:true,
+        maxDate: $.nowDate({DD:0}), //最大日期
+        okfun: function(obj){
+            end.minDate = obj.val; //开始日选好后，重置结束日的最小日期
+            endDates();
+        }
+    };
+    var end = {
+        format: 'YYYY-MM-DD',
+        minDate: $.nowDate({DD:0}), //设定最小日期为当前日期
+        maxDate: '2099-06-16', //最大日期
+        okfun: function(obj){
+            start.maxDate = obj.val; //将结束日的初始值设定为开始日的最大日期
+        }
+    };
+    //这里是日期联动的关键
+    function endDates() {
+        //将结束日期的事件改成 false 即可
+        end.trigger = false;
+        $("#inpend").jeDate(end);
+    }
+    $('#kaigong_date').jeDate(start);
+    $('#wangong_date').jeDate(end);
     $("#pingding_date").jeDate({
         format: "YYYY-MM-DD"
     });

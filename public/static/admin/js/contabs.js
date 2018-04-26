@@ -1,4 +1,5 @@
 $(function() {
+
     function f(l) {
         var k = 0;
         $(l).each(function() {
@@ -262,4 +263,25 @@ $(function() {
             };
         })
     })
+//    监测F5刷新index
+    $("body").bind("keydown",function(event){
+        if (event.keyCode == 116) {
+            event.preventDefault(); //阻止默认刷新
+            // $("#main_frame").attr("src",window.frames["main_frame"].src);
+            $(".J_mainContent .J_iframe").each(function(){
+                if($(this).css('display') == 'inline'){
+                    $(this)[0].contentWindow.location.reload();
+                };
+            })
+        }else if(event.keyCode == 82 && event.ctrlKey ){
+            event.preventDefault(); //阻止默认刷新
+            // $("#main_frame").attr("src",window.frames["main_frame"].src);
+            $(".J_mainContent .J_iframe").each(function(){
+                if($(this).css('display') == 'inline'){
+                    $(this)[0].contentWindow.location.reload();
+                };
+            })
+        }
+    })
+
 });

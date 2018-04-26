@@ -600,16 +600,24 @@
     function getId(that) {
         var isChecked = $(that).prop('checked');
         var id = $(that).parents('tr').find('td:eq(1)').text();
+        var checkedLen = $('input[type="checkbox"][name="checkList"]:checked').length;
+        var checkboxLen = $('input[type="checkbox"][name="checkList"]').length;
+        if(checkedLen===checkboxLen){
+            $('#all_checked').prop('checked',true);
+        }else{
+            $('#all_checked').prop('checked',false);
+        }
         if(isChecked){
             idArr.push(id);
             idArr.removalArray();
-            $('#all_checked').prop('checked',true);
         }else{
+            state=false;
             idArr.remove(id);
             idArr.removalArray();
             $('#all_checked').prop('checked',false);
             tableItem.on('draw',function () {
                 $('input[type="checkbox"][name="checkList"]').prop("checked",false);
+                $('#all_checked').prop('checked',false);
                 delCheckedAllTips();
             });
         }
@@ -662,22 +670,21 @@
     }
     getDataTotal();
 
-    function isTrue() {
-        var state = $('#isSelect').attr('state');
-        tableItem.on('draw',function () {
-            if(state!=='false'){
-                $('input[type="checkbox"][name="all_checked"]').prop("checked",false);
-            }
-        });
-    }
-    isTrue();
+    tableItem.on('draw',function () {
+        if(state==false){
+            $('input[type="checkbox"][name="all_checked"]').prop("checked",false);
+        }
+    });
+
     //勾选表全部数据
+    var state = false;
     function checkedAlls(that) {
         var total = $('input[type="hidden"][name="total"]').val();
-        var state = $(that).attr('state');
-        if(state!=='false'){
+        if(state==true){
+            state=false;
+            console.log(idArr);
+            $('#total').html('已勾选本页'+ idArr.length +'条数据，');
             $(that).html('勾选"收件箱"中全部 '+ total +' 封邮件');
-            $(that).attr('state',false);
             tableItem.on('draw',function () {
                 $('input[type="checkbox"][name="checkList"]').prop("checked",false);
                 $('input[type="checkbox"][name="all_checked"]').prop("checked",false);
@@ -685,12 +692,13 @@
             });
             return false;
         }else{
+            state=true;
             idArr.length=0;
             for(var i = 0;i<majorKeyArr[0].length;i++){
                 idArr.push(majorKeyArr[0][i]);
             }
+            $('#total').html('已勾选'+ total +'条数据，');
             $(that).html('取消勾选');
-            $(that).attr('state',true);
             //翻页事件
             tableItem.on('draw',function () {
                 $('input[type="checkbox"][name="checkList"]').prop("checked",true);
@@ -707,8 +715,8 @@
             return false;
         }
         var trDom = '<tr class="graytip">' +
-            '<td colspan="11" class="div_mail_info">已勾选本页 50 封邮件，' +
-            '<a id="isSelect" onclick="checkedAlls(this)" state="false">'+msg+'</a>' +
+            '<td colspan="11" class="div_mail_info"><span id="total">已勾选本页'+ idArr.length +'条数据，</span>' +
+            '<a id="isSelect" onclick="checkedAlls(this)">'+msg+'</a>' +
             '</td>' +
             '</tr>';
         $('#tableItem tbody').prepend(trDom);

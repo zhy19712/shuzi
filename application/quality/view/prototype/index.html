@@ -936,6 +936,7 @@
             }
         })
     }
+    //问题测试 服务器按钮点击无效
     function del(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
@@ -945,7 +946,7 @@
                 type: "post",
                 dataType: "json",
                 success: function (res) {
-                    if(res.code == 1){
+                    if(res.code === 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         standard_table.ajax.url("__SCRIPT__/prototype.php").load();
                         ss_table.ajax.url("__SCRIPT__/prototype_list.php").load();
@@ -1222,6 +1223,7 @@
             }
         })
     }
+    //
     function sdel(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
@@ -1231,7 +1233,7 @@
                 type: "post",
                 dataType: "json",
                 success: function (res) {
-                    if(res.code == 1){
+                    if(res.code === 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         ss_table.ajax.url("__SCRIPT__/prototype_list.php?group_id=" + cid).load();
                     }else{
@@ -1275,9 +1277,10 @@
             }
         }
     } );
+    //服务器按钮失效问题
     $("div.mybtn").html('<div>新增</div>');
     $("#ssgy .mybtn").click(function () {
-        if(!cid || cid == "没有找到记录"){
+        if(!cid || cid === "没有找到记录"){
             layer.msg("请选择样板工程列表");
             return;
         }
@@ -1382,6 +1385,7 @@
             }
         })
     }
+    //服务器按钮失效问题
     function fdel(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         var parent = $(that).parent("td").parent("tr").parent("tbody").parent("table").attr("id");
@@ -1392,7 +1396,7 @@
                 type: "post",
                 dataType: "json",
                 success: function (res) {
-                    if(res.code == 1){
+                    if(res.code === 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         if(parent === "check_table1"){
                             check_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=mbjc").load();
@@ -1568,6 +1572,7 @@
             }
         })
     }
+    //服务器按钮失效问题
     function unqua(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         var parent = $(that).parent("td").parent("tr").parent("tbody").parent("table").attr("id");
@@ -1578,7 +1583,7 @@
                 type: "post",
                 dataType: "json",
                 success: function (res) {
-                    if(res.code == 1){
+                    if(res.code === 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
                         implement_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=ss").load();
                         standard_table1.ajax.url("__SCRIPT__/prototype_attachment.php?group_id=" + cid3 + "&table_name=jc").load();
@@ -1909,10 +1914,11 @@
 
     //提交
     //sstable
+    //服务器按钮失效问题
     $("#ss_modal .btn-primary").click(function () {
         $('#pro_modalAdd').ajaxForm({
             success: function (data) {
-                if(data.code==1){
+                if(data.code===1){
                     $("#ss_modal").modal('hide');
                     layer.msg(data.msg);
                     ss_table.ajax.url("__SCRIPT__/prototype_list.php?group_id=" + cid).load();
@@ -1925,6 +1931,7 @@
         });
     })
     //save
+    //服务器按钮失效问题
     $("#mysave1").click(function () {
         $.ajax({
             url: "./prototypeListAdd",
@@ -1932,7 +1939,7 @@
             data: {id:cid3,reason:$("#reason").val()},
             dataType: "json",
             success: function (res) {
-                if(res.code==1){
+                if(res.code===1){
                     layer.msg(res.msg);
                 }else{
                     layer.msg(res.msg, {icon: 5,time:1500,shade: 0.1});
@@ -1941,7 +1948,7 @@
             }
         })
     });
-
+    //服务器按钮失效问题
     $("#abort").click(function () {
         if($("#abort").text() === "未实施"){
             var abort = 0;
@@ -1960,7 +1967,7 @@
             data: {id:cid3,abort:abort,step:2},
             dataType: "json",
             success: function (res) {
-                if(res.code==1){
+                if(res.code===1){
                     layer.msg(res.msg);
                 }else{
                     layer.msg(res.msg, {icon: 5,time:1500,shade: 0.1});

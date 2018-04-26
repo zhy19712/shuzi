@@ -107,18 +107,13 @@ class Risk extends Base
      */
     public function importExcel()
     {
-        $pid = input('param.pid');
-        $zid = input('param.zid');
-        if (empty($pid) || empty($zid)) {
-            return json(['code' => 1, 'data' => '', 'msg' => '请选择分组']);
-        }
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/education');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/safety/import/risk');
         if ($info) {
             // 调用插件PHPExcel把excel文件导入数据库
             Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
             $exclePath = $info->getSaveName();  //获取文件名
-            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/education' . DS . $exclePath;   //上传文件的地址
+            $file_name = ROOT_PATH . 'public' . DS . 'uploads/safety/import/risk' . DS . $exclePath;   //上传文件的地址
             // 当文件后缀是xlsx 或者 csv 就会报：the filename xxx is not recognised as an OLE file错误
             $extension = get_extension($file_name);
             if ($extension == 'xlsx') {
@@ -166,10 +161,10 @@ class Risk extends Base
                 }else if ($str == '验收人') {
                     $acceptor_idnex = $k;
                 } else if ($str == '发现日期') {
-                    $founderdate_index = $k;
+                    $founddate_index = $k;
                 }
             }
-            if ($context_index == -1 || $part_index == -1 || $section_index == -1 || $cat_index == -1 || $source_index == -1 || $founder_index == -1 || $founderdate_index == -1) {
+            if ($context_index == -1 || $part_index == -1 || $section_index == -1 || $cat_index == -1 || $source_index == -1 || $founder_index == -1 || $founddate_index == -1) {
                 $json_data['code'] = -1;
                 $json_data['info'] = '文件内容格式不对';
                 return json($json_data);
@@ -184,7 +179,7 @@ class Risk extends Base
                     $insertData[$k]['cat'] = $v[$cat_index];
                     $insertData[$k]['source'] = $v[$source_index];
                     $insertData[$k]['founder'] = $v[$founder_index];
-                    $insertData[$k]['founderdate'] = $v[$founderdate_index];
+                    $insertData[$k]['founddate'] = $v[$founddate_index];
                     $insertData[$k]['level'] = $v[$level_index];
                     $insertData[$k]['govern'] = $v[$govern_index];
                     $insertData[$k]['governdate'] = $v[$governdate_index];
@@ -193,9 +188,9 @@ class Risk extends Base
                     $insertData[$k]['acceptor'] = $v[$acceptor_idnex];
                 }
             }
-            foreach ($insertData as $item)
+            foreach ($insertData as $d)
             {
-               $success= $m->insertOrEdit($item);
+               $success= $m->insertOrEdit($d);
             }
             if ($success) {
                 return json(['code' => 1, 'data' => '', 'msg' => '导入成功']);
@@ -300,19 +295,11 @@ class Risk extends Base
             return json(['code' => 1]);
         }
         $name = input('param.name');
-        $newName = '安全隐患排查 - ' . $name . date('Y-m-d H:i:s'); // 导出的文件名
+        $newName = '安全隐患排查模板 - ' . $name . date('Y-m-d H:i:s'); // 导出的文件名
         header("Content-type:text/html;charset=utf-8");
         Loader::import('PHPExcel\Classes\PHPExcel', EXTEND_PATH);
         //实例化
         $objPHPExcel = new \PHPExcel();
-        /*右键属性所显示的信息*/
-        $objPHPExcel->getProperties()->setCreator("zxf")//作者
-        ->setLastModifiedBy("zxf")//最后一次保存者
-        ->setTitle('数据EXCEL导出')//标题
-        ->setSubject('数据EXCEL导出')//主题
-        ->setDescription('导出数据')//描述
-        ->setKeywords("excel")//标记
-        ->setCategory("result file");  //类别
         //设置当前的表格
         $objPHPExcel->setActiveSheetIndex(0);
         // 设置表格第一行显示内容

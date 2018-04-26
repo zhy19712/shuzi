@@ -12,4 +12,16 @@
 <script src="__JS__/lunhui.js"></script>
 <script>
     $(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});
+    $("body").bind("keydown",function(event){
+        if (event.keyCode == 116) {
+            event.preventDefault(); //阻止默认刷新
+            //location.reload();
+            //采用location.reload()在火狐下可能会有问题，火狐会保留上一次链接
+            location=location;
+        }else if(event.keyCode == 82 && event.ctrlKey ){
+            event.preventDefault(); //阻止默认刷新
+            // $("#main_frame").attr("src",window.frames["main_frame"].src);
+            location=location;
+        }
+    })
 </script>

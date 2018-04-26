@@ -146,6 +146,7 @@
         <input type="hidden" name="id">
         <input type="hidden" name="zid">
         <input type="hidden" name="groupId">
+        <input type="hidden" name="total">
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="ibox float-e-margins">
@@ -159,7 +160,7 @@
                                 <tr>
                                     <th>
                                         <label for="manage_all_checked" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
-                                        <input type='checkbox' name='all_checked' id="manage_all_checked" class='icheckbox_minimal' value=''>
+                                        <input type='checkbox' name='manage_all_checked' id="manage_all_checked" class='icheckbox_minimal' relation='manageCheckList' value=''>
                                     </th>
                                     <th>序号</th>
                                     <th>姓名</th>
@@ -180,7 +181,7 @@
                                 <tr>
                                     <th>
                                         <label for="pract_all_checked" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
-                                        <input type='checkbox' name='all_checked' id="pract_all_checked" class='icheckbox_minimal' value=''>
+                                        <input type='checkbox' name='pract_all_checked' id="pract_all_checked" class='icheckbox_minimal' relation='practCheckList' value=''>
                                     </th>
                                     <th>序号</th>
                                     <th>姓名</th>
@@ -204,7 +205,7 @@
                                 <tr>
                                     <th>
                                         <label for="foreign_all_checked" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
-                                        <input type='checkbox' name='all_checked' id="foreign_all_checked" class='icheckbox_minimal' value=''>
+                                        <input type='checkbox' name='foreign_all_checked' id="foreign_all_checked" class='icheckbox_minimal' relation='foreignCheckList' value=''>
                                     </th>
                                     <th>序号</th>
                                     <th>姓名</th>
@@ -604,7 +605,9 @@
     <script src="__JS__/plugins/validate/jquery.validate.min.js"></script>
 
     <script>
-        var idArr = [];
+        var idArr = []; // 已选id
+        var majorKeyArr = [];   //全部id
+        var tableNameObj = {};
         //TODO  以下重复代码需要重构
         $('.effectiveDate').jeDate();
         $('.validTillDate').jeDate();
@@ -825,6 +828,7 @@
         //点击节点
         function zTreeOnClick(event, treeId, treeNode) {
             idArr.length=0;
+            $('.graytip').remove();
             $('input[type="hidden"][name="zid"]').val(treeNode.id);
             $('input[type="hidden"][name="groupId"]').val(treeNode.pId);
 
@@ -834,13 +838,19 @@
             });
 
             if(treeNode.pId==1){
+                tableNameObj = manageTableItem;
                 isHidden('manageTableItem_wrapper',treeNode,'safety_edupeople',manageTableItem);
+                getDataTotal('safety_edupeople');
             }
             if(treeNode.pId==2){
+                tableNameObj = practTableItem;
                 isHidden('practTableItem_wrapper',treeNode,'safety_eduployee',practTableItem);
+                getDataTotal('safety_eduemployee');
             }
             if(treeNode.pId==3){
+                tableNameObj = foreignTableItem;
                 isHidden('foreignTableItem_wrapper',treeNode,'safety_eduforeignpersonnel',foreignTableItem);
+                getDataTotal('safety_eduforeignpersonnel');
             }
             console.log(treeNode);
 
@@ -1630,41 +1640,150 @@
         }
 
         //获取选中行ID
-        function getId(that) {
+        function getId(that,checkboxName,allCheckboxName) {
             var isChecked = $(that).prop('checked');
             var id = $(that).parents('tr').find('td:eq(1)').text();
+            var checkedLen = $('input[type="checkbox"][name='+ checkboxName +']:checked').length;
+            var checkboxLen = $('input[type="checkbox"][name='+ checkboxName +']').length;
+            if(checkedLen===checkboxLen){
+                $('#'+ allCheckboxName).prop('checked',true);
+            }else{
+                $('#'+ allCheckboxName).prop('checked',false);
+            }
             if(isChecked){
                 idArr.push(id);
                 idArr.removalArray();
             }else{
+                state=false;
                 idArr.remove(id);
                 idArr.removalArray();
+                $('#'+ allCheckboxName).prop('checked',false);
+                manageTableItem.on('draw',function () {
+                    $('input[type="checkbox"][name='+ checkboxName +']').prop("checked",false);
+                    $('#'+ allCheckboxName).prop('checked',false);
+                    delCheckedAllTips();
+                });
             }
         }
 
-        //单选
-        function getSelectId(that) {
-            getId(that);
-            console.log(idArr);
+        //获取数据总条数
+        function getDataTotal(path) {
+            $.ajax({
+                url: "{:url('Upload/getCheckAllNum')}",
+                type: "post",
+                data: {
+                    tableName:path
+                },
+                dataType: "json",
+                success: function (res) {
+                    $('input[type="hidden"][name="total"]').val(res.total);
+                    majorKeyArr.push(res.major_key);
+                }
+            });
         }
 
-        //checkbox全选主要负责人和安全管理人员
-        $("#manage_all_checked").on("click", function () {
-            if ($(this).prop("checked") === true) {
-                $("input[name='manageCheckList']").prop("checked", $(this).prop("checked"));
-                $('#tableItem tbody tr').addClass('selected');
-                $('input[name="manageCheckList"]').each(function(){
+        //全选方法
+        function checkedAll(that,checkboxName,tableName){
+            var total = $('input[type="hidden"][name="total"]').val();
+            if (that.prop("checked") === true) {
+                $('input[name='+ checkboxName +']').prop("checked", that.prop("checked"));
+                $('#'+ tableName +'tbody tr').addClass('selected');
+                $('input[name='+ checkboxName +']').each(function(){
                     getId(this);
                 });
+                addCheckedAllTips('勾选"收件箱"中全部 '+ total +' 条数据',tableName);
             } else {
-                $("input[name='manageCheckList']").prop("checked", false);
-                $('#tableItem tbody tr').removeClass('selected');
-                $('input[name="manageCheckList"]').each(function(){
+                $('input[name='+ checkboxName +']').prop("checked", false);
+                $('#'+ tableName +'tbody tr').removeClass('selected');
+                $('input[name='+ checkboxName +']').each(function(){
                     getId(this);
                 });
+                delCheckedAllTips();
             }
             console.log(idArr);
+        }
+
+        //单选方法
+        function getSelectId(that) {
+            var checkboxName = $(that).attr('name');
+            var allCheckboxName = $('input[type="checkbox"][relation='+ checkboxName +']').attr('id');
+            getId(that,checkboxName,allCheckboxName);
+            delCheckedAllTips();
+            console.log(idArr);
+        }
+
+        //主要负责人和安全管理人员全选事件
+        $("#manage_all_checked").on("click", function () {
+            var tableName = $(this).parents('table').attr('id');
+            checkedAll($(this),'manageCheckList',tableName);
         });
+
+        //从业人员全选事件
+        $("#pract_all_checked").on("click", function () {
+            var tableName = $(this).parents('table').attr('id');
+            checkedAll($(this),'practCheckList',tableName);
+        });
+
+        manageTableItem.on('draw',function () {
+            if(state==false){
+                $('input[type="checkbox"][name="manage_all_checked"]').prop("checked",false);
+            }
+        });
+
+        //勾选表全部数据
+        var state = false;
+        function checkedAllData(that) {
+            var tableName = $(that).parents('table').attr('id');
+            var allCheckboxName = $('table[id='+ tableName +'] thead').find('input.icheckbox_minimal').attr('name');
+            var checkboxName = $(that).parents('.graytip').siblings().find('input[type="checkbox"]').attr('name');
+            var total = $('input[type="hidden"][name="total"]').val();
+            if(state==true){
+                state=false;
+                console.log(idArr);
+                $('#total').html('已勾选本页'+ idArr.length +'条数据，');
+                $(that).html('勾选"表格"中全部 '+ total +' 条数据');
+                tableNameObj.on('draw',function () {
+                    $('input[type="checkbox"][name='+ checkboxName +']').prop("checked",false);
+                    $('input[type="checkbox"][name='+ allCheckboxName +']').prop("checked",false);
+                    delCheckedAllTips();
+                });
+                return false;
+            }else{
+                state=true;
+                idArr.length=0;
+                for(var i = 0;i<majorKeyArr[0].length;i++){
+                    idArr.push(majorKeyArr[0][i]);
+                }
+                $('#total').html('已勾选'+ total +'条数据，');
+                $(that).html('取消勾选');
+                //翻页事件
+                console.log(tableNameObj);
+                tableNameObj.on('draw',function () {
+                    $('input[type="checkbox"][name='+ checkboxName +']').prop("checked",true);
+                    $('input[type="checkbox"][name='+ allCheckboxName +']').prop("checked",true);
+                    addCheckedAllTips('取消勾选',tableName);
+                });
+                console.log(idArr);
+            }
+        }
+
+        //插入全选提示
+        function addCheckedAllTips(msg,tableName) {
+            if($('.graytip').length>0){
+                return false;
+            }
+            var trDom = '<tr class="graytip">' +
+                '<td colspan="11" class="div_mail_info"><span id="total">已勾选本页'+ idArr.length +'条数据，</span>' +
+                '<a id="isSelect" onclick="checkedAllData(this)">'+msg+'</a>' +
+                '</td>' +
+                '</tr>';
+            $('#'+ tableName +' tbody').prepend(trDom);
+        }
+
+        //删除全选提示
+        function delCheckedAllTips() {
+            $('.graytip').remove();
+        }
 
 
     </script>
