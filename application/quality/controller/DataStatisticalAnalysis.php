@@ -38,57 +38,30 @@ class DataStatisticalAnalysis extends Base
     }
 
     /**
-     *  开挖工程
-     *  开挖工程需要统计的信息数据分为超挖、欠挖、不平整度和半孔率4类
-     *  逐级进行统计分析，即单元工程统计该单元下所有单元工程检验批的信息数据，分部工程统计该分部工程下所有单元工程的信息数据，以此列推
-     *
-     *  平均值 （cm）=该统计项目下平均超挖之和/该统计项目下单元工程验收批数。
-     *  检测点数（个）=该统计项目下所有检测点之和。
-     *  最大值max（cm）=该统计项目下所有值中取最大值。
-     *  最小值min（cm）=该统计项目下所有值中取最小值。
-     *  合格率Ps（%）=该统计项目下所有合格率的平均值。
-     *  半孔率（%）=该统计项目下所有半孔率的平均值
-     *
+     * 数据统计分析
+     * @return \think\response\Json
+     * @author hutao
      */
     public function excavate()
     {
-        // 前台需要传递 的是 节点的主键 id
+        // 前台需要传递 的是 节点的主键 id 展示的 工程类型 cate 开挖,支护,混凝土,排水孔
         if($this->request->isAjax()){
             $param = input('param.');
-            $param['id'] = 1929;
             // 验证规则
             $rule = [
-                ['id', 'require|number|gt:-1', '请选择要查询的工程编号|工程编号只能是数字|工程编号不能为负数']
+                ['id', 'require|number|gt:-1', '请选择要查询的工程编号|工程编号只能是数字|工程编号不能为负数'],
+                ['cate', 'require', '请选择要查询的工程类型']
             ];
             $validate = new \think\Validate($rule);
             //验证部分数据合法性
             if (!$validate->check($param)) {
                 return json(['code' => -1,'msg' => $validate->getError()]);
             }
-            $id = $param['id'];
             $pic = new DivideModel();
             // 获取开挖的统计分析数据
-            $excavate_data = $pic->getAllProject($id,'开挖');
+            $excavate_data = $pic->excavateData($param['id'],$param['cate']);
             return json($excavate_data);
         }
-    }
-
-    // 支护工程
-    public function support()
-    {
-
-    }
-
-    // 混凝土工程
-    public function concrete()
-    {
-
-    }
-
-    // 排水孔
-    public function scupper()
-    {
-
     }
 
 }

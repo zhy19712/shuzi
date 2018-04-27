@@ -192,6 +192,20 @@ class DivideModel extends Model
     }
 
 
+
+    public function projectIdArr($id,$cate)
+    {
+        // 获取此节点下包含的所有子节点编号
+        $child_node_id = [];
+        $child_node_obj = $this->cateTree($id);
+        foreach ($child_node_obj as $v){
+            $child_node_id[] = $v['id'];
+        }
+        // 获取此节点下包含的所有单元工程检验批
+        $unit_id = Db::name('project')->where(['pid'=>['in',$child_node_id],'cate'=>$cate])->column('id');
+        return $unit_id;
+    }
+
     /**
      *  开挖工程
      *  开挖工程需要统计的信息数据分为超挖、欠挖、不平整度和半孔率4类
@@ -203,18 +217,11 @@ class DivideModel extends Model
      *  最小值min（cm）=该统计项目下所有值中取最小值。
      *  合格率Ps（%）=该统计项目下所有合格率的平均值。
      *  半孔率（%）=该统计项目下所有半孔率的平均值
-     *
+     * @author hutao
      */
-    public function getAllProject($id,$cate)
+    public function excavateData($id,$cate)
     {
-        // 获取此节点下包含的所有子节点编号
-        $child_node_id = [];
-        $child_node_obj = $this->cateTree($id);
-        foreach ($child_node_obj as $v){
-            $child_node_id[] = $v['id'];
-        }
-        // 获取此节点下包含的所有单元工程检验批
-        $unit_id = Db::name('project')->where(['pid'=>['in',$child_node_id],'cate'=>$cate])->column('id');
+        $unit_id = $this->projectIdArr($id,$cate);
         // 根据 单元工程检验批 获取 所有的开挖 信息
         $excavate_data = Db::name('project_kaiwa')->where(['uid'=>['in',$unit_id]])->select();
         $ave_overbreak = 0; // 平均超挖之和
@@ -247,6 +254,25 @@ class DivideModel extends Model
         $data['percent_of_pass'] = array_sum($percent_of_pass) / sizeof($percent_of_pass); // 合格率
         $data['half_percentage'] = array_sum($half_percentage) / sizeof($half_percentage); // 半孔率
         return ['code'=>1,'excavate_data'=>$data,'msg'=>'开挖统计数据'];
+    }
+
+
+    // 支护工程
+    public function support()
+    {
+
+    }
+
+    // 混凝土工程
+    public function concrete()
+    {
+
+    }
+
+    // 排水孔
+    public function scupper()
+    {
+
     }
 
 
