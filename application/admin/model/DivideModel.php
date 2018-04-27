@@ -9,6 +9,8 @@
 namespace app\admin\model;
 
 
+use think\Db;
+use think\exception\PDOException;
 use think\Model;
 
 class DivideModel extends Model
@@ -190,6 +192,62 @@ class DivideModel extends Model
     }
 
 
+    /**
+     *  开挖工程
+     *  开挖工程需要统计的信息数据分为超挖、欠挖、不平整度和半孔率4类
+     *  逐级进行统计分析，即单元工程统计该单元下所有单元工程检验批的信息数据，分部工程统计该分部工程下所有单元工程的信息数据，以此列推
+     *
+     *  平均值 （cm）=该统计项目下平均超挖之和/该统计项目下单元工程验收批数。
+     *  检测点数（个）=该统计项目下所有检测点之和。
+     *  最大值max（cm）=该统计项目下所有值中取最大值。
+     *  最小值min（cm）=该统计项目下所有值中取最小值。
+     *  合格率Ps（%）=该统计项目下所有合格率的平均值。
+     *  半孔率（%）=该统计项目下所有半孔率的平均值
+     *
+     */
+    public function getAllProject($id,$cate)
+    {
+        // 获取此节点下包含的所有子节点编号
+        $child_node_id = [];
+        $child_node_obj = $this->cateTree($id);
+        foreach ($child_node_obj as $v){
+            $child_node_id[] = $v['id'];
+        }
+        // 获取此节点下包含的所有单元工程检验批
+        $unit_id = Db::name('project')->where(['pid'=>['in',$child_node_id],'cate'=>$cate])->column('id');
+        // 根据 单元工程检验批 获取 所有的开挖 信息
+        $excavate_data = Db::name('project_kaiwa')->where(['uid'=>['in',$unit_id]])->select();
+        $ave_overbreak = 0; // 平均超挖之和
+        $unit_batch = 0; // 单元工程验收批数
+        $detection_points = 0; // 检测点数
+        $max_val = []; // 最大值
+        $min_val = []; // 最小值
+        $percent_of_pass = []; // 合格率
+        $half_percentage = []; // 半孔率
+        foreach($excavate_data as $v){
+            $ave_overbreak = $ave_overbreak + $v['ave_overbreak'];
+            $unit_batch = $unit_batch + 1;
+            $detection_points = $detection_points + $v['points'];
+            $max_val[] = $v['max']; // 最大值
+            $min_val[] = $v['min']; // 最小值
+            if(!empty($v['pass_overbreak'])){
+                $percent_of_pass[] = $v['pass_overbreak']; // 超挖合格率
+            }
+            if(!empty($v['pass_underbreak'])){
+                $percent_of_pass[] = $v['pass_underbreak']; // 欠挖合格率
+            }
+            if(!empty($v['pass_underbreak'])){
+                $half_percentage[] = $v['half_percentage']; // 半孔率
+            }
+        }
+        $data['average_val'] = $ave_overbreak / $unit_batch; // 平均值
+        $data['detection_points'] = $detection_points; // 检测点数
+        $data['max_val'] = max($max_val); // 最大值
+        $data['min_val'] = min($min_val); // 最小值
+        $data['percent_of_pass'] = array_sum($percent_of_pass) / sizeof($percent_of_pass); // 合格率
+        $data['half_percentage'] = array_sum($half_percentage) / sizeof($half_percentage); // 半孔率
+        return ['code'=>1,'excavate_data'=>$data,'msg'=>'开挖统计数据'];
+    }
 
 
 
