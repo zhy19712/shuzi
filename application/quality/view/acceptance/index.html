@@ -850,44 +850,40 @@
                             <table>
                                 <tr>
                                     <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">砂浆强度<br><span style="font-weight: 400;">(施工单位抽检)</span></td>
+                                    <td>方量（m³）</td>
                                     <td>设计等级</td>
-                                    <td>施工单位自检组数(个)</td>
+                                    <td>检测组数(个)</td>
                                     <td>最大值(Mpa)</td>
                                     <td>最小值(Mpa)</td>
                                     <td>平均值(Mpa)</td>
-                                    <td>标准差(Mpa)</td>
-                                    <td>保证率(%)</td>
                                     <td>合格率(%)</td>
                                 </tr>
                                 <tr>
+                                    <td><input type="text" name="level_square_self" id="level_square_self_m"></td>
                                     <td><input type="text" name="level_self" id="level_self_m"></td>
                                     <td><input type="text" name="mortar_num_self" id="mortar_num_self_m"></td>
                                     <td><input type="text" name="mortar_max_self" id="mortar_max_self_m"></td>
                                     <td><input type="text" name="mortar_min_self" id="mortar_min_self_m"></td>
                                     <td><input type="text" name="mortar_ave_self" id="mortar_ave_self_m"></td>
-                                    <td><input type="text" name="mortar_stand_self" id="mortar_stand_self_m"></td>
-                                    <td><input type="text" name="mortar_ensure_self" id="mortar_ensure_self_m"></td>
                                     <td><input type="text" name="mortar_pass_self" id="mortar_pass_self_m"></td>
                                 </tr>
                                 <tr>
                                     <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">砂浆强度<br><span style="font-weight: 400;">(监理单位抽检)</span></td>
+                                    <td>方量（m³）</td>
                                     <td>设计等级</td>
-                                    <td>监理单位抽检组数(个)</td>
+                                    <td>检测组数(个)</td>
                                     <td>最大值(Mpa)</td>
                                     <td>最小值(Mpa)</td>
                                     <td>平均值(Mpa)</td>
-                                    <td>标准差(Mpa)</td>
-                                    <td>保证率(%)</td>
                                     <td>合格率(%)</td>
                                 </tr>
                                 <tr>
+                                    <td><input type="text" name="level_square_inspection" id="level_square_m"></td>
                                     <td><input type="text" name="level_inspection" id="level_inspection_m"></td>
                                     <td><input type="text" name="mortar_num_inspection" id="mortar_num_inspection_m"></td>
                                     <td><input type="text" name="mortar_max_inspection" id="mortar_max_inspection_m"></td>
                                     <td><input type="text" name="mortar_min_inspection" id="mortar_min_inspection_m"></td>
                                     <td><input type="text" name="mortar_ave_inspection" id="mortar_ave_inspection_m"></td>
-                                    <td><input type="text" name="mortar_stand_inspection" id="mortar_stand_inspection_m"></td>
-                                    <td><input type="text" name="mortar_ensure_inspection" id="mortar_ensure_inspection_m"></td>
                                     <td><input type="text" name="mortar_pass_inspection" id="mortar_pass_inspection_m"></td>
                                 </tr>
                             </table>
@@ -1266,7 +1262,6 @@
 
     //组织结构
     var zTreeObj;
-
     function change1(that) {
         var val = $(that).val();
         var id = mytree_node.id;
@@ -1805,7 +1800,7 @@
         return object;
     }
     function intnumber(arr) {
-        var reg = /^([0-9]+(\.[0-9]+)|\d+)$/;
+        var reg = /^\d+$/;
         var alt = "";
         $.each(arr,function (i,n) {
             if(n.val != ""){
@@ -1840,8 +1835,8 @@
     }
     $("#save").click(function () {
         $.each($("form"),function (i,n) {
-            if($(n).css("display") === "block"){
-                if($(n).attr("id") === "model1"){
+            if($(n).css("display") == "block"){
+                if($(n).attr("id") == "model1"){
                     if(!$("#evaluated_date").val()){
                         alert("评定日期不能为空");
                         return;
@@ -1876,7 +1871,6 @@
                         new newobj("平均欠挖",$("#ave_underbreak").val()),
                         new newobj("合格率(欠挖)",$("#pass_underbreak").val())
                     );
-                    console.log($("#ave_size").val());
                     var test1 = intnumber(arr1);
                     var test2 = floatnumber(arr2);
                     if(test1 && test2){
@@ -1887,7 +1881,7 @@
                             dataType: 'json'
                         });
                     }
-                }else if($(n).attr("id") === "model2"){
+                }else if($(n).attr("id") == "model2"){
                     if(!$("#evaluated_date2").val()){
                         alert("评定日期不能为空");
                         return;
@@ -1907,11 +1901,10 @@
                         new newobj("合格根数(监理)",$("#pass_self2").val())
                     );
                     var arr2 = [];
-                    arr2.push(new newobj("支护面积",$("#area").val()),
+                    arr2.push(new newobj("支护面积",$("#area2").val()),
                         new newobj("最大值",$("#max2").val()),
                         new newobj("最小值",$("#min2").val()),
                         new newobj("平均值",$("#ave2").val()),
-                        new newobj("方量",$("#max_overbreak2").val()),
                         new newobj("最大值（施工锚杆长度）",$("#anchor_max_self2").val()),
                         new newobj("最小值（施工锚杆长度）",$("#anchor_min_self2").val()),
                         new newobj("最大值（施工注浆密实度）",$("#casting_max_self2").val()),
@@ -1931,7 +1924,7 @@
                             dataType: 'json'
                         });
                     }
-                }else if($(n).attr("id") === "model3"){
+                }else if($(n).attr("id") == "model3"){
                     if(!$("#evaluated_date3").val()){
                         alert("评定日期不能为空");
                         return;

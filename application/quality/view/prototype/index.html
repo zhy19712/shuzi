@@ -1030,7 +1030,6 @@
         $("#standard_modal").modal('show');
         if(!standard_uploader){
             standard_uploader = WebUploader.create({
-
                 auto: false,// 选完文件后，是否自动上传。
                 swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
                 server: "{:url('Upload/uploadPrototype')}",// 文件接收服务端。
