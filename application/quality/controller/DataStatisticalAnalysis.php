@@ -59,7 +59,17 @@ class DataStatisticalAnalysis extends Base
             }
             $pic = new DivideModel();
             // 获取开挖的统计分析数据
-            $excavate_data = $pic->excavateData($param['id'],$param['cate']);
+            if($param['cate'] == '开挖'){
+                $excavate_data = $pic->excavateData($param['id'],$param['cate']);
+            }else if($param['cate'] == '支护'){
+                $excavate_data = $pic->support($param['id'],$param['cate']);
+            }else if($param['cate'] == '混凝土'){
+                $excavate_data = $pic->concrete($param['id'],$param['cate']);
+            }else if($param['cate'] == '排水孔'){
+                $excavate_data = $pic->scupper($param['id'],$param['cate']);
+            }else{
+                return json(['code'=>1,'excavate_data'=>array(),'msg'=>'开挖统计数据']);
+            }
             return json($excavate_data);
         }
     }

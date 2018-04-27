@@ -224,55 +224,110 @@ class DivideModel extends Model
         $unit_id = $this->projectIdArr($id,$cate);
         // 根据 单元工程检验批 获取 所有的开挖 信息
         $excavate_data = Db::name('project_kaiwa')->where(['uid'=>['in',$unit_id]])->select();
-        $ave_overbreak = 0; // 平均超挖之和
+        $ave_1 = $ave_2 = $ave_3 = $ave_4 = []; // 平均超挖,平均欠挖,平均不平整度,平均半孔率
         $unit_batch = 0; // 单元工程验收批数
-        $detection_points = 0; // 检测点数
-        $max_val = []; // 最大值
-        $min_val = []; // 最小值
-        $percent_of_pass = []; // 合格率
-        $half_percentage = []; // 半孔率
+        $points_1 = $points_2 = $points_3 = $points_4 = []; // 超挖检测点数,欠挖检测点数,不平整度检测点数,半孔率检测点数,
+        $max_1 = $max_2 = $max_3 = $max_4 = []; // 最大值
+        $min_1 = $min_2 = $min_3 = $min_4 = []; // 最小值
+        $percent_1 = $percent_2 = $percent_3 = $percent_4 = []; // 合格率
+        $half_1 = $half_2 = $half_3 = $half_4 = []; // 半孔率
         foreach($excavate_data as $v){
-            $ave_overbreak = $ave_overbreak + $v['ave_overbreak'];
+            $ave_1[] = $v['ave_overbreak'];
+            $ave_2[] = $v['ave_underbreak'];
+            $ave_3[] = $v['avg_irregularity_degree'];
+            $ave_4[] = $v['ave'];
+
             $unit_batch = $unit_batch + 1;
-            $detection_points = $detection_points + $v['points'];
-            $max_val[] = $v['max']; // 最大值
-            $min_val[] = $v['min']; // 最小值
-            if(!empty($v['pass_overbreak'])){
-                $percent_of_pass[] = $v['pass_overbreak']; // 超挖合格率
-            }
-            if(!empty($v['pass_underbreak'])){
-                $percent_of_pass[] = $v['pass_underbreak']; // 欠挖合格率
-            }
-            if(!empty($v['pass_underbreak'])){
-                $half_percentage[] = $v['half_percentage']; // 半孔率
-            }
+
+            $points_1[] = $v['points_overbreak'];
+            $points_2[] = $v['points_underbreak'];
+            $points_3[] = $v['points_irregularity_degree'];
+            $points_4[] = $v['points'];
+
+            $max_1[] = $v['max_overbreak'];
+            $max_2[] = $v['max_underbreak'];
+            $max_3[] = $v['max_irregularity_degree'];
+            $max_4[] = $v['max'];
+
+            $min_1[] = $v['min_overbreak'];
+            $min_2[] = $v['min_underbreak'];
+            $min_3[] = $v['min_irregularity_degree'];
+            $min_4[] = $v['min'];
+
+            $percent_1[] = $v['pass_overbreak'];
+            $percent_2[] = $v['pass_underbreak'];
+            $percent_3[] = $v['pass_irregularity_degree'];
+            $percent_4[] = $v['half_percentage'];
+
+            $half_1[] = $v['half_overbreak'];
+            $half_2[] = $v['half_underbreak'];
+            $half_3[] = $v['half_irregularity_degree'];
+            $half_4[] = $v['half_percentage'];
         }
-        $data['average_val'] = $ave_overbreak / $unit_batch; // 平均值
-        $data['detection_points'] = $detection_points; // 检测点数
-        $data['max_val'] = max($max_val); // 最大值
-        $data['min_val'] = min($min_val); // 最小值
-        $data['percent_of_pass'] = array_sum($percent_of_pass) / sizeof($percent_of_pass); // 合格率
-        $data['half_percentage'] = array_sum($half_percentage) / sizeof($half_percentage); // 半孔率
+        // 超挖
+        $data['back_break']['average_val'] = array_sum($ave_1) / $unit_batch; // 平均值
+        $data['back_break']['detection_points'] = array_sum($points_1); // 检测点数
+        $data['back_break']['max_val'] = max($max_1); // 最大值
+        $data['back_break']['min_val'] = min($min_1); // 最小值
+        $data['back_break']['percent_of_pass'] = array_sum($percent_1) / sizeof($percent_1); // 合格率
+        $data['back_break']['half'] = array_sum($half_1) / sizeof($half_1); // 半孔率
+
+        // 欠挖
+        $data['under_break']['average_val'] = array_sum($ave_2) / $unit_batch; // 平均值
+        $data['under_break']['detection_points'] = array_sum($points_2); // 检测点数
+        $data['under_break']['max_val'] = max($max_2); // 最大值
+        $data['under_break']['min_val'] = min($min_2); // 最小值
+        $data['under_break']['percent_of_pass'] = array_sum($percent_2) / sizeof($percent_2); // 合格率
+        $data['back_break']['half'] = array_sum($half_2) / sizeof($half_2); // 半孔率
+
+        // 不平整度
+        $data['irregularity_degree']['average_val'] = array_sum($ave_3) / $unit_batch; // 平均值
+        $data['irregularity_degree']['detection_points'] = array_sum($points_3); // 检测点数
+        $data['irregularity_degree']['max_val'] = max($max_3); // 最大值
+        $data['irregularity_degree']['min_val'] = min($min_3); // 最小值
+        $data['irregularity_degree']['percent_of_pass'] = array_sum($percent_3) / sizeof($percent_3); // 合格率
+        $data['back_break']['half'] = array_sum($half_3) / sizeof($half_3); // 半孔率
+
+        // 半孔率
+        $data['half_porosity']['average_val'] = array_sum($ave_4) / $unit_batch; // 平均值
+        $data['half_porosity']['detection_points'] = array_sum($points_4); // 检测点数
+        $data['half_porosity']['max_val'] = max($max_4); // 最大值
+        $data['half_porosity']['min_val'] = min($min_4); // 最小值
+        $data['half_porosity']['percent_of_pass'] = array_sum($percent_4) / sizeof($percent_4); // 合格率
+        $data['back_break']['half'] = array_sum($half_4) / sizeof($half_4); // 半孔率
+
         return ['code'=>1,'excavate_data'=>$data,'msg'=>'开挖统计数据'];
     }
 
 
     // 支护工程
-    public function support()
+    public function support($id,$cate)
     {
-
+        $unit_id = $this->projectIdArr($id,$cate);
+        // 根据 单元工程检验批 获取 所有的支护 信息
+        $excavate_data = Db::name('project_zhihu')->where(['uid'=>['in',$unit_id]])->select();
+        $data = [];
+        return ['code'=>1,'excavate_data'=>$data,'msg'=>'开挖统计数据'];
     }
 
     // 混凝土工程
-    public function concrete()
+    public function concrete($id,$cate)
     {
-
+        $unit_id = $this->projectIdArr($id,$cate);
+        // 根据 单元工程检验批 获取 所有的混凝土 信息
+        $excavate_data = Db::name('project_hunningtu')->where(['uid'=>['in',$unit_id]])->select();
+        $data = [];
+        return ['code'=>1,'excavate_data'=>$data,'msg'=>'开挖统计数据'];
     }
 
     // 排水孔
-    public function scupper()
+    public function scupper($id,$cate)
     {
-
+        $unit_id = $this->projectIdArr($id,$cate);
+        // 根据 单元工程检验批 获取 所有的排水孔 信息
+        $excavate_data = Db::name('project_kaiwa')->where(['uid'=>['in',$unit_id]])->select();
+        $data = [];
+        return ['code'=>1,'excavate_data'=>$data,'msg'=>'开挖统计数据'];
     }
 
 
