@@ -11,6 +11,10 @@
         font-weight: 700;
         border-bottom: 1px solid #000;
     }
+    #myTable table>tr>th{
+        text-align: center;
+        font-size: 18px;
+    }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
 <div id="mycontent" style="width: 20%;height: 98%;display: inline-block;margin: 0 10px;background-color:#fff;overflow-x: scroll;padding-top: 20px;padding-right:10px;border-right: 1px solid #ccc;">
@@ -23,10 +27,10 @@
         <div class="ibox-content">
             <div class="row">
                 <div id="path">当前路径:</div>
-                <div class="ibox float-e-margins">
+                <div class="ibox float-e-margins" id="content" style="visibility: hidden">
                     <div class="ibox-content">
                         <div class="row">
-                            <div id="content">
+                            <div >
                                 <div id="container">
                                     <ul class="nav nav-tabs" id="myTab">
                                         <li class="active"><a href="#excavation_engineering">开挖工程</a></li>
@@ -38,17 +42,46 @@
                                         <div class="tab-pane active" id="excavation_engineering">
                                             <div class="myheader">
                                                 <div id="excavation">
-                                                   <div class="row" style="padding-top: 20px">
-                                                       <div class="col-xs-12">
-                                                           <div id="mainBar" style="height:400px;" class="main"></div>
-                                                       </div>
-                                                       <div class="col-xs-12">
-                                                           <div id="mainLine" style="height:400px;" class="main"></div>
-                                                       </div>
-                                                       <div class="col-xs-12">
-                                                           <div id="mainPie" style="height:400px;" class="main"></div>
-                                                       </div>
-                                                   </div>
+                                                    <div class="row" style="padding-top: 20px">
+                                                        <!--最大值最小值平均值柱状图-->
+                                                        <div class="col-xs-6">
+                                                            <div id="mainBar" style="height:400px;" class="main"></div>
+                                                        </div>
+                                                        <!--合格率柱状图-->
+                                                        <div class="col-xs-6">
+                                                            <div id="mainLine" style="height:400px;" class="main"></div>
+                                                        </div>
+                                                        <!--监测点数柱状图-->
+                                                        <div class="col-xs-6">
+                                                            <div id="mainPoint" style="height:400px;" class="main"></div>
+                                                        </div>
+                                                        <!--半孔率扇形图-->
+                                                        <div class="col-xs-6">
+                                                            <div id="mainPie" style="height:400px;" class="main"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" id="myTable">
+                                                        <table class="table table-bordered">
+                                                            <caption>开挖数据分析</caption>
+                                                            <thead>
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>监测点数（个）</th>
+                                                                <th>最大值（cm）</th>
+                                                                <th>最小值（cm）</th>
+                                                                <th>平均值（cm）</th>
+                                                                <th>合格率（%）</th>
+                                                                <th>半孔率（%）</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+
+                                                            </tr>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -94,508 +127,218 @@
 <script>
     //组织结构
     var zTreeObj;
-    function change1(that) {
-        var val = $(that).val();
-        var id = mytree_node.id;
-        console.log(val,id);
-        $.ajax({
-            url: "./level3Quality",
-            type: "post",
-            data: {id:id,accident:val},
-            dataType: "json",
-            success: function (res) {
-                if(res.code === 1){
-                    $("#accident").text(res.level);
-                }else{
-                    layer.msg(res.msg);
-                }
-            }
-        })
-    }
-    function change2(that) {
-        var val = $(that).val();
-        var id = mytree_node.id;
-        $.ajax({
-            url: "./changePrimary",
-            type: "post",
-            data: {id:id,primary:val}
-        })
-    }
-    function change3(that) {
-        var val = $(that).val();
-        var id = mytree_node.id;
-        $.ajax({
-            url: "./level2Quality",
-            type: "post",
-            data: {id:id,accident:val},
-            dataType: "json",
-            success: function (res) {
-                if(res.code === 1){
-                    $("#accdient2").text(res.level);
-                }else{
-                    layer.msg(res.msg);
-                }
-
-            }
-        })
-    }
-    function count(that) {
-        var val1 = $(that).siblings("#g1").children("input").val();
-        var val2 = $(that).siblings("#g2").children("input").val();
-        var result = Math.floor(val2/val1*1000)/10;
-        console.log(result)
-        $(that).siblings("#g3").children("input").val(result);
-        $.ajax({
-            url: "./level2Quality",
-            type: "post",
-            data: {id:mytree_node.id,score_design:val1,score_actual:val2,score:result},
-            dataType: "json",
-            success: function (res) {
-                if(res.code === 1){
-                    $("#accdient2").text(res.level);
-                }else{
-                    layer.msg(res.msg);
-                }
-            }
-        })
-    }
-
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
-        $("#table_info").css("visibility","visible");
-        mytree_node = treeNode;
-        $("#groupname").val(treeNode.name);
-        $("#mycontent>p").text(treeNode.name);
-        $("#groupid").val(treeNode.id);
-        var cate = encodeURI(encodeURI(treeNode.cate));
-        $("#level2").css("display","none");
-        $("#level3").css("display","none");
-        $("#level5").css("display","none");
-        if(treeNode.level == 4){
-            var groupid = treeNode.uid;
-            $("#level5").css("display","block");
+        var tId = treeNode.id;
+        if(treeNode.level == 3) {
+            $("#content").css("visibility", "visible");
+            // 基于准备好的dom，初始化echarts实例
+            var myChartBar = echarts.init(document.getElementById('mainBar'));
+            var myChartLine = echarts.init(document.getElementById('mainLine'));
+            var myChartPoint = echarts.init(document.getElementById('mainPoint'));
+            var myChartPie = echarts.init(document.getElementById('mainPie'));
             $.ajax({
-                url: "./fetchData",
-                type: "post",
-                data: {uid:groupid,cate:cate},
-                dataType: "json",
-                success: function (res) {
+                type:'post',
+                url:'./excavate',
+                data:{
+                    "id":tId,
+                    "cate":"开挖"
+                },
+                dataType:'json',
+                success:function (res) {
                     console.log(res);
-                    if(res.code == 1){
-                        var data = res.projectData;
-                        $("#input1").val(data.name);
-                        $("#input2").val(data.sn + data.post_sn);
-                        $("#input3").val(data.zhuanghaoqi);
-                        $("#input4").val(data.zhuanghaozhi);
-                        $("#input5").val(data.gaochengqi);
-                        $("#input6").val(data.gaochengzhi);
-                        $("#input7").val(data.primary);
-                        $("#container form").css("display","none");
-                        if(data.cate == "开挖"){
-                            $("#uid1").val(groupid);
-                            $("#cate1").val(data.cate);
-                            $("#model1").css("display","block");
-                            if(res.kaiwaData){
-                                var kdata = res.kaiwaData;
-                                $("#edit1").val("edit");
-                                $("#pass").val(kdata.pass);
-                                $("#quality_level").val(kdata.quality_level);
-                                $("#evaluated_date").val(kdata.evaluated_date);
-                                $("#evaluated_by").val(kdata.evaluated_by);
-                                $("#holes").val(kdata.holes);
-                                $("#ave_size").val(kdata.ave_size);
-                                $("#ave_length").val(kdata.ave_length);
-                                $("#half_percentage").val(kdata.half_percentage);
-                                $("#holes_test_date").val(kdata.holes_test_date);
-                                $("#sections").val(kdata.sections);
-                                $("#points").val(kdata.points);
-                                $("#max").val(kdata.max);
-                                $("#min").val(kdata.min);
-                                $("#ave").val(kdata.ave);
-                                $("#sections_test_date").val(kdata.sections_test_date);
-                                $("#sections_overbreak").val(kdata.sections_overbreak);
-                                $("#points_overbreak").val(kdata.points_overbreak);
-                                $("#max_overbreak").val(kdata.max_overbreak);
-                                $("#min_overbreak").val(kdata.min_overbreak);
-                                $("#ave_overbreak").val(kdata.ave_overbreak);
-                                $("#pass_overbreak").val(kdata.pass_overbreak);
-                                $("#sections_underbreak").val(kdata.sections_underbreak);
-                                $("#points_underbreak").val(kdata.points_underbreak);
-                                $("#max_underbreak").val(kdata.max_underbreak);
-                                $("#min_underbreak").val(kdata.min_underbreak);
-                                $("#ave_underbreak").val(kdata.ave_underbreak);
-                                $("#pass_underbreak").val(kdata.pass_underbreak);
-                            }else {
-                                $("#edit1").val("");
-                            }
-                        }else if(data.cate == "支护"){
-                            $("#uid2").val(groupid);
-                            $("#uid4").val(groupid);
-                            $("#cate2").val(data.cate);
-                            $("#model2").css("display","block");
-                            if(res.zhihuData){
-                                var kdata = res.zhihuData;
-                                $("#edit2").val("edit");
-                                $("#pass2").val(kdata.pass);
-                                $("#quality_level2").val(kdata.quality_level);
-                                $("#evaluated_date2").val(kdata.evaluated_date);
-                                $("#evaluated_by2").val(kdata.evaluated_by);
-                                $("#area2").val(kdata.area);
-                                $("#thickness2").val(kdata.thickness);
-                                $("#points2").val(kdata.points);
-                                $("#max2").val(kdata.max);
-                                $("#min2").val(kdata.min);
-                                $("#ave2").val(kdata.ave);
-                                $("#points2").val(kdata.points);
-                                $("#max2").val(kdata.max);
-                                $("#min2").val(kdata.min);
-                                $("#ave2").val(kdata.ave);
-                                $("#quantity_self2").val(kdata.quantity_self);
-                                $("#num_self2").val(kdata.num_self);
-                                $("#ratio_self2").val(kdata.ratio_self);
-                                $("#pass_self2").val(kdata.pass_self);
-                                $("#anchor_max_self2").val(kdata.anchor_max_self);
-                                $("#anchor_min_self2").val(kdata.anchor_min_self);
-                                $("#casting_max_self2").val(kdata.casting_max_self);
-                                $("#casting_min_self2").val(kdata.casting_min_self);
-                                $("#pass_rate_self2").val(kdata.pass_rate_self);
-                                $("#quantity_inspection2").val(kdata.quantity_inspection);
-                                $("#num_inspection2").val(kdata.num_inspection);
-                                $("#ratio_inspection2").val(kdata.ratio_inspection);
-                                $("#pass_inspection2").val(kdata.pass_inspection);
-                                $("#anchor_max_inspection2").val(kdata.anchor_max_inspection);
-                                $("#anchor_min_inspection2").val(kdata.anchor_min_inspection);
-                                $("#casting_max_inspection2").val(kdata.casting_max_inspection);
-                                $("#casting_min_inspection2").val(kdata.casting_min_inspection);
-                                $("#pass_rate_inspection2").val(kdata.pass_rate_inspection);
-                            }else {
-                                $("#edit2").val("");
-                            }
-                        }else if(data.cate == "混凝土"){
-                            $("#uid3").val(groupid);
-                            $("#cate3").val(data.cate);
-                            $("#model3").css("display","block");
-                            if(res.hunningtuData){
-                                var kdata = res.hunningtuData;
-                                $("#edit3").val("edit");
-                                $("#pass3").val(kdata.pass);
-                                $("#quality_level3").val(kdata.quality_level);
-                                $("#evaluated_date3").val(kdata.evaluated_date);
-                                $("#evaluated_by3").val(kdata.evaluated_by);
-                                $("#requirement_self").val(kdata.requirement_self);
-                                $("#volume_self").val(kdata.volume_self);
-                                $("#num_self").val(kdata.num_self);
-                                $("#max_self").val(kdata.max_self);
-                                $("#min_self").val(kdata.min_self);
-                                $("#ave_self").val(kdata.ave_self);
-                                $("#pass_self").val(kdata.pass_self);
-                                $("#requirement_inspection").val(kdata.requirement_inspection);
-                                $("#volume_inspection").val(kdata.volume_inspection);
-                                $("#num_inspection").val(kdata.num_inspection);
-                                $("#max_inspection").val(kdata.max_inspection);
-                                $("#min_inspection").val(kdata.min_inspection);
-                                $("#ave_inspection").val(kdata.ave_inspection);
-                                $("#pass_inspection").val(kdata.pass_inspection);
-                                $("#points_flat").val(kdata.points_flat);
-                                $("#deviation_min_flat").val(kdata.deviation_min_flat);
-                                $("#deviation_max_flat").val(kdata.deviation_max_flat);
-                                $("#pass_flat").val(kdata.pass_flat);
-                                $("#points_vertical").val(kdata.points_vertical);
-                                $("#deviation_min_vertical").val(kdata.deviation_min_vertical);
-                                $("#deviation_max_vertical").val(kdata.deviation_max_vertical);
-                                $("#pass_vertical").val(kdata.pass_vertical);
-                                $("#allowable_deviation").val(kdata.allowable_deviation);
-                                $("#points_union").val(kdata.points_union);
-                                $("#max_union").val(kdata.max_union);
-                                $("#min_union").val(kdata.min_union);
-                                $("#ave_union").val(kdata.ave_union);
-                                $("#pass_union").val(kdata.pass_union);
-                            }else {
-                                $("#edit3").val("");
-                            }
-                        }
-                    }else {
-                        layer.msg(res.msg);
-                    }
-                }
-            });
-            //获取路径
-            $.ajax({
-                url: "./getParents",
-                type: "post",
-                data: {uid:groupid},
-                dataType: "json",
-                success: function (res) {
-                    idlist = res.idList;
-                    $("#path").text("当前路径:" + res.path)
-                }
-            })
-        }else if(treeNode.level == 2){
-            $.ajax({
-                url: "./level3Quality",
-                type: "post",
-                data: {id:treeNode.id},
-                dataType: "json",
-                success: function (res) {
+                    var data = res.excavate_data;
+                    var max_val = data.max_val;
+                    var mix_val = data.min_val;
+                    var average_val = data.average_val;
                     if(res.code === 1){
-                        $("#level3 tbody").empty();
-                        console.log(res);
-                        var len = res.column3.length;
-                        $.each(res.column3,function (i,n) {
-                            if(i < len - 2){
-                                if(i === 0){
-                                    var str = "";
-                                    str += "<tr>"
-                                        +  "<td>"+ (i+1) +"</td>"
-                                        +  "<td>"+ res.column1[i] +"</td>"
-                                        +  "<td>"+ res.column2[i] +"</td>"
-                                        +  "<td>"+ res.column3[i] +"</td>"
-                                        +  "<td>"+ res.column4[i] +"</td>"
-                                        +  "<td>"+ res.column5[i] +"</td>"
-                                        +  "<td style='font-weight: 700;font-size: 25px;' id='accident' rowspan="+ (len+1) +">"+ res.level +"</td>"
-                                        +  "</tr>"
-                                }else {
-                                    var str = "";
-                                    str += "<tr>"
-                                        +  "<td>"+ (i+1) +"</td>"
-                                        +  "<td>"+ res.column1[i] +"</td>"
-                                        +  "<td>"+ res.column2[i] +"</td>"
-                                        +  "<td>"+ res.column3[i] +"</td>"
-                                        +  "<td>"+ res.column4[i] +"</td>"
-                                        +  "<td>"+ res.column5[i] +"</td>"
-                                        +  "</tr>"
+                        //最大值最小值柱状图
+                        myChartBar.setOption({
+                                title: {
+                                    text: '数值分析（cm）'
+                                },
+                                color:['#EED5B7','#FFC125', '#1E90FF'],
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {
+                                        type: 'shadow'
+                                    }
+                                },
+                                legend: {
+                                    data: ['最大值', '平均值','最小值' ]
+                                },
+                                grid: {
+
+                                    containLabel: true
+                                },
+                                xAxis: {
+                                    type: 'value',
+                                    boundaryGap: [0, 0.01]
+                                },
+                                yAxis: {
+                                    type: 'category',
+                                    data: ['超挖','欠挖','不平整度',"半孔率"]
+
+                                },
+
+                                series: [
+                                    {
+                                        name: '最大值',
+                                        type: 'bar', //柱状图
+                                        data: max_val
+                                    },
+                                    {
+                                        name: '平均值',
+                                        type: 'bar',
+                                        data: average_val
+                                    },
+                                    {
+                                        name: '最小值',
+                                        type: 'bar',
+                                        data: mix_val
+                                    }
+                                ]
+                            });
+                        //合格率柱状图
+                        myChartLine.setOption({
+                            title: {
+                                text: '合格率'
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                formatter: '{c}%',
+                                axisPointer: {
+                                    type: 'shadow'
                                 }
-                                $("#level3 tbody").append(str);
-                            }else if(i === len - 2){
-                                var str = "";
-                                str += ""
-                                    +  "<tr>"
-                                    +  "<td colspan=\"2\">合计</td>"
-                                    +  "<td>"+ res.column2[i] +"</td>"
-                                    +  "<td>"+ res.column3[i] +"</td>"
-                                    +  "<td>"+ res.column4[i] +"</td>"
-                                    +  "<td>"+ res.column5[i] +"</td>"
-                                    +  "</tr>"
-                                $("#level3 tbody").append(str);
-                            }else if(i === len - 1){
-                                var str = "";
-                                str += ""
-                                    +  "<tr>"
-                                    +  "<td colspan=\"2\">主要单元工程、重要隐藏工程及关键部位单元工程</td>"
-                                    +  "<td>"+ res.column2[i] +"</td>"
-                                    +  "<td>"+ res.column3[i] +"</td>"
-                                    +  "<td>"+ res.column4[i] +"</td>"
-                                    +  "<td>"+ res.column5[i] +"</td>"
-                                    +  "</tr>"
-                                $("#level3 tbody").append(str);
-                            }
-                        })
-                        var str1 = "";
-                        str1 += "<tr>"
-                            +  "<td colspan=\"6\">"
-                            +  "<span>是否发生质量事故</span>"
-                            +  "<select onchange='change1(this)' id=\"sel1\" value=''>"
-                            +  "<option value=\"是\">是</option>"
-                            +  "<option value=\"否\">否</option>"
-                            +  "</select>"
-                            +  "</td>"
-                            +  "</tr>"
-                        $("#level3 tbody").append(str1);
-                        var str2 = "";
-                        str2 += "<tr>"
-                            +  "<td colspan=\"2\" style=\"background-color: #bae2f3;font-weight: 700;\">主要分部工程</td>"
-                            +  "<td colspan=\"5\">"
-                            +  "<select onchange='change2(this)' id=\"sel2\" value=''>"
-                            +  "<option value=\"是\">是</option>"
-                            +  "<option value=\"否\">否</option>"
-                            +  "</select>"
-                            +  "</td>"
-                            +  "</tr>"
+                            },
+                            legend: {
+                                data:['合格率']
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
 
-                        $("#level3 tbody").append(str2);
-
-                        $("#sel1").val(res.accident);
-                        $("#sel2").val(res.primary);
-                    }else {
-                        layer.msg(res.msg);
-                    }
-                }
-            });
-            //获取路径
-            $.ajax({
-                url: "./getParents",
-                type: "post",
-                data: {id:treeNode.id},
-                dataType: "json",
-                success: function (res) {
-                    console.log(res)
-                    if(res.code === 1){
-                        idlist = res.idList;
-                        $("#path").text("当前路径:" + res.path);
-                    }else {
-                        layer.msg(res.msg);
-                    }
-                }
-            });
-            $("#level3").css("display","block");
-        }else if(treeNode.level == 1){
-            $.ajax({
-                url: "./level2Quality",
-                type: "post",
-                data: {id:treeNode.id},
-                dataType: "json",
-                success: function (res) {
-                    if(res.code === 1){
-                        $("#level2 tbody").empty();
-                        console.log(res);
-                        var str = "";
-                        str += ""
-                            +  "<tr>"
-                            +  "<td></td>"
-                            +  "<td class='style1'>分部个数</td>"
-                            +  "<td class='style1'>合格个数</td>"
-                            +  "<td class='style1'>优良个数</td>"
-                            +  "<td class='style1'>优良率</td>"
-                            +  "</tr>"
-                        $("#level2 tbody").append(str);
-                        $.each(res.column1,function (i,n) {
-                            var txt = "合计";
-                            if(i === 1){
-                                txt = "主要分部工程"
-                            }
-                            var str = "";
-                            str += ""
-                                +  "<tr>"
-                                +  "<td>"+ txt +"</td>"
-                                +  "<td>"+ res.column1[i] +"</td>"
-                                +  "<td>"+ res.column2[i] +"</td>"
-                                +  "<td>"+ res.column3[i] +"</td>"
-                                +  "<td>"+ res.column4[i] +"</td>"
-                                +  "</tr>"
-                            $("#level2 tbody").append(str);
+                            xAxis: {
+                                type: 'category',
+                                data: ['超挖','欠挖','不平整度',"半孔率"],
+                                itemStyle: {
+                                    normal: {
+                                        label: {
+                                            show: true,
+                                            positiong: 'top',
+                                            formatter: '{c}%'
+                                        }
+                                    }
+                                },
+                                boundaryGap: [0, 0.01]
+                            },
+                            yAxis:  {
+                                axisLabel: {
+                                    formatter: '{value} %'
+                                }
+                            },
+                            series: [
+                                {
+                                    name:'合格率',
+                                    type:'bar',
+                                    barWidth : 40,
+                                    stack: '总量',
+                                    data:data.percent_of_pass
+                                }
+                            ]
                         });
-                        var str1 = "";
-                        str1 += "<tr>"
-                            +  "<td colspan=\"5\">"
-                            +  "<span>是否发生质量事故</span>"
-                            +  "<select onchange='change3(this)' id=\"sel3\" value=''>"
-                            +  "<option value=\"是\">是</option>"
-                            +  "<option value=\"否\">否</option>"
-                            +  "</select>"
-                            +  "</td>"
-                            +  "</tr>"
-                        $("#level2 tbody").append(str1);
+                        //监测点数柱状图
+                        myChartPoint.setOption({
+                            title: {
+                                text: '监测点数（个）'
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                }
+                            },
+                            grid: {
 
-                        var lstr = "";
-                        lstr += "<tr>"
-                            +  "<td colspan='2'>工程外观质量</td>"
-                            +  "<td colspan='3'>"
-                            +  "<div class='grade' id='g1'>"
-                            +  "应得<input type='number'>分"
-                            +  "</div>"
-                            +  "<div class='grade' id='g2'>"
-                            +  "实得<input type='number'>分"
-                            +  "</div>"
-                            +  "<button style='line-height: 16px;' onclick='count(this)'>开始计算</button>"
-                            +  "<div class='grade' id='g3'>"
-                            +  "得分率<input type='' readonly='readonly'>"
-                            +  "</div>"
-                            +  "</td>"
-                            +  "</tr>"
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'category',
+                                data: ['超挖','欠挖','不平整度',"半孔率"]
+                            },
+                            yAxis: {
 
-                        $("#level2 tbody").append(lstr);
+                                type: 'value',
+                                boundaryGap: [0, 0.01]
+                            },
 
-                        var len = res.name.length;
-
-                        var str3 = "";
-                        str3 += ""
-                            +  "<tr>"
-                            +  "<td class='style1'>项次</td>"
-                            +  "<td class='style1'>分部工程名称</td>"
-                            +  "<td class='style1'>质量等级</td>"
-                            +  "<td class='style1' colspan='2'>单位工程质量等级</td>"
-                            +  "</tr>"
-                        $("#level2 tbody").append(str3);
-
-                        $.each(res.name,function (i,n) {
-                            if(i === 0){
-                                var str = "";
-                                str += "<tr>"
-                                    +  "<td>"+ (i+1) +"</td>"
-                                    +  "<td>"+ res.name[i] +"</td>"
-                                    +  "<td>"+ res.quality[i] +"</td>"
-                                    +  "<td style='font-weight: 700;font-size: 25px;' id='accdient2' colspan='2' rowspan="+ len +">"+ res.level +"</td>"
-                                    +  "</tr>"
-                            }else {
-                                var str = "";
-                                str += "<tr>"
-                                    +  "<td>"+ (i+1) +"</td>"
-                                    +  "<td>"+ res.name[i] +"</td>"
-                                    +  "<td>"+ res.quality[i] +"</td>"
-                                    +  "</tr>"
-                            }
-                            $("#level2 tbody").append(str);
+                            series: [
+                                {
+                                    name: '检测点数',
+                                    barWidth:40,
+                                    type: 'bar', //柱状图
+                                    data: data.detection_points
+                                 }
+                            ]
                         })
-                        $(".grade:first-child input").val(res.score[0]);
-                        $(".grade:nth-child(2) input").val(res.score[1]);
-                        $(".grade:nth-child(4) input").val(res.score[2]);
-                        $("#sel3").val(res.accident);
-                    }else {
-                        layer.msg(res.msg);
+                        //半孔率pie
+                        myChartPie.setOption({
+                            title : {
+                                text: '半孔率',
+                                x:'left'
+                            },
+                            tooltip : {
+                                trigger: 'item',
+                                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                            },
+                            legend: {
+                                orient: 'horizontal',
+                                left: 'left',
+                                data: ['超挖','欠挖','不平整度','半孔率']
+                            },
+                            series : [
+                                {
+                                    name: '半孔率',
+                                    type: 'pie',
+                                    radius : '55%',
+                                    center: ['50%', '60%'],
+                                    data:[
+                                        {value:data.half[0], name:'超挖'},
+                                        {value:data.half[1], name:'欠挖'},
+                                        {value:data.half[2], name:'不平整度'},
+                                        {value:data.half[3], name:'半孔率'},
+                                    ],
+                                    itemStyle: {
+                                        emphasis: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
+                                    }
+                                }
+                            ]
+                        })
+                        //table统计
+                        var str = '';
+                        var arr = ['超挖','欠挖','不平整度','半孔率']
+                        for (var i = 0; i < max_val.length; i++) {
+                            str += '<tr><td>'+arr[i]+'</td><td>'+data.detection_points[i]+'</td><td>'+max_val[i]+'</td><td>'+mix_val[i]+'</td><td>'+average_val[i]+'</td><td>'+data.percent_of_pass[i]+'</td><td>'+data.half[i]+'</td></tr>>';
+                        }
+                        $("#myTable tbody").empty().append(str);
+                        }
+
+
                     }
-                }
-            });
-            //获取路径
-            $.ajax({
-                url: "./getParents",
-                type: "post",
-                data: {id:treeNode.id},
-                dataType: "json",
-                success: function (res) {
-                    console.log(res)
-                    if(res.code === 1){
-                        idlist = res.idList;
-                        $("#path").text("当前路径:" + res.path);
-                    }else {
-                        layer.msg(res.msg);
-                    }
-                }
-            });
-            $("#level2").css("display","block");
-        }else{
-            //获取路径
-            $.ajax({
-                url: "./getParents",
-                type: "post",
-                data: {id:treeNode.id},
-                dataType: "json",
-                success: function (res) {
-                    console.log(res)
-                    if(res.code === 1){
-                        idlist = res.idList;
-                        $("#path").text("当前路径:" + res.path)
-                    }else {
-                        layer.msg(res.msg);
-                    }
-                }
-            });
+            })
+
+
+        }else if(treeNode.level != 3) {
+            $("#content").css("visibility", "none");
         }
-        if(mytree_node.id){
-            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.id + "&pid=" + mytree_node.pId).load();
-        }else {
-            admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.uid + "&pid=" + mytree_node.pId).load();
-        }
-        // console.log(treeNode.name)
-        // var kk = treeNode.name;
-        // $.ajax({
-        //     url: "__SCRIPT__/project_attachment_table.php",
-        //     data: {uname:123},
-        //     dataType: "json",
-        //     success: function (res) {
-        //         console.log(res);
-        //     }
-        // })
     };
     var setting = {
         async: {
@@ -626,104 +369,12 @@
         e.preventDefault();
         $(this).tab('show');
     });
-    // 基于准备好的dom，初始化echarts实例
-    var myChartBar = echarts.init(document.getElementById('mainBar'));
-    // 指定图表的配置项和数据
-    optionBar = {
-        title:{
-            text:'质量验评趋势图'
-        },
-        tooltip: {
-            trigger: 'axis',
-        },
-        legend:{
-            data:['优良率（%）'],
-        },
-        xAxis: {
-            type: 'category',
-            axisLabel:{ //坐标轴刻度标签的相关设置。
-                interval:0,// 强制显示所有标签
-                rotate:30 //刻度标签旋转的角度，在类目轴的类目标签显示不下的时候可以通过旋转防止标签之间重叠。
-            },
-            data: ['2018年1月', '2018年2月', '2018年3月', '2018年4月', '2018年5月', '2018年6月', '2018年7月']
-        },
-        yAxis: {
-            type: 'value',
-            axisLabel: {
-                show: true,
-                interval: 'auto',
-                formatter: '{value} %'//刻度标签的内容格式器，支持字符串模板和回调函数两种形式。
-            },
-            show: true
-        },
-        series: [
-            {
-                name:'优良率',
-                data: [20, 30, 50, 60, 20, 100, 70],
-                type: 'bar',
-                itemStyle: {
-                    normal: {
-                        label: {
-                            show: true,
-                            position: 'top',
-                            formatter: '{c}%'
-                        }
-                    }
-                }
-            }
-        ]
-    };
-    // 使用刚指定的配置项和数据显示图表。
-    myChartBar.setOption(optionBar);
-    //折线图
-    var myChartLine = echarts.init(document.getElementById('mainLine'));
-    optionLine = {
-        title:{
-            text:'质量验评趋势图'
-        },
-        tooltip: {
-            trigger: 'axis',
-        },
-        legend:{
-            data:['优良率（%）'],
-        },
-        xAxis: {
-            type: 'category',
-            axisLabel:{ //坐标轴刻度标签的相关设置。
-                interval:0,// 强制显示所有标签
-                rotate:30 //刻度标签旋转的角度，在类目轴的类目标签显示不下的时候可以通过旋转防止标签之间重叠。
-            },
-            data: ['2018年1月', '2018年2月', '2018年3月', '2018年4月', '2018年5月', '2018年6月', '2018年7月']
-        },
-        yAxis: {
-            type: 'value',
-            axisLabel: {
-                show: true,
-                interval: 'auto',
-                formatter: '{value} %'//刻度标签的内容格式器，支持字符串模板和回调函数两种形式。
-            },
-            show: true
-        },
-        series: [
-            {
-                name:'优良率',
-                data: [20, 30, 50, 60, 20, 100, 70],
-                type: 'line',
-                itemStyle: {
-                    normal: {
-                        label: {
-                            show: true,
-                            position: 'top',
-                            formatter: '{c}%'
-                        }
-                    }
-                }
-            }
-        ]
-    };
-    myChartLine.setOption(optionLine);
+
+
+
+
     //pie图
 
 
 </script>
-</script>
+
