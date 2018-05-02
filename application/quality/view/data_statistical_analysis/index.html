@@ -101,7 +101,6 @@
                                                                         <th>最小值（cm）</th>
                                                                         <th>平均值（cm）</th>
                                                                         <th>合格率（%）</th>
-                                                                        <th>半孔率（%）</th>
                                                                     </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -656,7 +655,7 @@
                                 },
                                 yAxis: {
                                     type: 'category',
-                                    data: ['超挖','欠挖','不平整度',"半孔率"]
+                                    data: ['超挖','欠挖','不平整度']
 
                                 },
 
@@ -702,7 +701,7 @@
 
                             xAxis: {
                                 type: 'category',
-                                data: ['超挖','欠挖','不平整度',"半孔率"],
+                                data: ['超挖','欠挖','不平整度'],
                                 itemStyle: {
                                     normal: {
                                         label: {
@@ -746,7 +745,7 @@
                             },
                             xAxis: {
                                 type: 'category',
-                                data: ['超挖','欠挖','不平整度',"半孔率"]
+                                data: ['超挖','欠挖','不平整度']
                             },
                             yAxis: {
 
@@ -776,7 +775,7 @@
                             legend: {
                                 orient: 'horizontal',
                                 left: 'left',
-                                data: ['超挖','欠挖','不平整度','半孔率']
+                                data: ['半孔率']
                             },
                             series : [
                                 {
@@ -785,10 +784,8 @@
                                     radius : '55%',
                                     center: ['50%', '60%'],
                                     data:[
-                                        {value:data.half[0], name:'超挖'},
-                                        {value:data.half[1], name:'欠挖'},
-                                        {value:data.half[2], name:'不平整度'},
-                                        {value:data.half[3], name:'半孔率'},
+                                        {value:data.half.zhen_d, name:'半孔率'},
+                                        {value:'', name:''}
                                     ],
                                     itemStyle: {
                                         emphasis: {
@@ -802,9 +799,9 @@
                         })
                         //table统计
                         var str = '';
-                        var arr = ['超挖','欠挖','不平整度','半孔率']
+                        var arr = ['超挖','欠挖','不平整度']
                         for (var i = 0; i < max_val.length; i++) {
-                            str += '<tr><td>'+arr[i]+'</td><td>'+data.detection_points[i]+'</td><td>'+max_val[i]+'</td><td>'+mix_val[i]+'</td><td>'+average_val[i]+'</td><td>'+data.percent_of_pass[i]+'</td><td>'+data.half[i]+'</td></tr>>';
+                            str += '<tr><td>'+arr[i]+'</td><td>'+data.detection_points[i]+'</td><td>'+max_val[i]+'</td><td>'+mix_val[i]+'</td><td>'+average_val[i]+'</td><td>'+data.percent_of_pass[i]+'</td></tr>';
                         }
                         $("#myTable tbody").empty().append(str);
                         }
