@@ -28,7 +28,7 @@
     #support_engineering table td:hover,#concrete table td:hover{
         background-color: #e7eaec;
     }
-    #support,#concrete{
+    #support,#concrete,#excavation,#drainage{
         margin-top: 10px;
         padding: 5px;
         border: solid 1px #e7eaec;
@@ -378,180 +378,207 @@
                                         <div class="tab-pane" id="concrete_engineering">
                                             <div class="myheader">
                                                 <div id="concrete">
-                                                    <!--出机口温度-->
-                                                    <table class="table table-bordered" id="outletTemperature">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td rowspan="2" style="width: 160px;background-color: #bae2f3;">出机口温度</td>
-                                                            <td>控制标准（℃）</td>
-                                                            <td>检测组数（个）</td>
-                                                            <td>合格组数（个）</td>
-                                                            <td>最大值（℃）</td>
-                                                            <td>最小值（℃）</td>
-                                                            <td>平均值（℃）</td>
-                                                            <td>合格率（%）</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>23</td>
-                                                            <td>9</td>
-                                                            <td>23</td>
-                                                            <td>65</td>
-                                                            <td>43</td>
-                                                            <td>55</td>
-                                                            <td>68</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                    <!--入仓温度-->
-                                                    <table class="table table-bordered" id="entryTemperature">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td rowspan="2" style="width: 160px;background-color: #bae2f3;">入仓温度</td>
-                                                            <td>检测次数（次）</td>
-                                                            <td>最大值（℃）</td>
-                                                            <td>最小值（℃）</td>
-                                                            <td>平均值（℃）</td>
-                                                            <td>合格次数（次）</td>
-                                                            <td>合格率（%）</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>9</td>
-                                                            <td>23</td>
-                                                            <td>65</td>
-                                                            <td>43</td>
-                                                            <td>55</td>
-                                                            <td>68</td>
-                                                        </tr>
+                                                    <ul id="myTabD" class="nav nav-tabs">
+                                                        <li class="active">
+                                                            <a href="#outletTemperature" data-toggle="tab">
+                                                                出机口温度
+                                                            </a>
+                                                        </li>
+                                                        <li><a href="#entryTemperature" data-toggle="tab">入仓温度</a></li>
+                                                        <li><a href="#pouringTemperature" data-toggle="tab">浇筑温度</a></li>
+                                                        <li><a href="#mixtureTemperature" data-toggle="tab">混凝土拌合物</a></li>
+                                                        <li><a href="#compressiveStrength" data-toggle="tab">混凝土抗压强度</a></li>
+                                                        <li><a href="#comprehensivePerformance" data-toggle="tab">混凝土全面性能</a></li>
+                                                    </ul>
+                                                    <div id="myTabContentD" class="tab-content">
+                                                        <!--出机口温度-->
+                                                        <div class="tab-pane fade in active" id="outletTemperature">
+                                                            <table class="table table-bordered">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td rowspan="2" style="width: 160px;background-color: #bae2f3;">出机口温度</td>
+                                                                    <td>控制标准（℃）</td>
+                                                                    <td>检测组数（个）</td>
+                                                                    <td>合格组数（个）</td>
+                                                                    <td>最大值（℃）</td>
+                                                                    <td>最小值（℃）</td>
+                                                                    <td>平均值（℃）</td>
+                                                                    <td>合格率（%）</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>23</td>
+                                                                    <td>9</td>
+                                                                    <td>23</td>
+                                                                    <td>65</td>
+                                                                    <td>43</td>
+                                                                    <td>55</td>
+                                                                    <td>68</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <!--入仓温度-->
+                                                        <div class="tab-pane fade" id="entryTemperature">
+                                                            <table class="table table-bordered">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td rowspan="2" style="width: 160px;background-color: #bae2f3;">入仓温度</td>
+                                                                    <td>检测次数（次）</td>
+                                                                    <td>最大值（℃）</td>
+                                                                    <td>最小值（℃）</td>
+                                                                    <td>平均值（℃）</td>
+                                                                    <td>合格次数（次）</td>
+                                                                    <td>合格率（%）</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>9</td>
+                                                                    <td>23</td>
+                                                                    <td>65</td>
+                                                                    <td>43</td>
+                                                                    <td>55</td>
+                                                                    <td>68</td>
+                                                                </tr>
 
-                                                        </tbody>
-                                                    </table>
-                                                    <!--浇筑温度-->
-                                                    <table class="table table-bordered" id="pouringTemperature">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td rowspan="2" style="width: 160px;background-color: #bae2f3;">浇筑温度</td>
-                                                            <td>检测次数（次）</td>
-                                                            <td>最大值（℃）</td>
-                                                            <td>最小值（℃）</td>
-                                                            <td>平均值（℃）</td>
-                                                            <td>合格次数（次）</td>
-                                                            <td>合格率（%）</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>9</td>
-                                                            <td>23</td>
-                                                            <td>65</td>
-                                                            <td>43</td>
-                                                            <td>55</td>
-                                                            <td>68</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                    <!--混凝土拌合物-->
-                                                    <table class="table table-bordered" id="mixtureTemperature">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td rowspan="2" style="width: 160px;background-color: #bae2f3;">混凝土拌合物（机口）塌落度</td>
-                                                            <td>设计要求（mm）</td>
-                                                            <td>检测次数（次）</td>
-                                                            <td>合格次数</td>
-                                                            <td>最大值（mm）</td>
-                                                            <td>最小值（mm）</td>
-                                                            <td>平均值（mm）</td>
-                                                            <td>合格率（%）</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>23</td>
-                                                            <td>65</td>
-                                                            <td>43</td>
-                                                            <td>55</td>
-                                                            <td>68</td>
-                                                            <td>55</td>
-                                                            <td>68</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                    <!--混凝土抗压强度-->
-                                                    <table class="table table-bordered" id="compressiveStrength">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td rowspan="2" style="width: 160px;background-color: #bae2f3;">混凝土抗压强度<br>(施工单位)</td>
-                                                            <td>期龄（d）</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>23</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td rowspan="2" style="width: 160px;background-color: #bae2f3;">混凝土抗压强度<br>(监理单位)</td>
-                                                            <td>期龄（d）</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>23</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                    <!--混凝土全面性能-->
-                                                    <table class="table table-bordered" id="comprehensivePerformance">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td rowspan="3" style="width: 160px;background-color: #bae2f3;">混凝土全面性能<br>(施工单位)</td>
-                                                            <td rowspan="2" colspan="2">设计指标</td>
-                                                            <td rowspan="2" colspan="2">期龄（d）</td>
-                                                            <td colspan="3">抗冻等级</td>
-                                                            <td colspan="3">抗渗等级</td>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <!--浇筑温度-->
+                                                        <div class="tab-pane fade" id="pouringTemperature">
+                                                            <table class="table table-bordered">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td rowspan="2" style="width: 160px;background-color: #bae2f3;">浇筑温度</td>
+                                                                    <td>检测次数（次）</td>
+                                                                    <td>最大值（℃）</td>
+                                                                    <td>最小值（℃）</td>
+                                                                    <td>平均值（℃）</td>
+                                                                    <td>合格次数（次）</td>
+                                                                    <td>合格率（%）</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>9</td>
+                                                                    <td>23</td>
+                                                                    <td>65</td>
+                                                                    <td>43</td>
+                                                                    <td>55</td>
+                                                                    <td>68</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <!--混凝土拌合物-->
+                                                        <div class="tab-pane fade" id="mixtureTemperature">
+                                                            <table class="table table-bordered">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td rowspan="2" style="width: 160px;background-color: #bae2f3;">混凝土拌合物（机口）塌落度</td>
+                                                                    <td>设计要求（mm）</td>
+                                                                    <td>检测次数（次）</td>
+                                                                    <td>合格次数</td>
+                                                                    <td>最大值（mm）</td>
+                                                                    <td>最小值（mm）</td>
+                                                                    <td>平均值（mm）</td>
+                                                                    <td>合格率（%）</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>23</td>
+                                                                    <td>65</td>
+                                                                    <td>43</td>
+                                                                    <td>55</td>
+                                                                    <td>68</td>
+                                                                    <td>55</td>
+                                                                    <td>68</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
 
-                                                        </tr>
-                                                        <tr>
-                                                            <td>取样组数</td>
-                                                            <td>测值</td>
-                                                            <td>合格率</td>
-                                                            <td>取样组数</td>
-                                                            <td>测值</td>
-                                                            <td>合格率</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2">23</td>
-                                                            <td colspan="2">65</td>
-                                                            <td>1</td>
-                                                            <td>2</td>
-                                                            <td>3</td>
-                                                            <td>4</td>
-                                                            <td>5</td>
-                                                            <td>9</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td rowspan="3" style="width: 160px;background-color: #bae2f3;">混凝土全面性能<br>(监理单位)</td>
-                                                            <td rowspan="2" colspan="2">设计指标</td>
-                                                            <td rowspan="2" colspan="2">期龄（d）</td>
-                                                            <td colspan="3">抗冻等级</td>
-                                                            <td colspan="3">抗渗等级</td>
+                                                        </div>
+                                                        <!--混凝土抗压强度-->
+                                                        <div class="tab-pane fade" id="compressiveStrength">
+                                                            <table class="table table-bordered">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td rowspan="2" style="width: 160px;background-color: #bae2f3;">混凝土抗压强度<br>(施工单位)</td>
+                                                                    <td>期龄（d）</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>23</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td rowspan="2" style="width: 160px;background-color: #bae2f3;">混凝土抗压强度<br>(监理单位)</td>
+                                                                    <td>期龄（d）</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>23</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <!--混凝土全面性能-->
+                                                        <div class="tab-pane fade" id="comprehensivePerformance">
+                                                            <table class="table table-bordered">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td rowspan="3" style="width: 160px;background-color: #bae2f3;">混凝土全面性能<br>(施工单位)</td>
+                                                                    <td rowspan="2" colspan="2">设计指标</td>
+                                                                    <td rowspan="2" colspan="2">期龄（d）</td>
+                                                                    <td colspan="3">抗冻等级</td>
+                                                                    <td colspan="3">抗渗等级</td>
 
-                                                        </tr>
-                                                        <tr>
-                                                            <td>取样组数</td>
-                                                            <td>测值</td>
-                                                            <td>合格率</td>
-                                                            <td>取样组数</td>
-                                                            <td>测值</td>
-                                                            <td>合格率</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2">23</td>
-                                                            <td colspan="2">65</td>
-                                                            <td>1</td>
-                                                            <td>2</td>
-                                                            <td>3</td>
-                                                            <td>4</td>
-                                                            <td>5</td>
-                                                            <td>9</td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>取样组数</td>
+                                                                    <td>测值</td>
+                                                                    <td>合格率</td>
+                                                                    <td>取样组数</td>
+                                                                    <td>测值</td>
+                                                                    <td>合格率</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2">23</td>
+                                                                    <td colspan="2">65</td>
+                                                                    <td>1</td>
+                                                                    <td>2</td>
+                                                                    <td>3</td>
+                                                                    <td>4</td>
+                                                                    <td>5</td>
+                                                                    <td>9</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td rowspan="3" style="width: 160px;background-color: #bae2f3;">混凝土全面性能<br>(监理单位)</td>
+                                                                    <td rowspan="2" colspan="2">设计指标</td>
+                                                                    <td rowspan="2" colspan="2">期龄（d）</td>
+                                                                    <td colspan="3">抗冻等级</td>
+                                                                    <td colspan="3">抗渗等级</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>取样组数</td>
+                                                                    <td>测值</td>
+                                                                    <td>合格率</td>
+                                                                    <td>取样组数</td>
+                                                                    <td>测值</td>
+                                                                    <td>合格率</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2">23</td>
+                                                                    <td colspan="2">65</td>
+                                                                    <td>1</td>
+                                                                    <td>2</td>
+                                                                    <td>3</td>
+                                                                    <td>4</td>
+                                                                    <td>5</td>
+                                                                    <td>9</td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="drainage_engineering">
-                                            <div class="drainage">
+                                            <div id="drainage">
                                                 排水孔
                                             </div>
                                         </div>
@@ -582,7 +609,7 @@
     function zTreeOnClick(event, treeId, treeNode) {
         console.log(treeNode);
         var tId = treeNode.id;
-        if(treeNode.level == 3) {
+        if(treeNode.level == 3 || treeNode.level == 2 || treeNode.level == 1) {
             $("#content").css("visibility", "visible");
             // 基于准备好的dom，初始化echarts实例
             var myChartBar = echarts.init(document.getElementById('mainBar'));
