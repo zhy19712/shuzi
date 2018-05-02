@@ -208,7 +208,8 @@ class DivideModel extends Model
     }
 
     /**
-     *  开挖工程
+     *  开挖工程 -- 分为 明挖 和 洞挖
+     *
      *  开挖工程需要统计的信息数据分为超挖、欠挖、不平整度和半孔率4类
      *  逐级进行统计分析，即单元工程统计该单元下所有单元工程检验批的信息数据，分部工程统计该分部工程下所有单元工程的信息数据，以此列推
      *
@@ -225,48 +226,51 @@ class DivideModel extends Model
         $unit_id = $this->projectIdArr($id,$cate);
         // 根据 单元工程检验批 获取 所有的开挖 信息
         $excavate_data = Db::name('project_kaiwa')->where(['uid'=>['in',$unit_id]])->select();
-        $ave_1 = $ave_2 = $ave_3 = $ave_4 = []; // 平均超挖,平均欠挖,平均不平整度,平均半孔率
-        $unit_batch = 0; // 单元工程验收批数
-        $points_1 = $points_2 = $points_3 = $points_4 = []; // 超挖检测点数,欠挖检测点数,不平整度检测点数,半孔率检测点数,
-        $max_1 = $max_2 = $max_3 = $max_4 = []; // 最大值
-        $min_1 = $min_2 = $min_3 = $min_4 = []; // 最小值
-        $percent_1 = $percent_2 = $percent_3 = $percent_4 = []; // 合格率
-        $half_1 = $half_2 = $half_3 = $half_4 = []; // 半孔率
         if(sizeof($excavate_data) < 1){
             return ['code'=>1,'excavate_data'=>[],'msg'=>'开挖统计数据 -- 数据为空'];
         }
+        $data['open_cut'] = $this->getKaiWa($excavate_data,1); // type 1 明挖 2 洞挖
+        $data['hole_digging'] = $this->getKaiWa($excavate_data,2);
+
+        return ['code'=>1,'excavate_data'=>$data,'msg'=>'开挖统计数据'];
+    }
+
+    public function getKaiWa($excavate_data,$type)
+    {
+        $ave_1 = $ave_2 = $ave_3 = []; // 平均超挖,平均欠挖,平均不平整度,平均半孔率
+        $unit_batch = 0; // 单元工程验收批数
+        $points_1 = $points_2 = $points_3 = []; // 超挖检测点数,欠挖检测点数,不平整度检测点数,半孔率检测点数,
+        $max_1 = $max_2 = $max_3 = []; // 最大值
+        $min_1 = $min_2 = $min_3 = []; // 最小值
+        $percent_1 = $percent_2 = $percent_3 = []; // 合格率
+        $half_1 = []; // 半孔率
         foreach($excavate_data as $v){
-            $ave_1[] = $v['ave_overbreak'];
-            $ave_2[] = $v['ave_underbreak'];
-            $ave_3[] = $v['avg_irregularity_degree'];
-            $ave_4[] = $v['ave'];
+            // 1 明挖工程 2 洞挖工程
+            if($type == $v['type']){
+                $ave_1[] = $v['ave_overbreak'];
+                $ave_2[] = $v['ave_underbreak'];
+                $ave_3[] = $v['avg_irregularity_degree'];
 
-            $unit_batch = $unit_batch + 1;
+                $unit_batch = $unit_batch + 1;
 
-            $points_1[] = $v['points_overbreak'];
-            $points_2[] = $v['points_underbreak'];
-            $points_3[] = $v['points_irregularity_degree'];
-            $points_4[] = $v['points'];
+                $points_1[] = $v['points_overbreak'];
+                $points_2[] = $v['points_underbreak'];
+                $points_3[] = $v['points_irregularity_degree'];
 
-            $max_1[] = $v['max_overbreak'];
-            $max_2[] = $v['max_underbreak'];
-            $max_3[] = $v['max_irregularity_degree'];
-            $max_4[] = $v['max'];
+                $max_1[] = $v['max_overbreak'];
+                $max_2[] = $v['max_underbreak'];
+                $max_3[] = $v['max_irregularity_degree'];
 
-            $min_1[] = $v['min_overbreak'];
-            $min_2[] = $v['min_underbreak'];
-            $min_3[] = $v['min_irregularity_degree'];
-            $min_4[] = $v['min'];
+                $min_1[] = $v['min_overbreak'];
+                $min_2[] = $v['min_underbreak'];
+                $min_3[] = $v['min_irregularity_degree'];
 
-            $percent_1[] = $v['pass_overbreak'];
-            $percent_2[] = $v['pass_underbreak'];
-            $percent_3[] = $v['pass_irregularity_degree'];
-            $percent_4[] = $v['half_percentage'];
+                $percent_1[] = $v['pass_overbreak'];
+                $percent_2[] = $v['pass_underbreak'];
+                $percent_3[] = $v['pass_irregularity_degree'];
 
-            $half_1[] = $v['half_overbreak'];
-            $half_2[] = $v['half_underbreak'];
-            $half_3[] = $v['half_irregularity_degree'];
-            $half_4[] = $v['half_percentage'];
+                $half_1[] = $v['half_percentage'];
+            }
         }
 
         // 超挖
@@ -277,7 +281,6 @@ class DivideModel extends Model
         $data['detection_points'][] = array_sum($points_1); // 检测点数
 
         $data['percent_of_pass'][] = round(array_sum($percent_1) / sizeof($percent_1),2); // 合格率
-        $data['half'][] = round(array_sum($half_1) / sizeof($half_1),2); // 半孔率
 
         // 欠挖
         $data['average_val'][] = round(array_sum($ave_2) / $unit_batch,2); // 平均值
@@ -287,7 +290,6 @@ class DivideModel extends Model
         $data['detection_points'][] = array_sum($points_2); // 检测点数
 
         $data['percent_of_pass'][] = round(array_sum($percent_2) / sizeof($percent_2),2); // 合格率
-        $data['half'][] = round(array_sum($half_2) / sizeof($half_2),2); // 半孔率
 
         // 不平整度
         $data['average_val'][] = round(array_sum($ave_3) / $unit_batch,2); // 平均值
@@ -297,29 +299,112 @@ class DivideModel extends Model
         $data['detection_points'][] = array_sum($points_3); // 检测点数
 
         $data['percent_of_pass'][] = round(array_sum($percent_3) / sizeof($percent_3),2); // 合格率
-        $data['half'][] = round(array_sum($half_3) / sizeof($half_3),2); // 半孔率
 
         // 半孔率
-        $data['average_val'][] = round(array_sum($ave_4) / $unit_batch,2); // 平均值
-        $data['max_val'][] = max($max_4); // 最大值
-        $data['min_val'][] = min($min_4); // 最小值
-
-        $data['detection_points'][] = array_sum($points_4); // 检测点数
-
-        $data['percent_of_pass'][] = round(array_sum($percent_4) / sizeof($percent_4),2); // 合格率
-        $data['half'][] = round(array_sum($half_4) / sizeof($half_4),2); // 半孔率
-
-        return ['code'=>1,'excavate_data'=>$data,'msg'=>'开挖统计数据'];
+        $data['half'][] = round(array_sum($half_1) / sizeof($half_1),2); // 半孔率
+        return  $data;
     }
 
 
-    // 支护工程
+    /**
+     * 支护工程
+     *
+     * 支护工程需要统计的信息数据分为喷砼厚度、喷砼强度、锚杆砂浆强度、锚杆无损检测和锚杆拉拔试验5类，逐级进行统计分析，
+     * 即单元工程统计该单元下所有单元工程检验批的信息数据，分部工程统计该分部工程下所有单元工程的信息数据，以此列推。
+     *
+     * 支护面积（m2）=该统计项目下所有支护面积之和。
+     * 检测组数（个）=该统计项目下所有检测组之和。
+     * 设计值 = 该统计项目下所录入的设计值（有几个设计值，就显示几个设计值，并且按不同设计值分开显示）。
+     * 最大值max（cm）=该统计项目下所有值中取最大值。
+     * 最小值min（cm）=该统计项目下所有值中取最小值。
+     * 平均值 （cm）=该统计项目下所有平均值之和/该统计项目下单元工程验收批数（即该项目下所有最小子项之和）。
+     * 合格率Ps（%）=该统计项目下所有合格率的平均值。
+     * 方量（m3）=该统计项目下所有方量之和。
+     * 设计等级=该统计项目下所录入的设计等级（有几个设计等级，就显示几个设计等级，并且按不同设计等级分开显示）。
+     * 标准差（Mpa）=根据混凝土强度标准差计算公式进行自动计算，计算公式
+     */
     public function support($id,$cate)
     {
         $unit_id = $this->projectIdArr($id,$cate);
         // 根据 单元工程检验批 获取 所有的支护 信息
-        $excavate_data = Db::name('project_zhihu')->where(['uid'=>['in',$unit_id]])->select();
-        $data = [];
+        $id_arr = Db::name('project_zhihu')->where(['uid'=>['in',$unit_id]])->column('id');
+        // 根据支护表获取关联的锚杆检测组
+        $zhihu_test_group = Db::name('project_zhihu_test_group')->where(['uid'=>['in',$id_arr]])->select();
+        if(sizeof($zhihu_test_group) < 1){
+            return ['code'=>1,'excavate_data'=>[],'msg'=>'支护统计数据 -- 数据为空'];
+        }
+        // 喷砼厚度
+        $supporting_area_1 = $supporting_area_2 = []; // 支护面积
+        $thickness_number_1 = $thickness_number_2 =[]; // 检测组数
+        $design_val_1 = $design_val_2 = []; // 设计值
+        $max_1 = $max_2 = []; // 最大值
+        $min_1 = $min_2 = []; // 最小值
+        $avg_1 = $avg_2 = []; // 平均值
+        $count_num_1 = $count_num_2 = 0; // 该统计项目下单元工程验收批数(即该项目下所有最小子项之和)
+        $percent_1 = $percent_2 = []; // 合格率
+
+        // 喷砼强度
+        $square_quantity_1 = $square_quantity_2 = []; // 方量
+        $intensity_level_1 = $intensity_level_2 = []; // 设计等级
+        $mortar_standard_deviation_1 = $mortar_standard_deviation_2 = []; // 标准差
+
+        // unit_type 1 施工单位 2 监理单位
+        foreach ($zhihu_test_group as $v){
+            if($v['unit_type'] == 1){
+                $supporting_area_1[] = $v['supporting_area'];
+                $thickness_number_1[] = $v['thickness_number'];
+                $design_val_1[] = $v['design_val'];
+                $max_1[] = $v['max_val'];
+                $min_1[] = $v['min_val'];
+                $avg_1[] = $v['avg_val'];
+                $percent_1[] = $v['pass_percentage'];
+
+                $square_quantity_1[] = $v['square_quantity'];
+                $intensity_level_1[] = $v['intensity_level'];
+                $mortar_standard_deviation_1[] = $v['intensity_standard_deviation'];
+
+                $count_num_1 = $count_num_1 + 1;
+            }else{
+                $supporting_area_2[] = $v['supporting_area'];
+                $thickness_number_2[] = $v['thickness_number'];
+                $design_val_2[] = $v['design_val'];
+                $max_2[] = $v['max_val'];
+                $min_2[] = $v['min_val'];
+                $avg_2[] = $v['avg_val'];
+                $percent_2[] = $v['pass_percentage'];
+
+                $square_quantity_2[] = $v['square_quantity'];
+                $intensity_level_2[] = $v['intensity_level'];
+                $mortar_standard_deviation_2[] = $v['intensity_standard_deviation'];
+
+                $count_num_2 = $count_num_2 + 1;
+            }
+        }
+
+        // 施工单位
+        $data['builder']['supporting_area'] = array_sum($supporting_area_1); // 支护面积
+        $data['builder']['thickness_number'] = array_sum($thickness_number_1); // 检测组数
+        $data['builder']['design_val'] = $design_val_1; // 设计值
+        $data['builder']['max'] = max($max_1); // 最大值
+        $data['builder']['min'] = min($min_1); // 最小值
+        $data['builder']['avg_val'] = round(array_sum($avg_1) / $count_num_1,2); // 平均值
+        $data['builder']['avg_val'] = round(array_sum($percent_1) / $count_num_1,2); // 合格率Ps
+
+        $data['builder']['square_quantity'] = array_sum($square_quantity_1); // 方量
+        $data['builder']['intensity_level'] = $intensity_level_1; // 设计等级
+
+        // 监理单位
+        $data['supervision']['supporting_area'] = array_sum($supporting_area_2); // 支护面积
+        $data['supervision']['thickness_number'] = array_sum($thickness_number_1); // 检测组数
+        $data['supervision']['design_val'] = $design_val_1; // 设计值
+        $data['supervision']['max'] = max($max_2); // 最大值
+        $data['supervision']['min'] = min($min_2); // 最小值
+        $data['supervision']['avg_val'] = round(array_sum($avg_2) / $count_num_2,2); // 平均值
+        $data['supervision']['avg_val'] = round(array_sum($percent_2) / $count_num_2,2); // 合格率Ps
+
+        $data['supervision']['square_quantity'] = array_sum($square_quantity_2); // 方量
+        $data['builder']['intensity_level'] = $intensity_level_2; // 设计等级
+
         return ['code'=>1,'excavate_data'=>$data,'msg'=>'支护统计数据'];
     }
 
