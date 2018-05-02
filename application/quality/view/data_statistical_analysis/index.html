@@ -113,8 +113,46 @@
                                                             </div>
                                                         </div>
                                                         <!--开挖工程（洞挖）-->
-                                                        <div class="tab-pane fade" id="excavationB">
+                                                        <div class="tab-pane fade active" id="excavationB">
+                                                            <div class="row" style="padding-top: 20px">
+                                                                <!--最大值最小值平均值柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainBarH" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                                <!--合格率柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainLineH" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                                <!--监测点数柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainPointH" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                                <!--半孔率扇形图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainPieH" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" id="myTableH">
+                                                                <table class="table table-bordered table-hover">
+                                                                    <caption>开挖数据分析</caption>
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th></th>
+                                                                        <th>监测点数（个）</th>
+                                                                        <th>最大值（cm）</th>
+                                                                        <th>最小值（cm）</th>
+                                                                        <th>平均值（cm）</th>
+                                                                        <th>合格率（%）</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr>
 
+                                                                    </tr>
+
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         </div>
 
                                                     </div>
@@ -602,40 +640,50 @@
 <script src="__JS__/mypdf.js"></script>
 </body>
 <script>
-    //组织结构
-    var zTreeObj;
-    //点击获取节点名称
-    function zTreeOnClick(event, treeId, treeNode) {
-        console.log(treeNode);
-        var tId = treeNode.id;
-        if(treeNode.level == 3 || treeNode.level == 2 || treeNode.level == 1) {
-            $("#content").css("visibility", "visible");
-            // 基于准备好的dom，初始化echarts实例
-            var myChartBar = echarts.init(document.getElementById('mainBar'));
-            var myChartLine = echarts.init(document.getElementById('mainLine'));
-            var myChartPoint = echarts.init(document.getElementById('mainPoint'));
-            var myChartPie = echarts.init(document.getElementById('mainPie'));
-            $.ajax({
-                type:'post',
-                url:'./excavate',
-                data:{
-                    "id":tId,
-                    "cate":"开挖"
-                },
-                dataType:'json',
-                success:function (res) {
-                    console.log(res);
-                    var data = res.excavate_data.open_cut;
-                    var max_val = data.max_val;
-                    var mix_val = data.min_val;
-                    var average_val = data.average_val;
-                    if(res.code === 1){
-                        //最大值最小值柱状图
-                        myChartBar.setOption({
+    $(function () {
+        //组织结构
+        var zTreeObj;
+        //点击获取节点名称
+        function zTreeOnClick(event, treeId, treeNode) {
+            console.log(treeNode);
+            var tId = treeNode.id;
+            if(treeNode.level == 3 || treeNode.level == 2 || treeNode.level == 1) {
+                $("#content").css("visibility", "visible");
+                // 基于准备好的dom，初始化echarts实例
+                var myChartBar = echarts.init(document.getElementById('mainBar'));
+                var myChartLine = echarts.init(document.getElementById('mainLine'));
+                var myChartPoint = echarts.init(document.getElementById('mainPoint'));
+                var myChartPie = echarts.init(document.getElementById('mainPie'));
+                var myChartBarH = echarts.init(document.getElementById('mainBarH'));
+                var myChartLineH = echarts.init(document.getElementById('mainLineH'));
+                var myChartPointH = echarts.init(document.getElementById('mainPointH'));
+                var myChartPieH = echarts.init(document.getElementById('mainPieH'));
+                $.ajax({
+                    type:'post',
+                    url:'./excavate',
+                    data:{
+                        "id":tId,
+                        "cate":"开挖"
+                    },
+                    dataType:'json',
+                    success:function (res) {
+                        console.log(res);
+                        var data = res.excavate_data.open_cut;
+                        var max_val = data.max_val;
+                        var mix_val = data.min_val;
+                        var average_val = data.average_val;
+                        var dataH = res.excavate_data.open_cut;
+                        var max_valH = data.max_val;
+                        var mix_valH = data.min_val;
+                        var average_valH = data.average_val;
+                        if (res.code === 1) {
+                            /*明挖*/
+                            //最大值最小值柱状图
+                            myChartBar.setOption({
                                 title: {
                                     text: '数值分析（cm）'
                                 },
-                                color:['#EED5B7','#FFC125', '#1E90FF'],
+                                color: ['#EED5B7', '#FFC125', '#1E90FF'],
                                 tooltip: {
                                     trigger: 'axis',
                                     axisPointer: {
@@ -643,7 +691,7 @@
                                     }
                                 },
                                 legend: {
-                                    data: ['最大值', '平均值','最小值' ]
+                                    data: ['最大值', '平均值', '最小值']
                                 },
                                 grid: {
 
@@ -655,7 +703,7 @@
                                 },
                                 yAxis: {
                                     type: 'category',
-                                    data: ['超挖','欠挖','不平整度']
+                                    data: ['超挖', '欠挖', '不平整度']
 
                                 },
 
@@ -677,178 +725,354 @@
                                     }
                                 ]
                             });
-                        //合格率柱状图
-                        myChartLine.setOption({
-                            title: {
-                                text: '合格率'
-                            },
-                            tooltip: {
-                                trigger: 'axis',
-                                formatter: '{c}%',
-                                axisPointer: {
-                                    type: 'shadow'
-                                }
-                            },
-                            legend: {
-                                data:['合格率']
-                            },
-                            grid: {
-                                left: '3%',
-                                right: '4%',
-                                bottom: '3%',
-                                containLabel: true
-                            },
-
-                            xAxis: {
-                                type: 'category',
-                                data: ['超挖','欠挖','不平整度'],
-                                itemStyle: {
-                                    normal: {
-                                        label: {
-                                            show: true,
-                                            positiong: 'top',
-                                            formatter: '{c}%'
-                                        }
+                            //合格率柱状图
+                            myChartLine.setOption({
+                                title: {
+                                    text: '合格率'
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    formatter: '{c}%',
+                                    axisPointer: {
+                                        type: 'shadow'
                                     }
                                 },
-                                boundaryGap: [0, 0.01]
-                            },
-                            yAxis:  {
-                                axisLabel: {
-                                    formatter: '{value} %'
-                                }
-                            },
-                            series: [
-                                {
-                                    name:'合格率',
-                                    type:'bar',
-                                    barWidth : 40,
-                                    stack: '总量',
-                                    data:data.percent_of_pass
-                                }
-                            ]
-                        });
-                        //监测点数柱状图
-                        myChartPoint.setOption({
-                            title: {
-                                text: '监测点数（个）'
-                            },
-                            tooltip: {
-                                trigger: 'axis',
-                                axisPointer: {
-                                    type: 'shadow'
-                                }
-                            },
-                            grid: {
+                                legend: {
+                                    data: ['合格率']
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
 
-                                containLabel: true
-                            },
-                            xAxis: {
-                                type: 'category',
-                                data: ['超挖','欠挖','不平整度']
-                            },
-                            yAxis: {
-
-                                type: 'value',
-                                boundaryGap: [0, 0.01]
-                            },
-
-                            series: [
-                                {
-                                    name: '检测点数',
-                                    barWidth:40,
-                                    type: 'bar', //柱状图
-                                    data: data.detection_points
-                                 }
-                            ]
-                        })
-                        //半孔率pie
-                        myChartPie.setOption({
-                            title : {
-                                text: '半孔率',
-                                x:'left'
-                            },
-                            tooltip : {
-                                trigger: 'item',
-                                formatter: "{a} <br/>{b} : {c} ({d}%)"
-                            },
-                            legend: {
-                                orient: 'horizontal',
-                                left: 'left',
-                                data: ['半孔率','']
-                            },
-                            series : [
-                                {
-                                    name: '半孔率',
-                                    type: 'pie',
-                                    radius : '55%',
-                                    center: ['50%', '60%'],
-                                    data:[
-                                        {value:data.half.zhen_d, name:'半孔率'},
-                                        {value:data.half.jia_d, name:''}
-                                    ],
+                                xAxis: {
+                                    type: 'category',
+                                    data: ['超挖', '欠挖', '不平整度'],
                                     itemStyle: {
-                                        emphasis: {
-                                            shadowBlur: 10,
-                                            shadowOffsetX: 0,
-                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        normal: {
+                                            label: {
+                                                show: true,
+                                                positiong: 'top',
+                                                formatter: '{c}%'
+                                            }
+                                        }
+                                    },
+                                    boundaryGap: [0, 0.01]
+                                },
+                                yAxis: {
+                                    axisLabel: {
+                                        formatter: '{value} %'
+                                    }
+                                },
+                                series: [
+                                    {
+                                        name: '合格率',
+                                        type: 'bar',
+                                        barWidth: 40,
+                                        stack: '总量',
+                                        data: data.percent_of_pass
+                                    }
+                                ]
+                            });
+                            //监测点数柱状图
+                            myChartPoint.setOption({
+                                title: {
+                                    text: '监测点数（个）'
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {
+                                        type: 'shadow'
+                                    }
+                                },
+                                grid: {
+
+                                    containLabel: true
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    data: ['超挖', '欠挖', '不平整度']
+                                },
+                                yAxis: {
+
+                                    type: 'value',
+                                    boundaryGap: [0, 0.01]
+                                },
+
+                                series: [
+                                    {
+                                        name: '检测点数',
+                                        barWidth: 40,
+                                        type: 'bar', //柱状图
+                                        data: data.detection_points
+                                    }
+                                ]
+                            })
+                            //半孔率pie
+                            myChartPie.setOption({
+                                title: {
+                                    text: '半孔率',
+                                    x: 'left'
+                                },
+                                tooltip: {
+                                    trigger: 'item',
+                                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                                },
+                                legend: {
+                                    orient: 'horizontal',
+                                    left: 'left',
+                                    data: ['半孔率', '完整率']
+                                },
+                                series: [
+                                    {
+                                        name: '半孔率',
+                                        type: 'pie',
+                                        radius: '55%',
+                                        center: ['50%', '60%'],
+                                        data: [
+                                            {value: data.half.zhen_d, name: '半孔率'},
+                                            {value: data.half.jia_d, name: '完整率'}
+                                        ],
+                                        itemStyle: {
+                                            emphasis: {
+                                                shadowBlur: 10,
+                                                shadowOffsetX: 0,
+                                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                            }
                                         }
                                     }
-                                }
-                            ]
-                        })
-                        //table统计
-                        var str = '';
-                        var arr = ['超挖','欠挖','不平整度']
-                        for (var i = 0; i < max_val.length; i++) {
-                            str += '<tr><td>'+arr[i]+'</td><td>'+data.detection_points[i]+'</td><td>'+max_val[i]+'</td><td>'+mix_val[i]+'</td><td>'+average_val[i]+'</td><td>'+data.percent_of_pass[i]+'</td></tr>';
-                        }
-                        $("#myTable tbody").empty().append(str);
-                        }
+                                ]
+                            })
+                            //table统计
+                            var str = '';
+                            var arr = ['超挖', '欠挖', '不平整度']
+                            for (var i = 0; i < max_val.length; i++) {
+                                str += '<tr><td>' + arr[i] + '</td><td>' + data.detection_points[i] + '</td><td>' + max_val[i] + '</td><td>' + mix_val[i] + '</td><td>' + average_val[i] + '</td><td>' + data.percent_of_pass[i] + '</td></tr>';
+                            }
+                            $("#myTable tbody").empty().append(str);
+                            /*洞挖*/
+                            //最大值最小值柱状图
+                            myChartBarH.setOption({
+                                title: {
+                                    text: '数值分析（cm）'
+                                },
+                                color: ['#EED5B7', '#FFC125', '#1E90FF'],
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {
+                                        type: 'shadow'
+                                    }
+                                },
+                                legend: {
+                                    data: ['最大值', '平均值', '最小值']
+                                },
+                                grid: {
 
+                                    containLabel: true
+                                },
+                                xAxis: {
+                                    type: 'value',
+                                    boundaryGap: [0, 0.01]
+                                },
+                                yAxis: {
+                                    type: 'category',
+                                    data: ['超挖', '欠挖', '不平整度']
 
+                                },
+
+                                series: [
+                                    {
+                                        name: '最大值',
+                                        type: 'bar', //柱状图
+                                        data: max_val
+                                    },
+                                    {
+                                        name: '平均值',
+                                        type: 'bar',
+                                        data: average_val
+                                    },
+                                    {
+                                        name: '最小值',
+                                        type: 'bar',
+                                        data: mix_val
+                                    }
+                                ]
+                            });
+                            //合格率柱状图
+                            myChartLineH.setOption({
+                                title: {
+                                    text: '合格率'
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    formatter: '{c}%',
+                                    axisPointer: {
+                                        type: 'shadow'
+                                    }
+                                },
+                                legend: {
+                                    data: ['合格率']
+                                },
+                                grid: {
+                                    left: '3%',
+                                    right: '4%',
+                                    bottom: '3%',
+                                    containLabel: true
+                                },
+
+                                xAxis: {
+                                    type: 'category',
+                                    data: ['超挖', '欠挖', '不平整度'],
+                                    itemStyle: {
+                                        normal: {
+                                            label: {
+                                                show: true,
+                                                positiong: 'top',
+                                                formatter: '{c}%'
+                                            }
+                                        }
+                                    },
+                                    boundaryGap: [0, 0.01]
+                                },
+                                yAxis: {
+                                    axisLabel: {
+                                        formatter: '{value} %'
+                                    }
+                                },
+                                series: [
+                                    {
+                                        name: '合格率',
+                                        type: 'bar',
+                                        barWidth: 40,
+                                        stack: '总量',
+                                        data: data.percent_of_pass
+                                    }
+                                ]
+                            });
+                            //监测点数柱状图
+                            myChartPointH.setOption({
+                                title: {
+                                    text: '监测点数（个）'
+                                },
+                                tooltip: {
+                                    trigger: 'axis',
+                                    axisPointer: {
+                                        type: 'shadow'
+                                    }
+                                },
+                                grid: {
+
+                                    containLabel: true
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    data: ['超挖', '欠挖', '不平整度']
+                                },
+                                yAxis: {
+
+                                    type: 'value',
+                                    boundaryGap: [0, 0.01]
+                                },
+
+                                series: [
+                                    {
+                                        name: '检测点数',
+                                        barWidth: 40,
+                                        type: 'bar', //柱状图
+                                        data: data.detection_points
+                                    }
+                                ]
+                            })
+                            //半孔率pie
+                            myChartPieH.setOption({
+                                title: {
+                                    text: '半孔率',
+                                    x: 'left'
+                                },
+                                tooltip: {
+                                    trigger: 'item',
+                                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                                },
+                                legend: {
+                                    orient: 'horizontal',
+                                    left: 'left',
+                                    data: ['半孔率', '完整率']
+                                },
+                                series: [
+                                    {
+                                        name: '半孔率',
+                                        type: 'pie',
+                                        radius: '55%',
+                                        center: ['50%', '60%'],
+                                        data: [
+                                            {value: data.half.zhen_d, name: '半孔率'},
+                                            {value: data.half.jia_d, name: '完整率'}
+                                        ],
+                                        itemStyle: {
+                                            emphasis: {
+                                                shadowBlur: 10,
+                                                shadowOffsetX: 0,
+                                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                            }
+                                        }
+                                    }
+                                ]
+                            })
+                            //table统计
+                            var str = '';
+                            var arr = ['超挖', '欠挖', '不平整度']
+                            for (var i = 0; i < max_val.length; i++) {
+                                str += '<tr><td>' + arr[i] + '</td><td>' + data.detection_points[i] + '</td><td>' + max_val[i] + '</td><td>' + mix_val[i] + '</td><td>' + average_val[i] + '</td><td>' + data.percent_of_pass[i] + '</td></tr>';
+                            }
+                            $("#myTableH tbody").empty().append(str);
+                        }
                     }
-            })
+                })
 
 
-        }else if(treeNode.level != 3) {
-            $("#content").css("visibility", "none");
-        }
-    };
-    var setting = {
-        async: {
-            enable : true,
-            autoParam: ["pId"],
-            type : "post",
-            url : "./index",
-            dataType :"json"
-        },
-        data:{
-            keep: {
-                leaf : true,
-                parent : true
-            },
-            simpleData : {
-                enable:true,
-                idkey: "id",
-                pIdKey: "pId"
+            }else{
+                $("#content").css("visibility", "none");
             }
-        },
-        callback: {
-            onClick: zTreeOnClick
-        }
-    };
-    zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
-    //tab切换
-    $('#myTab a').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-    });
+        };
+        var setting = {
+            async: {
+                enable : true,
+                autoParam: ["pId"],
+                type : "post",
+                url : "./index",
+                dataType :"json"
+            },
+            data:{
+                keep: {
+                    leaf : true,
+                    parent : true
+                },
+                simpleData : {
+                    enable:true,
+                    idkey: "id",
+                    pIdKey: "pId"
+                }
+            },
+            callback: {
+                onClick: zTreeOnClick
+            }
+        };
+        zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
+        //tab切换
+        $('#myTab a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+        $('#myTabB a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    })
 
 
 
-
-    //pie图
 
 
 </script>
