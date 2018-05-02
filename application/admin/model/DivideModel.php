@@ -307,7 +307,7 @@ class DivideModel extends Model
         // 半孔率
         $data['half']['zhen_d'] = round(array_sum($half_1) / sizeof($half_1),2); // 半孔率
         // 这里存放的是 多余值 作用是  便于 前台饼图的 百分比划分
-        $data['half']['jia_d'] = round($data['half'][0] / 100,2); // 半孔率
+        $data['half']['jia_d'] = round($data['half']['zhen_d'] / 100,2); // 半孔率
         return  $data;
     }
 
@@ -339,14 +339,15 @@ class DivideModel extends Model
         if(sizeof($zhihu_test_group) < 1){
             return ['code'=>1,'excavate_data'=>[],'msg'=>'支护统计数据 -- 数据为空'];
         }
-        $data[''] = $this->getZhiHu($zhihu_test_group,1); // 1 施工单位 2 监理单位
-        $data['supervision_unit'] = $this->getZhiHu($zhihu_test_group,1);
+        $data['builder'] = $this->getZhiHu($zhihu_test_group,1); // 1 施工单位 2 监理单位
+        $data['supervision_unit'] = $this->getZhiHu($zhihu_test_group,2);
 
         return ['code'=>1,'excavate_data'=>$data,'msg'=>'支护统计数据'];
     }
 
     public function getZhiHu($zhihu_test_group,$type)
     {
+        $data = [];
         // 喷砼厚度
         $supporting_area_1 = []; // 支护面积
         $thickness_number_1 =[]; // 检测组数
@@ -358,13 +359,13 @@ class DivideModel extends Model
         $percent_1 = []; // 合格率
 
         // 喷砼强度
-        $square_quantity_1 = $square_quantity_2 = []; // 方量
-        $intensity_level_1 = $intensity_level_2 = []; // 设计等级
-        $mortar_standard_deviation_1 = $mortar_standard_deviation_2 = []; // 标准差
+        $square_quantity_1 = []; // 方量
+        $intensity_level_1 = []; // 设计等级
+        $mortar_standard_deviation_1 = []; // 标准差
 
         // unit_type 1 施工单位 2 监理单位
         foreach ($zhihu_test_group as $v){
-            if($v['unit_type'] == 1){
+            if($v['unit_type'] == $type){
                 $supporting_area_1[] = $v['supporting_area'];
                 $thickness_number_1[] = $v['thickness_number'];
                 $design_val_1[] = $v['design_val'];
@@ -381,6 +382,9 @@ class DivideModel extends Model
             }
         }
 
+        if($count_num_1 == 0){
+            return $data;
+        }
         $data['builder']['supporting_area'] = array_sum($supporting_area_1); // 支护面积
         $data['builder']['thickness_number'] = array_sum($thickness_number_1); // 检测组数
         $data['builder']['design_val'] = $design_val_1; // 设计值
@@ -391,6 +395,8 @@ class DivideModel extends Model
 
         $data['builder']['square_quantity'] = array_sum($square_quantity_1); // 方量
         $data['builder']['intensity_level'] = $intensity_level_1; // 设计等级
+
+        return $data;
     }
 
     // 混凝土工程
