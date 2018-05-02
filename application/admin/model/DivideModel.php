@@ -237,6 +237,7 @@ class DivideModel extends Model
 
     public function getKaiWa($excavate_data,$type)
     {
+        $data = [];
         $ave_1 = $ave_2 = $ave_3 = []; // 平均超挖,平均欠挖,平均不平整度,平均半孔率
         $unit_batch = 0; // 单元工程验收批数
         $points_1 = $points_2 = $points_3 = []; // 超挖检测点数,欠挖检测点数,不平整度检测点数,半孔率检测点数,
@@ -274,6 +275,9 @@ class DivideModel extends Model
         }
 
         // 超挖
+        if($unit_batch == 0){
+            return  $data;
+        }
         $data['average_val'][] = round(array_sum($ave_1) / $unit_batch,2); // 平均值
         $data['max_val'][] = max($max_1); // 最大值
         $data['min_val'][] = min($min_1); // 最小值
@@ -334,14 +338,14 @@ class DivideModel extends Model
             return ['code'=>1,'excavate_data'=>[],'msg'=>'支护统计数据 -- 数据为空'];
         }
         // 喷砼厚度
-        $supporting_area_1 = $supporting_area_2 = []; // 支护面积
-        $thickness_number_1 = $thickness_number_2 =[]; // 检测组数
-        $design_val_1 = $design_val_2 = []; // 设计值
-        $max_1 = $max_2 = []; // 最大值
-        $min_1 = $min_2 = []; // 最小值
-        $avg_1 = $avg_2 = []; // 平均值
-        $count_num_1 = $count_num_2 = 0; // 该统计项目下单元工程验收批数(即该项目下所有最小子项之和)
-        $percent_1 = $percent_2 = []; // 合格率
+        $supporting_area_1 = []; // 支护面积
+        $thickness_number_1 =[]; // 检测组数
+        $design_val_1 = []; // 设计值
+        $max_1 = []; // 最大值
+        $min_1 = []; // 最小值
+        $avg_1 = []; // 平均值
+        $count_num_1 = 0; // 该统计项目下单元工程验收批数(即该项目下所有最小子项之和)
+        $percent_1 = []; // 合格率
 
         // 喷砼强度
         $square_quantity_1 = $square_quantity_2 = []; // 方量
@@ -364,20 +368,6 @@ class DivideModel extends Model
                 $mortar_standard_deviation_1[] = $v['intensity_standard_deviation'];
 
                 $count_num_1 = $count_num_1 + 1;
-            }else{
-                $supporting_area_2[] = $v['supporting_area'];
-                $thickness_number_2[] = $v['thickness_number'];
-                $design_val_2[] = $v['design_val'];
-                $max_2[] = $v['max_val'];
-                $min_2[] = $v['min_val'];
-                $avg_2[] = $v['avg_val'];
-                $percent_2[] = $v['pass_percentage'];
-
-                $square_quantity_2[] = $v['square_quantity'];
-                $intensity_level_2[] = $v['intensity_level'];
-                $mortar_standard_deviation_2[] = $v['intensity_standard_deviation'];
-
-                $count_num_2 = $count_num_2 + 1;
             }
         }
 
@@ -394,16 +384,6 @@ class DivideModel extends Model
         $data['builder']['intensity_level'] = $intensity_level_1; // 设计等级
 
         // 监理单位
-        $data['supervision']['supporting_area'] = array_sum($supporting_area_2); // 支护面积
-        $data['supervision']['thickness_number'] = array_sum($thickness_number_1); // 检测组数
-        $data['supervision']['design_val'] = $design_val_1; // 设计值
-        $data['supervision']['max'] = max($max_2); // 最大值
-        $data['supervision']['min'] = min($min_2); // 最小值
-        $data['supervision']['avg_val'] = round(array_sum($avg_2) / $count_num_2,2); // 平均值
-        $data['supervision']['avg_val'] = round(array_sum($percent_2) / $count_num_2,2); // 合格率Ps
-
-        $data['supervision']['square_quantity'] = array_sum($square_quantity_2); // 方量
-        $data['builder']['intensity_level'] = $intensity_level_2; // 设计等级
 
         return ['code'=>1,'excavate_data'=>$data,'msg'=>'支护统计数据'];
     }
