@@ -153,6 +153,7 @@
                                                                 </table>
                                                             </div>
                                                         </div>
+
                                                     </div>
 
                                                 </div>
@@ -711,7 +712,14 @@
             if(treeNode.level == 3 || treeNode.level == 2 || treeNode.level == 1) {
                 $("#content").css("visibility", "visible");
                 // 基于准备好的dom，初始化echarts实例
-
+                var myChartBar = echarts.init(document.getElementById('mainBar'));
+                var myChartLine = echarts.init(document.getElementById('mainLine'));
+                var myChartPoint = echarts.init(document.getElementById('mainPoint'));
+                var myChartPie = echarts.init(document.getElementById('mainPie'));
+                var myChartBarH = echarts.init(document.getElementById('mainBarH'));
+                var myChartLineH = echarts.init(document.getElementById('mainLineH'));
+                var myChartPointH = echarts.init(document.getElementById('mainPointH'));
+                var myChartPieH = echarts.init(document.getElementById('mainPieH'));
                 $.ajax({
                     type:'post',
                     url:'./excavate',
@@ -1109,10 +1117,6 @@
                                 var average_valH = dataH.average_val;
                                 if (res.code === 1) {
                                     /*明挖*/
-                                    var myChartBar = echarts.init(document.getElementById('mainBar'));
-                                    var myChartLine = echarts.init(document.getElementById('mainLine'));
-                                    var myChartPoint = echarts.init(document.getElementById('mainPoint'));
-                                    var myChartPie = echarts.init(document.getElementById('mainPie'));
                                     //最大值最小值柱状图
                                     myChartBar.setOption({
                                         title: {
@@ -1288,10 +1292,6 @@
                                     }
                                     $("#myTable tbody").empty().append(str);
                                     /*洞挖*/
-                                    var myChartBarH = echarts.init(document.getElementById('mainBarH'));
-                                    var myChartLineH = echarts.init(document.getElementById('mainLineH'));
-                                    var myChartPointH = echarts.init(document.getElementById('mainPointH'));
-                                    var myChartPieH = echarts.init(document.getElementById('mainPieH'));
                                     //最大值最小值柱状图
                                     myChartBarH.setOption({
                                         title: {
