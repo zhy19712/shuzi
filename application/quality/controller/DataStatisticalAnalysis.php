@@ -9,6 +9,7 @@
 namespace app\quality\controller;
 use app\admin\controller\Base;
 use app\admin\model\DivideModel;
+use think\Db;
 
 /**
  *  数据统计分析
