@@ -153,7 +153,6 @@
                                                                 </table>
                                                             </div>
                                                         </div>
-
                                                     </div>
 
                                                 </div>
@@ -176,24 +175,6 @@
                                                     <div id="myTabContentC" class="tab-content">
                                                         <!--喷砼厚度-->
                                                         <div class="tab-pane fade in active" id="hotcreteThickness">
-                                                            <div class="row" style="padding-top: 20px">
-                                                                <!--最大值最小值平均值柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainBarThickness" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--合格率柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainLineThickness" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--监测点数柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainPointThickness" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--半孔率扇形图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainPieThickness" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                            </div>
                                                             <div class="row">
                                                                 <table class="table table-bordered">
                                                                     <caption>喷砼厚度</caption>
@@ -219,66 +200,126 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
+                                                            <div class="row" style="padding-top: 20px">
+                                                                <!--最大值最小值平均值柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainBarThickness" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                                <!--合格率柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainLineThickness" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                                <!--监测组数柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainPointThickness" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                                <!--支护面积柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainPieThickness" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <!--喷砼强度-->
-                                                        <div class="tab-pane fade" id="hotcreteStrength">
-                                                            <table class="table table-bordered" id="hotcreteStrengthS">
-                                                                <caption>喷砼强度(施工单位)</caption>
-                                                                <tbody>
-                                                                <tr>
-                                                                    <td>方量（m³）</td>
-                                                                    <td>监测组数（个）</td>
-                                                                    <td>设计等级</td>
-                                                                    <td>最大值（Mpa）</td>
-                                                                    <td>最小值（Mpa）</td>
-                                                                    <td>平均值（Mpa）</td>
-                                                                    <td>标准差（Mpa）</td>
-                                                                    <td>保证率（%）</td>
-                                                                    <td>合格率（%）</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>9</td>
-                                                                    <td>23</td>
-                                                                    <td>65</td>
-                                                                    <td>43</td>
-                                                                    <td>55</td>
-                                                                    <td>68</td>
-                                                                    <td>55</td>
-                                                                    <td>68</td>
-                                                                    <td>65</td>
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
-                                                            <table class="table table-bordered" id="hotcreteStrengthM">
-                                                                <caption >喷砼强度(监理单位)</caption>
-                                                                <tbody>
-                                                                <tr>
-                                                                    <td>方量（m³）</td>
-                                                                    <td>监测组数（个）</td>
-                                                                    <td>设计等级</td>
-                                                                    <td>最大值（Mpa）</td>
-                                                                    <td>最小值（Mpa）</td>
-                                                                    <td>平均值（Mpa）</td>
-                                                                    <td>标准差（Mpa）</td>
-                                                                    <td>保证率（%）</td>
-                                                                    <td>合格率（%）</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>9</td>
-                                                                    <td>23</td>
-                                                                    <td>65</td>
-                                                                    <td>43</td>
-                                                                    <td>55</td>
-                                                                    <td>68</td>
-                                                                    <td>55</td>
-                                                                    <td>68</td>
-                                                                    <td>65</td>
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
+                                                        <div class="tab-pane fade active" id="hotcreteStrength">
+                                                            <!--施工单位自检-->
+                                                            <div class="row">
+                                                                <table class="table table-bordered" id="hotcreteStrengthS">
+                                                                    <caption>喷砼强度(施工单位)</caption>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td>方量（m³）</td>
+                                                                        <td>监测组数（个）</td>
+                                                                        <td>设计等级</td>
+                                                                        <td>最大值（Mpa）</td>
+                                                                        <td>最小值（Mpa）</td>
+                                                                        <td>平均值（Mpa）</td>
+                                                                        <td>标准差（Mpa）</td>
+                                                                        <td>保证率（%）</td>
+                                                                        <td>合格率（%）</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>9</td>
+                                                                        <td>23</td>
+                                                                        <td>65</td>
+                                                                        <td>43</td>
+                                                                        <td>55</td>
+                                                                        <td>68</td>
+                                                                        <td>55</td>
+                                                                        <td>68</td>
+                                                                        <td>65</td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="row" style="padding-top: 20px">
+                                                                <!--最大值最小值平均值柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainBarStrengthS" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                                <!--合格率柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainLineStrengthS" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                                <!--监测组数柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainPointStrengthS" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                                <!--支护面积柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainPieStrengthS" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                            </div>
+                                                            <!--监理单位抽检-->
+                                                            <div class="row">
+                                                                <table class="table table-bordered" id="hotcreteStrengthM">
+                                                                    <caption >喷砼强度(监理单位)</caption>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td>方量（m³）</td>
+                                                                        <td>监测组数（个）</td>
+                                                                        <td>设计等级</td>
+                                                                        <td>最大值（Mpa）</td>
+                                                                        <td>最小值（Mpa）</td>
+                                                                        <td>平均值（Mpa）</td>
+                                                                        <td>标准差（Mpa）</td>
+                                                                        <td>保证率（%）</td>
+                                                                        <td>合格率（%）</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>9</td>
+                                                                        <td>23</td>
+                                                                        <td>65</td>
+                                                                        <td>43</td>
+                                                                        <td>55</td>
+                                                                        <td>68</td>
+                                                                        <td>55</td>
+                                                                        <td>68</td>
+                                                                        <td>65</td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="row" style="padding-top: 20px">
+                                                                <!--最大值最小值平均值柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainBarStrengthM" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                                <!--合格率柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainLineStrengthM" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                                <!--监测组数柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainPointStrengthM" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                                <!--支护面积柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainPieStrengthM" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <!--锚杆砂浆强度-->
-                                                        <div class="tab-pane fade" id="mortarStrength">
+                                                        <div class="tab-pane fade active" id="mortarStrength">
                                                             <table class="table table-bordered" id=" mortarStrengthS">
                                                                 <caption>锚杆砂浆强度(施工单位)</caption>
                                                                 <tbody>
@@ -331,7 +372,7 @@
                                                             </table>
                                                         </div>
                                                         <!--锚杆无损检测-->
-                                                        <div class="tab-pane fade" id="nondestructiveTesting">
+                                                        <div class="tab-pane fade active" id="nondestructiveTesting">
                                                             <table class="table table-bordered" id=" nondestructiveTestingS">
                                                                 <caption>锚杆无损检测(施工单位)</caption>
                                                                 <tbody>
@@ -393,7 +434,7 @@
 
                                                         </div>
                                                         <!--拉拔试验-->
-                                                        <div class="tab-pane fade" id="pullTest">
+                                                        <div class="tab-pane fade active" id="pullTest">
                                                             <table class="table table-bordered" id="pullTestS">
                                                                 <caption>锚杆拉拔试验(施工单位)</caption>
                                                                 <tbody>
@@ -666,23 +707,11 @@
         var zTreeObj;
         //点击获取节点名称
         function zTreeOnClick(event, treeId, treeNode) {
-            console.log(treeNode);
             var tId = treeNode.id;
             if(treeNode.level == 3 || treeNode.level == 2 || treeNode.level == 1) {
                 $("#content").css("visibility", "visible");
                 // 基于准备好的dom，初始化echarts实例
-                var myChartBar = echarts.init(document.getElementById('mainBar'));
-                var myChartLine = echarts.init(document.getElementById('mainLine'));
-                var myChartPoint = echarts.init(document.getElementById('mainPoint'));
-                var myChartPie = echarts.init(document.getElementById('mainPie'));
-                var myChartBarH = echarts.init(document.getElementById('mainBarH'));
-                var myChartLineH = echarts.init(document.getElementById('mainLineH'));
-                var myChartPointH = echarts.init(document.getElementById('mainPointH'));
-                var myChartPieH = echarts.init(document.getElementById('mainPieH'));
-                var myChartBarThickness = echarts.init(document.getElementById('mainBarThickness'));
-                var myChartLineThickness = echarts.init(document.getElementById('mainLineThickness'));
-                var myChartPointThickness = echarts.init(document.getElementById('mainPointThickness'));
-                var myChartPieThickness = echarts.init(document.getElementById('mainPieThickness'));
+
                 $.ajax({
                     type:'post',
                     url:'./excavate',
@@ -702,7 +731,6 @@
                         var max_valH = dataH.max_val;
                         var mix_valH = dataH.min_val;
                         var average_valH = dataH.average_val;
-                        console.log(dataH);
                         if (res.code === 1) {
                             /*明挖*/
                             //最大值最小值柱状图
@@ -1071,19 +1099,20 @@
                             },
                             dataType:'json',
                             success:function (res) {
-                                console.log(res);
                                 var data = res.excavate_data.open_cut;
                                 var max_val = data.max_val;
                                 var mix_val = data.min_val;
                                 var average_val = data.average_val;
-                                console.log(data);
                                 var dataH = res.excavate_data.hole_digging;
                                 var max_valH = dataH.max_val;
                                 var mix_valH = dataH.min_val;
                                 var average_valH = dataH.average_val;
-                                console.log(dataH);
                                 if (res.code === 1) {
                                     /*明挖*/
+                                    var myChartBar = echarts.init(document.getElementById('mainBar'));
+                                    var myChartLine = echarts.init(document.getElementById('mainLine'));
+                                    var myChartPoint = echarts.init(document.getElementById('mainPoint'));
+                                    var myChartPie = echarts.init(document.getElementById('mainPie'));
                                     //最大值最小值柱状图
                                     myChartBar.setOption({
                                         title: {
@@ -1259,6 +1288,10 @@
                                     }
                                     $("#myTable tbody").empty().append(str);
                                     /*洞挖*/
+                                    var myChartBarH = echarts.init(document.getElementById('mainBarH'));
+                                    var myChartLineH = echarts.init(document.getElementById('mainLineH'));
+                                    var myChartPointH = echarts.init(document.getElementById('mainPointH'));
+                                    var myChartPieH = echarts.init(document.getElementById('mainPieH'));
                                     //最大值最小值柱状图
                                     myChartBarH.setOption({
                                         title: {
@@ -1454,7 +1487,11 @@
                                 var mix_val = data.min_val;
                                 var average_val = data.average_val;
                                 if (res.code === 1) {
-                                    /*明挖*/
+                                    //喷砼厚度
+                                    var myChartBarThickness = echarts.init(document.getElementById('mainBarThickness'));
+                                    var myChartLineThickness = echarts.init(document.getElementById('mainLineThickness'));
+                                    var myChartPointThickness = echarts.init(document.getElementById('mainPointThickness'));
+                                    var myChartPieThickness = echarts.init(document.getElementById('mainPieThickness'));
                                     //最大值最小值柱状图
                                     myChartBarThickness.setOption({
                                         title: {
@@ -1475,30 +1512,29 @@
                                             containLabel: true
                                         },
                                         xAxis: {
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-                                        yAxis: {
                                             type: 'category',
                                             data: ['超挖', '欠挖', '不平整度']
-
+                                        },
+                                        yAxis: {
+                                            type: 'value',
+                                            boundaryGap: [0, 0.01]
                                         },
 
                                         series: [
                                             {
                                                 name: '最大值',
                                                 type: 'bar', //柱状图
-                                                data: max_val
+                                                data: [88,88,88,88]
                                             },
                                             {
                                                 name: '平均值',
                                                 type: 'bar',
-                                                data: average_val
+                                                data: [77,77,77,77]
                                             },
                                             {
                                                 name: '最小值',
                                                 type: 'bar',
-                                                data: mix_val
+                                                data: [66,66,66,66]
                                             }
                                         ]
                                     });
@@ -1587,42 +1623,385 @@
                                             }
                                         ]
                                     });
-                                    //半孔率pie
+                                    //支护面积面积
                                     myChartPieThickness.setOption({
                                         title: {
-                                            text: '半孔率',
-                                            x: 'left'
+                                            text: '支护面积'
                                         },
                                         tooltip: {
-                                            trigger: 'item',
-                                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                                            trigger: 'axis',
+                                            axisPointer: {
+                                                type: 'shadow'
+                                            }
                                         },
-                                        legend: {
-                                            orient: 'horizontal',
-                                            left: 'left',
-                                            data: ['半孔率', '完整率']
+                                        grid: {
+
+                                            containLabel: true
                                         },
+                                        xAxis: {
+                                            type: 'value',
+                                            boundaryGap: [0, 0.01]
+                                        },
+                                        yAxis: {
+                                            type: 'category',
+                                            data: ['超挖', '欠挖', '不平整度']
+                                        },
+
                                         series: [
                                             {
-                                                name: '半孔率',
-                                                type: 'pie',
-                                                radius: '55%',
-                                                center: ['50%', '60%'],
-                                                data: [
-                                                    {value: data.half.zhen_d, name: '半孔率'},
-                                                    {value: data.half.jia_d, name: '完整率'}
-                                                ],
-                                                itemStyle: {
-                                                    emphasis: {
-                                                        shadowBlur: 10,
-                                                        shadowOffsetX: 0,
-                                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                                    }
-                                                }
+                                                name: '检测点数',
+                                                barWidth: 40,
+                                                type: 'bar', //柱状图
+                                                data: data.detection_points
                                             }
                                         ]
                                     });
+                                    //喷砼强度（施工单位自检）
+                                    var myChartBarStrengthS = echarts.init(document.getElementById('mainBarStrengthS'));
+                                    var myChartLineStrengthS = echarts.init(document.getElementById('mainLineStrengthS'));
+                                    var myChartPointStrengthS = echarts.init(document.getElementById('mainPointStrengthS'));
+                                    var myChartPieStrengthS = echarts.init(document.getElementById('mainPieStrengthS'));
+                                    myChartBarStrengthS.setOption({
+                                        title: {
+                                            text: '数值分析（Mpa）'
+                                        },
+                                        color: ['#ff3e25','#EED5B7', '#FFC125', '#1E90FF'],
+                                        tooltip: {
+                                            trigger: 'axis',
+                                            axisPointer: {
+                                                type: 'shadow'
+                                            }
+                                        },
+                                        legend: {
+                                            data: ['标准差','最大值', '平均值', '最小值']
+                                        },
+                                        grid: {
 
+                                            containLabel: true
+                                        },
+                                        xAxis: {
+                                            type: 'category',
+                                            data: ['超挖', '欠挖', '不平整度']
+                                        },
+                                        yAxis: {
+                                            type: 'value',
+                                            boundaryGap: [0, 0.01]
+                                        },
+
+                                        series: [
+                                            {
+                                                name: '标准差',
+                                                type: 'bar', //柱状图
+                                                data: [66,68,99,56]
+                                            },
+                                            {
+                                                name: '最大值',
+                                                type: 'bar', //柱状图
+                                                data: [88,88,88,88]
+                                            },
+                                            {
+                                                name: '平均值',
+                                                type: 'bar',
+                                                data: [77,77,77,77]
+                                            },
+                                            {
+                                                name: '最小值',
+                                                type: 'bar',
+                                                data: [66,66,66,66]
+                                            }
+                                        ]
+                                    });
+                                    //合格率
+                                    myChartLineStrengthS.setOption({
+                                        title: {
+                                            text: '合格率'
+                                        },
+                                        tooltip: {
+                                            trigger: 'axis',
+                                            formatter: '{c}%',
+                                            axisPointer: {
+                                                type: 'shadow'
+                                            }
+                                        },
+                                        legend: {
+                                            data: ['合格率']
+                                        },
+                                        grid: {
+                                            left: '3%',
+                                            right: '4%',
+                                            bottom: '3%',
+                                            containLabel: true
+                                        },
+
+                                        xAxis: {
+                                            type: 'category',
+                                            data: ['超挖', '欠挖', '不平整度'],
+                                            itemStyle: {
+                                                normal: {
+                                                    label: {
+                                                        show: true,
+                                                        positiong: 'top',
+                                                        formatter: '{c}%'
+                                                    }
+                                                }
+                                            },
+                                            boundaryGap: [0, 0.01]
+                                        },
+                                        yAxis: {
+                                            axisLabel: {
+                                                formatter: '{value} %'
+                                            }
+                                        },
+                                        series: [
+                                            {
+                                                name: '合格率',
+                                                type: 'bar',
+                                                barWidth: 40,
+                                                stack: '总量',
+                                                data: data.percent_of_pass
+                                            }
+                                        ]
+                                    });
+                                    //监测组数
+                                    myChartPointStrengthS.setOption({
+                                        title: {
+                                            text: '监测组数（组）'
+                                        },
+                                        tooltip: {
+                                            trigger: 'axis',
+                                            axisPointer: {
+                                                type: 'shadow'
+                                            }
+                                        },
+                                        grid: {
+
+                                            containLabel: true
+                                        },
+                                        xAxis: {
+                                            type: 'category',
+                                            data: ['超挖', '欠挖', '不平整度']
+                                        },
+                                        yAxis: {
+
+                                            type: 'value',
+                                            boundaryGap: [0, 0.01]
+                                        },
+
+                                        series: [
+                                            {
+                                                name: '检测点数',
+                                                barWidth: 40,
+                                                type: 'bar', //柱状图
+                                                data: data.detection_points
+                                            }
+                                        ]
+                                    });
+                                    //方量
+                                    myChartPieStrengthS.setOption({
+                                        title: {
+                                            text: '方量（m³）'
+                                        },
+                                        tooltip: {
+                                            trigger: 'axis',
+                                            axisPointer: {
+                                                type: 'shadow'
+                                            }
+                                        },
+                                        grid: {
+
+                                            containLabel: true
+                                        },
+                                        xAxis: {
+                                            type: 'value',
+                                            boundaryGap: [0, 0.01]
+                                        },
+                                        yAxis: {
+                                            type: 'category',
+                                            data: ['超挖', '欠挖', '不平整度']
+                                        },
+
+                                        series: [
+                                            {
+                                                name: '检测点数',
+                                                barWidth: 40,
+                                                type: 'bar', //柱状图
+                                                data: data.detection_points
+                                            }
+                                        ]
+                                    });
+                                    //喷砼强度（监理单位抽检）
+                                    var myChartBarStrengthM = echarts.init(document.getElementById('mainBarStrengthM'));
+                                    var myChartLineStrengthM = echarts.init(document.getElementById('mainLineStrengthM'));
+                                    var myChartPointStrengthM = echarts.init(document.getElementById('mainPointStrengthM'));
+                                    var myChartPieStrengthM = echarts.init(document.getElementById('mainPieStrengthM'));
+                                    myChartBarStrengthM.setOption({
+                                        title: {
+                                            text: '数值分析（Mpa）'
+                                        },
+                                        color: ['#ff3e25','#EED5B7', '#FFC125', '#1E90FF'],
+                                        tooltip: {
+                                            trigger: 'axis',
+                                            axisPointer: {
+                                                type: 'shadow'
+                                            }
+                                        },
+                                        legend: {
+                                            data: ['标准差','最大值', '平均值', '最小值']
+                                        },
+                                        grid: {
+
+                                            containLabel: true
+                                        },
+                                        xAxis: {
+                                            type: 'category',
+                                            data: ['超挖', '欠挖', '不平整度']
+                                        },
+                                        yAxis: {
+                                            type: 'value',
+                                            boundaryGap: [0, 0.01]
+                                        },
+
+                                        series: [
+                                            {
+                                                name: '设计值',
+                                                type: 'bar', //柱状图
+                                                data: [66,68,99,56]
+                                            },
+                                            {
+                                                name: '最大值',
+                                                type: 'bar', //柱状图
+                                                data: [88,88,88,88]
+                                            },
+                                            {
+                                                name: '平均值',
+                                                type: 'bar',
+                                                data: [77,77,77,77]
+                                            },
+                                            {
+                                                name: '最小值',
+                                                type: 'bar',
+                                                data: [66,66,66,66]
+                                            }
+                                        ]
+                                    });
+                                    //合格率
+                                    myChartLineStrengthM.setOption({
+                                        title: {
+                                            text: '合格率'
+                                        },
+                                        tooltip: {
+                                            trigger: 'axis',
+                                            formatter: '{c}%',
+                                            axisPointer: {
+                                                type: 'shadow'
+                                            }
+                                        },
+                                        legend: {
+                                            data: ['合格率']
+                                        },
+                                        grid: {
+                                            left: '3%',
+                                            right: '4%',
+                                            bottom: '3%',
+                                            containLabel: true
+                                        },
+
+                                        xAxis: {
+                                            type: 'category',
+                                            data: ['超挖', '欠挖', '不平整度'],
+                                            itemStyle: {
+                                                normal: {
+                                                    label: {
+                                                        show: true,
+                                                        positiong: 'top',
+                                                        formatter: '{c}%'
+                                                    }
+                                                }
+                                            },
+                                            boundaryGap: [0, 0.01]
+                                        },
+                                        yAxis: {
+                                            axisLabel: {
+                                                formatter: '{value} %'
+                                            }
+                                        },
+                                        series: [
+                                            {
+                                                name: '合格率',
+                                                type: 'bar',
+                                                barWidth: 40,
+                                                stack: '总量',
+                                                data: data.percent_of_pass
+                                            }
+                                        ]
+                                    });
+                                    //监测组数
+                                    myChartPointStrengthM.setOption({
+                                        title: {
+                                            text: '监测组数（组）'
+                                        },
+                                        tooltip: {
+                                            trigger: 'axis',
+                                            axisPointer: {
+                                                type: 'shadow'
+                                            }
+                                        },
+                                        grid: {
+
+                                            containLabel: true
+                                        },
+                                        xAxis: {
+                                            type: 'category',
+                                            data: ['超挖', '欠挖', '不平整度']
+                                        },
+                                        yAxis: {
+
+                                            type: 'value',
+                                            boundaryGap: [0, 0.01]
+                                        },
+
+                                        series: [
+                                            {
+                                                name: '检测点数',
+                                                barWidth: 40,
+                                                type: 'bar', //柱状图
+                                                data: data.detection_points
+                                            }
+                                        ]
+                                    });
+                                    //方量
+                                    myChartPieStrengthM.setOption({
+                                        title: {
+                                            text: '方量（m³）'
+                                        },
+                                        tooltip: {
+                                            trigger: 'axis',
+                                            axisPointer: {
+                                                type: 'shadow'
+                                            }
+                                        },
+                                        grid: {
+
+                                            containLabel: true
+                                        },
+                                        xAxis: {
+                                            type: 'value',
+                                            boundaryGap: [0, 0.01]
+                                        },
+                                        yAxis: {
+                                            type: 'category',
+                                            data: ['超挖', '欠挖', '不平整度']
+                                        },
+
+                                        series: [
+                                            {
+                                                name: '检测点数',
+                                                barWidth: 40,
+                                                type: 'bar', //柱状图
+                                                data: data.detection_points
+                                            }
+                                        ]
+                                    });
 
                                 }
 
@@ -1668,6 +2047,10 @@
             $(this).tab('show');
         });
         $('#myTabB a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+        $('#myTabC a').click(function (e) {
             e.preventDefault();
             $(this).tab('show');
         });
