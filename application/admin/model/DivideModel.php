@@ -328,6 +328,19 @@ class DivideModel extends Model
      * 方量（m3）=该统计项目下所有方量之和。
      * 设计等级=该统计项目下所录入的设计等级（有几个设计等级，就显示几个设计等级，并且按不同设计等级分开显示）。
      * 标准差（Mpa）=根据混凝土强度标准差计算公式进行自动计算，计算公式
+     * 保证率（%）=根据混凝土强度保证率计算公式进行自动计算
+     * 施工数量（个）=该统计项目下所有施工数量之和。
+     * 抽检根数（个）=该统计项目下所有抽检根数之和。
+     * 检测比例（%）=抽检根数/施工数量*100%
+     * 合格根数（个）=该统计项目下所有合格根数之和
+     * 锚杆型号=该统计项目下所录入的锚杆型号（有几种锚杆型号，就显示几种锚杆型号，并且按不同锚杆型号分开显示）。
+     * 锚杆长度-最大（m）=该统计项目下所有值中取最大值
+     * 锚杆长度-最小（m）=该统计项目下所有值中取最小值
+     * 注浆密实度-最大（%）=该统计项目下所有值中取最大值
+     * 注浆密实度-最小（%）=该统计项目下所有值中取最小值
+     * 锚杆类型=锚杆型号
+     * 设计拉拔力（KN）=该统计项目下所录入的设计拉拔力值（一种锚杆型号对应一个固定的设计拉拔力，有几种锚杆型号，就显示对应的设计拉拔力，并且按不同锚杆型号分开显示）。
+     * 检测根数（个）=该统计项目下所有检测根数之和
      */
     public function support($id,$cate)
     {
@@ -339,7 +352,8 @@ class DivideModel extends Model
         if(sizeof($zhihu_test_group) < 1){
             return ['code'=>1,'excavate_data'=>[],'msg'=>'支护统计数据 -- 数据为空'];
         }
-        $data['builder'] = $this->getZhiHu($zhihu_test_group,1); // 1 施工单位 2 监理单位
+        // 1 施工单位 2 监理单位
+        $data['builder'] = $this->getZhiHu($zhihu_test_group,1);
         $data['supervision_unit'] = $this->getZhiHu($zhihu_test_group,2);
 
         return ['code'=>1,'excavate_data'=>$data,'msg'=>'支护统计数据'];
@@ -430,9 +444,78 @@ class DivideModel extends Model
         if($count_num_1 == 0){
             return $data;
         }
+        // 按照 设计值 分组 统计 ==》 设计值相同的统计到一起 (求平均值)
+        $design_supporting_area = $design_thickness_number = $design_max = $design_min = $design_avg = $design_percent = $design_square_quantity = $design_intensity_level = $design_mortar_standard_deviation =[];
+        $design_guarantee_rate = $design_mortar_standard_deviation2 = $design_guarantee_rate2 = $design_nde_quantity = $design_nde_inspection_num = $design_nde_percent_num = $design_nde_model_number = [];
+        $design_nde_max = $design_nde_min = $design_nde_density_max = $design_nde_density_min = $design_anchor_type = $design_drawing_load = $design_experiment_inspection_num = [];
+        $arr = array_count_values($design_val_1); // 每一个设计值出现的次数
+        $arr_1 = array_keys($arr); // 相同的设计值
+        foreach ($design_val_1 as $dk=>$dv){
+            $design_supporting_area[$dv][] = $supporting_area_1[$dk];
+            $design_thickness_number[$dv][] = $thickness_number_1[$dk];
+            $design_max[$dv][] = $max_1[$dk];
+            $design_min[$dv][] = $min_1[$dk];
+            $design_avg[$dv][] = $avg_1[$dk];
+            $design_percent[$dv][] = $percent_1[$dk];
+
+            $design_square_quantity[$dv][] = $square_quantity_1[$dk];
+            $design_intensity_level[$dv][] = $intensity_level_1[$dk];
+            $design_mortar_standard_deviation[$dv][] = $mortar_standard_deviation_1[$dk];
+            $design_guarantee_rate[$dv][] = $guarantee_rate_1[$dk];
+            $design_mortar_standard_deviation2[$dv][] = $mortar_standard_deviation_2[$dk];
+            $design_guarantee_rate2[$dv][] = $guarantee_rate_2[$dk];
+
+            $design_nde_quantity[$dv][] = $nde_quantity[$dk];
+            $design_nde_inspection_num[$dv][] = $nde_inspection_num[$dk];
+            $design_nde_percent_num[$dv][] = $nde_percent_num[$dk];
+            $design_nde_model_number[$dv][] = $nde_model_number[$dk];
+            $design_nde_max[$dv][] = $nde_max[$dk];
+            $design_nde_min[$dv][] = $nde_min[$dk];
+            $design_nde_density_max[$dv][] = $nde_density_max[$dk];
+            $design_nde_density_min[$dv][] = $nde_density_min[$dk];
+
+            $design_anchor_type[$dv][] = $anchor_type[$dk];
+            $design_drawing_load[$dv][] = $drawing_load[$dk];
+            $design_experiment_inspection_num[$dv][] = $experiment_inspection_num[$dk];
+        }
+
+
+        foreach($arr_1 as $arv){
+            $data['design_data']['design_val'][] = $arv; // 相同的设计值
+            $data['design_data']['supporting_area'][] = array_sum($design_supporting_area[$arv]); // 支护面积
+            $data['design_data']['thickness_number'][] = array_sum($design_thickness_number[$arv]); // 检测组数
+            $data['design_data']['max'][] = max($design_max[$arv]); // 最大值
+            $data['design_data']['min'][] = min($design_min[$arv]); // 最小值
+            $data['design_data']['avg_val'][] = round(array_sum($design_avg[$arv]) / sizeof($design_avg[$arv]),2); // 平均值
+            $data['design_data']['pass'][] = round(array_sum($design_percent[$arv]) / sizeof($design_percent[$arv]),2); // 合格率Ps
+
+            $data['design_data']['square_quantity'][] = array_sum($design_square_quantity[$arv]); // 方量
+            $data['design_data']['intensity_level'][] = $design_intensity_level[$arv]; // 设计等级
+            $data['design_data']['mortar_standard_deviation_1'][] = $design_mortar_standard_deviation[$arv]; // 喷砼强度 -- 标准差
+            $data['design_data']['guarantee_rate_1'][] = $design_guarantee_rate[$arv]; // 喷砼强度 -- 保证率
+            $data['design_data']['mortar_standard_deviation_2'][] = $design_mortar_standard_deviation2[$arv]; // 锚杆砂浆强度 -- 标准差
+            $data['design_data']['guarantee_rate_2'][] = $design_guarantee_rate2[$arv]; // 锚杆砂浆强度 -- 保证率
+
+            $data['design_data']['nde_quantity'][] = array_sum($design_nde_quantity[$arv]); // 施工数量(个)
+            $data['design_data']['nde_inspection_num'][] = array_sum($design_nde_inspection_num[$arv]); // 抽检根数(个)
+            $data['design_data']['detection_ratio'][] = round(array_sum($design_nde_quantity[$arv]) / array_sum($design_nde_inspection_num[$arv]),2) * (100/100); // 检测比例
+            $data['design_data']['nde_percent_num'][] = array_sum($design_nde_percent_num[$arv]); // 合格根数（个）
+            $data['design_data']['nde_model_number'] = $design_nde_model_number[$arv]; // 锚杆型号
+            $data['design_data']['nde_max'][] = max($design_nde_max[$arv]); // 锚杆长度-最大
+            $data['design_data']['nde_min'][] = min($design_nde_min[$arv]); // 锚杆长度-最小
+            $data['design_data']['nde_density_max'][] = max($design_nde_density_max[$arv]); // 注浆密实度-最大
+            $data['design_data']['nde_density_min'][] = min($design_nde_density_min[$arv]); // 注浆密实度-最小
+
+            $data['design_data']['anchor_type'][] = $design_anchor_type[$arv]; // 锚杆类型
+            $data['design_data']['drawing_load'][] = $design_drawing_load[$arv]; // 设计拉拔力
+            $data['design_data']['experiment_inspection_num'][] = array_sum($design_experiment_inspection_num[$arv]); // 检测根数（个）
+        }
+
+
+
         $data['supporting_area'] = array_sum($supporting_area_1); // 支护面积
         $data['thickness_number'] = array_sum($thickness_number_1); // 检测组数
-        $data['design_val'] = $design_val_1; // 设计值
+//        $data['design_val'] = $design_val_1; // 设计值
         $data['max'] = max($max_1); // 最大值
         $data['min'] = min($min_1); // 最小值
         $data['avg_val'] = round(array_sum($avg_1) / $count_num_1,2); // 平均值
@@ -447,7 +530,7 @@ class DivideModel extends Model
 
         $data['nde_quantity'] = array_sum($nde_quantity); // 施工数量(个)
         $data['nde_inspection_num'] = array_sum($nde_inspection_num); // 抽检根数(个)
-        $data['detection_ratio'] = round($nde_inspection_num / $nde_quantity,2) * (100/100); // 检测比例
+        $data['detection_ratio'] = round($data['nde_quantity'] / $data['nde_inspection_num'],2) * (100/100); // 检测比例
         $data['nde_percent_num'] = array_sum($nde_percent_num); // 合格根数（个）
         $data['nde_model_number'] = $nde_model_number; // 锚杆型号
         $data['nde_max'] = max($nde_max); // 锚杆长度-最大
@@ -519,6 +602,10 @@ class DivideModel extends Model
         $unit_id = $this->projectIdArr($id,$cate);
         // 根据 单元工程检验批 获取 所有的混凝土 信息
         $excavate_data = Db::name('project_hunningtu')->where(['uid'=>['in',$unit_id]])->select();
+
+        // (出口机)
+        $ex_control_criterion = []; // 控制标准
+
         $data = [];
         return ['code'=>1,'excavate_data'=>$data,'msg'=>'混凝土统计数据'];
     }
