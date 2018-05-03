@@ -21,7 +21,135 @@ class PartitionedProject extends Base
 {
     public function index()
     {
+        if(request()->isAjax()){
+            $node1 = new DivideModel();
+            $nodeStr1 = $node1->getNodeInfo_4(3);
+            $nodeStr = "[" . substr($nodeStr1, 0, -1) . "]";
+            return json($nodeStr);
+        }
         return $this->fetch();
+    }
+
+    //分部工程质量台账
+    public function level3Quality()
+    {
+        $level = '';
+        $level4 = new DivideModel();
+        $level5 = new ProjectModel();
+        $level5_kaiwa = new KaiwaModel();
+        $level5_zhihu = new ZhihuModel();
+        $level5_hunningtu = new HunningtuModel();
+        $num = array();
+        $qualified_num = array();
+        $good_num = array();
+        $good_rate = array();
+        $level4_name = array();
+        if(request()->isAjax()) {
+            $param = input('post.');
+            $pid = $param['id'];
+            $level4_data = $level4->getAllbyPID($pid);
+            $level5_num_primary = 0;
+            $level5_qualified_num_primary = 0;
+            $level5_good_num_primary = 0;
+            foreach($level4_data as $dd){
+                $level5_num = 0;
+                $level5_qualified_num = 0;
+                $level5_good_num = 0;
+                array_push($level4_name, $dd['name']);             //单元工程名
+                $level5_data = $level5->getAllbyPID($dd['id']);    //全部单元工程
+                $level5_data_primary =  $level5->getAllbyPIDandPrimary($dd['id']); //主要单元工程
+                foreach($level5_data as $data) {
+                    if ($data['cate'] == '开挖') {
+                        $level5_num += $level5_kaiwa->getNum($data['id']);
+                        $level5_qualified_num += $level5_kaiwa->getQualifiedNum($data['id']);
+                        $level5_good_num += $level5_kaiwa->getGoodNum($data['id']);
+
+                    }else if($data['cate'] == '支护'){
+                        $level5_num += $level5_zhihu->getNum($data['id']);
+                        $level5_qualified_num += $level5_zhihu->getQualifiedNum($data['id']);
+                        $level5_good_num += $level5_zhihu->getGoodNum($data['id']);
+                    }else if($data['cate'] == '混凝土'){
+                        $level5_num += $level5_hunningtu->getNum($data['id']);
+                        $level5_qualified_num += $level5_hunningtu->getQualifiedNum($data['id']);
+                        $level5_good_num += $level5_hunningtu->getGoodNum($data['id']);
+                    }
+                }
+
+                foreach($level5_data_primary as $data_primary) {
+                    if ($data_primary['cate'] == '开挖') {
+                        $level5_num_primary += $level5_kaiwa->getNum($data_primary['id']);
+                        $level5_qualified_num_primary += $level5_kaiwa->getQualifiedNum($data_primary['id']);
+                        $level5_good_num_primary += $level5_kaiwa->getGoodNum($data_primary['id']);
+
+                    }else if($data_primary['cate'] == '支护'){
+                        $level5_num_primary += $level5_zhihu->getNum($data_primary['id']);
+                        $level5_qualified_num_primary += $level5_zhihu->getQualifiedNum($data_primary['id']);
+                        $level5_good_num_primary += $level5_zhihu->getGoodNum($data_primary['id']);
+                    }else if($data_primary['cate'] == '混凝土'){
+                        $level5_num_primary += $level5_hunningtu->getNum($data_primary['id']);
+                        $level5_qualified_num_primary += $level5_hunningtu->getQualifiedNum($data_primary['id']);
+                        $level5_good_num_primary += $level5_hunningtu->getGoodNum($data_primary['id']);
+                    }
+                }
+
+                array_push($num, $level5_num);
+                array_push($qualified_num, $level5_qualified_num);
+                array_push($good_num, $level5_good_num);
+                if($level5_num>0){
+                    array_push($good_rate, floor($level5_good_num/$level5_num*100)/100);
+                }else{
+                    array_push($good_rate,0);
+                }
+
+            }
+
+            //合计数目
+            array_push($num, array_sum($num));
+            array_push($qualified_num, array_sum($qualified_num));
+            array_push($good_num, array_sum($good_num));
+            if(end($num)>0){
+                array_push($good_rate,  floor(end($good_num)/end($num)*100)/100);
+            }else{
+                array_push($good_rate,0);
+            }
+
+
+            //主要单位工程数目
+            array_push($num, $level5_num_primary);
+            array_push($qualified_num, $level5_qualified_num_primary);
+            array_push($good_num, $level5_good_num_primary);
+            if($level5_num_primary>0){
+                array_push($good_rate,  floor($level5_good_num_primary/$level5_num_primary*100)/100);
+            }else{
+                array_push($good_rate,0);
+            }
+
+            if(!empty($param['accident'])){
+                $level4->editNode($param);
+            }
+            $level3_data = $level4->getOnebyID($pid);
+            $accident = $level3_data['accident'];
+            $primary = $level3_data['primary'];
+            //计算优良等级
+            if($num[count($num)-2] != 0 && $num[count($num)-2] == ($qualified_num[count($qualified_num)-2] + $good_num[count($good_num)-2])){
+                $level = '合格';
+                if($level5_num_primary == 0 && $accident == '否' && $good_rate[count($good_rate)-1]){
+                    $level = '优良';
+                }
+                if(end($good_rate) >= 0.9 && $accident == '否' && $good_rate[count($good_rate)-1]){
+                    $level = '优良';
+                }
+            }else{
+                $level = '尚未评定';
+            }
+
+            $param['level'] = $level;
+            $level4->editNode($param);
+
+
+            return json(['code' => 1, 'column1' => $level4_name, 'column2' => $num, 'column3' => $qualified_num, 'column4' => $good_num, 'column5' => $good_rate, 'primary' => $primary, 'accident' => $accident, 'level' => $level]);
+
+        }
     }
 
 }

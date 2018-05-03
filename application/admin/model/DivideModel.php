@@ -39,10 +39,22 @@ class DivideModel extends Model
      * [getNodeInfo 获取工程划分5级节点树结构数据的前4级]
      *
      */
-    public function getNodeInfo_4()
+    public function getNodeInfo_4($level = 0)
     {
-        $result = $this->field('id,name,pid')->select();
         $str = "";
+        if($level == 2){
+            $pid = $this->where(['pid'=>0])->column('id');
+            array_push($pid,0);
+            $result = $this->where(['pid'=>['in',$pid]])->field('id,name,pid')->select();
+        }else if($level == 3){
+            $pid = $this->where(['pid'=>0])->column('id');
+            $new_pid = $this->where(['pid'=>['in',$pid]])->column('id');
+            array_push($new_pid,0);
+            $result = $this->where(['pid'=>['in',$new_pid]])->whereOr(['id'=>['in',$new_pid]])->field('id,name,pid')->select();
+        }else{
+            $result = $this->field('id,name,pid')->select();
+        }
+
 
         foreach($result as $key=>$vo){
             $str .= '{ "id": "' . $vo['id'] . '", "pId":"' . $vo['pid'] . '", "name":"' . $vo['name'].'"';
