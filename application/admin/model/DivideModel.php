@@ -421,8 +421,8 @@ class DivideModel extends Model
                 $data_2 = $this->getDesign($v['id'],2);
                 $mortar_standard_deviation_2[] = $data_2['design_val'];
                 // 保证率
-                $guarantee_rate_1 = $data_1['guarantee_rate_1'];
-                $guarantee_rate_2 = $data_2['guarantee_rate_1'];
+                $guarantee_rate_1[] = $data_1['guarantee_rate_1'];
+                $guarantee_rate_2[] = $data_2['guarantee_rate_1'];
 
                 $nde_quantity[] = $v['nde_quantity']; // 该统计项目下所有施工数量之和
                 $nde_inspection_num[] = $v['nde_inspection_num']; // 该统计项目下所有抽检根数之和。
@@ -601,13 +601,31 @@ class DivideModel extends Model
     {
         $unit_id = $this->projectIdArr($id,$cate);
         // 根据 单元工程检验批 获取 所有的混凝土 信息
-        $excavate_data = Db::name('project_hunningtu')->where(['uid'=>['in',$unit_id]])->select();
+        $id_arr = Db::name('project_hunningtu')->where(['uid'=>['in',$unit_id]])->column('id');
+        $h_data = Db::name('project_hnt_attachment')->where(['hid'=>['in',$id_arr]])->select();
+        if(sizeof($h_data) < 1){
+            return ['code'=>1,'excavate_data'=>[],'msg'=>'支护统计数据 -- 数据为空'];
+        }
+        // unit_type 1 施工单位 2 监理单位
+        $data['builder'] = $this->getConcrete($h_data,1);
+        $data['supervision_unit'] = $this->getConcrete($h_data,2);
 
+        return ['code'=>1,'excavate_data'=>$data,'msg'=>'混凝土统计数据'];
+    }
+
+    public function getConcrete($h_data,$type)
+    {
         // (出口机)
         $ex_control_criterion = []; // 控制标准
 
+        foreach ($h_data as $v) {
+            if($v['unit_type'] == $type) {
+                $ex_control_criterion[] = $v['ex_control_criterion'];
+            }
+        }
+
         $data = [];
-        return ['code'=>1,'excavate_data'=>$data,'msg'=>'混凝土统计数据'];
+        return $data;
     }
 
     // 排水孔
