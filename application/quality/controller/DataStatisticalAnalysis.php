@@ -41,6 +41,9 @@ class DataStatisticalAnalysis extends Base
     /**
      * 数据统计分析
      * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      * @author hutao
      */
     public function excavate()
