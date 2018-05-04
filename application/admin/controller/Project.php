@@ -49,7 +49,11 @@ class project extends Base
                 $data = [
                     'uid' => $project->getLastInsID()
                 ];
-                if($param['cate'] == '开挖'){
+                if($param['cate'] == '明挖'){
+                    $data['type'] = 1;
+                    $kaiwa->insertKaiwa($data);
+                }else if($param['cate'] == '洞挖'){
+                    $data['type'] = 2;
                     $kaiwa->insertKaiwa($data);
                 }else if( $param['cate'] == '支护'){
                     $zhihu->insertZhihu($data);
@@ -61,6 +65,11 @@ class project extends Base
             }
             else if(!empty($param['id']))
             {
+                if($param['cate'] == '明挖'){
+                    Db::name('project_kaiwa')->where(['uid'=>$param['id']])->update(['type'=>1]);
+                }else if($param['cate'] == '洞挖'){
+                    Db::name('project_kaiwa')->where(['uid'=>$param['id']])->update(['type'=>2]);
+                }
                 $flag = $project->editProject($param);
                 acceptanceWarning();//刷新验收预警
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
@@ -77,9 +86,7 @@ class project extends Base
     public function projectEdit()
     {
         $project = new ProjectModel();
-
         if(request()->isAjax()){
-
             $param = input('post.');
             $data = $project->getOneProject($param['id']);
             $post_length = strlen($data['post_sn']);

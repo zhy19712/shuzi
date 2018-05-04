@@ -66,7 +66,7 @@ class ProjectModel extends Model
     {
         $flag = [];
         $data = $this->where('id',$id)->find();
-        if($data['cate'] == '开挖'){
+        if($data['cate'] == '开挖' || $data['cate'] == '明挖' || $data['cate'] == '洞挖'){
             $kaiwa = new KaiwaModel();
             $flag = $kaiwa->delKaiwaBuUid($id);
         }else if($data['cate'] == '支护'){
