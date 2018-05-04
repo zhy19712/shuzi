@@ -16,7 +16,7 @@ class SurveyDataModel extends Model
 {
     protected $name = 'project_survey_data';
 
-    public function insertMater($param)
+    public function insertSurvey($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -30,7 +30,7 @@ class SurveyDataModel extends Model
         }
     }
 
-    public function editMater($param)
+    public function editSurvey($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['id' => $param['id']]);
@@ -44,7 +44,7 @@ class SurveyDataModel extends Model
         }
     }
 
-    public function delMater($id)
+    public function delSurvey($id)
     {
         try{
             $this->where('id', $id)->delete();

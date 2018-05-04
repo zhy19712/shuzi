@@ -483,10 +483,14 @@ class Upload extends Base
                 'date' => $date,
                 'path' => $path,
                 'filename' => $filename,
+                'k_check_single_number' => $k_check_single_number,
+                'k_reception_time' => $k_reception_time,
+                'h_check_single_number' => $h_check_single_number,
+                'h_reception_time' => $h_reception_time
             ];
 
             if(empty($major_key)){
-                $flag = $survey->insertMater($data);
+                $flag = $survey->insertSurvey($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
                 $data_older = $survey->getOne($major_key);
@@ -496,8 +500,8 @@ class Upload extends Base
                 if(file_exists($data_older['path'])){
                     unlink($data_older['path']);
                 }
-                $data['major_key'] = $major_key;
-                $flag = $survey->editMater($data);
+                $data['id'] = $major_key;
+                $flag = $survey->editSurvey($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{

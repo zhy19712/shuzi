@@ -854,7 +854,7 @@ class DivideModel extends Model
             // (出口机)
             $data['control_data']['ex_control_criterion'][] = $arv; // 相同的设计值
             $data['control_data']['ex_test_groups'][] = array_sum($control_ex_test_groups[$arv]); // 检测组数（个）
-            $data['control_data']['ex_qualified_groups'] = array_sum($control_ex_qualified_groups[$arv]); // 合格组数（个）
+            $data['control_data']['ex_qualified_groups'][] = array_sum($control_ex_qualified_groups[$arv]); // 合格组数（个）
             $data['control_data']['ex_max'][] = max($control_ex_max[$arv]); // 最大值
             $data['control_data']['ex_min'][] = min($control_ex_min[$arv]); // 最小值
             $data['control_data']['ex_avg'][] = round(array_sum($control_ex_avg[$arv]) / sizeof($control_ex_avg[$arv]),2); // 平均值
