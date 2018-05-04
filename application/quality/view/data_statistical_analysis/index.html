@@ -182,9 +182,9 @@
                                                     </ul>
                                                     <div id="myTabContentC" class="tab-content">
                                                         <!--喷砼厚度-->
-                                                        <div class="tab-pane fade in active">
+                                                        <div class="tab-pane fade active in" id="hotcreteThickness">
                                                             <div class="row">
-                                                                <table class="table table-bordered" id="hotcreteThickness">
+                                                                <table class="table table-bordered" id="hotcreteThicknessF">
                                                                     <caption>喷砼厚度</caption>
                                                                     <thead>
                                                                         <tr>
@@ -854,9 +854,9 @@
                                                     </ul>
                                                     <div id="myTabContentD" class="tab-content">
                                                         <!--出机口温度-->
-                                                        <div class="tab-pane fade in active" id="outletTemperature">
+                                                        <div class="tab-pane fade active in" id="outletTemperature">
                                                             <div class="row">
-                                                                <table class="table table-bordered">
+                                                                <table class="table table-bordered"  id="outletTemperatureF">
                                                                     <caption>出机口温度</caption>
                                                                     <thead>
                                                                         <tr>
@@ -871,21 +871,31 @@
                                                                     </thead>
                                                                     <tbody>
 
+
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="table table-bordered"  id="outletTemperatureT">
+                                                                    <caption>出机口温度总数据</caption>
+                                                                    <thead>
                                                                     <tr>
-                                                                        <td>23</td>
-                                                                        <td>9</td>
-                                                                        <td>23</td>
-                                                                        <td>65</td>
-                                                                        <td>43</td>
-                                                                        <td>55</td>
-                                                                        <td>68</td>
+                                                                        <th>控制标准（℃）</th>
+                                                                        <th>检测组数（个）</th>
+                                                                        <th>合格组数（个）</th>
+                                                                        <th>最大值（℃）</th>
+                                                                        <th>最小值（℃）</th>
+                                                                        <th>平均值（℃）</th>
+                                                                        <th>合格率（%）</th>
                                                                     </tr>
+                                                                    </thead>
+                                                                    <tbody>
+
+
                                                                     </tbody>
                                                                 </table>
                                                             </div>
                                                             <div class="row" style="padding-top: 20px">
                                                                 <!--最大值最小值平均值柱状图-->
-                                                                <div class="col-xs-6">
+                                                                <div class="col-xs-12">
                                                                     <div id="mainBarOutletTemp" style="height:400px;" class="main"></div>
                                                                 </div>
                                                                 <!--合格率柱状图-->
@@ -896,10 +906,6 @@
                                                                 <div class="col-xs-6">
                                                                     <div id="mainPointOutletTemp" style="height:400px;" class="main"></div>
                                                                 </div>
-                                                                <!--支护面积柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainPieOutletTemp" style="height:400px;" class="main"></div>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                         <!--入仓温度-->
@@ -907,60 +913,58 @@
                                                             <div class="row">
                                                                 <table class="table table-bordered">
                                                                     <caption>入仓温度</caption>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>检测次数（次）</th>
+                                                                            <th>最大值（℃）</th>
+                                                                            <th>最小值（℃）</th>
+                                                                            <th>平均值（℃）</th>
+                                                                            <th>合格次数（次）</th>
+                                                                            <th>合格率（%）</th>
+                                                                        </tr>
+                                                                    </thead>
                                                                     <tbody>
-                                                                    <tr>
-                                                                        <td>检测次数（次）</td>
-                                                                        <td>最大值（℃）</td>
-                                                                        <td>最小值（℃）</td>
-                                                                        <td>平均值（℃）</td>
-                                                                        <td>合格次数（次）</td>
-                                                                        <td>合格率（%）</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>9</td>
-                                                                        <td>23</td>
-                                                                        <td>65</td>
-                                                                        <td>43</td>
-                                                                        <td>55</td>
-                                                                        <td>68</td>
-                                                                    </tr>
+
 
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                            <div class="row" style="padding-top: 20px">
-                                                                <!--最大值最小值平均值柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainBarEntryTemp" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--合格率柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainLineEntryTemp" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--监测组数柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainPointEntryTemp" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--支护面积柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainPieEntryTemp" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                            </div>
+                                                            <!--<div class="row" style="padding-top: 20px">-->
+                                                                <!--&lt;!&ndash;最大值最小值平均值柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainBarEntryTemp" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                                <!--&lt;!&ndash;合格率柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainLineEntryTemp" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                                <!--&lt;!&ndash;监测组数柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainPointEntryTemp" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                                <!--&lt;!&ndash;支护面积柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainPieEntryTemp" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
                                                         </div>
                                                         <!--浇筑温度-->
                                                         <div class="tab-pane fade" id="pouringTemperature">
                                                             <div class="row">
                                                                 <table class="table table-bordered">
                                                                     <caption>浇筑温度</caption>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>检测次数（次）</th>
+                                                                            <th>最大值（℃）</th>
+                                                                            <th>最小值（℃）</th>
+                                                                            <th>平均值（℃）</th>
+                                                                            <th>合格次数（次）</th>
+                                                                            <th>合格率（%）</th>
+                                                                        </tr>
+                                                                    </thead>
                                                                     <tbody>
-                                                                    <tr>
-                                                                        <td>检测次数（次）</td>
-                                                                        <td>最大值（℃）</td>
-                                                                        <td>最小值（℃）</td>
-                                                                        <td>平均值（℃）</td>
-                                                                        <td>合格次数（次）</td>
-                                                                        <td>合格率（%）</td>
-                                                                    </tr>
+
                                                                     <tr>
                                                                         <td>9</td>
                                                                         <td>23</td>
@@ -972,24 +976,24 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                            <div class="row" style="padding-top: 20px">
-                                                                <!--最大值最小值平均值柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainBarPouringTemp" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--合格率柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainLinePouringTemp" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--监测组数柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainPointPouringTemp" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--支护面积柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainPiePouringTemp" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                            </div>
+                                                            <!--<div class="row" style="padding-top: 20px">-->
+                                                                <!--&lt;!&ndash;最大值最小值平均值柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainBarPouringTemp" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                                <!--&lt;!&ndash;合格率柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainLinePouringTemp" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                                <!--&lt;!&ndash;监测组数柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainPointPouringTemp" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                                <!--&lt;!&ndash;支护面积柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainPiePouringTemp" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
                                                         </div>
                                                         <!--混凝土拌合物-->
                                                         <div class="tab-pane fade" id="mixtureTemperature">
@@ -1031,25 +1035,55 @@
                                                                 <div class="col-xs-6">
                                                                     <div id="mainPointMixture" style="height:400px;" class="main"></div>
                                                                 </div>
-                                                                <!--支护面积柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainPieMixture" style="height:400px;" class="main"></div>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                         <!--混凝土抗压强度-->
                                                         <div class="tab-pane fade" id="compressiveStrength">
-                                                            <table class="table table-bordered" id="compressiveStrengthS">
-                                                                <caption>混凝土抗压强度(施工单位)</caption>
-                                                                <tbody>
-                                                                <tr>
-                                                                    <td>期龄（d）</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>23</td>
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
+                                                            <div class="row">
+                                                                <table class="table table-bordered" id="compressiveStrengthS">
+                                                                    <caption>混凝土抗压强度(施工单位)</caption>
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <th>设计指标（Mpa）</th>
+                                                                        <th>期龄（d）</th>
+                                                                        <th>检测组数</th>
+                                                                        <th>最大值（Mpa）</th>
+                                                                        <th>最小值（Mpa）</th>
+                                                                        <th>平均值（Mpa）</th>
+                                                                        <th>标准差（Mpa）</th>
+                                                                        <th>保证率（%）</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+
+                                                                    <tr>
+                                                                        <td>23</td>
+                                                                        <td>23</td>
+                                                                        <td>23</td>
+                                                                        <td>23</td>
+                                                                        <td>23</td>
+                                                                        <td>23</td>
+                                                                        <td>23</td>
+                                                                        <td>23</td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div class="row" style="padding-top: 20px">
+                                                                <!--最大值最小值平均值柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainBarCompreS" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                                <!--合格率柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainLineCompreS" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                                <!--监测组数柱状图-->
+                                                                <div class="col-xs-6">
+                                                                    <div id="mainPointCompreS" style="height:400px;" class="main"></div>
+                                                                </div>
+                                                            </div>
+
                                                             <table class="table table-bordered" id="compressiveStrengthM">
                                                                 <caption>混凝土抗压强度(监理单位)</caption>
                                                                 <tbody>
@@ -1316,22 +1350,23 @@
                 var myChartBarOutletTemp = echarts.init(document.getElementById('mainBarOutletTemp'));
                 var myChartLineOutletTemp = echarts.init(document.getElementById('mainLineOutletTemp'));
                 var myChartPointOutletTemp = echarts.init(document.getElementById('mainPointOutletTemp'));
-                var myChartPieOutletTemp = echarts.init(document.getElementById('mainPieOutletTemp'));
                 //入口温度
-                var myChartBarEntryTemp = echarts.init(document.getElementById('mainBarEntryTemp'));
-                var myChartLineEntryTemp = echarts.init(document.getElementById('mainLineEntryTemp'));
-                var myChartPointEntryTemp = echarts.init(document.getElementById('mainPointEntryTemp'));
-                var myChartPieEntryTemp = echarts.init(document.getElementById('mainPieEntryTemp'));
+                // var myChartBarEntryTemp = echarts.init(document.getElementById('mainBarEntryTemp'));
+                // var myChartLineEntryTemp = echarts.init(document.getElementById('mainLineEntryTemp'));
+                // var myChartPointEntryTemp = echarts.init(document.getElementById('mainPointEntryTemp'));
+                // var myChartPieEntryTemp = echarts.init(document.getElementById('mainPieEntryTemp'));
                 //浇筑温度
-                var myChartBarPouringTemp = echarts.init(document.getElementById('mainBarPouringTemp'));
-                var myChartLinePouringTemp = echarts.init(document.getElementById('mainLinePouringTemp'));
-                var myChartPointPouringTemp = echarts.init(document.getElementById('mainPointPouringTemp'));
-                var myChartPiePouringTemp = echarts.init(document.getElementById('mainPiePouringTemp'));
-                //混凝土拌合物
+                // var myChartBarPouringTemp = echarts.init(document.getElementById('mainBarPouringTemp'));
+                // var myChartLinePouringTemp = echarts.init(document.getElementById('mainLinePouringTemp'));
+                // var myChartPointPouringTemp = echarts.init(document.getElementById('mainPointPouringTemp'));
+                //混凝土拌合物mainBarCompreS
                 var myChartBarMixture = echarts.init(document.getElementById('mainBarMixture'));
                 var myChartLineMixture = echarts.init(document.getElementById('mainLineMixture'));
                 var myChartPointMixture = echarts.init(document.getElementById('mainPointMixture'));
-                var myChartPieMixture = echarts.init(document.getElementById('mainPieMixture'));
+                //混凝土强度
+                var myChartBarCompreS = echarts.init(document.getElementById('mainBarCompreS'));
+                var myChartLineCompreS = echarts.init(document.getElementById('mainLineCompreS'));
+                var myChartPointCompreS = echarts.init(document.getElementById('mainPointCompreS'));
                 //排水孔
                 var myChartBarDrainage = echarts.init(document.getElementById('mainBarDrainage'));
                 var myChartLineDrainage = echarts.init(document.getElementById('mainLineDrainage'));
@@ -2134,7 +2169,7 @@
                                     for (var i = 0;i<design_val.length;i++){
                                         strThickness += '<tr><td>'+design_val[i]+'</td><td>'+supporting_area[i]+'</td><td>'+thickness_number[i]+'</td><td>'+max[i]+'</td><td>'+min[i]+'</td><td>'+avg_val[i]+'</td><td>'+pass[i]+'</td></tr>';
                                     }
-                                    $("#hotcreteThickness tbody").empty().append(strThickness);
+                                    $("#hotcreteThicknessF tbody").empty().append(strThickness);
                                     var strThicknessT = '';
                                     strThicknessT = '<tr><td>'+data.supporting_area+'</td><td>'+data.thickness_number+'</td><td>'+data.max+'</td><td>'+data.min+'</td><td>'+data.avg_val+'</td><td>'+data.pass+'</td></tr>';
                                     $("#hotcreteThicknessT tbody").empty().append(strThicknessT);
@@ -3738,21 +3773,35 @@
                             dataType:'json',
                             success:function (res) {
                                 console.log(res);
-                                var data = res.excavate_data.builder;
+                                var main = res.excavate_data.builder;
+                                var data = res.excavate_data.builder.control_data;
                                 var ex_control_criterion = data.ex_control_criterion;//控制标准
                                 var ex_test_groups = data.ex_test_groups;//监测组数
+                                var ex_qualified_groups = data.ex_qualified_groups;
                                 var ex_max = data.ex_max;
                                 var ex_min = data.ex_min;
                                 var ex_avg = data.ex_avg;
                                 var ex_pass = data.ex_pass;
-                                console.log(ex_control_criterion);
-                                console.log(ex_test_groups);
-                                console.log(ex_max);
-                                console.log(ex_pass);
+                                //拌合物
+                                var mix_design = data.mix_design;
+                                var mix_num = data.mix_num;
+                                var mix_qualified_num = data.mix_qualified_num;
+                                var mix_max = data.mix_max;
+                                var mix_min = data.mix_min;
+                                var mix_avg = data.mix_avg;
+                                var mix_pass = data.mix_pass;
                                 if (res.code === 1) {
                                     //混凝土工程
                                     //出机口温度
                                     //最大值最小值柱状图
+                                    var strOutlet = '';
+                                    for (var i = 0; i < ex_control_criterion.length; i++) {
+                                        strOutlet += '<tr><td>'+ex_control_criterion[i]+'</td><td>'+ex_test_groups[i]+'</td><td>'+ex_qualified_groups[i]+'</td><td>'+ex_max[i]+'</td><td>'+ex_min[i]+'</td><td>'+ex_avg[i]+'</td><td>'+ex_pass[i]+'</td></tr>';
+                                    }
+                                    $("#outletTemperatureF tbody").empty().append(strOutlet);
+                                    var strOutletT = '';
+                                    strOutletT += '<tr><td>'+main.ex_test_groups+'</td><td>'+main.ex_qualified_groups+'</td><td>'+main.ex_max+'</td><td>'+main.ex_min+'</td><td>'+main.ex_avg+'</td><td>'+main.ex_pass+'</td></tr>';
+                                    $("#outletTemperatureT tbody").empty().append(strOutletT);
                                     myChartBarOutletTemp.setOption({
                                         title: {
                                             text: '数值分析（℃）'
@@ -3864,13 +3913,17 @@
                                     //监测点数柱状图
                                     myChartPointOutletTemp.setOption({
                                         title: {
-                                            text: '监测点数（个）'
+                                            text: '监测结果'
                                         },
+                                        color: ['#EED5B7', '#FFC125'],
                                         tooltip: {
                                             trigger: 'axis',
                                             axisPointer: {
                                                 type: 'shadow'
                                             }
+                                        },
+                                        legend: {
+                                            data: ['检测次数', '合格次数']
                                         },
                                         grid: {
 
@@ -3882,194 +3935,331 @@
                                                 var arr = [];
                                                 for (var i = 0; i < ex_control_criterion.length; i++) {
                                                     arr.push("控制标准" + ex_control_criterion[i]);
-
                                                 }
                                                 return arr;
                                             })()
                                         },
                                         yAxis: {
-
                                             type: 'value',
                                             boundaryGap: [0, 0.01]
                                         },
 
                                         series: [
                                             {
-                                                name: '检测点数',
-                                                barWidth: 40,
+                                                name: '检查次数',
                                                 type: 'bar', //柱状图
-                                                data:ex_test_groups
+                                                data: mix_num
+                                            },
+                                            {
+                                                name: '合格次数',
+                                                type: 'bar',
+                                                data: mix_qualified_num
                                             }
                                         ]
                                     });
-
-
+                                    var strEntery = '';
+                                    strEntery = '<tr><td>'+main.be_measurement+'</td><td>'+main.be_max+'</td><td>'+main.be_min+'</td><td>'+main.be_avg+'</td><td>'+main.be_num+'</td><td>'+main.be_pass+'</td></tr>';
+                                    $("#entryTemperature table tbody").empty().append(strEntery);
                                     //入口温度
-                                    myChartBarEntryTemp.setOption({
-                                        title: {
-                                            text: '数值分析（cm）'
-                                        },
-                                        color: ['#EED5B7', '#FFC125', '#1E90FF'],
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        legend: {
-                                            data: ['最大值', '平均值', '最小值']
-                                        },
-                                        grid: {
-
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
-                                        },
-                                        yAxis: {
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '最大值',
-                                                type: 'bar', //柱状图
-                                                data: [88,88,88,88]
-                                            },
-                                            {
-                                                name: '平均值',
-                                                type: 'bar',
-                                                data: [77,77,77,77]
-                                            },
-                                            {
-                                                name: '最小值',
-                                                type: 'bar',
-                                                data: [66,66,66,66]
-                                            }
-                                        ]
-                                    });
-                                    //合格率柱状图
-                                    myChartLineEntryTemp.setOption({
-                                        title: {
-                                            text: '合格率'
-                                        },
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            formatter: '{c}%',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        legend: {
-                                            data: ['合格率']
-                                        },
-                                        grid: {
-                                            left: '3%',
-                                            right: '4%',
-                                            bottom: '3%',
-                                            containLabel: true
-                                        },
-
-                                        xAxis: {
-                                            type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度'],
-                                            itemStyle: {
-                                                normal: {
-                                                    label: {
-                                                        show: true,
-                                                        positiong: 'top',
-                                                        formatter: '{c}%'
-                                                    }
-                                                }
-                                            },
-                                            boundaryGap: [0, 0.01]
-                                        },
-                                        yAxis: {
-                                            axisLabel: {
-                                                formatter: '{value} %'
-                                            }
-                                        },
-                                        series: [
-                                            {
-                                                name: '合格率',
-                                                type: 'bar',
-                                                barWidth: 40,
-                                                stack: '总量',
-                                                data: [60,30,40]
-                                            }
-                                        ]
-                                    });
-                                    //监测点数柱状图
-                                    myChartPointEntryTemp.setOption({
-                                        title: {
-                                            text: '监测点数（个）'
-                                        },
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        grid: {
-
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
-                                        },
-                                        yAxis: {
-
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '检测点数',
-                                                barWidth: 40,
-                                                type: 'bar', //柱状图
-                                                data: [60,30,40]
-                                            }
-                                        ]
-                                    });
-                                    //支护面积面积
-                                    myChartPieEntryTemp.setOption({
-                                        title: {
-                                            text: '支护面积'
-                                        },
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        grid: {
-
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-                                        yAxis: {
-                                            type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '检测点数',
-                                                barWidth: 40,
-                                                type: 'bar', //柱状图
-                                                data: [60,30,40]
-                                            }
-                                        ]
-                                    });
+                                    // myChartBarEntryTemp.setOption({
+                                    //     title: {
+                                    //         text: '数值分析（cm）'
+                                    //     },
+                                    //     color: ['#EED5B7', '#FFC125', '#1E90FF'],
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['最大值', '平均值', '最小值']
+                                    //     },
+                                    //     grid: {
+                                    //
+                                    //         containLabel: true
+                                    //     },
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: ['超挖', '欠挖', '不平整度']
+                                    //     },
+                                    //     yAxis: {
+                                    //         type: 'value',
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //
+                                    //     series: [
+                                    //         {
+                                    //             name: '最大值',
+                                    //             type: 'bar', //柱状图
+                                    //             data: [88,88,88,88]
+                                    //         },
+                                    //         {
+                                    //             name: '平均值',
+                                    //             type: 'bar',
+                                    //             data: [77,77,77,77]
+                                    //         },
+                                    //         {
+                                    //             name: '最小值',
+                                    //             type: 'bar',
+                                    //             data: [66,66,66,66]
+                                    //         }
+                                    //     ]
+                                    // });
+                                    // //合格率柱状图
+                                    // myChartLineEntryTemp.setOption({
+                                    //     title: {
+                                    //         text: '合格率'
+                                    //     },
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         formatter: '{c}%',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['合格率']
+                                    //     },
+                                    //     grid: {
+                                    //         left: '3%',
+                                    //         right: '4%',
+                                    //         bottom: '3%',
+                                    //         containLabel: true
+                                    //     },
+                                    //
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: ['超挖', '欠挖', '不平整度'],
+                                    //         itemStyle: {
+                                    //             normal: {
+                                    //                 label: {
+                                    //                     show: true,
+                                    //                     positiong: 'top',
+                                    //                     formatter: '{c}%'
+                                    //                 }
+                                    //             }
+                                    //         },
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //     yAxis: {
+                                    //         axisLabel: {
+                                    //             formatter: '{value} %'
+                                    //         }
+                                    //     },
+                                    //     series: [
+                                    //         {
+                                    //             name: '合格率',
+                                    //             type: 'bar',
+                                    //             barWidth: 40,
+                                    //             stack: '总量',
+                                    //             data: [60,30,40]
+                                    //         }
+                                    //     ]
+                                    // });
+                                    // //监测点数柱状图
+                                    // myChartPointEntryTemp.setOption({
+                                    //     title: {
+                                    //         text: '监测点数（个）'
+                                    //     },
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     grid: {
+                                    //
+                                    //         containLabel: true
+                                    //     },
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: ['超挖', '欠挖', '不平整度']
+                                    //     },
+                                    //     yAxis: {
+                                    //
+                                    //         type: 'value',
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //
+                                    //     series: [
+                                    //         {
+                                    //             name: '检测点数',
+                                    //             barWidth: 40,
+                                    //             type: 'bar', //柱状图
+                                    //             data: [60,30,40]
+                                    //         }
+                                    //     ]
+                                    // });
+                                    // //支护面积面积
+                                    // myChartPieEntryTemp.setOption({
+                                    //     title: {
+                                    //         text: '支护面积'
+                                    //     },
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     grid: {
+                                    //
+                                    //         containLabel: true
+                                    //     },
+                                    //     xAxis: {
+                                    //         type: 'value',
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //     yAxis: {
+                                    //         type: 'category',
+                                    //         data: ['超挖', '欠挖', '不平整度']
+                                    //     },
+                                    //
+                                    //     series: [
+                                    //         {
+                                    //             name: '检测点数',
+                                    //             barWidth: 40,
+                                    //             type: 'bar', //柱状图
+                                    //             data: [60,30,40]
+                                    //         }
+                                    //     ]
+                                    // });
 
                                     //浇筑温度
+                                    // myChartBarPouringTemp.setOption({
+                                    //     title: {
+                                    //         text: '数值分析（cm）'
+                                    //     },
+                                    //     color: ['#EED5B7', '#FFC125', '#1E90FF'],
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['最大值', '平均值', '最小值']
+                                    //     },
+                                    //     grid: {
+                                    //
+                                    //         containLabel: true
+                                    //     },
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: ['超挖', '欠挖', '不平整度']
+                                    //     },
+                                    //     yAxis: {
+                                    //         type: 'value',
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //
+                                    //     series: [
+                                    //         {
+                                    //             name: '最大值',
+                                    //             type: 'bar', //柱状图
+                                    //             data: [88,88,88,88]
+                                    //         },
+                                    //         {
+                                    //             name: '平均值',
+                                    //             type: 'bar',
+                                    //             data: [77,77,77,77]
+                                    //         },
+                                    //         {
+                                    //             name: '最小值',
+                                    //             type: 'bar',
+                                    //             data: [66,66,66,66]
+                                    //         }
+                                    //     ]
+                                    // });
+                                    // //合格率柱状图
+                                    // myChartLinePouringTemp.setOption({
+                                    //     title: {
+                                    //         text: '合格率'
+                                    //     },
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         formatter: '{c}%',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['合格率']
+                                    //     },
+                                    //     grid: {
+                                    //         left: '3%',
+                                    //         right: '4%',
+                                    //         bottom: '3%',
+                                    //         containLabel: true
+                                    //     },
+                                    //
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: ['超挖', '欠挖', '不平整度'],
+                                    //         itemStyle: {
+                                    //             normal: {
+                                    //                 label: {
+                                    //                     show: true,
+                                    //                     positiong: 'top',
+                                    //                     formatter: '{c}%'
+                                    //                 }
+                                    //             }
+                                    //         },
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //     yAxis: {
+                                    //         axisLabel: {
+                                    //             formatter: '{value} %'
+                                    //         }
+                                    //     },
+                                    //     series: [
+                                    //         {
+                                    //             name: '合格率',
+                                    //             type: 'bar',
+                                    //             barWidth: 40,
+                                    //             stack: '总量',
+                                    //             data: [60,30,40]
+                                    //         }
+                                    //     ]
+                                    // });
+                                    // //监测点数柱状图
+                                    // myChartPointPouringTemp.setOption({
+                                    //     title: {
+                                    //         text: '监测点数（个）'
+                                    //     },
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     grid: {
+                                    //
+                                    //         containLabel: true
+                                    //     },
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: ['超挖', '欠挖', '不平整度']
+                                    //     },
+                                    //     yAxis: {
+                                    //
+                                    //         type: 'value',
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //
+                                    //     series: [
+                                    //         {
+                                    //             name: '检测点数',
+                                    //             barWidth: 40,
+                                    //             type: 'bar', //柱状图
+                                    //             data: [60,30,40]
+                                    //         }
+                                    //     ]
+                                    // });
+                                    var strPour = '';
+                                    strPour = '<tr><td>'+main.pouring_measurement+'</td><td>'+main.pouring_max+'</td><td>'+main.pouring_min+'</td><td>'+main.pouring_avg+'</td><td>'+main.pouring_num+'</td><td>'+main.pouring_pass+'</td></tr>';
+                                    $("#pouringTemperature table tbody").empty().append(strPour);
+                                    //混凝土拌合物
                                     myChartBarMixture.setOption({
                                         title: {
                                             text: '数值分析（cm）'
@@ -4090,7 +4280,13 @@
                                         },
                                         xAxis: {
                                             type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
+                                            data: (function () {
+                                                var arr = [];
+                                                for (var i = 0; i < mix_design.length; i++) {
+                                                    arr.push("设计指标" + mix_design[i]);
+                                                }
+                                                return arr;
+                                            })(),
                                         },
                                         yAxis: {
                                             type: 'value',
@@ -4101,17 +4297,17 @@
                                             {
                                                 name: '最大值',
                                                 type: 'bar', //柱状图
-                                                data: [88,88,88,88]
+                                                data: mix_max
                                             },
                                             {
                                                 name: '平均值',
                                                 type: 'bar',
-                                                data: [77,77,77,77]
+                                                data: mix_avg
                                             },
                                             {
                                                 name: '最小值',
                                                 type: 'bar',
-                                                data: [66,66,66,66]
+                                                data: mix_min
                                             }
                                         ]
                                     });
@@ -4139,7 +4335,13 @@
 
                                         xAxis: {
                                             type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度'],
+                                            data: (function () {
+                                                var arr = [];
+                                                for (var i = 0; i < mix_design.length; i++) {
+                                                    arr.push("设计指标" + mix_design[i]);
+                                                }
+                                                return arr;
+                                            })(),
                                             itemStyle: {
                                                 normal: {
                                                     label: {
@@ -4162,84 +4364,16 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: [60,30,40]
+                                                data: mix_pass
                                             }
                                         ]
                                     });
                                     //监测点数柱状图
                                     myChartPointMixture.setOption({
                                         title: {
-                                            text: '监测点数（个）'
+                                            text: '监测结果'
                                         },
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        grid: {
-
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
-                                        },
-                                        yAxis: {
-
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '检测点数',
-                                                barWidth: 40,
-                                                type: 'bar', //柱状图
-                                                data: [60,30,40]
-                                            }
-                                        ]
-                                    });
-                                    //支护面积面积
-                                    myChartPieMixture.setOption({
-                                        title: {
-                                            text: '支护面积'
-                                        },
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        grid: {
-
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-                                        yAxis: {
-                                            type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '检测点数',
-                                                barWidth: 40,
-                                                type: 'bar', //柱状图
-                                                data: [60,30,40]
-                                            }
-                                        ]
-                                    });
-
-                                    //混凝土拌合物
-                                    myChartBarPouringTemp.setOption({
-                                        title: {
-                                            text: '数值分析（cm）'
-                                        },
-                                        color: ['#EED5B7', '#FFC125', '#1E90FF'],
+                                        color: ['#EED5B7', '#FFC125'],
                                         tooltip: {
                                             trigger: 'axis',
                                             axisPointer: {
@@ -4247,7 +4381,7 @@
                                             }
                                         },
                                         legend: {
-                                            data: ['最大值', '平均值', '最小值']
+                                            data: ['检测组数', '合格组数']
                                         },
                                         grid: {
 
@@ -4255,7 +4389,62 @@
                                         },
                                         xAxis: {
                                             type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
+                                            data: (function () {
+                                                var arr = [];
+                                                for (var i = 0; i < mix_design.length; i++) {
+                                                    arr.push("控制标准" + mix_design[i]);
+                                                }
+                                                return arr;
+                                            })()
+                                        },
+                                        yAxis: {
+                                            type: 'value',
+                                            boundaryGap: [0, 0.01]
+                                        },
+
+                                        series: [
+                                            {
+                                                name: '检查组数',
+                                                type: 'bar', //柱状图
+                                                data: ex_test_groups
+                                            },
+                                            {
+                                                name: '合格组数',
+                                                type: 'bar',
+                                                data: ex_qualified_groups
+                                            }
+                                        ]
+                                    });
+
+
+                                    //混凝土强度
+                                    myChartBarCompreS.setOption({
+                                        title: {
+                                            text: '数值分析（cm）'
+                                        },
+                                        color: ['#EED5B7', '#FFC125', '#1E90FF','#EDD234'],
+                                        tooltip: {
+                                            trigger: 'axis',
+                                            axisPointer: {
+                                                type: 'shadow'
+                                            }
+                                        },
+                                        legend: {
+                                            data: ['最大值', '平均值', '最小值','标准差']
+                                        },
+                                        grid: {
+
+                                            containLabel: true
+                                        },
+                                        xAxis: {
+                                            type: 'category',
+                                            data: (function () {
+                                                var arr = [];
+                                                for (var i = 0; i < data.resist_design_index.length; i++) {
+                                                    arr.push("设计指标" + data.resist_design_index[i]);
+                                                }
+                                                return arr;
+                                            })(),
                                         },
                                         yAxis: {
                                             type: 'value',
@@ -4266,24 +4455,29 @@
                                             {
                                                 name: '最大值',
                                                 type: 'bar', //柱状图
-                                                data: [88,88,88,88]
+                                                data: data.resist_max
                                             },
                                             {
                                                 name: '平均值',
                                                 type: 'bar',
-                                                data: [77,77,77,77]
+                                                data: data.resist_avg
                                             },
                                             {
                                                 name: '最小值',
                                                 type: 'bar',
-                                                data: [66,66,66,66]
+                                                data: data.resist_min
+                                            },
+                                            {
+                                                name: '标准差',
+                                                type: 'bar',
+                                                data: data.mortar_standard_deviation_1
                                             }
                                         ]
                                     });
                                     //合格率柱状图
-                                    myChartLinePouringTemp.setOption({
+                                    myChartLineCompreS.setOption({
                                         title: {
-                                            text: '合格率'
+                                            text: '保证率'
                                         },
                                         tooltip: {
                                             trigger: 'axis',
@@ -4293,7 +4487,7 @@
                                             }
                                         },
                                         legend: {
-                                            data: ['合格率']
+                                            data: ['保证率']
                                         },
                                         grid: {
                                             left: '3%',
@@ -4304,7 +4498,13 @@
 
                                         xAxis: {
                                             type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度'],
+                                            data: (function () {
+                                                var arr = [];
+                                                for (var i = 0; i < data.resist_design_index.length; i++) {
+                                                    arr.push("设计指标" + data.resist_design_index[i]);
+                                                }
+                                                return arr;
+                                            })(),
                                             itemStyle: {
                                                 normal: {
                                                     label: {
@@ -4327,74 +4527,48 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: [60,30,40]
+                                                data: data.guarantee_rate_1
                                             }
                                         ]
                                     });
                                     //监测点数柱状图
-                                    myChartPointPouringTemp.setOption({
+                                    myChartPointCompreS.setOption({
                                         title: {
-                                            text: '监测点数（个）'
+                                            text: '检测组数'
                                         },
+                                        color: ['#EED5B7'],
                                         tooltip: {
                                             trigger: 'axis',
                                             axisPointer: {
                                                 type: 'shadow'
                                             }
                                         },
+                                        legend: {
+                                            data: ['检测组数']
+                                        },
                                         grid: {
-
                                             containLabel: true
                                         },
                                         xAxis: {
                                             type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
+                                            data: (function () {
+                                                var arr = [];
+                                                for (var i = 0; i < data.resist_design_index.length; i++) {
+                                                    arr.push("控制标准" + data.resist_design_index[i]);
+                                                }
+                                                return arr;
+                                            })()
                                         },
                                         yAxis: {
-
                                             type: 'value',
                                             boundaryGap: [0, 0.01]
                                         },
 
                                         series: [
                                             {
-                                                name: '检测点数',
-                                                barWidth: 40,
+                                                name: '检查组数',
                                                 type: 'bar', //柱状图
-                                                data: [60,30,40]
-                                            }
-                                        ]
-                                    });
-                                    //支护面积面积
-                                    myChartPiePouringTemp.setOption({
-                                        title: {
-                                            text: '支护面积'
-                                        },
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        grid: {
-
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-                                        yAxis: {
-                                            type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '检测点数',
-                                                barWidth: 40,
-                                                type: 'bar', //柱状图
-                                                data: [60,30,40]
+                                                data: data.resist_test_group
                                             }
                                         ]
                                     });
@@ -4627,6 +4801,10 @@
             $(this).tab('show');
         });
         $('#myTabC a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+        $('#myTabD a').click(function (e) {
             e.preventDefault();
             $(this).tab('show');
         });
