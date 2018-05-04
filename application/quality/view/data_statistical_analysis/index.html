@@ -15,12 +15,13 @@
         text-align: center;
         font-size: 18px;
     }
-    #support_engineering caption{
+    caption{
         text-indent: 5px;
         background-color: #bae2f3;
         color: #000000;
         font-weight: bold;
         font-size: 14px;
+        text-indent: 2em;
     }
     #support_engineering table td,#concrete table td{
         font-size: 12px;
@@ -181,9 +182,9 @@
                                                     </ul>
                                                     <div id="myTabContentC" class="tab-content">
                                                         <!--喷砼厚度-->
-                                                        <div class="tab-pane fade in active" id="hotcreteThickness">
+                                                        <div class="tab-pane fade in active">
                                                             <div class="row">
-                                                                <table class="table table-bordered">
+                                                                <table class="table table-bordered" id="hotcreteThickness">
                                                                     <caption>喷砼厚度</caption>
                                                                     <tbody>
                                                                     <tr>
@@ -195,15 +196,21 @@
                                                                         <td>平均值（cm）</td>
                                                                         <td>合格率（%）</td>
                                                                     </tr>
+
+                                                                    </tbody>
+                                                                </table>
+                                                                <table class="table table-bordered" id="hotcreteThicknessT">
+                                                                    <caption>喷砼厚度(总计)</caption>
+                                                                    <tbody>
                                                                     <tr>
-                                                                        <td>9</td>
-                                                                        <td>9</td>
-                                                                        <td>23</td>
-                                                                        <td>65</td>
-                                                                        <td>43</td>
-                                                                        <td>55</td>
-                                                                        <td>68</td>
+                                                                        <td>支护面积（㎡）</td>
+                                                                        <td>监测组数（个）</td>
+                                                                        <td>最大值（cm）</td>
+                                                                        <td>最小值（cm）</td>
+                                                                        <td>平均值（cm）</td>
+                                                                        <td>合格率（%）</td>
                                                                     </tr>
+
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -1023,17 +1030,21 @@
                                                         </div>
                                                         <!--混凝土抗压强度-->
                                                         <div class="tab-pane fade" id="compressiveStrength">
-                                                            <table class="table table-bordered">
+                                                            <table class="table table-bordered" id="compressiveStrengthS">
+                                                                <caption>混凝土抗压强度(施工单位)</caption>
                                                                 <tbody>
                                                                 <tr>
-                                                                    <td rowspan="2" style="width: 160px;background-color: #bae2f3;">混凝土抗压强度<br>(施工单位)</td>
                                                                     <td>期龄（d）</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>23</td>
                                                                 </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <table class="table table-bordered" id="compressiveStrengthM">
+                                                                <caption>混凝土抗压强度(监理单位)</caption>
+                                                                <tbody>
                                                                 <tr>
-                                                                    <td rowspan="2" style="width: 160px;background-color: #bae2f3;">混凝土抗压强度<br>(监理单位)</td>
                                                                     <td>期龄（d）</td>
                                                                 </tr>
                                                                 <tr>
@@ -1044,15 +1055,14 @@
                                                         </div>
                                                         <!--混凝土全面性能-->
                                                         <div class="tab-pane fade" id="comprehensivePerformance">
-                                                            <table class="table table-bordered">
+                                                            <table class="table table-bordered" id="comprehensivePerformanceS">
+                                                                <caption>混凝土全面性能(施工单位)</caption>
                                                                 <tbody>
                                                                 <tr>
-                                                                    <td rowspan="3" style="width: 160px;background-color: #bae2f3;">混凝土全面性能<br>(施工单位)</td>
                                                                     <td rowspan="2" colspan="2">设计指标</td>
                                                                     <td rowspan="2" colspan="2">期龄（d）</td>
                                                                     <td colspan="3">抗冻等级</td>
                                                                     <td colspan="3">抗渗等级</td>
-
                                                                 </tr>
                                                                 <tr>
                                                                     <td>取样组数</td>
@@ -1072,13 +1082,16 @@
                                                                     <td>5</td>
                                                                     <td>9</td>
                                                                 </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <table class="table table-bordered" id="comprehensivePerformanceM">
+                                                                <caption>混凝土全面性能(监理单位)</caption>
+                                                                <tbody>
                                                                 <tr>
-                                                                    <td rowspan="3" style="width: 160px;background-color: #bae2f3;">混凝土全面性能<br>(监理单位)</td>
                                                                     <td rowspan="2" colspan="2">设计指标</td>
                                                                     <td rowspan="2" colspan="2">期龄（d）</td>
                                                                     <td colspan="3">抗冻等级</td>
                                                                     <td colspan="3">抗渗等级</td>
-
                                                                 </tr>
                                                                 <tr>
                                                                     <td>取样组数</td>
@@ -2080,8 +2093,25 @@
                             dataType:'json',
                             success:function (res) {
                                 console.log(res);
+                                var data = res.excavate_data.builder;
+                                var design_data = data.design_data;
+                                var design_val = design_data.design_val;
+                                var supporting_area = design_data.supporting_area;
+                                var thickness_number = design_data.thickness_number;
+                                var pass = design_data.pass;
+                                var max = design_data.max;
+                                var min = design_data.min;
+                                var avg_val = design_data.avg_val;
                                 if (res.code === 1) {
                                     //喷砼厚度
+                                    var strThickness = '';
+                                    for (var i = 0;i<design_val.length;i++){
+                                        strThickness += '<tr><td>'+design_val[i]+'</td><td>'+supporting_area[i]+'</td><td>'+thickness_number[i]+'</td><td>'+max[i]+'</td><td>'+min[i]+'</td><td>'+avg_val[i]+'</td><td>'+pass[i]+'</td></tr>';
+                                    }
+                                    $("#hotcreteThickness tbody").append(strThickness);
+                                    var strThicknessT = '';
+                                    strThicknessT = '<tr><td>'+data.supporting_area+'</td><td>'+data.thickness_number+'</td><td>'+data.max+'</td><td>'+data.min+'</td><td>'+data.avg_val+'</td><td>'+data.pass+'</td></tr>';
+                                    $("#hotcreteThicknessT tbody").append(strThicknessT);
                                     //最大值最小值柱状图
                                     myChartBarThickness.setOption({
                                         title: {
@@ -2098,12 +2128,30 @@
                                             data: ['最大值', '平均值', '最小值']
                                         },
                                         grid: {
-
+                                            left: '3%',
+                                            right: '4%',
+                                            bottom: '3%',
                                             containLabel: true
                                         },
                                         xAxis: {
                                             type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
+                                            data: (function () {
+                                                var arr = [];
+                                                for (var i = 0; i < design_data.design_val.length; i++) {
+                                                    arr.push("设计等级" + design_data.design_val[i]);
+
+                                                }
+                                                return arr;
+                                            })(),
+                                            axisLabel: {
+                                                interval: 0,
+                                                //rotate: 45,//倾斜度 -90 至 90 默认为0
+                                                margin: 2,
+                                                textStyle: {
+                                                    fontWeight: "bolder",
+                                                    color: "#000000"
+                                                }
+                                            }
                                         },
                                         yAxis: {
                                             type: 'value',
@@ -2114,17 +2162,17 @@
                                             {
                                                 name: '最大值',
                                                 type: 'bar', //柱状图
-                                                data: [88,88,88,88]
+                                                data:max
                                             },
                                             {
                                                 name: '平均值',
                                                 type: 'bar',
-                                                data: [77,77,77,77]
+                                                data: avg_val
                                             },
                                             {
                                                 name: '最小值',
                                                 type: 'bar',
-                                                data: [66,66,66,66]
+                                                data: min
                                             }
                                         ]
                                     });
@@ -2152,7 +2200,14 @@
 
                                         xAxis: {
                                             type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度'],
+                                            data: (function () {
+                                                var arr = [];
+                                                for (var i = 0; i < design_data.design_val.length; i++) {
+                                                    arr.push("设计等级" + design_data.design_val[i]);
+
+                                                }
+                                                return arr;
+                                            })(),
                                             itemStyle: {
                                                 normal: {
                                                     label: {
@@ -2162,7 +2217,16 @@
                                                     }
                                                 }
                                             },
-                                            boundaryGap: [0, 0.01]
+                                            boundaryGap: [0, 0.01],
+                                            axisLabel: {
+                                                interval: 0,
+                                                //rotate: 45,//倾斜度 -90 至 90 默认为0
+                                                margin: 2,
+                                                textStyle: {
+                                                    fontWeight: "bolder",
+                                                    color: "#000000"
+                                                }
+                                            }
                                         },
                                         yAxis: {
                                             axisLabel: {
@@ -2175,7 +2239,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: [60,30,40]
+                                                data: design_data.pass
                                             }
                                         ]
                                     });
@@ -2196,7 +2260,22 @@
                                         },
                                         xAxis: {
                                             type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
+                                            data: (function () {
+                                                var arr = [];
+                                                for (var i = 0; i < design_data.design_val.length; i++) {
+                                                    arr.push("设计等级" + design_data.design_val[i]);
+                                                }
+                                                return arr;
+                                            })(),
+                                            itemStyle: {
+                                                normal: {
+                                                    label: {
+                                                        show: true,
+                                                        positiong: 'top',
+                                                        formatter: '{c}%'
+                                                    }
+                                                }
+                                            },
                                         },
                                         yAxis: {
 
@@ -2209,7 +2288,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: [30,50,60]
+                                                data: thickness_number
                                             }
                                         ]
                                     });
@@ -2234,7 +2313,23 @@
                                         },
                                         yAxis: {
                                             type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
+                                            data: (function () {
+                                                var arr = [];
+                                                for (var i = 0; i < design_data.design_val.length; i++) {
+                                                    arr.push("设计等级" + design_data.design_val[i]);
+
+                                                }
+                                                return arr;
+                                            })(),
+                                            itemStyle: {
+                                                normal: {
+                                                    label: {
+                                                        show: true,
+                                                        positiong: 'top',
+                                                        formatter: '{c}%'
+                                                    }
+                                                }
+                                            },
                                         },
 
                                         series: [
@@ -2242,7 +2337,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: [30,50,60]
+                                                data:supporting_area
                                             }
                                         ]
                                     });
@@ -3717,7 +3812,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: data.percent_of_pass
+                                                data: [60,30,40]
                                             }
                                         ]
                                     });
@@ -3751,7 +3846,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [60,30,40]
                                             }
                                         ]
                                     });
@@ -3784,7 +3879,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [60,30,40]
                                             }
                                         ]
                                     });
@@ -3882,7 +3977,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: data.percent_of_pass
+                                                data: [60,30,40]
                                             }
                                         ]
                                     });
@@ -3916,7 +4011,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [60,30,40]
                                             }
                                         ]
                                     });
@@ -3949,7 +4044,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [60,30,40]
                                             }
                                         ]
                                     });
@@ -4047,7 +4142,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: data.percent_of_pass
+                                                data: [60,30,40]
                                             }
                                         ]
                                     });
@@ -4081,7 +4176,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [60,30,40]
                                             }
                                         ]
                                     });
@@ -4114,7 +4209,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [60,30,40]
                                             }
                                         ]
                                     });
@@ -4212,7 +4307,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: data.percent_of_pass
+                                                data: [60,30,40]
                                             }
                                         ]
                                     });
@@ -4246,7 +4341,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [60,30,40]
                                             }
                                         ]
                                     });
@@ -4279,7 +4374,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [60,30,40]
                                             }
                                         ]
                                     });
