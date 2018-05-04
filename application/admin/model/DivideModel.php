@@ -554,13 +554,22 @@ class DivideModel extends Model
                     $no = $no + 1;
                 }
             }
-            $design_val = sqrt( ( pow($f,2) - $n * pow($m,2) ) / ($n-1) ); // 套用公式计算
-            $percentage = ($no / $n) * (100/100); // 百分率
+            if($n <= 1){
+                $design_val = sqrt( ( pow($f,2) - $n * pow($m,2) ) / 1 ); // 套用公式计算
+                $percentage = ($no / 1) * (100/100); // 百分率
+            }else{
+                $design_val = sqrt( ( pow($f,2) - $n * pow($m,2) ) / ($n-1) ); // 套用公式计算
+                $percentage = ($no / $n) * (100/100); // 百分率
+            }
         }
 
         $guarantee_rate_arr = [65.5,69.2,72.5,75.8,78.8,80.0,82.9,85.0,90.0,93.3,95.0,97.7,99.9];
         $t_arr = [0.40,0.50,0.60,0.70,0.80,0.84,0.95,1.04,1.28,1.50,1.65,2.0,3.0];
-        $t = round(($m - $f) / $design_val,1); // 概率度系数
+        if($design_val == 0){
+            $t = round(($m - $f) / 1,1); // 概率度系数
+        }else{
+            $t = round(($m - $f) / $design_val,1); // 概率度系数
+        }
         // 插值法计算 保证率
         $start_t = $end_t = 0;
         foreach($t_arr as $tk=>$tv){
