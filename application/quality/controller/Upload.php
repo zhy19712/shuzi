@@ -402,6 +402,13 @@ class Upload extends Base
         $welding = request()->param('welding/a'); //  焊接或连接方式
         $order_number = request()->param('order_number'); //  序号
 
+        // 水泥,粉煤灰,钢筋,粗骨料,细骨料,减水剂,速凝剂,引气剂,微膨胀剂,纤维,钢止水,橡胶止水,PVC止水,钢绞线,土工布
+        // 委托编号、报告编号、进场检测时间、使用部位、生产厂家、品种/标号/规格、批号、代表数量（t）、结论
+        for($i = 0; $i < 15;$i++){
+            $data[$i]['entrustment_number'] = $entrustment_number[$i];
+            $data[$i]['report_number'] = $report_number[$i];
+        }
+
 
         // 系统自动生成的数据
         $years = date('Y'); // 年度
