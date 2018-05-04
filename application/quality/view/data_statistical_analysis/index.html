@@ -32,6 +32,14 @@
         margin-top: 10px;
        
     }
+    .tab-content > .tab-pane{
+        display: block; /* undo display:none */
+        height: 0; /* height:0 is also invisible */
+        overflow-y: hidden; /* no-overflow */
+    }
+    .tab-content > .active{
+        height: auto; /* let the content decide it */
+    }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
 <div id="mycontent" style="width: 20%;height: 98%;display: inline-block;margin: 0 10px;background-color:#fff;overflow-x: scroll;padding-top: 20px;padding-right:10px;border-right: 1px solid #ccc;">
@@ -2062,69 +2070,16 @@
 
                         })
                     }else if(inText == '支护工程'){
-                        $("#myTabC li a").click(function (){
-                            var $this = $(this);
-                            var inerText = $this.html();
-                            if(inerText == '喷砼厚度'){
-                                myChartBarThickness.resize();
-                                myChartLineThickness.resize();
-                                myChartPointThickness.resize();
-                                myChartPieThickness.resize();
-                            }else if(inerText == '喷砼强度'){
-                                myChartBarStrengthS.resize();
-                                myChartLineStrengthS.resize();
-                                myChartPointStrengthS.resize();
-                                myChartPieStrengthS.resize();
-                                myChartBarStrengthM.resize();
-                                myChartLineStrengthM.resize();
-                                myChartPointStrengthM.resize();
-                                myChartPieStrengthM.resize();
-                            }else if(inerText == '锚杆砂浆强度'){
-                                myChartBarMortarStrengthS.resize();
-                                myChartLineMortarStrengthS.resize();
-                                myChartPointMortarStrengthS.resize();
-                                myChartPieMortarStrengthS.resize();
-                                myChartBarMortarStrengthM.resize();
-                                myChartLineMortarStrengthM.resize();
-                                myChartPointMortarStrengthM.resize();
-                                myChartPieMortarStrengthM.resize();
-                            }else if(inerText == '锚杆无损检测'){
-                                myChartBarStructiveS.resize();
-                                myChartLineStructiveS.resize();
-                                myChartPointStructiveS.resize();
-                                myChartPieStructiveS.resize();
-                                myChartBarStructiveM.resize();
-                                myChartLineStructiveM.resize();
-                                myChartPointStructiveM.resize();
-                                myChartPieStructiveM.resize();
-                            }else {
-                                myChartBarPullTestS.resize();
-                                myChartLinePullTestS.resize();
-                                myChartPointPullTestS.resize();
-                                myChartPiePullTestS.resize();
-                                myChartBarPullTestM.resize();
-                                myChartLinePullTestM.resize();
-                                myChartPointPullTestM.resize();
-                                myChartPiePullTestM.resize();
-                            }
-                        });
-                        myChartBarThickness.resize();
-                        myChartLineThickness.resize();
-                        myChartPointThickness.resize();
-                        myChartPieThickness.resize();
                         $.ajax({
                             type:'post',
                             url:'./excavate',
                             data:{
                                 "id":tId,
-                                "cate":"开挖"
+                                "cate":"支护"
                             },
                             dataType:'json',
                             success:function (res) {
-                                var data = res.excavate_data.open_cut;
-                                var max_val = data.max_val;
-                                var mix_val = data.min_val;
-                                var average_val = data.average_val;
+                                console.log(res);
                                 if (res.code === 1) {
                                     //喷砼厚度
                                     //最大值最小值柱状图
@@ -2220,7 +2175,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: data.percent_of_pass
+                                                data: [60,30,40]
                                             }
                                         ]
                                     });
@@ -2254,7 +2209,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -2287,7 +2242,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -2390,7 +2345,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: data.percent_of_pass
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -2424,7 +2379,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -2457,7 +2412,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -2559,7 +2514,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: data.percent_of_pass
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -2593,7 +2548,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -2626,7 +2581,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -2729,7 +2684,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: data.percent_of_pass
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -2763,7 +2718,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -2796,7 +2751,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -2898,7 +2853,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: data.percent_of_pass
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -2932,7 +2887,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -2965,7 +2920,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -3068,7 +3023,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: data.percent_of_pass
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -3102,7 +3057,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -3135,7 +3090,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -3237,7 +3192,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: data.percent_of_pass
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -3271,7 +3226,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -3304,7 +3259,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -3407,7 +3362,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: data.percent_of_pass
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -3441,7 +3396,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -3474,7 +3429,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -3576,7 +3531,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: data.percent_of_pass
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -3610,7 +3565,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -3643,7 +3598,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [30,50,60]
                                             }
                                         ]
                                     });
@@ -3652,10 +3607,6 @@
 
                         })
                     }else if(inText == '混凝土工程'){
-                        myChartBarOutletTemp.resize();
-                        myChartLineOutletTemp.resize();
-                        myChartPointOutletTemp.resize();
-                        myChartPieOutletTemp.resize();
                         $.ajax({
                             type:'post',
                             url:'./excavate',
@@ -4338,10 +4289,6 @@
 
                         })
                     }else if(inText == '排水孔'){
-                        myChartBarDrainage.resize();
-                        myChartLineDrainage.resize();
-                        myChartPointDrainage.resize();
-                        myChartPieDrainage.resize();
                         $.ajax({
                             type:'post',
                             url:'./excavate',
@@ -4572,44 +4519,5 @@
             $(this).tab('show');
         });
     })
-    // function chartsResize(){
-    //     myChartBar.resize();
-    //     myChartLine.resize();
-    //     myChartPoint.resize();
-    //     myChartPie.resize();
-    //     //洞挖
-
-    //     //支护工程
-    //     //喷砼厚度
-
-    //     //喷砼强度
-
-    //     //锚杆砂浆强度
-
-    //     //锚杆无损测试
-
-    //     //锚杆拉力测试
-
-    //     /*混凝土工程*/
-    //     //出机口温度
-
-    //     //入口温度
-    //     myChartBarEntryTemp.resize();
-    //     myChartLineEntryTemp.resize();
-    //     myChartPointEntryTemp.resize();
-    //     myChartPieEntryTemp.resize();
-    //     //浇筑温度
-    //     myChartBarPouringTemp.resize();
-    //     myChartLinePouringTemp.resize();
-    //     myChartPointPouringTemp.resize();
-    //     myChartPiePouringTemp.resize();
-    //     //混凝土拌合物
-    //     myChartBarMixture.resize();
-    //     myChartLineMixture.resize();
-    //     myChartPointMixture.resize();
-    //     myChartPieMixture.resize();
-    //     //排水孔
-
-    // }
 </script>
 
