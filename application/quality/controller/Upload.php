@@ -2,6 +2,7 @@
 
 namespace app\quality\controller;
 use app\admin\controller\Base;
+use app\quality\model\MaterialfileModel;
 use app\quality\model\ProcedureAttachmentModel;
 use app\quality\model\ProcedureModel;
 use app\quality\model\ProjectAttachmentModel;
@@ -376,7 +377,69 @@ class Upload extends Base
         }
     }
 
+    public function upload(){
+        $mater = new MaterialfileModel();
+        // 前台提交的数据
+        $major_key = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传 注意 修改的时候一定要传
+        $entrustment_number = request()->param('entrustment_number/a'); //  委托编号
+        $report_number = request()->param('report_number/a'); //  报告编号
+        $report_number = request()->param('approach_detection_time/a'); //  进场检测时间/成型日期
+        $using_position = request()->param('using_position/a'); //  使用部位/工程部位/检测部位
+        $manufacturer = request()->param('manufacturer/a'); //  生产厂家
+        $specifications = request()->param('specifications/a'); //  品种/标号/规格/等级/种类
+        $lot_number = request()->param('lot_number/a'); //  批号/炉号/型号/桩号/母材批号
+        $number_of_delegates = request()->param('number_of_delegates/a'); //  代表数量/进场数量
+        $conclusion = request()->param('conclusion/a'); //  结论
+        $broken_date = request()->param('broken_date/a'); //  破型日期
+        $bids = request()->param('bids/a'); //  标段
+        $altitude = request()->param('altitude/a'); //  高程
+        $kind = request()->param('kind/a'); //  种类/样品名称/检测项目
+        $design_strength_grade = request()->param('design_strength_grade/a'); //  设计强度等级
+        $age = request()->param('age/a'); //  期龄
+        $compression_strength = request()->param('compression_strength/a'); //  抗压强度
+        $bar_diameter = request()->param('bar_diameter/a'); //  钢筋直径
+        $status = request()->param('status/a'); //  状态
+        $welding = request()->param('welding/a'); //  焊接或连接方式
+        $order_number = request()->param('order_number'); //  序号
 
+
+        // 系统自动生成的数据
+        $years = date('Y'); // 年度
+        $owner = session('username'); // 上传人
+        $rul_date = date("Y-m-d H:i:s"); // 上传时间
+
+        // 上传的文件
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/quality/materialfile');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/quality/materialfile/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            // 构造数据
+            $data = [
+                'years' => $years,
+                'group_id' => $group_id,
+            ];
+
+            if(empty($major_key)){
+                $flag = $mater->insertMater($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $mater->getOne($major_key);
+                if(empty($data_older)){
+                    return json(['code' => '0', 'msg' => '无效的编号']);
+                }
+                if(file_exists($data_older['path'])){
+                    unlink($data_older['path']);
+                }
+                $data['major_key'] = $major_key;
+                $flag = $mater->editMater($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
 
 
     //视频上传V
