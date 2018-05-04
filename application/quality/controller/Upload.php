@@ -461,28 +461,28 @@ class Upload extends Base
         $survey = new SurveyDataModel();
         // 前台提交的数据
         $major_key = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传 注意 修改的时候一定要传
-        $major_key = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传 注意 修改的时候一定要传
-
-
-
-
+        $k_check_single_number = request()->param('k_check_single_number'); // 开挖报验单号
+        $k_reception_time = request()->param('k_reception_time'); // 开挖验收时间
+        $h_check_single_number = request()->param('h_check_single_number'); // 混凝土报验单号
+        $h_reception_time = request()->param('h_reception_time'); // 混凝土验收时间
 
         // 系统自动生成的数据
-        $years = date('Y'); // 年度
         $owner = session('username'); // 上传人
-        $rul_date = date("Y-m-d H:i:s"); // 上传时间
+        $date = date("Y-m-d H:i:s"); // 上传时间
 
         // 上传的文件
         $file = request()->file('file');
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/quality/materialfile');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/quality/survey');
         if($info){
             $temp = $info->getSaveName();
-            $path = './uploads/quality/materialfile/' . str_replace("\\","/",$temp);
+            $path = './uploads/quality/survey/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             // 构造数据
             $data = [
-                'years' => $years,
-                'group_id' => 1,
+                'owner' => $owner,
+                'date' => $date,
+                'path' => $path,
+                'filename' => $filename,
             ];
 
             if(empty($major_key)){
