@@ -386,39 +386,105 @@ class Upload extends Base
         $mater = new MaterialfileModel();
         // 前台提交的数据
         $major_key = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传 注意 修改的时候一定要传
+
+        // 数组
         $entrustment_number = request()->param('entrustment_number/a'); //  委托编号
         $report_number = request()->param('report_number/a'); //  报告编号
-        $report_number = request()->param('approach_detection_time/a'); //  进场检测时间/成型日期
+        $approach_detection_time = request()->param('approach_detection_time/a'); //  进场检测时间/成型日期
         $using_position = request()->param('using_position/a'); //  使用部位/工程部位/检测部位
         $manufacturer = request()->param('manufacturer/a'); //  生产厂家
         $specifications = request()->param('specifications/a'); //  品种/标号/规格/等级/种类
         $lot_number = request()->param('lot_number/a'); //  批号/炉号/型号/桩号/母材批号
-        $number_of_delegates = request()->param('number_of_delegates/a'); //  代表数量/进场数量
-        $conclusion = request()->param('conclusion/a'); //  结论
-        $broken_date = request()->param('broken_date/a'); //  破型日期
+        $number_of_delegates = request()->param('number_of_delegates/a'); // 代表数量/进场数量
+        $conclusion = request()->param('conclusion/a'); // 结论
+
+        $kind = request()->param('kind/a'); // 样品名称/检测项目
         $bids = request()->param('bids/a'); //  标段
-        $altitude = request()->param('altitude/a'); //  高程
-        $kind = request()->param('kind/a'); //  种类/样品名称/检测项目
-        $design_strength_grade = request()->param('design_strength_grade/a'); //  设计强度等级
-        $age = request()->param('age/a'); //  期龄
-        $compression_strength = request()->param('compression_strength/a'); //  抗压强度
-        $bar_diameter = request()->param('bar_diameter/a'); //  钢筋直径
-        $status = request()->param('status/a'); //  状态
-        $welding = request()->param('welding/a'); //  焊接或连接方式
+
+        // 单个值
+        $broken_date = request()->param('broken_date'); // 破型日期
+        $altitude = request()->param('altitude'); //  高程
+        $design_strength_grade = request()->param('design_strength_grade'); //  设计强度等级
+        $age = request()->param('age'); //  期龄
+        $compression_strength = request()->param('compression_strength'); //  抗压强度
+        $bar_diameter = request()->param('bar_diameter'); //  钢筋直径
+        $status = request()->param('status'); //  状态
+        $welding = request()->param('welding'); //  焊接或连接方式
         $order_number = request()->param('order_number'); //  序号
 
+        $data = [];
         // 水泥,粉煤灰,钢筋,粗骨料,细骨料,减水剂,速凝剂,引气剂,微膨胀剂,纤维,钢止水,橡胶止水,PVC止水,钢绞线,土工布
-        // 委托编号、报告编号、进场检测时间、使用部位、生产厂家、品种/标号/规格、批号、代表数量（t）、结论
         for($i = 0; $i < 15;$i++){
+            // 委托编号、报告编号、进场检测时间、使用部位、生产厂家
             $data[$i]['entrustment_number'] = $entrustment_number[$i];
             $data[$i]['report_number'] = $report_number[$i];
+            $data[$i]['approach_detection_time'] = $approach_detection_time[$i];
+            $data[$i]['using_position'] = $using_position[$i];
+            $data[$i]['manufacturer'] = $manufacturer[$i];
+            if(in_array($i,[0,1,3,4,5,6,7,8,9,10,11,12,13])){
+                $data[$i]['manufacturer'] = $specifications[$i]; // 品种/标号/规格/等级/种类
+            }
+            if(in_array($i,[0,1,2,5,6,7,8,9,10,11,12,13])){
+                $data[$i]['lot_number'] = $lot_number[$i]; // 批号/炉号/型号/桩号/母材批号
+            }
+            $data[$i]['number_of_delegates'] = $number_of_delegates[$i]; // 代表数量/进场数量
+            $data[$i]['$conclusion'] = $conclusion[$i]; // 结论
         }
+        //  混凝土 ==>委托编号、报告编号、成型日期、破型日期、标段、工程部位、桩号、高程、种类、设计强度等级、龄期(d)、抗压强度(Mpa)、结论
+        $data[14]['entrustment_number'] = $entrustment_number[14];
+        $data[14]['report_number'] = $report_number[14];
+        $data[14]['approach_detection_time'] = $approach_detection_time[14];
+        $data[14]['broken_date'] = $broken_date;
+        $data[14]['bids'] = $bids[0];
+        $data[14]['using_position'] = $using_position[14];
+        $data[14]['lot_number'] = $lot_number[14];
+        $data[14]['altitude'] = $altitude;
+        $data[14]['specifications'] = $specifications[14];
+        $data[14]['design_strength_grade'] = $design_strength_grade;
+        $data[14]['age'] = $age;
+        $data[14]['compression_strength'] = $compression_strength;
+        $data[14]['conclusion'] = $conclusion[14];
+
+        // 钢筋接头==> 检测日期、标段、工程部位、品种规格、钢筋直径、代表数量(个)、结论
+        $data[15]['approach_detection_time'] = $approach_detection_time[15];
+        $data[15]['bids'] = $bids[1];
+        $data[15]['using_position'] = $using_position[15];
+        $data[15]['specifications'] = $specifications[15];
+        $data[15]['bar_diameter'] = $bar_diameter;
+        $data[15]['number_of_delegates'] = $number_of_delegates[14];
+        $data[15]['conclusion'] = $conclusion[15];
+        // 止水材料接头==> 委托编号、报告编号、检测日期、标段、工程部位、母材批号、状态、焊接或连接方式、结论
+        $data[16]['entrustment_number'] = $entrustment_number[15];
+        $data[16]['report_number'] = $report_number[15];
+        $data[16]['approach_detection_time'] = $approach_detection_time[16];
+        $data[16]['bids'] = $bids[2];
+        $data[16]['using_position'] = $using_position[16];
+        $data[16]['lot_number'] = $lot_number[15];
+        $data[16]['status'] = $status;
+        $data[16]['welding'] = $welding;
+        $data[16]['conclusion'] = $conclusion[16];
+        // 压实度==> 委托编号、报告编号、检测日期、标段、检测部位、样品名称、结论
+        $data[17]['entrustment_number'] = $entrustment_number[16];
+        $data[17]['report_number'] = $report_number[16];
+        $data[17]['approach_detection_time'] = $approach_detection_time[17];
+        $data[17]['bids'] = $bids[3];
+        $data[17]['using_position'] = $using_position[17];
+        $data[17]['kind'] = $kind[0];
+        $data[17]['conclusion'] = $conclusion[17];
+        // 地基承载力==> 序号、委托编号、报告编号、检测日期、标段、检测部位、检测项目、结论
+        $data[18]['order_number'] = $order_number;
+        $data[18]['entrustment_number'] = $entrustment_number[17];
+        $data[18]['report_number'] = $report_number[17];
+        $data[18]['approach_detection_time'] = $approach_detection_time[18];
+        $data[18]['bids'] = $bids[4];
+        $data[18]['using_position'] = $using_position[18];
+        $data[18]['kind'] = $kind[1];
+        $data[18]['conclusion'] = $conclusion[1];
 
 
         // 系统自动生成的数据
-        $years = date('Y'); // 年度
         $owner = session('username'); // 上传人
-        $rul_date = date("Y-m-d H:i:s"); // 上传时间
+        $date = date("Y-m-d H:i:s"); // 上传时间
 
         // 上传的文件
         $file = request()->file('file');
@@ -428,10 +494,10 @@ class Upload extends Base
             $path = './uploads/quality/materialfile/' . str_replace("\\","/",$temp);
             $filename = $file->getInfo('name');
             // 构造数据
-            $data = [
-                'years' => $years,
-                'group_id' => 1,
-            ];
+            $data[0]['owner'] = $owner;
+            $data[0]['date'] = $date;
+            $data[0]['filename'] = $filename;
+            $data[0]['path'] = $path;
 
             if(empty($major_key)){
                 $flag = $mater->insertMater($data);
@@ -444,7 +510,7 @@ class Upload extends Base
                 if(file_exists($data_older['path'])){
                     unlink($data_older['path']);
                 }
-                $data['major_key'] = $major_key;
+                $data[0]['id'] = $major_key;
                 $flag = $mater->editMater($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }

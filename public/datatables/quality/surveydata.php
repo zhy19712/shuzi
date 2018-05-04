@@ -36,7 +36,8 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
     array( 'db' => 'filename',  'dt' => 3 ),
     array( 'db' => 'k_check_single_number',  'dt' => 4 ),
     array( 'db' => 'k_reception_time',  'dt' => 5 ),
-    array( 'db' => 'k_reception_time',  'dt' => 6 ),
+    array( 'db' => 'h_check_single_number',  'dt' => 6 ),
+    array( 'db' => 'h_reception_time',  'dt' => 7 ),
 );
 
 
