@@ -811,10 +811,10 @@ class DivideModel extends Model
             $pouring_min11[$dv][] = $pouring_min[$dk];
             $pouring_avg11[$dv][] = $pouring_avg[$dk];
             $pouring_pass11[$dv][] = $pouring_pass[$dk];
-            $pouring_num11[$dv][] = $pouring_num11[$dk];
+            $pouring_num11[$dv][] = $pouring_num[$dk];
 
             $mix_design11[$dv][] = $mix_design[$dk];
-            $mix_num11[$dv][] = $mix_num11[$dk];
+            $mix_num11[$dv][] = $mix_num[$dk];
             $mix_qualified_num11[$dv][] = $mix_qualified_num[$dk];
             $mix_max11[$dv][] = $mix_max[$dk];
             $mix_min11[$dv][] = $mix_min[$dk];
@@ -981,9 +981,8 @@ class DivideModel extends Model
         return $data;
     }
 
-    // 排水孔
-
     /**
+     * 排水孔
      * 设计孔深（m）=该统计项目下所录入的设计孔深（有几个设计孔深，就显示几个设计孔深，并且按不同设计孔深分开显示）。
      * 抽检数量=该统计项目下所有抽检数量之和
      * 平均值=该统计项目下所有平均值之和/该统计项目下单元工程验收批数（即该项目下所有最小子项之和）

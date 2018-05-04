@@ -14,6 +14,7 @@ use app\quality\model\PrototypeModel;
 use app\quality\model\ReformAttachmentModel;
 use app\quality\model\ReformModel;
 use app\quality\model\ConstructionModel;
+use app\quality\model\SurveyDataModel;
 use think\Controller;
 use think\File;
 use think\Request;
@@ -377,7 +378,11 @@ class Upload extends Base
         }
     }
 
-    public function upload(){
+    /**
+     * 试验资料 有文件上传的 新增或者修改
+     * @return \think\response\Json
+     */
+    public function uploadMater(){
         $mater = new MaterialfileModel();
         // 前台提交的数据
         $major_key = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传 注意 修改的时候一定要传
@@ -425,7 +430,7 @@ class Upload extends Base
             // 构造数据
             $data = [
                 'years' => $years,
-                'group_id' => $group_id,
+                'group_id' => 1,
             ];
 
             if(empty($major_key)){
@@ -441,6 +446,58 @@ class Upload extends Base
                 }
                 $data['major_key'] = $major_key;
                 $flag = $mater->editMater($data);
+                return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
+            }
+        }else{
+            echo $file->getError();
+        }
+    }
+
+    /**
+     * 测量资料 有文件上传的 新增或者修改
+     * @return \think\response\Json
+     */
+    public function uploadSurvey(){
+        $survey = new SurveyDataModel();
+        // 前台提交的数据
+        $major_key = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传 注意 修改的时候一定要传
+        $major_key = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传 注意 修改的时候一定要传
+
+
+
+
+
+        // 系统自动生成的数据
+        $years = date('Y'); // 年度
+        $owner = session('username'); // 上传人
+        $rul_date = date("Y-m-d H:i:s"); // 上传时间
+
+        // 上传的文件
+        $file = request()->file('file');
+        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads/quality/materialfile');
+        if($info){
+            $temp = $info->getSaveName();
+            $path = './uploads/quality/materialfile/' . str_replace("\\","/",$temp);
+            $filename = $file->getInfo('name');
+            // 构造数据
+            $data = [
+                'years' => $years,
+                'group_id' => 1,
+            ];
+
+            if(empty($major_key)){
+                $flag = $survey->insertMater($data);
+                return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
+            }else{
+                $data_older = $survey->getOne($major_key);
+                if(empty($data_older)){
+                    return json(['code' => '0', 'msg' => '无效的编号']);
+                }
+                if(file_exists($data_older['path'])){
+                    unlink($data_older['path']);
+                }
+                $data['major_key'] = $major_key;
+                $flag = $survey->editMater($data);
                 return json(['code' => $flag['code'], 'msg' => $flag['msg']]);
             }
         }else{
