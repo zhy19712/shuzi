@@ -11,9 +11,9 @@
         font-weight: 700;
         border-bottom: 1px solid #000;
     }
-    #myTable table>tr>th{
+    table tr th{
         text-align: center;
-        font-size: 18px;
+        font-size: 12px;
     }
     caption{
         text-indent: 5px;
@@ -186,30 +186,36 @@
                                                             <div class="row">
                                                                 <table class="table table-bordered" id="hotcreteThickness">
                                                                     <caption>喷砼厚度</caption>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>设计值（cm）</th>
+                                                                            <th>支护面积（㎡）</th>
+                                                                            <th>监测组数（个）</th>
+                                                                            <th>最大值（cm）</th>
+                                                                            <th>最小值（cm）</th>
+                                                                            <th>平均值（cm）</th>
+                                                                            <th>合格率（%）</th>
+                                                                        </tr>
+                                                                    </thead>
                                                                     <tbody>
-                                                                    <tr>
-                                                                        <td>设计值（cm）</td>
-                                                                        <td>支护面积（㎡）</td>
-                                                                        <td>监测组数（个）</td>
-                                                                        <td>最大值（cm）</td>
-                                                                        <td>最小值（cm）</td>
-                                                                        <td>平均值（cm）</td>
-                                                                        <td>合格率（%）</td>
-                                                                    </tr>
+
 
                                                                     </tbody>
                                                                 </table>
                                                                 <table class="table table-bordered" id="hotcreteThicknessT">
                                                                     <caption>喷砼厚度(总计)</caption>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>支护面积（㎡）</th>
+                                                                            <th>监测组数（个）</th>
+                                                                            <th>最大值（cm）</th>
+                                                                            <th>最小值（cm）</th>
+                                                                            <th>平均值（cm）</th>
+                                                                            <th>合格率（%）</th>
+                                                                        </tr>
+                                                                    </thead>
                                                                     <tbody>
-                                                                    <tr>
-                                                                        <td>支护面积（㎡）</td>
-                                                                        <td>监测组数（个）</td>
-                                                                        <td>最大值（cm）</td>
-                                                                        <td>最小值（cm）</td>
-                                                                        <td>平均值（cm）</td>
-                                                                        <td>合格率（%）</td>
-                                                                    </tr>
+
 
                                                                     </tbody>
                                                                 </table>
@@ -852,16 +858,19 @@
                                                             <div class="row">
                                                                 <table class="table table-bordered">
                                                                     <caption>出机口温度</caption>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>控制标准（℃）</th>
+                                                                            <th>检测组数（个）</th>
+                                                                            <th>合格组数（个）</th>
+                                                                            <th>最大值（℃）</th>
+                                                                            <th>最小值（℃）</th>
+                                                                            <th>平均值（℃）</th>
+                                                                            <th>合格率（%）</th>
+                                                                        </tr>
+                                                                    </thead>
                                                                     <tbody>
-                                                                    <tr>
-                                                                        <td>控制标准（℃）</td>
-                                                                        <td>检测组数（个）</td>
-                                                                        <td>合格组数（个）</td>
-                                                                        <td>最大值（℃）</td>
-                                                                        <td>最小值（℃）</td>
-                                                                        <td>平均值（℃）</td>
-                                                                        <td>合格率（%）</td>
-                                                                    </tr>
+
                                                                     <tr>
                                                                         <td>23</td>
                                                                         <td>9</td>
@@ -2093,6 +2102,7 @@
                             dataType:'json',
                             success:function (res) {
                                 console.log(res);
+                                //喷砼厚度数据
                                 var data = res.excavate_data.builder;
                                 var design_data = data.design_data;
                                 var design_val = design_data.design_val;
@@ -2102,16 +2112,32 @@
                                 var max = design_data.max;
                                 var min = design_data.min;
                                 var avg_val = design_data.avg_val;
+                                // //喷砼强度数据
+                                // var square_quantity = design_data.square_quantity;
+                                // var intensity_level = design_data.intensity_level;
+                                // var mortar_standard_deviation_1 = design_data.mortar_standard_deviation_1;
+                                // var guarantee_rate_1 = design_data.guarantee_rate_1;
+                                // //锚杆砂浆强度数据
+                                // //锚杆无损检测数据
+                                // var nde_quantity = design_data.nde_quantity;//施工数量
+                                // var nde_inspection_num = design_data.nde_inspection_num;//抽检根数
+                                // var detection_ratio = design_data.detection_ratio;//检测比例
+                                // var nde_percent_num = design_data.nde_percent_num;//合格根数
+                                // var nde_model_number = design_data.nde_model_number;//锚杆型号
+                                // var nde_max = design_data.nde_max;
+                                // var nde_min = design_data.nde_min;
+                                // var nde_density_max = design_data.nde_density_max;
+                                // var nde_density_min = design_data.nde_density_min;
                                 if (res.code === 1) {
                                     //喷砼厚度
                                     var strThickness = '';
                                     for (var i = 0;i<design_val.length;i++){
                                         strThickness += '<tr><td>'+design_val[i]+'</td><td>'+supporting_area[i]+'</td><td>'+thickness_number[i]+'</td><td>'+max[i]+'</td><td>'+min[i]+'</td><td>'+avg_val[i]+'</td><td>'+pass[i]+'</td></tr>';
                                     }
-                                    $("#hotcreteThickness tbody").append(strThickness);
+                                    $("#hotcreteThickness tbody").empty().append(strThickness);
                                     var strThicknessT = '';
                                     strThicknessT = '<tr><td>'+data.supporting_area+'</td><td>'+data.thickness_number+'</td><td>'+data.max+'</td><td>'+data.min+'</td><td>'+data.avg_val+'</td><td>'+data.pass+'</td></tr>';
-                                    $("#hotcreteThicknessT tbody").append(strThicknessT);
+                                    $("#hotcreteThicknessT tbody").empty().append(strThicknessT);
                                     //最大值最小值柱状图
                                     myChartBarThickness.setOption({
                                         title: {
@@ -3707,22 +3733,29 @@
                             url:'./excavate',
                             data:{
                                 "id":tId,
-                                "cate":"开挖"
+                                "cate":"混凝土"
                             },
                             dataType:'json',
                             success:function (res) {
                                 console.log(res);
-                                var data = res.excavate_data.open_cut;
-                                var max_val = data.max_val;
-                                var mix_val = data.min_val;
-                                var average_val = data.average_val;
+                                var data = res.excavate_data.builder;
+                                var ex_control_criterion = data.ex_control_criterion;//控制标准
+                                var ex_test_groups = data.ex_test_groups;//监测组数
+                                var ex_max = data.ex_max;
+                                var ex_min = data.ex_min;
+                                var ex_avg = data.ex_avg;
+                                var ex_pass = data.ex_pass;
+                                console.log(ex_control_criterion);
+                                console.log(ex_test_groups);
+                                console.log(ex_max);
+                                console.log(ex_pass);
                                 if (res.code === 1) {
                                     //混凝土工程
                                     //出机口温度
                                     //最大值最小值柱状图
                                     myChartBarOutletTemp.setOption({
                                         title: {
-                                            text: '数值分析（cm）'
+                                            text: '数值分析（℃）'
                                         },
                                         color: ['#EED5B7', '#FFC125', '#1E90FF'],
                                         tooltip: {
@@ -3740,7 +3773,13 @@
                                         },
                                         xAxis: {
                                             type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
+                                            data: (function () {
+                                                var arr = [];
+                                                for (var i = 0; i < ex_control_criterion.length; i++) {
+                                                    arr.push("控制标准" + ex_control_criterion[i]);
+                                                }
+                                                return arr;
+                                            })()
                                         },
                                         yAxis: {
                                             type: 'value',
@@ -3751,17 +3790,17 @@
                                             {
                                                 name: '最大值',
                                                 type: 'bar', //柱状图
-                                                data: [88,88,88,88]
+                                                data: ex_max
                                             },
                                             {
                                                 name: '平均值',
                                                 type: 'bar',
-                                                data: [77,77,77,77]
+                                                data: ex_avg
                                             },
                                             {
                                                 name: '最小值',
                                                 type: 'bar',
-                                                data: [66,66,66,66]
+                                                data: ex_min
                                             }
                                         ]
                                     });
@@ -3789,7 +3828,13 @@
 
                                         xAxis: {
                                             type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度'],
+                                            data: (function () {
+                                                var arr = [];
+                                                for (var i = 0; i < ex_control_criterion.length; i++) {
+                                                    arr.push("控制标准" + ex_control_criterion[i]);
+                                                }
+                                                return arr;
+                                            })(),
                                             itemStyle: {
                                                 normal: {
                                                     label: {
@@ -3812,7 +3857,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: [60,30,40]
+                                                data: ex_pass
                                             }
                                         ]
                                     });
@@ -3833,7 +3878,14 @@
                                         },
                                         xAxis: {
                                             type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
+                                            data: (function () {
+                                                var arr = [];
+                                                for (var i = 0; i < ex_control_criterion.length; i++) {
+                                                    arr.push("控制标准" + ex_control_criterion[i]);
+
+                                                }
+                                                return arr;
+                                            })()
                                         },
                                         yAxis: {
 
@@ -3846,43 +3898,11 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: [60,30,40]
+                                                data:ex_test_groups
                                             }
                                         ]
                                     });
-                                    //支护面积面积
-                                    myChartPieOutletTemp.setOption({
-                                        title: {
-                                            text: '支护面积'
-                                        },
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        grid: {
 
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-                                        yAxis: {
-                                            type: 'category',
-                                            data: ['超挖', '欠挖', '不平整度']
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '检测点数',
-                                                barWidth: 40,
-                                                type: 'bar', //柱状图
-                                                data: [60,30,40]
-                                            }
-                                        ]
-                                    });
 
                                     //入口温度
                                     myChartBarEntryTemp.setOption({
@@ -4389,15 +4409,12 @@
                             url:'./excavate',
                             data:{
                                 "id":tId,
-                                "cate":"开挖"
+                                "cate":"排水孔"
                             },
                             dataType:'json',
                             success:function (res) {
                                 console.log(res);
-                                var data = res.excavate_data.open_cut;
-                                var max_val = data.max_val;
-                                var mix_val = data.min_val;
-                                var average_val = data.average_val;
+
                                 if (res.code === 1) {
                                     //排水孔
                                     //最大值最小值柱状图
@@ -4493,7 +4510,7 @@
                                                 type: 'bar',
                                                 barWidth: 40,
                                                 stack: '总量',
-                                                data: data.percent_of_pass
+                                                data: [60,40,60,50]
                                             }
                                         ]
                                     });
@@ -4527,7 +4544,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [60,40,60,50]
                                             }
                                         ]
                                     });
@@ -4560,7 +4577,7 @@
                                                 name: '检测点数',
                                                 barWidth: 40,
                                                 type: 'bar', //柱状图
-                                                data: data.detection_points
+                                                data: [60,40,60,50]
                                             }
                                         ]
                                     });
