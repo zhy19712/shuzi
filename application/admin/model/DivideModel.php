@@ -985,20 +985,118 @@ class DivideModel extends Model
             }
         }
 
-        // (形体偏差)
-        $data['deviation_plane_num'] = array_sum($deviation_plane_num); // (平面)测点数(个)
-        $data['deviation_plane_scope'] = [min($deviation_plane_scope),max($deviation_plane_scope)]; // (平面)偏差范围
-        if(sizeof($deviation_plane_pass) == 0){
-            $data['deviation_plane_pass'] = 0; // (平面)合格率
+        // (出口机)
+        $data['all']['ex_control_criterion'] = $ex_control_criterion; // 控制标准
+        $data['all']['ex_test_groups'] = array_sum($ex_test_groups); // 检测组数（个）
+        $data['all']['ex_qualified_groups'] = array_sum($ex_qualified_groups); // 合格组数（个）
+        $data['all']['ex_max'] = max($ex_max); // 最大值
+        $data['all']['ex_min'] = min($ex_min); // 最小值
+        if(sizeof($ex_avg) == 0){
+            $data['all']['ex_avg'] = 0; // 平均值
         }else{
-            $data['deviation_plane_pass'] = round(array_sum($deviation_plane_pass) / sizeof($deviation_plane_pass),2); // (平面)合格率
+            $data['all']['ex_avg'] = round(array_sum($ex_avg) / sizeof($ex_avg),2); // 平均值
         }
-        $data['deviation_plane_num'] = array_sum($deviation_vertical_num); // (竖面)测点数(个)
-        $data['deviation_vertical_scope'] = [min($deviation_vertical_scope),max($deviation_vertical_scope)]; // (竖面)偏差范围
-        if(sizeof($deviation_vertical_pass) == 0){
-            $data['deviation_vertical_pass'] = 0; // (竖面)合格率
+        if(sizeof($ex_pass) == 0){
+            $data['all']['ex_pass'] = 0; // 合格率Ps
         }else{
-            $data['deviation_vertical_pass'] = round(array_sum($deviation_vertical_pass) / sizeof($deviation_vertical_pass),2); // (竖面)合格率
+            $data['all']['ex_pass'] = round(array_sum($ex_pass) / sizeof($ex_pass),2); // 合格率Ps
+        }
+        // (入仓)
+        $data['all']['be_measurement'] = $be_measurement; // 测次
+        $data['all']['be_max'] = max($be_max); // 最大值
+        $data['all']['be_min'] = min($be_min); // 最小值
+        if(sizeof($be_avg) == 0){
+            $data['all']['be_avg'] = 0; // 平均值
+        }else{
+            $data['all']['be_avg'] = round(array_sum($be_avg) / sizeof($be_avg),2); // 平均值
+        }
+        if(sizeof($be_pass) == 0){
+            $data['all']['be_pass'] = 0; // 合格率Ps
+        }else{
+            $data['all']['be_pass'] = round(array_sum($be_pass) / sizeof($be_pass),2); // 合格率Ps
+        }
+        $data['all']['be_num'] = array_sum($be_num); // 合格次数（个）
+        // (浇筑)
+        $data['all']['pouring_measurement'] = $pouring_measurement; // 测次
+        $data['all']['pouring_max'] = max($pouring_max); // 最大值
+        $data['all']['pouring_min'] = min($pouring_min); // 最小值
+        if(sizeof($pouring_avg) == 0){
+            $data['all']['pouring_avg'] = 0; // 平均值
+        }else{
+            $data['all']['pouring_avg'] = round(array_sum($pouring_avg) / sizeof($pouring_avg),2); // 平均值
+        }
+        if(sizeof($pouring_pass) == 0){
+            $data['all']['pouring_pass'] = 0; // 合格率Ps
+        }else{
+            $data['all']['pouring_pass'] = round(array_sum($pouring_pass) / sizeof($pouring_pass),2); // 合格率Ps
+        }
+        $data['all']['pouring_num'] = array_sum($pouring_num); // 合格次数（个）
+
+        // (拌和物)
+        $data['all']['mix_design'] = $mix_design; // 设计指标
+        $data['all']['mix_num'] = array_sum($mix_num); // 检测次数
+        $data['all']['mix_qualified_num'] = array_sum($mix_qualified_num); // 合格次数
+        $data['all']['mix_max'] = max($mix_max); // 最大值
+        $data['all']['mix_min'] = min($mix_min); // 最小值
+        if(sizeof($mix_avg) == 0){
+            $data['all']['mix_avg'] = 0; // 平均值
+        }else{
+            $data['all']['mix_avg'] = round(array_sum($mix_avg) / sizeof($mix_avg),2); // 平均值
+        }
+        if(sizeof($mix_pass) == 0){
+            $data['all']['mix_pass'] = 0; // 合格率Ps
+        }else{
+            $data['all']['mix_pass'] = round(array_sum($mix_pass) / sizeof($mix_pass),2); // 合格率Ps
+        }
+
+        // (抗压强度)
+        $data['all']['resist_design_index'] = $resist_design_index; // 设计指标
+        $data['all']['resist_age'] = $resist_age; // 龄期
+        $data['all']['resist_test_group'] = $resist_test_group; // 检查组数 == 最大值 == 最小值 == 平均值
+        $data['all']['resist_max'] = max($resist_max); // 最大值
+        $data['all']['resist_min'] = min($resist_min); // 最小值
+        if(sizeof($resist_avg) == 0){
+            $data['all']['resist_avg'] = 0; // 平均值
+        }else{
+            $data['all']['resist_avg'] = round(array_sum($resist_avg) / sizeof($resist_avg),2); // 平均值
+        }
+        $data['all']['mortar_standard_deviation_1'] = $mortar_standard_deviation_1; // 喷砼强度 -- 标准差
+        $data['all']['guarantee_rate_1'] = $guarantee_rate_1; // 喷砼强度 -- 保证率
+        $data['all']['mortar_standard_deviation_2'] = $mortar_standard_deviation_2; // 锚杆砂浆强度 -- 标准差
+        $data['all']['guarantee_rate_2'] = $guarantee_rate_2; // 锚杆砂浆强度 -- 保证率
+
+        // (全面性能)
+        $data['all']['etc_design_index'] = $etc_design_index; // 设计指标
+        $data['all']['etc_age'] = $etc_age; // 龄期
+        $data['all']['etc_anti_groups'] = array_sum($etc_anti_groups); // (抗冻)取样组数
+        $data['all']['etc_anti_test'] = $etc_anti_test; // (抗冻)测值
+        if(sizeof($etc_anti_pass) == 0){
+            $data['all']['etc_anti_pass'] = 0; // (抗冻)合格率
+        }else{
+            $data['all']['etc_anti_pass'] = round(array_sum($etc_anti_pass) / sizeof($etc_anti_pass),2); // (抗冻)合格率
+        }
+        $data['all']['etc_impervious_groups'] = array_sum($etc_impervious_groups); // (抗渗)取样组数
+        $data['all']['etc_impervious_test'] = $etc_impervious_test; // (抗渗)测值
+        if(sizeof($etc_impervious_pass) == 0){
+            $data['all']['etc_impervious_pass'] = 0; // (抗渗)合格率
+        }else{
+            $data['all']['etc_impervious_pass'] = round(array_sum($etc_impervious_pass) / sizeof($etc_impervious_pass),2); // (抗渗)合格率
+        }
+
+        // (形体偏差)
+        $data['all']['deviation_plane_num'] = array_sum($deviation_plane_num); // (平面)测点数(个)
+        $data['all']['deviation_plane_scope'] = [min($deviation_plane_scope),max($deviation_plane_scope)]; // (平面)偏差范围
+        if(sizeof($deviation_plane_pass) == 0){
+            $data['all']['deviation_plane_pass'] = 0; // (平面)合格率
+        }else{
+            $data['all']['deviation_plane_pass'] = round(array_sum($deviation_plane_pass) / sizeof($deviation_plane_pass),2); // (平面)合格率
+        }
+        $data['all']['deviation_plane_num'] = array_sum($deviation_vertical_num); // (竖面)测点数(个)
+        $data['all']['deviation_vertical_scope'] = [min($deviation_vertical_scope),max($deviation_vertical_scope)]; // (竖面)偏差范围
+        if(sizeof($deviation_vertical_pass) == 0){
+            $data['all']['deviation_vertical_pass'] = 0; // (竖面)合格率
+        }else{
+            $data['all']['deviation_vertical_pass'] = round(array_sum($deviation_vertical_pass) / sizeof($deviation_vertical_pass),2); // (竖面)合格率
         }
 
         return $data;
