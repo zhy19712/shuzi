@@ -878,7 +878,6 @@
                                                                     <caption>出机口温度总数据</caption>
                                                                     <thead>
                                                                     <tr>
-                                                                        <th>控制标准（℃）</th>
                                                                         <th>检测组数（个）</th>
                                                                         <th>合格组数（个）</th>
                                                                         <th>最大值（℃）</th>
@@ -998,27 +997,21 @@
                                                         <!--混凝土拌合物-->
                                                         <div class="tab-pane fade" id="mixtureTemperature">
                                                             <div class="row">
-                                                                <table class="table table-bordered">
+                                                                <table class="table table-bordered" id="mixtureTemperatureF">
                                                                     <caption>混凝土拌合物（机口）塌落度</caption>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>设计要求（mm）</th>
+                                                                            <th>检测次数（次）</th>
+                                                                            <th>合格次数</th>
+                                                                            <th>最大值（mm）</th>
+                                                                            <th>最小值（mm）</th>
+                                                                            <th>平均值（mm）</th>
+                                                                            <th>合格率（%）</th>
+                                                                        </tr>
+                                                                    </thead>
                                                                     <tbody>
-                                                                    <tr>
-                                                                        <td>设计要求（mm）</td>
-                                                                        <td>检测次数（次）</td>
-                                                                        <td>合格次数</td>
-                                                                        <td>最大值（mm）</td>
-                                                                        <td>最小值（mm）</td>
-                                                                        <td>平均值（mm）</td>
-                                                                        <td>合格率（%）</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>23</td>
-                                                                        <td>65</td>
-                                                                        <td>43</td>
-                                                                        <td>55</td>
-                                                                        <td>68</td>
-                                                                        <td>55</td>
-                                                                        <td>68</td>
-                                                                    </tr>
+
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -1060,20 +1053,20 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                            <div class="row" style="padding-top: 20px">
-                                                                <!--最大值最小值平均值柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainBarCompreS" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--合格率柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainLineCompreS" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--监测组数柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainPointCompreS" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                            </div>
+                                                            <!--<div class="row" style="padding-top: 20px">-->
+                                                                <!--&lt;!&ndash;最大值最小值平均值柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainBarCompreS" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                                <!--&lt;!&ndash;合格率柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainLineCompreS" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                                <!--&lt;!&ndash;监测组数柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainPointCompreS" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
                                                             <div class="row">
                                                                 <table class="table table-bordered" id="compressiveStrengthM">
                                                                     <caption>混凝土抗压强度(监理单位)</caption>
@@ -1104,21 +1097,20 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                            <div class="row" style="padding-top: 20px">
-                                                                <!--最大值最小值平均值柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainBarCompreM" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--合格率柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainLineCompreM" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--监测组数柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainPointCompreM" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                            </div>
-
+                                                            <!--<div class="row" style="padding-top: 20px">-->
+                                                                <!--&lt;!&ndash;最大值最小值平均值柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainBarCompreM" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                                <!--&lt;!&ndash;合格率柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainLineCompreM" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                                <!--&lt;!&ndash;监测组数柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainPointCompreM" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
                                                         </div>
                                                         <!--混凝土全面性能-->
                                                         <div class="tab-pane fade" id="comprehensivePerformance">
@@ -1156,20 +1148,20 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                            <div class="row" style="padding-top: 20px">
-                                                                <!--最大值最小值平均值柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainBarComprePerS" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--合格率柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainLineComprePerS" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--监测组数柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainPointComprePerS" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                            </div>
+                                                            <!--<div class="row" style="padding-top: 20px">-->
+                                                                <!--&lt;!&ndash;最大值最小值平均值柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainBarComprePerS" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                                <!--&lt;!&ndash;合格率柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainLineComprePerS" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                                <!--&lt;!&ndash;监测组数柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainPointComprePerS" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
                                                             <div class="row">
                                                                 <table class="table table-bordered" id="comprehensivePerformanceM">
                                                                     <caption>混凝土全面性能(监理单位)</caption>
@@ -1204,20 +1196,20 @@
                                                                     </tbody>
                                                                 </table>
                                                             </div>
-                                                            <div class="row" style="padding-top: 20px">
-                                                                <!--最大值最小值平均值柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainBarComprePerM" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--合格率柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainLineComprePerM" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                                <!--监测组数柱状图-->
-                                                                <div class="col-xs-6">
-                                                                    <div id="mainPointComprePerM" style="height:400px;" class="main"></div>
-                                                                </div>
-                                                            </div>
+                                                            <!--<div class="row" style="padding-top: 20px">-->
+                                                                <!--&lt;!&ndash;最大值最小值平均值柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainBarComprePerM" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                                <!--&lt;!&ndash;合格率柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainLineComprePerM" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                                <!--&lt;!&ndash;监测组数柱状图&ndash;&gt;-->
+                                                                <!--<div class="col-xs-6">-->
+                                                                    <!--<div id="mainPointComprePerM" style="height:400px;" class="main"></div>-->
+                                                                <!--</div>-->
+                                                            <!--</div>-->
                                                         </div>
                                                         <!--混凝土形体偏差-->
                                                         <div class="tab-pane fade" id="concreteDeviation">
@@ -1426,19 +1418,19 @@
                 var myChartLineMixture = echarts.init(document.getElementById('mainLineMixture'));
                 var myChartPointMixture = echarts.init(document.getElementById('mainPointMixture'));
                 //混凝土强度
-                var myChartBarCompreS = echarts.init(document.getElementById('mainBarCompreS'));
-                var myChartLineCompreS = echarts.init(document.getElementById('mainLineCompreS'));
-                var myChartPointCompreS = echarts.init(document.getElementById('mainPointCompreS'));
-                var myChartBarCompreM = echarts.init(document.getElementById('mainBarCompreM'));
-                var myChartLineCompreM = echarts.init(document.getElementById('mainLineCompreM'));
-                var myChartPointCompreM = echarts.init(document.getElementById('mainPointCompreM'));
+                // var myChartBarCompreS = echarts.init(document.getElementById('mainBarCompreS'));
+                // var myChartLineCompreS = echarts.init(document.getElementById('mainLineCompreS'));
+                // var myChartPointCompreS = echarts.init(document.getElementById('mainPointCompreS'));
+                // var myChartBarCompreM = echarts.init(document.getElementById('mainBarCompreM'));
+                // var myChartLineCompreM = echarts.init(document.getElementById('mainLineCompreM'));
+                // var myChartPointCompreM = echarts.init(document.getElementById('mainPointCompreM'));
                 //混凝土综合性能
-                var myChartBarComprePerS = echarts.init(document.getElementById('mainBarComprePerS'));
-                var myChartLineComprePerS = echarts.init(document.getElementById('mainLineComprePerS'));
-                var myChartPointComprePerS = echarts.init(document.getElementById('mainPointComprePerS'));
-                var myChartBarComprePerM = echarts.init(document.getElementById('mainBarComprePerM'));
-                var myChartLineComprePerM = echarts.init(document.getElementById('mainLineComprePerM'));
-                var myChartPointComprePerM = echarts.init(document.getElementById('mainPointComprePerM'));
+                // var myChartBarComprePerS = echarts.init(document.getElementById('mainBarComprePerS'));
+                // var myChartLineComprePerS = echarts.init(document.getElementById('mainLineComprePerS'));
+                // var myChartPointComprePerS = echarts.init(document.getElementById('mainPointComprePerS'));
+                // var myChartBarComprePerM = echarts.init(document.getElementById('mainBarComprePerM'));
+                // var myChartLineComprePerM = echarts.init(document.getElementById('mainLineComprePerM'));
+                // var myChartPointComprePerM = echarts.init(document.getElementById('mainPointComprePerM'));
                 //排水孔
                 var myChartBarDrainage = echarts.init(document.getElementById('mainBarDrainage'));
                 var myChartLineDrainage = echarts.init(document.getElementById('mainLineDrainage'));
@@ -4333,6 +4325,11 @@
                                     strPour = '<tr><td>'+all.pouring_measurement+'</td><td>'+all.pouring_max+'</td><td>'+all.pouring_min+'</td><td>'+all.pouring_avg+'</td><td>'+all.pouring_num+'</td><td>'+all.pouring_pass+'</td></tr>';
                                     $("#pouringTemperature table tbody").empty().append(strPour);
                                     //混凝土拌合物
+                                    var strMix = '';
+                                    for (var i = 0; i < data.mix.mix_design.length; i++) {
+                                        strMix += '<tr><td>'+data.mix.mix_design[i]+'</td><td>'+data.mix.mix_num[i]+'</td><td>'+data.mix.mix_qualified_num[i]+'</td><td>'+data.mix.mix_max[i]+'</td><td>'+data.mix.mix_min[i]+'</td><td>'+data.mix.mix_avg[i]+'</td><td>'+data.mix.mix_pass[i]+'</td></tr>';
+                                    }
+                                    $("#mixtureTemperatureF tbody").empty().append(strMix);
                                     myChartBarMixture.setOption({
                                         title: {
                                             text: '数值分析（cm）'
@@ -4496,320 +4493,319 @@
                                         strCompreS += '<tr><td>'+data.resist.resist_design_index[i]+'</td><td>'+data.resist.resist_age[i]+'</td><td>'+data.resist.resist_test_group[i]+'</td><td>'+data.resist.resist_max[i]+'</td><td>'+data.resist.resist_min[i]+'</td><td>'+data.resist.resist_avg[i]+'</td><td>'+data.resist.mortar_standard_deviation_1[i]+'</td>\<td>'+data.resist.guarantee_rate_1[i]+'</td></tr>';
                                     }
                                     $("#compressiveStrengthS tbody").empty().append(strCompreS);
-
-                                    myChartBarCompreS.setOption({
-                                        title: {
-                                            text: '数值分析（Mpa）'
-                                        },
-                                        color: ['#EED5B7', '#FFC125', '#1E90FF','#EDD234'],
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        legend: {
-                                            data: ['最大值', '平均值', '最小值','标准差']
-                                        },
-                                        grid: {
-
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'category',
-                                            data: (function () {
-                                                var arr = [];
-                                                for (var i = 0; i < data.resist.resist_design_index.length; i++) {
-                                                    arr.push("设计指标" + data.resist.resist_design_index[i]);
-                                                }
-                                                return arr;
-                                            })(),
-                                        },
-                                        yAxis: {
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '最大值',
-                                                type: 'bar', //柱状图
-                                                data: data.resist.resist_max
-                                            },
-                                            {
-                                                name: '平均值',
-                                                type: 'bar',
-                                                data: data.resist.resist_avg
-                                            },
-                                            {
-                                                name: '最小值',
-                                                type: 'bar',
-                                                data: data.resist.resist_min
-                                            },
-                                            {
-                                                name: '标准差',
-                                                type: 'bar',
-                                                data: data.resist.mortar_standard_deviation_1
-                                            }
-                                        ]
-                                    });
-                                    //合格率柱状图
-                                    myChartLineCompreS.setOption({
-                                        title: {
-                                            text: '保证率'
-                                        },
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            formatter: '{c}%',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        legend: {
-                                            data: ['保证率']
-                                        },
-                                        grid: {
-                                            left: '3%',
-                                            right: '4%',
-                                            bottom: '3%',
-                                            containLabel: true
-                                        },
-
-                                        xAxis: {
-                                            type: 'category',
-                                            data: (function () {
-                                                var arr = [];
-                                                for (var i = 0; i < data.resist.resist_design_index.length; i++) {
-                                                    arr.push("设计指标" + data.resist.resist_design_index[i]);
-                                                }
-                                                return arr;
-                                            })(),
-                                            itemStyle: {
-                                                normal: {
-                                                    label: {
-                                                        show: true,
-                                                        positiong: 'top',
-                                                        formatter: '{c}%'
-                                                    }
-                                                }
-                                            },
-                                            boundaryGap: [0, 0.01]
-                                        },
-                                        yAxis: {
-                                            axisLabel: {
-                                                formatter: '{value} %'
-                                            }
-                                        },
-                                        series: [
-                                            {
-                                                name: '合格率',
-                                                type: 'bar',
-                                                barWidth: 40,
-                                                stack: '总量',
-                                                data: data.resist.guarantee_rate_1
-                                            }
-                                        ]
-                                    });
-                                    //监测点数柱状图
-                                    myChartPointCompreS.setOption({
-                                        title: {
-                                            text: '检测组数'
-                                        },
-                                        color: ['#EED5B7'],
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        legend: {
-                                            data: ['检测组数']
-                                        },
-                                        grid: {
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'category',
-                                            data: (function () {
-                                                var arr = [];
-                                                for (var i = 0; i < data.resist.resist_design_index.length; i++) {
-                                                    arr.push("控制标准" + data.resist.resist_design_index[i]);
-                                                }
-                                                return arr;
-                                            })()
-                                        },
-                                        yAxis: {
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '检查组数',
-                                                type: 'bar', //柱状图
-                                                data: data.resist.resist_test_group
-                                            }
-                                        ]
-                                    });
+                                    // myChartBarCompreS.setOption({
+                                    //     title: {
+                                    //         text: '数值分析（Mpa）'
+                                    //     },
+                                    //     color: ['#EED5B7', '#FFC125', '#1E90FF','#EDD234'],
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['最大值', '平均值', '最小值','标准差']
+                                    //     },
+                                    //     grid: {
+                                    //
+                                    //         containLabel: true
+                                    //     },
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: (function () {
+                                    //             var arr = [];
+                                    //             for (var i = 0; i < data.resist.resist_design_index.length; i++) {
+                                    //                 arr.push("设计指标" + data.resist.resist_design_index[i]);
+                                    //             }
+                                    //             return arr;
+                                    //         })(),
+                                    //     },
+                                    //     yAxis: {
+                                    //         type: 'value',
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //
+                                    //     series: [
+                                    //         {
+                                    //             name: '最大值',
+                                    //             type: 'bar', //柱状图
+                                    //             data: data.resist.resist_max
+                                    //         },
+                                    //         {
+                                    //             name: '平均值',
+                                    //             type: 'bar',
+                                    //             data: data.resist.resist_avg
+                                    //         },
+                                    //         {
+                                    //             name: '最小值',
+                                    //             type: 'bar',
+                                    //             data: data.resist.resist_min
+                                    //         },
+                                    //         {
+                                    //             name: '标准差',
+                                    //             type: 'bar',
+                                    //             data: data.resist.mortar_standard_deviation_1
+                                    //         }
+                                    //     ]
+                                    // });
+                                    // //合格率柱状图
+                                    // myChartLineCompreS.setOption({
+                                    //     title: {
+                                    //         text: '保证率'
+                                    //     },
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         formatter: '{c}%',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['保证率']
+                                    //     },
+                                    //     grid: {
+                                    //         left: '3%',
+                                    //         right: '4%',
+                                    //         bottom: '3%',
+                                    //         containLabel: true
+                                    //     },
+                                    //
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: (function () {
+                                    //             var arr = [];
+                                    //             for (var i = 0; i < data.resist.resist_design_index.length; i++) {
+                                    //                 arr.push("设计指标" + data.resist.resist_design_index[i]);
+                                    //             }
+                                    //             return arr;
+                                    //         })(),
+                                    //         itemStyle: {
+                                    //             normal: {
+                                    //                 label: {
+                                    //                     show: true,
+                                    //                     positiong: 'top',
+                                    //                     formatter: '{c}%'
+                                    //                 }
+                                    //             }
+                                    //         },
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //     yAxis: {
+                                    //         axisLabel: {
+                                    //             formatter: '{value} %'
+                                    //         }
+                                    //     },
+                                    //     series: [
+                                    //         {
+                                    //             name: '合格率',
+                                    //             type: 'bar',
+                                    //             barWidth: 40,
+                                    //             stack: '总量',
+                                    //             data: data.resist.guarantee_rate_1
+                                    //         }
+                                    //     ]
+                                    // });
+                                    // //监测点数柱状图
+                                    // myChartPointCompreS.setOption({
+                                    //     title: {
+                                    //         text: '检测组数'
+                                    //     },
+                                    //     color: ['#EED5B7'],
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['检测组数']
+                                    //     },
+                                    //     grid: {
+                                    //         containLabel: true
+                                    //     },
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: (function () {
+                                    //             var arr = [];
+                                    //             for (var i = 0; i < data.resist.resist_design_index.length; i++) {
+                                    //                 arr.push("控制标准" + data.resist.resist_design_index[i]);
+                                    //             }
+                                    //             return arr;
+                                    //         })()
+                                    //     },
+                                    //     yAxis: {
+                                    //         type: 'value',
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //
+                                    //     series: [
+                                    //         {
+                                    //             name: '检查组数',
+                                    //             type: 'bar', //柱状图
+                                    //             data: data.resist.resist_test_group
+                                    //         }
+                                    //     ]
+                                    // });
                                     var strCompreM = '';
                                     for (var i = 0; i < dataM.resist.resist_design_index.length; i++) {
                                         strCompreM += '<tr><td>'+dataM.resist.resist_design_index[i]+'</td><td>'+dataM.resist.resist_age[i]+'</td><td>'+dataM.resist.resist_test_group[i]+'</td><td>'+dataM.resist.resist_max[i]+'</td><td>'+dataM.resist.resist_min[i]+'</td><td>'+dataM.resist.resist_avg[i]+'</td><td>'+dataM.resist.mortar_standard_deviation_1[i]+'</td>\<td>'+dataM.resist.guarantee_rate_1[i]+'</td></tr>';
                                     }
                                     $("#compressiveStrengthM tbody").empty().append(strCompreM);
-                                    myChartBarCompreM.setOption({
-                                        title: {
-                                            text: '数值分析（Mpa）'
-                                        },
-                                        color: ['#EED5B7', '#FFC125', '#1E90FF','#EDD234'],
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        legend: {
-                                            data: ['最大值', '平均值', '最小值','标准差']
-                                        },
-                                        grid: {
-
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'category',
-                                            data: (function () {
-                                                var arr = [];
-                                                for (var i = 0; i < dataM.resist.resist_design_index.length; i++) {
-                                                    arr.push("设计指标" + dataM.resist.resist_design_index[i]);
-                                                }
-                                                return arr;
-                                            })(),
-                                        },
-                                        yAxis: {
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '最大值',
-                                                type: 'bar', //柱状图
-                                                data: dataM.resist.resist_max
-                                            },
-                                            {
-                                                name: '平均值',
-                                                type: 'bar',
-                                                data: dataM.resist.resist_avg
-                                            },
-                                            {
-                                                name: '最小值',
-                                                type: 'bar',
-                                                data: dataM.resist.resist_min
-                                            },
-                                            {
-                                                name: '标准差',
-                                                type: 'bar',
-                                                data: dataM.resist.mortar_standard_deviation_1
-                                            }
-                                        ]
-                                    });
-                                    //合格率柱状图
-                                    myChartLineCompreM.setOption({
-                                        title: {
-                                            text: '保证率'
-                                        },
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            formatter: '{c}%',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        legend: {
-                                            data: ['保证率']
-                                        },
-                                        grid: {
-                                            left: '3%',
-                                            right: '4%',
-                                            bottom: '3%',
-                                            containLabel: true
-                                        },
-
-                                        xAxis: {
-                                            type: 'category',
-                                            data: (function () {
-                                                var arr = [];
-                                                for (var i = 0; i < dataM.resist.resist_design_index.length; i++) {
-                                                    arr.push("设计指标" + dataM.resist.resist_design_index[i]);
-                                                }
-                                                return arr;
-                                            })(),
-                                            itemStyle: {
-                                                normal: {
-                                                    label: {
-                                                        show: true,
-                                                        positiong: 'top',
-                                                        formatter: '{c}%'
-                                                    }
-                                                }
-                                            },
-                                            boundaryGap: [0, 0.01]
-                                        },
-                                        yAxis: {
-                                            axisLabel: {
-                                                formatter: '{value} %'
-                                            }
-                                        },
-                                        series: [
-                                            {
-                                                name: '合格率',
-                                                type: 'bar',
-                                                barWidth: 40,
-                                                stack: '总量',
-                                                data: dataM.resist.guarantee_rate_1
-                                            }
-                                        ]
-                                    });
-                                    //监测点数柱状图
-                                    myChartPointCompreM.setOption({
-                                        title: {
-                                            text: '检测组数'
-                                        },
-                                        color: ['#EED5B7'],
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        legend: {
-                                            data: ['检测组数']
-                                        },
-                                        grid: {
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'category',
-                                            data: (function () {
-                                                var arr = [];
-                                                for (var i = 0; i < dataM.resist.resist_design_index.length; i++) {
-                                                    arr.push("控制标准" + dataM.resist.resist_design_index[i]);
-                                                }
-                                                return arr;
-                                            })()
-                                        },
-                                        yAxis: {
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '检查组数',
-                                                type: 'bar', //柱状图
-                                                data: dataM.resist.resist_test_group
-                                            }
-                                        ]
-                                    });
+                                    // myChartBarCompreM.setOption({
+                                    //     title: {
+                                    //         text: '数值分析（Mpa）'
+                                    //     },
+                                    //     color: ['#EED5B7', '#FFC125', '#1E90FF','#EDD234'],
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['最大值', '平均值', '最小值','标准差']
+                                    //     },
+                                    //     grid: {
+                                    //
+                                    //         containLabel: true
+                                    //     },
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: (function () {
+                                    //             var arr = [];
+                                    //             for (var i = 0; i < dataM.resist.resist_design_index.length; i++) {
+                                    //                 arr.push("设计指标" + dataM.resist.resist_design_index[i]);
+                                    //             }
+                                    //             return arr;
+                                    //         })(),
+                                    //     },
+                                    //     yAxis: {
+                                    //         type: 'value',
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //
+                                    //     series: [
+                                    //         {
+                                    //             name: '最大值',
+                                    //             type: 'bar', //柱状图
+                                    //             data: dataM.resist.resist_max
+                                    //         },
+                                    //         {
+                                    //             name: '平均值',
+                                    //             type: 'bar',
+                                    //             data: dataM.resist.resist_avg
+                                    //         },
+                                    //         {
+                                    //             name: '最小值',
+                                    //             type: 'bar',
+                                    //             data: dataM.resist.resist_min
+                                    //         },
+                                    //         {
+                                    //             name: '标准差',
+                                    //             type: 'bar',
+                                    //             data: dataM.resist.mortar_standard_deviation_1
+                                    //         }
+                                    //     ]
+                                    // });
+                                    // //合格率柱状图
+                                    // myChartLineCompreM.setOption({
+                                    //     title: {
+                                    //         text: '保证率'
+                                    //     },
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         formatter: '{c}%',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['保证率']
+                                    //     },
+                                    //     grid: {
+                                    //         left: '3%',
+                                    //         right: '4%',
+                                    //         bottom: '3%',
+                                    //         containLabel: true
+                                    //     },
+                                    //
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: (function () {
+                                    //             var arr = [];
+                                    //             for (var i = 0; i < dataM.resist.resist_design_index.length; i++) {
+                                    //                 arr.push("设计指标" + dataM.resist.resist_design_index[i]);
+                                    //             }
+                                    //             return arr;
+                                    //         })(),
+                                    //         itemStyle: {
+                                    //             normal: {
+                                    //                 label: {
+                                    //                     show: true,
+                                    //                     positiong: 'top',
+                                    //                     formatter: '{c}%'
+                                    //                 }
+                                    //             }
+                                    //         },
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //     yAxis: {
+                                    //         axisLabel: {
+                                    //             formatter: '{value} %'
+                                    //         }
+                                    //     },
+                                    //     series: [
+                                    //         {
+                                    //             name: '合格率',
+                                    //             type: 'bar',
+                                    //             barWidth: 40,
+                                    //             stack: '总量',
+                                    //             data: dataM.resist.guarantee_rate_1
+                                    //         }
+                                    //     ]
+                                    // });
+                                    // //监测点数柱状图
+                                    // myChartPointCompreM.setOption({
+                                    //     title: {
+                                    //         text: '检测组数'
+                                    //     },
+                                    //     color: ['#EED5B7'],
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['检测组数']
+                                    //     },
+                                    //     grid: {
+                                    //         containLabel: true
+                                    //     },
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: (function () {
+                                    //             var arr = [];
+                                    //             for (var i = 0; i < dataM.resist.resist_design_index.length; i++) {
+                                    //                 arr.push("控制标准" + dataM.resist.resist_design_index[i]);
+                                    //             }
+                                    //             return arr;
+                                    //         })()
+                                    //     },
+                                    //     yAxis: {
+                                    //         type: 'value',
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //
+                                    //     series: [
+                                    //         {
+                                    //             name: '检查组数',
+                                    //             type: 'bar', //柱状图
+                                    //             data: dataM.resist.resist_test_group
+                                    //         }
+                                    //     ]
+                                    // });
                                     //混凝土综合性能
                                     var strComprePerS = '';
                                     for (var i = 0; i < data.etc.etc_design_index.length; i++) {
@@ -4817,312 +4813,312 @@
                                     }
                                     $("#comprehensivePerformanceS tbody").empty().append(strComprePerS);
 
-                                    myChartBarComprePerS.setOption({
-                                        title: {
-                                            text: '检测组数'
-                                        },
-                                        color: ['#EED5B7', '#FFC125'],
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        legend: {
-                                            data: ['抗冻组数','抗渗组数']
-                                        },
-                                        grid: {
-
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'category',
-                                            data: (function () {
-                                                var arr = [];
-                                                for (var i = 0; i < data.etc.etc_design_index.length; i++) {
-                                                    arr.push("设计指标" + data.etc.etc_design_index[i]);
-                                                }
-                                                return arr;
-                                            })(),
-                                        },
-                                        yAxis: {
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '抗冻组数',
-                                                barWidth:35,
-                                                type: 'bar', //柱状图
-                                                data: data.etc_anti_groups
-                                            },
-                                            {
-                                                name: '抗渗组数',
-                                                barWidth:35,
-                                                type: 'bar', //柱状图
-                                                data: data.etc_impervious_groups
-                                            }
-                                        ]
-                                    });
-                                    //合格率柱状图
-                                    myChartLineComprePerS.setOption({
-                                        title: {
-                                            text: '保证率'
-                                        },
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            formatter: '{c}%',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        legend: {
-                                            data: ['保证率']
-                                        },
-                                        grid: {
-                                            left: '3%',
-                                            right: '4%',
-                                            bottom: '3%',
-                                            containLabel: true
-                                        },
-
-                                        xAxis: {
-                                            type: 'category',
-                                            data: (function () {
-                                                var arr = [];
-                                                for (var i = 0; i < data.etc.etc_design_index.length; i++) {
-                                                    arr.push("设计指标" + data.etc.etc_design_index[i]);
-                                                }
-                                                return arr;
-                                            })(),
-                                            itemStyle: {
-                                                normal: {
-                                                    label: {
-                                                        show: true,
-                                                        positiong: 'top',
-                                                        formatter: '{c}%'
-                                                    }
-                                                }
-                                            },
-                                            boundaryGap: [0, 0.01]
-                                        },
-                                        yAxis: {
-                                            axisLabel: {
-                                                formatter: '{value} %'
-                                            }
-                                        },
-                                        series: [
-                                            {
-                                                name: '合格率',
-                                                type: 'bar',
-                                                barWidth: 40,
-                                                stack: '总量',
-                                                data: data.etc.etc_anti_pass
-                                            }
-                                        ]
-                                    });
-                                    //监测点数柱状图
-                                    myChartPointComprePerS.setOption({
-                                        title: {
-                                            text: '检测组数'
-                                        },
-                                        color: ['#EED5B7'],
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        legend: {
-                                            data: ['检测组数']
-                                        },
-                                        grid: {
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'category',
-                                            data: (function () {
-                                                var arr = [];
-                                                for (var i = 0; i < data.etc.etc_design_index.length; i++) {
-                                                    arr.push("控制标准" + data.etc.etc_design_index[i]);
-                                                }
-                                                return arr;
-                                            })()
-                                        },
-                                        yAxis: {
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '检查组数',
-                                                barWidth:35,
-                                                type: 'bar', //柱状图
-                                                data: data.resist.resist_test_group
-                                            }
-                                        ]
-                                    });
+                                    // myChartBarComprePerS.setOption({
+                                    //     title: {
+                                    //         text: '检测组数'
+                                    //     },
+                                    //     color: ['#EED5B7', '#FFC125'],
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['抗冻组数','抗渗组数']
+                                    //     },
+                                    //     grid: {
+                                    //
+                                    //         containLabel: true
+                                    //     },
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: (function () {
+                                    //             var arr = [];
+                                    //             for (var i = 0; i < data.etc.etc_design_index.length; i++) {
+                                    //                 arr.push("设计指标" + data.etc.etc_design_index[i]);
+                                    //             }
+                                    //             return arr;
+                                    //         })(),
+                                    //     },
+                                    //     yAxis: {
+                                    //         type: 'value',
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //
+                                    //     series: [
+                                    //         {
+                                    //             name: '抗冻组数',
+                                    //             barWidth:35,
+                                    //             type: 'bar', //柱状图
+                                    //             data: data.etc_anti_groups
+                                    //         },
+                                    //         {
+                                    //             name: '抗渗组数',
+                                    //             barWidth:35,
+                                    //             type: 'bar', //柱状图
+                                    //             data: data.etc_impervious_groups
+                                    //         }
+                                    //     ]
+                                    // });
+                                    // //合格率柱状图
+                                    // myChartLineComprePerS.setOption({
+                                    //     title: {
+                                    //         text: '保证率'
+                                    //     },
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         formatter: '{c}%',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['保证率']
+                                    //     },
+                                    //     grid: {
+                                    //         left: '3%',
+                                    //         right: '4%',
+                                    //         bottom: '3%',
+                                    //         containLabel: true
+                                    //     },
+                                    //
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: (function () {
+                                    //             var arr = [];
+                                    //             for (var i = 0; i < data.etc.etc_design_index.length; i++) {
+                                    //                 arr.push("设计指标" + data.etc.etc_design_index[i]);
+                                    //             }
+                                    //             return arr;
+                                    //         })(),
+                                    //         itemStyle: {
+                                    //             normal: {
+                                    //                 label: {
+                                    //                     show: true,
+                                    //                     positiong: 'top',
+                                    //                     formatter: '{c}%'
+                                    //                 }
+                                    //             }
+                                    //         },
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //     yAxis: {
+                                    //         axisLabel: {
+                                    //             formatter: '{value} %'
+                                    //         }
+                                    //     },
+                                    //     series: [
+                                    //         {
+                                    //             name: '合格率',
+                                    //             type: 'bar',
+                                    //             barWidth: 40,
+                                    //             stack: '总量',
+                                    //             data: data.etc.etc_anti_pass
+                                    //         }
+                                    //     ]
+                                    // });
+                                    // //监测点数柱状图
+                                    // myChartPointComprePerS.setOption({
+                                    //     title: {
+                                    //         text: '检测组数'
+                                    //     },
+                                    //     color: ['#EED5B7'],
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['检测组数']
+                                    //     },
+                                    //     grid: {
+                                    //         containLabel: true
+                                    //     },
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: (function () {
+                                    //             var arr = [];
+                                    //             for (var i = 0; i < data.etc.etc_design_index.length; i++) {
+                                    //                 arr.push("控制标准" + data.etc.etc_design_index[i]);
+                                    //             }
+                                    //             return arr;
+                                    //         })()
+                                    //     },
+                                    //     yAxis: {
+                                    //         type: 'value',
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //
+                                    //     series: [
+                                    //         {
+                                    //             name: '检查组数',
+                                    //             barWidth:35,
+                                    //             type: 'bar', //柱状图
+                                    //             data: data.resist.resist_test_group
+                                    //         }
+                                    //     ]
+                                    // });
                                     var strComprePerM = '';
                                     for (var i = 0; i < dataM.resist.resist_design_index.length; i++) {
                                         strComprePerM += '<tr><td>'+dataM.resist.resist_design_index[i]+'</td><td>'+dataM.resist.resist_age[i]+'</td><td>'+dataM.resist.resist_test_group[i]+'</td><td>'+dataM.resist.resist_max[i]+'</td><td>'+dataM.resist.resist_min[i]+'</td><td>'+dataM.resist.resist_avg[i]+'</td><td>'+dataM.resist.mortar_standard_deviation_1[i]+'</td>\<td>'+dataM.resist.guarantee_rate_1[i]+'</td></tr>';
                                     }
                                     $("#compressiveStrengthM tbody").empty().append(strComprePerM);
-                                    myChartBarComprePerM.setOption({
-                                        title: {
-                                            text: '数值分析（Mpa）'
-                                        },
-                                        color: ['#EED5B7', '#FFC125', '#1E90FF','#EDD234'],
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        legend: {
-                                            data: ['最大值', '平均值', '最小值','标准差']
-                                        },
-                                        grid: {
-
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'category',
-                                            data: (function () {
-                                                var arr = [];
-                                                for (var i = 0; i < dataM.resist.resist_design_index.length; i++) {
-                                                    arr.push("设计指标" + dataM.resist.resist_design_index[i]);
-                                                }
-                                                return arr;
-                                            })(),
-                                        },
-                                        yAxis: {
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '最大值',
-                                                type: 'bar', //柱状图
-                                                data: dataM.resist.resist_max
-                                            },
-                                            {
-                                                name: '平均值',
-                                                type: 'bar',
-                                                data: dataM.resist.resist_avg
-                                            },
-                                            {
-                                                name: '最小值',
-                                                type: 'bar',
-                                                data: dataM.resist.resist_min
-                                            },
-                                            {
-                                                name: '标准差',
-                                                type: 'bar',
-                                                data: dataM.resist.mortar_standard_deviation_1
-                                            }
-                                        ]
-                                    });
-                                    //合格率柱状图
-                                    myChartLineComprePerM.setOption({
-                                        title: {
-                                            text: '保证率'
-                                        },
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            formatter: '{c}%',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        legend: {
-                                            data: ['保证率']
-                                        },
-                                        grid: {
-                                            left: '3%',
-                                            right: '4%',
-                                            bottom: '3%',
-                                            containLabel: true
-                                        },
-
-                                        xAxis: {
-                                            type: 'category',
-                                            data: (function () {
-                                                var arr = [];
-                                                for (var i = 0; i < dataM.resist.resist_design_index.length; i++) {
-                                                    arr.push("设计指标" + dataM.resist.resist_design_index[i]);
-                                                }
-                                                return arr;
-                                            })(),
-                                            itemStyle: {
-                                                normal: {
-                                                    label: {
-                                                        show: true,
-                                                        positiong: 'top',
-                                                        formatter: '{c}%'
-                                                    }
-                                                }
-                                            },
-                                            boundaryGap: [0, 0.01]
-                                        },
-                                        yAxis: {
-                                            axisLabel: {
-                                                formatter: '{value} %'
-                                            }
-                                        },
-                                        series: [
-                                            {
-                                                name: '合格率',
-                                                type: 'bar',
-                                                barWidth: 40,
-                                                stack: '总量',
-                                                data: dataM.resist.guarantee_rate_1
-                                            }
-                                        ]
-                                    });
-                                    //监测点数柱状图
-                                    myChartPointComprePerM.setOption({
-                                        title: {
-                                            text: '检测组数'
-                                        },
-                                        color: ['#EED5B7'],
-                                        tooltip: {
-                                            trigger: 'axis',
-                                            axisPointer: {
-                                                type: 'shadow'
-                                            }
-                                        },
-                                        legend: {
-                                            data: ['检测组数']
-                                        },
-                                        grid: {
-                                            containLabel: true
-                                        },
-                                        xAxis: {
-                                            type: 'category',
-                                            data: (function () {
-                                                var arr = [];
-                                                for (var i = 0; i < dataM.resist.resist_design_index.length; i++) {
-                                                    arr.push("控制标准" + dataM.resist.resist_design_index[i]);
-                                                }
-                                                return arr;
-                                            })()
-                                        },
-                                        yAxis: {
-                                            type: 'value',
-                                            boundaryGap: [0, 0.01]
-                                        },
-
-                                        series: [
-                                            {
-                                                name: '检查组数',
-                                                type: 'bar', //柱状图
-                                                data: dataM.resist.resist_test_group
-                                            }
-                                        ]
-                                    });
+                                    // myChartBarComprePerM.setOption({
+                                    //     title: {
+                                    //         text: '数值分析（Mpa）'
+                                    //     },
+                                    //     color: ['#EED5B7', '#FFC125', '#1E90FF','#EDD234'],
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['最大值', '平均值', '最小值','标准差']
+                                    //     },
+                                    //     grid: {
+                                    //
+                                    //         containLabel: true
+                                    //     },
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: (function () {
+                                    //             var arr = [];
+                                    //             for (var i = 0; i < dataM.resist.resist_design_index.length; i++) {
+                                    //                 arr.push("设计指标" + dataM.resist.resist_design_index[i]);
+                                    //             }
+                                    //             return arr;
+                                    //         })(),
+                                    //     },
+                                    //     yAxis: {
+                                    //         type: 'value',
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //
+                                    //     series: [
+                                    //         {
+                                    //             name: '最大值',
+                                    //             type: 'bar', //柱状图
+                                    //             data: dataM.resist.resist_max
+                                    //         },
+                                    //         {
+                                    //             name: '平均值',
+                                    //             type: 'bar',
+                                    //             data: dataM.resist.resist_avg
+                                    //         },
+                                    //         {
+                                    //             name: '最小值',
+                                    //             type: 'bar',
+                                    //             data: dataM.resist.resist_min
+                                    //         },
+                                    //         {
+                                    //             name: '标准差',
+                                    //             type: 'bar',
+                                    //             data: dataM.resist.mortar_standard_deviation_1
+                                    //         }
+                                    //     ]
+                                    // });
+                                    // //合格率柱状图
+                                    // myChartLineComprePerM.setOption({
+                                    //     title: {
+                                    //         text: '保证率'
+                                    //     },
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         formatter: '{c}%',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['保证率']
+                                    //     },
+                                    //     grid: {
+                                    //         left: '3%',
+                                    //         right: '4%',
+                                    //         bottom: '3%',
+                                    //         containLabel: true
+                                    //     },
+                                    //
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: (function () {
+                                    //             var arr = [];
+                                    //             for (var i = 0; i < dataM.resist.resist_design_index.length; i++) {
+                                    //                 arr.push("设计指标" + dataM.resist.resist_design_index[i]);
+                                    //             }
+                                    //             return arr;
+                                    //         })(),
+                                    //         itemStyle: {
+                                    //             normal: {
+                                    //                 label: {
+                                    //                     show: true,
+                                    //                     positiong: 'top',
+                                    //                     formatter: '{c}%'
+                                    //                 }
+                                    //             }
+                                    //         },
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //     yAxis: {
+                                    //         axisLabel: {
+                                    //             formatter: '{value} %'
+                                    //         }
+                                    //     },
+                                    //     series: [
+                                    //         {
+                                    //             name: '合格率',
+                                    //             type: 'bar',
+                                    //             barWidth: 40,
+                                    //             stack: '总量',
+                                    //             data: dataM.resist.guarantee_rate_1
+                                    //         }
+                                    //     ]
+                                    // });
+                                    // //监测点数柱状图
+                                    // myChartPointComprePerM.setOption({
+                                    //     title: {
+                                    //         text: '检测组数'
+                                    //     },
+                                    //     color: ['#EED5B7'],
+                                    //     tooltip: {
+                                    //         trigger: 'axis',
+                                    //         axisPointer: {
+                                    //             type: 'shadow'
+                                    //         }
+                                    //     },
+                                    //     legend: {
+                                    //         data: ['检测组数']
+                                    //     },
+                                    //     grid: {
+                                    //         containLabel: true
+                                    //     },
+                                    //     xAxis: {
+                                    //         type: 'category',
+                                    //         data: (function () {
+                                    //             var arr = [];
+                                    //             for (var i = 0; i < dataM.resist.resist_design_index.length; i++) {
+                                    //                 arr.push("控制标准" + dataM.resist.resist_design_index[i]);
+                                    //             }
+                                    //             return arr;
+                                    //         })()
+                                    //     },
+                                    //     yAxis: {
+                                    //         type: 'value',
+                                    //         boundaryGap: [0, 0.01]
+                                    //     },
+                                    //
+                                    //     series: [
+                                    //         {
+                                    //             name: '检查组数',
+                                    //             type: 'bar', //柱状图
+                                    //             data: dataM.resist.resist_test_group
+                                    //         }
+                                    //     ]
+                                    // });
 
                                     //code===1结束
                                 }
