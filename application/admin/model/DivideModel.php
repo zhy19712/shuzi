@@ -850,7 +850,7 @@ class DivideModel extends Model
         $pouring_max11 = $pouring_min11 = $pouring_avg11 = $pouring_pass11 = $pouring_num11 = [];
         $po_arr = array_count_values($pouring_measurement); // 每一个 测次 出现的次数
         $po_arr_1 = array_keys($po_arr); // 相同的 测次
-        foreach ($ex_control_criterion as $dk=>$dv) {
+        foreach ($pouring_measurement as $dk=>$dv) {
             $pouring_max11[$dv][] = $pouring_max[$dk];
             $pouring_min11[$dv][] = $pouring_min[$dk];
             $pouring_avg11[$dv][] = $pouring_avg[$dk];
@@ -882,7 +882,7 @@ class DivideModel extends Model
         $mix_num11 = $mix_qualified_num11 = $mix_max11 = $mix_min11 = $mix_avg11 = $mix_pass11 = [];
         $mix_arr = array_count_values($mix_design); // 每一个 设计指标 出现的次数
         $mix_arr_1 = array_keys($mix_arr); // 相同的 设计指标
-        foreach ($ex_control_criterion as $dk=>$dv) {
+        foreach ($mix_design as $dk=>$dv) {
             $mix_num11[$dv][] = $mix_num[$dk];
             $mix_qualified_num11[$dv][] = $mix_qualified_num[$dk];
             $mix_max11[$dv][] = $mix_max[$dk];
@@ -916,7 +916,7 @@ class DivideModel extends Model
         $resist_age11 = $resist_test_group11 = $resist_max11 = $resist_min11 = $resist_avg11 = $mortar_standard_deviation_111 = $guarantee_rate_111 = $mortar_standard_deviation_211 = $guarantee_rate_211 = [];
         $res_arr = array_count_values($resist_design_index); // 每一个 设计指标 出现的次数
         $res_arr_1 = array_keys($res_arr); // 相同的 设计指标
-        foreach ($ex_control_criterion as $dk=>$dv) {
+        foreach ($resist_design_index as $dk=>$dv) {
             $resist_age11[$dv][] = $resist_age[$dk];
             $resist_test_group11[$dv][] = $resist_test_group[$dk];
             $resist_max11[$dv][] = $resist_max[$dk];
@@ -952,7 +952,7 @@ class DivideModel extends Model
         $etc_age11 = $etc_anti_groups11 = $etc_anti_test11 = $etc_anti_pass11 = $etc_impervious_groups11 = $etc_impervious_test11 = $etc_impervious_pass11 = [];
         $etc_arr = array_count_values($etc_design_index); // 每一个 设计指标 出现的次数
         $etc_arr_1 = array_keys($etc_arr); // 相同的 设计指标
-        foreach ($ex_control_criterion as $dk=>$dv) {
+        foreach ($etc_design_index as $dk=>$dv) {
             $etc_age11[$dv][] = $etc_age[$dk];
             $etc_anti_groups11[$dv][] = $etc_anti_groups[$dk];
             $etc_anti_test11[$dv][] = $etc_anti_test[$dk];
