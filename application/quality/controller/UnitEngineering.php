@@ -9,7 +9,12 @@
 namespace app\quality\controller;
 use app\admin\controller\Base;
 use app\admin\model\DivideModel;
+use app\admin\model\HunningtuModel;
+use app\admin\model\KaiwaModel;
+use app\admin\model\MaoganModel;
 use app\admin\model\ProjectModel;
+use app\admin\model\ZhihuModel;
+use app\quality\model\ProjectAttachmentModel;
 
 /**
  * 质量验收管理  --  单元工程
@@ -47,7 +52,7 @@ class UnitEngineering extends Base
             $param = input('post.');
             $projectData = $project->getOneProject($param['uid']);
             $p = urldecode(urldecode($param['cate']));
-            if($p==="开挖")
+            if($p==="开挖" || $p=="明挖" || $p=="洞挖")
             {
                 $kaiwaData = $kaiwa->getOne($param['uid']);
                 return json(['projectData' => $projectData, 'kaiwaData' => $kaiwaData,'code' => 1]);
@@ -91,7 +96,7 @@ class UnitEngineering extends Base
                 $project->editProject($projectData);
                 acceptanceWarning();//启动时刷新验收预警
             }
-            if(empty($param['edit'])&&$param['cate']=='开挖')
+            if(empty($param['edit']) && ($param['cate']=='开挖' || $param['cate']=='明挖' || $param['cate']=='洞挖'))
             {
                 $flag = $kaiwa->insertKaiwa($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
@@ -111,7 +116,7 @@ class UnitEngineering extends Base
                 $flag = $maogan->insertMaogan($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-            else if(!empty($param['edit'])&&$param['cate']=='开挖')
+            else if(!empty($param['edit']) && ($param['cate']=='开挖' || $param['cate']=='明挖' || $param['cate']=='洞挖'))
             {
                 $flag = $kaiwa->editKaiwa($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
@@ -288,7 +293,7 @@ class UnitEngineering extends Base
                 $level5_data = $level5->getAllbyPID($dd['id']);    //全部单元工程
                 $level5_data_primary =  $level5->getAllbyPIDandPrimary($dd['id']); //主要单元工程
                 foreach($level5_data as $data) {
-                    if ($data['cate'] == '开挖') {
+                    if ($data['cate'] == '开挖' || $data['cate']=="明挖" || $data['cate'] == "洞挖") {
                         $level5_num += $level5_kaiwa->getNum($data['id']);
                         $level5_qualified_num += $level5_kaiwa->getQualifiedNum($data['id']);
                         $level5_good_num += $level5_kaiwa->getGoodNum($data['id']);
@@ -305,7 +310,7 @@ class UnitEngineering extends Base
                 }
 
                 foreach($level5_data_primary as $data_primary) {
-                    if ($data_primary['cate'] == '开挖') {
+                    if ($data_primary['cate'] == '开挖' || $data_primary['cate'] == '明挖' || $data_primary['cate'] == '洞挖') {
                         $level5_num_primary += $level5_kaiwa->getNum($data_primary['id']);
                         $level5_qualified_num_primary += $level5_kaiwa->getQualifiedNum($data_primary['id']);
                         $level5_good_num_primary += $level5_kaiwa->getGoodNum($data_primary['id']);
@@ -486,13 +491,6 @@ class UnitEngineering extends Base
             $param = input('post.');
             $flag = $level3->editNode($param);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-        }
-    }
-
-    public function jj(){
-        if(request()->isAjax()){
-            $param = input('get.');
-            return json(['res' => $param['uname']]);
         }
     }
 

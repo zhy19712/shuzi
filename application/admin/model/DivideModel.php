@@ -215,7 +215,7 @@ class DivideModel extends Model
         }
         $child_node_id[] = $id;
         // 获取此节点下包含的所有单元工程检验批
-        $unit_id = Db::name('project')->where(['pid'=>['in',$child_node_id],'cate'=>$cate])->column('id');
+        $unit_id = Db::name('project')->where(['pid'=>['in',$child_node_id],'cate'=>['in',$cate]])->column('id');
         return $unit_id;
     }
 
@@ -235,7 +235,7 @@ class DivideModel extends Model
      */
     public function excavateData($id,$cate)
     {
-        $unit_id = $this->projectIdArr($id,$cate);
+        $unit_id = $this->projectIdArr($id,['开挖','明挖','洞挖']);
         // 根据 单元工程检验批 获取 所有的开挖 信息
         $excavate_data = Db::name('project_kaiwa')->where(['uid'=>['in',$unit_id]])->select();
         if(sizeof($excavate_data) < 1){
@@ -356,7 +356,7 @@ class DivideModel extends Model
      */
     public function support($id,$cate)
     {
-        $unit_id = $this->projectIdArr($id,$cate);
+        $unit_id = $this->projectIdArr($id,[$cate]);
         // 根据 单元工程检验批 获取 所有的支护 信息
         $id_arr = Db::name('project_zhihu')->where(['uid'=>['in',$unit_id]])->column('id');
         // 根据支护表获取关联的锚杆检测组
@@ -681,7 +681,7 @@ class DivideModel extends Model
      */
     public function concrete($id,$cate)
     {
-        $unit_id = $this->projectIdArr($id,$cate);
+        $unit_id = $this->projectIdArr($id,[$cate]);
         // 根据 单元工程检验批 获取 所有的混凝土 信息
         $id_arr = Db::name('project_hunningtu')->where(['uid'=>['in',$unit_id]])->column('id');
         $h_data = Db::name('project_hnt_attachment')->where(['hid'=>['in',$id_arr]])->select();
@@ -1405,7 +1405,7 @@ class DivideModel extends Model
      */
     public function scupper($id,$cate)
     {
-        $unit_id = $this->projectIdArr($id,$cate);
+        $unit_id = $this->projectIdArr($id,[$cate]);
         // 根据 单元工程检验批 获取 所有的排水孔 信息
         $scupper_data = Db::name('project_scupper')->where(['divide_id'=>['in',$unit_id]])->select();
         if(sizeof($scupper_data) < 1){
