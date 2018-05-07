@@ -412,20 +412,20 @@
                                         <span>不平整度</span>
                                         <div class="exp w2">
                                             <div class="top border-bottom">
-                                                <span>检查断面(个)</span>
+                                                <!--<span>检查断面(个)</span>-->
                                                 <span>检查点数(个)</span>
                                                 <span>最大值(cm)</span>
                                                 <span>最小值(cm)</span>
                                                 <span>平均值(cm)</span>
-                                                <span>检查时间</span>
+                                                <span>合格率</span>
                                             </div>
                                             <div class="bottom">
-                                                <input type="text" name="sections" id="sections">
-                                                <input type="text" name="points" id="points">
-                                                <input type="text" name="max" id="max">
-                                                <input type="text" name="min" id="min">
-                                                <input type="text" name="ave" id="ave">
-                                                <input type="text" name="sections_test_date" id="sections_test_date">
+                                                <!--<input type="text" name="sections" id="sections">-->
+                                                <input type="text" name="points_irregularity_degree" id="points">
+                                                <input type="text" name="max_irregularity_degree" id="max">
+                                                <input type="text" name="min_irregularity_degree" id="min">
+                                                <input type="text" name="avg_irregularity_degree" id="avg">
+                                                <input type="text" name="pass_irregularity_degree" id="sections_test_date">
                                             </div>
                                         </div>
                                     </div>
@@ -1317,7 +1317,6 @@
 
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
-        console.log(treeNode);
         $("#table_info").css("visibility","visible");
         mytree_node = treeNode;
         $("#groupname").val(treeNode.name);
@@ -1347,7 +1346,7 @@
                         $("#input6").val(data.gaochengzhi);
                         $("#input7").val(data.primary);
                         $("#container form").css("display","none");
-                        if(data.cate == "开挖"){
+                        if(data.cate == "开挖" || data.cate == "明挖" || data.cate == "洞挖"){
                             $("#uid1").val(groupid);
                             $("#cate1").val(data.cate);
                             $("#model1").css("display","block");
@@ -1363,12 +1362,12 @@
                                 $("#ave_length").val(kdata.ave_length);
                                 $("#half_percentage").val(kdata.half_percentage);
                                 $("#holes_test_date").val(kdata.holes_test_date);
-                                $("#sections").val(kdata.sections);
-                                $("#points").val(kdata.points);
-                                $("#max").val(kdata.max);
-                                $("#min").val(kdata.min);
-                                $("#ave").val(kdata.ave);
-                                $("#sections_test_date").val(kdata.sections_test_date);
+                                // $("#sections").val(kdata.sections);
+                                $("#points").val(kdata.points_irregularity_degree);
+                                $("#max").val(kdata.max_irregularity_degree);
+                                $("#min").val(kdata.min_irregularity_degree);
+                                $("#ave").val(kdata.avg_irregularity_degree);
+                                $("#sections_test_date").val(kdata.pass_irregularity_degree);
                                 $("#sections_overbreak").val(kdata.sections_overbreak);
                                 $("#points_overbreak").val(kdata.points_overbreak);
                                 $("#max_overbreak").val(kdata.max_overbreak);
@@ -1829,7 +1828,7 @@
                     }
                     var arr1 = [];
                     arr1.push(new newobj("检查孔数",$("#holes").val()),
-                        new newobj("检查断面",$("#sections").val()),
+                        // new newobj("检查断面",$("#sections").val()),
                         new newobj("检查点数",$("#points").val()),
                         new newobj("检查断面(超挖)",$("#sections_overbreak").val()),
                         new newobj("检查点数(超挖)",$("#points").val()),
@@ -1843,7 +1842,7 @@
                         new newobj("平均残孔长度",$("#ave_length").val()),
                         new newobj("最大值",$("#max").val()),
                         new newobj("最小值",$("#min").val()),
-                        new newobj("平均值",$("#ave").val()),
+                        new newobj("平均值",$("#avg").val()),
                         new newobj("最大超挖",$("#max_overbreak").val()),
                         new newobj("最小超挖",$("#min_overbreak").val()),
                         new newobj("平均超挖",$("#ave_overbreak").val()),
