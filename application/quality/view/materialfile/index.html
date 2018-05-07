@@ -23,7 +23,7 @@
 </style>
 <body>
 <div class="container-fluid">
-    <button class="btn btn-primary btn-md pull-right" data-toggle="modal" id="addTest" data-target="#fname" style="position: relative;top: 20px;right: 20px;z-index: 999">新增</button>
+    <button class="btn btn-primary btn-md pull-right" data-toggle="modal" id="addTest"   style="position: relative;top: 20px;right: 20px;z-index: 999">新增</button>
     <div class="row">
         <table class="table table-hover table-bordered"  id="materTable">
             <thead>
@@ -40,11 +40,12 @@
     </div>
     <!--增加试验资料-->
     <div id="fname" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 90%;height: 600px;overflow-y: scroll;margin: 10px auto;">
-        <form action="#" id="testContent">
+        <form action="#" id="testContent" method="post">
             <div class="row">
                 <div class="col-sm-12" style="background-color:#fff;">
                     <div class="ibox float-e-margins">
                         <div class="modal-body table-responsive">
+
                             <table class="table table-bordered">
                                 <caption>水泥</caption>
                                 <thead>
@@ -629,7 +630,7 @@
                                 </div>
                             </div>
                             <div class="pull-right">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <button  id="saveTest" class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
                                 <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
                             </div>
                         </div>
@@ -649,9 +650,11 @@
 <script src="__JS__/mypdf.js"></script>
 </body>
 <script>
-    $(function () {
+
+    // $(function () {
         var uploader;
-        $("#testContent").submit(function () {
+        $("#addTest").click(function () {
+            $("#fname").modal('show');
             myupload();
         });
         function myupload() {
@@ -674,7 +677,6 @@
                         innerHTML: "上传文件"
                     }
                 });
-
                 uploader.on( 'fileQueued', function( file ) {
                     $("#file_per").append('<div id="' + file.id + '" class="item">' +
                         '</div>');
@@ -695,11 +697,72 @@
                     console.log("remove");
                 });
                 uploader.on("uploadStart",function () {
-                    var entrustment_number = [];
+                    //委托编号
+                    var entrustmentNumArr = [];
                     $("input[name='entrustmentNum']").each(function () {
-                        entrustment_number.push($(this).val());
+                        entrustmentNumArr.push($(this).val());
                     })
-                    uploader.options.formData.entrustment_number = entrustment_number;
+                    uploader.options.formData.entrustment_number = entrustmentNumArr;
+                    //报告编号
+                    var report_numberArr = [];
+                    $("input[name='report_number']").each(function () {
+                        report_numberArr.push($(this).val());
+                    })
+                    uploader.options.formData.entrustment_number = report_numberArr;
+                    //进场检测时间/成型日期
+                    var checkDateArr = [];
+                    $("input[name='checkDate']").each(function () {
+                        checkDateArr.push($(this).val());
+                    })
+                    uploader.options.formData.approach_detection_time = checkDateArr;
+                    //使用部位/工程部位/检测部位
+                    var usePositionArr = [];
+                    $("input[name='usePosition']").each(function () {
+                        usePositionArr.push($(this).val());
+                    })
+                    uploader.options.formData.using_position =  usePositionArr;
+                    // 生产厂家
+                    var manufacturerArr = [];
+                    $("input[name='manufacturer']").each(function () {
+                        manufacturerArr.push($(this).val());
+                    })
+                    uploader.options.formData.manufacturer = manufacturerArr;
+                    //  品种/标号/规格/等级/种类
+                    var specificationsArr = [];
+                    $("input[name='specifications']").each(function () {
+                        specificationsArr.push($(this).val());
+                    })
+                    uploader.options.formData.specifications = specificationsArr;
+                    //  批号/炉号/型号/桩号/母材批号
+                    var lotNumArr = [];
+                    $("input[name='lotNum']").each(function () {
+                        lotNumArr.push($(this).val());
+                    })
+                    uploader.options.formData.lot_number = lotNumArr;
+                    // 代表数量/进场数量
+                    var delegatesNumArr = [];
+                    $("input[name='delegatesNum']").each(function () {
+                        delegatesNumArr.push($(this).val());
+                    })
+                    uploader.options.formData.number_of_delegates = delegatesNumArr;
+                    // 结论
+                    var conclusionArr = [];
+                    $("input[name='conclusion']").each(function () {
+                        conclusionArr.push($(this).val());
+                    })
+                    uploader.options.formData.conclusion = conclusionArr;
+                    // 样品名称/检测项目
+                    var kindArr = [];
+                    $("input[name='kind']").each(function () {
+                        kindArr.push($(this).val());
+                    })
+                    uploader.options.formData.kind = kindArr;
+                    //  标段
+                    var bidsArr = [];
+                    $("input[name='bids']").each(function () {
+                        bidsArr.push($(this).val());
+                    })
+                    uploader.options.formData.bids = bidsArr;
                 });
                 uploader.on('beforeFileQueued', function (file) {
                     if($("#file_list").html()){
@@ -725,44 +788,13 @@
                 });
                 // 文件上传成功
                 uploader.on( 'uploadSuccess', function( file,data, response ) {
-                    console.log(file)
-                    console.log(data)
-                    if(data.code === 1){
                         layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
-                        table_refresh();
                         uploader = null;
                         $("#file_upload").empty();
                         $("#fname").modal('hide');
                         $("#file_per").empty();
-
-                        if(mytablename === "jc"){
-                            $.ajax({
-                                url: "./prototypeListAdd",
-                                type: "post",
-                                data: {id:cid3,status:"检查"},
-                                dataType: "json",
-                                success: function (res) {
-                                    console.log(res);
-                                }
-                            })
-                        }
-                        if(mytablename === "chhzb"){
-                            $.ajax({
-                                url: "./prototypeListAdd",
-                                type: "post",
-                                data: {id:cid3,status:"完成"},
-                                dataType: "json",
-                                success: function (res) {
-                                    console.log(res);
-                                }
-                            })
-                        }
-                    }else {
-                        layer.msg("抱歉，您没有此权限");
-                    }
-
+                        materTables.ajax.url("__SCRIPT__/Materialfile.php").load();
                 });
-
                 // 文件上传失败，显示上传出错。
                 uploader.on( 'uploadError', function( file ) {
                     layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
@@ -771,8 +803,7 @@
                 });
             }
         }
-
-        $('#materTable').dataTable( {
+        var materTables = $('#materTable').dataTable( {
             "ordering": false,
             "ajax": "__SCRIPT__/Materialfile.php",
             "columnDefs": [
@@ -810,37 +841,39 @@
             "dom": '<"top pull-left"f>rt<"bottom"p><"clear">'
         } );
         //新增提交
+     $("#testContent").submit(function (){
+            uploader.upload();
 
-
-    })
-    //删除
-    function del(that) {
-        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
-            $.ajax({
-                url: "./ReformDel",
-                data: {'id' : id},
-                type: "post",
-                dataType: "json",
-                success: function (res) {
-                    if(res.code == 1){
-                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        standard_table.ajax.url("__SCRIPT__/reform.php").load();
-                    }else{
-                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
-                    }
-                }
-            })
-            layer.close(index);
         })
-    }
-    //查看
-    function detail(that) {
-        $("#detailModal").modal();
-    }
-    //编辑
-    function edit() {
-        $("#editlModal").modal();
-    }
+
+        //删除
+        function del(that) {
+            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+            layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+                $.ajax({
+                    url: "./ReformDel",
+                    data: {'id' : id},
+                    type: "post",
+                    dataType: "json",
+                    success: function (res) {
+                        if(res.code == 1){
+                            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                            standard_table.ajax.url("__SCRIPT__/reform.php").load();
+                        }else{
+                            layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
+                        }
+                    }
+                })
+                layer.close(index);
+            })
+        }
+        //查看
+        function detail(that) {
+            $("#detailModal").modal();
+        }
+        //编辑
+        function edit() {
+            $("#editlModal").modal();
+        }
 </script>
 </html>
