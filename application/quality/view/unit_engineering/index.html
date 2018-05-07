@@ -618,53 +618,187 @@
                                         </div>
                                     </div>
                                     <div class="info">
-                                        <span>抗压强度检测<br>(施工单位自检)</span>
+                                        <span>出机口温度</span>
                                         <div class="exp w2">
                                             <div class="top border-bottom">
-                                                <span>设计指标</span>
-                                                <span>方量(m³)</span>
-                                                <span>施工单位自检组数(个)</span>
-                                                <span>最大值(Mpa)</span>
-                                                <span>最小值(Mpa)</span>
-                                                <span>平均值(Mpa)</span>
-                                                <span>合格率(%)</span>
+                                                <span>控制标准</span>
+                                                <span>检测组数</span>
+                                                <span>合格组数</span>
+                                                <span>最大值</span>
+                                                <span>最小值</span>
+                                                <span>平均值</span>
+                                                <span>合格率</span>
                                             </div>
                                             <div class="bottom">
-                                                <input type="text" name="requirement_self" id="requirement_self">
-                                                <input type="text" name="volume_self" id="volume_self">
-                                                <input type="text" name="num_self" id="num_self">
-                                                <input type="text" name="max_self" id="max_self">
-                                                <input type="text" name="min_self" id="min_self">
-                                                <input type="text" name="ave_self" id="ave_self">
-                                                <input type="text" name="pass_self" id="pass_self">
+                                                <input type="text" name="ex_control_criterion" id="ex_control_criterion" ids="requirement_self">
+                                                <input type="text" name="ex_test_groups" id="ex_test_groups">
+                                                <input type="text" name="ex_qualified_groups" id="ex_qualified_groups">
+                                                <input type="text" name="ex_max" id="ex_max">
+                                                <input type="text" name="ex_min" id="ex_min">
+                                                <input type="text" name="ex_avg" id="ex_avg">
+                                                <input type="text" name="ex_pass" id="ex_pass">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="info" style="margin-top: 0;border-top: none;">
-                                        <span>抗压强度检测<br>(监理单位自检)</span>
+                                        <span>入仓温度</span>
                                         <div class="exp w2">
                                             <div class="top border-bottom">
-                                                <span>设计指标</span>
-                                                <span>方量(m³)</span>
-                                                <span>监理单位自检组数(个)</span>
+                                                <span>测次</span>
+                                                <span>最大值(Mpa)</span>
+                                                <span>最小值(Mpa)</span>
+                                                <span>平均值(Mpa)</span>
+                                                <span>合格次数</span>
+                                                <span>合格率(%)</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="be_measurement" id="be_measurement">
+                                                <input type="text" name="be_max" id="be_max">
+                                                <input type="text" name="be_min" id="be_min">
+                                                <input type="text" name="be_avg" id="be_avg">
+                                                <input type="text" name="be_num" id="be_num">
+                                                <input type="text" name="be_pass" id="be_pass">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info" style="margin-top: 0;border-top: none;">
+                                        <span>浇筑温度</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
+                                                <span>测次</span>
+                                                <span>最大值(Mpa)</span>
+                                                <span>最小值(Mpa)</span>
+                                                <span>平均值(Mpa)</span>
+                                                <span>合格次数</span>
+                                                <span>合格率(%)</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="pouring_measurement" id="pouring_measurement">
+                                                <input type="text" name="pouring_max" id="pouring_max">
+                                                <input type="text" name="pouring_min" id="pouring_min">
+                                                <input type="text" name="pouring_avg" id="pouring_avg">
+                                                <input type="text" name="pouring_num" id="pouring_num">
+                                                <input type="text" name="pouring_pass" id="pouring_pass">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info" style="margin-top: 0;border-top: none;">
+                                        <span>混凝土拌和物（机口）塌落度</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
+                                                <span>设计要求</span>
+                                                <span>检测次数</span>
+                                                <span>合格次数</span>
                                                 <span>最大值(Mpa)</span>
                                                 <span>最小值(Mpa)</span>
                                                 <span>平均值(Mpa)</span>
                                                 <span>合格率(%)</span>
                                             </div>
                                             <div class="bottom">
-                                                <input type="text" name="requirement_inspection" id="requirement_inspection">
-                                                <input type="text" name="volume_inspection" id="volume_inspection">
-                                                <input type="text" name="num_inspection" id="num_inspection">
-                                                <input type="text" name="max_inspection" id="max_inspection">
-                                                <input type="text" name="min_inspection" id="min_inspection">
-                                                <input type="text" name="ave_inspection" id="ave_inspection">
-                                                <input type="text" name="pass_inspection" id="pass_inspection">
+                                                <input type="text" name="mix_design" id="mix_design">
+                                                <input type="text" name="mix_num" id="mix_num">
+                                                <input type="text" name="mix_qualified_num" id="mix_qualified_num">
+                                                <input type="text" name="mix_max" id="mix_max">
+                                                <input type="text" name="mix_min" id="mix_min">
+                                                <input type="text" name="mix_avg" id="mix_avg">
+                                                <input type="text" name="mix_pass" id="mix_pass">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info" style="margin-top: 0;border-top: none;">
+                                        <span>混凝土抗压强度<br>(施工单位)</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
+                                                <span>设计指标</span>
+                                                <span>龄期</span>
+                                                <span>检查组数</span>
+                                                <span>最大值(Mpa)</span>
+                                                <span>最小值(Mpa)</span>
+                                                <span>平均值(Mpa)</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="resist_design_index" id="resist_design_index">
+                                                <input type="text" name="resist_age" id="resist_age">
+                                                <input type="text" name="resist_test_group" id="resist_test_group">
+                                                <input type="text" name="resist_max" id="resist_max">
+                                                <input type="text" name="resist_min" id="resist_min">
+                                                <input type="text" name="resist_avg" id="resist_avg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info" style="">
+                                        <span>混凝土抗压强度<br>(监理单位)</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
+                                                <span>设计指标</span>
+                                                <span>龄期</span>
+                                                <span>检查组数</span>
+                                                <span>最大值(Mpa)</span>
+                                                <span>最小值(Mpa)</span>
+                                                <span>平均值(Mpa)</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="resist_design_index_2" id="resist_design_index2">
+                                                <input type="text" name="resist_age_2" id="resist_age2">
+                                                <input type="text" name="resist_test_group_2" id="resist_test_group2">
+                                                <input type="text" name="resist_max_2" id="resist_max2">
+                                                <input type="text" name="resist_min_2" id="resist_min2">
+                                                <input type="text" name="resist_avg_2" id="resist_avg2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info" style="">
+                                        <span>混凝土全面性能<br>（施工单位）</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
+                                                <span>设计指标</span>
+                                                <span>龄期</span>
+                                                <span>(抗冻)取样组数</span>
+                                                <span>(抗冻)测值</span>
+                                                <span>(抗冻)合格率</span>
+                                                <span>(抗渗)取样组数</span>
+                                                <span>(抗渗)测值</span>
+                                                <span>(抗渗)合格率</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="etc_design_index" id="etc_design_index">
+                                                <input type="text" name="etc_age" id="etc_age">
+                                                <input type="text" name="etc_anti_groups" id="etc_anti_groups">
+                                                <input type="text" name="etc_anti_test" id="etc_anti_test">
+                                                <input type="text" name="etc_anti_pass" id="etc_anti_pass">
+                                                <input type="text" name="etc_impervious_groups" id="etc_impervious_groups">
+                                                <input type="text" name="etc_impervious_test" id="etc_impervious_test">
+                                                <input type="text" name="etc_impervious_pass" id="etc_impervious_pass">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info" style="">
+                                        <span>混凝土全面性能<br>(监理单位)</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
+                                                <span>设计指标</span>
+                                                <span>龄期</span>
+                                                <span>(抗冻)取样组数</span>
+                                                <span>(抗冻)测值</span>
+                                                <span>(抗冻)合格率</span>
+                                                <span>(抗渗)取样组数</span>
+                                                <span>(抗渗)测值</span>
+                                                <span>(抗渗)合格率</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="etc_design_index_2" id="etc_design_index2">
+                                                <input type="text" name="etc_age_2" id="etc_age2">
+                                                <input type="text" name="etc_anti_groups_2" id="etc_anti_groups2">
+                                                <input type="text" name="etc_anti_test_2" id="etc_anti_test2">
+                                                <input type="text" name="etc_anti_pass_2" id="etc_anti_pass2">
+                                                <input type="text" name="etc_impervious_groups_2" id="etc_impervious_groups2">
+                                                <input type="text" name="etc_impervious_test_2" id="etc_impervious_test2">
+                                                <input type="text" name="etc_impervious_pass_2" id="etc_impervious_pass2">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="info">
-                                        <span>混凝土形体偏差检测<br>(联合检测)</span>
+                                        <span>混凝土形体偏差</span>
                                         <div class="exp w4">
                                             <div class="top border-bottom">
                                                 <span>偏差方向</span>
@@ -674,36 +808,121 @@
                                             </div>
                                             <div class="top border-bottom">
                                                 <div class="sp1">平面</div>
-                                                <div class="sp1"><input type="text" name="points_flat" id="points_flat"></div>
-                                                <div class="sp1"><input type="text" name="deviation_min_flat" id="deviation_min_flat" style="width: 40%;"><span>-</span><input type="text" name="deviation_max_flat" id="deviation_max_flat" style="width: 40%;"></div>
-                                                <div class="sp1"><input type="text" name="pass_flat" id="pass_flat"></div>
+                                                <div class="sp1"><input type="text" name="deviation_plane_num" id="deviation_plane_num"></div>
+                                                <div class="sp1"><input type="text" name="deviation_plane_scope" id="deviation_plane_scope" style="width: 40%;"><span>-</span><input type="text" name="deviation_plane_scope_2" id="deviation_plane_scope2" style="width: 40%;"></div>
+                                                <div class="sp1"><input type="text" name="deviation_plane_pass" id="deviation_plane_pass"></div>
                                             </div>
                                             <div class="top">
                                                 <div class="sp1">竖向</div>
-                                                <div class="sp1"><input type="text" name="points_vertical" id="points_vertical"></div>
-                                                <div class="sp1"><input type="text" name="deviation_min_vertical" id="deviation_min_vertical" style="width: 40%;"><span>-</span><input type="text" name="deviation_max_vertical" id="deviation_max_vertical" style="width: 40%;"></div>
-                                                <div class="sp1"><input type="text" name="pass_vertical" id="pass_vertical"></div>
+                                                <div class="sp1"><input type="text" name="deviation_vertical_num" id="deviation_vertical_num"></div>
+                                                <div class="sp1"><input type="text" name="deviation_vertical_scope" id="deviation_vertical_scope" style="width: 40%;"><span>-</span><input type="text" name="deviation_vertical_scope_2" id="deviation_vertical_scope2" style="width: 40%;"></div>
+                                                <div class="sp1"><input type="text" name="deviation_vertical_pass" id="deviation_vertical_pass"></div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="info" style="">
-                                        <span>混凝土平整度检测<br>(联合检测)</span>
-                                        <div class="exp w3">
+                                </form>
+                                <form class="form-horizontal" name="model1" id="model5">
+                                    <input type="text" id="edit5" name="edit" style="display: none;">
+                                    <input type="text" id="uid5" name="uid" style="display: none;">
+                                    <input type="text" id="cate5" name="cate" style="display: none;">
+                                    <div class="info">
+                                        <span style="vertical-align: top;">验评结果</span>
+                                        <div id="db_wrapper5" style="background-color:#fff;display: inline-block;vertical-align:top;width: 86%;height: 38px;border-left: 1px solid #000;">
+                                            <div class="db">
+                                                <span>一检合格</span>
+                                                <select name="pass" id="pass5">
+                                                    <option value="是">是</option>
+                                                </select>
+                                            </div>
+                                            <div class="db">
+                                                <span>质量等级</span>
+                                                <select name="quality_level" id="quality_level5">
+                                                    <option value="尚未评定">尚未评定</option>
+                                                    <option value="优良">优良</option>
+                                                    <option value="合格">合格</option>
+                                                </select>
+                                            </div>
+                                            <div class="db">
+                                                <span>评定日期</span>
+                                                <input type="text" id="evaluated_date5" name="evaluated_date" readonly>
+                                            </div>
+                                            <div class="db">
+                                                <span>评定人</span>
+                                                <input type="text" id="evaluated_by5" name="evaluated_by">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info">
+                                        <span>半孔率</span>
+                                        <div class="exp">
                                             <div class="top border-bottom">
-                                                <span>设计/规范允许偏差值(mm)</span>
+                                                <span>检查孔数(个)</span>
+
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" id="holes" name="holes" placeholder="只能输入整数">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info">
+                                        <span>不平整度</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
                                                 <span>检查点数(个)</span>
-                                                <span>最大值(mm)</span>
-                                                <span>最小值(mm)</span>
-                                                <span>平均值(mm)</span>
+                                                <span>最大值(cm)</span>
+                                                <span>最小值(cm)</span>
+                                                <span>平均值(cm)</span>
+                                                <span>合格率</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="points_irregularity_degree" id="points">
+                                                <input type="text" name="max_irregularity_degree" id="max">
+                                                <input type="text" name="min_irregularity_degree" id="min">
+                                                <input type="text" name="avg_irregularity_degree" id="avg">
+                                                <input type="text" name="pass_irregularity_degree" id="sections_test_date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info">
+                                        <span>轮廓体型(超挖)</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
+                                                <span>检查断面(个)</span>
+                                                <span>检查点数(个)</span>
+                                                <span>最大超挖(cm)</span>
+                                                <span>最小超挖(cm)</span>
+                                                <span>平均超挖(cm)</span>
                                                 <span>合格率(%)</span>
                                             </div>
                                             <div class="bottom">
-                                                <input type="text" name="allowable_deviation" id="allowable_deviation">
-                                                <input type="text" name="points_union" id="points_union">
-                                                <input type="text" name="max_union" id="max_union">
-                                                <input type="text" name="min_union" id="min_union">
-                                                <input type="text" name="ave_union" id="ave_union">
-                                                <input type="text" name="pass_union" id="pass_union">
+                                                <input type="text" name="sections_overbreak" id="sections_overbreak">
+                                                <input type="text" name="points_overbreak" id="points_overbreak">
+                                                <input type="text" name="max_overbreak" id="max_overbreak">
+                                                <input type="text" name="min_overbreak" id="min_overbreak">
+                                                <input type="text" name="ave_overbreak" id="ave_overbreak">
+                                                <input type="text" name="pass_overbreak" id="pass_overbreak">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info" style="margin-top: 0;border-top: none;">
+                                        <span>轮廓体型(欠挖)</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
+                                                <span>检查断面(个)</span>
+                                                <span>检查点数(个)</span>
+                                                <span>最大欠挖(cm)</span>
+                                                <span>最小欠挖(cm)</span>
+                                                <span>平均欠挖(cm)</span>
+                                                <span>合格率(%)</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="sections_underbreak" id="sections_underbreak">
+                                                <input type="text" name="points_underbreak" id="points_underbreak">
+                                                <input type="text" name="max_underbreak" id="max_underbreak">
+                                                <input type="text" name="min_underbreak" id="min_underbreak">
+                                                <input type="text" name="ave_underbreak" id="ave_underbreak">
+                                                <input type="text" name="pass_underbreak" id="pass_underbreak">
                                             </div>
                                         </div>
                                     </div>
@@ -1430,34 +1649,68 @@
                                 $("#quality_level3").val(kdata.quality_level);
                                 $("#evaluated_date3").val(kdata.evaluated_date);
                                 $("#evaluated_by3").val(kdata.evaluated_by);
-                                $("#requirement_self").val(kdata.requirement_self);
-                                $("#volume_self").val(kdata.volume_self);
-                                $("#num_self").val(kdata.num_self);
-                                $("#max_self").val(kdata.max_self);
-                                $("#min_self").val(kdata.min_self);
-                                $("#ave_self").val(kdata.ave_self);
-                                $("#pass_self").val(kdata.pass_self);
-                                $("#requirement_inspection").val(kdata.requirement_inspection);
-                                $("#volume_inspection").val(kdata.volume_inspection);
-                                $("#num_inspection").val(kdata.num_inspection);
-                                $("#max_inspection").val(kdata.max_inspection);
-                                $("#min_inspection").val(kdata.min_inspection);
-                                $("#ave_inspection").val(kdata.ave_inspection);
-                                $("#pass_inspection").val(kdata.pass_inspection);
-                                $("#points_flat").val(kdata.points_flat);
-                                $("#deviation_min_flat").val(kdata.deviation_min_flat);
-                                $("#deviation_max_flat").val(kdata.deviation_max_flat);
-                                $("#pass_flat").val(kdata.pass_flat);
-                                $("#points_vertical").val(kdata.points_vertical);
-                                $("#deviation_min_vertical").val(kdata.deviation_min_vertical);
-                                $("#deviation_max_vertical").val(kdata.deviation_max_vertical);
-                                $("#pass_vertical").val(kdata.pass_vertical);
-                                $("#allowable_deviation").val(kdata.allowable_deviation);
-                                $("#points_union").val(kdata.points_union);
-                                $("#max_union").val(kdata.max_union);
-                                $("#min_union").val(kdata.min_union);
-                                $("#ave_union").val(kdata.ave_union);
-                                $("#pass_union").val(kdata.pass_union);
+                                $("#ex_control_criterion").val(kdata.ex_control_criterion);
+                                $("#ex_test_groups").val(kdata.ex_test_groups);
+                                $("#ex_qualified_groups").val(kdata.ex_qualified_groups);
+                                $("#ex_max").val(kdata.ex_max);
+                                $("#ex_min").val(kdata.ex_min);
+                                $("#ex_avg").val(kdata.ex_avg);
+                                $("#ex_pass").val(kdata.ex_pass);
+                                $("#be_measurement").val(kdata.be_measurement);
+                                $("#be_max").val(kdata.be_max);
+                                $("#be_min").val(kdata.be_min);
+                                $("#be_avg").val(kdata.be_avg);
+                                $("#be_num").val(kdata.be_num);
+                                $("#be_pass").val(kdata.be_pass);
+                                $("#pouring_measurement").val(kdata.pouring_measurement);
+                                $("#pouring_max").val(kdata.pouring_max);
+                                $("#pouring_min").val(kdata.pouring_min);
+                                $("#pouring_avg").val(kdata.pouring_avg);
+                                $("#pouring_num").val(kdata.pouring_num);
+                                $("#pouring_pass").val(kdata.pouring_pass);
+                                $("#mix_design").val(kdata.mix_design);
+                                $("#mix_num").val(kdata.mix_num);
+                                $("#mix_qualified_num").val(kdata.mix_qualified_num);
+                                $("#mix_max").val(kdata.mix_max);
+                                $("#mix_min").val(kdata.mix_min);
+                                $("#mix_avg").val(kdata.mix_avg);
+                                $("#mix_pass").val(kdata.mix_pass);
+                                $("#resist_design_index").val(kdata.resist_design_index);
+                                $("#resist_age").val(kdata.resist_age);
+                                $("#resist_test_group").val(kdata.resist_test_group);
+                                $("#resist_max").val(kdata.resist_max);
+                                $("#resist_min").val(kdata.resist_min);
+                                $("#resist_avg").val(kdata.resist_avg);
+                                $("#resist_design_index2").val(kdata.resist_design_index_2);
+                                $("#resist_age2").val(kdata.resist_age_2);
+                                $("#resist_test_group2").val(kdata.resist_test_group_2);
+                                $("#resist_max2").val(kdata.resist_max_2);
+                                $("#resist_min2").val(kdata.resist_min_2);
+                                $("#resist_avg2").val(kdata.resist_avg_2);
+                                $("#etc_design_index").val(kdata.etc_design_index);
+                                $("#etc_age").val(kdata.etc_age);
+                                $("#etc_anti_groups").val(kdata.etc_anti_groups);
+                                $("#etc_anti_test").val(kdata.etc_anti_test);
+                                $("#etc_anti_pass").val(kdata.etc_anti_pass);
+                                $("#etc_impervious_groups").val(kdata.etc_impervious_groups);
+                                $("#etc_impervious_test").val(kdata.etc_impervious_test);
+                                $("#etc_impervious_pass").val(kdata.etc_impervious_pass);
+                                $("#etc_design_index2").val(kdata.etc_design_index_2);
+                                $("#etc_age2").val(kdata.etc_age_2);
+                                $("#etc_anti_groups2").val(kdata.etc_anti_groups_2);
+                                $("#etc_anti_test2").val(kdata.etc_anti_test_2);
+                                $("#etc_anti_pass2").val(kdata.etc_anti_pass_2);
+                                $("#etc_impervious_groups2").val(kdata.etc_impervious_groups_2);
+                                $("#etc_impervious_test2").val(kdata.etc_impervious_test_2);
+                                $("#etc_impervious_pass2").val(kdata.etc_impervious_pass_2);
+                                $("#deviation_plane_num").val(kdata.deviation_plane_num);
+                                $("#deviation_plane_scope").val(kdata.deviation_plane_scope);
+                                $("#deviation_plane_scope2").val(kdata.deviation_plane_scope_2);
+                                $("#deviation_plane_pass").val(kdata.deviation_plane_pass);
+                                $("#deviation_vertical_num").val(kdata.deviation_vertical_num);
+                                $("#deviation_vertical_scope").val(kdata.deviation_vertical_scope);
+                                $("#deviation_vertical_scope2").val(kdata.deviation_vertical_scope_2);
+                                $("#deviation_vertical_pass").val(kdata.deviation_vertical_pass);
                             }else {
                                 $("#edit3").val("");
                             }
@@ -1917,29 +2170,60 @@
                         return;
                     }
                     var arr1 = [];
-                    arr1.push(new newobj("施工单位自检组数",$("#num_self").val()),
-                        new newobj("监理单位自检组数",$("#num_inspection").val()),
-                        new newobj("测点数(平面)",$("#points_flat").val()),
-                        new newobj("测点数(竖面)",$("#points_vertical").val()),
-                        new newobj("检查点数(联合检测)",$("#points_union").val())
+                    arr1.push(new newobj("(出口机)检测组数",$("#ex_test_groups").val()),
+                        new newobj("(出口机)合格组数",$("#ex_qualified_groups").val()),
+                        new newobj("(入仓)合格次数",$("#be_num").val()),
+                        new newobj("(浇筑)合格次数",$("#pouring_num").val()),
+                        new newobj("(拌和物)检测次数",$("#mix_num").val()),
+                        new newobj("(拌和物)合格次数",$("#mix_qualified_num").val()),
+                        new newobj("(施工(抗压强度)龄期",$("#resist_age").val()),
+                        new newobj("(监理(抗压强度)龄期",$("#resist_age2").val()),
+                        new newobj("(施工(抗压强度)检查组数",$("#resist_test_group").val()),
+                        new newobj("(监理(抗压强度)检查组数",$("#resist_test_group2").val()),
+                        new newobj("(施工(全面性能)(抗冻)取样组数",$("#etc_anti_groups").val()),
+                        new newobj("(施工(全面性能)(抗渗)取样组数",$("#etc_impervious_groups").val()),
+                        new newobj("(形体偏差)(平面)测点数(个)",$("#deviation_plane_num").val()),
+                        new newobj("(形体偏差)(竖面)测点数(个)",$("#deviation_vertical_num").val()),
                     );
                     var arr2 = [];
-                    arr2.push(new newobj("方量(施工)",$("#volume_self").val()),
-                        new newobj("最大值(施工)",$("#max_self").val()),
-                        new newobj("最小值(施工)",$("#min_self").val()),
-                        new newobj("平均值(施工)",$("#ave_self").val()),
-                        new newobj("合格率(施工)",$("#pass_self").val()),
-                        new newobj("方量(监理)",$("#volume_inspection").val()),
-                        new newobj("最大值(监理)",$("#max_inspection").val()),
-                        new newobj("最小值(监理)",$("#min_inspection").val()),
-                        new newobj("平均值(监理)",$("#ave_inspection").val()),
-                        new newobj("合格率(监理)",$("#pass_inspection").val()),
-                        new newobj("合格率(联合检测平面)",$("#pass_flat").val()),
-                        new newobj("合格率(联合检测竖面)",$("#pass_vertical").val()),
-                        new newobj("最大值(联合)",$("#max_union").val()),
-                        new newobj("最小值(联合)",$("#min_union").val()),
-                        new newobj("平均值(联合)",$("#ave_union").val()),
-                        new newobj("合格率(联合)",$("#pass_union").val())
+                    arr2.push(new newobj("出口机)最大值",$("#ex_max").val()),
+                        new newobj("出口机)最小值",$("#ex_min").val()),
+                        new newobj("出口机)平均值",$("#ex_avg").val()),
+                        new newobj("出口机)合格率",$("#ex_pass").val()),
+                        new newobj("(入仓)最大值",$("#be_max").val()),
+                        new newobj("(入仓)最小值",$("#be_min").val()),
+                        new newobj("(入仓)平均值",$("#be_avg").val()),
+                        new newobj("(入仓)合格率",$("#be_pass").val()),
+                        new newobj("(浇筑)最大值",$("#pouring_max").val()),
+                        new newobj("(浇筑)最小值",$("#pouring_min").val()),
+                        new newobj("(浇筑)平均值",$("#pouring_avg").val()),
+                        new newobj("(浇筑)合格率",$("#pouring_pass").val()),
+                        new newobj("(拌和物)最大值",$("#mix_max").val()),
+                        new newobj("(拌和物)最小值",$("#mix_min").val()),
+                        new newobj("(拌和物)平均值",$("#mix_avg").val()),
+                        new newobj("(拌和物)合格率",$("#mix_pass").val()),
+                        new newobj("施工(抗压强度)最大值",$("#resist_max").val()),
+                        new newobj("施工(抗压强度)最小值",$("#resist_min").val()),
+                        new newobj("施工(抗压强度)平均值",$("#resist_avg").val()),
+                        new newobj("监理(抗压强度)最大值",$("#resist_max2").val()),
+                        new newobj("监理(抗压强度)最小值",$("#resist_min2").val()),
+                        new newobj("监理(抗压强度)平均值",$("#resist_avg2").val()),
+                        new newobj("施工(全面性能)龄期",$("#etc_age").val()),
+                        new newobj("施工(全面性能)(抗冻)测值",$("#etc_anti_test").val()),
+                        new newobj("施工(全面性能)(抗冻)合格率",$("#etc_anti_pass").val()),
+                        new newobj("施工(全面性能)(抗渗)测值",$("#etc_impervious_test").val()),
+                        new newobj("施工(全面性能)(抗渗)合格率",$("#etc_impervious_pass").val()),
+                        new newobj("监理(全面性能)龄期",$("#etc_age2").val()),
+                        new newobj("监理(全面性能)(抗冻)测值",$("#etc_anti_test2").val()),
+                        new newobj("监理(全面性能)(抗冻)合格率",$("#etc_anti_pass2").val()),
+                        new newobj("监理(全面性能)(抗渗)测值",$("#etc_impervious_test2").val()),
+                        new newobj("监理(全面性能)(抗渗)合格率",$("#etc_impervious_pass2").val()),
+                        new newobj("(形体偏差)(平面)偏差范围上",$("#deviation_plane_scope").val()),
+                        new newobj("(形体偏差)(平面)偏差范围下",$("#deviation_plane_scope2").val()),
+                        new newobj("(形体偏差)(平面)合格率",$("#deviation_plane_pass").val()),
+                        new newobj("(形体偏差)(竖面)偏差范围上",$("#deviation_vertical_scope").val()),
+                        new newobj("(形体偏差)(竖面)偏差范围下",$("#deviation_vertical_scope2").val()),
+                        new newobj("(形体偏差)(竖面)合格率",$("#deviation_vertical_pass").val())
                     );
                     var test1 = intnumber(arr1);
                     var test2 = floatnumber(arr2);
