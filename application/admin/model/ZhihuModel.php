@@ -9,11 +9,14 @@
 namespace app\admin\model;
 
 
+use think\exception\PDOException;
 use think\Model;
 
 class ZhihuModel extends Model
 {
     protected $name = 'project_zhihu';
+    //自动写入创建、更新时间 insertGetId和update方法中无效，只能用于save方法
+    protected $autoWriteTimestamp = true;
     /**
      * 插入
      */
