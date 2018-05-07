@@ -412,20 +412,20 @@
                                         <span>不平整度</span>
                                         <div class="exp w2">
                                             <div class="top border-bottom">
-                                                <span>检查断面(个)</span>
+                                                <!--<span>检查断面(个)</span>-->
                                                 <span>检查点数(个)</span>
                                                 <span>最大值(cm)</span>
                                                 <span>最小值(cm)</span>
                                                 <span>平均值(cm)</span>
-                                                <span>检查时间</span>
+                                                <span>合格率</span>
                                             </div>
                                             <div class="bottom">
-                                                <input type="text" name="sections" id="sections">
-                                                <input type="text" name="points" id="points">
-                                                <input type="text" name="max" id="max">
-                                                <input type="text" name="min" id="min">
-                                                <input type="text" name="ave" id="ave">
-                                                <input type="text" name="sections_test_date" id="sections_test_date">
+                                                <!--<input type="text" name="sections" id="sections">-->
+                                                <input type="text" name="points_irregularity_degree" id="points">
+                                                <input type="text" name="max_irregularity_degree" id="max">
+                                                <input type="text" name="min_irregularity_degree" id="min">
+                                                <input type="text" name="avg_irregularity_degree" id="avg">
+                                                <input type="text" name="pass_irregularity_degree" id="sections_test_date">
                                             </div>
                                         </div>
                                     </div>
@@ -508,73 +508,67 @@
                                             <tbody>
                                             <tr>
                                                 <td style="background-color:#bae2f3;border-right: 1px solid #000;">喷砼检测</td>
-                                                <td colspan="7"></td>
+                                                <td colspan="8"></td>
                                             </tr>
                                             <tr>
                                                 <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">厚度检测<br><span style="font-weight: 400;">(联合检测)</span></td>
                                                 <td>支护面积(m²)</td>
-                                                <td>设计厚度(cm)</td>
-                                                <td>检测点数(个)</td>
+                                                <td>设计值</td>
+                                                <td>检测组数(个)</td>
                                                 <td>最大值(cm)</td>
                                                 <td>最小值(cm)</td>
-                                                <td style="border-right: 1px solid #000;">平均值(cm)</td>
+                                                <td>平均值(cm)</td>
+                                                <td style="border-right: 1px solid #000;">合格率</td>
                                             </tr>
                                             <tr>
-                                                <td><input type="text" name="area" id="area2"></td>
-                                                <td><input type="text" name="thickness" id="thickness2"></td>
-                                                <td><input type="text" name="points" id="points2"></td>
-                                                <td><input type="text" name="max" id="max2"></td>
-                                                <td><input type="text" name="min" id="min2"></td>
-                                                <td style="border-right: 1px solid #000;"><input type="text" name="ave" id="ave2"></td>
+                                                <td><input type="text" name="supporting_area" id="supporting_area"></td>
+                                                <td><input type="text" name="design_val" id="design_val"></td>
+                                                <td><input type="text" name="thickness_number" id="thickness_number"></td>
+                                                <td><input type="text" name="max_val" id="max_val"></td>
+                                                <td><input type="text" name="min_val" id="min_val"></td>
+                                                <td><input type="text" name="avg_val" id="avg_val"></td>
+                                                <td style="border-right: 1px solid #000;"><input type="text" name="pass_percentage" id="pass_percentage"></td>
                                             </tr>
                                             </tbody>
                                         </table>
                                         <table>
                                             <tr>
                                                 <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">强度检测<br><span style="font-weight: 400;">(施工单位自检)</span></td>
-                                                <td>施工数量(个)</td>
-                                                <td>监理单位抽检根数(个)</td>
-                                                <td>检测比例(%)</td>
-                                                <td>合格根数(个)</td>
-                                                <td>锚杆长度最大值(m)</td>
-                                                <td>锚杆长度最小值(m)</td>
-                                                <td>注浆密实度最大值(m)</td>
-                                                <td>注浆密实度最小值(m)</td>
+                                                <td>方量</td>
+                                                <td>检测组数(个)</td>
+                                                <td>设计等级</td>
+                                                <td>最大值</td>
+                                                <td>最小值</td>
+                                                <td>平均值</td>
                                                 <td>合格率(%)</td>
                                             </tr>
                                             <tr>
-                                                <td><input type="text" name="quantity_self" id="quantity_self2"></td>
-                                                <td><input type="text" name="num_self" id="num_self2"></td>
-                                                <td><input type="text" name="ratio_self" id="ratio_self2"></td>
-                                                <td><input type="text" name="pass_self" id="pass_self2"></td>
-                                                <td><input type="text" name="anchor_max_self" id="anchor_max_self2"></td>
-                                                <td><input type="text" name="anchor_min_self" id="anchor_min_self2"></td>
-                                                <td><input type="text" name="casting_max_self" id="casting_max_self2"></td>
-                                                <td><input type="text" name="casting_min_self" id="casting_min_self2"></td>
-                                                <td><input type="text" name="pass_rate_self" id="pass_rate_self2"></td>
+                                                <td><input type="text" name="square_quantity" id="square_quantity"></td>
+                                                <td><input type="text" name="intensity_number" id="intensity_number"></td>
+                                                <td><input type="text" name="intensity_level" id="intensity_level"></td>
+                                                <td><input type="text" name="intensity_max" id="intensity_max"></td>
+                                                <td><input type="text" name="intensity_min" id="intensity_min"></td>
+                                                <td><input type="text" name="intensity_avg" id="intensity_avg"></td>
+                                                <td><input type="text" name="intensity_percent" id="intensity_percent"></td>
                                             </tr>
                                             <tr>
                                                 <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">强度检测<br><span style="font-weight: 400;">(监理单位自检)</span></td>
-                                                <td>施工数量(个)</td>
-                                                <td>施工单位自检根数(个)</td>
-                                                <td>检测比例(%)</td>
-                                                <td>合格根数(个)</td>
-                                                <td>锚杆长度最大值(m)</td>
-                                                <td>锚杆长度最小值(m)</td>
-                                                <td>注浆密实度最大值(m)</td>
-                                                <td>注浆密实度最小值(m)</td>
+                                                <td>方量</td>
+                                                <td>检测组数(个)</td>
+                                                <td>设计等级</td>
+                                                <td>最大值</td>
+                                                <td>最小值</td>
+                                                <td>平均值</td>
                                                 <td>合格率(%)</td>
                                             </tr>
                                             <tr>
-                                                <td><input type="text" name="quantity_inspection" id="quantity_inspection2"></td>
-                                                <td><input type="text" name="num_inspection" id="num_inspection2"></td>
-                                                <td><input type="text" name="ratio_inspection" id="ratio_inspection2"></td>
-                                                <td><input type="text" name="pass_inspection" id="pass_inspection2"></td>
-                                                <td><input type="text" name="anchor_max_inspection" id="anchor_max_inspection2"></td>
-                                                <td><input type="text" name="anchor_min_inspection" id="anchor_min_inspection2"></td>
-                                                <td><input type="text" name="casting_max_inspection" id="casting_max_inspection2"></td>
-                                                <td><input type="text" name="casting_min_inspection" id="casting_min_inspection2"></td>
-                                                <td><input type="text" name="pass_rate_inspection" id="pass_rate_inspection2"></td>
+                                                <td><input type="text" name="square_quantity_2" id="square_quantity_2"></td>
+                                                <td><input type="text" name="intensity_number_2" id="intensity_number_2"></td>
+                                                <td><input type="text" name="intensity_level_2" id="intensity_level_2"></td>
+                                                <td><input type="text" name="intensity_max_2" id="intensity_max_2"></td>
+                                                <td><input type="text" name="intensity_min_2" id="intensity_min_2"></td>
+                                                <td><input type="text" name="intensity_avg_2" id="intensity_avg_2"></td>
+                                                <td><input type="text" name="intensity_percent_2" id="intensity_percent_2"></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -750,6 +744,7 @@
                     <form class="form-horizontal" name="projectAdd" id="projectAdd" target="myFrame">
                         <input type="text" id="edit4" name="edit" style="display: none;">
                         <input type="text" id="uid4" name="uid" style="display: none;">
+                        <input type="text" id="maoganid" name="maoganid" style="display: none;">
                         <input type="text" id="cate4" name="cate" style="display: none;">
                         <div class="form-group" style="text-align: center;">
                             <table>
@@ -763,136 +758,124 @@
                                 <tr>
                                     <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">无损检测<br><span style="font-weight: 400;">(施工单位自检)</span></td>
                                     <td>施工数量(个)</td>
-                                    <td>施工单位自检根数(个)</td>
-                                    <td>检测比例(%)</td>
-                                    <td>合格根数(个)</td>
-                                    <td>锚杆长度最大值(m)</td>
-                                    <td>锚杆长度最小值(m)</td>
-                                    <td>注浆密实度最大值(%)</td>
-                                    <td>注浆密实度最小值(%)</td>
-                                    <td>合格率(%)</td>
+                                    <td>自检根数(个)</td>
+                                    <td>检测比例</td>
+                                    <td>合格的根数(个)</td>
+                                    <td>锚杆型号统计</td>
+                                    <td>锚杆长度最大</td>
+                                    <td>锚杆长度最小</td>
+                                    <td>注浆密实度最大</td>
+                                    <td>注浆密实度最小</td>
+                                    <td>合格率</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" name="quantity_self" id="quantity_self_m"></td>
-                                    <td><input type="text" name="num_self" id="num_self_m"></td>
-                                    <td><input type="text" name="ratio_self" id="ratio_self_m"></td>
-                                    <td><input type="text" name="pass_self" id="pass_self_m"></td>
-                                    <td><input type="text" name="anchor_max_self" id="anchor_max_self_m"></td>
-                                    <td><input type="text" name="anchor_min_self" id="anchor_min_self_m"></td>
-                                    <td><input type="text" name="casting_max_self" id="casting_max_self_m"></td>
-                                    <td><input type="text" name="casting_min_self" id="casting_min_self_m"></td>
-                                    <td><input type="text" name="pass_rate_self" id="pass_rate_self_m"></td>
+                                    <td><input type="text" name="nde_quantity" id="nde_quantity" ids="quantity_self_m"></td>
+                                    <td><input type="text" name="nde_inspection_num" id="nde_inspection_num"></td>
+                                    <td><input type="text" name="nde_detection_ratio" id="nde_detection_ratio"></td>
+                                    <td><input type="text" name="nde_percent_num" id="nde_percent_num"></td>
+                                    <td><input type="text" name="nde_model_number" id="nde_model_number"></td>
+                                    <td><input type="text" name="nde_max" id="nde_max"></td>
+                                    <td><input type="text" name="nde_min" id="nde_min"></td>
+                                    <td><input type="text" name="nde_density_max" id="nde_density_max"></td>
+                                    <td><input type="text" name="nde_density_min" id="nde_density_min"></td>
+                                    <td><input type="text" name="nde_percent" id="nde_percent"></td>
                                 </tr>
                                 <tr>
                                     <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">无损检测<br><span style="font-weight: 400;">(监理单位抽检)</span></td>
                                     <td>施工数量(个)</td>
-                                    <td>施工单位自检根数(个)</td>
-                                    <td>检测比例(%)</td>
-                                    <td>合格根数(个)</td>
-                                    <td>锚杆长度最大值(m)</td>
-                                    <td>锚杆长度最小值(m)</td>
-                                    <td>注浆密实度最大值(%)</td>
-                                    <td>注浆密实度最小值(%)</td>
-                                    <td>合格率(%)</td>
+                                    <td>自检根数(个)</td>
+                                    <td>检测比例</td>
+                                    <td>合格的根数(个)</td>
+                                    <td>锚杆型号统计</td>
+                                    <td>锚杆长度最大</td>
+                                    <td>锚杆长度最小</td>
+                                    <td>注浆密实度最大</td>
+                                    <td>注浆密实度最小</td>
+                                    <td>合格率</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" name="quantity_inspection" id="quantity_inspection_m"></td>
-                                    <td><input type="text" name="num_inspection" id="num_inspection_m"></td>
-                                    <td><input type="text" name="ratio_inspection" id="ratio_inspection_m"></td>
-                                    <td><input type="text" name="pass_inspection" id="pass_inspection_m"></td>
-                                    <td><input type="text" name="anchor_max_inspection" id="anchor_max_inspection_m"></td>
-                                    <td><input type="text" name="anchor_min_inspection" id="anchor_min_inspection_m"></td>
-                                    <td><input type="text" name="casting_max_inspection" id="casting_max_inspection_m"></td>
-                                    <td><input type="text" name="casting_min_inspection" id="casting_min_inspection_m"></td>
-                                    <td><input type="text" name="pass_rate_inspection" id="pass_rate_inspection_m"></td>
+                                    <td><input type="text" name="nde_quantity_2" id="nde_quantity_2"></td>
+                                    <td><input type="text" name="nde_inspection_num_2" id="nde_inspection_num_2"></td>
+                                    <td><input type="text" name="nde_detection_ratio_2" id="nde_detection_ratio_2"></td>
+                                    <td><input type="text" name="nde_percent_num_2" id="nde_percent_num_2"></td>
+                                    <td><input type="text" name="nde_model_number_2" id="nde_model_number_2"></td>
+                                    <td><input type="text" name="nde_max_2" id="nde_max_2"></td>
+                                    <td><input type="text" name="nde_min_2" id="nde_min_2"></td>
+                                    <td><input type="text" name="nde_density_max_2" id="nde_density_max_2"></td>
+                                    <td><input type="text" name="nde_density_min_2" id="nde_density_min_2"></td>
+                                    <td><input type="text" name="nde_percent_2" id="nde_percent_2"></td>
                                 </tr>
                                 </tbody>
                             </table>
                             <table>
                                 <tr>
                                     <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">拉拔力检测<br><span style="font-weight: 400;">(施工单位自检)</span></td>
-                                    <td>设计拉拔力值(KN)</td>
-                                    <td>施工单位自检根数(个)</td>
-                                    <td>合格根数(个)</td>
-                                    <td>最大值(KN)</td>
-                                    <td>最小值(KN)</td>
-                                    <td>平均值(KN)</td>
-                                    <td>合格率(%)</td>
+                                    <td>锚杆类型</td>
+                                    <td>设计拉拔力</td>
+                                    <td>检测根数(个)</td>
+                                    <td>合格率</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" name="pull_self" id="pull_self_m"></td>
-                                    <td><input type="text" name="test_num_self" id="test_num_self_m"></td>
-                                    <td><input type="text" name="pass_num_self" id="pass_num_self_m"></td>
-                                    <td><input type="text" name="pull_max_self" id="pull_max_self_m"></td>
-                                    <td><input type="text" name="pull_min_self" id="pull_min_self_m"></td>
-                                    <td><input type="text" name="pull_ave_self" id="pull_ave_self_m"></td>
-                                    <td><input type="text" name="pull_pass_self" id="pull_pass_self_m"></td>
+                                    <td><input type="text" name="anchor_type" id="anchor_type"></td>
+                                    <td><input type="text" name="drawing_load" id="drawing_load"></td>
+                                    <td><input type="text" name="experiment_inspection_num" id="experiment_inspection_num"></td>
+                                    <td><input type="text" name="experiment_percent" id="experiment_percent"></td>
                                 </tr>
                                 <tr>
                                     <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">拉拔力检测<br><span style="font-weight: 400;">(监理单位抽检)</span></td>
-                                    <td>设计拉拔力值(KN)</td>
-                                    <td>监理单位自检根数(个)</td>
-                                    <td>合格根数(个)</td>
-                                    <td>最大值(KN)</td>
-                                    <td>最小值(KN)</td>
-                                    <td>平均值(KN)</td>
-                                    <td>合格率(%)</td>
+                                    <td>锚杆类型</td>
+                                    <td>设计拉拔力</td>
+                                    <td>检测根数(个)</td>
+                                    <td>合格率</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" name="pull_inspection" id="pull_inspection_m"></td>
-                                    <td><input type="text" name="test_num_inspection" id="test_num_inspection_m"></td>
-                                    <td><input type="text" name="pass_num_inspection" id="pass_num_inspection_m"></td>
-                                    <td><input type="text" name="pull_max_inspection" id="pull_max_inspection_m"></td>
-                                    <td><input type="text" name="pull_min_inspection" id="pull_min_inspection_m"></td>
-                                    <td><input type="text" name="pull_ave_inspection" id="pull_ave_inspection_m"></td>
-                                    <td><input type="text" name="pull_pass_inspection" id="pull_pass_inspection_m"></td>
+                                    <td><input type="text" name="anchor_type_2" id="anchor_type_2"></td>
+                                    <td><input type="text" name="drawing_load_2" id="drawing_load_2"></td>
+                                    <td><input type="text" name="experiment_inspection_num_2" id="experiment_inspection_num_2"></td>
+                                    <td><input type="text" name="experiment_percent_2" id="experiment_percent_2"></td>
                                 </tr>
                             </table>
                             <table>
                                 <tr>
-                                    <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">砂浆强度<br><span style="font-weight: 400;">(施工单位抽检)</span></td>
-                                    <td>方量（m³）</td>
-                                    <td>设计等级</td>
+                                    <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">锚杆砂浆强度<br><span style="font-weight: 400;">(施工单位抽检)</span></td>
                                     <td>检测组数(个)</td>
+                                    <td>设计等级</td>
                                     <td>最大值(Mpa)</td>
                                     <td>最小值(Mpa)</td>
                                     <td>平均值(Mpa)</td>
                                     <td>合格率(%)</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" name="level_square_self" id="level_square_self_m"></td>
-                                    <td><input type="text" name="level_self" id="level_self_m"></td>
-                                    <td><input type="text" name="mortar_num_self" id="mortar_num_self_m"></td>
-                                    <td><input type="text" name="mortar_max_self" id="mortar_max_self_m"></td>
-                                    <td><input type="text" name="mortar_min_self" id="mortar_min_self_m"></td>
-                                    <td><input type="text" name="mortar_ave_self" id="mortar_ave_self_m"></td>
-                                    <td><input type="text" name="mortar_pass_self" id="mortar_pass_self_m"></td>
+                                    <td><input type="text" name="mortar_number" id="mortar_number"></td>
+                                    <td><input type="text" name="mortar_level" id="mortar_level"></td>
+                                    <td><input type="text" name="mortar_max" id="mortar_max"></td>
+                                    <td><input type="text" name="mortar_min" id="mortar_min"></td>
+                                    <td><input type="text" name="mortar_avg" id="mortar_avg"></td>
+                                    <td><input type="text" name="mortar_percent" id="mortar_percent"></td>
                                 </tr>
                                 <tr>
-                                    <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">砂浆强度<br><span style="font-weight: 400;">(监理单位抽检)</span></td>
-                                    <td>方量（m³）</td>
-                                    <td>设计等级</td>
+                                    <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">锚杆砂浆强度<br><span style="font-weight: 400;">(监理单位抽检)</span></td>
                                     <td>检测组数(个)</td>
+                                    <td>设计等级</td>
                                     <td>最大值(Mpa)</td>
                                     <td>最小值(Mpa)</td>
                                     <td>平均值(Mpa)</td>
                                     <td>合格率(%)</td>
                                 </tr>
                                 <tr>
-                                    <td><input type="text" name="level_square_inspection" id="level_square_m"></td>
-                                    <td><input type="text" name="level_inspection" id="level_inspection_m"></td>
-                                    <td><input type="text" name="mortar_num_inspection" id="mortar_num_inspection_m"></td>
-                                    <td><input type="text" name="mortar_max_inspection" id="mortar_max_inspection_m"></td>
-                                    <td><input type="text" name="mortar_min_inspection" id="mortar_min_inspection_m"></td>
-                                    <td><input type="text" name="mortar_ave_inspection" id="mortar_ave_inspection_m"></td>
-                                    <td><input type="text" name="mortar_pass_inspection" id="mortar_pass_inspection_m"></td>
+                                    <td><input type="text" name="mortar_number_2" id="mortar_number_2"></td>
+                                    <td><input type="text" name="mortar_level_2" id="mortar_level_2"></td>
+                                    <td><input type="text" name="mortar_max_2" id="mortar_max_2"></td>
+                                    <td><input type="text" name="mortar_min_2" id="mortar_min_2"></td>
+                                    <td><input type="text" name="mortar_avg_2" id="mortar_avg_2"></td>
+                                    <td><input type="text" name="mortar_percent_2" id="mortar_percent_2"></td>
                                 </tr>
                             </table>
                         </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-xs-12 col-sm-offset-6">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>
                                 <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
                             </div>
                         </div>
@@ -953,12 +936,13 @@
     });
     var mytree_node;
     function zedit(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         var uid = mytree_node.uid;
-        console.log(uid);
+        var cate = '锚杆';
         $.ajax({
             url: "./fetchData",
             type: "post",
-            data: {uid:uid,cate:cate},
+            data: {uid:id,cate:cate},
             dataType: "json",
             success: function (res) {
                 console.log(res);
@@ -971,54 +955,52 @@
                     }
                     $("#myModal h5").text("编辑");
                     $("#uid4").val(uid);
+                    $("#maoganid").val(id);
                     $("#cate4").val("锚杆");
+                    $("#edit4").val("edit");
                     var cate = encodeURI(encodeURI("锚杆"));
                     var data = res.maoganData;
                     $("#standard_m").val(data.standard);
-                    $("#quantity_self_m").val(data.quantity_self);
-                    $("#num_self_m").val(data.num_self);
-                    $("#ratio_self_m").val(data.ratio_self);
-                    $("#pass_self_m").val(data.pass_self);
-                    $("#anchor_max_self_m").val(data.anchor_max_self);
-                    $("#anchor_min_self_m").val(data.anchor_min_self);
-                    $("#casting_max_self_m").val(data.casting_max_self);
-                    $("#casting_min_self_m").val(data.casting_min_self);
-                    $("#pass_rate_self_m").val(data.pass_rate_self);
-                    $("#quantity_inspection_m").val(data.quantity_inspection);
-                    $("#num_inspection_m").val(data.num_inspection);
-                    $("#ratio_inspection_m").val(data.ratio_inspection);
-                    $("#pass_inspection_m").val(data.pass_inspection);
-                    $("#anchor_max_inspection_m").val(data.anchor_max_inspection);
-                    $("#anchor_min_inspection_m").val(data.anchor_min_inspection);
-                    $("#casting_max_inspection_m").val(data.casting_max_inspection);
-                    $("#casting_min_inspection_m").val(data.casting_min_inspection);
-                    $("#pass_rate_inspection_m").val(data.pass_rate_inspection);
-                    $("#pull_self_m").val(data.pull_self);
-                    $("#test_num_self_m").val(data.test_num_self);
-                    $("#pass_num_self_m").val(data.pass_num_self);
-                    $("#pull_max_self_m").val(data.pull_max_self);
-                    $("#pull_min_self_m").val(data.pull_min_self);
-                    $("#pull_ave_self_m").val(data.pull_ave_self);
-                    $("#pull_pass_self_m").val(data.pull_pass_self);
-                    $("#pull_inspection_m").val(data.pull_inspection);
-                    $("#test_num_inspection_m").val(data.test_num_inspection);
-                    $("#pass_num_inspection_m").val(data.pass_num_inspection);
-                    $("#pull_max_inspection_m").val(data.pull_max_inspection);
-                    $("#pull_min_inspection_m").val(data.pull_min_inspection);
-                    $("#pull_ave_inspection_m").val(data.pull_ave_inspection);
-                    $("#pull_pass_inspection_m").val(data.pull_pass_inspection);
-                    $("#level_self_m").val(data.level_self);
-                    $("#mortar_num_self_m").val(data.mortar_num_self);
-                    $("#mortar_max_self_m").val(data.mortar_max_self);
-                    $("#mortar_min_self_m").val(data.mortar_min_self);
-                    $("#mortar_ave_self_m").val(data.mortar_ave_self);
-                    $("#mortar_pass_self_m").val(data.mortar_pass_self);
-                    $("#level_inspection_m").val(data.level_inspection);
-                    $("#mortar_num_inspection_m").val(data.mortar_num_inspection);
-                    $("#mortar_max_inspection_m").val(data.mortar_max_inspection);
-                    $("#mortar_min_inspection_m").val(data.mortar_min_inspection);
-                    $("#mortar_ave_inspection_m").val(data.mortar_ave_inspection);
-                    $("#mortar_pass_inspection_m").val(data.mortar_pass_inspection);
+                    $("#nde_quantity").val(data.nde_quantity);
+                    $("#nde_inspection_num").val(data.nde_inspection_num);
+                    $("#nde_detection_ratio").val(data.nde_detection_ratio);
+                    $("#nde_percent_num").val(data.nde_percent_num);
+                    $("#nde_model_number").val(data.nde_model_number);
+                    $("#nde_max").val(data.nde_max);
+                    $("#nde_min").val(data.nde_min);
+                    $("#nde_density_max").val(data.nde_density_max);
+                    $("#nde_density_min").val(data.nde_density_min);
+                    $("#nde_percent").val(data.nde_percent);
+                    $("#nde_quantity_2").val(data.nde_quantity_2);
+                    $("#nde_inspection_num_2").val(data.nde_inspection_num_2);
+                    $("#nde_detection_ratio_2").val(data.nde_detection_ratio_2);
+                    $("#nde_percent_num_2").val(data.nde_percent_num_2);
+                    $("#nde_model_number_2").val(data.nde_model_number_2);
+                    $("#nde_max_2").val(data.nde_max_2);
+                    $("#nde_min_2").val(data.nde_min_2);
+                    $("#nde_density_max_2").val(data.nde_density_max_2);
+                    $("#nde_density_min_2").val(data.nde_density_min_2);
+                    $("#nde_percent_2").val(data.nde_percent_2);
+                    $("#anchor_type").val(data.anchor_type);
+                    $("#drawing_load").val(data.drawing_load);
+                    $("#experiment_inspection_num").val(data.experiment_inspection_num);
+                    $("#experiment_percent").val(data.experiment_percent);
+                    $("#anchor_type_2").val(data.anchor_type_2);
+                    $("#drawing_load_2").val(data.drawing_load_2);
+                    $("#experiment_inspection_num_2").val(data.experiment_inspection_num_2);
+                    $("#experiment_percent_2").val(data.experiment_percent_2);
+                    $("#mortar_number").val(data.mortar_number);
+                    $("#mortar_level").val(data.mortar_level);
+                    $("#mortar_max").val(data.mortar_max);
+                    $("#mortar_min").val(data.mortar_min);
+                    $("#mortar_avg").val(data.mortar_avg);
+                    $("#mortar_percent").val(data.mortar_percent);
+                    $("#mortar_number_2").val(data.mortar_number_2);
+                    $("#mortar_level_2").val(data.mortar_level_2);
+                    $("#mortar_max_2").val(data.mortar_max_2);
+                    $("#mortar_min_2").val(data.mortar_min_2);
+                    $("#mortar_avg_2").val(data.mortar_avg_2);
+                    $("#mortar_percent_2").val(data.mortar_percent_2);
                     $("#myModal").modal('show');
                 }else {
                     layer.msg(res.msg);
@@ -1066,6 +1048,7 @@
                 "render" :  function(data,type,row) {
                     var html = "";
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='zdel(this)' value='删除'/>" ;
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
                     return html;
                 }
             }
@@ -1334,7 +1317,6 @@
 
     //点击获取节点名称
     function zTreeOnClick(event, treeId, treeNode) {
-        console.log(treeNode);
         $("#table_info").css("visibility","visible");
         mytree_node = treeNode;
         $("#groupname").val(treeNode.name);
@@ -1364,7 +1346,7 @@
                         $("#input6").val(data.gaochengzhi);
                         $("#input7").val(data.primary);
                         $("#container form").css("display","none");
-                        if(data.cate == "开挖"){
+                        if(data.cate == "开挖" || data.cate == "明挖" || data.cate == "洞挖"){
                             $("#uid1").val(groupid);
                             $("#cate1").val(data.cate);
                             $("#model1").css("display","block");
@@ -1380,12 +1362,12 @@
                                 $("#ave_length").val(kdata.ave_length);
                                 $("#half_percentage").val(kdata.half_percentage);
                                 $("#holes_test_date").val(kdata.holes_test_date);
-                                $("#sections").val(kdata.sections);
-                                $("#points").val(kdata.points);
-                                $("#max").val(kdata.max);
-                                $("#min").val(kdata.min);
-                                $("#ave").val(kdata.ave);
-                                $("#sections_test_date").val(kdata.sections_test_date);
+                                // $("#sections").val(kdata.sections);
+                                $("#points").val(kdata.points_irregularity_degree);
+                                $("#max").val(kdata.max_irregularity_degree);
+                                $("#min").val(kdata.min_irregularity_degree);
+                                $("#ave").val(kdata.avg_irregularity_degree);
+                                $("#sections_test_date").val(kdata.pass_irregularity_degree);
                                 $("#sections_overbreak").val(kdata.sections_overbreak);
                                 $("#points_overbreak").val(kdata.points_overbreak);
                                 $("#max_overbreak").val(kdata.max_overbreak);
@@ -1413,34 +1395,27 @@
                                 $("#quality_level2").val(kdata.quality_level);
                                 $("#evaluated_date2").val(kdata.evaluated_date);
                                 $("#evaluated_by2").val(kdata.evaluated_by);
-                                $("#area2").val(kdata.area);
-                                $("#thickness2").val(kdata.thickness);
-                                $("#points2").val(kdata.points);
-                                $("#max2").val(kdata.max);
-                                $("#min2").val(kdata.min);
-                                $("#ave2").val(kdata.ave);
-                                $("#points2").val(kdata.points);
-                                $("#max2").val(kdata.max);
-                                $("#min2").val(kdata.min);
-                                $("#ave2").val(kdata.ave);
-                                $("#quantity_self2").val(kdata.quantity_self);
-                                $("#num_self2").val(kdata.num_self);
-                                $("#ratio_self2").val(kdata.ratio_self);
-                                $("#pass_self2").val(kdata.pass_self);
-                                $("#anchor_max_self2").val(kdata.anchor_max_self);
-                                $("#anchor_min_self2").val(kdata.anchor_min_self);
-                                $("#casting_max_self2").val(kdata.casting_max_self);
-                                $("#casting_min_self2").val(kdata.casting_min_self);
-                                $("#pass_rate_self2").val(kdata.pass_rate_self);
-                                $("#quantity_inspection2").val(kdata.quantity_inspection);
-                                $("#num_inspection2").val(kdata.num_inspection);
-                                $("#ratio_inspection2").val(kdata.ratio_inspection);
-                                $("#pass_inspection2").val(kdata.pass_inspection);
-                                $("#anchor_max_inspection2").val(kdata.anchor_max_inspection);
-                                $("#anchor_min_inspection2").val(kdata.anchor_min_inspection);
-                                $("#casting_max_inspection2").val(kdata.casting_max_inspection);
-                                $("#casting_min_inspection2").val(kdata.casting_min_inspection);
-                                $("#pass_rate_inspection2").val(kdata.pass_rate_inspection);
+                                $("#supporting_area").val(kdata.supporting_area);
+                                $("#design_val").val(kdata.design_val);
+                                $("#thickness_number").val(kdata.thickness_number);
+                                $("#max_val").val(kdata.max_val);
+                                $("#min_val").val(kdata.min_val);
+                                $("#avg_val").val(kdata.avg_val);
+                                $("#pass_percentage").val(kdata.pass_percentage);
+                                $("#square_quantity").val(kdata.square_quantity);
+                                $("#intensity_number").val(kdata.intensity_number);
+                                $("#intensity_level").val(kdata.intensity_level);
+                                $("#intensity_max").val(kdata.intensity_max);
+                                $("#intensity_min").val(kdata.intensity_min);
+                                $("#intensity_avg").val(kdata.intensity_avg);
+                                $("#intensity_percent").val(kdata.intensity_percent);
+                                $("#square_quantity_2").val(kdata.square_quantity_2);
+                                $("#intensity_number_2").val(kdata.intensity_number_2);
+                                $("#intensity_level_2").val(kdata.intensity_level_2);
+                                $("#intensity_max_2").val(kdata.intensity_max_2);
+                                $("#intensity_min_2").val(kdata.intensity_min_2);
+                                $("#intensity_avg_2").val(kdata.intensity_avg_2);
+                                $("#intensity_percent_2").val(kdata.intensity_percent_2);
                             }else {
                                 $("#edit2").val("");
                             }
@@ -1824,12 +1799,14 @@
         var reg = /^[0-9]+([.]{1}[0-9])?$/;
         var alt = "";
         $.each(arr,function (i,n) {
+            console.log('ssssss========'.n);
             if(n.val != ""){
                 if(!reg.test(n.val)){
                     alt += n.str + ","
                 }
             }
-        })
+        });
+        console.log('ssssss========'.arr);
         if(alt){
             alert(alt + "只能为保留一位小数");
             return false;
@@ -1851,7 +1828,7 @@
                     }
                     var arr1 = [];
                     arr1.push(new newobj("检查孔数",$("#holes").val()),
-                        new newobj("检查断面",$("#sections").val()),
+                        // new newobj("检查断面",$("#sections").val()),
                         new newobj("检查点数",$("#points").val()),
                         new newobj("检查断面(超挖)",$("#sections_overbreak").val()),
                         new newobj("检查点数(超挖)",$("#points").val()),
@@ -1865,7 +1842,7 @@
                         new newobj("平均残孔长度",$("#ave_length").val()),
                         new newobj("最大值",$("#max").val()),
                         new newobj("最小值",$("#min").val()),
-                        new newobj("平均值",$("#ave").val()),
+                        new newobj("平均值",$("#avg").val()),
                         new newobj("最大超挖",$("#max_overbreak").val()),
                         new newobj("最小超挖",$("#min_overbreak").val()),
                         new newobj("平均超挖",$("#ave_overbreak").val()),
@@ -1895,28 +1872,30 @@
                         return;
                     }
                     var arr1 = [];
-                    arr1.push(new newobj("设计厚度",$("#thickness2").val()),
-                        new newobj("检测点数",$("#points2").val()),
-                        new newobj("施工数量(施工)",$("#quantity_self2").val()),
-                        new newobj("施工自检根数(施工)",$("#num_self2").val()),
-                        new newobj("合格根数(施工)",$("#pass_self2").val()),
-                        new newobj("施工数量(监理)",$("#quantity_inspection2").val()),
-                        new newobj("施工自检根数(监理)",$("#num_inspection2").val()),
-                        new newobj("合格根数(监理)",$("#pass_self2").val())
+                    arr1.push(
+                        new newobj("(厚度)设计值",$("#design_val").val()),
+                        new newobj("(厚度)检测组数(个)",$("#thickness_number").val()),
+                        new newobj("(施工强度)检测组数(个)",$("#intensity_number").val()),
+                        new newobj("(施工强度)设计等级",$("#intensity_level").val()),
+                        new newobj("(监理强度)检测组数(个)",$("#intensity_number_2").val()),
+                        new newobj("(监理强度)设计等级",$("#intensity_level_2").val())
                     );
                     var arr2 = [];
-                    arr2.push(new newobj("支护面积",$("#area2").val()),
-                        new newobj("最大值",$("#max2").val()),
-                        new newobj("最小值",$("#min2").val()),
-                        new newobj("平均值",$("#ave2").val()),
-                        new newobj("最大值（施工锚杆长度）",$("#anchor_max_self2").val()),
-                        new newobj("最小值（施工锚杆长度）",$("#anchor_min_self2").val()),
-                        new newobj("最大值（施工注浆密实度）",$("#casting_max_self2").val()),
-                        new newobj("最小值（施工注浆密实度）",$("#casting_min_self2").val()),
-                        new newobj("最大值（监理锚杆长度）",$("#anchor_max_inspection2").val()),
-                        new newobj("最小值（监理锚杆长度）",$("#anchor_min_inspection2").val()),
-                        new newobj("最大值（监理注浆密实度）",$("#casting_max_inspection2").val()),
-                        new newobj("最小值（监理注浆密实度）",$("#casting_min_inspection2").val())
+                    arr2.push(new newobj("(厚度)支护面积",$("#supporting_area").val()),
+                        new newobj("(厚度)最大值",$("#max_val").val()),
+                        new newobj("(厚度)最小值",$("#min_val").val()),
+                        new newobj("(厚度)平均值",$("#avg_val").val()),
+                        new newobj("(厚度)合格率",$("#pass_percentage").val()),
+                        new newobj("(施工强度)方量",$("#square_quantity").val()),
+                        new newobj("(施工强度)最大值",$("#intensity_max").val()),
+                        new newobj("(施工强度)最小值",$("#intensity_min").val()),
+                        new newobj("(施工强度)平均值",$("#intensity_avg").val()),
+                        new newobj("(施工强度)合格率(%)",$("#intensity_percent").val()),
+                        new newobj("(监理强度)方量",$("#square_quantity_2").val()),
+                        new newobj("(监理强度)最大值",$("#intensity_max_2").val()),
+                        new newobj("(监理强度)最小值",$("#intensity_min_2").val()),
+                        new newobj("(监理强度)平均值",$("#intensity_avg_2").val()),
+                        new newobj("(监理强度)合格率(%)",$("#intensity_percent_2").val())
                     );
                     var test1 = intnumber(arr1);
                     var test2 = floatnumber(arr2);
@@ -1989,42 +1968,44 @@
     }
     $("#myModal .btn-primary").click(function () {
         var arr1 = [];
-        arr1.push(new newobj("施工数量(施工无损检测)",$("#quantity_self_m").val()),
-            new newobj("施工单位自检根数(施工无损检测)",$("#num_self_m").val()),
-            new newobj("合格根数(施工无损检测)",$("#pass_self_m").val()),
-            new newobj("施工数量(监理无损检测)",$("#quantity_inspection_m").val()),
-            new newobj("监理单位抽检根数(监理无损检测)",$("#num_inspection_m").val()),
-            new newobj("合格根数(监理无损检测)",$("#pass_inspection_m").val()),
-            new newobj("设计拉拔力值(施工拉拔力检测)",$("#pull_self_m").val()),
-            new newobj("施工单位自检根数(施工拉拔力检测)",$("#test_num_self_m").val()),
-            new newobj("合格根数(施工拉拔力检测)",$("#pass_num_self_m").val()),
-            new newobj("设计拉拔力值(监理拉拔力检测)",$("#pull_inspection_m").val()),
-            new newobj("监理单位自检根数(监理拉拔力检测)",$("#test_num_inspection_m").val()),
-            new newobj("合格根数(监理拉拔力检测)",$("#pass_num_inspection_m").val()),
-            new newobj("施工单位检测组数(施工)",$("#mortar_num_self_m").val()),
-            new newobj("施工单位检测组数(监理)",$("#mortar_num_inspection_m").val())
+        arr1.push(new newobj("(锚杆砂浆强度)检测组数(个)",$("#mortar_number").val()),
+            new newobj("(锚杆砂浆强度)设计等级",$("#mortar_level").val()),
+            new newobj("(锚杆无损检测)施工数量(个)",$("#nde_quantity").val()),
+            new newobj("(锚杆无损检测)抽检根数(个)",$("#nde_inspection_num").val()),
+            new newobj("(锚杆无损检测)合格的根数(个)",$("#nde_percent_num").val()),
+            new newobj("(锚杆拉拔实验)检测根数(个)",$("#experiment_inspection_num").val()),
+
+            new newobj("(监理)(锚杆砂浆强度)检测组数(个)",$("#mortar_number").val()),
+            new newobj("(监理)(锚杆砂浆强度)设计等级",$("#mortar_level").val()),
+            new newobj("(监理)(锚杆无损检测)施工数量(个)",$("#nde_quantity").val()),
+            new newobj("(监理)(锚杆无损检测)抽检根数(个)",$("#nde_inspection_num").val()),
+            new newobj("(监理)(锚杆无损检测)合格的根数(个)",$("#nde_percent_num").val()),
+            new newobj("(监理)(锚杆拉拔实验)检测根数(个)",$("#experiment_inspection_num").val())
         );
         var arr2 = [];
-        arr2.push(new newobj("锚杆长度最大值(施工)",$("#anchor_max_self_m").val()),
-            new newobj("锚杆长度最小值(施工)",$("#anchor_min_self_m").val()),
-            new newobj("注浆密实度最大值(施工)",$("#casting_max_self_m").val()),
-            new newobj("注浆密实度最小值(施工)",$("#casting_min_self_m").val()),
-            new newobj("锚杆长度最大值(监理)",$("#anchor_max_inspection_m").val()),
-            new newobj("锚杆长度最小值(监理)",$("#anchor_min_inspection_m").val()),
-            new newobj("注浆密实度最大值(监理)",$("#casting_max_inspection_m").val()),
-            new newobj("注浆密实度最小值(监理)",$("#casting_min_inspection_m").val()),
-            new newobj("最大值(施工拉拔力检测)",$("#pull_max_self_m").val()),
-            new newobj("最小值(施工拉拔力检测)",$("#pull_min_self_m").val()),
-            new newobj("平均值(施工拉拔力检测)",$("#pull_ave_self_m").val()),
-            new newobj("最大值(监理拉拔力检测)",$("#pull_max_inspection_m").val()),
-            new newobj("最小值(监理拉拔力检测)",$("#pull_min_inspection_m").val()),
-            new newobj("平均值(监理拉拔力检测)",$("#pull_ave_inspection_m").val()),
-            new newobj("最大值(施工砂浆强度)",$("#mortar_max_self_m").val()),
-            new newobj("最小值(施工砂浆强度)",$("#mortar_min_self_m").val()),
-            new newobj("平均值(施工砂浆强度)",$("#mortar_ave_self_m").val()),
-            new newobj("最大值(监理砂浆强度)",$("#mortar_max_inspection_m").val()),
-            new newobj("最小值(监理砂浆强度)",$("#mortar_min_inspection_m").val()),
-            new newobj("平均值(监理砂浆强度)",$("#mortar_ave_inspection_m").val())
+        arr2.push( new newobj("(锚杆砂浆强度)最大值",$("#mortar_max").val()),
+            new newobj("(锚杆砂浆强度)最小值",$("#mortar_min").val()),
+            new newobj("(锚杆砂浆强度)平均值",$("#mortar_avg").val()),
+            new newobj("(锚杆砂浆强度)合格率",$("#mortar_percent").val()),
+            new newobj("(锚杆无损检测)检测比例",$("#nde_detection_ratio").val()),
+            new newobj("(锚杆无损检测)锚杆长度最大",$("#nde_max").val()),
+            new newobj("(锚杆无损检测)锚杆长度最小",$("#nde_min").val()),
+            new newobj("(锚杆无损检测)注浆密实度最大",$("#nde_density_max").val()),
+            new newobj("(锚杆无损检测)注浆密实度最小",$("#nde_density_min").val()),
+            new newobj("(锚杆无损检测)合格率",$("#nde_percent").val()),
+            new newobj("(锚杆拉拔实验)合格率",$("#experiment_percent").val()),
+
+            new newobj("(监理)(锚杆砂浆强度)最大值",$("#mortar_max_2").val()),
+            new newobj("(监理)(锚杆砂浆强度)最小值",$("#mortar_min_2").val()),
+            new newobj("(监理)(锚杆砂浆强度)平均值",$("#mortar_avg_2").val()),
+            new newobj("(监理)(锚杆砂浆强度)合格率",$("#mortar_percent_2").val()),
+            new newobj("(监理)(锚杆无损检测)检测比例",$("#nde_detection_ratio_2").val()),
+            new newobj("(监理)(锚杆无损检测)锚杆长度最大",$("#nde_max_2").val()),
+            new newobj("(监理)(锚杆无损检测)锚杆长度最小",$("#nde_min_2").val()),
+            new newobj("(监理)(锚杆无损检测)注浆密实度最大",$("#nde_density_max_2").val()),
+            new newobj("(监理)(锚杆无损检测)注浆密实度最小",$("#nde_density_min_2").val()),
+            new newobj("(监理)(锚杆无损检测)合格率",$("#nde_percent_2").val()),
+            new newobj("(监理)(锚杆拉拔实验)合格率",$("#experiment_percent_2").val())
         );
         var test1 = intnumber(arr1);
         var test2 = floatnumber(arr2);
@@ -2036,7 +2017,7 @@
                 dataType: 'json'
             });
         }
-    })
+    });
     function complete(data){
         if(data.code==1){
             layer.msg("保存成功");

@@ -9,6 +9,7 @@
 namespace app\admin\model;
 
 
+use think\exception\PDOException;
 use think\Model;
 
 class MaoganModel extends Model
@@ -37,7 +38,7 @@ class MaoganModel extends Model
     public function editMaogan($param)
     {
         try{
-            $result =  $this->allowField(true)->save($param, ['uid' => $param['uid']]);
+            $result =  $this->allowField(true)->save($param, ['id' => $param['maoganid']]);
             if(false === $result){
                 return ['code' => 0, 'data' => '', 'msg' => $this->getError()];
             }else{
@@ -65,6 +66,6 @@ class MaoganModel extends Model
      */
     public function getOne($uid)
     {
-        return $this->where('uid', $uid)->find();
+        return $this->where('id', $uid)->find();
     }
 }
