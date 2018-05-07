@@ -12,606 +12,635 @@
     table tr td,table tr th{
         font-size: 12px;
     }
+    caption{
+        text-indent: 5px;
+        background-color: #bae2f3;
+        color: #000000;
+        font-weight: bold;
+        font-size: 14px;
+        text-indent: 2em;
+    }
 </style>
 <body>
 <div class="container-fluid">
+    <button class="btn btn-primary btn-md pull-right" data-toggle="modal" id="addTest" data-target="#fname" style="position: relative;top: 20px;right: 20px;z-index: 999">新增</button>
     <div class="row">
-        <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#myModal">
-            新增
-        </button>
-    </div>
-    <div class="row">
-        <table class="table table-hover"  id="materTable">
+        <table class="table table-hover table-bordered"  id="materTable">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>文件名</th>
+                    <th>上传人</th>
+                    <th>上传时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
 
         </table>
     </div>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document" style="width: 100%;">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <table class="table table-bordered">
-                        <caption>水泥</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测时间</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>品种/标号/规格</th>
-                            <th>批号</th>
-                            <th>代表数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>粉煤灰</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测时间</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>品种/等级</th>
-                            <th>批号</th>
-                            <th>代表数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>钢筋</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测时间</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>炉（批）号</th>
-                            <th>批号</th
-                            <th>代表数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>粗骨料</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测时间</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>规格</th>
-                            <th>代表数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>细骨料</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测时间</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>规格</th>
-                            <th>代表数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>减水剂</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测时间</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>种类</th>
-                            <th>批号</th>
-                            <th>代表数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>速凝剂</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测时间</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>种类</th>
-                            <th>批号</th>
-                            <th>代表数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>引气剂</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测时间</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>种类</th>
-                            <th>批号</th>
-                            <th>代表数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>微膨胀剂</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测时间</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>种类</th>
-                            <th>批号</th>
-                            <th>代表数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>纤维</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测时间</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>种类</th>
-                            <th>批号</th>
-                            <th>代表数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>钢止水</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测时间</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>种类</th>
-                            <th>批号</th>
-                            <th>代表数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>橡胶止水</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测时间</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>种类</th>
-                            <th>批号</th>
-                            <th>代表数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>PVC止水</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测时间</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>种类</th>
-                            <th>批号</th>
-                            <th>代表数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>钢绞线</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测日期</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>规格</th>
-                            <th>批号</th>
-                            <th>进场数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>土工布</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>进场检测日期</th>
-                            <th>使用部位</th>
-                            <th>生产厂家</th>
-                            <th>型号</th>
-                            <th>进场数量（t）</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>混凝土</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>成型日期</th>
-                            <th>破型日期</th>
-                            <th>标段</th>
-                            <th>工程部位</th>
-                            <th>桩号</th>
-                            <th>高程</th>
-                            <th>种类</th>
-                            <th>设计强度等级</th>
-                            <th>龄期(d)</th>
-                            <th>抗压强度(Mpa)</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>钢筋接头</caption>
-                        <thead>
-                        <tr>
-                            <th>检测日期</th>
-                            <th>标段</th>
-                            <th>工程部位</th>
-                            <th>品种规格</th>
-                            <th>钢筋直径</th>
-                            <th>代表数量(个)</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>止水材料接头</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>检测日期</th>
-                            <th>标段</th>
-                            <th>工程部位</th>
-                            <th>母材批号</th>
-                            <th>状态</th>
-                            <th>焊接或连接方式</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>压实度</caption>
-                        <thead>
-                        <tr>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>检测日期</th>
-                            <th>标段</th>
-                            <th>检测部位</th>
-                            <th>样品名称</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered">
-                        <caption>地基承载力</caption>
-                        <thead>
-                        <tr>
-                            <th>序号</th>
-                            <th>委托编号</th>
-                            <th>报告编号</th>
-                            <th>检测日期</th>
-                            <th>标段</th>
-                            <th>检测部位</th>
-                            <th>检测项目</th>
-                            <th>结论</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                            <th><input type="text"></th>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">提交更改</button>
+    <!--增加试验资料-->
+    <div id="fname" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 90%;height: 600px;overflow-y: scroll;margin: 10px auto;">
+        <form action="#" id="testContent">
+            <div class="row">
+                <div class="col-sm-12" style="background-color:#fff;">
+                    <div class="ibox float-e-margins">
+                        <div class="modal-body table-responsive">
+                            <table class="table table-bordered">
+                                <caption>水泥</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>进场检测时间</th>
+                                    <th>使用部位</th>
+                                    <th>生产厂家</th>
+                                    <th>品种/标号/规格</th>
+                                    <th>批号</th>
+                                    <th>代表数量（t）</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum" value="1" required="required"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>粉煤灰</caption>
+                                <thead>
+                                <tr>
+                                    <th width="60">委托编号</th>
+                                    <th width="60">报告编号</th>
+                                    <th width="60">进场检测时间</th>
+                                    <th width="90">使用部位</th>
+                                    <th width="60">生产厂家</th>
+                                    <th>品种/等级</th>
+                                    <th>批号</th>
+                                    <th width="60">代表数量（t）</th>
+                                    <th width="60">结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum" value="2"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>钢筋</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>进场检测时间</th>
+                                    <th>使用部位</th>
+                                    <th>生产厂家</th>
+                                    <th>炉（批）号</th>
+                                    <th>批号</th>
+                                    <th>代表数量（t）</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum" value="3"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>粗骨料</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>进场检测时间</th>
+                                    <th>使用部位</th>
+                                    <th>生产厂家</th>
+                                    <th>规格</th>
+                                    <th>代表数量（t）</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>细骨料</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>进场检测时间</th>
+                                    <th>使用部位</th>
+                                    <th>生产厂家</th>
+                                    <th>规格</th>
+                                    <th>代表数量（t）</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>减水剂</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>进场检测时间</th>
+                                    <th>使用部位</th>
+                                    <th>生产厂家</th>
+                                    <th>种类</th>
+                                    <th>批号</th>
+                                    <th>代表数量（t）</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>速凝剂</caption>
+                                <thead>
+                                <tr>
+                                    <td>委托编号</td>
+                                    <td>报告编号</td>
+                                    <td>进场检测时间</td>
+                                    <td>使用部位</td>
+                                    <td>生产厂家</td>
+                                    <td>种类</td>
+                                    <td>批号</td>
+                                    <td>代表数量（t）</td>
+                                    <td>结论</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>引气剂</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>进场检测时间</th>
+                                    <th>使用部位</th>
+                                    <th>生产厂家</th>
+                                    <th>种类</th>
+                                    <th>批号</th>
+                                    <th>代表数量（t）</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>微膨胀剂</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>进场检测时间</th>
+                                    <th>使用部位</th>
+                                    <th>生产厂家</th>
+                                    <th>种类</th>
+                                    <th>批号</th>
+                                    <th>代表数量（t）</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>纤维</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>进场检测时间</th>
+                                    <th>使用部位</th>
+                                    <th>生产厂家</th>
+                                    <th>种类</th>
+                                    <th>批号</th>
+                                    <th>代表数量（t）</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>钢止水</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>进场检测时间</th>
+                                    <th>使用部位</th>
+                                    <th>生产厂家</th>
+                                    <th>种类</th>
+                                    <th>批号</th>
+                                    <th>代表数量（t）</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>橡胶止水</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>进场检测时间</th>
+                                    <th>使用部位</th>
+                                    <th>生产厂家</th>
+                                    <th>种类</th>
+                                    <th>批号</th>
+                                    <th>代表数量（t）</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>PVC止水</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>进场检测时间</th>
+                                    <th>使用部位</th>
+                                    <th>生产厂家</th>
+                                    <th>种类</th>
+                                    <th>批号</th>
+                                    <th>代表数量（t）</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>钢绞线</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>进场检测日期</th>
+                                    <th>使用部位</th>
+                                    <th>生产厂家</th>
+                                    <th>规格</th>
+                                    <th>批号</th>
+                                    <th>进场数量（t）</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>土工布</caption>
+                                <thead>
+                                <tr>
+                                    <td>委托编号</td>
+                                    <td>报告编号</td>
+                                    <td>进场检测日期</td>
+                                    <td>使用部位</td>
+                                    <td>生产厂家</td>
+                                    <td>型号</td>
+                                    <td>进场数量（t）</td>
+                                    <td>结论</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="manufacturer"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>混凝土</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>成型日期</th>
+                                    <th>破型日期</th>
+                                    <th>标段</th>
+                                    <th>工程部位</th>
+                                    <th>桩号</th>
+                                    <th>高程</th>
+                                    <th>种类</th>
+                                    <th>设计强度等级</th>
+                                    <th>龄期(d)</th>
+                                    <th>抗压强度(Mpa)</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text"></td>
+                                    <td><input type="text"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text"></td>
+                                    <td><input type="text"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text"></td>
+                                    <td><input type="text"></td>
+                                    <td><input type="text"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>钢筋接头</caption>
+                                <thead>
+                                <tr>
+                                    <th>检测日期</th>
+                                    <th>标段</th>
+                                    <th>工程部位</th>
+                                    <th>品种规格</th>
+                                    <th>钢筋直径</th>
+                                    <th>代表数量(个)</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="bids"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text"></td>
+                                    <td><input type="text" name="delegatesNum"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>止水材料接头</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>检测日期</th>
+                                    <th>标段</th>
+                                    <th>工程部位</th>
+                                    <th>母材批号</th>
+                                    <th>状态</th>
+                                    <th>焊接或连接方式</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="bids"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="specifications"></td>
+                                    <td><input type="text" name="lotNum"></td>
+                                    <td><input type="text"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>压实度</caption>
+                                <thead>
+                                <tr>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>检测日期</th>
+                                    <th>标段</th>
+                                    <th>检测部位</th>
+                                    <th>样品名称</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="bids"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="kind"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-bordered">
+                                <caption>地基承载力</caption>
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>委托编号</th>
+                                    <th>报告编号</th>
+                                    <th>检测日期</th>
+                                    <th>标段</th>
+                                    <th>检测部位</th>
+                                    <th>检测项目</th>
+                                    <th>结论</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td><input type="text"></td>
+                                    <td><input type="text" name="entrustmentNum"></td>
+                                    <td><input type="text" name="reportNum"></td>
+                                    <td><input type="text" name="checkDate"></td>
+                                    <td><input type="text" name="bids"></td>
+                                    <td><input type="text" name="usePosition"></td>
+                                    <td><input type="text" name="kind"></td>
+                                    <td><input type="text" name="conclusion"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="col-lg-12 col-xs-12">
+                                <label class="col-xs-1 control-label" id="file">文件：</label>
+                                <div class="myblock col-xs-8 input-group" style="text-align: left;">
+                                    <div id="file_per" style="display: inline-block;vertical-align: middle;"></div>
+                                    <div id="file_upload" style="display: inline-block;vertical-align: middle;"></div>
+                                    <div id="file_list" style="display: inline-block;vertical-align: middle;"></div>
+                                </div>
+                            </div>
+                            <div class="pull-right">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
-
 <script src="__JS__/jquery.ztree.all.js"></script>
 <script src="__JS__/jquery.dataTables.min.js"></script>
 <script src="__JS__/jquery.jedate.js"></script>
@@ -621,62 +650,139 @@
 </body>
 <script>
     $(function () {
-        $('#materTable').dataTable( {
-            "aLengthMenu" : [10, 15,20],
-            "iDisplayLength" : 15,
-            data:[
-                {
-                    "month":    "试验一",
-                    "planName":   "2018-02-03",
-                    "position":    "管理员"
-                },
-                {
-                    "month":    "试验一",
-                    "planName":   "2018-02-03",
-                    "position":    "管理员"
-                },
-                {
-                    "month":    "试验一",
-                    "planName":   "2018-02-03",
-                    "position":    "管理员"
-                },
-                {
-                    "month":    "试验一",
-                    "planName":   "2018-02-03",
-                    "position":    "管理员"
-                }
-            ],
-            columns: [
-                {
-                    "data": "month",
-                    "title":"文件名称",
-                    "orderable": false
-                },
-                {
-                    "data": "planName",
-                    "title":"上传人",
-                    "orderable": false
-                },
-                {
-                    "data": "position",
-                    "title":"上传时间",
-                    "orderable": false
-                },
-                {
-                    "data": null,
-                    "title":"操作",
-                    "orderable": false,
-                }
+        var uploader;
+        $("#testContent").submit(function () {
+            myupload();
+        });
+        function myupload() {
+            $("#fname input").val("");
+            $("#file_list").empty();
+            $("#fname").modal('show');
+            if(!uploader){
+                uploader = WebUploader.create({
+                    auto: false,// 选完文件后，是否自动上传。
+                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                    server: "{:url('Upload/uploadMater')}",// 文件接收服务端。
+                    chunked: false,
+                    fileSizeLimit: 1000 *1024 *1024,
+                    fileNumLimit: 1,
+                    formData: {"uid":"","table_name":"","group_id":""},
+                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                    pick: {
+                        multiple: false,
+                        id: "#file_upload",
+                        innerHTML: "上传文件"
+                    }
+                });
 
-            ],
+                uploader.on( 'fileQueued', function( file ) {
+                    $("#file_per").append('<div id="' + file.id + '" class="item">' +
+                        '</div>');
+                    $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                        '<span class="info">' + file.name + '</span>&nbsp' +
+                        '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                        '</div>' );
+                });
+                $("#file_list").on("click", ".webuploadDelbtn", function () {
+                    var $ele = $(this);
+                    var id = $ele.parent().attr("class");
+                    var file = uploader.getFile(id);
+                    uploader.removeFile(file,true);
+                });
+                uploader.on('fileDequeued', function (file) {
+                    $(file.id).remove();
+                    $('.'+file.id).remove();
+                    console.log("remove");
+                });
+                uploader.on("uploadStart",function () {
+                    var entrustment_number = [];
+                    $("input[name='entrustmentNum']").each(function () {
+                        entrustment_number.push($(this).val());
+                    })
+                    uploader.options.formData.entrustment_number = entrustment_number;
+                });
+                uploader.on('beforeFileQueued', function (file) {
+                    if($("#file_list").html()){
+                        alert("只能上传一个文件,请先删除文件");
+                        return false;
+                    }else {
+                        return true;
+                    }
+                });
+                // 文件上传过程中创建进度条实时显示。
+                uploader.on('uploadProgress', function (file, percentage) {
+                    var $li = $('#' + file.id),
+                        $percent = $li.find('.progress .progress-bar');
+                    // 避免重复创建
+                    if (!$percent.length) {
+                        $percent = $('<div class="progress progress-striped active">' +
+                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                            '</div>' +
+                            '</div>').appendTo($li).find('.progress-bar');
+                    }
+                    $li.find('p.state').text('上传中');
+                    $percent.css('width', percentage * 100 + '%');
+                });
+                // 文件上传成功
+                uploader.on( 'uploadSuccess', function( file,data, response ) {
+                    console.log(file)
+                    console.log(data)
+                    if(data.code === 1){
+                        layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
+                        table_refresh();
+                        uploader = null;
+                        $("#file_upload").empty();
+                        $("#fname").modal('hide');
+                        $("#file_per").empty();
+
+                        if(mytablename === "jc"){
+                            $.ajax({
+                                url: "./prototypeListAdd",
+                                type: "post",
+                                data: {id:cid3,status:"检查"},
+                                dataType: "json",
+                                success: function (res) {
+                                    console.log(res);
+                                }
+                            })
+                        }
+                        if(mytablename === "chhzb"){
+                            $.ajax({
+                                url: "./prototypeListAdd",
+                                type: "post",
+                                data: {id:cid3,status:"完成"},
+                                dataType: "json",
+                                success: function (res) {
+                                    console.log(res);
+                                }
+                            })
+                        }
+                    }else {
+                        layer.msg("抱歉，您没有此权限");
+                    }
+
+                });
+
+                // 文件上传失败，显示上传出错。
+                uploader.on( 'uploadError', function( file ) {
+                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                    $("#file_per").empty();
+                    $("#file_upload").empty();
+                });
+            }
+        }
+
+        $('#materTable').dataTable( {
+            "ordering": false,
+            "ajax": "__SCRIPT__/Materialfile.php",
             "columnDefs": [
                 {
                     "searchable": false,
                     "orderable": false,
-                    "targets": [3],
+                    "targets": [4],
                     "render" :  function(data,type,row) {
                         var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='detail(this)' value='查看'/>";
-                        html += "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='下载'/>";
+                        html += "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
                         html += "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
                         html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                         return html;
@@ -701,8 +807,9 @@
                     "sLast" : "最后一页"
                 }
             },
-            "dom": '<"top"f>rt<"bottom"p><"clear">'
+            "dom": '<"top pull-left"f>rt<"bottom"p><"clear">'
         } );
+        //新增提交
 
 
     })
@@ -726,6 +833,14 @@
             })
             layer.close(index);
         })
+    }
+    //查看
+    function detail(that) {
+        $("#detailModal").modal();
+    }
+    //编辑
+    function edit() {
+        $("#editlModal").modal();
     }
 </script>
 </html>
