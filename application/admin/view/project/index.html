@@ -62,6 +62,9 @@
         width: 100%;
         height: 100%;
     }
+    .test_resource{
+        margin-right: 50px;
+    }
 </style>
 <body>
 <div id="mycontent" style="width: 20%;height: 98%;display: inline-block;margin: 0 10px;background-color:#fff;overflow-x: scroll;padding-top: 20px;padding-right:10px;border-right: 1px solid #ccc;">
@@ -136,6 +139,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
@@ -206,11 +210,297 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group text-center">
+                                <div class="input-group col-xs-4 col-lg-offset-2 pull-left">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#selects">试验资料
+                                        </button>
+                                    </div>
+                                    <input type="text" class="form-control" readonly id="vlad1">
+                                </div>
+                                <div class="input-group col-xs-4  pull-left"  style="margin-left: 100px" data-toggle="modal" data-target="#selects2">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-primary">测量资料
+                                        </button>
+                                    </div>
+                                    <input type="text" class="form-control" readonly id="vlad2">
+                                </div>
+                        </div>
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-xs-12" style="text-align: center;">
                                 <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
                                 <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                    <!--新增用户信息结束-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="selects" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins" style="height: 600px">
+                <div class="ibox-title">
+                    <h5></h5>
+                </div>
+                <div class="ibox-content">
+                    <!--新增用户信息开始-->
+                    <form class="form-horizontal" name="level2Add" method="post" action="#" onsubmit="return false">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>文件名</th>
+                                <th>上传人</th>
+                                <th>上传时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>实验材料测试一</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;'  value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;'  value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;'  value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>混凝土实验材料</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>混凝土实验材料二</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>测试材料一</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>实验材料三</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>测试</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>实验测试</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>混凝土实验材料五</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>混凝土实验材料一</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <div class="col-xs-12" style="text-align: center;">
+                                <button class="btn btn-primary get_res" data-dismiss="modal"><i class="fa fa-save"></i> 确定</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger get_res" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                    <!--新增用户信息结束-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="selects2" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins" style="height: 600px">
+                <div class="ibox-title">
+                    <h5></h5>
+                </div>
+                <div class="ibox-content">
+                    <!--新增用户信息开始-->
+                    <form class="form-horizontal" name="level2Add" method="post" action="#" onsubmit="return false">
+                        <table class="table table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>文件名</th>
+                                <th>上传人</th>
+                                <th>上传时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>实验材料测试一</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;'  value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;'  value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;'  value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>混凝土实验材料</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>混凝土实验材料二</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>测试材料一</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>实验材料三</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>测试</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>实验测试</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>混凝土实验材料五</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>混凝土实验材料一</td>
+                                <td>admin</td>
+                                <td>2018-02-03</td>
+                                <td>
+                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
+                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
+                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <div class="col-xs-12" style="text-align: center;">
+                                <button class="btn btn-primary get_res2" data-dismiss="modal"><i class="fa fa-save"></i> 确定</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger get_res" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
                             </div>
                         </div>
                     </form>
@@ -541,7 +831,15 @@ function edit(that) {
         }
     })
 }
-
+//静态点击事件
+    $(".get_res").click(function () {
+        var text = $("#selects input:checked").parent().next("td").text();
+        $("#vlad1").val(text);
+    });
+    $(".get_res2").click(function () {
+        var text = $("#selects input:checked").parent().next("td").text();
+        $("#vlad2").val(text);
+    });
 //删除
     function myconfirm(id,url) {
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){

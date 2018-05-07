@@ -383,7 +383,6 @@ class Upload extends Base
      * @return \think\response\Json
      */
     public function uploadMater(){
-        halt(input());
         $mater = new MaterialfileModel();
         // 前台提交的数据
         $major_key = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传 注意 修改的时候一定要传
