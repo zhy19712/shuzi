@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: admin
  * Date: 2017/12/27
- * Time: 9:50
+ * Time: 8:50
  */
 
 namespace app\admin\model;
@@ -12,15 +12,16 @@ namespace app\admin\model;
 use think\exception\PDOException;
 use think\Model;
 
-class HunningtuModel extends Model
+class ProjectScupperModel extends Model
 {
-    protected $name = 'project_hunningtu';
+
+    protected $name = 'project_scupper';
     //自动写入创建、更新时间 insertGetId和update方法中无效，只能用于save方法
     protected $autoWriteTimestamp = true;
     /**
      * 插入
      */
-    public function insertHunningtu($param)
+    public function insertScupper($param)
     {
         try{
             $result = $this->allowField(true)->save($param);
@@ -37,7 +38,7 @@ class HunningtuModel extends Model
     /**
      * 编辑信息
      */
-    public function editHunningtu($param)
+    public function editScupper($param)
     {
         try{
             $result =  $this->allowField(true)->save($param, ['uid' => $param['uid']]);
@@ -79,14 +80,15 @@ class HunningtuModel extends Model
         return $this->where($where)->count();
     }
 
-    public function delHunningtuByUid($uid){
+    public function delKaiwaBuUid($uid){
         $has = $this->where('uid',$uid)->value('id');
         if($has){
             $bol = $this->where('uid',$uid)->delete();
             if($bol < 1){
-                return ['code' => 1, 'data' => '', 'msg' => '混凝土删除失败'];
+                return ['code' => 0, 'data' => '', 'msg' => '开挖删除失败'];
             }
         }
-        return ['code' => 1, 'data' => '', 'msg' => '混凝土删除成功'];
+        return ['code' => 1, 'data' => '', 'msg' => '开挖删除成功'];
     }
+
 }

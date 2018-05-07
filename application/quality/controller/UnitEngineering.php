@@ -13,6 +13,7 @@ use app\admin\model\HunningtuModel;
 use app\admin\model\KaiwaModel;
 use app\admin\model\MaoganModel;
 use app\admin\model\ProjectModel;
+use app\admin\model\ProjectScupperModel;
 use app\admin\model\ZhihuModel;
 use app\quality\model\ProjectAttachmentModel;
 
@@ -48,6 +49,7 @@ class UnitEngineering extends Base
         $hunningtu = new HunningtuModel();
         $zhihu = new ZhihuModel();
         $maogan = new MaoganModel();
+        $scupper = new ProjectScupperModel();
         if(request()->isAjax()){
             $param = input('post.');
             $projectData = $project->getOneProject($param['uid']);
@@ -68,6 +70,10 @@ class UnitEngineering extends Base
             {
                 $maoganData = $maogan->getOne($param['uid']);
                 return json([ 'maoganData' => $maoganData,'code' => 1]);
+            }else if($p=='排水孔')
+            {
+                $scupperData = $scupper->getOne($param['uid']);
+                return json(['projectData' => $projectData, 'scupperData' => $scupperData,'code' => 1]);
             }
 
         }
@@ -85,6 +91,7 @@ class UnitEngineering extends Base
         $hunningtu = new HunningtuModel();
         $maogan = new MaoganModel();
         $project = new ProjectModel();
+        $scupper = new ProjectScupperModel();
 
         $param = input('post.');
         if(request()->isAjax()){
@@ -116,6 +123,11 @@ class UnitEngineering extends Base
                 $flag = $maogan->insertMaogan($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
+            else if(empty($param['edit'])&&$param['cate']=='排水孔')
+            {
+                $flag = $scupper->insertScupper($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
             else if(!empty($param['edit']) && ($param['cate']=='开挖' || $param['cate']=='明挖' || $param['cate']=='洞挖'))
             {
                 $flag = $kaiwa->editKaiwa($param);
@@ -130,12 +142,17 @@ class UnitEngineering extends Base
             {
                 $flag = $hunningtu->editHunningtu($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
-            }else if(!empty($param['edit'])&&$param['cate']=='锚杆')
+            }
+            else if(!empty($param['edit'])&&$param['cate']=='锚杆')
             {
                 $flag = $maogan->editMaogan($param);
                 return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
             }
-
+            else if(!empty($param['edit'])&&$param['cate']=='排水孔')
+            {
+                $flag = $scupper->editScupper($param);
+                return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+            }
         }
         return $this->fetch();
     }

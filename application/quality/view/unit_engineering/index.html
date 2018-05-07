@@ -853,76 +853,67 @@
                                         </div>
                                     </div>
                                     <div class="info">
-                                        <span>半孔率</span>
+                                        <span>设计</span>
                                         <div class="exp">
                                             <div class="top border-bottom">
-                                                <span>检查孔数(个)</span>
-
+                                                <span>设计孔深</span>
+                                                <span>抽检数量</span>
                                             </div>
                                             <div class="bottom">
-                                                <input type="text" id="holes" name="holes" placeholder="只能输入整数">
-
+                                                <input type="text" id="design_hole_depth" name="design_hole_depth">
+                                                <input type="text" id="sampling_quantity" name="sampling_quantity">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="info">
-                                        <span>不平整度</span>
+                                        <span>孔深</span>
                                         <div class="exp w2">
                                             <div class="top border-bottom">
-                                                <span>检查点数(个)</span>
-                                                <span>最大值(cm)</span>
-                                                <span>最小值(cm)</span>
-                                                <span>平均值(cm)</span>
-                                                <span>合格率</span>
+                                                <span>孔深平均值</span>
+                                                <span>孔深合格率</span>
                                             </div>
                                             <div class="bottom">
-                                                <input type="text" name="points_irregularity_degree" id="points">
-                                                <input type="text" name="max_irregularity_degree" id="max">
-                                                <input type="text" name="min_irregularity_degree" id="min">
-                                                <input type="text" name="avg_irregularity_degree" id="avg">
-                                                <input type="text" name="pass_irregularity_degree" id="sections_test_date">
+                                                <input type="text" id="hole_depth_avg" name="hole_depth_avg">
+                                                <input type="text" id="hole_depth_percent" name="hole_depth_percent">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="info">
-                                        <span>轮廓体型(超挖)</span>
+                                        <span>孔位</span>
                                         <div class="exp w2">
                                             <div class="top border-bottom">
-                                                <span>检查断面(个)</span>
-                                                <span>检查点数(个)</span>
-                                                <span>最大超挖(cm)</span>
-                                                <span>最小超挖(cm)</span>
-                                                <span>平均超挖(cm)</span>
-                                                <span>合格率(%)</span>
+                                                <span>孔位平均值</span>
+                                                <span>孔位合格率</span>
                                             </div>
                                             <div class="bottom">
-                                                <input type="text" name="sections_overbreak" id="sections_overbreak">
-                                                <input type="text" name="points_overbreak" id="points_overbreak">
-                                                <input type="text" name="max_overbreak" id="max_overbreak">
-                                                <input type="text" name="min_overbreak" id="min_overbreak">
-                                                <input type="text" name="ave_overbreak" id="ave_overbreak">
-                                                <input type="text" name="pass_overbreak" id="pass_overbreak">
+                                                <input type="text" name="hole_site_avg" id="hole_site_avg">
+                                                <input type="text" name="hole_site_percent" id="hole_site_percent">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="info" style="margin-top: 0;border-top: none;">
-                                        <span>轮廓体型(欠挖)</span>
+                                        <span>孔径</span>
                                         <div class="exp w2">
                                             <div class="top border-bottom">
-                                                <span>检查断面(个)</span>
-                                                <span>检查点数(个)</span>
-                                                <span>最大欠挖(cm)</span>
-                                                <span>最小欠挖(cm)</span>
-                                                <span>平均欠挖(cm)</span>
-                                                <span>合格率(%)</span>
+                                                <span>孔径平均值</span>
+                                                <span>孔径合格率</span>
                                             </div>
                                             <div class="bottom">
-                                                <input type="text" name="sections_underbreak" id="sections_underbreak">
-                                                <input type="text" name="points_underbreak" id="points_underbreak">
-                                                <input type="text" name="max_underbreak" id="max_underbreak">
-                                                <input type="text" name="min_underbreak" id="min_underbreak">
-                                                <input type="text" name="ave_underbreak" id="ave_underbreak">
-                                                <input type="text" name="pass_underbreak" id="pass_underbreak">
+                                                <input type="text" name="aperture_avg" id="aperture_avg">
+                                                <input type="text" name="aperture_percent" id="aperture_percent">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="info" style="margin-top: 0;border-top: none;">
+                                        <span>孔斜</span>
+                                        <div class="exp w2">
+                                            <div class="top border-bottom">
+                                                <span>孔斜平均值</span>
+                                                <span>孔斜合格率</span>
+                                            </div>
+                                            <div class="bottom">
+                                                <input type="text" name="pore_slant_avg" id="pore_slant_avg">
+                                                <input type="text" name="pore_slant_percent" id="pore_slant_percent">
                                             </div>
                                         </div>
                                     </div>
@@ -1151,6 +1142,9 @@
         format: "YYYY-MM-DD"
     });
     $("#evaluated_date3").jeDate({
+        format: "YYYY-MM-DD"
+    });
+    $("#evaluated_date5").jeDate({
         format: "YYYY-MM-DD"
     });
     var mytree_node;
@@ -1714,6 +1708,30 @@
                             }else {
                                 $("#edit3").val("");
                             }
+                        }else if(data.cate == "排水孔"){
+                            $("#uid5").val(groupid);
+                            $("#cate5").val(data.cate);
+                            $("#model5").css("display","block");
+                            if(res.scupperData){
+                                var kdata = res.scupperData;
+                                $("#edit5").val("edit");
+                                $("#pass5").val(kdata.pass);
+                                $("#quality_level5").val(kdata.quality_level);
+                                $("#evaluated_date5").val(kdata.evaluated_date);
+                                $("#evaluated_by5").val(kdata.evaluated_by);
+                                $("#design_hole_depth").val(kdata.design_hole_depth);
+                                $("#sampling_quantity").val(kdata.sampling_quantity);
+                                $("#hole_depth_avg").val(kdata.hole_depth_avg);
+                                $("#hole_depth_percent").val(kdata.hole_depth_percent);
+                                $("#hole_site_avg").val(kdata.hole_site_avg);
+                                $("#hole_site_percent").val(kdata.hole_site_percent);
+                                $("#aperture_avg").val(kdata.aperture_avg);
+                                $("#aperture_percent").val(kdata.aperture_percent);
+                                $("#pore_slant_avg").val(kdata.pore_slant_avg);
+                                $("#pore_slant_percent").val(kdata.pore_slant_percent);
+                            }else {
+                                $("#edit5").val("");
+                            }
                         }
                     }else {
                         layer.msg(res.msg);
@@ -2235,10 +2253,44 @@
                             dataType: 'json'
                         });
                     }
+                }else if($(n).attr("id") == "model5"){
+                    if(!$("#evaluated_date5").val()){
+                        alert("评定日期不能为空");
+                        return;
+                    }
+                    if(!$("#evaluated_by5").val()){
+                        alert("评定人不能为空");
+                        return;
+                    }
+                    var arr1 = [];
+                    arr1.push(
+                        new newobj("抽检数量",$("#sampling_quantity").val())
+                    );
+                    var arr2 = [];
+                    arr2.push(new newobj("设计孔深",$("#design_hole_depth").val()),
+                        new newobj("孔深平均值",$("#hole_depth_avg").val()),
+                        new newobj("孔深合格率",$("#hole_depth_percent").val()),
+                        new newobj("孔位平均值",$("#hole_site_avg").val()),
+                        new newobj("孔位合格率",$("#hole_site_percent").val()),
+                        new newobj("孔径平均值",$("#aperture_avg").val()),
+                        new newobj("孔径合格率",$("#aperture_percent").val()),
+                        new newobj("孔斜平均值",$("#pore_slant_avg").val()),
+                        new newobj("孔斜合格率",$("#pore_slant_percent").val())
+                    );
+                    var test1 = intnumber(arr1);
+                    var test2 = floatnumber(arr2);
+                    if(test1 && test2){
+                        $('#model5').ajaxSubmit({
+                            url: "./dataAdd",
+                            type: "post",
+                            success: complete1,
+                            dataType: 'json'
+                        });
+                    }
                 }
             }
-        })
-    })
+        });
+    });
     function complete1(data){
         if(data.code==1){
             layer.msg("保存成功");
