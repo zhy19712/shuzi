@@ -22,6 +22,7 @@
     }
 </style>
 <body>
+<div id="form_container" style="display: none;"></div>
 <div class="container-fluid">
     <button class="btn btn-primary btn-md pull-right" data-toggle="modal" id="addTest"   style="position: relative;top: 20px;right: 20px;z-index: 999">新增</button>
     <div class="row">
@@ -63,15 +64,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum" value="1" required="required"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" required="required" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="lot_number"  ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion"  ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -92,15 +93,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum" value="2"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="lot_number" ></td>
+                                    <td><input type="text" name="number_of_delegates"  ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -114,22 +115,20 @@
                                     <th>使用部位</th>
                                     <th>生产厂家</th>
                                     <th>炉（批）号</th>
-                                    <th>批号</th>
                                     <th>代表数量（t）</th>
                                     <th>结论</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum" value="3"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="lot_number" ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -149,14 +148,14 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -176,15 +175,14 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -205,15 +203,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="lot_number" ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -234,15 +232,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="lot_number" ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -263,15 +261,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="lot_number" ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -292,15 +290,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="lot_number" ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -321,15 +319,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="lot_number" ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -350,15 +348,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="lot_number" ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -379,15 +377,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="lot_number" ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -408,15 +406,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="lot_number" ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -437,15 +435,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="lot_number" ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -465,14 +463,14 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="manufacturer"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="manufacturer" ></td>
+                                    <td><input type="text" name="lot_number" ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -497,19 +495,19 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text"></td>
-                                    <td><input type="text"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text"></td>
-                                    <td><input type="text"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text"></td>
-                                    <td><input type="text"></td>
-                                    <td><input type="text"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="broken_date" ></td>
+                                    <td><input type="text" name="bids"></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="lot_number" ></td>
+                                    <td><input type="text" name="altitude" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="design_strength_grade" ></td>
+                                    <td><input type="text" name="age" ></td>
+                                    <td><input type="text" name="compression_strength" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -528,13 +526,13 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="bids"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text"></td>
-                                    <td><input type="text" name="delegatesNum"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="bids" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="specifications" ></td>
+                                    <td><input type="text" name="bar_diameter" ></td>
+                                    <td><input type="text" name="number_of_delegates" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -555,15 +553,15 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="bids"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="specifications"></td>
-                                    <td><input type="text" name="lotNum"></td>
-                                    <td><input type="text"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="bids" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="lot_number" ></td>
+                                    <td><input type="text" name="status" ></td>
+                                    <td><input type="text" name="welding" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -582,13 +580,13 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="bids"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="kind"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="entrustment_number" ></td>
+                                    <td><input type="text" name="report_number"></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="bids" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="kind" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -608,14 +606,14 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><input type="text"></td>
-                                    <td><input type="text" name="entrustmentNum"></td>
-                                    <td><input type="text" name="reportNum"></td>
-                                    <td><input type="text" name="checkDate"></td>
-                                    <td><input type="text" name="bids"></td>
-                                    <td><input type="text" name="usePosition"></td>
-                                    <td><input type="text" name="kind"></td>
-                                    <td><input type="text" name="conclusion"></td>
+                                    <td><input type="text" name="order_number" ></td>
+                                    <td><input type="text" name="entrustment_number"></td>
+                                    <td><input type="text" name="report_number" ></td>
+                                    <td><input type="text" name="approach_detection_time" ></td>
+                                    <td><input type="text" name="bids" ></td>
+                                    <td><input type="text" name="using_position" ></td>
+                                    <td><input type="text" name="kind" ></td>
+                                    <td><input type="text" name="conclusion" ></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -651,228 +649,436 @@
 </body>
 <script>
 
-    // $(function () {
-        var uploader;
-        $("#addTest").click(function () {
-            $("#fname").modal('show');
-            myupload();
-        });
-        function myupload() {
-            $("#fname input").val("");
-            $("#file_list").empty();
-            $("#fname").modal('show');
-            if(!uploader){
-                uploader = WebUploader.create({
-                    auto: false,// 选完文件后，是否自动上传。
-                    swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
-                    server: "{:url('Upload/uploadMater')}",// 文件接收服务端。
-                    chunked: false,
-                    fileSizeLimit: 1000 *1024 *1024,
-                    fileNumLimit: 1,
-                    duplicate :true,// 重复上传图片，true为可重复false为不可重复
-                    pick: {
-                        multiple: false,
-                        id: "#file_upload",
-                        innerHTML: "上传文件"
-                    }
+    var uploader;
+    $("#addTest").click(function () {
+        $("#fname").modal('show');
+        myupload();
+    });
+    function myupload() {
+        // $("#fname input").val("");
+        $("#file_list").empty();
+        $("#fname").modal('show');
+        if(!uploader){
+            uploader = WebUploader.create({
+                auto: false,// 选完文件后，是否自动上传。
+                swf: '/static/admin/webupload/Uploader.swf',// swf文件路径
+                server: "{:url('Upload/uploadMater')}",// 文件接收服务端。
+                chunked: false,
+                fileSizeLimit: 1000 *1024 *1024,
+                fileNumLimit: 1,
+                duplicate :true,// 重复上传图片，true为可重复false为不可重复
+                pick: {
+                    multiple: false,
+                    id: "#file_upload",
+                    innerHTML: "上传文件"
+                }
+            });
+            uploader.on( 'fileQueued', function( file ) {
+                $("#file_per").append('<div id="' + file.id + '" class="item">' +
+                    '</div>');
+                $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
+                    '<span class="info">' + file.name + '</span>&nbsp' +
+                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>' );
+            });
+            $("#file_list").on("click", ".webuploadDelbtn", function () {
+                var $ele = $(this);
+                var id = $ele.parent().attr("class");
+                var file = uploader.getFile(id);
+                uploader.removeFile(file,true);
+            });
+            uploader.on('fileDequeued', function (file) {
+                $(file.id).remove();
+                $('.'+file.id).remove();
+                console.log("remove");
+            });
+            uploader.on("uploadStart",function () {
+                //委托编号
+                var entrustmentNumArr = [];
+                $("input[name='entrustment_number']").each(function () {
+                    entrustmentNumArr.push($(this).val());
                 });
-                uploader.on( 'fileQueued', function( file ) {
-                    $("#file_per").append('<div id="' + file.id + '" class="item">' +
-                        '</div>');
-                    $("#file_list").append('<div style="display: inline-block;vertical-align: middle;" class="' + file.id + '" class="item">' +
-                        '<span class="info">' + file.name + '</span>&nbsp' +
-                        '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
-                        '</div>' );
+                uploader.options.formData.entrustment_number = entrustmentNumArr;
+                //报告编号
+                var report_numberArr = [];
+                $("input[name='report_number']").each(function () {
+                    report_numberArr.push($(this).val());
                 });
-                $("#file_list").on("click", ".webuploadDelbtn", function () {
-                    var $ele = $(this);
-                    var id = $ele.parent().attr("class");
-                    var file = uploader.getFile(id);
-                    uploader.removeFile(file,true);
+                uploader.options.formData.report_number = report_numberArr;
+                //进场检测时间/成型日期
+                var checkDateArr = [];
+                $("input[name='approach_detection_time']").each(function () {
+                    checkDateArr.push($(this).val());
                 });
-                uploader.on('fileDequeued', function (file) {
-                    $(file.id).remove();
-                    $('.'+file.id).remove();
-                    console.log("remove");
+                uploader.options.formData.approach_detection_time = checkDateArr;
+                //使用部位/工程部位/检测部位
+                var usePositionArr = [];
+                $("input[name='using_position']").each(function () {
+                    usePositionArr.push($(this).val());
                 });
-                uploader.on("uploadStart",function () {
-                    //委托编号
-                    var entrustmentNumArr = [];
-                    $("input[name='entrustmentNum']").each(function () {
-                        entrustmentNumArr.push($(this).val());
-                    })
-                    uploader.options.formData.entrustment_number = entrustmentNumArr;
-                    //报告编号
-                    var report_numberArr = [];
-                    $("input[name='report_number']").each(function () {
-                        report_numberArr.push($(this).val());
-                    })
-                    uploader.options.formData.report_number = report_numberArr;
-                    //进场检测时间/成型日期
-                    var checkDateArr = [];
-                    $("input[name='checkDate']").each(function () {
-                        checkDateArr.push($(this).val());
-                    })
-                    uploader.options.formData.approach_detection_time = checkDateArr;
-                    //使用部位/工程部位/检测部位
-                    var usePositionArr = [];
-                    $("input[name='usePosition']").each(function () {
-                        usePositionArr.push($(this).val());
-                    })
-                    uploader.options.formData.using_position =  usePositionArr;
-                    // 生产厂家
-                    var manufacturerArr = [];
-                    $("input[name='manufacturer']").each(function () {
-                        manufacturerArr.push($(this).val());
-                    })
-                    uploader.options.formData.manufacturer = manufacturerArr;
-                    //  品种/标号/规格/等级/种类
-                    var specificationsArr = [];
-                    $("input[name='specifications']").each(function () {
-                        specificationsArr.push($(this).val());
-                    })
-                    uploader.options.formData.specifications = specificationsArr;
-                    //  批号/炉号/型号/桩号/母材批号
-                    var lotNumArr = [];
-                    $("input[name='lotNum']").each(function () {
-                        lotNumArr.push($(this).val());
-                    })
-                    uploader.options.formData.lot_number = lotNumArr;
-                    // 代表数量/进场数量
-                    var delegatesNumArr = [];
-                    $("input[name='delegatesNum']").each(function () {
-                        delegatesNumArr.push($(this).val());
-                    })
-                    uploader.options.formData.number_of_delegates = delegatesNumArr;
-                    // 结论
-                    var conclusionArr = [];
-                    $("input[name='conclusion']").each(function () {
-                        conclusionArr.push($(this).val());
-                    })
-                    uploader.options.formData.conclusion = conclusionArr;
-                    // 样品名称/检测项目
-                    var kindArr = [];
-                    $("input[name='kind']").each(function () {
-                        kindArr.push($(this).val());
-                    })
-                    uploader.options.formData.kind = kindArr;
-                    //  标段
-                    var bidsArr = [];
-                    $("input[name='bids']").each(function () {
-                        bidsArr.push($(this).val());
-                    })
-                    uploader.options.formData.bids = bidsArr;
+                uploader.options.formData.using_position =  usePositionArr;
+                // 生产厂家
+                var manufacturerArr = [];
+                $("input[name='manufacturer']").each(function () {
+                    manufacturerArr.push($(this).val());
                 });
-                uploader.on('beforeFileQueued', function (file) {
-                    if($("#file_list").html()){
-                        alert("只能上传一个文件,请先删除文件");
-                        return false;
-                    }else {
-                        return true;
-                    }
+                uploader.options.formData.manufacturer = manufacturerArr;
+                //  品种/标号/规格/等级/种类
+                var specificationsArr = [];
+                $("input[name='specifications']").each(function () {
+                    specificationsArr.push($(this).val());
                 });
-                // 文件上传过程中创建进度条实时显示。
-                uploader.on('uploadProgress', function (file, percentage) {
-                    var $li = $('#' + file.id),
-                        $percent = $li.find('.progress .progress-bar');
-                    // 避免重复创建
-                    if (!$percent.length) {
-                        $percent = $('<div class="progress progress-striped active">' +
-                            '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-                            '</div>' +
-                            '</div>').appendTo($li).find('.progress-bar');
-                    }
-                    $li.find('p.state').text('上传中');
-                    $percent.css('width', percentage * 100 + '%');
+                uploader.options.formData.specifications = specificationsArr;
+                //  批号/炉号/型号/桩号/母材批号
+                var lotNumArr = [];
+                $("input[name='lot_number']").each(function () {
+                    lotNumArr.push($(this).val());
                 });
-                // 文件上传成功
-                uploader.on( 'uploadSuccess', function( file,data, response ) {
-                        layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
-                        uploader = null;
-                        $("#file_upload").empty();
-                        $("#fname").modal('hide');
-                        $("#file_per").empty();
-                        materTables.ajax.url("__SCRIPT__/Materialfile.php").load();
+                uploader.options.formData.lot_number = lotNumArr;
+                // 代表数量/进场数量
+                var delegatesNumArr = [];
+                $("input[name='number_of_delegates']").each(function () {
+                    delegatesNumArr.push($(this).val());
                 });
-                // 文件上传失败，显示上传出错。
-                uploader.on( 'uploadError', function( file ) {
-                    layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
-                    $("#file_per").empty();
+                uploader.options.formData.number_of_delegates = delegatesNumArr;
+                // 结论
+                var conclusionArr = [];
+                $("input[name='conclusion']").each(function () {
+                    conclusionArr.push($(this).val());
+                });
+                uploader.options.formData.conclusion = conclusionArr;
+                // 样品名称/检测项目
+                var kindArr = [];
+                $("input[name='kind']").each(function () {
+                    kindArr.push($(this).val());
+                });
+                uploader.options.formData.kind = kindArr;
+                //  标段
+                var bidsArr = [];
+                $("input[name='bids']").each(function () {
+                    bidsArr.push($(this).val());
+                });
+                uploader.options.formData.bids = bidsArr;
+                // 破型日期
+                uploader.options.formData.broken_date = $("input[name='broken_date']").val();
+                // 高程
+                uploader.options.formData.altitude = $("input[name='altitude']").val();
+                // 设计强度等级
+                uploader.options.formData.design_strength_grade = $("input[name='design_strength_grade']").val();
+                // 期龄
+                uploader.options.formData.age = $("input[name='age']").val();
+                // 抗压强度
+                uploader.options.formData.compression_strength = $("input[name='compression_strength']").val();
+                // 钢筋直径
+                uploader.options.formData.bar_diameter = $("input[name='bar_diameter']").val();
+                // 状态
+                uploader.options.formData.status = $("input[name='status']").val();
+                // 焊接或连接方式
+                uploader.options.formData.welding = $("input[name='welding']").val();
+                // 序号
+                uploader.options.formData.order_number = $("input[name='order_number']").val();
+            });
+            uploader.on('beforeFileQueued', function (file) {
+                if($("#file_list").html()){
+                    alert("只能上传一个文件,请先删除文件");
+                    return false;
+                }else {
+                    return true;
+                }
+            });
+            // 文件上传过程中创建进度条实时显示。
+            uploader.on('uploadProgress', function (file, percentage) {
+                var $li = $('#' + file.id),
+                    $percent = $li.find('.progress .progress-bar');
+                // 避免重复创建
+                if (!$percent.length) {
+                    $percent = $('<div class="progress progress-striped active">' +
+                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                        '</div>' +
+                        '</div>').appendTo($li).find('.progress-bar');
+                }
+                $li.find('p.state').text('上传中');
+                $percent.css('width', percentage * 100 + '%');
+            });
+            // 文件上传成功
+            uploader.on( 'uploadSuccess', function( file,data, response ) {
+                    layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
+                    uploader = null;
                     $("#file_upload").empty();
-                });
-            }
+                    // $("#fname").modal('hide');
+                    // $("#file_per").empty();
+                    // materTables.api().ajax.url("__SCRIPT__/materialfile.php").load();
+            });
+            // 文件上传失败，显示上传出错。
+            uploader.on( 'uploadError', function( file ) {
+                layer.msg("上传失败",{icon:2,time:1500,shade: 0.1});
+                $("#file_per").empty();
+                $("#file_upload").empty();
+            });
         }
-        var materTables = $('#materTable').dataTable( {
-            "ordering": false,
-            "ajax": "__SCRIPT__/Materialfile.php",
-            "columnDefs": [
-                {
-                    "searchable": false,
-                    "orderable": false,
-                    "targets": [4],
-                    "render" :  function(data,type,row) {
-                        var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='detail(this)' value='查看'/>";
-                        html += "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
-                        html += "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
-                        html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
-                        return html;
-                    }
+    }
+   var materTables = $('#materTable').dataTable( {
+        "ordering": false,
+        "ajax": "__SCRIPT__/materialfile.php",
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [4],
+                "render" :  function(data,type,row) {
+                    var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='detail(this)' value='查看'/>";
+                    html += "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>";
+                    html += "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>";
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    return html;
                 }
-            ]
-            ,
-            "oLanguage": {
-                "sProcessing" : "正在获取数据，请稍后...",
-                "sLengthMenu" : "显示 _MENU_ 条",
-                "sZeroRecords" : "没有您要搜索的内容",
-                "sInfo" : "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
-                "sInfoEmpty" : "记录数为0",
-                "sInfoFiltered" : "(全部记录数 _MAX_ 条)",
-                "sInfoPostFix" : "",
-                "sSearch" : "搜索",
-                "sUrl" : "",
-                "oPaginate": {
-                    "sFirst" : "第一页",
-                    "sPrevious" : "上一页",
-                    "sNext" : "下一页",
-                    "sLast" : "最后一页"
-                }
-            },
-            "dom": '<"top pull-left"f>rt<"bottom"p><"clear">'
-        } );
-        //新增提交
+            }
+        ],
+        "oLanguage": {
+            "sProcessing" : "正在获取数据，请稍后...",
+            "sLengthMenu" : "显示 _MENU_ 条",
+            "sZeroRecords" : "没有您要搜索的内容",
+            "sInfo" : "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
+            "sInfoEmpty" : "记录数为0",
+            "sInfoFiltered" : "(全部记录数 _MAX_ 条)",
+            "sInfoPostFix" : "",
+            "sSearch" : "搜索",
+            "sUrl" : "",
+            "oPaginate": {
+                "sFirst" : "第一页",
+                "sPrevious" : "上一页",
+                "sNext" : "下一页",
+                "sLast" : "最后一页"
+            }
+        },
+        "dom": '<"top pull-left"f>rt<"bottom"p><"clear">'
+    } );
+     //新增提交
      $("#testContent").submit(function (){
             uploader.upload();
+     });
 
-        })
-
-        //删除
-        function del(that) {
-            var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-            layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
-                $.ajax({
-                    url: "./ReformDel",
-                    data: {'id' : id},
-                    type: "post",
-                    dataType: "json",
-                    success: function (res) {
-                        if(res.code == 1){
-                            layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                            standard_table.ajax.url("__SCRIPT__/reform.php").load();
-                        }else{
-                            layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
-                        }
+    //删除
+    function del(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "./del",
+                data: {'major_key' : id},
+                type: "post",
+                dataType: "json",
+                success: function (res) {
+                    if(res.code == 1){
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        materTables.api().ajax.url("__SCRIPT__/materialfile.php").load();
+                    }else{
+                        layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
-                })
-                layer.close(index);
-            })
-        }
-        //查看
-        function detail(that) {
-            $("#detailModal").modal();
-        }
-        //编辑
-        function edit() {
-            $("#editlModal").modal();
-        }
+                }
+            });
+            layer.close(index);
+        })
+    }
+    //下载
+    function download(that) {
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        var url = "./download";
+        $.ajax({
+            url: url,
+            data: {major_key:id},
+            success: function (res) {
+                if(res.code != 1){
+                    layer.msg(res.msg)
+                }else {
+                    $("#form_container").empty();
+                    var str = "";
+                    str += ""
+                        + "<iframe name=downloadFrame"+ id +" style='display:none;'></iframe>"
+                        + "<form name=download"+ id +" action="+ url +" method='get' target=downloadFrame"+ id +">"
+                        + "<span class='file_name' style='color: #000;'>"+str+"</span>"
+                        + "<input class='file_url' style='display: none;' name='major_key' value="+ id +">"
+                        + "<button type='submit' class=btn" + id +"></button>"
+                        + "</form>";
+                    $("#form_container").append(str);
+                    $("#form_container").find(".btn" + id).click();
+                }
+            }
+        })
+    }
+
+    //查看
+    function detail(that) {
+        $("#fname").modal('show');
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $('#sid').val(id);
+        $.ajax({
+            url: "{:url('Materialfile/getOne')}",
+            type: "post",
+            dataType: "json",
+            data:{
+                major_key:id
+            },
+            success: function (res) {
+                var en = -1;
+                $("table").each(function () {
+                    $(this).children('tbody').children('tr').children('td').each(function () {
+                        if($(this).children('input').attr("name") == 'entrustment_number'){
+                            $(this).children('input').val(res[en].entrustment_number);
+                        }
+                        if($(this).children('input').attr("name") == 'report_number'){
+                            $(this).children('input').val(res[en].report_number);
+                        }
+                        if($(this).children('input').attr("name") == 'approach_detection_time'){
+                            $(this).children('input').val(res[en].approach_detection_time);
+                        }
+                        if($(this).children('input').attr("name") == 'using_position'){
+                            $(this).children('input').val(res[en].using_position);
+                        }
+                        if($(this).children('input').attr("name") == 'manufacturer'){
+                            $(this).children('input').val(res[en].manufacturer);
+                        }
+                        if($(this).children('input').attr("name") == 'specifications'){
+                            $(this).children('input').val(res[en].specifications);
+                        }
+                        if($(this).children('input').attr("name") == 'lot_number'){
+                            $(this).children('input').val(res[en].lot_number);
+                        }
+                        if($(this).children('input').attr("name") == 'number_of_delegates'){
+                            $(this).children('input').val(res[en].number_of_delegates);
+                        }
+                        if($(this).children('input').attr("name") == 'conclusion'){
+                            $(this).children('input').val(res[en].conclusion);
+                        }
+                        if($(this).children('input').attr("name") == 'kind'){
+                            $(this).children('input').val(res[en].kind);
+                        }
+                        if($(this).children('input').attr("name") == 'bids'){
+                            $(this).children('input').val(res[en].bids);
+                        }
+                        if($(this).children('input').attr("name") == 'broken_date'){
+                            $(this).children('input').val(res[en].broken_date);
+                        }
+                        if($(this).children('input').attr("name") == 'altitude'){
+                            $(this).children('input').val(res[en].altitude);
+                        }
+                        if($(this).children('input').attr("name") == 'design_strength_grade'){
+                            $(this).children('input').val(res[en].design_strength_grade);
+                        }
+                        if($(this).children('input').attr("name") == 'age'){
+                            $(this).children('input').val(res[en].age);
+                        }
+                        if($(this).children('input').attr("name") == 'compression_strength'){
+                            $(this).children('input').val(res[en].compression_strength);
+                        }
+                        if($(this).children('input').attr("name") == 'bar_diameter'){
+                            $(this).children('input').val(res[en].bar_diameter);
+                        }
+                        if($(this).children('input').attr("name") == 'status'){
+                            $(this).children('input').val(res[en].status);
+                        }
+                        if($(this).children('input').attr("name") == 'welding'){
+                            $(this).children('input').val(res[en].welding);
+                        }
+                        if($(this).children('input').attr("name") == 'order_number'){
+                            $(this).children('input').val(res[en].order_number);
+                        }
+                    });
+                    en++;
+                });
+                var fileList = '<div style="display: inline-block;vertical-align: middle;">' +
+                    '<span class="info">' + res[0].filename + '</span>&nbsp' +
+                    '<span class="DelFilebtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>';
+                $('#fileUpload').append(fileList);
+            }
+        });
+    }
+    //编辑
+    function edit(that) {
+        $("#fname").modal('show');
+        var id = $(that).parent("td").parent("tr").children("td:first-child").text();
+        $('#sid').val(id);
+        $.ajax({
+            url: "{:url('Materialfile/getOne')}",
+            type: "post",
+            dataType: "json",
+            data:{
+                major_key:id
+            },
+            success: function (res) {
+                var en = -1;
+                $("table").each(function () {
+                    $(this).children('tbody').children('tr').children('td').each(function () {
+                        if($(this).children('input').attr("name") == 'entrustment_number'){
+                            $(this).children('input').val(res[en].entrustment_number);
+                        }
+                        if($(this).children('input').attr("name") == 'report_number'){
+                            $(this).children('input').val(res[en].report_number);
+                        }
+                        if($(this).children('input').attr("name") == 'approach_detection_time'){
+                            $(this).children('input').val(res[en].approach_detection_time);
+                        }
+                        if($(this).children('input').attr("name") == 'using_position'){
+                            $(this).children('input').val(res[en].using_position);
+                        }
+                        if($(this).children('input').attr("name") == 'manufacturer'){
+                            $(this).children('input').val(res[en].manufacturer);
+                        }
+                        if($(this).children('input').attr("name") == 'specifications'){
+                            $(this).children('input').val(res[en].specifications);
+                        }
+                        if($(this).children('input').attr("name") == 'lot_number'){
+                            $(this).children('input').val(res[en].lot_number);
+                        }
+                        if($(this).children('input').attr("name") == 'number_of_delegates'){
+                            $(this).children('input').val(res[en].number_of_delegates);
+                        }
+                        if($(this).children('input').attr("name") == 'conclusion'){
+                            $(this).children('input').val(res[en].conclusion);
+                        }
+                        if($(this).children('input').attr("name") == 'kind'){
+                            $(this).children('input').val(res[en].kind);
+                        }
+                        if($(this).children('input').attr("name") == 'bids'){
+                            $(this).children('input').val(res[en].bids);
+                        }
+                        if($(this).children('input').attr("name") == 'broken_date'){
+                            $(this).children('input').val(res[en].broken_date);
+                        }
+                        if($(this).children('input').attr("name") == 'altitude'){
+                            $(this).children('input').val(res[en].altitude);
+                        }
+                        if($(this).children('input').attr("name") == 'design_strength_grade'){
+                            $(this).children('input').val(res[en].design_strength_grade);
+                        }
+                        if($(this).children('input').attr("name") == 'age'){
+                            $(this).children('input').val(res[en].age);
+                        }
+                        if($(this).children('input').attr("name") == 'compression_strength'){
+                            $(this).children('input').val(res[en].compression_strength);
+                        }
+                        if($(this).children('input').attr("name") == 'bar_diameter'){
+                            $(this).children('input').val(res[en].bar_diameter);
+                        }
+                        if($(this).children('input').attr("name") == 'status'){
+                            $(this).children('input').val(res[en].status);
+                        }
+                        if($(this).children('input').attr("name") == 'welding'){
+                            $(this).children('input').val(res[en].welding);
+                        }
+                        if($(this).children('input').attr("name") == 'order_number'){
+                            $(this).children('input').val(res[en].order_number);
+                        }
+                    });
+                    en++;
+                });
+                var fileList = '<div style="display: inline-block;vertical-align: middle;">' +
+                    '<span class="info">' + res[0].filename + '</span>&nbsp' +
+                    '<span class="DelFilebtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '</div>';
+                $('#fileUpload').append(fileList);
+            }
+        })
+    }
 </script>
 </html>
