@@ -40,7 +40,7 @@
     </div>
     <!--增加试验资料-->
     <div id="fname" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 90%;height: 600px;overflow-y: scroll;margin: 10px auto;">
-        <form action="#" id="testContent" method="post">
+        <form action="#" id="testContent" method="post" onsubmit="return false">
             <div class="row">
                 <div class="col-sm-12" style="background-color:#fff;">
                     <div class="ibox float-e-margins">
@@ -707,7 +707,7 @@
                     $("input[name='report_number']").each(function () {
                         report_numberArr.push($(this).val());
                     })
-                    uploader.options.formData.entrustment_number = report_numberArr;
+                    uploader.options.formData.report_number = report_numberArr;
                     //进场检测时间/成型日期
                     var checkDateArr = [];
                     $("input[name='checkDate']").each(function () {

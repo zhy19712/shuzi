@@ -389,6 +389,8 @@ class Upload extends Base
 
         // 数组
         $entrustment_number = request()->param('entrustment_number/a'); //  委托编号
+        dump($entrustment_number);
+        halt(input());
         $report_number = request()->param('report_number/a'); //  报告编号
         $approach_detection_time = request()->param('approach_detection_time/a'); //  进场检测时间/成型日期
         $using_position = request()->param('using_position/a'); //  使用部位/工程部位/检测部位
