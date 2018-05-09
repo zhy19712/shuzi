@@ -217,13 +217,15 @@
                                         </button>
                                     </div>
                                     <input type="text" class="form-control" readonly id="vlad1">
+                                    <input type="hidden" name="test_data_id" class="form-control" readonly id="test_data_id">
                                 </div>
                                 <div class="input-group col-xs-4  pull-left"  style="margin-left: 100px" data-toggle="modal" data-target="#selects2">
                                     <div class="input-group-btn">
                                         <button type="button" class="btn btn-primary">测量资料
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control" readonly id="vlad2">
+                                    <input type="text"  class="form-control" readonly id="vlad2">
+                                    <input type="hidden" name="survey_data_id" class="form-control" readonly id="survey_data_id">
                                 </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -250,116 +252,19 @@
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="level2Add" method="post" action="#" onsubmit="return false">
-                        <table class="table table-hover table-bordered">
+                        <table class="table table-hover table-bordered" id="experiment" style="width: 100%">
                             <thead>
                             <tr>
-                                <th></th>
+                                <th>
+                                    <label for="all_checked" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
+                                    <input type='checkbox' name='all_checked' id="experiment_all_checked" class='icheckbox_minimal' value=''>
+                                </th>
                                 <th>文件名</th>
                                 <th>上传人</th>
                                 <th>上传时间</th>
-                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>实验材料测试一</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;'  value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;'  value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;'  value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>混凝土实验材料</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>混凝土实验材料二</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>测试材料一</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>实验材料三</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>测试</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>实验测试</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>混凝土实验材料五</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>混凝土实验材料一</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
                             </tbody>
                         </table>
                         <div class="form-group">
@@ -385,116 +290,19 @@
                 <div class="ibox-content">
                     <!--新增用户信息开始-->
                     <form class="form-horizontal" name="level2Add" method="post" action="#" onsubmit="return false">
-                        <table class="table table-hover table-bordered">
+                        <table class="table table-hover table-bordered" id="measure" style="width: 100%">
                             <thead>
                             <tr>
-                                <th></th>
+                                <th>
+                                    <label for="all_checked" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
+                                    <input type='checkbox' name='all_checked' id="measure_all_checked" class='icheckbox_minimal' value=''>
+                                </th>
                                 <th>文件名</th>
                                 <th>上传人</th>
                                 <th>上传时间</th>
-                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>实验材料测试一</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;'  value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;'  value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;'  value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>混凝土实验材料</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>混凝土实验材料二</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>测试材料一</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>实验材料三</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>测试</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>实验测试</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>混凝土实验材料五</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox"></td>
-                                <td>混凝土实验材料一</td>
-                                <td>admin</td>
-                                <td>2018-02-03</td>
-                                <td>
-                                    <input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>
-                                    <input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>
-                                    <input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>
-                                </td>
-                            </tr>
                             </tbody>
                         </table>
                         <div class="form-group">
@@ -735,6 +543,81 @@
     });
     var mytree_node;
 
+    //试验
+    var experiment = $('#experiment').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "/datatables/quality/materialfile.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        columns:[
+            {
+                name: "id",
+                "render": function(data, type, full, meta) {
+                    var ipt = "<input type='checkbox' name='experimentEheckList' idv='"+data+"' onclick='getSelectId(this)'>";
+                    return ipt;
+                },
+            },
+            {
+                name: "code"
+            },{
+                name: "name"
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
+
+    //测量
+    var measure = $('#measure').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "/datatables/quality/surveydata.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        columns:[
+            {
+                name: "id",
+                "render": function(data, type, full, meta) {
+                    var ipt = "<input type='checkbox' name='measureCheckList' idv='"+data+"' onclick='getSelectId(this)'>";
+                    return ipt;
+                },
+            },
+            {
+                name: "code"
+            },{
+                name: "name"
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    });
+
+    //取消全选的事件绑定
+    $("thead tr th:first-child").unbind();
+
     var admin_table = $('#admin_table').DataTable( {
         "processing": true,
         "serverSide": true,
@@ -768,6 +651,7 @@
             }
         }
     } );
+
 $("div.mybtn").html('<div>新增</div>');
 $("div.mybtn").click(function () {
         if(mytree_node.level == 3){
@@ -831,15 +715,6 @@ function edit(that) {
         }
     })
 }
-//静态点击事件
-    $(".get_res").click(function () {
-        var text = $("#selects input:checked").parent().next("td").text();
-        $("#vlad1").val(text);
-    });
-    $(".get_res2").click(function () {
-        var text = $("#selects input:checked").parent().next("td").text();
-        $("#vlad2").val(text);
-    });
 //删除
     function myconfirm(id,url) {
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
@@ -1232,6 +1107,123 @@ function edit(that) {
 //        $("#btn_upload").click(function () {
 //            uploader.upload();
 //        })
+
+        //删除数组中的指定元素
+        Array.prototype.remove = function(val){
+            for (var i = 0; i < this.length; i++) {
+                if(this[i] === val){
+                    this.splice(i,1);
+                    break;
+                }
+            }
+            return this;
+        }
+
+        //数组去重
+        Array.prototype.removalArray = function(){
+            var newArr = [];
+            for (var i = 0; i < this.length; i++) {
+                if(newArr.indexOf(this[i]) == -1){  //indexOf 不兼容IE8及以下
+                    newArr.push(this[i]);
+                }
+            }
+            return newArr;
+        }
+
+        //获取选中行ID
+        function getId(that,idArr) {
+            var allChecked = $(that).parents('table.table').find('input[name="all_checked"]').attr('id');
+            var isChecked = $(that).prop('checked');
+            var id = $(that).attr('idv');
+            var name = $(that).attr('name');
+            var checkedLen = $('input[type="checkbox"][name='+ name +']:checked').length;
+            var checkboxLen = $('input[type="checkbox"][name='+ name +']').length;
+            if(checkedLen===checkboxLen){
+                $('#'+ allChecked).prop('checked',true);
+            }else{
+                $('#'+ allChecked).prop('checked',false);
+            }
+            if(isChecked){
+                idArr.push(id);
+                idArr.removalArray();
+            }else{
+                idArr.remove(id);
+                idArr.removalArray();
+                $('#'+ allChecked).prop('checked',false);
+            }
+        }
+
+        //单选
+        var experimentArr = [];
+        var measureArr = [];
+        function getSelectId(that) {
+            var name = $(that).attr('name');
+            if(name=='measureCheckList'){
+                getId(that,measureArr);
+            }else{
+                getId(that,experimentArr);
+            }
+            console.log(measureArr);
+            console.log(experimentArr);
+        }
+
+        //checkbox全选
+        function addChecked(that,idArr) {
+            idArr.length=0;
+            var that = $(that);
+            var name = that.parents('table.table').find('tbody input[type="checkbox"]').attr('name');
+            if (that.prop("checked") === true) {
+                $('input[name='+ name +']').prop("checked", that.prop("checked"));
+                $('input[name='+ name +']').each(function(){
+                    getId(this,idArr);
+                });
+            } else {
+                $('input[name='+ name +']').prop("checked", false);
+                $('input[name='+ name +']').each(function(){
+                    getId(this,idArr);
+                });
+            }
+            console.log(idArr);
+        }
+
+        //试验全选
+        $("#experiment_all_checked").on("click", function () {
+            addChecked(this,experimentArr);
+        });
+
+        //测量全选
+        $("#measure_all_checked").on("click", function () {
+            addChecked(this,measureArr);
+        });
+
+        //翻页事件
+        experiment.on('draw',function () {
+            $('input[type="checkbox"][name="checkList"]').prop("checked",false);
+            $('#all_checked').prop('checked',false);
+            experimentArr.length=0;
+        });
+        //翻页事件
+        measure.on('draw',function () {
+            $('input[type="checkbox"][name="checkList"]').prop("checked",false);
+            $('#all_checked').prop('checked',false);
+            measureArr.length=0;
+        });
+
+        //静态点击事件
+        $(".get_res").click(function () {
+            var text = $("#experiment tbody input:checked").parent().next('td').text();
+            $("#vlad1").val(text);
+            $("#test_data_id").val(experimentArr);
+        });
+        $(".get_res2").click(function () {
+            var text = $("#measure tbody input:checked").parent().next('td').text();
+            $("#vlad2").val(text);
+            $("#survey_data_id").val(measureArr);
+        });
+
+        $('#selects,#selects2').on('hide.bs.modal', function () {
+
+        });
 </script>
 </body>
 </html>
