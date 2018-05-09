@@ -535,8 +535,8 @@
                                             <tr>
                                                 <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">强度检测<br><span style="font-weight: 400;">(施工单位自检)</span></td>
                                                 <td>方量</td>
-                                                <td>检测组数(个)</td>
                                                 <td>设计等级</td>
+                                                <td>检测组数(个)</td>
                                                 <td>最大值</td>
                                                 <td>最小值</td>
                                                 <td>平均值</td>
@@ -544,8 +544,8 @@
                                             </tr>
                                             <tr>
                                                 <td><input type="text" name="square_quantity" id="square_quantity"></td>
-                                                <td><input type="text" name="intensity_number" id="intensity_number"></td>
                                                 <td><input type="text" name="intensity_level" id="intensity_level"></td>
+                                                <td><input type="text" name="intensity_number" id="intensity_number"></td>
                                                 <td><input type="text" name="intensity_max" id="intensity_max"></td>
                                                 <td><input type="text" name="intensity_min" id="intensity_min"></td>
                                                 <td><input type="text" name="intensity_avg" id="intensity_avg"></td>
@@ -554,8 +554,8 @@
                                             <tr>
                                                 <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">强度检测<br><span style="font-weight: 400;">(监理单位自检)</span></td>
                                                 <td>方量</td>
-                                                <td>检测组数(个)</td>
                                                 <td>设计等级</td>
+                                                <td>检测组数(个)</td>
                                                 <td>最大值</td>
                                                 <td>最小值</td>
                                                 <td>平均值</td>
@@ -563,8 +563,8 @@
                                             </tr>
                                             <tr>
                                                 <td><input type="text" name="square_quantity_2" id="square_quantity_2"></td>
-                                                <td><input type="text" name="intensity_number_2" id="intensity_number_2"></td>
                                                 <td><input type="text" name="intensity_level_2" id="intensity_level_2"></td>
+                                                <td><input type="text" name="intensity_number_2" id="intensity_number_2"></td>
                                                 <td><input type="text" name="intensity_max_2" id="intensity_max_2"></td>
                                                 <td><input type="text" name="intensity_min_2" id="intensity_min_2"></td>
                                                 <td><input type="text" name="intensity_avg_2" id="intensity_avg_2"></td>
@@ -2004,17 +2004,7 @@
         }else {
             admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.uid + "&pid=" + mytree_node.pId).load();
         }
-        // console.log(treeNode.name)
-        // var kk = treeNode.name;
-        // $.ajax({
-        //     url: "__SCRIPT__/project_attachment_table.php",
-        //     data: {uname:123},
-        //     dataType: "json",
-        //     success: function (res) {
-        //         console.log(res);
-        //     }
-        // })
-    };
+    }
     var setting = {
         async: {
             enable : true,
