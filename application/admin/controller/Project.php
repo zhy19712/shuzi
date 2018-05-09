@@ -41,20 +41,8 @@ class project extends Base
         $hunningtu = new HunningtuModel();
         $param = input('post.');
         $param['sn'] = $param['sn'] . $param['post_sn'];
-        $test_data_arr = input('test_data_id/a');
-        $param['test_data_id'] = '';
-        if(sizeof($test_data_arr)){
-            foreach ($test_data_arr as $v){
-                $param['test_data_id'] = $param['test_data_id'] . ',' . $v;
-            }
-        }
-        $survey_data_arr = input('survey_data_id/a');
-        $param['survey_data_id'] = '';
-        if(sizeof($survey_data_arr)){
-            foreach ($survey_data_arr as $v){
-                $param['survey_data_id'] = $param['survey_data_id'] . ',' . $v;
-            }
-        }
+        $param['test_data_id'] = input('test_data_id');
+        $param['survey_data_id'] = input('survey_data_id');
         if(request()->isAjax()){
             if(empty($param['id']))
             {
