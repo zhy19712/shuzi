@@ -683,10 +683,7 @@
                     '</div>' );
             });
             $("#file_list").on("click", ".webuploadDelbtn", function () {
-                var $ele = $(this);
-                var id = $ele.parent().attr("class");
-                var file = uploader.getFile(id);
-                uploader.removeFile(file,true);
+                $('#file_list').empty();
             });
             uploader.on('fileDequeued', function (file) {
                 $(file.id).remove();
