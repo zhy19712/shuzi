@@ -1120,8 +1120,8 @@ class DivideModel extends Model
         // (拌和物)==》设计指标 == 检测次数（个）== 合格次数（个）== 最大值 == 最小值 == 平均值 == 合格率Ps
         $mix_design = $mix_num = $mix_qualified_num = $mix_max = $mix_min = $mix_avg = $mix_pass = [];
         // (抗压强度)==》设计指标 == 龄期 == 检查组数 == 最大值 == 最小值 == 平均值 == 喷砼强度标准差 == 喷砼强度保证率 == 锚杆砂浆强度标准差 == 锚杆砂浆强度保证率
-        $resist_design_index = $resist_age = $resist_test_group = $resist_max = $resist_min = $resist_avg = $mortar_standard_deviation_1 = $guarantee_rate_1 = [];
-        $resist_design_index2 = $resist_age2 = $resist_test_group2 = $resist_max2 = $resist_min2 = $resist_avg2 = $mortar_standard_deviation_2 = $guarantee_rate_2 = [];
+        $resist_design_index = $resist_age = $resist_test_group = $resist_max = $resist_min = $resist_avg = $mortar_standard_deviation_1 = $guarantee_rate_1 = $mortar_standard_deviation_2 = $guarantee_rate_2 = [];
+        $resist_design_index2 = $resist_age2 = $resist_test_group2 = $resist_max2 = $resist_min2 = $resist_avg2 = $mortar_standard_deviation_3 = $guarantee_rate_3 = $mortar_standard_deviation_4 = $guarantee_rate_4 = [];
         // (全面性能)==》设计指标 == 龄期 == (抗冻)取样组数 == (抗冻)测值 == (抗冻)合格率 == (抗渗)取样组数 == (抗渗)测值 == (抗渗)合格率
         $etc_design_index = $etc_age = $etc_anti_groups = $etc_anti_test = $etc_anti_pass = $etc_impervious_groups = $etc_impervious_test = $etc_impervious_pass = [];
         $etc_design_index2 = $etc_age2 = $etc_anti_groups2 = $etc_anti_test2 = $etc_anti_pass2 = $etc_impervious_groups2 = $etc_impervious_test2 = $etc_impervious_pass2 = [];
@@ -1129,6 +1129,7 @@ class DivideModel extends Model
         $deviation_plane_num = $deviation_plane_scope = $deviation_plane_pass = $deviation_vertical_num = $deviation_vertical_scope = $deviation_vertical_pass = [];
         // 将数据库里的值 都取出来 放到数组里, 用于统计
         foreach ($h_data as $v) {
+            // (出口机)
             $ex_control_criterion[] = $v['ex_control_criterion'];
             $ex_test_groups[] = $v['ex_test_groups'];
             $ex_qualified_groups[] = $v['ex_qualified_groups'];
@@ -1136,21 +1137,21 @@ class DivideModel extends Model
             $ex_min[] = $v['ex_min'];
             $ex_avg[] = $v['ex_avg'];
             $ex_pass[] = $v['ex_pass'];
-
+            // (入仓)
             $be_measurement[] = $v['be_measurement'];
             $be_max[] = $v['be_max'];
             $be_min[] = $v['be_min'];
             $be_avg[] = $v['be_avg'];
             $be_pass[] = $v['be_pass'];
             $be_num[] = $v['be_num'];
-
+            // (浇筑)
             $pouring_measurement[] = $v['pouring_measurement'];
             $pouring_max[] = $v['pouring_max'];
             $pouring_min[] = $v['pouring_min'];
             $pouring_avg[] = $v['pouring_avg'];
             $pouring_pass[] = $v['pouring_pass'];
             $pouring_num[] = $v['pouring_num'];
-
+            // (拌和物)
             $mix_design[] = $v['mix_design'];
             $mix_num[] = $v['mix_num'];
             $mix_qualified_num[] = $v['mix_qualified_num'];
@@ -1158,30 +1159,35 @@ class DivideModel extends Model
             $mix_min[] = $v['mix_min'];
             $mix_avg[] = $v['mix_avg'];
             $mix_pass[] = $v['mix_pass'];
-
+            // 施工单位 -- (抗压强度)
             $resist_design_index[] = $v['resist_design_index'];
             $resist_age[] = $v['resist_age'];
             $resist_test_group[] = $v['resist_test_group'];
             $resist_max[] = $v['resist_max'];
             $resist_min[] = $v['resist_min'];
             $resist_avg[] = $v['resist_avg'];
-
+            // genre 1 支护 2混凝土 gid 支护,锚杆,混凝土主键  unit_type 1施工单位2监理单位 type 1喷砼强度 2锚杆砂浆强度
+            $data_1 = $this->getDesign(2,$v['id'],1,1);
+            $data_2 = $this->getDesign(2,$v['id'],1,2);
+            $mortar_standard_deviation_1[] = $data_1['design_val']; //  1喷砼强度    标准差
+            $mortar_standard_deviation_2[] = $data_2['design_val']; // 2锚杆砂浆强度 标准差
+            $guarantee_rate_1[] = $data_1['guarantee_rate_1']; // 1喷砼强度     保证率
+            $guarantee_rate_2[] = $data_2['guarantee_rate_1']; // 2锚杆砂浆强度 保证率
+            // 监理单位 -- (抗压强度)
             $resist_design_index2[] = $v['resist_design_index_2'];
             $resist_age2[] = $v['resist_age_2'];
             $resist_test_group2[] = $v['resist_test_group_2'];
             $resist_max2[] = $v['resist_max_2'];
             $resist_min2[] = $v['resist_min_2'];
             $resist_avg2[] = $v['resist_avg_2'];
-
-            // 标准差 type 1喷砼强度2锚杆砂浆强度
-            $data_1 = $this->getDesign(2,$v['id'],1);
-            $mortar_standard_deviation_1[] = $data_1['design_val'];
-            $data_2 = $this->getDesign(2,$v['id'],2);
-            $mortar_standard_deviation_2[] = $data_2['design_val'];
-            // 保证率
-            $guarantee_rate_1[] = $data_1['guarantee_rate_1'];
-            $guarantee_rate_2[] = $data_2['guarantee_rate_1'];
-
+            // genre 1 支护 2混凝土 gid 支护,锚杆,混凝土主键  unit_type 1施工单位2监理单位 type 1喷砼强度 2锚杆砂浆强度
+            $data_3 = $this->getDesign(2,$v['id'],2,1);
+            $data_4 = $this->getDesign(2,$v['id'],2,2);
+            $mortar_standard_deviation_3[] = $data_3['design_val']; //  1喷砼强度    标准差
+            $mortar_standard_deviation_4[] = $data_4['design_val']; // 2锚杆砂浆强度 标准差
+            $guarantee_rate_3[] = $data_3['guarantee_rate_1']; // 1喷砼强度     保证率
+            $guarantee_rate_4[] = $data_4['guarantee_rate_1']; // 2锚杆砂浆强度 保证率
+            // 施工单位 -- (全面性能)
             $etc_design_index[] = $v['etc_design_index'];
             $etc_age[] = $v['etc_age'];
             $etc_anti_groups[] = $v['etc_anti_groups'];
@@ -1190,7 +1196,7 @@ class DivideModel extends Model
             $etc_impervious_groups[] = $v['etc_impervious_groups'];
             $etc_impervious_test[] = $v['etc_impervious_test'];
             $etc_impervious_pass[] = $v['etc_impervious_pass'];
-
+            // 施工单位 -- (全面性能)
             $etc_design_index2[] = $v['etc_design_index_2'];
             $etc_age2[] = $v['etc_age_2'];
             $etc_anti_groups2[] = $v['etc_anti_groups_2'];
@@ -1199,7 +1205,7 @@ class DivideModel extends Model
             $etc_impervious_groups2[] = $v['etc_impervious_groups_2'];
             $etc_impervious_test2[] = $v['etc_impervious_test_2'];
             $etc_impervious_pass2[] = $v['etc_impervious_pass_2'];
-
+            // (形体偏差)
             $deviation_plane_num[] = $v['deviation_plane_num'];
             $deviation_plane_scope[] = $v['deviation_plane_scope'];
             $deviation_plane_pass[] = $v['deviation_plane_pass'];
@@ -1242,70 +1248,6 @@ class DivideModel extends Model
             }
         }
 
-//        // 按照 测次 分组 统计 ==》 测次 相同的统计到一起 (求平均值)
-//        $be_max11 = $be_min11 = $be_avg11 = $be_pass11 = $be_num11 = [];
-//        $be_arr = array_count_values($be_measurement); // 每一个 测次 出现的次数
-//        $be_arr_1 = array_keys($be_arr); // 相同的 测次
-//        foreach ($be_measurement as $dk=>$dv) {
-//            $be_max11[$dv][] = $be_max[$dk];
-//            $be_min11[$dv][] = $be_min[$dk];
-//            $be_avg11[$dv][] = $be_avg[$dk];
-//            $be_pass11[$dv][] = $be_pass[$dk];
-//            $be_num11[$dv][] = $be_num[$dk];
-//        }
-//        /**
-//         * (入仓)
-//         */
-//        $data['be'] = [];
-//        foreach($be_arr_1 as $arv) {
-//            $data['be']['be_measurement'][] = $arv; // 测次
-//            $data['be']['be_max'][] = max($be_max11[$arv]); // 最大值
-//            $data['be']['be_min'][] = min($be_min11[$arv]); // 最小值
-//            if(sizeof($be_avg11[$arv]) == 0){
-//                $data['be']['be_avg'][] = 0; // 平均值
-//            }else{
-//                $data['be']['be_avg'][] = round(array_sum($be_avg11[$arv]) / sizeof($be_avg11[$arv]), 2); // 平均值
-//            }
-//            if(sizeof($be_pass11[$arv]) == 0){
-//                $data['be']['be_pass'][] = 0; // 合格率Ps
-//            }else{
-//                $data['be']['be_pass'][] = round(array_sum($be_pass11[$arv]) / sizeof($be_pass11[$arv]), 2); // 合格率Ps
-//            }
-//            $data['be']['be_num'][] = array_sum($be_num11[$arv]); // 合格次数（个）
-//        }
-//
-//        // 按照 测次 分组 统计 ==》 测次 相同的统计到一起 (求平均值)
-//        $pouring_max11 = $pouring_min11 = $pouring_avg11 = $pouring_pass11 = $pouring_num11 = [];
-//        $po_arr = array_count_values($pouring_measurement); // 每一个 测次 出现的次数
-//        $po_arr_1 = array_keys($po_arr); // 相同的 测次
-//        foreach ($pouring_measurement as $dk=>$dv) {
-//            $pouring_max11[$dv][] = $pouring_max[$dk];
-//            $pouring_min11[$dv][] = $pouring_min[$dk];
-//            $pouring_avg11[$dv][] = $pouring_avg[$dk];
-//            $pouring_pass11[$dv][] = $pouring_pass[$dk];
-//            $pouring_num11[$dv][] = $pouring_num[$dk];
-//        }
-//        /**
-//         * (浇筑)
-//         */
-//        $data['po'] = [];
-//        foreach($po_arr_1 as $arv) {
-//            $data['po']['pouring_measurement'][] = $arv; // 测次
-//            $data['po']['pouring_max'][] = max($pouring_max11[$arv]); // 最大值
-//            $data['po']['pouring_min'][] = min($pouring_min11[$arv]); // 最小值
-//            if(sizeof($pouring_avg11[$arv]) == 0){
-//                $data['po']['pouring_avg'][] = 0; // 平均值
-//            }else{
-//                $data['po']['pouring_avg'][] = round(array_sum($pouring_avg11[$arv]) / sizeof($pouring_avg11[$arv]), 2); // 平均值
-//            }
-//            if(sizeof($pouring_pass11[$arv]) == 0){
-//                $data['po']['pouring_pass'][] = 0; // 合格率Ps
-//            }else{
-//                $data['po']['pouring_pass'][] = round(array_sum($pouring_pass11[$arv]) / sizeof($pouring_pass11[$arv]), 2); // 合格率Ps
-//            }
-//            $data['po']['pouring_num'][] = array_sum($pouring_num11[$arv]); // 合格次数（个）
-//        }
-//
         // 按照 设计指标 分组 统计 ==》 设计指标 相同的统计到一起 (求平均值)
         $mix_num11 = $mix_qualified_num11 = $mix_max11 = $mix_min11 = $mix_avg11 = $mix_pass11 = [];
         $mix_arr = array_count_values($mix_design); // 每一个 设计指标 出现的次数
@@ -1326,8 +1268,8 @@ class DivideModel extends Model
             $data['mix']['mix_design'][] = $arv; // 设计指标
             $data['mix']['mix_num'][] = array_sum($mix_num11[$arv]); // 检测次数
             $data['mix']['mix_qualified_num'][] = array_sum($mix_qualified_num11[$arv]); // 合格次数
-            $data['mix']['mix_max'][] = max($mix_max11[$arv]); // 最大值
-            $data['mix']['mix_min'][] = min($mix_min11[$arv]); // 最小值
+            $data['mix']['mix_max'][] = sizeof($mix_max11[$arv]) ? max($mix_max11[$arv]) : 0; // 最大值
+            $data['mix']['mix_min'][] = sizeof($mix_min11[$arv]) ? min($mix_min11[$arv]) : 0; // 最小值
             if(sizeof($mix_avg11[$arv]) == 0){
                 $data['mix']['mix_avg'][] = 0; // 平均值
             }else{
@@ -1364,8 +1306,8 @@ class DivideModel extends Model
             $data['builder']['resist_design_index'][] = $arv; // 设计指标
             $data['builder']['resist_age'][] = $resist_age11[$arv]; // 龄期
             $data['builder']['resist_test_group'][] = $resist_test_group11[$arv]; // 检查组数
-            $data['builder']['resist_max'][] = max($resist_max11[$arv]); // 最大值
-            $data['builder']['resist_min'][] = min($resist_min11[$arv]); // 最小值
+            $data['builder']['resist_max'][] = sizeof($resist_max11) ? max($resist_max11[$arv]) : 0; // 最大值
+            $data['builder']['resist_min'][] = sizeof($resist_min11[$arv]) ? min($resist_min11[$arv]) : 0; // 最小值
             if(sizeof($resist_avg11[$arv]) == 0){
                 $data['builder']['resist_avg'][] = 0; // 平均值
             }else{
@@ -1399,8 +1341,8 @@ class DivideModel extends Model
             $data['supervision_unit']['resist_design_index'][] = $arv; // 设计指标
             $data['supervision_unit']['resist_age'][] = $resist_age11[$arv]; // 龄期
             $data['supervision_unit']['resist_test_group'][] = $resist_test_group11[$arv]; // 检查组数
-            $data['supervision_unit']['resist_max'][] = max($resist_max11[$arv]); // 最大值
-            $data['supervision_unit']['resist_min'][] = min($resist_min11[$arv]); // 最小值
+            $data['supervision_unit']['resist_max'][] = sizeof($resist_max11[$arv]) ? max($resist_max11[$arv]) : 0; // 最大值
+            $data['supervision_unit']['resist_min'][] = sizeof($resist_min11[$arv]) ? min($resist_min11[$arv]) : 0; // 最小值
             if(sizeof($resist_avg11[$arv]) == 0){
                 $data['supervision_unit']['resist_avg'][] = 0; // 平均值
             }else{
@@ -1450,11 +1392,10 @@ class DivideModel extends Model
         }
 
         // (出口机)
-//        $data['all']['ex_control_criterion'] = $ex_control_criterion; // 控制标准
         $data['all']['ex_test_groups'] = array_sum($ex_test_groups); // 检测组数（个）
         $data['all']['ex_qualified_groups'] = array_sum($ex_qualified_groups); // 合格组数（个）
-        $data['all']['ex_max'] = max($ex_max); // 最大值
-        $data['all']['ex_min'] = min($ex_min); // 最小值
+        $data['all']['ex_max'] = sizeof($ex_max) ? max($ex_max) : 0; // 最大值
+        $data['all']['ex_min'] = sizeof($ex_min) ? min($ex_min) : 0; // 最小值
         if(sizeof($ex_avg) == 0){
             $data['all']['ex_avg'] = 0; // 平均值
         }else{
@@ -1467,8 +1408,8 @@ class DivideModel extends Model
         }
         // (入仓)
         $data['all']['be_measurement'] = array_sum($be_measurement); // 测次
-        $data['all']['be_max'] = max($be_max); // 最大值
-        $data['all']['be_min'] = min($be_min); // 最小值
+        $data['all']['be_max'] = sizeof($be_max) ? max($be_max) : 0; // 最大值
+        $data['all']['be_min'] = sizeof($be_min) ? min($be_min) : 0; // 最小值
         if(sizeof($be_avg) == 0){
             $data['all']['be_avg'] = 0; // 平均值
         }else{
@@ -1483,8 +1424,8 @@ class DivideModel extends Model
 
         // (浇筑)
         $data['all']['pouring_measurement'] = array_sum($pouring_measurement); // 测次
-        $data['all']['pouring_max'] = max($pouring_max); // 最大值
-        $data['all']['pouring_min'] = min($pouring_min); // 最小值
+        $data['all']['pouring_max'] = sizeof($pouring_max) ? max($pouring_max) : 0; // 最大值
+        $data['all']['pouring_min'] = sizeof($pouring_min) ? min($pouring_min) : 0; // 最小值
         if(sizeof($pouring_avg) == 0){
             $data['all']['pouring_avg'] = 0; // 平均值
         }else{
@@ -1498,11 +1439,10 @@ class DivideModel extends Model
         $data['all']['pouring_num'] = array_sum($pouring_num); // 合格次数（个）
 
         // (拌和物)
-//        $data['all']['mix_design'] = $mix_design; // 设计指标
         $data['all']['mix_num'] = array_sum($mix_num); // 检测次数
         $data['all']['mix_qualified_num'] = array_sum($mix_qualified_num); // 合格次数
-        $data['all']['mix_max'] = max($mix_max); // 最大值
-        $data['all']['mix_min'] = min($mix_min); // 最小值
+        $data['all']['mix_max'] = sizeof($mix_max) ? max($mix_max) : 0; // 最大值
+        $data['all']['mix_min'] = sizeof($mix_min) ? min($mix_min) : 0; // 最小值
         if(sizeof($mix_avg) == 0){
             $data['all']['mix_avg'] = 0; // 平均值
         }else{
@@ -1515,26 +1455,18 @@ class DivideModel extends Model
         }
 
         // (抗压强度)
-//        $data['all']['resist_design_index'] = $resist_design_index; // 设计指标
-//        $data['all']['resist_age'] = $resist_age; // 龄期
         $data['all']['resist_test_group'] = array_sum($resist_test_group); // 检查组数
-        $data['all']['resist_max'] = max($resist_max); // 最大值
-        $data['all']['resist_min'] = min($resist_min); // 最小值
+        $data['all']['resist_max'] = sizeof($resist_max) ? max($resist_max) : 0; // 最大值
+        $data['all']['resist_min'] = sizeof($resist_min) ? min($resist_min) : 0; // 最小值
         if(sizeof($resist_avg) == 0){
             $data['all']['resist_avg'] = 0; // 平均值
         }else{
             $data['all']['resist_avg'] = round(array_sum($resist_avg) / sizeof($resist_avg),2); // 平均值
         }
-//        $data['all']['mortar_standard_deviation_1'] = $mortar_standard_deviation_1; // 喷砼强度 -- 标准差
-//        $data['all']['guarantee_rate_1'] = $guarantee_rate_1; // 喷砼强度 -- 保证率
-//        $data['all']['mortar_standard_deviation_2'] = $mortar_standard_deviation_2; // 锚杆砂浆强度 -- 标准差
-//        $data['all']['guarantee_rate_2'] = $guarantee_rate_2; // 锚杆砂浆强度 -- 保证率
 
         // (全面性能)
-//        $data['all']['etc_design_index'] = $etc_design_index; // 设计指标
-//        $data['all']['etc_age'] = $etc_age; // 龄期
+
         $data['all']['etc_anti_groups'] = array_sum($etc_anti_groups); // (抗冻)取样组数
-//        $data['all']['etc_anti_test'] = $etc_anti_test; // (抗冻)测值
         if(sizeof($etc_anti_pass) == 0){
             $data['all']['etc_anti_pass'] = 0; // (抗冻)合格率
         }else{
