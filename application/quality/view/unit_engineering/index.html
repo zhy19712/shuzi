@@ -276,6 +276,15 @@
     #admin_table td{
         font-size: 12px;
     }
+    #strengthAdd .panel-body{
+        padding: 15px 0;
+    }
+    #strengthAdd .col-lg-6{
+        margin-bottom: 15px;
+    }
+    #strengthAdd .form-group{
+        margin-bottom: 0;
+    }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
 <div id="mycontent" style="width: 20%;height: 98%;display: inline-block;margin: 0 10px;background-color:#fff;overflow-x: scroll;padding-top: 20px;padding-right:10px;border-right: 1px solid #ccc;">
@@ -508,7 +517,9 @@
                                             <tbody>
                                             <tr>
                                                 <td style="background-color:#bae2f3;border-right: 1px solid #000;">喷砼检测</td>
-                                                <td colspan="8"></td>
+                                                <td colspan="8" style=" text-align: left !important;">
+                                                    <div class="btn btn-outline btn-primary" id="addStrengthVal" style="margin:5px">添加强度值</div>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td rowspan="2" style="border-right: 1px solid #000;font-weight: 700;">厚度检测<br><span style="font-weight: 400;">(联合检测)</span></td>
@@ -583,8 +594,6 @@
                                             </thead>
                                         </table>
                                     </div>
-
-
                                 </form>
                                 <form class="form-horizontal" name="model3" id="model3">
                                     <input type="text" id="edit3" name="edit" style="display: none;">
@@ -1097,6 +1106,48 @@
     </div>
 </div>
 <div id="form_container" style="display: none;"></div>
+<div id="strengthAddWrap" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>新增</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal" name="strengthAdd" id="strengthAdd" method="post" action="{:url('projectAdd')}">
+                        <div class="form-group">
+                            <div class="col-lg-6 col-xs-12">
+                                <label class="col-xs-6 col-sm-4 control-label">标准值：</label>
+                                <div class="myblock col-xs-6 input-group">
+                                    <input type="text" id="standard_value" class="form-control" name="standard_value" placeholder="请输入标准值" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">施工单位--喷仝强度</div>
+                            <div class="panel-body">
+                                <div class="form-group" id="intensityWrap"></div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">监理单位--喷仝强度</div>
+                            <div class="panel-body">
+                                <div class="form-group" id="standardWrap"></div>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-xs-12" style="text-align: center;">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
@@ -1109,6 +1160,7 @@
 <script src="__JS__/jquery.jedate.js"></script>
 <script src="__JS__/pdf.js"></script>
 <script src="__JS__/mypdf.js"></script>
+<script src="__JS__/plugins/validate/jquery.validate.min.js"></script>
 <script>
     function showPdf(id,url) {
         $.ajax({
@@ -2368,6 +2420,63 @@
         }
     }
 
+</script>
+<script type="text/javascript">
+    $('#addStrengthVal').click(function () {
+        $("#strengthAddWrap").modal('show');
+        $('#intensityWrap').empty();
+        $('#standardWrap').empty();
+        var intensityNumber = $('#intensity_number').val();
+        var inputTemplate = [];
+        for(var i = 0;i<intensityNumber;i++){
+            inputTemplate.push('<div class="col-lg-6 col-xs-12">');
+            inputTemplate.push('<label class="col-xs-6 col-sm-4 control-label">强度值：</label>');
+            inputTemplate.push('<div class="myblock col-xs-6 input-group">');
+            inputTemplate.push('<input type="text" class="form-control"  name="intensity_value" placeholder="请输入强度值" />');
+            inputTemplate.push('</div>');
+            inputTemplate.push('</div>');
+        }
+        $('#intensityWrap').append(inputTemplate.join(''));
+
+
+        var standardNumber = $('#intensity_number_2').val();
+        var standardInputTemplate = [];
+        for(var j = 0;j<standardNumber;j++){
+            standardInputTemplate.push('<div class="col-lg-6 col-xs-12">');
+            standardInputTemplate.push('<label class="col-xs-6 col-sm-4 control-label">强度值：</label>');
+            standardInputTemplate.push('<div class="myblock col-xs-6 input-group">');
+            standardInputTemplate.push('<input type="text" class="form-control"  name="intensity_value" placeholder="请输入强度值" />');
+            standardInputTemplate.push('</div>');
+            standardInputTemplate.push('</div>');
+        }
+        $('#standardWrap').append(standardInputTemplate.join(''));
+    });
+
+    var manageValidator = $("#strengthAdd").validate({
+        submitHandler: function(form) {
+            $.ajax({
+                url: "./editStandardDeviation",
+                type: "post",
+                data: {},
+                dataType: "json",
+                success: function (res) {
+                    console.log(res);
+                }
+            })
+        }/*,
+        rules: {
+            k_check_single_number: "required",
+            k_reception_time: "required",
+            h_check_single_number: "required",
+            h_reception_time: "required",
+        },
+        messages: {
+            k_check_single_number: "开挖报验单号不能为空",
+            k_reception_time: "开挖验收时间不能为空",
+            h_check_single_number: "混凝土报验单号不能为空",
+            h_reception_time: "混凝土验收时间不能为空",
+        }*/
+    });
 </script>
 </body>
 </html>
