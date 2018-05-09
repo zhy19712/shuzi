@@ -42,6 +42,7 @@
     <!--增加试验资料-->
     <div id="fname" data-keyboard="false" data-backdrop="static" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 90%;height: 600px;overflow-y: scroll;margin: 10px auto;">
         <form action="#" id="testContent" method="post" onsubmit="return false">
+            <input type="hidden" value="" id="major_key">
             <div class="row">
                 <div class="col-sm-12" style="background-color:#fff;">
                     <div class="ibox float-e-margins">
@@ -655,7 +656,7 @@
         myupload();
     });
     function myupload() {
-        // $("#fname input").val("");
+        $('#saveTest').show();
         $("#file_list").empty();
         $("#fname").modal('show');
         if(!uploader){
@@ -777,6 +778,7 @@
                 uploader.options.formData.welding = $("input[name='welding']").val();
                 // 序号
                 uploader.options.formData.order_number = $("input[name='order_number']").val();
+                uploader.options.formData.major_key = $("input[name='major_key']").val();
             });
             uploader.on('beforeFileQueued', function (file) {
                 if($("#file_list").html()){
@@ -805,9 +807,10 @@
                     layer.msg(file.name + "上传成功",{icon:1,time:1500,shade: 0.1});
                     uploader = null;
                     $("#file_upload").empty();
-                    // $("#fname").modal('hide');
-                    // $("#file_per").empty();
-                    // materTables.api().ajax.url("__SCRIPT__/materialfile.php").load();
+                    $("#fname").modal('hide');
+                    $("#file_per").empty();
+                    $('#major_key').val('');
+                    materTables.api().ajax.url("__SCRIPT__/materialfile.php").load();
             });
             // 文件上传失败，显示上传出错。
             uploader.on( 'uploadError', function( file ) {
@@ -855,8 +858,109 @@
     } );
      //新增提交
      $("#testContent").submit(function (){
+         if($("#major_key").val() == ''){
             uploader.upload();
+         }else if($("#major_key").val() != ''){
+                if(filieName1 == filieName2){
+                    //委托编号
+                    var entrustmentNumArr = [];
+                    $("input[name='entrustment_number']").each(function () {
+                        entrustmentNumArr.push($(this).val());
+                    });
+                    //报告编号
+                    var report_numberArr = [];
+                    $("input[name='report_number']").each(function () {
+                        report_numberArr.push($(this).val());
+                    });
+                    //进场检测时间/成型日期
+                    var checkDateArr = [];
+                    $("input[name='approach_detection_time']").each(function () {
+                        checkDateArr.push($(this).val());
+                    });
+                    //使用部位/工程部位/检测部位
+                    var usePositionArr = [];
+                    $("input[name='using_position']").each(function () {
+                        usePositionArr.push($(this).val());
+                    });
+                    // 生产厂家
+                    var manufacturerArr = [];
+                    $("input[name='manufacturer']").each(function () {
+                        manufacturerArr.push($(this).val());
+                    });
+                    //  品种/标号/规格/等级/种类
+                    var specificationsArr = [];
+                    $("input[name='specifications']").each(function () {
+                        specificationsArr.push($(this).val());
+                    });
+                    //  批号/炉号/型号/桩号/母材批号
+                    var lotNumArr = [];
+                    $("input[name='lot_number']").each(function () {
+                        lotNumArr.push($(this).val());
+                    });
+                    // 代表数量/进场数量
+                    var delegatesNumArr = [];
+                    $("input[name='number_of_delegates']").each(function () {
+                        delegatesNumArr.push($(this).val());
+                    });
+                    // 结论
+                    var conclusionArr = [];
+                    $("input[name='conclusion']").each(function () {
+                        conclusionArr.push($(this).val());
+                    });
+                    // 样品名称/检测项目
+                    var kindArr = [];
+                    $("input[name='kind']").each(function () {
+                        kindArr.push($(this).val());
+                    });
+                    //  标段
+                    var bidsArr = [];
+                    $("input[name='bids']").each(function () {
+                        bidsArr.push($(this).val());
+                    });
+
+                    $.ajax({
+                        url: "./edit",
+                        type: "post",
+                        data: {
+                            entrustment_number:entrustmentNumArr,
+                            report_number:report_numberArr,
+                            approach_detection_time:checkDateArr,
+                            using_position:usePositionArr,
+                            manufacturer:manufacturerArr,
+                            specifications:specificationsArr,
+                            lot_number:lotNumArr,
+                            number_of_delegates:delegatesNumArr,
+                            conclusion:conclusionArr,
+                            kind:kindArr,
+                            bids:bidsArr,
+                            broken_date:$("input[name='broken_date']").val(),
+                            altitude:$("input[name='altitude']").val(),
+                            design_strength_grade:$("input[name='design_strength_grade']").val(),
+                            age:$("input[name='age']").val(),
+                            compression_strength:$("input[name='compression_strength']").val(),
+                            bar_diameter:$("input[name='bar_diameter']").val(),
+                            status:$("input[name='status']").val(),
+                            welding:$("input[name='welding']").val(),
+                            order_number:$("input[name='order_number']").val(),
+                            major_key:$('#major_key').val()
+                        },
+                        datatype: "json",
+                        success: function (res) {
+                            if(res.code === 1){
+                                layer.msg(res.msg);
+                                $("#fname").modal('hide');
+                                materTables.ajax.url("__SCRIPT__/materialfile.php").load();
+                            }else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    })
+                }else{
+                    uploader.upload();
+                }
+         }
      });
+
 
     //删除
     function del(that) {
@@ -987,17 +1091,21 @@
                 });
                 var fileList = '<div style="display: inline-block;vertical-align: middle;">' +
                     '<span class="info">' + res[0].filename + '</span>&nbsp' +
-                    '<span class="DelFilebtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
                     '</div>';
-                $('#fileUpload').append(fileList);
+                $('#file_list').empty().append(fileList);
+                $('#saveTest').hide();
             }
         });
     }
+
+    var filieName1;
+    var filieName2;
     //编辑
     function edit(that) {
         $("#fname").modal('show');
+        $('#saveTest').show();
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
-        $('#sid').val(id);
+        $('#major_key').val(id);
         $.ajax({
             url: "{:url('Materialfile/getOne')}",
             type: "post",
@@ -1072,13 +1180,17 @@
                     });
                     en++;
                 });
-                var fileList = '<div style="display: inline-block;vertical-align: middle;">' +
+                filieName1 = res[0].filename;
+                filieName2 = res[0].filename;
+                myupload();
+                var fileList = '<div style="display: inline-block;vertical-align: middle;" class="' +  res[0].id + '" class="item">' +
                     '<span class="info">' + res[0].filename + '</span>&nbsp' +
-                    '<span class="DelFilebtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
+                    '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
                     '</div>';
-                $('#fileUpload').append(fileList);
+                $('#file_list').empty().append(fileList);
             }
         })
     }
+
 </script>
 </html>

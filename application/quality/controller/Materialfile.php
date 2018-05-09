@@ -48,37 +48,27 @@ class Materialfile extends Base
         if(request()->isAjax()){
             $sdi = new MaterialfileModel();
             $param = input('post.');
-            $is_exist = $sdi->getOne($param['major_key']);
+            $id = $param['major_key'];
+            $is_exist = $sdi->getOne($id);
             if(empty($is_exist)){
                 return json(['code' => '-1', 'msg' => '不存在的编号，请刷新当前页面']);
             }
             $data = [];
             // 前台提交的数据
-            $data['id'] = request()->param('major_key'); // 可选 文件自增编号 新增时 可以不必传 注意 修改的时候一定要传
+            $data[0]['id'] = $id;
             // 数组
-            $entrustment_number_1 = request()->param('entrustment_number'); //  委托编号
-            $entrustment_number = explode(',',$entrustment_number_1);
-            $report_number_1 = request()->param('report_number'); //  报告编号
-            $report_number = explode(',',$report_number_1);
-            $approach_detection_time_1 = request()->param('approach_detection_time'); //  进场检测时间/成型日期
-            $approach_detection_time = explode(',',$approach_detection_time_1);
-            $using_position_1 = request()->param('using_position'); //  使用部位/工程部位/检测部位
-            $using_position = explode(',',$using_position_1);
-            $manufacturer_1 = request()->param('manufacturer'); //  生产厂家
-            $manufacturer = explode(',',$manufacturer_1);
-            $specifications_1 = request()->param('specifications'); //  品种/标号/规格/等级/种类
-            $specifications = explode(',',$specifications_1);
-            $lot_number_1 = request()->param('lot_number'); //  批号/炉号/型号/桩号/母材批号
-            $lot_number = explode(',',$lot_number_1);
-            $number_of_delegates_1 = request()->param('number_of_delegates'); // 代表数量/进场数量
-            $number_of_delegates = explode(',',$number_of_delegates_1);
-            $conclusion_1 = request()->param('conclusion'); // 结论
-            $conclusion = explode(',',$conclusion_1);
+            $entrustment_number = request()->param('entrustment_number/a'); //  委托编号
+            $report_number = request()->param('report_number/a'); //  报告编号
+            $approach_detection_time = request()->param('approach_detection_time/a'); //  进场检测时间/成型日期
+            $using_position = request()->param('using_position/a'); //  使用部位/工程部位/检测部位
+            $manufacturer = request()->param('manufacturer/a'); //  生产厂家
+            $specifications = request()->param('specifications/a'); //  品种/标号/规格/等级/种类
+            $lot_number = request()->param('lot_number/a'); //  批号/炉号/型号/桩号/母材批号
+            $number_of_delegates = request()->param('number_of_delegates/a'); // 代表数量/进场数量
+            $conclusion = request()->param('conclusion/a'); // 结论
 
-            $kind_1 = request()->param('kind'); // 样品名称/检测项目
-            $kind = explode(',',$kind_1);
-            $bids_1 = request()->param('bids'); //  标段
-            $bids = explode(',',$bids_1);
+            $kind = request()->param('kind/a'); // 样品名称/检测项目
+            $bids = request()->param('bids/a'); //  标段
 
             // 单个值
             $broken_date = request()->param('broken_date'); // 破型日期
