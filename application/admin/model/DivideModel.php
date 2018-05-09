@@ -1011,9 +1011,26 @@ class DivideModel extends Model
     // 计算标准差 和 百分率 保证率
     public function getDesign($genre,$id,$unit_type,$type)
     {
+        /**
+         * 设计强度标准值 是检测数据是否合格的参照值 施工单位和监理单位的值都一样
+         * 施工单位 -- 喷砼强度
+         * 比如 施工单位的检测组数 是 3 那么
+         *  设计强度标准值    试验强度值
+         *      5                   2
+         *      5                   3
+         *      5                   4
+         * 监理单位 -- 喷砼强度
+         * 比如 监理单位的检测组数 是 2 那么
+         * 设计强度标准值    试验强度值
+         *      5               4
+         *      5               3
+         */
         $design_val = $f = $m = $n = $guarantee_rate_1 = 0;
         // genre 1 支护 2混凝土 gid 支护,锚杆,混凝土主键  unit_type 1施工单位2监理单位 type 1喷砼强度 2锚杆砂浆强度
-        $design = Db::name('project_standard_deviation')->where(['genre'=>$genre,'gid'=>['eq',$id],'unit_type'=>$unit_type,'type'=>$type])->column('design_val');
+        // 获取 设计强度标准值
+        $standard_value = Db::name('project_standard_deviation')->where(['genre'=>$genre,'gid'=>['eq',$id],'unit_type'=>$unit_type,'type'=>$type])->value('standard_value');
+        // 获取所有的试验强度值
+        $design = Db::name('project_standard_deviation')->where(['genre'=>$genre,'gid'=>['eq',$id],'unit_type'=>$unit_type,'type'=>$type])->column('intensity_value');
         if(sizeof($design) > 0){
             $f = round(array_sum($design) / sizeof($design),2);// 统计周期内第i组混凝土试件强度值
             $arr = array_count_values($design); // 每一组强度出现的次数
@@ -1026,7 +1043,7 @@ class DivideModel extends Model
             $m = round(array_sum($new_arr) / sizeof($new_arr),2); // 统计周期内n组混凝土试件的强度平均值
             $no = 0; // 统计周期内试件强度不低于要求强度等级值的组数
             foreach ($design as $d){
-                if($d >= $f){
+                if($d >= $standard_value){
                     $no = $no + 1;
                 }
             }
