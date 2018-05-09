@@ -31,13 +31,9 @@ $primaryKey = 'id';
 // indexes
 $columns = array(//定义数据库中查看的字段与表格中的哪一列相对应
     array( 'db' => 'id',  'dt' => 0 ),
-    array( 'db' => 'owner',  'dt' => 1 ),
-    array( 'db' => 'date',  'dt' => 2 ),
-    array( 'db' => 'filename',  'dt' => 3 ),
-    array( 'db' => 'k_check_single_number',  'dt' => 4 ),
-    array( 'db' => 'k_reception_time',  'dt' => 5 ),
-    array( 'db' => 'h_check_single_number',  'dt' => 6 ),
-    array( 'db' => 'h_reception_time',  'dt' => 7 ),
+    array( 'db' => 'filename',  'dt' => 1 ),
+    array( 'db' => 'owner',  'dt' => 2 ),
+    array( 'db' => 'date',  'dt' => 3 ),
 );
 
 
