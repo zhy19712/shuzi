@@ -2004,6 +2004,18 @@
         }else {
             admin_table.ajax.url("__SCRIPT__/project_attachment_table.php?id=" + mytree_node.uid + "&pid=" + mytree_node.pId).load();
         }
+
+
+        //监理单位检测组数不能大于施工检测组数
+        $('#intensity_number_2').keyup(function () {
+           var val = $(this).val();
+           var intensity_number_val = $('#intensity_number').val();
+           if(+val>+intensity_number_val){
+               $(this).val('');
+           }
+        });
+
+
     }
     var setting = {
         async: {
