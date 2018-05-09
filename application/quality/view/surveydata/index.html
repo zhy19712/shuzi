@@ -20,6 +20,17 @@
         font-size: 14px;
         text-indent: 2em;
     }
+    #file_view{
+        display: inline-block;
+        vertical-align: middle;
+        height: 38px;
+        line-height: 32px;
+        position: absolute;
+        z-index: 999;
+    }
+    .webuploader-pick{
+        margin-right: 8px;
+    }
 </style>
 <body>
 <div class="container-fluid">
@@ -49,6 +60,9 @@
                     <div class="ibox-content">
                         <!--新增用户信息开始-->
                         <form class="form-horizontal" name="surveyAddForm" id="surveyAddForm" method="post">
+                            <input type="hidden" name="fileName" id="fileName">
+                            <input type="hidden" name="oldFileName" id="oldFileName">
+                            <input type="hidden" name="major_key" id="major_key">
                             <div class="form-group">
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">开挖报验单号：</label>
@@ -88,10 +102,11 @@
                             <div class="form-group">
                                 <div class="col-lg-6 col-xs-12">
                                     <label class="col-xs-6 col-sm-4 control-label">上传：</label>
-                                    <div class="myblock col-xs-6 input-group">
+                                    <div class="col-xs-6 input-group">
                                         <div id="file_per" style="display: inline-block;vertical-align: middle;"></div>
                                         <div id="file_upload" style="display: inline-block;vertical-align: middle;"></div>
                                         <div id="file_list" style="display: inline-block;vertical-align: middle;"></div>
+                                        <div id="file_view"></div>
                                     </div>
                                 </div>
                             </div>
@@ -159,16 +174,20 @@
             });
             uploader.on("uploadStart",function () {
                 //获取表单数据
+                var major_key = $('#major_key').val();
                 var k_check_single_number = $('#k_check_single_number').val();
                 var k_reception_time = $('#k_reception_time').val();
                 var h_check_single_number = $('#h_check_single_number').val();
                 var h_reception_time = $('#h_reception_time').val();
+                uploader.options.formData.major_key = major_key;
                 uploader.options.formData.k_check_single_number = k_check_single_number;
                 uploader.options.formData.k_reception_time = k_reception_time;
                 uploader.options.formData.h_check_single_number = h_check_single_number;
                 uploader.options.formData.h_reception_time = h_reception_time;
             });
             uploader.on('beforeFileQueued', function (file) {
+                $('#fileName').val(file.name);
+                $('#file_view').text(file.name);
                 if($("#file_list").html()){
                     alert("只能上传一个文件,请先删除文件");
                     return false;
@@ -183,7 +202,7 @@
                 $("#file_upload").empty();
                 $("#surveyData").modal('hide');
                 $("#file_per").empty();
-                materTables.ajax.url("__SCRIPT__/Materialfile.php").load();
+                materTables.api().ajax.url("__SCRIPT__/surveydata.php").load();
             });
             // 文件上传失败，显示上传出错。
             uploader.on( 'uploadError', function( file ) {
@@ -195,7 +214,7 @@
     }
     var materTables = $('#materTable').dataTable( {
         "ordering": false,
-        "ajax": "__SCRIPT__/Materialfile.php",
+        "ajax": "__SCRIPT__/surveydata.php",
         "columnDefs": [
             {
                 "searchable": false,
@@ -233,7 +252,37 @@
     //新增提交
     var manageValidator = $("#surveyAddForm").validate({
         submitHandler: function(form) {
-            uploader.upload();
+            var fileName = $('#fileName').val();
+            var oldFileName = $('#oldFileName').val();
+            var major_key = $('#major_key').val();
+            var k_check_single_number = $('#k_check_single_number').val();
+            var k_reception_time = $('#k_reception_time').val();
+            var h_check_single_number = $('#h_check_single_number').val();
+            var h_reception_time = $('#h_reception_time').val();
+            if(fileName!==oldFileName){
+                uploader.upload();
+            }else{
+                $.ajax({
+                    url: "./edit",
+                    type: "post",
+                    data: {
+                        major_key:major_key,
+                        k_check_single_number:k_check_single_number,
+                        k_reception_time:k_reception_time,
+                        h_check_single_number:h_check_single_number,
+                        h_reception_time:h_reception_time
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
+                        uploader = null;
+                        $("#file_upload").empty();
+                        $("#surveyData").modal('hide');
+                        $("#file_per").empty();
+                        materTables.api().ajax.url("__SCRIPT__/surveydata.php").load();
+                    }
+                });
+            }
         },
         rules: {
             k_check_single_number: "required",
@@ -272,11 +321,38 @@
     }
     //查看
     function detail(that) {
-        $("#detailModal").modal();
+        $('.webuploader-pick').hide();
+        var major_key = $(that).parents('tr').find('td:first-child').text();
+        $('#major_key').val(major_key);
+        $.ajax({
+            url: "./getOne",
+            type: "post",
+            data: {
+                major_key:major_key
+            },
+            dataType: "json",
+            success: function (res) {
+                $('#k_check_single_number').val(res.k_check_single_number);
+                $('#k_reception_time').val(res.k_reception_time);
+                $('#h_check_single_number').val(res.h_check_single_number);
+                $('#h_reception_time').val(res.h_reception_time);
+                $('#file_view').text(res.filename);
+                $('#fileName').val(res.filename);
+                $('#oldFileName').val(res.filename);
+            }
+        })
+        $("#surveyData").modal();
     }
     //编辑
-    function edit() {
-        $("#editlModal").modal();
+    function edit(that) {
+        $("#surveyData").modal();
+        myupload();
+        detail(that);
+        $('.webuploader-pick').show();
     }
+
+    $('#surveyData').on('hide.bs.modal', function () {
+        manageValidator.resetForm();//重置form表单
+    });
 </script>
 </html>
