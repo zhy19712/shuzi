@@ -46,7 +46,7 @@ class MaterialfileModel extends Model
         try{
             $result = $this->allowField(true)->save($param[0], ['id' => $param[0]['id']]);
 
-            $id_arr = $this->where('relevance_id',$param[0]['id'])->column('id');
+            $id_arr = $this->where('relevance_id',$param[0]['id'])->order('id asc')->column('id');
 
             foreach($id_arr as $k=>$v){
                 $this->allowField(true)->save($param[$k+1], ['id' => $v]);
@@ -101,7 +101,9 @@ class MaterialfileModel extends Model
                 $data[$i]['number_of_delegates'] = $da[$i]['number_of_delegates']; // 代表数量/进场数量
             }
             $data[$i]['conclusion'] = $da[$i]['conclusion']; // 结论
+            $data[$i]['id'] = $da[$i]['id'];
         }
+        $data[0]['filename'] = $da[0]['filename'];
         //  混凝土 ==>委托编号、报告编号、成型日期、破型日期、标段、工程部位、桩号、高程、种类、设计强度等级、龄期(d)、抗压强度(Mpa)、结论
         $data[15]['broken_date'] = $da[15]['broken_date'];
         $data[15]['bids'] = $da[15]['bids'];

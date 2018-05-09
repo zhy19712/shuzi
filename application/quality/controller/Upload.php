@@ -493,9 +493,11 @@ class Upload extends Base
             $data[0]['path'] = $path;
 
             if(empty($major_key)){
+                halt('insert');
                 $flag = $mater->insertMater($data);
                 return json(['code' => $flag['code'],  'msg' => $flag['msg']]);
             }else{
+                halt('edit');
                 $data_older = $mater->getOne($major_key);
                 if(empty($data_older)){
                     return json(['code' => '0', 'msg' => '无效的编号']);
