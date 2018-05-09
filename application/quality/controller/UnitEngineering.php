@@ -16,6 +16,7 @@ use app\admin\model\ProjectModel;
 use app\admin\model\ProjectScupperModel;
 use app\admin\model\ZhihuModel;
 use app\quality\model\ProjectAttachmentModel;
+use app\quality\model\StandardDeviationModel;
 
 /**
  * 质量验收管理  --  单元工程
@@ -507,6 +508,49 @@ class UnitEngineering extends Base
         if(request()->isAjax()) {
             $param = input('post.');
             $flag = $level3->editNode($param);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    // 新增或修改强度值
+    public function editStandardDeviation()
+    {
+        if(request()->isAjax()){
+            $param = input('post.');
+            // 前台需要传递的参数 genre 1支护2锚杆3混凝土 gid 支护,锚杆,混凝土主键  unit_type 1施工单位2监理单位 type 1喷砼强度 2锚杆砂浆强度
+            // 前台需要传递的参数 intensity_value(是数组) 每个检测组的试验强度值 standard_value 设计强度标准值
+
+            // 验证规则
+            $rule = [
+                ['genre', 'require|number|gt:-1', '请选择所属的工程类型|工程类型的编号只能是数字|工程类型的编号不能为负数'],
+                ['gid', 'require|number|gt:-1', '请选择所属的工程类型|工程类型的编号只能是数字|工程类型的编号不能为负数'],
+                ['unit_type', 'require|number|gt:-1', '请选择所属单位|所属单位的编号只能是数字|所属单位的编号不能为负数'],
+                ['type', 'require|number|gt:-1', '请选择强度类型|强度类型的编号只能是数字|强度类型的编号不能为负数'],
+                ['intensity_value', 'require', '请填写试验强度值'],
+                ['standard_value', 'require|number|gt:-1', '请填写设计强度标准值|设计强度标准值只能是数字|设计强度标准值不能为负数'],
+            ];
+            $validate = new \think\Validate($rule);
+            //验证部分数据合法性
+            if (!$validate->check($param)) {
+                return json(['code' => -1,'msg' => $validate->getError()]);
+            }
+            $intensity_arr = explode(',',$param['intensity_value']);
+            $intensity_arr = array_filter($intensity_arr);
+            if(sizeof($intensity_arr) < 1){
+                return json(['code' => '-1', 'data' => [], 'msg' => '请填写试验强度值']);
+            }
+            $data = [];
+            $genre = $param['genre']; $gid = $param['gid']; $unit_type = $param['unit_type']; $type = $param['type']; $standard_value = $param['standard_value'];
+            foreach ($intensity_arr as $k=>$v){
+                $data[$k]['genre'] = $genre;
+                $data[$k]['gid'] = $gid;
+                $data[$k]['unit_type'] = $unit_type;
+                $data[$k]['type'] = $type;
+                $data[$k]['intensity_value'] = $v;
+                $data[$k]['standard_value'] = $standard_value;
+            }
+            $level3 = new StandardDeviationModel();
+            $flag = $level3->insertMater($data);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }

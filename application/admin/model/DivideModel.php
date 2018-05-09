@@ -1026,7 +1026,7 @@ class DivideModel extends Model
          *      5               3
          */
         $design_val = $f = $m = $n = $guarantee_rate_1 = 0;
-        // genre 1 支护 2混凝土 gid 支护,锚杆,混凝土主键  unit_type 1施工单位2监理单位 type 1喷砼强度 2锚杆砂浆强度
+        // genre 1支护2锚杆3混凝土 gid 支护,锚杆,混凝土主键  unit_type 1施工单位2监理单位 type 1喷砼强度 2锚杆砂浆强度
         // 获取 设计强度标准值
         $standard_value = Db::name('project_standard_deviation')->where(['genre'=>$genre,'gid'=>['eq',$id],'unit_type'=>$unit_type,'type'=>$type])->value('standard_value');
         // 获取所有的试验强度值
