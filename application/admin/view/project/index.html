@@ -216,7 +216,7 @@
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#selects">试验资料
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control" readonly id="vlad1">
+                                    <input type="text" name="test_data_name" class="form-control" readonly id="vlad1">
                                     <input type="hidden" name="test_data_id" class="form-control" readonly id="test_data_id">
                                 </div>
                                 <div class="input-group col-xs-4  pull-left"  style="margin-left: 100px" data-toggle="modal" data-target="#selects2">
@@ -224,7 +224,7 @@
                                         <button type="button" class="btn btn-primary">测量资料
                                         </button>
                                     </div>
-                                    <input type="text"  class="form-control" readonly id="vlad2">
+                                    <input type="text" name="survey_data_name" class="form-control" readonly id="vlad2">
                                     <input type="hidden" name="survey_data_id" class="form-control" readonly id="survey_data_id">
                                 </div>
                         </div>
@@ -708,6 +708,8 @@ function edit(that) {
                 $("#zhuanghaozhi").val(data.zhuanghaozhi);
                 $("#gaochengqi").val(data.gaochengqi);
                 $("#gaochengzhi").val(data.gaochengzhi);
+                $("#vlad1").val(data.test_data_name);
+                $("#vlad2").val(data.survey_data_name);
                 $("#myModal").modal('show');
             }else {
                 layer.msg(res.msg);
@@ -1221,8 +1223,9 @@ function edit(that) {
             $("#survey_data_id").val(measureArr);
         });
 
-        $('#selects,#selects2').on('hide.bs.modal', function () {
-
+        $('#myModal').on('hide.bs.modal', function () {
+            $('#vlad1').val('');
+            $('#vlad2').val('');
         });
 </script>
 </body>
