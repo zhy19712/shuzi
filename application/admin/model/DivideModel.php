@@ -332,7 +332,7 @@ class DivideModel extends Model
 
         // 半孔率
         $half_1 = array_filter($half_1);
-        if(sizeof($percent_3)){
+        if(sizeof($half_1)){
             $data['half']['zhen_d'] = round(array_sum($half_1) / sizeof($half_1),2); // 半孔率
             // 这里存放的是 多余值 作用是  便于 前台饼图的 百分比划分
             $data['half']['jia_d'] = round($data['half']['zhen_d'] / 100,2); // 半孔率
@@ -1534,7 +1534,7 @@ class DivideModel extends Model
     {
         $unit_id = $this->projectIdArr($id,[$cate]);
         // 根据 单元工程检验批 获取 所有的排水孔 信息
-        $scupper_data = Db::name('project_scupper')->where(['divide_id'=>['in',$unit_id]])->select();
+        $scupper_data = Db::name('project_scupper')->where(['uid'=>['in',$unit_id]])->select();
         if(sizeof($scupper_data) < 1){
             return ['code'=>1,'excavate_data'=>[],'msg'=>'排水孔统计数据 -- 数据为空'];
         }
@@ -1573,46 +1573,46 @@ class DivideModel extends Model
         $data['design'] = [];
         foreach($arr_1 as $arv) {
             $data['design']['design_hole_depth'][] = $arv; // 设计孔深
-            $data['design']['sampling_quantity'] = array_sum($sampling_quantity2); // 抽检数量
-            if(sizeof(array_sum($hole_depth_avg2))){
-                $data['design']['hole_depth_avg'] = round(array_sum($hole_depth_avg2) / sizeof(array_sum($hole_depth_avg2)),2); // 孔深平均值
+            $data['design']['sampling_quantity'][] = array_sum($sampling_quantity2[$arv]); // 抽检数量
+            if(sizeof(array_sum($hole_depth_avg2[$arv]))){
+                $data['design']['hole_depth_avg'][] = round(array_sum($hole_depth_avg2[$arv]) / sizeof(array_sum($hole_depth_avg2[$arv])),2); // 孔深平均值
             }else{
-                $data['design']['hole_depth_avg'] = 0; // 孔深平均值
+                $data['design']['hole_depth_avg'][] = 0; // 孔深平均值
             }
-            if(sizeof(array_sum($hole_depth_percent2))){
-                $data['design']['hole_depth_percent'] = round(array_sum($hole_depth_percent2) / sizeof(array_sum($hole_depth_percent2)),2); // 孔深合格率
+            if(sizeof(array_sum($hole_depth_percent2[$arv]))){
+                $data['design']['hole_depth_percent'][] = round(array_sum($hole_depth_percent2[$arv]) / sizeof(array_sum($hole_depth_percent2[$arv])),2); // 孔深合格率
             }else{
-                $data['design']['hole_depth_percent'] = 0; // 孔深合格率
+                $data['design']['hole_depth_percent'][] = 0; // 孔深合格率
             }
-            if(sizeof(array_sum($hole_depth_avg2))){
-                $data['design']['hole_site_avg'] = round(array_sum($hole_site_avg2) / sizeof(array_sum($hole_site_avg2)),2); // 孔位平均值
+            if(sizeof(array_sum($hole_site_avg2[$arv]))){
+                $data['design']['hole_site_avg'][] = round(array_sum($hole_site_avg2[$arv]) / sizeof(array_sum($hole_site_avg2[$arv])),2); // 孔位平均值
             }else{
-                $data['design']['hole_site_avg'] = 0; // 孔位平均值
+                $data['design']['hole_site_avg'][] = 0; // 孔位平均值
             }
-            if(sizeof(array_sum($hole_site_percent2))){
-                $data['design']['hole_site_percent'] = round(array_sum($hole_site_percent2) / sizeof(array_sum($hole_site_percent2)),2); // 孔位合格率
+            if(sizeof(array_sum($hole_site_percent2[$arv]))){
+                $data['design']['hole_site_percent'][] = round(array_sum($hole_site_percent2[$arv]) / sizeof(array_sum($hole_site_percent2[$arv])),2); // 孔位合格率
             }else{
-                $data['design']['hole_site_percent'] = 0; // 孔位合格率
+                $data['design']['hole_site_percent'][] = 0; // 孔位合格率
             }
-            if(sizeof(array_sum($aperture_avg2))){
-                $data['design']['aperture_avg'] = round(array_sum($aperture_avg2) / sizeof(array_sum($aperture_avg2)),2); // 孔径平均值
+            if(sizeof(array_sum($aperture_avg2[$arv]))){
+                $data['design']['aperture_avg'][] = round(array_sum($aperture_avg2[$arv]) / sizeof(array_sum($aperture_avg2[$arv])),2); // 孔径平均值
             }else{
-                $data['design']['aperture_avg'] = 0; // 孔径平均值
+                $data['design']['aperture_avg'][] = 0; // 孔径平均值
             }
-            if(sizeof(array_sum($aperture_percent2))){
-                $data['design']['aperture_percent'] = round(array_sum($aperture_percent2) / sizeof(array_sum($aperture_percent2)),2); // 孔径合格率
+            if(sizeof(array_sum($aperture_percent2[$arv]))){
+                $data['design']['aperture_percent'][] = round(array_sum($aperture_percent2[$arv]) / sizeof(array_sum($aperture_percent2[$arv])),2); // 孔径合格率
             }else{
-                $data['design']['aperture_percent'] = 0; // 孔径合格率
+                $data['design']['aperture_percent'][] = 0; // 孔径合格率
             }
-            if(sizeof(array_sum($pore_slant_avg2))){
-                $data['design']['pore_slant_avg'] = round(array_sum($pore_slant_avg2) / sizeof(array_sum($pore_slant_avg2)),2); // 孔斜平均值
+            if(sizeof(array_sum($pore_slant_avg2[$arv]))){
+                $data['design']['pore_slant_avg'][] = round(array_sum($pore_slant_avg2[$arv]) / sizeof(array_sum($pore_slant_avg2[$arv])),2); // 孔斜平均值
             }else{
-                $data['design']['pore_slant_avg'] = 0; // 孔斜平均值
+                $data['design']['pore_slant_avg'][] = 0; // 孔斜平均值
             }
-            if(sizeof(array_sum($pore_slant_percent2))){
-                $data['design']['pore_slant_percent'] = round(array_sum($pore_slant_percent2) / sizeof(array_sum($pore_slant_percent2)),2); // 孔斜合格率
+            if(sizeof(array_sum($pore_slant_percent2[$arv]))){
+                $data['design']['pore_slant_percent'][] = round(array_sum($pore_slant_percent2[$arv]) / sizeof(array_sum($pore_slant_percent2[$arv])),2); // 孔斜合格率
             }else{
-                $data['design']['pore_slant_percent'] = 0; // 孔斜合格率
+                $data['design']['pore_slant_percent'][] = 0; // 孔斜合格率
             }
         }
 
