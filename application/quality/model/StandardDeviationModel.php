@@ -22,7 +22,7 @@ class StandardDeviationModel extends Model
     {
         try{
             // genre 1支护2锚杆3混凝土 gid 支护,锚杆,混凝土主键  unit_type 1施工单位2监理单位 type 1喷砼强度 2锚杆砂浆强度
-            $this->where(['genre'=>$param['genre'],'gid'=>$param['gid'],'unit_type'=>$param['unit_type'],'type'=>$param['type']])->delete();
+            $this->where(['genre'=>$param[0]['genre'],'gid'=>$param[0]['gid'],'type'=>$param[0]['type']])->delete();
             $result = $this->allowField(true)->saveAll($param);
             if(false === $result){
                 return ['code' => -1, 'data' => '', 'msg' => $this->getError()];
@@ -32,5 +32,18 @@ class StandardDeviationModel extends Model
         }catch( PDOException $e){
             return ['code' => -2, 'data' => '', 'msg' => $e->getMessage()];
         }
+    }
+
+    public function getOne($param)
+    {
+        $new_data['construct_value'] = $new_data['supervise_value'] = [];
+        // genre 1支护2锚杆3混凝土 gid 支护,锚杆,混凝土主键 type 1喷砼强度 2锚杆砂浆强度
+        $data = $this->where(['genre'=>$param['genre'],'gid'=>$param['gid'],'type'=>$param['type']])->select();
+        foreach ($data as $v){
+            $new_data['standard_value'] = $v['standard_value'];
+            $new_data['construct_value'][] = $v['intensity_value'];
+            $new_data['supervise_value'][] = $v['intensity_value'];
+        }
+        return $new_data;
     }
 }

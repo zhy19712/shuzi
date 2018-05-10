@@ -534,10 +534,10 @@ class UnitEngineering extends Base
             if (!$validate->check($param)) {
                 return json(['code' => -1,'msg' => $validate->getError()]);
             }
-            $construct_arr = $param['construct_value/a'];
-            $supervise_arr = $param['supervise_value/a'];
+            $construct_arr = $param['construct_value'];
+            $supervise_arr = $param['supervise_value'];
             $data = [];
-            $genre = $param['genre']; $gid = $param['gid']; $unit_type = $param['unit_type']; $type = $param['type']; $standard_value = $param['standard_value'];
+            $genre = $param['genre']; $gid = $param['gid'];$type = $param['type']; $standard_value = $param['standard_value'];
             $k = 0;
             foreach ($construct_arr as $v){
                 $data[$k]['genre'] = $genre;
@@ -559,6 +559,29 @@ class UnitEngineering extends Base
             }
             $level3 = new StandardDeviationModel();
             $flag = $level3->insertMater($data);
+            return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
+        }
+    }
+
+    // 回显强度值
+    public function standardDeviation()
+    {
+        if(request()->isAjax()){
+            $param = input('post.');
+            // 前台传递 参数 genre 1支护2锚杆3混凝土 gid 支护,锚杆,混凝土主键 type 1喷砼强度 2锚杆砂浆强度
+            // 验证规则
+            $rule = [
+                ['genre', 'require', '请选择所属的工程类型'],
+                ['gid', 'require', '请选择所属的工程类型'],
+                ['type', 'require', '请选择强度类型|强度类型的编号不能为负数']
+            ];
+            $validate = new \think\Validate($rule);
+            //验证部分数据合法性
+            if (!$validate->check($param)) {
+                return json(['code' => -1,'msg' => $validate->getError()]);
+            }
+            $level3 = new StandardDeviationModel();
+            $flag = $level3->getOne($param);
             return json(['code' => $flag['code'], 'data' => $flag['data'], 'msg' => $flag['msg']]);
         }
     }
