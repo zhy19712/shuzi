@@ -582,7 +582,7 @@ class UnitEngineering extends Base
             }
             $level3 = new StandardDeviationModel();
             $flag = $level3->getOne($param);
-            return json(['code' => 1, 'data' => $flag['data'], 'msg' => '强度值']);
+            return json(['code' => 1, 'data' => $flag, 'msg' => '强度值']);
         }
     }
 
