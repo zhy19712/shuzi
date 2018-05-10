@@ -1310,6 +1310,24 @@
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         showPdf(id,"./attachmentPreview");
     }
+    function addMgStrength(that) {
+        var gid = $(that).parents('tr').find('.sorting_1').text();
+        $('#genre').val('2');
+        $('#gid').val(gid);
+        $('#strength_type').val('2');
+        $.ajax({
+            url: "./getNum",
+            type: "post",
+            data: {
+                gid:gid
+            },
+            dataType: "json",
+            success: function (res) {
+                addStrengthFun(res.construct_num,res.supervise_num);
+            }
+        })
+
+    }
 
     var zhihu_table = $('#zhihu_table').DataTable( {
         "processing": true,
@@ -1327,6 +1345,7 @@
                     var html = "";
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='zdel(this)' value='删除'/>" ;
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='zedit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='addMgStrength(this)' value='添加强度值'/>" ;
                     return html;
                 }
             }
@@ -2454,6 +2473,10 @@
 
 </script>
 <script type="text/javascript">
+    var treeObj = $.fn.zTree.getZTreeObj("tree_container");
+    $('#mycontent').click(function(){
+        treeObj.expandAll(true);
+    })
     //添加强度值模板
     function addStrengthFun(intensityNumber,standardNumber) {
         $("#strengthAddWrap").modal('show');
@@ -2484,7 +2507,6 @@
         $('#standardWrap').append(standardInputTemplate.join(''));
     }
 
-
     //支护添加强度值
     $('#addStrengthVal').click(function () {
         var intensityNumber = $('#intensity_number').val();
@@ -2495,6 +2517,12 @@
     $('#addHntStrengthVal').click(function () {
         var intensityNumber = $('#resist_test_group').val();
         var standardNumber = $('#resist_test_group2').val();
+        addStrengthFun(intensityNumber,standardNumber);
+    });
+    //混凝土添加强度值
+    $('#addMgStrengthVal').click(function () {
+        var intensityNumber = $('#mortar_number').val();
+        var standardNumber = $('#mortar_number_2').val();
         addStrengthFun(intensityNumber,standardNumber);
     });
 
@@ -2526,7 +2554,8 @@
                 },
                 dataType: "json",
                 success: function (res) {
-                    console.log(res);
+                    $("#strengthAddWrap").modal('hide');
+                    layer.msg(res.msg);
                 }
             })
         }/*,
