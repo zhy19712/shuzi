@@ -1324,6 +1324,7 @@
             dataType: "json",
             success: function (res) {
                 addStrengthFun(res.construct_num,res.supervise_num);
+                standardDeviation();
             }
         })
 
@@ -2511,21 +2512,25 @@
     $('#addStrengthVal').click(function () {
         var intensityNumber = $('#intensity_number').val();
         var standardNumber = $('#intensity_number_2').val();
+        standardDeviation();
         addStrengthFun(intensityNumber,standardNumber);
     });
     //混凝土添加强度值
     $('#addHntStrengthVal').click(function () {
         var intensityNumber = $('#resist_test_group').val();
         var standardNumber = $('#resist_test_group2').val();
+        standardDeviation();
         addStrengthFun(intensityNumber,standardNumber);
     });
     //混凝土添加强度值
     $('#addMgStrengthVal').click(function () {
         var intensityNumber = $('#mortar_number').val();
         var standardNumber = $('#mortar_number_2').val();
+        standardDeviation();
         addStrengthFun(intensityNumber,standardNumber);
     });
 
+    //提交添加强度值
     var manageValidator = $("#strengthAdd").validate({
         submitHandler: function(form) {
             var gid = $('#gid').val();
@@ -2572,6 +2577,36 @@
             h_reception_time: "混凝土验收时间不能为空",
         }*/
     });
+
+    //回显强度值
+    function standardDeviation(type) {
+        var gid = $('#gid').val();
+        var genre = $('#genre').val();
+        var type = $('#strength_type').val();
+
+        $.ajax({
+            url: "./standardDeviation",
+            type: "post",
+            data: {
+                genre:genre,
+                gid:gid,
+                type:type,
+            },
+            dataType: "json",
+            success: function (res) {
+                var construct_value = res.data.construct_value;
+                var supervise_value = res.data.supervise_value;
+                $('input[name="construct_value"]').each(function (i,n) {
+                    $(n).val(construct_value[i]);
+                });
+
+                $('input[name="supervise_value"]').each(function (ix,nx) {
+                    $(nx).val(supervise_value[ix]);
+                })
+                $('input[name="standard_value"]').val(res.data.standard_value);
+            }
+        })
+    }
 </script>
 </body>
 </html>
