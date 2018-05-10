@@ -287,6 +287,8 @@
     }
 </style>
 <body class="gray-bg" style="background-color:#fff;">
+<input type="hidden" name="gid" id="gid">   <!-- 支护,锚杆,混凝土主键 -->
+<input type="hidden" name="genre" id="genre">   <!-- 1支护2锚杆3混凝土 -->
 <div id="mycontent" style="width: 20%;height: 98%;display: inline-block;margin: 0 10px;background-color:#fff;overflow-x: scroll;padding-top: 20px;padding-right:10px;border-right: 1px solid #ccc;">
     <div style="text-align: center;background-color:#1ab394;line-height: 30px;color: #fff;">工程划分</div>
     <div id="tree_container" class="ztree"></div>
@@ -714,6 +716,15 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="info">
+                                        <span>混凝土抗压强度</span>
+                                        <div class="exp w2">
+                                            <div class="top">
+                                                <div class="btn btn-outline btn-primary" id="addHntStrengthVal" style="margin:5px">添加强度值</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="info" style="margin-top: 0;border-top: none;">
                                         <span>混凝土抗压强度<br>(施工单位)</span>
                                         <div class="exp w2">
@@ -732,10 +743,11 @@
                                                 <input type="text" name="resist_max" id="resist_max">
                                                 <input type="text" name="resist_min" id="resist_min">
                                                 <input type="text" name="resist_avg" id="resist_avg">
+                                                <div></div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="info" style="">
+                                    <div class="info" style="margin-top: 0;border-top: none;">
                                         <span>混凝土抗压强度<br>(监理单位)</span>
                                         <div class="exp w2">
                                             <div class="top border-bottom">
@@ -1115,6 +1127,7 @@
                 </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" name="strengthAdd" id="strengthAdd" method="post" action="{:url('projectAdd')}">
+                        <input type="hidden" name="strength_type" id="strength_type" value="1">
                         <div class="form-group">
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">标准值：</label>
@@ -1681,6 +1694,8 @@
                                 $("#intensity_min_2").val(kdata.intensity_min_2);
                                 $("#intensity_avg_2").val(kdata.intensity_avg_2);
                                 $("#intensity_percent_2").val(kdata.intensity_percent_2);
+                                $('#gid').val(kdata.id);
+                                $('#genre').val('1');
                             }else {
                                 $("#edit2").val("");
                             }
@@ -2422,42 +2437,76 @@
 
 </script>
 <script type="text/javascript">
-    $('#addStrengthVal').click(function () {
+    //添加强度值模板
+    function addStrengthFun(intensityNumber,standardNumber) {
         $("#strengthAddWrap").modal('show');
         $('#intensityWrap').empty();
         $('#standardWrap').empty();
-        var intensityNumber = $('#intensity_number').val();
+
         var inputTemplate = [];
         for(var i = 0;i<intensityNumber;i++){
             inputTemplate.push('<div class="col-lg-6 col-xs-12">');
             inputTemplate.push('<label class="col-xs-6 col-sm-4 control-label">强度值：</label>');
             inputTemplate.push('<div class="myblock col-xs-6 input-group">');
-            inputTemplate.push('<input type="text" class="form-control"  name="intensity_value" placeholder="请输入强度值" />');
+            inputTemplate.push('<input type="text" class="form-control"  name="construct_value" placeholder="请输入强度值" />');
             inputTemplate.push('</div>');
             inputTemplate.push('</div>');
         }
         $('#intensityWrap').append(inputTemplate.join(''));
 
 
-        var standardNumber = $('#intensity_number_2').val();
         var standardInputTemplate = [];
         for(var j = 0;j<standardNumber;j++){
             standardInputTemplate.push('<div class="col-lg-6 col-xs-12">');
             standardInputTemplate.push('<label class="col-xs-6 col-sm-4 control-label">强度值：</label>');
             standardInputTemplate.push('<div class="myblock col-xs-6 input-group">');
-            standardInputTemplate.push('<input type="text" class="form-control"  name="intensity_value" placeholder="请输入强度值" />');
+            standardInputTemplate.push('<input type="text" class="form-control"  name="supervise_value" placeholder="请输入强度值" />');
             standardInputTemplate.push('</div>');
             standardInputTemplate.push('</div>');
         }
         $('#standardWrap').append(standardInputTemplate.join(''));
+    }
+
+
+    //支护添加强度值
+    $('#addStrengthVal').click(function () {
+        var intensityNumber = $('#intensity_number').val();
+        var standardNumber = $('#intensity_number_2').val();
+        addStrengthFun(intensityNumber,standardNumber);
+    });
+    //混凝土添加强度值
+    $('#addHntStrengthVal').click(function () {
+        var intensityNumber = $('#resist_test_group').val();
+        var standardNumber = $('#resist_test_group2').val();
+        addStrengthFun(intensityNumber,standardNumber);
     });
 
     var manageValidator = $("#strengthAdd").validate({
         submitHandler: function(form) {
+            var gid = $('#gid').val();
+            var genre = $('#genre').val();
+            var type = $('#strength_type').val();
+            var standard_value = $('#standard_value').val();
+            var construct_value = [];
+            var supervise_value = [];
+            $('input[name="construct_value"]').each(function () {
+                construct_value.push($(this).val());
+            });
+            $('input[name="supervise_value"]').each(function () {
+                supervise_value.push($(this).val());
+            });
+
             $.ajax({
                 url: "./editStandardDeviation",
                 type: "post",
-                data: {},
+                data: {
+                    genre:genre,
+                    gid:gid,
+                    type:type,
+                    construct_value:construct_value,
+                    supervise_value:supervise_value,
+                    standard_value:standard_value
+                },
                 dataType: "json",
                 success: function (res) {
                     console.log(res);
