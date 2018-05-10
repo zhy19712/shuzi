@@ -38,11 +38,14 @@ class StandardDeviationModel extends Model
     {
         $new_data['construct_value'] = $new_data['supervise_value'] = [];
         // genre 1支护2锚杆3混凝土 gid 支护,锚杆,混凝土主键 type 1喷砼强度 2锚杆砂浆强度
-        $data = $this->where(['genre'=>$param['genre'],'gid'=>$param['gid'],'type'=>$param['type']])->select();
+        $data = $this->where(['genre'=>$param['genre'],'gid'=>$param['gid'],'type'=>$param['type']])->order('id asc')->select();
         foreach ($data as $v){
             $new_data['standard_value'] = $v['standard_value'];
-            $new_data['construct_value'][] = $v['intensity_value'];
-            $new_data['supervise_value'][] = $v['intensity_value'];
+            if($v['unit_type'] == 1){
+                $new_data['construct_value'][] = $v['intensity_value'];
+            }else{
+                $new_data['supervise_value'][] = $v['intensity_value'];
+            }
         }
         return $new_data;
     }
