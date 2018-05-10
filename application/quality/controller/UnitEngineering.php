@@ -586,4 +586,15 @@ class UnitEngineering extends Base
         }
     }
 
+    // 获取锚杆强度值的数量
+    public function getNum()
+    {
+        if(request()->isAjax()) {
+            $gid = input('post.gid');
+            $ma = new MaoganModel();
+            $data = $ma->getOne($gid);
+            return json(['code' => 1, 'construct_num' => $data['mortar_number'],'supervise_num' => $data['mortar_number_2'], 'msg' =>'锚杆的强度值数量']);
+        }
+    }
+
 }
