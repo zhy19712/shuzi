@@ -1647,6 +1647,9 @@
                                 $("#pass_underbreak").val(kdata.pass_underbreak);
                             }else {
                                 $("#edit1").val("");
+                                $("#model1")[0].reset();
+                                $("#uid1").val(groupid);
+                                $("#cate1").val(data.cate);
                             }
                         }else if(data.cate == "支护"){
                             $("#uid2").val(groupid);
@@ -1683,6 +1686,10 @@
                                 $("#intensity_percent_2").val(kdata.intensity_percent_2);
                             }else {
                                 $("#edit2").val("");
+                                $("#model2")[0].reset();
+                                $("#uid2").val(groupid);
+                                $("#uid4").val(groupid);
+                                $("#cate2").val(data.cate);
                             }
                         }else if(data.cate == "混凝土"){
                             $("#uid3").val(groupid);
@@ -1759,6 +1766,9 @@
                                 $("#deviation_vertical_pass").val(kdata.deviation_vertical_pass);
                             }else {
                                 $("#edit3").val("");
+                                $("#model3")[0].reset();
+                                $("#uid3").val(groupid);
+                                $("#cate3").val(data.cate);
                             }
                         }else if(data.cate == "排水孔"){
                             $("#uid5").val(groupid);
@@ -1783,6 +1793,9 @@
                                 $("#pore_slant_percent").val(kdata.pore_slant_percent);
                             }else {
                                 $("#edit5").val("");
+                                $("#model5")[0].reset();
+                                $("#uid5").val(groupid);
+                                $("#cate5").val(data.cate);
                             }
                         }
                     }else {
