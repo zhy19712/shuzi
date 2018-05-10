@@ -681,6 +681,7 @@
                     '<span class="info">' + file.name + '</span>&nbsp' +
                     '<span class="webuploadDelbtn" style="color: #0d8ddb;text-decoration: underline;cursor: pointer;">删除</span>' +
                     '</div>' );
+                filieName2 = file.name;
             });
             $("#file_list").on("click", ".webuploadDelbtn", function () {
                 $('#file_list').empty();
@@ -775,7 +776,7 @@
                 uploader.options.formData.welding = $("input[name='welding']").val();
                 // 序号
                 uploader.options.formData.order_number = $("input[name='order_number']").val();
-                uploader.options.formData.major_key = $("input[name='major_key']").val();
+                uploader.options.formData.major_key = $("#major_key").val();
             });
             uploader.on('beforeFileQueued', function (file) {
                 if($("#file_list").html()){
@@ -946,7 +947,7 @@
                             if(res.code === 1){
                                 layer.msg(res.msg);
                                 $("#fname").modal('hide');
-                                materTables.ajax.url("__SCRIPT__/materialfile.php").load();
+                                materTables.api().ajax.url("__SCRIPT__/materialfile.php").load();
                             }else {
                                 layer.msg(res.msg);
                             }
