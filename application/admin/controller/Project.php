@@ -42,7 +42,9 @@ class project extends Base
         $param = input('post.');
         $param['sn'] = $param['sn'] . $param['post_sn'];
         $param['test_data_id'] = input('test_data_id');
+        $param['test_data_name'] = input('test_data_name');
         $param['survey_data_id'] = input('survey_data_id');
+        $param['survey_data_name'] = input('survey_data_name');
         if(request()->isAjax()){
             if(empty($param['id']))
             {
