@@ -447,5 +447,14 @@ class project extends Base
         }
     }
 
+    /**
+     * 打开关联模型 页面 openModelPicture
+     * @return mixed|\think\response\Json
+     * @author hutao
+     */
+    public function openModelPicture(){
+        return $this->fetch('relationview');
+    }
+
 
 }
