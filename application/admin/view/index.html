@@ -1,12 +1,36 @@
 {include file="public/header" /}
 <style>
+    .navbar-top-links li{
+        vertical-align: middle;
+    }
     .nav .model{
         margin-right: 10px;
     }
     .nav .model a{
-        padding: 0;
+        padding: 30px 0;
         width: 30px;
         min-height: 30px;
+        background-size: 30px;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+    .panorama{
+        background-image: url("/static/admin/images/panorama.png");
+    }
+    .three-dimension{
+        background-image: url("/static/admin/images/3D1.png");
+    }
+    .manage-three-dimension{
+        background-image: url("/static/admin/images/zhiliang3D.png");
+    }
+    .panorama:hover{
+        background-image: url("/static/admin/images/panorama1.png");
+    }
+    .three-dimension:hover{
+        background-image: url("/static/admin/images/3D2.png");
+    }
+    .manage-three-dimension:hover{
+        background-image: url("/static/admin/images/zhiliang3D1.png");
     }
     .nav .model img{
         width: 100%;
@@ -98,19 +122,13 @@
 
                 <ul class="nav navbar-top-links navbar-right">
                     <li class="model">
-                        <a href="javascript:;">
-                            <img src="/static/admin/images/panorama.png" alt="">
-                        </a>
+                        <a href="javascript:;" class="panorama"></a>
                     </li>
                     <li class="model">
-                        <a href="javascript:;">
-                            <img src="/static/admin/images/3D1.png" alt="">
-                        </a>
+                        <a href="javascript:;" class="three-dimension"></a>
                     </li>
                     <li class="model">
-                        <a href="javascript:;">
-                            <img src="/static/admin/images/zhiliang3D.png" alt="">
-                        </a>
+                        <a href="manage" class="J_menuItem manage-three-dimension"></a>
                     </li>
                     <li class="dropdown hidden-xs" style="position: relative;z-index: 999;">
                         <a class="right-sidebar-toggle" aria-expanded="false">
