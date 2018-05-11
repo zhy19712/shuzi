@@ -2,8 +2,11 @@
 <link href="__JS__/plugins/easyui/easyui.css" rel="stylesheet">
 <link href="__JS__/plugins/swiper/css/swiper-3.4.2.min.css" rel="stylesheet">
 <link href="__JS__/plugins/layui/css/layui.css" rel="stylesheet">
-<link href="/static/admin/webuploader/webuploader.css" rel="stylesheet">
+<link href="/static/admin/webupload/webuploader.css" rel="stylesheet">
 <style>
+    input[type=file]{
+        display: none;
+    }
     .centent{
         border: 0;
     }
@@ -275,6 +278,9 @@
     .file-info span{
         margin: 0 5px;
         color: #1ab394;
+    }
+    .files-wrap{
+        position: relative;
     }
     /* 上传按钮 */
     .webuploader-container{
@@ -1369,12 +1375,12 @@
             '        <li uid="image" class="active">图片</li>' +
             '        <li uid="file">文档</li>' +
             '    </ul>' +
-            '    <div id="image">' +
+            '    <div id="image" class="files-wrap">' +
             '        <div id="addImage"></div>' +
             '        <div id="imgList">' +
             '        </div>' +
             '    </div>' +
-            '    <div id="file" style="display: none">' +
+            '    <div id="file" class="files-wrap" style="display: none">' +
             '        <div id="addFile"></div>' +
             '        <div id="fileList"></div>' +
             '    </div>';
@@ -1395,13 +1401,20 @@
         });
         //添加样式
         $('#anchorFile').parent().css('padding','20px');
-        $('.webuploader-pick').next().css({
-            width:'60px',
-            height:'20px',
-            right:0,
-            left:'auto'
-        });
     }
+
+    //重置webupload按钮宽高
+    $('#anchorLayerTab').tabs({
+        onSelect:function(title,index){
+            $('.webuploader-pick').next().css({
+                width:'60px',
+                height:'20px',
+                right:0,
+                left:'auto'
+            });
+        }
+    });
+
     //显示删除按钮
     $('.imgItem').bind('mouseover mouseleave',function (e) {
         if(e.type == 'mouseover'){
