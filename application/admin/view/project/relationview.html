@@ -153,26 +153,6 @@
 
                 RealBimOcx.SetSuitableCam();
 
-                var unitEnginNoId = document.cookie.split(';')[0].split('=')[1];
-                //保存关联模型
-                window.saveModel = function (picture_id) {
-                    if(!picture_id){
-                        return false;
-                    }
-                    $.ajax({
-                        url: "./addModelPicture",
-                        type: "post",
-                        data: {
-                            id:unitEnginNoId,
-                            picture_id:picture_id
-                        },
-                        dataType: "json",
-                        success: function (res) {
-                            layer.msg(res.msg);
-                            alert(res.msg);
-                        }
-                    })
-                }
                 //加载模型试图
                 window.loadModel = function (number) {
                     if(number==''){
@@ -235,7 +215,7 @@
     });
 
     //构建构件树
-    var nodes = [
+    /*var nodes = [
         {id:1, pId:0, name: "子节点0"},
         {id:2, pId:0, name: "子节点1"},
         {id:3, pId:0, name: "子节点2"}
@@ -263,8 +243,8 @@
         showIcon:true
     };
 
-    zTreeObj = $.fn.zTree.init($("#ztree"), setting, nodes);
-    /*function setZtree(nodes) {
+    zTreeObj = $.fn.zTree.init($("#ztree"), setting, nodes);*/
+    function setZtree(nodes) {
         var setting = {
             check: {
                 enable: true
@@ -290,7 +270,7 @@
 
         zTreeObj = $.fn.zTree.init($("#ztree"), setting, nodes);
         echoRelation();
-    }*/
+    }
 
     //回显已关联节点
     function echoRelation() {
@@ -375,7 +355,23 @@
     }
 
     $('#save').click(function () {
-        saveModel(picture_id);
+        var unitEnginNoId = document.cookie.split(';')[0].split('=')[1];
+        //保存关联模型
+        if(!picture_id){
+            return false;
+        }
+        $.ajax({
+            url: "./addModelPicture",
+            type: "post",
+            data: {
+                id:unitEnginNoId,
+                picture_id:picture_id
+            },
+            dataType: "json",
+            success: function (res) {
+                layer.msg(res.msg);
+            }
+        })
     });
 
     $('#close').click(function () {

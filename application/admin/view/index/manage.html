@@ -139,7 +139,7 @@
                     <i class="yellow"></i>
                 </li>
                 <li>
-                    <span>未验评</span>
+                    <span>尚未评定</span>
                     <i class="blue"></i>
                 </li>
             </ul>
@@ -214,115 +214,6 @@
                 $('#tabs').show();
                 //隐藏质量分布
                 $('#qualityDistribute').hide();
-                //基本信息模板
-                /*function infoTemplateFun(res) {
-                    var infoTemplate = [];
-                    for(var i = 0;i<res.data.length;i++){
-                        infoTemplate.push('<div class="layui-colla-item">');
-                        infoTemplate.push('<h2 class="layui-colla-title infoTitle"></h2>');
-                        infoTemplate.push('<div class="layui-colla-content layui-show">');
-                        infoTemplate.push('<table class="layui-table" lay-skin="line" lay-size="sm">');
-                        infoTemplate.push('<tbody>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>检验批名称</td>');
-                        infoTemplate.push('<td>'+ res.data[i].site +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>检验批编码</td>');
-                        infoTemplate.push('<td id="serial_number">'+ res.data[i].serial_number +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>关键部位</td>');
-                        infoTemplate.push('<td id="hinge">'+ res.data[i].hinge +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>工程量</td>');
-                        infoTemplate.push('<td id="quantities">'+ res.data[i].quantities +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>工程类型</td>');
-                        infoTemplate.push('<td id="en_type">'+ res.data[i].en_type +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>施工依据</td>');
-                        infoTemplate.push('<td id="ma_bases">'+ res.data[i].ma_bases +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>补充依据</td>');
-                        infoTemplate.push('<td id="su_basis">'+ res.data[i].su_basis +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>高程（起）</td>');
-                        infoTemplate.push('<td id="el_start">'+ res.data[i].el_start +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>高程（止）</td>');
-                        infoTemplate.push('<td id="el_cease">'+ res.data[i].el_cease +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>桩号（起止）</td>');
-                        infoTemplate.push('<td id="pile_number">'+ res.data[i].pile_number +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>开始日期</td>');
-                        infoTemplate.push('<td id="start_date">'+ res.data[i].start_date +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('<tr>');
-                        infoTemplate.push('<td>结束日期</td>');
-                        infoTemplate.push('<td id="completion_date">'+ res.data[i].completion_date +'</td>');
-                        infoTemplate.push('</tr>');
-                        infoTemplate.push('</tbody>');
-                        infoTemplate.push('</table>');
-                        infoTemplate.push('</div>');
-                        infoTemplate.push('</div>');
-                    }
-                    var infoTemplateHtml = infoTemplate.join(',');
-                    $('#layuiCollapse').append(infoTemplateHtml);
-                }*/
-                //工序信息模板
-                function workInfoTemplateFun(res) {
-                    $('#layuiTimeline').empty();
-                    var workInfoTemplate = [];
-                    for(var i = 0;i<res.processinfo.length;i++){
-                        var point_step = res.processinfo[i].point_step==1?'current':''; //执行到某个节点
-                        workInfoTemplate.push('<li class="layui-timeline-item">');
-                        workInfoTemplate.push('<i class="layui-icon layui-timeline-axis '+ point_step +'">&#xe617;</i>');
-                        workInfoTemplate.push('<div class="layui-timeline-content layui-text">');
-                        workInfoTemplate.push('<div class="layui-timeline-title">'+ res.processinfo[i].name +'</div>');
-                        workInfoTemplate.push('</div>');
-                        workInfoTemplate.push('</li>');
-                    }
-                    var workInfoTemplateHtml = workInfoTemplate.join('');
-                    $('#layuiTimeline').append(workInfoTemplateHtml);
-                }
-                //质量表格模板
-                function qualityTableTemplateFun(res) {
-                    $('#qualityTable tbody').empty();
-                    var qualityTableTemplate = [];
-                    for(var i = 0;i<res.processinfo.length;i++){
-                        if(res.processinfo[i].form_list.length>0){
-                            var form_list = res.processinfo[i].form_list;
-                        }
-                        if(!form_list){
-                            return false;
-                        }
-                        for(var j = 0;j<form_list.length;j++){
-                            qualityTableTemplate.push('<tr>');
-                            if(j == 0){
-                                qualityTableTemplate.push('<td rowspan='+ form_list.length +'>'+ res.processinfo[i].name +'</td>');
-                            }
-                            qualityTableTemplate.push('<td class="bg">'+ form_list[j].form_name +'</td>');
-                            qualityTableTemplate.push('<td>');
-                            qualityTableTemplate.push('<i class="fa fa-eye faEye" onclick="seeOnLine(this)" formId='+ form_list[j].form_id +' cprId='+ form_list[j].cpr_id +'></i>');
-                            qualityTableTemplate.push('<i class="fa fa-search" onclick="search(this)" pid='+ res.processinfo[i].pid +' uid='+ form_list[j].division_id +' ></i>');
-                            qualityTableTemplate.push('</td>');
-                            qualityTableTemplate.push('</tr>');
-                        }
-                    }
-                    var qualityTableTemplateHtml = qualityTableTemplate.join('');
-                    $('#qualityTable tbody').append(qualityTableTemplateHtml);
-                }
-
                 search = function (that) {
                     var pid = $(that).attr('pid');
                     var uid = $(that).attr('uid');
@@ -340,21 +231,19 @@
                     },
                     dataType: "json",
                     success: function (res) {
-                        workInfoTemplateFun(res);
-                        qualityTableTemplateFun(res);
-                        $('.infoTitle').text(res.unit_info.site);
-                        $('#site').text(res.unit_info.site);
-                        $('#serial_number').text(res.unit_info.coding);
-                        $('#hinge').text(res.unit_info.hinge);
+                        console.log(res);
+                        $('.infoTitle').text(res.unit_info.name);
+                        $('#site').text(res.unit_info.name);
+                        $('#serial_number').text(res.unit_info.sn);
+                        $('#hinge').text(res.unit_info.primary);
                         $('#quantities').text(res.unit_info.quantities);
-                        $('#en_type').text(res.unit_info.en_type);
-                        $('#ma_bases').text(res.unit_info.ma_bases);
-                        $('#su_basis').text(res.unit_info.su_basis);
-                        $('#el_start').text(res.unit_info.el_start);
-                        $('#el_cease').text(res.unit_info.el_cease);
-                        $('#pile_number').text(res.unit_info.pile_number);
-                        $('#start_date').text(res.unit_info.start_date);
-                        $('#completion_date').text(res.unit_info.completion_date);
+                        $('#en_type').text(res.unit_info.cate);
+                        $('#el_start').text(res.unit_info.gaochengqi);
+                        $('#el_cease').text(res.unit_info.gaochengzhi);
+                        $('#pile_number_start').text(res.unit_info.zhuanghaoqi);
+                        $('#pile_number_end').text(res.unit_info.zhuanghaozhi);
+                        $('#start_date').text(res.unit_info.kaigong_date);
+                        $('#completion_date').text(res.unit_info.wangong_date);
                     }
                 });
             </script>
@@ -379,7 +268,7 @@
                                     <td id="serial_number"></td>
                                 </tr>
                                 <tr>
-                                    <td>关键部位</td>
+                                    <td>是否为主要单元工程</td>
                                     <td id="hinge"></td>
                                 </tr>
                                 <tr>
@@ -391,14 +280,6 @@
                                     <td id="en_type"></td>
                                 </tr>
                                 <tr>
-                                    <td>施工依据</td>
-                                    <td id="ma_bases"></td>
-                                </tr>
-                                <tr>
-                                    <td>补充依据</td>
-                                    <td id="su_basis"></td>
-                                </tr>
-                                <tr>
                                     <td>高程（起）</td>
                                     <td id="el_start"></td>
                                 </tr>
@@ -407,8 +288,12 @@
                                     <td id="el_cease"></td>
                                 </tr>
                                 <tr>
-                                    <td>桩号（起止）</td>
-                                    <td id="pile_number"></td>
+                                    <td>桩号（起）</td>
+                                    <td id="pile_number_start"></td>
+                                </tr>
+                                <tr>
+                                    <td>桩号（止）</td>
+                                    <td id="pile_number_end"></td>
                                 </tr>
                                 <tr>
                                     <td>开始日期</td>
@@ -418,35 +303,6 @@
                                     <td>结束日期</td>
                                     <td id="completion_date"></td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div title="工序信息" style="overflow:auto;padding:10px;display:none;">
-            <div class="layui-collapse">
-                <div class="layui-colla-item">
-                    <h2 class="layui-colla-title infoTitle"></h2>
-                    <div class="layui-colla-content layui-show">
-                        <ul class="layui-timeline" id="layuiTimeline">
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div title="质量表格" style="padding:10px;display:none;">
-            <div class="layui-collapse">
-                <div class="layui-colla-item">
-                    <h2 class="layui-colla-title infoTitle"></h2>
-                    <div class="layui-colla-content layui-show">
-                        <table class="layui-table" id="qualityTable" lay-size="sm">
-                            <colgroup>
-                                <col>
-                                <col>
-                                <col width="56">
-                            </colgroup>
-                            <tbody>
                             </tbody>
                         </table>
                     </div>
@@ -476,7 +332,7 @@
                     <td id="qualified_rate"></td>
                 </tr>
                 <tr>
-                    <td>未验评</td>
+                    <td>尚未评定</td>
                     <td id="unchecked_number"></td>
                     <td id="unchecked_rate"></td>
                 </tr>
@@ -487,12 +343,6 @@
     <div class="planned-task-info" id="plannedTaskInfo" style="display: none">
         <h2 class="layui-info-title">计划任务信息</h2>
         <table class="layui-table" lay-skin="line" lay-size="sm">
-            <!--<thead>
-                <tr>
-                    <th>任务名称</th>
-                    <th>五层主体施工</th>
-                </tr>
-            </thead>-->
             <tbody>
                 <tr>
                     <td>任务名称</td>

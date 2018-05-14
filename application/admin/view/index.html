@@ -13,6 +13,10 @@
         background-size: 30px;
         background-position: center center;
         background-repeat: no-repeat;
+        text-indent: -999em;
+    }
+    .nav>li>a:focus, .nav>li>a:hover{
+        background-color: #f3f3f4;
     }
     .panorama{
         background-image: url("/static/admin/images/panorama.png");
@@ -128,7 +132,7 @@
                         <a href="javascript:;" class="three-dimension"></a>
                     </li>
                     <li class="model">
-                        <a href="manage" class="J_menuItem manage-three-dimension"></a>
+                        <a href="manage" class="J_menuItem manage-three-dimension">管理3D</a>
                     </li>
                     <li class="dropdown hidden-xs" style="position: relative;z-index: 999;">
                         <a class="right-sidebar-toggle" aria-expanded="false">

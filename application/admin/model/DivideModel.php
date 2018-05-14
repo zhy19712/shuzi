@@ -316,7 +316,7 @@ class DivideModel extends Model
 
         // 超挖
         if($unit_batch == 0){
-            return  $data;
+            $unit_batch = 1;
         }
         $data['average_val'][] = round(array_sum($ave_1) / $unit_batch,2); // 平均值
         $data['max_val'][] = sizeof($max_1) ? max($max_1) : 0; // 最大值
@@ -367,7 +367,7 @@ class DivideModel extends Model
             $data['half']['jia_d'] = round($data['half']['zhen_d'] / 100,2); // 半孔率
         }else{
             $data['half']['zhen_d'] = 0;
-            $data['half']['jia_d'] = 100;
+            $data['half']['jia_d'] = 0;
         }
         return  $data;
     }
@@ -642,12 +642,8 @@ class DivideModel extends Model
 
         // 根据支护表获取关联的锚杆检测组
         $zhihu_maogan = Db::name('project_zhihu_maogan')->where(['uid'=>['in',$id_arr]])->select();
-        if(sizeof($zhihu_maogan) < 1){
-            $data['maogan'] = [];
-        }else{
-            // 锚杆统计 1 施工单位 2 监理单位
-            $data['maogan'] = $this->getMaoGan($zhihu_maogan);
-        }
+        // 锚杆统计 1 施工单位 2 监理单位
+        $data['maogan'] = $this->getMaoGan($zhihu_maogan);
         return ['code'=>1,'excavate_data'=>$data,'msg'=>'支护统计数据'];
     }
 
@@ -761,18 +757,29 @@ class DivideModel extends Model
             if(sizeof($design_mortar_standard_deviation[$arv])){
                 $data['builder']['mortar_standard_deviation_2'][] = round(array_sum($design_mortar_standard_deviation[$arv]) / sizeof($design_mortar_standard_deviation[$arv]),2); // 锚杆砂浆强度 -- 标准差
             }else{
-                $design_mortar_standard_deviation[$arv] = 0;
+                $data['builder']['mortar_standard_deviation_2'][] = 0;
             }
             if(sizeof($design_guarantee_rate[$arv])){
                 $data['builder']['guarantee_rate_2'][] = round(array_sum($design_guarantee_rate[$arv]) / sizeof($design_guarantee_rate[$arv]),2); // 锚杆砂浆强度 -- 保证率
             }else{
-                $design_guarantee_rate[$arv] = 0;
+                $data['builder']['guarantee_rate_2'][] = 0;
             }
             if(sizeof($design_mortar_percent[$arv]) == 0){
                 $data['builder']['mortar_percent'][] = 0; // 合格率Ps
             }else{
                 $data['builder']['mortar_percent'][] = round(array_sum($design_mortar_percent[$arv]) / sizeof($design_mortar_percent[$arv]), 2); // 合格率Ps
             }
+        }
+
+        if(empty($arr_3)){
+            $data['builder']['mortar_level'][] = 0; // 设计等级
+            $data['builder']['mortar_number'][] = 0; // 检测组数
+            $data['builder']['mortar_max'][] = 0; // 最大值
+            $data['builder']['mortar_min'][] = 0; // 最小值
+            $data['builder']['mortar_avg'][] = 0; // 平均值
+            $design_mortar_standard_deviation[] = 0;
+            $design_guarantee_rate[] = 0;
+            $data['builder']['mortar_percent'][] = 0; // 合格率Ps
         }
 
         /**
@@ -793,7 +800,7 @@ class DivideModel extends Model
             $design_nde_percent[$dv][] = $nde_percent[$dk];
         }
         foreach($arr_4 as $arv) {
-            $data['builder']['nde_model_number'] = $arv; // 锚杆型号
+            $data['builder']['nde_model_number'][] = $arv; // 锚杆型号
             $data['builder']['nde_quantity'][] = array_sum($design_nde_quantity[$arv]); // 施工数量(个)
             $data['builder']['nde_inspection_num'][] = array_sum($design_nde_inspection_num[$arv]); // 抽检根数(个)
             if(array_sum($design_nde_inspection_num[$arv]) == 0){
@@ -811,6 +818,18 @@ class DivideModel extends Model
             }else{
                 $data['builder']['nde_percent'][] = round(array_sum($design_nde_percent[$arv]) / sizeof($design_nde_percent[$arv]), 2); // 合格率Ps
             }
+        }
+        if(empty($arr_4)){
+            $data['builder']['nde_model_number'][] = 0; // 锚杆型号
+            $data['builder']['nde_quantity'][] = 0; // 施工数量(个)
+            $data['builder']['nde_inspection_num'][] = 0; // 抽检根数(个)
+            $data['builder']['detection_ratio'][] = 0; // 检测比例
+            $data['builder']['nde_percent_num'][] = 0; // 合格根数（个）
+            $data['builder']['nde_max'][] = 0; // 锚杆长度-最大
+            $data['builder']['nde_min'][] = 0; // 锚杆长度-最小
+            $data['builder']['nde_density_max'][] = 0; // 注浆密实度-最大
+            $data['builder']['nde_density_min'][] = 0; // 注浆密实度-最小
+            $data['builder']['nde_percent'][] = 0; // 合格率Ps
         }
 
         /**
@@ -834,6 +853,12 @@ class DivideModel extends Model
             }else{
                 $data['builder']['experiment_percent'][] = round(array_sum($design_experiment_percent[$arv]) / sizeof($design_experiment_percent[$arv]),2); // 合格率Ps
             }
+        }
+        if(empty($arr_5)){
+            $data['builder']['anchor_type'][] = 0; // 锚杆类型
+            $data['builder']['drawing_load'][] = 0; // 设计拉拔力
+            $data['builder']['experiment_inspection_num'][] = 0; // 检测根数（个）
+            $data['builder']['experiment_percent'][] = 0; // 合格率Ps
         }
 
         // ========= 监理单位 =======
@@ -866,18 +891,29 @@ class DivideModel extends Model
             if(sizeof($design_mortar_standard_deviation2[$arv])){
                 $data['supervision_unit']['mortar_standard_deviation_2'][] = round(array_sum($design_mortar_standard_deviation2[$arv]) / sizeof($design_mortar_standard_deviation2[$arv]),2); // 锚杆砂浆强度 -- 标准差
             }else{
-                $design_mortar_standard_deviation2[$arv] = 0;
+                $data['supervision_unit']['mortar_standard_deviation_2'][] = 0;
             }
             if(sizeof($design_guarantee_rate2[$arv])){
                 $data['supervision_unit']['guarantee_rate_2'][] = round(array_sum($design_guarantee_rate2[$arv]) / sizeof($design_guarantee_rate2[$arv]),2); // 锚杆砂浆强度 -- 保证率
             }else{
-                $design_guarantee_rate2[$arv] = 0;
+                $data['supervision_unit']['guarantee_rate_2'][] = 0;
             }
             if(sizeof($design_mortar_percent2[$arv]) == 0){
                 $data['supervision_unit']['mortar_percent'][] = 0; // 合格率Ps
             }else{
                 $data['supervision_unit']['mortar_percent'][] = round(array_sum($design_mortar_percent2[$arv]) / sizeof($design_mortar_percent2[$arv]), 2); // 合格率Ps
             }
+        }
+
+        if(empty($arr_32)){
+            $data['supervision_unit']['mortar_level'][] = 0; // 设计等级
+            $data['supervision_unit']['mortar_number'][] = 0; // 检测组数
+            $data['supervision_unit']['mortar_max'][] = 0; // 最大值
+            $data['supervision_unit']['mortar_min'][] = 0; // 最小值
+            $data['supervision_unit']['mortar_avg'][] = 0; // 平均值
+            $data['supervision_unit']['mortar_standard_deviation_2'][] = 0;
+            $data['supervision_unit']['guarantee_rate_2'][] = 0;
+            $data['supervision_unit']['mortar_percent'][] = 0; // 合格率Ps
         }
 
         /**
@@ -898,7 +934,7 @@ class DivideModel extends Model
             $design_nde_percent2[$dv][] = $nde_percent2[$dk];
         }
         foreach($arr_42 as $arv) {
-            $data['supervision_unit']['nde_model_number'] = $arv; // 锚杆型号
+            $data['supervision_unit']['nde_model_number'][] = $arv; // 锚杆型号
             $data['supervision_unit']['nde_quantity'][] = array_sum($design_nde_quantity2[$arv]); // 施工数量(个)
             $data['supervision_unit']['nde_inspection_num'][] = array_sum($design_nde_inspection_num2[$arv]); // 抽检根数(个)
             if(array_sum($design_nde_inspection_num2[$arv]) == 0){
@@ -916,6 +952,18 @@ class DivideModel extends Model
             }else{
                 $data['supervision_unit']['nde_percent'][] = round(array_sum($design_nde_percent2[$arv]) / sizeof($design_nde_percent2[$arv]), 2); // 合格率Ps
             }
+        }
+        if(empty($arr_42)){
+            $data['supervision_unit']['nde_model_number'][] = 0; // 锚杆型号
+            $data['supervision_unit']['nde_quantity'][] = 0; // 施工数量(个)
+            $data['supervision_unit']['nde_inspection_num'][] = 0; // 抽检根数(个)
+            $data['supervision_unit']['detection_ratio'][] = 0; // 检测比例
+            $data['supervision_unit']['nde_percent_num'][] = 0; // 合格根数（个）
+            $data['supervision_unit']['nde_max'][] = 0; // 锚杆长度-最大
+            $data['supervision_unit']['nde_min'][] = 0; // 锚杆长度-最小
+            $data['supervision_unit']['nde_density_max'][] = 0; // 注浆密实度-最大
+            $data['supervision_unit']['nde_density_min'][] = 0; // 注浆密实度-最小
+            $data['supervision_unit']['nde_percent'][] = 0; // 合格率Ps
         }
 
         /**
@@ -940,7 +988,12 @@ class DivideModel extends Model
                 $data['supervision_unit']['experiment_percent'][] = round(array_sum($design_experiment_percent2[$arv]) / sizeof($design_experiment_percent2[$arv]),2); // 合格率Ps
             }
         }
-
+        if(empty($arr_52)){
+            $data['supervision_unit']['anchor_type'][] = 0; // 锚杆类型
+            $data['supervision_unit']['drawing_load'][] = 0; // 设计拉拔力
+            $data['supervision_unit']['experiment_inspection_num'][] = 0; // 检测根数（个）
+            $data['supervision_unit']['experiment_percent'][] = 0; // 合格率Ps
+        }
 
         // ========= 施工单位 =======
         /**
@@ -1294,6 +1347,16 @@ class DivideModel extends Model
             }
         }
 
+        if(empty($arr_1)){
+            $data['ex']['ex_control_criterion'][] = 0; // 相同的设计值
+            $data['ex']['ex_test_groups'][] = 0; // 检测组数（个）
+            $data['ex']['ex_qualified_groups'][] = 0; // 合格组数（个）
+            $data['ex']['ex_max'][] = 0; // 最大值
+            $data['ex']['ex_min'][] = 0; // 最小值
+            $data['ex']['ex_avg'][] = 0; // 平均值
+            $data['ex']['ex_pass'][] = 0; // 合格率Ps
+        }
+
         // 按照 设计指标 分组 统计 ==》 设计指标 相同的统计到一起 (求平均值)
         $mix_num11 = $mix_qualified_num11 = $mix_max11 = $mix_min11 = $mix_avg11 = $mix_pass11 = [];
         $mix_arr = array_count_values($mix_design); // 每一个 设计指标 出现的次数
@@ -1326,6 +1389,16 @@ class DivideModel extends Model
             }else{
                 $data['mix']['mix_pass'][] = round(array_sum($mix_pass11[$arv]) / sizeof($mix_pass11[$arv]), 2); // 合格率Ps
             }
+        }
+
+        if(empty($mix_arr_1)){
+            $data['mix']['mix_design'][] = 0; // 设计指标
+            $data['mix']['mix_num'][] = 0; // 检测次数
+            $data['mix']['mix_qualified_num'][] = 0; // 合格次数
+            $data['mix']['mix_max'][] = 0; // 最大值
+            $data['mix']['mix_min'][] = 0; // 最小值
+            $data['mix']['mix_avg'][] = 0; // 平均值
+            $data['mix']['mix_pass'][] = 0; // 合格率Ps
         }
 
         // 按照 设计指标 分组 统计 ==》 设计指标 相同的统计到一起 (求平均值)
@@ -1364,6 +1437,18 @@ class DivideModel extends Model
             $data['builder']['mortar_standard_deviation_2'][] = $mortar_standard_deviation_211[$arv]; // 锚杆砂浆强度 -- 标准差
             $data['builder']['guarantee_rate_2'][] = $guarantee_rate_211[$arv]; // 锚杆砂浆强度 -- 保证率
         }
+        if(empty($res_arr_1)){
+            $data['builder']['resist_design_index'][] = 0; // 设计指标
+            $data['builder']['resist_age'][] = 0; // 龄期
+            $data['builder']['resist_test_group'][] = 0; // 检查组数
+            $data['builder']['resist_max'][] = 0; // 最大值
+            $data['builder']['resist_min'][] = 0; // 最小值
+            $data['builder']['resist_avg'][] = 0; // 平均值
+            $data['builder']['mortar_standard_deviation_1'][] = 0; // 喷砼强度 -- 标准差
+            $data['builder']['guarantee_rate_1'][] = 0; // 喷砼强度 -- 保证率
+            $data['builder']['mortar_standard_deviation_2'][] = 0; // 锚杆砂浆强度 -- 标准差
+            $data['builder']['guarantee_rate_2'][] = 0; // 锚杆砂浆强度 -- 保证率
+        }
 
         // 按照 设计指标 分组 统计 ==》 设计指标 相同的统计到一起 (求平均值)
         $resist_age22 = $resist_test_group22 = $resist_max22 = $resist_min22 = $resist_avg22 = $mortar_standard_deviation_122 = $guarantee_rate_122 = $mortar_standard_deviation_222 = $guarantee_rate_222 = [];
@@ -1383,7 +1468,7 @@ class DivideModel extends Model
          * 监理单位 (抗压强度)
          */
         $data['supervision_unit'] = [];
-        foreach($res_arr_1 as $arv) {
+        foreach($res_arr_2 as $arv) {
             $data['supervision_unit']['resist_design_index'][] = $arv; // 设计指标
             $data['supervision_unit']['resist_age'][] = $resist_age11[$arv]; // 龄期
             $data['supervision_unit']['resist_test_group'][] = $resist_test_group11[$arv]; // 检查组数
@@ -1398,6 +1483,19 @@ class DivideModel extends Model
             $data['supervision_unit']['guarantee_rate_1'][] = $guarantee_rate_111[$arv]; // 喷砼强度 -- 保证率
             $data['supervision_unit']['mortar_standard_deviation_2'][] = $mortar_standard_deviation_211[$arv]; // 锚杆砂浆强度 -- 标准差
             $data['supervision_unit']['guarantee_rate_2'][] = $guarantee_rate_211[$arv]; // 锚杆砂浆强度 -- 保证率
+        }
+
+        if(empty($res_arr_2)){
+            $data['supervision_unit']['resist_design_index'][] = 0; // 设计指标
+            $data['supervision_unit']['resist_age'][] = 0; // 龄期
+            $data['supervision_unit']['resist_test_group'][] = 0; // 检查组数
+            $data['supervision_unit']['resist_max'][] = 0; // 最大值
+            $data['supervision_unit']['resist_min'][] = 0; // 最小值
+            $data['supervision_unit']['resist_avg'][] = 0; // 平均值
+            $data['supervision_unit']['mortar_standard_deviation_1'][] = 0; // 喷砼强度 -- 标准差
+            $data['supervision_unit']['guarantee_rate_1'][] = 0; // 喷砼强度 -- 保证率
+            $data['supervision_unit']['mortar_standard_deviation_2'][] = 0; // 锚杆砂浆强度 -- 标准差
+            $data['supervision_unit']['guarantee_rate_2'][] = 0; // 锚杆砂浆强度 -- 保证率
         }
 
         // 按照 设计指标 分组 统计 ==》 设计指标 相同的统计到一起 (求平均值)
@@ -1435,6 +1533,16 @@ class DivideModel extends Model
             }else{
                 $data['etc']['etc_impervious_pass'][] = round(array_sum($etc_impervious_pass11[$arv]) / sizeof($etc_impervious_pass11[$arv]), 2); // (抗渗)合格率
             }
+        }
+        if(empty($etc_arr_1)){
+            $data['etc']['etc_design_index'][] = 0; // 设计指标
+            $data['etc']['etc_age'][] = 0; // 龄期
+            $data['etc']['etc_anti_groups'][] = 0; // (抗冻)取样组数
+            $data['etc']['etc_anti_test'][] = 0; // (抗冻)测值
+            $data['etc']['etc_anti_pass'][] = 0; // (抗冻)合格率
+            $data['etc']['etc_impervious_groups'][] = 0; // (抗渗)取样组数
+            $data['etc']['etc_impervious_test'][] = 0; // (抗渗)测值
+            $data['etc']['etc_impervious_pass'][] = 0; // (抗渗)合格率
         }
 
         // (出口机)
@@ -1643,6 +1751,19 @@ class DivideModel extends Model
             }else{
                 $data['design']['pore_slant_percent'][] = 0; // 孔斜合格率
             }
+        }
+
+        if(empty($arr_1)){
+            $data['design']['design_hole_depth'][] = 0; // 设计孔深
+            $data['design']['sampling_quantity'][] = 0; // 抽检数量
+            $data['design']['hole_depth_avg'][] = 0; // 孔深平均值
+            $data['design']['hole_depth_percent'][] = 0; // 孔深合格率
+            $data['design']['hole_site_avg'][] = 0; // 孔位平均值
+            $data['design']['hole_site_percent'][] = 0; // 孔位合格率
+            $data['design']['aperture_avg'][] = 0; // 孔径平均值
+            $data['design']['aperture_percent'][] = 0; // 孔径合格率
+            $data['design']['pore_slant_avg'][] = 0; // 孔斜平均值
+            $data['design']['pore_slant_percent'][] = 0; // 孔斜合格率
         }
 
 
