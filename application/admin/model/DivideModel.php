@@ -777,8 +777,8 @@ class DivideModel extends Model
             $data['builder']['mortar_max'][] = 0; // 最大值
             $data['builder']['mortar_min'][] = 0; // 最小值
             $data['builder']['mortar_avg'][] = 0; // 平均值
-            $design_mortar_standard_deviation[] = 0;
-            $design_guarantee_rate[] = 0;
+            $data['builder']['mortar_standard_deviation_2'][] = 0; // 锚杆砂浆强度 -- 标准差
+            $data['builder']['guarantee_rate_2'][] = 0;// 锚杆砂浆强度 -- 保证率
             $data['builder']['mortar_percent'][] = 0; // 合格率Ps
         }
 
@@ -911,8 +911,8 @@ class DivideModel extends Model
             $data['supervision_unit']['mortar_max'][] = 0; // 最大值
             $data['supervision_unit']['mortar_min'][] = 0; // 最小值
             $data['supervision_unit']['mortar_avg'][] = 0; // 平均值
-            $data['supervision_unit']['mortar_standard_deviation_2'][] = 0;
-            $data['supervision_unit']['guarantee_rate_2'][] = 0;
+            $data['supervision_unit']['mortar_standard_deviation_2'][] = 0; // 锚杆砂浆强度 -- 标准差
+            $data['supervision_unit']['guarantee_rate_2'][] = 0;// 锚杆砂浆强度 -- 保证率
             $data['supervision_unit']['mortar_percent'][] = 0; // 合格率Ps
         }
 
