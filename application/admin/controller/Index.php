@@ -696,50 +696,71 @@ class Index extends Base
         //实例化模型类
         $model =  new PictureModel();
         $unit_data = $model->getAllCountUnit();
-//        halt($unit_data);
         //定义一个空的数组
         $data = array();
         if(!empty($unit_data))
         {
+            foreach($unit_data as $key=>$val)
+            {
+                //根据project_cate的类型查询相应的表中的数据
+
+                switch($val["project_cate"])
+                {
+                    case "洞挖":
+                        $result_rate = $model->getCateKaiwaRate($val["project_id"]);
+                        $unit_data[$key]["quality_level"] = $result_rate["quality_level"];
+                        break;
+                    case "明挖":
+                        $result_rate = $model->getCateKaiwaRate($val["project_id"]);
+                        $unit_data[$key]["quality_level"] = $result_rate["quality_level"];
+                        break;
+                    case "支护":
+                        $result_rate = $model->getCateZhiRate($val["project_id"]);
+                        $unit_data[$key]["quality_level"] = $result_rate["quality_level"];
+                        break;
+                    case "混凝土":
+                        $result_rate = $model->getCateHunRate($val["project_id"]);
+                        $unit_data[$key]["quality_level"] = $result_rate["quality_level"];
+                        break;
+                    case "排水孔":
+                        $result_rate = $model->getCateScupperRate($val["project_id"]);
+                        $unit_data[$key]["quality_level"] = $result_rate["quality_level"];
+                        break;
+                }
+            }
+
             $total = count($unit_data);//总数，未验评+优良+合格
 
-            $count = array_count_values(array_column($unit_data,"EvaluateResult"));
+            $count = array_count_values(array_column($unit_data,"quality_level"));
 
-            //0、未验评，1、优良，2、合格'
-            $data["excellent_number"] = empty($count["1"]) ? 0 : $count["1"];//优良数量
-            $data["qualified_number"] = empty($count["2"]) ? 0 : $count["2"];//合格数量
-            $data["unchecked_number"] = empty($count["0"]) ? 0 : $count["0"];//未验评数量
+            //尚未评定、合格、优良
+            $data["excellent_number"] = empty($count["优良"]) ? 0 : $count["优良"];//优良数量
+            $data["qualified_number"] = empty($count["合格"]) ? 0 : $count["合格"];//合格数量
 
             $data["excellent_rate"] = round($data["excellent_number"] / $total * 100);//优良率
             $data["qualified_rate"] = round($data["qualified_number"] / $total * 100);//合格率
-            $data["unchecked_rate"] = round($data["unchecked_number"] / $total * 100);//未验评率
 
-            //定义三个空数组表示优良、合格、未验评
+            //定义两个空数组表示优良、合格
             $excellent = array();
             $qualified = array();
-            $unchecked = array();
 
             foreach ($unit_data as $key => $val)
             {
-                switch($val["EvaluateResult"])
+                switch($val["quality_level"])
                 {
-                    case 1:
+                    case "优良":
                         $excellent[] = $val;
                         break;
-                    case 2:
+                    case "合格":
                         $qualified[] = $val;
-                        break;
-                    case 0:
-                        $unchecked[] = $val;
                         break;
                 }
             }
         }else
         {
-            $excellent = array();
-            $qualified = array();
-            $unchecked = array();
-            $data = array();
+            $excellent = [];
+            $qualified = [];
+            $data = [];
         }
 
         //查询全部的模型文件
@@ -748,10 +769,9 @@ class Index extends Base
 
         if(empty($model_picture))
         {
-            $model_picture = "";
+            $model_picture = [];
         }
-
-        return json(["code"=>1,"excellent"=>$excellent,"qualified"=>$qualified,"unchecked"=>$unchecked,"data"=>$data,"model_picture"=>$model_picture]);
+        return json(["code"=>1,"excellent"=>$excellent,"qualified"=>$qualified,"data"=>$data,"model_picture"=>$model_picture]);
     }
 
     /**
@@ -765,7 +785,6 @@ class Index extends Base
             //实例化模型类
             $model =  new PictureModel();
             $picture_number = input('post.picture_number');
-//            $picture_number = 15;
 
             /*******基本信息**********/
             $unit_info = $model->getUnitInfo($picture_number);
@@ -774,54 +793,7 @@ class Index extends Base
             {
                 $unit_info = [];
             }
-
-            /*******工序信息***********/
-            $en_type = $model->getEnType($picture_number);
-
-            //获取所有的控制点、工序、控制点下对应的信息
-
-            $processinfo = $model->getProcessInfo($en_type);
-
-
-            if(empty($processinfo))
-            {
-                $processinfo = [];
-            }
-
-            foreach($processinfo as $key=>$val)
-            {
-                //*****多表查询join改这里******
-                $par = array();
-                $par['type'] = 1;
-                $par['a.division_id'] = $en_type["division_id"];//488
-                $par["a.ma_division_id"] = $val["id"];//63 64 65 66 67
-                $processinfo_list = $model->getProcessInfoList($par);
-
-
-                if(empty($processinfo_list))
-                {
-                    $processinfo[$key]["point_step"] = 1;
-                }else
-                {
-                    $processinfo[$key]["point_step"] = 0;
-
-                }
-
-//                $processinfo[$key]["processinfo_list"] = $processinfo_list;
-                $form_list = Db::name("quality_form_info")->field("id as form_id,form_name,DivisionId as division_id,ProcedureId as ma_division_id,ControlPointId as control_id")->where("ProcedureId",$val["id"])->select();
-
-                foreach($form_list as $a=>$b)
-                {
-                    //cpr_id为control_point中的id
-                    $cpr_id = Db::name("quality_division_controlpoint_relation")->field("id as cpr_id")
-                        ->where(["division_id"=>$b["division_id"],"ma_division_id"=>$b["ma_division_id"],"control_id"=>$b["control_id"],"type"=>1])->find();
-                    $form_list[$a]["cpr_id"] = $cpr_id["cpr_id"];
-
-                }
-
-                $processinfo[$key]["form_list"] = $form_list;
-            }
-            return json(["code"=>1,"unit_info"=>$unit_info,"processinfo"=>$processinfo]);
+            return json(["code"=>1,"unit_info"=>$unit_info]);
         }
     }
 }

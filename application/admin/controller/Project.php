@@ -14,8 +14,8 @@ use app\admin\model\ProjectModel;
 use app\admin\model\ZhihuModel;
 use app\quality\model\ProjectAttachmentModel;
 //关联模型类
-use app\admin\model\PictureModel;
-use app\admin\model\PictureRelationModel;
+use app\quality\model\PictureModel;
+use app\quality\model\PictureRelationModel;
 use think\Db;
 use think\Loader;
 

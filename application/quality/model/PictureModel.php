@@ -1,15 +1,17 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: admin
- * Date: 2018/5/11
- * Time: 10:37
+ * User: sir
+ * Date: 2018/4/18
+ * Time: 17:30
  */
+
 namespace app\quality\model;
 
+
+use think\Db;
 use think\exception\PDOException;
 use think\Model;
-use think\Db;
 
 class PictureModel extends Model
 {
@@ -94,15 +96,78 @@ class PictureModel extends Model
      */
     public function getAllCountUnit()
     {
-        $unit_data = Db::name('quality_unit')->alias('u')
+        $unit_data = Db::name('project')->alias('u')
             ->join('quality_model_picture_relation r', 'r.relevance_id = u.id', 'left')
             ->join('quality_model_picture p', 'p.id = r.picture_id', 'left')
             ->where('r.type = 1')
             ->where("p.picture_type = 1")
-            ->field("p.picture_number,p.picture_name,u.EvaluateResult")->order("u.id asc")->select();
+            ->field("p.picture_number,p.picture_name,u.id as project_id,u.cate as project_cate")->order("u.id asc")->select();
         return $unit_data;
     }
 
+    /**
+     * kaiwa开挖表中的合格率、优良率
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getCateKaiwaRate($project_id)
+    {
+        $data = Db::name("project_kaiwa")
+            ->field("quality_level")
+            ->where("uid",$project_id)
+            ->find();
+        return $data;
+    }
+
+    /**
+     * zhihu支护表中的合格率、优良率
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getCateZhiRate($project_id)
+    {
+        $data = Db::name("project_zhihu")
+            ->field("quality_level")
+            ->where("uid",$project_id)
+            ->find();
+        return $data;
+    }
+
+    /**
+     * hunningtu混凝土表中的合格率、优良率
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getCateHunRate($project_id)
+    {
+        $data = Db::name("project_hunningtu")
+            ->field("quality_level")
+            ->where("uid",$project_id)
+            ->find();
+        return $data;
+    }
+
+    /**
+     * scupper排水孔表中的合格率、优良率
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getCateScupperRate($project_id)
+    {
+        $data = Db::name("project_scupper")
+            ->field("quality_level")
+            ->where("uid",$project_id)
+            ->find();
+        return $data;
+    }
     /**
      * 根据picture_number模型图编号查询单元工程下对应的信息
      * @return false|\PDOStatement|string|\think\Collection
@@ -112,67 +177,13 @@ class PictureModel extends Model
      */
     public function getUnitInfo($picture_number)
     {
-        $unit_info = Db::name('quality_unit')->alias('u')
+        $unit_info = Db::name('project')->alias('u')
             ->join('quality_model_picture_relation r', 'r.relevance_id = u.id', 'left')
             ->join('quality_model_picture p', 'p.id = r.picture_id', 'left')
             ->where('r.type = 1')
             ->where("p.picture_type = 1")
             ->where("p.picture_number",$picture_number)
-            ->field("u.site,u.coding,u.hinge,u.quantities,u.en_type,u.ma_bases,u.su_basis,u.el_start,u.el_cease,u.pile_number,u.start_date,u.completion_date,u.en_type")->find();
+            ->field("u.name,u.sn,u.primary,u.quantities,u.cate,u.gaochengqi,u.gaochengzhi,u.zhuanghaoqi,u.zhuanghaozhi,u.kaigong_date,u.wangong_date")->find();
         return $unit_info;
-    }
-
-    /**
-     * 根据picture_number模型图编号查询对应的工序信息，获取归属工程类型
-     * @return false|\PDOStatement|string|\think\Collection
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function getEnType($picture_number)
-    {
-        $en_type =  Db::name('quality_unit')->alias('u')
-            ->join('quality_model_picture_relation r', 'r.relevance_id = u.id', 'left')
-            ->join('quality_model_picture p', 'p.id = r.picture_id', 'left')
-            ->where("r.type = 1")
-            ->where("p.picture_type = 1")
-            ->where("p.picture_number",$picture_number)
-            ->field("u.en_type,u.division_id")->find();
-        return $en_type;
-    }
-
-    /**
-     * 根据归属工程编号查询工序号
-     * @return false|\PDOStatement|string|\think\Collection
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function getProcessInfo($en_type)
-    {
-        $processinfo = Db::name("materialtrackingdivision")->alias('a')
-//            ->join('quality_form_info q', 'q.ProcedureId=a.id', 'left')
-            ->where(["pid"=>$en_type["en_type"],"type"=>3])
-//            ->field("a.id,a.pid,a.name,q.id as form_id,q.form_name as form_name")
-            ->field("a.id,a.pid,a.name")
-            ->select();
-        return $processinfo;
-    }
-
-    /**
-     * 根据归属工程编号查询控制点信息
-     * @return false|\PDOStatement|string|\think\Collection
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function getProcessInfoList($par)
-    {
-        $processinfo_list = Db::name("quality_division_controlpoint_relation")->alias('a')
-            ->join('controlpoint b', 'a.control_id=b.id', 'left')
-            ->where($par)
-            ->field('a.id as cpr_id,b.code,b.name,a.status,a.division_id,a.ma_division_id,a.control_id')
-            ->select();
-        return $processinfo_list;
     }
 }
