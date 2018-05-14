@@ -600,31 +600,26 @@ class UnitEngineering extends Base
 
 
     // 获取资料编号
-    public function datumNumber()
+    public function datumNumber($uid,$type)
     {
-        $uid = input('uid'); // 单元工程检验批编号
-        $type = input('type'); // 1 试验资料 2 测量资料
+        // $uid 单元工程检验批编号  $type 1 试验资料 2 测量资料
         if($type == 1){
             $data_id = Db::name('project')->where(['id'=>$uid])->value('test_data_id');
         }else{
             $data_id = Db::name('project')->where(['id'=>$uid])->value('survey_data_id');
         }
         $data = explode(',',$data_id);
-        return json(['code'=>1,'data'=>$data]);
+        return $data;
     }
 
     // 关联资料
     public function relevanceDatum()
     {
         $data['id'] = input('uid'); // 单元工程检验批编号
-        $type = input('type'); // 1 试验资料 2 测量资料
-        if($type == 1){
-            $data['test_data_id'] = input('test_data_id');
-            $data['test_data_name'] = input('test_data_name');
-        }else{
-            $data['survey_data_id'] = input('survey_data_id');
-            $data['survey_data_name'] = input('survey_data_name');
-        }
+        $data['test_data_id'] = input('test_data_id');
+        $data['test_data_name'] = input('test_data_name');
+        $data['survey_data_id'] = input('survey_data_id');
+        $data['survey_data_name'] = input('survey_data_name');
         $project = new ProjectModel();
         $flag = $project->editProject($data);
         return $flag;
