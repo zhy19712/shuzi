@@ -8,6 +8,7 @@
 
 namespace app\admin\model;
 use app\quality\model\ProjectAttachmentModel;
+use think\exception\PDOException;
 use think\Model;
 
 class ProjectModel extends Model
