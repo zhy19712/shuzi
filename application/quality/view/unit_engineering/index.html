@@ -1463,7 +1463,7 @@
                 success: function (res) {
                     if(res.code == 1){
                         layer.msg(res.msg,{icon:1,time:1500,shade: 0.1});
-                        zhihu_table.ajax.url("__SCRIPT__/maogan_table.php").load();
+                        zhihu_table.ajax.url("__SCRIPT__/maogan_table.php?uid"+id).load();
                     }else{
                         layer.msg(res.msg,{icon:0,time:1500,shade: 0.1});
                     }
@@ -2118,6 +2118,7 @@
                                 $('#gid').val(kdata.id);
                                 $('#genre').val('1');
                                 $('#strength_type').val('1');
+                                zhihu_table.ajax.url("__SCRIPT__/maogan_table.php?uid"+kdata.id).load();
                             }else {
                                 $("#edit2").val("");
                                 $("#model2")[0].reset();
@@ -2902,7 +2903,8 @@
         if(data.code==1){
             layer.msg("保存成功");
             $("#myModal").modal('hide');
-            zhihu_table.ajax.url("__SCRIPT__/maogan_table.php").load();
+            var maoganuid = $('#gid').val();
+            zhihu_table.ajax.url("__SCRIPT__/maogan_table.php?uid"+maoganuid).load();
             return false;
         }else{
             layer.msg(data.msg, {icon: 5,time:1500,shade: 0.1});

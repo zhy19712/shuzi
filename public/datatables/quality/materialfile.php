@@ -51,10 +51,10 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
 
 require( '../ssp.class.php' );
 
-if(!empty($_POST["uid"]))
+if(!empty($_GET["uid"]))
 {
     $u = new \app\quality\controller\UnitEngineering();
-    $test_data_id = $u->datumNumber($_POST["uid"],1);
+    $test_data_id = $u->datumNumber($_GET["uid"],1);
     echo json_encode(
         SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "relevance_id = '0' and id in '$test_data_id'" )
     );
