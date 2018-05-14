@@ -736,9 +736,11 @@ class Index extends Base
             //尚未评定、合格、优良
             $data["excellent_number"] = empty($count["优良"]) ? 0 : $count["优良"];//优良数量
             $data["qualified_number"] = empty($count["合格"]) ? 0 : $count["合格"];//合格数量
+            $data["unchecked_number"] = empty($count["尚未评定"]) ? 0 : $count["尚未评定"];//尚未评定数量
 
             $data["excellent_rate"] = round($data["excellent_number"] / $total * 100);//优良率
             $data["qualified_rate"] = round($data["qualified_number"] / $total * 100);//合格率
+            $data["unchecked_rate"] = round($data["unchecked_number"] / $total * 100);//尚未评定率
 
             //定义两个空数组表示优良、合格
             $excellent = array();
@@ -753,6 +755,9 @@ class Index extends Base
                         break;
                     case "合格":
                         $qualified[] = $val;
+                        break;
+                    case "尚未评定":
+                        $unchecked[] = $val;
                         break;
                 }
             }
@@ -771,7 +776,7 @@ class Index extends Base
         {
             $model_picture = [];
         }
-        return json(["code"=>1,"excellent"=>$excellent,"qualified"=>$qualified,"data"=>$data,"model_picture"=>$model_picture]);
+        return json(["code"=>1,"excellent"=>$excellent,"qualified"=>$qualified,"unchecked"=>$unchecked,"data"=>$data,"model_picture"=>$model_picture]);
     }
 
     /**
