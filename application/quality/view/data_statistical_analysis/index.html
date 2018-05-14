@@ -1863,7 +1863,6 @@
                     },
                     dataType:'json',
                     success:function (res) {
-                        console.log(res);
                         //喷砼厚度数据
                         var data = res.excavate_data.builder;
                         var design_data = data.design_data;
@@ -1874,22 +1873,6 @@
                         var max = design_data.max;
                         var min = design_data.min;
                         var avg_val = design_data.avg_val;
-                        // //喷砼强度数据
-                        // var square_quantity = design_data.square_quantity;
-                        // var intensity_level = design_data.intensity_level;
-                        // var mortar_standard_deviation_1 = design_data.mortar_standard_deviation_1;
-                        // var guarantee_rate_1 = design_data.guarantee_rate_1;
-                        // //锚杆砂浆强度数据
-                        // //锚杆无损检测数据
-                        // var nde_quantity = design_data.nde_quantity;//施工数量
-                        // var nde_inspection_num = design_data.nde_inspection_num;//抽检根数
-                        // var detection_ratio = design_data.detection_ratio;//检测比例
-                        // var nde_percent_num = design_data.nde_percent_num;//合格根数
-                        // var nde_model_number = design_data.nde_model_number;//锚杆型号
-                        // var nde_max = design_data.nde_max;
-                        // var nde_min = design_data.nde_min;
-                        // var nde_density_max = design_data.nde_density_max;
-                        // var nde_density_min = design_data.nde_density_min;
                         if (res.code === 1) {
                             //喷砼厚度
                             var strThickness = '';
