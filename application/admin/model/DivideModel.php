@@ -348,7 +348,7 @@ class DivideModel extends Model
         // 不平整度
         $data['average_val'][] = round(array_sum($ave_3) / $unit_batch,2); // 平均值
         $data['max_val'][] = sizeof($max_3) ? max($max_3) : 0; // 最大值
-        $data['min_val'][] = sizeof($max_3) ? min($min_3) : 0; // 最小值
+        $data['min_val'][] = sizeof($min_3) ? min($min_3) : 0; // 最小值
 
         $data['detection_points'][] = array_sum($points_3); // 检测点数
 
