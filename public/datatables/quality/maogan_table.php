@@ -49,9 +49,23 @@ $columns = array(//定义数据库中查看的字段与表格中的哪一列相�
 
 require( '../ssp.class.php' );
 
-echo json_encode(
-    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
-);
+if(!empty($_GET["uid"]))
+{
+    $uid = $_GET["uid"];
+    echo json_encode(
+        SSP::complex( $_GET, $sql_details, $table, $primaryKey, $columns, null, "uid ='$uid'" )
+    );
+}
+else{
+    echo json_encode(
+        SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
+    );
+}
+
+
+//echo json_encode(
+//    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
+//);
 
 
 

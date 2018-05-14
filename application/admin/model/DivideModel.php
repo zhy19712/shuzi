@@ -708,7 +708,7 @@ class DivideModel extends Model
 
             // 锚杆无损检测
             $nde_quantity2[] = $v['nde_quantity_2'];
-            $nde_inspection_num2[] = $v['nde_inspection_num_'];
+            $nde_inspection_num2[] = $v['nde_inspection_num'];
             $nde_percent_num2[] = $v['nde_percent_num_2'];
             $nde_model_number2[] = $v['nde_model_number_2'];
             $nde_max2[] = $v['nde_max_2'];
