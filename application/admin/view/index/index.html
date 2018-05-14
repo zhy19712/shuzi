@@ -1,81 +1,1459 @@
 {include file="public/header"/}
-
-<body class="gray-bg" style = "overflow-x: hidden; overflow-y: hidden;">
-
-
-<script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
-    RealBimOcx.SwitchBIMSceneSimple("http://192.168.162.128:8008/default.aspx?dir=url_res02&path=","res_jinzhai");
-    //      RealBimOcx.SwitchBIMSceneSimple("F:\\AppTest\\URL_Res01\\","res_fengning_kw");
-    RealBimOcx.SetSceVersionInfo(100, -1);
-</script>
-<script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
-    if(CompleteEvent == "LoadMainScene" && retError==0 ){
-        RealBimOcx.SetAllHugeObjSubValidState(1);
-        RealBimOcx.SetSceHugeObjVisible(true);
+<link href="__JS__/plugins/easyui/easyui.css" rel="stylesheet">
+<link href="__JS__/plugins/swiper/css/swiper-3.4.2.min.css" rel="stylesheet">
+<link href="__JS__/plugins/layui/css/layui.css" rel="stylesheet">
+<link href="/static/admin/webupload/webuploader.css" rel="stylesheet">
+<style>
+    input[type=file]{
+        display: none;
     }
-</script>
-<OBJECT id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%">
-</OBJECT>
+    .centent{
+        border: 0;
+    }
+    /* 圆形图标 */
+    .round{
+        text-align: right;
+    }
+    .round i.fa{
+        margin: 0 5px;
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+        text-align: center;
+        background: #00c0ef;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    .round i.fa-danger{
+        background: #FF5722;
+    }
+    .round i.fa:before ,.round i.fa:hover:before{
+        color: #FFF;
+    }
+    /* 标注/快照滚动 */
+    .swiper-container {
+        padding: 10px 0;
+        width: 100%;
+        height: 165px;
+    }
+    .swiper-container img{
+        width: 100%;
+        height: 100%;
+    }
 
-<!--<div id="DominoActionBar" style='position:absolute; left:0px; top:0px; width:100%; height:100%; z-Index:9;opacity: 0;background: transparent;display: none;'>-->
-        <!--<iframe id='iframebar' src="about:blank" frameBorder=0 marginHeight=0 marginWidth=0-->
-                <!--style="position:absolute; top:0px;left:0px;width:100%;height: 100%; z-Index:-1;background: transparent;">-->
-        <!--</iframe>-->
-<!--</div>-->
+    .swiper-slide{
+        position: relative;
+        cursor: pointer;
+    }
+    .mask{
+        display: none;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        background: #333;
+        line-height: 12px;
+        filter:alpha(opacity=70);-moz-opacity:0.7;opacity:0.7;
+    }
+    .mask .right{
+        padding: 5px 0;
+        text-align: right;
+    }
+    .mask .right a{
+        margin-right: 5px;
+        display: inline-block;
+    }
+    .mask .scenter,.mask .center{
+        text-align: center;
+    }
+    .mask .scenter{
+        padding: 20px 0;
+    }
+    .mask .center{
+        padding: 10px 0;
+        color: #FFF;
+        font-size: 14px;
+    }
+    .mask i.fa:before,.mask i.fa:hover:before{
+        color: #FFF;
+    }
+    .mask .fa-search{
+        font-size: 30px;
+    }
+    .tabs,.tabs-panels,.tabs-header{
+        border: none;
+    }
+    .tabs{
+        border-bottom: 1px solid #cecece;
+    }
+    .tabs-header{
+        background: none;
+    }
+    /* 管理信息 */
+    .toggle-attr li{
+        line-height: 1;
+        display: inline-block;
+        text-align: center;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    .toggle-attr li:first-child{
+        padding-right: 5px;
+        border-right: 1px solid #666666;
+    }
+    .toggle-attr li.active,.toggle-attr li:hover{
+        color: #0c91e5;
+    }
+    /* 模型基本属性 */
+    .layui-collapse{
+        margin-top: 20px;
+    }
+    .layui-colla-item,.layui-collapse,.layui-show{
+        border: none;
+    }
+    .layui-colla-item{
+        margin-bottom: 20px;
+    }
+    .layui-colla-title{
+        padding: 0 15px 0 20px;
+        height: auto;
+        line-height: 1;
+        background: none;
+        font-size: 12px;
+    }
+    .layui-colla-icon{
+        left: 0;
+    }
+    /* 模型管理属性 */
+    .custom-attr{
+        margin-top: 5px;
+    }
+    .custom-attr .layui-form-item{
+        margin: 0;
+    }
+    .custom-attr .layui-form-label{
+        padding: 9px 0;
+        width: auto;
+        color: #333;
+    }
+    .custom-attr .layui-form-mid{
+        float: right;
+    }
+    .custom-attr .layui-input-block{
+        margin: 0;
+    }
+    .attr-group,.attr-group .layui-input-inline{
+        width: 100%;
+    }
+    .attr-group .layui-input-inline{
+        margin-bottom: 10px;
+    }
+    .attr-group .layui-input{
+        width: 40%;
+        display: inline-block;
+        vertical-align: middle;
+        float: none;
+    }
+    .attr-group i.fa{
+        display: block;
+        margin: 3px 0;
+        font-size: 14px;
+    }
+    .attr-group .layui-form-mid{
+        padding: 0 !important;
+    }
+    /* 标注基本属性 */
+    .add-tag{
+        padding-bottom: 10px;
+        text-align: right;
+    }
+    .add-tag h2{
+        text-align: center;
+    }
+    .layui-form-text .layui-input-inline{
+        width: 100%;
+    }
+    .layui-form-text .layui-textarea:hover{
+        border: 1px solid #0c91e5 !important;
+    }
+    /* 讨论 */
+    .operate .fa-wrap,.operate .btn-wrap{
+        width: auto;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .operate .fa-wrap i.fa{
+        font-size: 14px;
+    }
+    .operate .fa-wrap .webuploader-pick{
+        padding: 6px;
+        margin-left: -11px;
+        background: transparent !important;
+    }
+    .operate .btn-wrap{
+        float: right;
+    }
+    /* 讨论@人员 */
+    .tag{
+        display: inline-block;
+        margin: 5px;
+        padding: 0px 9px;
+        border-radius: 50px;
+        background: #00c0ef;
+        color: #fff;
+    }
+    .tag i.fa{
+        margin-left: 5px;
+    }
 
-
-
-
-<!--
-<div class="wrapper wrapper-content">
-    <div class="alert alert-danger alert-dismissable">
-        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-        <div>尊敬的管理员<span id="weather"></span></div>
-    </div>
-
-    <!-- 上方tab -->
-
-
-    <!-- 中间折线 -->
-<!--
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="col-sm-6">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <i class="fa fa-cogs"></i> 系统信息
+    /* 锚点 */
+    .anchor-list .layui-form-label,.anchor-list .layui-form-mid{
+        float: none;
+        display: inline-block;
+        width: 180px;
+        vertical-align: top;
+    }
+    .anchor-list .layui-form-label{
+        padding-left: 0;
+        width: 85px;
+        font-size: 14px;
+        color: #666666;
+        text-align: left;
+    }
+    .anchor-title{
+        padding-bottom: 10px;
+        text-align: center;
+        font-size: 16px;
+        color: #56abe4;
+    }
+    .anchor-title i.fa{
+        margin-right: 10px;
+    }
+    /* 锚点附件 */
+    .img-item{
+        margin: 5px;
+        position: relative;
+        width: 85px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .img-item img{
+        width: 100%;
+    }
+    .img-item a{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        z-index: 1;
+    }
+    .img-item span{
+        display: inline-block;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 17px;
+        background: #666;
+        filter:alpha(opacity=80);-moz-opacity:0.8;opacity:0.8;
+        z-index: 0;
+    }
+    .img-item a i.fa{
+        font-size: 16px;
+    }
+    .img-item a i.fa:before{
+        color: #FFF;
+    }
+    .file-list p{
+        display: inline-block;
+    }
+    .file-list a{
+        margin: 0 5px;
+    }
+    .file-info{
+        text-align: right;
+    }
+    .file-info span{
+        margin: 0 5px;
+        color: #1ab394;
+    }
+    .files-wrap{
+        position: relative;
+    }
+    /* 上传按钮 */
+    .webuploader-container{
+        text-align: right;
+    }
+    .webuploader-pick,.webuploader-pick:hover{
+        background:#fb9974;
+        padding: 2px 6px;
+    }
+</style>
+<body class="easyui-layout gray-bg" id="easyuiLayout" style = "overflow-x: hidden; overflow-y: hidden;">
+<div data-options="region:'east',title:'管理信息',split:true" style="width:345px;">
+    <!-- 默认业务层 -->
+    <div id="defaultAttr" class="easyui-tabs" style="width:100%;height:100%;border: 0;">
+        <div title="属性" style="padding:20px;display:none;">
+            <div class="attrWrap">
+                <ul class="toggle-attr" id="toogleAttr">
+                    <li uid="baseAttr" class="active">基本属性</li>
+                    <li uid="manageAttr">管理属性</li>
+                </ul>
+                <div class="baseAttrWrap" id="baseAttr">
+                    <div class="layui-collapse" id="baseAttrCon" style="display: none">
+                        <div class="layui-colla-item">
+                            <h2 class="layui-colla-title">常规属性</h2>
+                            <div class="layui-colla-content layui-show" id="attrCon"></div>
+                        </div>
+                        <div class="layui-colla-item">
+                            <h2 class="layui-colla-title">其他</h2>
+                            <div class="layui-colla-content" id="otherAttrCon"></div>
+                        </div>
                     </div>
-                    <div class="panel-body">
-                        <p><i class="fa fa-sitemap"></i> 框架版本：ThinkPHP{$info.think_v}
-                        </p>
-                        <p><i class="fa fa-windows"></i> 服务环境：{$info.web_server}
-                        </p>
-                        <p><i class="fa fa-warning"></i> 上传附件限制：{$info.onload}
-                        </p>
-                        <p><i class="fa fa-credit-card"></i> PHP 版本：{$info.phpversion}
-                        </p>
+                </div>
+                <div class="customAttrWrap" id="manageAttr" style="display: none">
+                    <div class="custom-attr customAttr">
+                        <form action="" class="layui-form">
+                            <div class="layui-form-item">
+                                <span class="layui-form-label">自定义属性</span>
+                                <a href="javascript:;" class="layui-form-mid layui-word-aux" id="addAttr"><i class="fa fa-plus"></i></a>
+                            </div>
+                            <div class="layui-form-item attr-group" id="attrGroup"></div>
+                            <div class="layui-form-item">
+                                <span class="layui-form-label">备注信息</span>
+                                <a href="javascript:;" class="layui-form-mid layui-word-aux" id="addRemark"><i class="fa fa-check"></i></a>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <textarea name="remark" placeholder="请输入内容" required  lay-verify="required" class="layui-textarea" id="remark"></textarea>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <i class="fa fa-cogs"></i> 系统信息
+        </div>
+        <!--<div title="讨论" style="overflow:auto;padding:20px;">
+            <form class="layui-form" id="comment" style="display: none">
+                <div class="layui-form-item layui-form-text">
+                    <div class="layui-input-inline">
+                        <textarea name="msg" placeholder="请输入内容" class="layui-textarea"></textarea>
                     </div>
-                    <div class="panel-body">
-                        <p><i class="fa fa-send-o"></i> 更多：<a href="http://www.bhidi.com" target="_blank">http://www.bhidi.com</a>
-                        </p>
+                </div>
+                <div class="layui-form-item operate">
+                    <div class="layui-input-inline fa-wrap">
+                        <i class="fa fa-paperclip" id="upload"></i>
+                        <i class="fa fa-at" id="at"></i>
+                    </div>
+                    <div class="layui-input-inline btn-wrap">
+                        <button class="layui-btn layui-btn-xs" lay-submit lay-filter="save">发送</button>
+                        <button class="layui-btn layui-btn-xs layui-btn-primary">取消</button>
+                    </div>
+                </div>
+                <div id="selectedUser"></div>
+            </form>
+        </div>
+        <div title="附件" style="overflow:auto;padding:20px;display:none;">
+              tab3
+        </div>
+        <div title="二维码" style="overflow:auto;padding:20px;display:none;">
+              tab4
+        </div>-->
+    </div>
+    <!-- 锚点业务层 -->
+    <div id="anchorLayerTab" class="easyui-tabs" style="width:100%;height:100%;border: 0;display: none;">
+        <div title="属性" style="padding:20px;display:none;">
+            <h2 class="anchor-title"><i class="fa fa-anchor"></i>构件锚点信息</h2>
+            <form action="" class="layui-form" id="">
+                <input type="hidden" id="fObjSelX">
+                <input type="hidden" id="fObjSelY">
+                <input type="hidden" id="fObjSelZ">
+                <div class="layui-form-item">
+                    <div class="anchor-list">
+                        <label class="layui-form-label">锚点名称</label>
+                        <div class="layui-form-mid layui-word-aux" id="anchorName"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="anchor-list">
+                        <label class="layui-form-label">关联构件名称</label>
+                        <div class="layui-form-mid layui-word-aux" id="componentName"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="anchor-list">
+                        <label class="layui-form-label">创建人</label>
+                        <div class="layui-form-mid layui-word-aux createName" uid="createName"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="anchor-list">
+                        <label class="layui-form-label">创建日期</label>
+                        <div class="layui-form-mid layui-word-aux createDate" uid="createDate"></div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block" style="margin: 0">
+                        <textarea name="anchorRemark" placeholder="锚点基本信息" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item round">
+                    <i class="fa fa-check" id="saveAnchor"></i>
+                    <i class="fa fa-reply fa-danger" id="backAnchor"></i>
+                    <i class="fa fa-close fa-danger" id="delAnchor"></i>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- 标注业务层 -->
+    <div id="addTag" class="easyui-tabs" style="width:100%;height:100%;border: 0;display: none">
+        <div title="属性" style="padding:20px;">
+            <div class="add-tag addTag">
+                <h2>基本属性</h2>
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">创建人</label>
+                        <div class="layui-form-mid layui-word-aux createName" uid="createNameTag"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">创建日期</label>
+                        <div class="layui-form-mid layui-word-aux createDate" uid="createDateTag"></div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">标注信息</label>
+                        <div class="layui-input-block">
+                            <textarea name="remarkTag" placeholder="请输入内容" class="layui-textarea" id="remarkTag"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item round">
+                        <i class="fa fa-check" id="save"></i>
+                        <i class="fa fa-reply fa-danger" id="back"></i>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--<div title="评论" style="overflow:auto;padding:20px;display:none;">
+            tab2
+        </div>
+        <div title="附件" style="padding:20px;display:none;">
+            tab3
+        </div>-->
+    </div>
+</div>
+<!--<div data-options="region:'west',title:'管理视图',split:true" style="width:200px;"></div>-->
+<div data-options="region:'center',title:''" class="centent">
+    <div class="easyui-layout" id="centent" data-options="fit:true">
+        <div data-options="region:'center',title:''" style="padding:5px;">
+            <!-- 点击模型事件 -->
+            <script language="javascript"  for="RealBimOcx" EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)" type="text/javascript">
+                $('#comment').show();//展示基本属性信息
+                easyUiPanelToggle();
+                uObjSubIdSingle = uObjSubID;
+                //添加锚点
+                var rnd = Math.floor(Math.random()*100000); //随机数
+                var times = new Date().getTime();   //时间戳
+                var anchorName = 'Anchor['+ rnd +']['+ times +']';  //锚点名称
+                if(operateType == 'AddComponentAnchor'){
+                    RealBimOcx.DelAllAnchors();
+                    RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+                    RealBimOcx.AddAnchor(anchorName,fObjSelX,fObjSelY,fObjSelZ,0);
+
+                    RealBimOcx.AddAnchorEnd();
+                    RealBimOcx.BatchAddSubClrInfoBegin();
+                    RealBimOcx.AddSubClrPercent(uObjSubID,0.5,0x80800080);    //第二个参数为透明度
+                    RealBimOcx.BatchAddSubClrInfoEnd();
+                    labelAttr(3,uObjSubID);
+                    $('#anchorName').html(anchorName);      //锚点名称
+                    $('#fObjSelX').val(fObjSelX);       //锚点坐标
+                    $('#fObjSelY').val(fObjSelY);
+                    $('#fObjSelZ').val(fObjSelZ);
+
+                }else{
+                    //单选/多选模型
+                    getAttr();
+                    getRemark();
+                    if(!isCtrlDown){
+                        uObjSubIDArr = [];
+                        hiddenArr = [];
+                        RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+                        RealBimOcx.BatchAddSubClrInfoBegin();
+                        RealBimOcx.AddSubClrPercent(uObjSubID,0.5,0x80800080);    //第二个参数为透明度
+                        uObjSubIDArr.push(uObjSubID);
+                        hiddenArr.push(uObjSubID);
+                        RealBimOcx.BatchAddSubClrInfoEnd();
+                        $('#baseAttrCon').show();//展示基本属性信息
+                    }else{
+                        RealBimOcx.BatchAddSubClrInfoBegin();
+                        RealBimOcx.AddSubClrPercent(uObjSubID,0.5,0x80800080);   //第二个参数为透明度
+                        uObjSubIDArr.push(uObjSubID);
+                        hiddenArr.push(uObjSubID);
+                        RealBimOcx.BatchAddSubClrInfoEnd();
+                    }
+                }
+            </script>
+            <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%"></object>
+            <!-- 初始化 -->
+            <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
+                // RealBimOcx.SwitchBIMSceneSimple("http://192.168.1.58:8008/default.aspx?dir=url_res02&path=","res_fengning_kw_03");
+
+                //设置服务url
+                //RealBimOcx.SwitchBIMSceneSimple("F:\\","res_fengning_kw_03");
+                RealBimOcx.SwitchBIMSceneSimple("http://192.168.1.2:8008/default.aspx?dir=url_res02&path=","res_fengning_kw");
+                RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
+
+                RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
+                RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
+            </script>
+            <!-- 初始化完成 -->
+            <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
+                if(CompleteEvent == "LoadMainScene" && retError==0 ){
+                    RealBimOcx.SetAllHugeObjSubValidState(1);
+                    RealBimOcx.SetSceHugeObjVisible(true);
+                }
+                RealBimOcx.SetSuitableCam();
+            </script>
+            <!-- 点击锚点 -->
+            <script for="RealBimOcx" event="OnAnchorSelected(SelAnchorName)" language='javascript'>
+                //点击锚点
+                //SelAnchorName
+                easyUiPanelToggle();
+                $('#defaultAttr').hide();
+                $('#anchorLayerTab').show();
+                addAttachment();
+                getAnchorPoint(SelAnchorName);
+            </script>
+            <!-- 点击模型操作按钮 -->
+            <script for="RealBimOcx" event="UIClicked(eType,uButtonMode)" language='javascript'>
+                function clearOperate() {
+                    RealBimOcx.AddAnchorEnd();
+                    RealBimOcx.CreateMarkerEnd("", 0, 0, "", true);
+                };
+                //右侧对应属性显隐
+                function addTagInfo() {
+                    $('#defaultAttr,#anchorLayerTab').hide();
+                    $('#addTag').show();
+                };
+                //锚点回显的显示隐藏
+                function anchorView() {
+                    $.ajax({
+                        type: "post",
+                        url: "./allAnchorPoint",
+                        success: function (data) {
+                            if (uButtonMode == 1) {
+                                RealBimOcx.AddAnchorBegin(0);
+                                $.each(data, function (i, item) {
+                                    RealBimOcx.AddAnchor(item.anchor_name, item.coordinate_x, item.coordinate_y, item.coordinate_z, 0);
+                                });
+                                RealBimOcx.AddAnchorEnd();
+                            }
+                            else {
+                                $('#anchorLayerTab').hide();
+                                $('#defaultAttr').show();
+                                RealBimOcx.DelAnchorBegin();
+                                $.each(data, function (i, item) {
+                                    RealBimOcx.DeleteAnchor(item.anchor_name);
+                                });
+                                RealBimOcx.DelAnchorEnd();
+                            }
+                        }
+                    });
+                };
+
+                //创建人 和 创建日期
+                window.labelAttr = function (type,picture_id) {
+                    $.ajax({
+                        url: "./labelAttr",
+                        type: "post",
+                        data: {
+                            type:type,
+                            picture_id:picture_id
+                        },
+                        dataType: "json",
+                        success: function (res) {
+                            $('.createName').html(res.data.user_name);
+                            $('.createDate').html(res.data.create_time);
+                            $('#componentName').html(res.data.componentName);
+                        }
+                    })
+                }
+                labelAttr();
+
+                $('textarea[name="remarkTag"]').on('input propertychange',function () {
+                    var val = $(this).text();
+                    RealBimOcx.SubmitMarkerText(val);
+                });
+
+                switch (eType) {
+                    case "ADD_ANCHOR":
+                        clearOperate();
+                        operateType = "AddComponentAnchor"; //判断是否进入锚点状态
+                        RealBimOcx.AddAnchorBegin(0);//构件锚点开始
+                        $('#defaultAttr,#backAnchor,#addTag').hide();
+                        $('#anchorLayerTab').show();
+                        easyUiPanelToggle();
+                        $('#anchorLayerTab').tabs('close','附件');
+                        break; //添加锚点
+                    case "DISP_ANCHOR":
+                        anchorView();
+                        break; //显示锚点
+                    case "MARKER":
+                        clearOperate();
+                        RealBimOcx.CreateMarkerBegin();
+                        addTagInfo();
+                        easyUiPanelToggle();
+                        easyUiPanelToggleSouth();
+                        $('#tt').tabs('select','标注');
+                        break;//添加标注
+
+                    case "CAPTURE":  //快照
+                        clearOperate();
+                        easyUiPanelToggleSouth();
+                        $('#tt').tabs('select','快照');
+                        RealBimOcx.CreateSnapShootInMem(true, 0, 0, true, true);
+                        break;
+                    case "DISP_ISOLATE":    //显示隔离
+                        RealBimOcx.SetIsolateSubElemIDBegin();
+                        if (uButtonMode === 1)                    //显示隔离
+                        {
+                            isOlate = true; //是否为隔离状态
+                            hiddenArr = [];
+                            $.each(uObjSubIDArr, function (i, item) {
+                                RealBimOcx.SetIsolateSubElemID(item)
+                            });
+                            RealBimOcx.SetIsolateSubElemIDEnd();
+                        }
+                        else                                      //隐藏隔离
+                        {
+                            isOlate = false;    //是否为隔离状态
+                            RealBimOcx.SetIsolateSubElemIDEnd();
+                            /* RealBimOcx.SetAllHugeObjSubValidState(1);*/
+                            RealBimOcx.SetHugeObjSubValidStateBegin();
+                            $.each(uObjSubIDArr, function (i, item) {  //取消隔离
+                                RealBimOcx.SetHugeObjSubValidStateInfo(item, 1);
+                            });
+                            RealBimOcx.SetHugeObjSubValidStateEnd();
+                            uObjSubIDArr = [];
+                        }
+                        break;
+                    case "DISP_HIDE":
+                        if (uButtonMode === 1) {                    //隐藏选择的模型
+                            uObjSubIDArr = [];
+                            RealBimOcx.SetHugeObjSubValidStateBegin();
+                            $.each(hiddenArr, function (i, item) {
+                                RealBimOcx.SetHugeObjSubValidStateInfo(item, 0);
+                            });
+                            RealBimOcx.SetHugeObjSubValidStateEnd();
+                        } else {
+                            if(isOlate){    //为隔离状态
+                                RealBimOcx.SetHugeObjSubValidStateBegin();
+                                $.each(hiddenArr, function (i, item) {  //取消隐藏
+                                    RealBimOcx.SetHugeObjSubValidStateInfo(item, 1);
+                                });
+                                RealBimOcx.SetHugeObjSubValidStateEnd();
+                            }else {
+                                RealBimOcx.SetAllHugeObjSubValidState(1);
+                            }
+                            RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+                            hiddenArr = [];
+                        }
+                        break;
+                }
+
+            </script>
+            <!-- 保存快照 -->
+            <script language="javascript" for="RealBimOcx" EVENT="SnapShootData(strPicData,picWidth,picHeight,strRenData)" type="text/javascript">
+                base64PicData = strPicData;
+                base64RenData = strRenData;
+                // TODO 需要重构
+                var snapshotImgPathArr = [];
+                $.ajax({
+                    url: "./labelSnapshot",
+                    type: "post",
+                    data: {
+                        picture_id:uObjSubIdSingle,
+                        type:2,
+                        label_snapshot:base64RenData,
+                        compress_base64:base64PicData
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        var imgPathSplit = res.base64_val_url.split('.');
+                        addSnapshotImgPath = imgPathSplit[1]+ '.'+imgPathSplit[2];
+                        snapshotImgPathArr.push('<div class="swiper-slide swiperSlide">');
+                        snapshotImgPathArr.push('<img src='+ addSnapshotImgPath +' alt="">');
+                        snapshotImgPathArr.push('<div class="mask">');
+                        snapshotImgPathArr.push('<div class="right">');
+                        snapshotImgPathArr.push('<a href="javascript:;" onclick="imageSaveAs(addSnapshotImgPath)" title="快照另存为">');
+                        snapshotImgPathArr.push('<i class="fa fa-save"></i>');
+                        snapshotImgPathArr.push('</a>');
+                        snapshotImgPathArr.push('<a href="javascript:;" title="删除快照">');
+                        snapshotImgPathArr.push('<i class="fa fa-close" uid='+ res.flag.label_snapshot_id +' onclick="del(this)"></i>');
+                        snapshotImgPathArr.push('</a>');
+                        snapshotImgPathArr.push('</div>');
+                        snapshotImgPathArr.push('<div class="scenter">');
+                        snapshotImgPathArr.push('<a href="javascript:;" title="查看快照" uid='+ base64RenData +' onclick="view(this)">');
+                        snapshotImgPathArr.push('<i class="fa fa-search"></i>');
+                        snapshotImgPathArr.push('</a>');
+                        snapshotImgPathArr.push('</div>');
+                        snapshotImgPathArr.push('<div class="center">2018-04-20</div>');
+                        snapshotImgPathArr.push('</div>');
+                        snapshotImgPathArr.push('</div>');
+                        snapshotSwiper.prependSlide(snapshotImgPathArr.join(' '));
+                        snapshotSwiper.updateSlidesSize();
+                        layer.msg('快照成功');
+                    }
+                });
+            </script>
+            <!-- 保存标注 -->
+            <script language="javascript" for="RealBimOcx" EVENT="MarkerData(strPicData,picWidth,picHeight,strRenData)" type="text/javascript">
+                base64PicData = strPicData;
+                base64RenData = strRenData;
+                // TODO 需要重构
+                var user_name = $('div[uid="createNameTag"]').html()
+                var create_time = $('div[uid="createDateTag"]').html()
+                var remark = $('#remarkTag').text();
+                var tagImgPathArr = [];
+                $.ajax({
+                    url: "./labelSnapshot",
+                    type: "post",
+                    data: {
+                        picture_id:uObjSubIdSingle,
+                        type:1,
+                        label_snapshot:base64RenData,
+                        compress_base64:base64PicData,
+                        user_name:user_name,
+                        create_time:create_time,
+                        remark:remark
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        var imgPathSplit = res.base64_val_url.split('.');
+                        addImgPath = imgPathSplit[1]+ '.'+imgPathSplit[2];
+                        tagImgPathArr.push('<div class="swiper-slide swiperSlide">');
+                        tagImgPathArr.push('<img src='+ addImgPath +' alt="">');
+                        tagImgPathArr.push('<div class="mask">');
+                        tagImgPathArr.push('<div class="right">');
+                        tagImgPathArr.push('<a href="javascript:;" onclick="imageSaveAs(addImgPath)" title="标注另存为">');
+                        tagImgPathArr.push('<i class="fa fa-save"></i>');
+                        tagImgPathArr.push('</a>');
+                        tagImgPathArr.push('<a href="javascript:;" title="删除标注">');
+                        tagImgPathArr.push('<i class="fa fa-close" uid='+ res.flag.label_snapshot_id +' onclick="del(this)"></i>');
+                        tagImgPathArr.push('</a>');
+                        tagImgPathArr.push('</div>');
+                        tagImgPathArr.push('<div class="scenter">');
+                        tagImgPathArr.push('<a href="javascript:;" title="查看标注"  uid='+ base64RenData +' onclick="view(this)">');
+                        tagImgPathArr.push('<i class="fa fa-search"></i>');
+                        tagImgPathArr.push('</a>');
+                        tagImgPathArr.push('</div>');
+                        tagImgPathArr.push('<div class="center">2018-04-20</div>');
+                        tagImgPathArr.push('</div>');
+                        tagImgPathArr.push('</div>');
+                        tagSwiper.prependSlide(tagImgPathArr.join(' '));
+                        tagSwiper.updateSlidesSize();
+                        layer.msg('标注成功');
+                    }
+                });
+            </script>
+        </div>
+        <div data-options="region:'south',title:'协同信息',split:true,collapsed:true" style="height:250px;">
+            <div id="tt" class="easyui-tabs" style="width:100%;height:220px;border: 0">
+                <div title="标注" style="display:none;">
+                    <input type="hidden" id="base64RenData">
+                    <div class="swiper-container" id="tag">
+                        <div class="swiper-wrapper">
+                        </div>
+                        <!-- 如果需要导航按钮 -->
+                        <div class="swiper-button-prev tag-button-prev"></div>
+                        <div class="swiper-button-next tag-button-next"></div>
+                    </div>
+                </div>
+                <div title="快照" style="overflow:auto;display:none;">
+                    <div class="swiper-container" id="snapshot">
+                        <div class="swiper-wrapper">
+                        </div>
+                        <!-- 如果需要导航按钮 -->
+                        <div class="swiper-button-prev snapshot-button-prev"></div>
+                        <div class="swiper-button-next snapshot-button-next"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
- -->
+<div id="form_container"></div>
 {include file="public/footer" /}
+<script src="__JS__/plugins/easyui/jquery.easyui.min.js"></script>
+<script src="__JS__/plugins/swiper/js/swiper-3.4.2.jquery.min.js"></script>
+<script src="/static/admin/webupload/webuploader.min.js"></script>
 </body>
+<!-- 自定义函数 -->
 <script>
+    uObjSubIdSingle = new Number();      //已选非隐藏单个模型ID
+    uObjSubIDArr = [];      //已选非隐藏模型ID数组
+    hiddenArr = [];         //已选隐藏模型ID
+    isCtrlDown = false;
+    $(document).keydown(function (event) {
+        var KeyCode = (navigator.appname=="Netscape")?event.which:window.event.keyCode;
+        if(KeyCode==17){
+            isCtrlDown = true;
+        }
+    });
+    $(document).keyup(function (event) {
+        var KeyCode = (navigator.appname=="Netscape")?event.which:window.event.keyCode;
+        if(KeyCode==17){
+            isCtrlDown = false;
+        }
+    });
+    //锚点的操作类型
+    operateType = "";
+    //删除锚点
+    function delAnchor(anchorName,anchor_point_id) {
+        var anchorName = $('#anchorName').html();
+        //锚点的名称：anchorName
+        $.ajax({
+            url: "./delAnchorPoint",
+            type: "post",
+            data: {
+                anchor_point_id:anchor_point_id
+            },
+            dataType: "json",
+            success: function (res) {
+                RealBimOcx.DelAnchorBegin();
+                RealBimOcx.DeleteAnchor(anchorName);
+                RealBimOcx.DelAnchorEnd();
+                RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+                $('#defaultAttr').show();
+                $('#anchorLayerTab').hide();
+            }
+        });
+
+    };
+    //保存标注
+    $('#save').click(function () {
+        var remarkTag = $('#remarkTag').text();
+        if(remarkTag=='请输入内容'||remarkTag==''){
+            $('#remarkTag').focus();
+            return false;
+        }
+        RealBimOcx.CreateMarkerEndInMem(true, 0, 0, true, true);  //保存标注
+    });
+    //回显标注
+    // TODO 需要重构
+    function getLabelTag() {
+        $.ajax({
+            url: "./getLabelSnapshot",
+            type: "post",
+            data: {
+                picture_id:uObjSubIdSingle,
+                type:1
+            },
+            dataType: "json",
+            success: function (res) {
+                var imgPathArr = [];
+                for(var i = 0;i<res.data.length;i++){
+                    var base64PicData = res.data[i].compress_base64;
+                    var base64RenData = res.data[i].label_snapshot;
+                    var imgPathSplit = res.data[i].base64_val_url.split('.');
+                    imgPath = imgPathSplit[1]+ '.'+imgPathSplit[2];
+                    imgPathArr.push('<div class="swiper-slide swiperSlide">');
+                    imgPathArr.push('<img src='+ imgPath +' alt="">');
+                    imgPathArr.push('<div class="mask">');
+                    imgPathArr.push('<div class="right">');
+                    imgPathArr.push('<a href="javascript:;" onclick="imageSaveAs(imgPath)" title="标注另存为">');
+                    imgPathArr.push('<i class="fa fa-save"></i>');
+                    imgPathArr.push('</a>');
+                    imgPathArr.push('<a href="javascript:;" title="删除标注">');
+                    imgPathArr.push('<i class="fa fa-close" uid='+ res.data[i].label_snapshot_id +' onclick="del(this)"></i>');
+                    imgPathArr.push('</a>');
+                    imgPathArr.push('</div>');
+                    imgPathArr.push('<div class="scenter">');
+                    imgPathArr.push('<a href="javascript:;" uid='+ res.data[i].label_snapshot +' title="查看标注" onclick="view(this)">');
+                    imgPathArr.push('<i class="fa fa-search"></i>');
+                    imgPathArr.push('</a>');
+                    imgPathArr.push('</div>');
+                    imgPathArr.push('<div class="center">'+ res.data[i].create_time +'</div>');
+                    imgPathArr.push('</div>');
+                    imgPathArr.push('</div>');
+                }
+                tagSwiper.prependSlide(imgPathArr.join(' '));
+            }
+        })
+    }
+    getLabelTag();
+
+    //回显快照
+    // TODO 需要重构
+    function getLabelSnapshot() {
+        $.ajax({
+            url: "./getLabelSnapshot",
+            type: "post",
+            data: {
+                picture_id:uObjSubIdSingle,
+                type:2
+            },
+            dataType: "json",
+            success: function (res) {
+                var snapshotImgPathArr = [];
+                for(var i = 0;i<res.data.length;i++){
+                    var base64PicData = res.data[i].compress_base64;
+                    var base64RenData = res.data[i].label_snapshot;
+                    var imgPathSplit = res.data[i].base64_val_url.split('.');
+                    snapshotImgPath = imgPathSplit[1]+ '.'+imgPathSplit[2];
+                    snapshotImgPathArr.push('<div class="swiper-slide swiperSlide">');
+                    snapshotImgPathArr.push('<img src='+ snapshotImgPath +' alt="">');
+                    snapshotImgPathArr.push('<div class="mask">');
+                    snapshotImgPathArr.push('<div class="right">');
+                    snapshotImgPathArr.push('<a href="javascript:;" onclick="imageSaveAs(snapshotImgPath)" title="快照另存为">');
+                    snapshotImgPathArr.push('<i class="fa fa-save"></i>');
+                    snapshotImgPathArr.push('</a>');
+                    snapshotImgPathArr.push('<a href="javascript:;" title="删除快照">');
+                    snapshotImgPathArr.push('<i class="fa fa-close" uid='+ res.data[i].label_snapshot_id +' onclick="del(this)"></i>');
+                    snapshotImgPathArr.push('</a>');
+                    snapshotImgPathArr.push('</div>');
+                    snapshotImgPathArr.push('<div class="scenter">');
+                    snapshotImgPathArr.push('<a href="javascript:;" uid='+ res.data[i].label_snapshot +' title="查看快照" onclick="view(this)">');
+                    snapshotImgPathArr.push('<i class="fa fa-search"></i>');
+                    snapshotImgPathArr.push('</a>');
+                    snapshotImgPathArr.push('</div>');
+                    snapshotImgPathArr.push('<div class="center">'+ res.data[i].create_time +'</div>');
+                    snapshotImgPathArr.push('</div>');
+                    snapshotImgPathArr.push('</div>');
+                }
+                snapshotSwiper.prependSlide(snapshotImgPathArr.join(' '));
+            }
+        })
+    }
+    getLabelSnapshot();
+
+    //查看标注快照
+    function view(that) {
+        var base64RenData = $(that).attr('uid');
+        RealBimOcx.ShowSnapshotOrMarkerInMem(base64RenData);
+    }
+
+    //删除标注/快照
+    function del(that) {
+        var label_snapshot_id = $(that).attr('uid');
+        $.ajax({
+            url: "./delLabelSnapshot",
+            type: "post",
+            data: {
+                label_snapshot_id:label_snapshot_id
+            },
+            dataType: "json",
+            success: function (res) {
+                $(that).parents('.swiperSlide').remove();
+                tagSwiper.update();
+                snapshotSwiper.update();
+                layer.msg(res.msg);
+            }
+        });
+    }
+
+    //键盘事件
+    $(document).keyup(function (event) {
+        var KeyCode = (navigator.appname=="Netscape")?event.which:window.event.keyCode;
+        if ( KeyCode == 27 ){
+            RealBimOcx.AddAnchorEnd();
+            RealBimOcx.CreateMarkerEnd("", 0, 0, "", true);
+            RealBimOcx.SetAllSubClrInfos(0,0,0xff); //颜色重置为空
+            uObjSubIDArr.length=0;
+        }
+    });
+
+    //标注图片滚动
+    window.tagSwiper = new Swiper ('#tag', {
+        nextButton: '.tag-button-next',
+        prevButton: '.tag-button-prev',
+        slidesPerView : 4,
+        spaceBetween: 30,
+        centeredSlides: false,
+        paginationClickable: true,
+        mousewheelControl : true,
+        keyboardControl : true
+    });
+
+    //快照图片滚动
+    window.snapshotSwiper = new Swiper ('#snapshot', {
+        nextButton: '.snapshot-button-next',
+        prevButton: '.snapshot-button-prev',
+        slidesPerView : 4,
+        spaceBetween: 30,
+        centeredSlides: false,
+        paginationClickable: true,
+        mousewheelControl : true,
+        keyboardControl : true
+    });
+
+    //初始化标注/快照滚动
+    $('#tt').tabs({
+        onSelect: function(title,index){
+            tagSwiper.update();
+            snapshotSwiper.update();
+        }
+    });
+
+    //添加快照
+    window.addSnapshot = function (base64RenData) {
+        var img =
+            '<div class="swiper-slide swiperSlide">' +
+            '<img src="data:image/png;base64,'+ base64PicData +'" alt="">' +
+            '<div class="mask">' +
+            '<div class="right">' +
+            '<a href="javascript:;" onclick="imageSaveAs(base64PicData)" title="快照另存为">' +
+            '<i class="fa fa-save"></i>' +
+            '</a>' +
+            '<a href="javascript:;" title="删除快照">' +
+            '<i class="fa fa-close" id="del"></i>' +
+            '</a>' +
+            '</div>'+
+            '<div class="scenter">' +
+            '<a href="javascript:;" title="查看快照">' +
+            '<i class="fa fa-search"></i>' +
+            '</a>' +
+            '</div>' +
+            '<div class="center">2018-04-20</div>'+
+            '</div>'+
+            '</div>';
+        return img;
+    }
+    //标注/快照操作蒙版
+    $('.swiper-wrapper').on('mouseover mouseleave','div',function (e) {
+        if(e.type == 'mouseover'){
+            $(this).find('div.mask').stop(true,true).fadeIn(500);
+        }else {
+            $(this).find('div.mask').stop(true,true).fadeOut(500);
+        }
+    });
+    //标注/快照保存成图片
+    function imageSaveAs(imgURL) {
+        var pagePop = window.open(imgURL, "", "width=1, height=1, top=5000, left=5000");
+        for (; pagePop.document.readyState !== "complete";) {
+            if (pagePop.document.readyState === "complete")
+                break;
+        }
+        pagePop.document.execCommand("SaveAs");
+        pagePop.close();
+    }
+
+    /*layui.use('element', function(){
+        var element = layui.element;
+    });*/
+    //属性切换
+    $('#toogleAttr li').click(function () {
+        var uid = $(this).attr('uid');
+        $(this).addClass('active').siblings().removeClass('active');
+        $('#'+ uid).show().siblings('div').hide();
+    });
+
+    //上传附件
+    /*$.upload({
+        btnText:''
+    });*/
+
+    //评论@人员选择
+    $('#at').click(function () {
+        window.open("./selectperson", "人员选择", "height=560, width=1000, top=200,left=400, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no,status=no");
+    });
+
+    //添加自定义属性
+    $('#addAttr').click(function () {
+        var attrGroup = [];
+        attrGroup.push('<div class="layui-input-inline attrGroup">');
+        attrGroup.push('<input type="text" name="attrKey" required  lay-verify="required" placeholder="属性名" autocomplete="off" class="layui-input">');
+        attrGroup.push('<input type="text" name="attrVal" required  lay-verify="required" placeholder="属性值" autocomplete="off" class="layui-input">');
+        attrGroup.push('<div class="layui-form-mid layui-word-aux">');
+        attrGroup.push('<i class="fa fa-check saveAttr" onclick="saveAttr(this)"></i>');
+        attrGroup.push('<i class="fa fa-close closeAttr" onclick="closeAttr(this)"></i>');
+        attrGroup.push('</div>');
+        attrGroup.push('</div>');
+        $('#attrGroup').append(attrGroup.join(' '));
+    });
+
+    //保存自定义属性
+    function saveAttr(that) {
+        var picture_id = uObjSubIdSingle;
+        var attrKey = $(that).parents('.attrGroup').find('input[name="attrKey"]').val();
+        var attrVal = $(that).parents('.attrGroup').find('input[name="attrVal"]').val();
+        $.ajax({
+            url: "./addAttr",
+            type: "post",
+            data: {
+                picture_id:picture_id,
+                attrKey:attrKey,
+                attrVal:attrVal
+            },
+            dataType: "json",
+            success: function (res) {
+                layer.msg(res.msg);
+            }
+        });
+    }
+
+    //回显自定义属性
+    function getAttr() {
+        var picture_id = uObjSubIdSingle;
+        $.ajax({
+            url: "./getAttr",
+            type: "post",
+            data: {
+                picture_id:picture_id,
+            },
+            dataType: "json",
+            success: function (res) {
+                $('#attrGroup').empty();
+                var attrGroup = [];
+                for(var i = 0;i<res.attr.length;i++){
+                    var attrKey = res.attr[i].attrKey;
+                    var attrVal = res.attr[i].attrVal;
+                    attrGroup.push('<div class="layui-input-inline attrGroup">');
+                    attrGroup.push('<input type="text" name="attrKey" value='+ attrKey +' required  lay-verify="required" placeholder="属性名" autocomplete="off" class="layui-input">');
+                    attrGroup.push('<input type="text" name="attrVal" value='+ attrVal +' required  lay-verify="required" placeholder="属性值" autocomplete="off" class="layui-input">');
+                    attrGroup.push('<div class="layui-form-mid layui-word-aux">');
+                    attrGroup.push('<i class="fa fa-check saveAttr" onclick="saveAttr(this)"></i>');
+                    attrGroup.push('<i class="fa fa-close closeAttr" onclick="closeAttr(this)"></i>');
+                    attrGroup.push('</div>');
+                    attrGroup.push('</div>');
+                }
+                $('#attrGroup').append(attrGroup.join(' '));
+            }
+        });
+    }
+
+    //删除自定义属性
+    function closeAttr(that) {
+        $(that).parents('.layui-input-inline').remove();
+    }
+
+    //添加备注信息
+    $('#addRemark').click(function () {
+        if(!uObjSubIdSingle){
+            layer.msg('请选择模型');
+            return false;
+        }
+        var picture_id = uObjSubIdSingle;
+        var remarkVal = $('#remark').text();
+        $.ajax({
+            url: "./addRemark",
+            type: "post",
+            data: {
+                picture_id:picture_id,
+                remark:remarkVal
+            },
+            dataType: "json",
+            success: function (res) {
+                layer.msg(res.msg);
+            }
+        })
+    });
+
+    //回显备注信息
+    function getRemark() {
+        var picture_id = uObjSubIdSingle;
+        $.ajax({
+            url: "./getRemark",
+            type: "post",
+            data: {
+                picture_id:picture_id
+            },
+            dataType: "json",
+            success: function (res) {
+                $('#remark').text(res.remark);
+            }
+        })
+    }
+
+    // 添加锚点
+    $('#saveAnchor').click(function () {
+        var picture_id = uObjSubIdSingle;
+        var anchorName = $('#anchorName').html();
+        var user_name = $('div[uid="createName"]').html();
+        var create_time = $('div[uid="createDate"]').html();
+        var componentName = $('#componentName').html();
+        var remark = $('textarea[name="anchorRemark"]').text();
+        console.log(remark);
+        var fObjSelX = $('#fObjSelX').val();
+        var fObjSelY = $('#fObjSelY').val();
+        var fObjSelZ = $('#fObjSelZ').val();
+        $.ajax({
+            url: "./anchorPoint",
+            type: "post",
+            data: {
+                picture_id:picture_id,
+                anchorName:anchorName,
+                user_name:user_name,
+                create_time:create_time,
+                componentName:componentName,
+                remark:remark,
+                fObjSelX:fObjSelX,
+                fObjSelY:fObjSelY,
+                fObjSelZ:fObjSelZ
+            },
+            dataType: "json",
+            success: function (res) {
+                layer.msg(res.msg);
+            }
+        });
+    });
+
+    //删除锚点
+    $('#delAnchor').click(function () {
+        var anchorName = $('#anchorName').html();
+        var anchor_point_id = $(this).attr('uid');
+        delAnchor(anchorName,anchor_point_id);
+    });
+
+    //点击锚点
+    function getAnchorPoint(anchorName) {
+        $.ajax({
+            url: "./getAnchorPoint",
+            type: "post",
+            data: {
+                anchorName:anchorName
+            },
+            dataType: "json",
+            success: function (res) {
+                $('#anchorName').html(res[0].anchor_name);
+                $('#componentName').html(res[0].component_name);
+                $('textarea[name="anchorRemark"]').text(res[0].remark);
+                $('#delAnchor').attr('uid',res[0].anchor_point_id);
+                $('#fObjSelX').val(res[0].coordinate_x);
+                $('#fObjSelY').val(res[0].coordinate_y);
+                $('#fObjSelZ').val(res[0].coordinate_z);
+                console.log(res.img_arr);
+                var anchor_point_id = res[0].anchor_point_id;
+                for(var i = 0;i<res.img_arr.length;i++){
+                    var attachment_id = res.img_arr[i].attachment_id;
+                    uploadImage(res.img_arr[i].filepath,anchor_point_id,attachment_id);
+                }
+
+                for(var j = 0;j<res.file_arr.length;j++){
+                    var attachment_id = res.file_arr[j].attachment_id;
+                    uploadFile(res.file_arr[j].filepath,anchor_point_id,attachment_id);
+                }
+            }
+        })
+    }
+
+    //返回
+    $('#backAnchor,#back').click(function(){
+        $('#defaultAttr').show();
+        $('#anchorLayer').hide();
+    });
+
+    /**
+     * easyui面板显隐
+     */
+
+//管理信息
+    function easyUiPanelToggle() {
+        var number = $("#easyuiLayout").layout("panel", "east")[0].clientWidth;
+        if(number<=0){
+            $('#easyuiLayout').layout('expand','east');
+        }
+    }
+
+    //协同信息
+    function easyUiPanelToggleSouth() {
+        var number = $("#centent").layout("panel", "south")[0].clientWidth;
+        if(number<=0){
+            $('#centent').layout('expand','south');
+        }
+    }
+
+    //新增图片
+    function addImageFun() {
+        addImage = WebUploader.create({
+            auto: true,
+            swf:  '/static/public/webupload/Uploader.swf',
+            server: './uploadAnchorPoint',
+            pick: {
+                multiple: false,
+                id: '#addImage',
+                innerHTML: '新增图片'
+            },
+            formData:{
+                anchor_point_id:''
+            },
+            accept: {
+                title: 'Images',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/jpg,image/jpeg,image/png'
+            },
+            resize: false
+        });
+        addImage.on( 'uploadSuccess', function( file ,res) {
+            for(key in res.data){
+                if(res.data.hasOwnProperty(key)){
+                    var imgPath = res.data[key];
+                    uploadImage(imgPath);
+                }
+            }
+        });
+        addImage.on( 'uploadError', function( file ,code) {
+            console.log(code);
+        });
+        addImage.on("uploadStart",function () {
+            var anchor_point_id = $('#delAnchor').attr('uid');
+            addImage.options.formData.anchor_point_id = anchor_point_id;
+        });
+    }
+
+    //新增文档
+    function addFileFun() {
+        var addFile = WebUploader.create({
+            auto: true,
+            swf:  '/static/public/webupload/Uploader.swf',
+            server: './uploadAnchorPoint',
+            pick: {
+                multiple: false,
+                id: '#addFile',
+                innerHTML: '新增文档'
+            },
+            formData:{
+                anchor_point_id:''
+            },
+            accept: {
+                title: 'excel',
+                extensions: 'xls,xlsx',
+                mimeTypes: '.xls,.xlsx'
+            },
+            resize: false
+        });
+
+        addFile.on( 'uploadSuccess', function( file ,res) {
+            uploadFile(file.name);
+        });
+        addFile.on( 'uploadError', function( file ,code) {
+            console.log(code);
+        });
+        addFile.on("uploadStart",function () {
+            var anchor_point_id = $('#delAnchor').attr('uid');
+            addFile.options.formData.anchor_point_id = anchor_point_id;
+        });
+    }
+
+    //显示图片
+    function uploadImage(imgPath,anchor_point_id,attachment_id) {
+        console.log(imgPath);
+        var img = '<div class="img-item imgItem" >' +
+            '<img src='+ imgPath +' alt="">' +
+            '<a href="javascript:;">' +
+            '<i class="fa fa-close" onclick="delAttachmentImg(this)"  pointId='+ anchor_point_id +' attachmentId = '+ attachment_id +'></i>' +
+            '</a>' +
+            '<span></span>'+
+            '</div>';
+        $('#imgList').append(img);
+    }
+
+    //显示文档
+    function uploadFile(fileName,anchor_point_id,attachment_id) {
+        var file = '<div class="file-item">' +
+            '<div class="file-list">' +
+            '<p>'+ fileName +'</p>' +
+            '<a href="javascript:;">' +
+            '<i class="fa fa-download"  onclick="relationDownload(this)" attachmentId = '+ attachment_id +'></i>' +
+            '</a>' +
+            '<a href="javascript:;">' +
+            '<i class="fa fa-close" onclick="delAttachmentImg(this)"  pointId='+ anchor_point_id +' attachmentId = '+ attachment_id +'></i>' +
+            '</a>' +
+            '</div>' +
+            '<div class="file-info">' +
+            '<span>name</span>' +
+            '<span>date</span>' +
+            '</div>' +
+            '</div>';
+        $('#fileList').append(file);
+    }
+
+    //添加附件标签页
+    function addAttachment() {
+        $('#anchorLayerTab').tabs('close','附件');
+        var attachmentHtml = '<ul class="toggle-attr" id="anchorFile">' +
+            '        <li uid="image" class="active">图片</li>' +
+            '        <li uid="file">文档</li>' +
+            '    </ul>' +
+            '    <div id="image" class="files-wrap">' +
+            '        <div id="addImage"></div>' +
+            '        <div id="imgList">' +
+            '        </div>' +
+            '    </div>' +
+            '    <div id="file" class="files-wrap" style="display: none">' +
+            '        <div id="addFile"></div>' +
+            '        <div id="fileList"></div>' +
+            '    </div>';
+        $('#anchorLayerTab').tabs('add',{
+            title: '附件',
+            selected: false,
+            content:attachmentHtml
+        });
+        //加载图片上传插件
+        addImageFun();
+        //加载文档上传插件
+        addFileFun();
+        //图片文档切换
+        $('#anchorFile li').click(function () {
+            var uid = $(this).attr('uid');
+            $(this).addClass('active').siblings().removeClass('active');
+            $('#'+ uid).show().siblings('div').hide();
+        });
+        //添加样式
+        $('#anchorFile').parent().css('padding','20px');
+    }
+
+    //重置webupload按钮宽高
+    $('#anchorLayerTab').tabs({
+        onSelect:function(title,index){
+            $('.webuploader-pick').next().css({
+                width:'60px',
+                height:'20px',
+                right:0,
+                left:'auto'
+            });
+        }
+    });
+
+    //显示删除按钮
+    $('.imgItem').bind('mouseover mouseleave',function (e) {
+        if(e.type == 'mouseover'){
+            $(this).find("a,span").show();
+        }else{
+            $(this).find('a,span').hide();
+        }
+    });
+
+
+    //删除附件
+    function delAttachmentImg(that) {
+        var anchor_point_id = $(that).attr('pointId');
+        var attachment_id = $(that).attr('attachmentId');
+        $.ajax({
+            url: "./delAttachment",
+            type: "post",
+            data: {
+                anchor_point_id:anchor_point_id,
+                attachment_id:attachment_id
+            },
+            dataType: "json",
+            success: function (res) {
+                $(that).parents('.imgItem').remove();
+            }
+        })
+    }
+
+    //下载文档
+    function relationDownload(that) {
+        var attachment_id = $(that).attr('attachmentId');
+        $.download({
+            url:'./relationDownload',
+            data:{
+                attachment_id:attachment_id
+            }
+        })
+    }
+
 
 </script>
 </html>

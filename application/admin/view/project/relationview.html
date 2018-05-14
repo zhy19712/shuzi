@@ -1,0 +1,412 @@
+{include file="public/header" /}
+<link href="__JS__/plugins/layui/css/layui.css" rel="stylesheet">
+<link href="__JS__/plugins/easyui/easyui.css" rel="stylesheet">
+<link href="__CSS__/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+<style>
+    .center{
+        border: 0;
+    }
+    .ztree{
+        margin: 0;
+    }
+    .south{
+        padding: 10px;
+        height: 38px;
+        line-height: 38px;
+    }
+    .select-count em{
+        font-style: normal;
+        font-weight: bold;
+        color: #F00;
+    }
+    .select-count{
+        float: left;
+    }
+    .btn-wrap{
+        float: right;
+    }
+    .west-ztree{
+        margin: 7px 24px 0;
+    }
+    .west-ztree .layui-input-inline{
+        margin-right: 0;
+        width: 150px;
+    }
+    .west-ztree .layui-word-aux{
+        padding: 5px 0 !important;
+        width: 38px;
+        text-align: center;
+        background: #00a0e9;
+    }
+    .west-ztree i.fa:before{
+        color: #FFF;
+    }
+    .west-ztree .layui-input{
+        height: 30px;
+        line-height:30px\9;
+    }
+</style>
+<body class="easyui-layout gray-bg" id="easyuiLayout" style = "overflow-x: hidden; overflow-y: hidden;">
+<div data-options="region:'west',title:'已选择构件',split:true" style="width:260px;">
+    <ul id="selectZtree" class="ztree"></ul>
+</div>
+<div data-options="region:'center',title:''" class="center">
+    <div class="easyui-layout" id="relationview" data-options="fit:true">
+        <div data-options="region:'west',title:'构件树',split:true,collapsed:false" style="width:260px">
+            <div class="layui-form-item west-ztree">
+                <div class="layui-input-inline">
+                    <input type="text" name="modelName" id="modelName" required lay-verify="required" placeholder="请输入模型名称" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux" id="search">
+                    <i class="fa fa-check"></i>
+                </div>
+            </div>
+            <ul id="ztree" class="ztree"></ul>
+        </div>
+        <div data-options="region:'center'">
+            <script language="javascript"  for="RealBimOcx" EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)" type="text/javascript">
+                console.log(uObjSubID);
+                /*var node = [];
+                var treeObj = $.fn.zTree.getZTreeObj("ztree");
+                var nodes = treeObj.transformToArray(treeObj.getNodes());
+                for(var i = 0;i<nodes.length;i++){
+                    if(nodes[i].name == 'Y-Ⅵ-969.30-CZ0+024.000-0+054.000'){
+                        node.push(nodes[i]);
+                        treeObj.checkNode(nodes[i],true);
+                    }
+                }*/
+                creatSelectedZtree(node,uObjSubID);
+
+                RealBimOcx.ExitSubObjFlicker();
+
+                RealBimOcx.BatchAddSubClrInfoBegin();
+                RealBimOcx.AddSubClrPercent(uObjSubID,1,0x80ffa500);
+                RealBimOcx.BatchAddSubClrInfoEnd();
+                // //设置模型的可见性，0为不可见，1为可见。通过模型id进行关联。
+                // RealBimOcx.SetHugeObjSubValidStateBegin();
+                // RealBimOcx.SetHugeObjSubValidStateInfo(uObjSubID, 1);
+                // RealBimOcx.SetHugeObjSubValidStateEnd();
+                // RealBimOcx.SetAllHugeObjSubValidState(0); //全部不显示
+
+
+                //点击树的时候加载
+                //RealBimOcx.SetAllHugeObjSubValidState(0); //全部不显示
+                //RealBimOcx.SetHugeObjSubValidStateBegin();
+                // for(var i = 0;i<arr.length;i++){        //多层关联可见性
+                //RealBimOcx.SetHugeObjSubValidStateInfo(uObjSubID, 1);
+                //}
+                //RealBimOcx.SetHugeObjSubValidStateEnd();
+
+                //点击表格数据的时候 加载
+                // RealBimOcx.FocusCameraToComponent(uObjSubID,3);
+
+
+                //获取一个构件的可见性状态
+                //ULONG uObjSubID:构件ID
+                //返回值表示指定构件的有效性:(0表示构件无效，1表示构件有效）
+                // ULONG GetAHugeObjSubValidState(ULONG uObjSubID);
+
+
+
+                //进入闪烁构件的设置状态
+                //FlickerSwitchTimes:闪烁次数
+                //FlickerInterval：闪烁时间间隔
+                //Alpha0，AlphaAmp0，RGBBlendInfo0，Alpha1，AlphaAmp1，RGBBlendInfo1：两种闪烁状态的透明度，透明度混合系数，以及颜色和颜色混合系数，与AddSubClrInfo()的后三个参数用法相同
+                // void SetSubObjFlickerBegin(LONG FlickerSwitchTimes,LONG FlickerInterval, BYTE Alpha0, BYTE AlphaAmp0, ULONG RGBBlendInfo0, BYTE Alpha1, BYTE AlphaAmp1, ULONG RGBBlendInfo1);
+
+                // RealBimOcx.SetSubObjFlickerBegin(20,1000,255,255,0xff87ceeb,255,255,0x8000008b);
+                // RealBimOcx.AddFlickerSubObjects(uObjSubID);
+                // RealBimOcx.SetSubObjFlickerEnd();
+
+
+                // 设置透明度和颜色：0为全透明，1为不透明
+                //RealBimOcx.BatchAddSubClrInfoBegin();
+               //RealBimOcx.AddSubClrPercent(uObjSubID,0.8,0x80ff0000);
+                //RealBimOcx.BatchAddSubClrInfoEnd();
+
+
+
+                //设置最佳视角
+                // RealBimOcx.SetSuitableCam();
+
+
+            </script>
+            <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="90%"></object>
+
+            <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
+                // RealBimOcx.SwitchBIMSceneSimple("http://192.168.1.58:8008/default.aspx?dir=url_res02&path=","res_fengning_kw_03");
+
+                //设置服务url
+                //RealBimOcx.SwitchBIMSceneSimple("F:\\","res_fengning_kw_03");
+                RealBimOcx.SwitchBIMSceneSimple("http://192.168.1.2:8008/default.aspx?dir=url_res02&path=","res_fengning_kw");
+                RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
+
+                RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
+                RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
+            </script>
+
+            <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
+                if(CompleteEvent == "LoadMainScene" && retError==0 ){
+                    RealBimOcx.SetAllHugeObjSubValidState(1);
+                    //RealBimOcx.SetSceHugeObjVisible(false);
+                }
+
+                RealBimOcx.SetSuitableCam();
+
+                //加载模型试图
+                window.loadModel = function (number) {
+                    if(number==''){
+                        RealBimOcx.SetAllHugeObjSubValidState(0);
+                    }else{
+                        RealBimOcx.SetAllHugeObjSubValidState(0);   //设置模型全部不可见
+                        RealBimOcx.SetHugeObjSubValidStateBegin();  //启用模型可见
+                        RealBimOcx.SetHugeObjSubValidStateInfo(number, 1); //设置单个模型可见
+                        RealBimOcx.SetHugeObjSubValidStateEnd();   //停用模型可见
+                        RealBimOcx.FocusCameraToComponent(number,1); //3：视角距离
+                        //模型视图闪烁
+                        RealBimOcx.SetSubObjFlickerBegin(3,500,255,255,0xffffff,255,255,0x80ff0000);
+                        RealBimOcx.AddFlickerSubObjects(number);
+                        RealBimOcx.SetSubObjFlickerEnd();
+                    }
+                };
+
+                //取消模型闪烁
+                window.cancelTwinkle = function () {
+                    RealBimOcx.ExitSubObjFlicker();
+                }
+                //FlickerSwitchTimes:闪烁次数
+                //FlickerInterval：闪烁时间间隔
+                //Alpha0，AlphaAmp0，RGBBlendInfo0，Alpha1，AlphaAmp1，RGBBlendInfo1：两种闪烁状态的透明度，透明度混合系数，以及颜色和颜色混合系数，与AddSubClrInfo()的后三个参数用法相同
+                // void SetSubObjFlickerBegin(LONG FlickerSwitchTimes,LONG FlickerInterval, BYTE Alpha0, BYTE AlphaAmp0, ULONG RGBBlendInfo0, BYTE Alpha1, BYTE AlphaAmp1, ULONG RGBBlendInfo1);
+            </script>
+        </div>
+    </div>
+</div>
+<div class="south" data-options="region:'south',title:''">
+    <div class="select-count">
+        <p>已选择构件数量：<em id="selectCount">0</em></p>
+    </div>
+    <div class="btn-wrap">
+        <button class="layui-btn layui-btn-normal" id="save">保存</button>
+        <button class="layui-btn layui-btn-danger" id="close">关闭</button>
+    </div>
+</div>
+{include file="public/footer" /}
+<script src="__JS__/plugins/easyui/jquery.easyui.min.js"></script>
+<script src="__JS__/jquery.ztree.all.js"></script>
+<script type="text/javascript">
+    var unitEnginNoId = document.cookie.split(';')[0].split('=')[1];    //单元工程段号编号
+    var one_picture_id; //模型主键
+    //加载构件树
+    var modelId = [];
+    $.ajax({
+        url: "./openModelPicture",
+        type: "post",
+        dataType: "json",
+        data:{
+            id:window.unitEnginNoId
+        },
+        success: function (res) {
+            one_picture_id = res.one_picture_id;
+            //转换节点数据
+            var nodes = JSON.parse(res.data);
+            setZtree(nodes);
+        }
+    });
+
+    //构建构件树
+    /*var nodes = [
+        {id:1, pId:0, name: "子节点0"},
+        {id:2, pId:0, name: "子节点1"},
+        {id:3, pId:0, name: "子节点2"}
+    ];
+    var setting = {
+        check: {
+            enable: true
+        },
+        data: {
+            simpleData: {
+                enable: true,
+                idKey: "id",
+                pIdKey: "pId"
+            }
+        },
+        view:{
+            selectedMulti: false
+        },
+        callback:{
+            onCheck: zTreeOnCheck,
+            onClick: zTreeOnClick
+        },
+        showLine:true,
+        showTitle:true,
+        showIcon:true
+    };
+
+    zTreeObj = $.fn.zTree.init($("#ztree"), setting, nodes);*/
+    function setZtree(nodes) {
+        var setting = {
+            check: {
+                enable: true
+            },
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "pId"
+                }
+            },
+            view:{
+                selectedMulti: false
+            },
+            callback:{
+                onCheck: zTreeOnCheck,
+                onClick: zTreeOnClick
+            },
+            showLine:true,
+            showTitle:true,
+            showIcon:true
+        };
+
+        zTreeObj = $.fn.zTree.init($("#ztree"), setting, nodes);
+        echoRelation();
+    }
+
+    //回显已关联节点
+    function echoRelation() {
+        var treeObj = $.fn.zTree.getZTreeObj("ztree");
+        if(!treeObj){
+            return false;
+        }
+        var checkedNode = treeObj.getNodeByParam('picture_id',one_picture_id);
+        if(!checkedNode){
+            return false;
+        }
+        console.log(checkedNode);
+        treeObj.checkNode(checkedNode,true,false);
+    }
+    echoRelation();
+
+    //加载模型视图
+    function zTreeOnCheck(event, treeId, treeNode) {
+        console.log(treeNode);
+        picture_id = treeNode.picture_id;
+        //勾选定位模型
+        /*if(treeNode.checked){
+            loadModel(treeNode.add_id);
+        }*/
+        // TODO:一对多
+        /*var node = [];
+        var treeObj = $.fn.zTree.getZTreeObj("ztree");
+        var nodes = treeObj.getCheckedNodes(true);
+        for(var i = 0;i<nodes.length;i++){
+            if(nodes[i].isParent==undefined||nodes[i].isParent==false){
+                node.push(nodes[i]);
+            }
+        }
+        creatSelectedZtree(node);*/
+
+        // TODO:一对一
+        var node = [];
+        var treeObj = $.fn.zTree.getZTreeObj("ztree");
+        var checkedNodes = treeObj.getCheckedNodes(true);
+        for(var i = 0;i<checkedNodes.length;i++){
+            treeObj.checkNode(checkedNodes[i],false,false);
+        }
+        node.push(treeNode);
+        treeObj.checkNode(treeNode,true,false);
+        creatSelectedZtree(node);
+    }
+
+    //构建已选构件树
+    window.creatSelectedZtree = function (node,uObjSubID) {
+        var setting = {
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "pId"
+                }
+            },
+            view:{
+                selectedMulti: false
+            },
+            callback:{
+                onClick: function (event, treeId, treeNode) {
+                    zTreeOnClick(event, treeId, treeNode);
+                }
+            },
+            showLine:true,
+            showTitle:true,
+            showIcon:true
+        };
+        zTreeObj = $.fn.zTree.init($("#selectZtree"), setting, node);
+        var checkedNodes = zTreeObj.getCheckedNodes(true);
+        $('#selectCount').text(checkedNodes.length);
+    }
+
+    //选中关联节点及加载模型视图
+    function zTreeOnClick(event, treeId, treeNode) {
+        var number = treeNode.picture_number;
+        var treeObj = $.fn.zTree.getZTreeObj("ztree");
+        var nodes = treeObj.getNodesByParam("id",treeNode.id);
+        treeObj.selectNode(nodes[0],true);
+        loadModel(number);
+    }
+
+    $('#save').click(function () {
+        var unitEnginNoId = document.cookie.split(';')[0].split('=')[1];
+        //保存关联模型
+        if(!picture_id){
+            return false;
+        }
+        $.ajax({
+            url: "./addModelPicture",
+            type: "post",
+            data: {
+                id:unitEnginNoId,
+                picture_id:picture_id
+            },
+            dataType: "json",
+            success: function (res) {
+                layer.msg(res.msg);
+            }
+        })
+    });
+
+    $('#close').click(function () {
+        window.close();
+    });
+
+    //搜索模型
+    $('#search').click(function () {
+        var inputModelName = $('#modelName').val();
+        var search_name = $.trim(inputModelName);
+        $.ajax({
+            url: "./searchModel",
+            type: "post",
+            data: {
+                id:unitEnginNoId,
+                search_name:search_name
+            },
+            dataType: "json",
+            success: function (res) {
+                var nodes = JSON.parse(res.data);
+                setZtree(nodes);
+            }
+        })
+        /* var treeObj = $.fn.zTree.getZTreeObj("ztree");
+         var nodes = treeObj.getNodes();
+         console.log(nodes);
+         var nodeArr = [];
+         for(var i = 0;i<nodes.length;i++){
+             nodeArr.push(nodes[i].name);
+         }
+         var nodesName = nodeArr.join();
+         if(nodesName.indexOf(modelName)){
+             treeObj.selectNode(nodes[i]);
+         }*/
+    });
+</script>
+</body>
+</html>

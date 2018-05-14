@@ -631,8 +631,10 @@
                 "orderable": false,
                 "targets": [8],
                 "render" :  function(data,type,row) {
+                    console.log(row[0]);
                     var html = "<input type='button' class='btn btn-info btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='查看'/>";
                     html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='edit(this)' value='编辑'/>" ;
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' uid="+ row[0] +" onclick='relation(this)' value='关联模型'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
                 }
@@ -741,6 +743,14 @@ function edit(that) {
     function del(that) {
         var uid = $(that).parent("td").parent("tr").children("td:first-child").text();
         myconfirm(uid,'{:url("projectDel")}');
+    }
+    
+    //关联模型
+    function relation(that) {
+        var uid = $(that).attr('uid');
+        console.log(uid);
+        document.cookie="unitEnginNoId="+uid;
+        window.open('./openModelPicture');
     }
 //组织结构
     var zTreeObj;
