@@ -688,7 +688,7 @@ class Index extends Base
     }
 
     /**
-     * 管理3D-统计未验评、优良、合格
+     * 管理3D-统计尚未评定、优良、合格
      * @return mixed
      */
     public function countUnit()
@@ -733,6 +733,7 @@ class Index extends Base
 
             $count = array_count_values(array_column($unit_data,"quality_level"));
 
+
             //尚未评定、合格、优良
             $data["excellent_number"] = empty($count["优良"]) ? 0 : $count["优良"];//优良数量
             $data["qualified_number"] = empty($count["合格"]) ? 0 : $count["合格"];//合格数量
@@ -742,10 +743,10 @@ class Index extends Base
             $data["qualified_rate"] = round($data["qualified_number"] / $total * 100);//合格率
             $data["unchecked_rate"] = round($data["unchecked_number"] / $total * 100);//尚未评定率
 
-            //定义两个空数组表示优良、合格
+            //定义三个空数组表示优良、合格、尚未评定
             $excellent = array();
             $qualified = array();
-
+            $unchecked = array();
             foreach ($unit_data as $key => $val)
             {
                 switch($val["quality_level"])
@@ -765,6 +766,7 @@ class Index extends Base
         {
             $excellent = [];
             $qualified = [];
+            $unchecked = [];
             $data = [];
         }
 
