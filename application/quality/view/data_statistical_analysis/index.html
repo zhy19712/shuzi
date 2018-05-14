@@ -66,7 +66,7 @@
                                         <li><a href="#drainage_engineering">排水孔</a></li>
                                     </ul>
                                     <div class="tab-content">
-                                        <div class="tab-pane  active" id="excavation_engineering">
+                                        <div class="tab-pane active" id="excavation_engineering">
                                             <div class="myheader">
                                                 <div id="excavation">
                                                     <ul id="myTabB" class="nav nav-tabs">
@@ -1360,47 +1360,7 @@
                 var myChartPointH = echarts.init(document.getElementById('mainPointH'));
                 var myChartPieH = echarts.init(document.getElementById('mainPieH'));
                 //支护工程
-                //喷砼厚度
-                var myChartBarThickness = echarts.init(document.getElementById('mainBarThickness'));
-                var myChartLineThickness = echarts.init(document.getElementById('mainLineThickness'));
-                var myChartPointThickness = echarts.init(document.getElementById('mainPointThickness'));
-                var myChartPieThickness = echarts.init(document.getElementById('mainPieThickness'));
-                //喷砼强度
-                var myChartBarStrengthS = echarts.init(document.getElementById('mainBarStrengthS'));
-                var myChartLineStrengthS = echarts.init(document.getElementById('mainLineStrengthS'));
-                var myChartPointStrengthS = echarts.init(document.getElementById('mainPointStrengthS'));
-                var myChartPieStrengthS = echarts.init(document.getElementById('mainPieStrengthS'));
-                var myChartBarStrengthM = echarts.init(document.getElementById('mainBarStrengthM'));
-                var myChartLineStrengthM = echarts.init(document.getElementById('mainLineStrengthM'));
-                var myChartPointStrengthM = echarts.init(document.getElementById('mainPointStrengthM'));
-                var myChartPieStrengthM = echarts.init(document.getElementById('mainPieStrengthM'));
-                //锚杆砂浆强度
-                var myChartBarMortarStrengthS = echarts.init(document.getElementById('mainBarMortarStrengthS'));
-                var myChartLineMortarStrengthS = echarts.init(document.getElementById('mainLineMortarStrengthS'));
-                var myChartPointMortarStrengthS = echarts.init(document.getElementById('mainPointMortarStrengthS'));
-                var myChartPieMortarStrengthS = echarts.init(document.getElementById('mainPieMortarStrengthS'));
-                var myChartBarMortarStrengthM = echarts.init(document.getElementById('mainBarMortarStrengthM'));
-                var myChartLineMortarStrengthM = echarts.init(document.getElementById('mainLineMortarStrengthM'));
-                var myChartPointMortarStrengthM = echarts.init(document.getElementById('mainPointMortarStrengthM'));
-                var myChartPieMortarStrengthM = echarts.init(document.getElementById('mainPieMortarStrengthM'));
-                //锚杆无损测试
-                var myChartBarStructiveS = echarts.init(document.getElementById('mainBarStructiveS'));
-                var myChartLineStructiveS = echarts.init(document.getElementById('mainLineStructiveS'));
-                var myChartPointStructiveS = echarts.init(document.getElementById('mainPointStructiveS'));
-                var myChartPieStructiveS = echarts.init(document.getElementById('mainPieStructiveS'));
-                var myChartBarStructiveM = echarts.init(document.getElementById('mainBarStructiveM'));
-                var myChartLineStructiveM = echarts.init(document.getElementById('mainLineStructiveM'));
-                var myChartPointStructiveM = echarts.init(document.getElementById('mainPointStructiveM'));
-                var myChartPieStructiveM = echarts.init(document.getElementById('mainPieStructiveM'));
-                //锚杆拉力测试
-                var myChartBarPullTestS = echarts.init(document.getElementById('mainBarPullTestS'));
-                var myChartLinePullTestS = echarts.init(document.getElementById('mainLinePullTestS'));
-                var myChartPointPullTestS = echarts.init(document.getElementById('mainPointPullTestS'));
-                var myChartPiePullTestS = echarts.init(document.getElementById('mainPiePullTestS'));
-                var myChartBarPullTestM = echarts.init(document.getElementById('mainBarPullTestM'));
-                var myChartLinePullTestM = echarts.init(document.getElementById('mainLinePullTestM'));
-                var myChartPointPullTestM = echarts.init(document.getElementById('mainPointPullTestM'));
-                var myChartPiePullTestM = echarts.init(document.getElementById('mainPiePullTestM'));
+
                 /*混凝土工程*/
                 //出机口温度
                 var myChartBarOutletTemp = echarts.init(document.getElementById('mainBarOutletTemp'));
@@ -1447,12 +1407,10 @@
                     },
                     dataType:'json',
                     success:function (res) {
-                        console.log(res);
                         var data = res.excavate_data.open_cut;
                         var max_val = data.max_val;
                         var mix_val = data.min_val;
                         var average_val = data.average_val;
-                        console.log(data);
                         var dataH = res.excavate_data.hole_digging;
                         var max_valH = dataH.max_val;
                         var mix_valH = dataH.min_val;
@@ -1472,7 +1430,7 @@
                                     }
                                 },
                                 legend: {
-                                    data: ['最大值', '平均值', '最小值']
+                                    data: ['最大值', '最小值', '平均值']
                                 },
                                 grid: {
 
@@ -1495,14 +1453,14 @@
                                         data: max_val
                                     },
                                     {
-                                        name: '平均值',
-                                        type: 'bar',
-                                        data: average_val
-                                    },
-                                    {
                                         name: '最小值',
                                         type: 'bar',
                                         data: mix_val
+                                    },
+                                    {
+                                        name: '平均值',
+                                        type: 'bar',
+                                        data: average_val
                                     }
                                 ]
                             });
@@ -1813,11 +1771,10 @@
 
                     }
 
-                })
+                });
 
                 var that = $("#myTab li:first-child a");
                 setData(that,tId);
-
             }else{
                 $("#content").css("visibility", "none");
             }
@@ -1847,10 +1804,8 @@
         };
         zTreeObj = $.fn.zTree.init($("#tree_container"), setting,null);
 
-
-
+        //工程类型切换
         function setData(that,tId) {
-
             var inText = $(that).html();
             if( inText == '开挖工程'){
             }else if(inText == '支护工程'){
@@ -1863,26 +1818,32 @@
                     },
                     dataType:'json',
                     success:function (res) {
+                        console.log(res);
                         //喷砼厚度数据
-                        var data = res.excavate_data.builder;
-                        var design_data = data.design_data;
-                        var design_val = design_data.design_val;
-                        var supporting_area = design_data.supporting_area;
-                        var thickness_number = design_data.thickness_number;
-                        var pass = design_data.pass;
-                        var max = design_data.max;
-                        var min = design_data.min;
-                        var avg_val = design_data.avg_val;
+                        var data = res.excavate_data.zhihu_h;
+                        var design_val = data.ex_control_criterion;
+                        var supporting_area = data.supporting_area;
+                        var thickness_number = data.thickness_number;
+                        var pass = data.pass;
+                        var max = data.max;
+                        var min = data.min;
+                        var avg_val = data.avg_val;
                         if (res.code === 1) {
                             //喷砼厚度
                             var strThickness = '';
                             for (var i = 0;i<design_val.length;i++){
-                                strThickness += '<tr><td>'+design_val[i]+'</td><td>'+supporting_area[i]+'</td><td>'+thickness_number[i]+'</td><td>'+max[i]+'</td><td>'+min[i]+'</td><td>'+avg_val[i]+'</td><td>'+pass[i]+'</td></tr>';
+                                strThickness += '<tr><td>'+design_val[i]+'</td><td>'+supporting_area+'</td><td>'+thickness_number+'</td><td>'+max[i]+'</td><td>'+min[i]+'</td><td>'+avg_val+'</td><td>'+pass+'</td></tr>';
                             }
                             $("#hotcreteThicknessF tbody").empty().append(strThickness);
                             var strThicknessT = '';
                             strThicknessT = '<tr><td>'+data.supporting_area+'</td><td>'+data.thickness_number+'</td><td>'+data.max+'</td><td>'+data.min+'</td><td>'+data.avg_val+'</td><td>'+data.pass+'</td></tr>';
                             $("#hotcreteThicknessT tbody").empty().append(strThicknessT);
+
+                            //喷砼厚度
+                            var myChartBarThickness = echarts.init(document.getElementById('mainBarThickness'));
+                            var myChartLineThickness = echarts.init(document.getElementById('mainLineThickness'));
+                            var myChartPointThickness = echarts.init(document.getElementById('mainPointThickness'));
+                            var myChartPieThickness = echarts.init(document.getElementById('mainPieThickness'));
                             //最大值最小值柱状图
                             myChartBarThickness.setOption({
                                 title: {
@@ -1896,7 +1857,7 @@
                                     }
                                 },
                                 legend: {
-                                    data: ['最大值', '平均值', '最小值']
+                                    data: ['最大值', '最小值', '平均值']
                                 },
                                 grid: {
                                     left: '3%',
@@ -1908,9 +1869,9 @@
                                     type: 'category',
                                     data: (function () {
                                         var arr = [];
-                                        for (var i = 0; i < design_data.design_val.length; i++) {
-                                            arr.push("设计等级" + design_data.design_val[i]);
-
+                                        console.log(data.ex_control_criterion);
+                                        for (var i = 0; i < data.ex_control_criterion.length; i++) {
+                                            arr.push("设计等级" + data.ex_control_criterion[i]);
                                         }
                                         return arr;
                                     })(),
@@ -1936,14 +1897,14 @@
                                         data:max
                                     },
                                     {
-                                        name: '平均值',
-                                        type: 'bar',
-                                        data: avg_val
-                                    },
-                                    {
                                         name: '最小值',
                                         type: 'bar',
                                         data: min
+                                    },
+                                    {
+                                        name: '平均值',
+                                        type: 'bar',
+                                        data: avg_val
                                     }
                                 ]
                             });
@@ -1973,8 +1934,8 @@
                                     type: 'category',
                                     data: (function () {
                                         var arr = [];
-                                        for (var i = 0; i < design_data.design_val.length; i++) {
-                                            arr.push("设计等级" + design_data.design_val[i]);
+                                        for (var i = 0; i < data.ex_control_criterion.length; i++) {
+                                            arr.push("设计等级" + data.ex_control_criterion[i]);
 
                                         }
                                         return arr;
@@ -2010,7 +1971,7 @@
                                         type: 'bar',
                                         barWidth: 40,
                                         stack: '总量',
-                                        data: design_data.pass
+                                        data: data.pass
                                     }
                                 ]
                             });
@@ -2033,8 +1994,8 @@
                                     type: 'category',
                                     data: (function () {
                                         var arr = [];
-                                        for (var i = 0; i < design_data.design_val.length; i++) {
-                                            arr.push("设计等级" + design_data.design_val[i]);
+                                        for (var i = 0; i < data.ex_control_criterion.length; i++) {
+                                            arr.push("设计等级" + data.ex_control_criterion[i]);
                                         }
                                         return arr;
                                     })(),
@@ -2086,8 +2047,8 @@
                                     type: 'category',
                                     data: (function () {
                                         var arr = [];
-                                        for (var i = 0; i < design_data.design_val.length; i++) {
-                                            arr.push("设计等级" + design_data.design_val[i]);
+                                        for (var i = 0; i < data.ex_control_criterion.length; i++) {
+                                            arr.push("设计等级" + data.ex_control_criterion[i]);
 
                                         }
                                         return arr;
@@ -2113,6 +2074,15 @@
                                 ]
                             });
 
+                            //喷砼强度
+                            var myChartBarStrengthS = echarts.init(document.getElementById('mainBarStrengthS'));
+                            var myChartLineStrengthS = echarts.init(document.getElementById('mainLineStrengthS'));
+                            var myChartPointStrengthS = echarts.init(document.getElementById('mainPointStrengthS'));
+                            var myChartPieStrengthS = echarts.init(document.getElementById('mainPieStrengthS'));
+                            var myChartBarStrengthM = echarts.init(document.getElementById('mainBarStrengthM'));
+                            var myChartLineStrengthM = echarts.init(document.getElementById('mainLineStrengthM'));
+                            var myChartPointStrengthM = echarts.init(document.getElementById('mainPointStrengthM'));
+                            var myChartPieStrengthM = echarts.init(document.getElementById('mainPieStrengthM'));
                             //喷砼强度（施工单位自检）
                             myChartBarStrengthS.setOption({
                                 title: {
@@ -2452,7 +2422,16 @@
                                 ]
                             });
 
+
                             //锚杆砂浆强度
+                            var myChartBarMortarStrengthS = echarts.init(document.getElementById('mainBarMortarStrengthS'));
+                            var myChartLineMortarStrengthS = echarts.init(document.getElementById('mainLineMortarStrengthS'));
+                            var myChartPointMortarStrengthS = echarts.init(document.getElementById('mainPointMortarStrengthS'));
+                            var myChartPieMortarStrengthS = echarts.init(document.getElementById('mainPieMortarStrengthS'));
+                            var myChartBarMortarStrengthM = echarts.init(document.getElementById('mainBarMortarStrengthM'));
+                            var myChartLineMortarStrengthM = echarts.init(document.getElementById('mainLineMortarStrengthM'));
+                            var myChartPointMortarStrengthM = echarts.init(document.getElementById('mainPointMortarStrengthM'));
+                            var myChartPieMortarStrengthM = echarts.init(document.getElementById('mainPieMortarStrengthM'));
                             myChartBarMortarStrengthS.setOption({
                                 title: {
                                     text: '数值分析（Mpa）'
@@ -2792,6 +2771,14 @@
                             });
 
                             //锚杆无损测验
+                            var myChartBarStructiveS = echarts.init(document.getElementById('mainBarStructiveS'));
+                            var myChartLineStructiveS = echarts.init(document.getElementById('mainLineStructiveS'));
+                            var myChartPointStructiveS = echarts.init(document.getElementById('mainPointStructiveS'));
+                            var myChartPieStructiveS = echarts.init(document.getElementById('mainPieStructiveS'));
+                            var myChartBarStructiveM = echarts.init(document.getElementById('mainBarStructiveM'));
+                            var myChartLineStructiveM = echarts.init(document.getElementById('mainLineStructiveM'));
+                            var myChartPointStructiveM = echarts.init(document.getElementById('mainPointStructiveM'));
+                            var myChartPieStructiveM = echarts.init(document.getElementById('mainPieStructiveM'));
                             myChartBarStructiveS.setOption({
                                 title: {
                                     text: '数值分析（Mpa）'
@@ -3131,6 +3118,14 @@
                             });
 
                             //锚杆拉力测验
+                            var myChartBarPullTestS = echarts.init(document.getElementById('mainBarPullTestS'));
+                            var myChartLinePullTestS = echarts.init(document.getElementById('mainLinePullTestS'));
+                            var myChartPointPullTestS = echarts.init(document.getElementById('mainPointPullTestS'));
+                            var myChartPiePullTestS = echarts.init(document.getElementById('mainPiePullTestS'));
+                            var myChartBarPullTestM = echarts.init(document.getElementById('mainBarPullTestM'));
+                            var myChartLinePullTestM = echarts.init(document.getElementById('mainLinePullTestM'));
+                            var myChartPointPullTestM = echarts.init(document.getElementById('mainPointPullTestM'));
+                            var myChartPiePullTestM = echarts.init(document.getElementById('mainPiePullTestM'));
                             myChartBarPullTestS.setOption({
                                 title: {
                                     text: '数值分析（Mpa）'
@@ -3482,7 +3477,6 @@
                     },
                     dataType:'json',
                     success:function (res) {
-                        console.log(res);
                         var data = res.excavate_data.builder;
                         var dataM = res.excavate_data.supervision_unit;
                         var all = data.all;
@@ -4782,8 +4776,6 @@
                     },
                     dataType:'json',
                     success:function (res) {
-                        console.log(res);
-
                         if (res.code === 1) {
                             //排水孔
                             //最大值最小值柱状图
