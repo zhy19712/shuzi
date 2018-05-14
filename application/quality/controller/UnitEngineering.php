@@ -17,6 +17,7 @@ use app\admin\model\ProjectScupperModel;
 use app\admin\model\ZhihuModel;
 use app\quality\model\ProjectAttachmentModel;
 use app\quality\model\StandardDeviationModel;
+use think\Db;
 
 /**
  * 质量验收管理  --  单元工程
@@ -595,6 +596,38 @@ class UnitEngineering extends Base
             $data = $ma->getOne($gid);
             return json(['code' => 1, 'construct_num' => $data['mortar_number'],'supervise_num' => $data['mortar_number_2'], 'msg' =>'锚杆的强度值数量']);
         }
+    }
+
+
+    // 获取资料编号
+    public function datumNumber()
+    {
+        $uid = input('uid'); // 单元工程检验批编号
+        $type = input('type'); // 1 试验资料 2 测量资料
+        if($type == 1){
+            $data_id = Db::name('project')->where(['id'=>$uid])->value('test_data_id');
+        }else{
+            $data_id = Db::name('project')->where(['id'=>$uid])->value('survey_data_id');
+        }
+        $data = explode(',',$data_id);
+        return json(['code'=>1,'data'=>$data]);
+    }
+
+    // 关联资料
+    public function relevanceDatum()
+    {
+        $data['id'] = input('uid'); // 单元工程检验批编号
+        $type = input('type'); // 1 试验资料 2 测量资料
+        if($type == 1){
+            $data['test_data_id'] = input('test_data_id');
+            $data['test_data_name'] = input('test_data_name');
+        }else{
+            $data['survey_data_id'] = input('survey_data_id');
+            $data['survey_data_name'] = input('survey_data_name');
+        }
+        $project = new ProjectModel();
+        $flag = $project->editProject($data);
+        return $flag;
     }
 
 }
