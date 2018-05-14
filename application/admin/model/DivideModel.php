@@ -476,16 +476,16 @@ class DivideModel extends Model
         $data['zhihu_h'] = [];
         foreach($arr_1 as $arv){
             $data['zhihu_h']['ex_control_criterion'][] = $arv; // 相同的设计值
-            $data['zhihu_h']['supporting_area'] = array_sum($supporting_area_11); // 支护面积
-            $data['zhihu_h']['thickness_number'] = array_sum($thickness_number_11); // 检测组数
-            $data['zhihu_h']['max'] = sizeof($max_11) ? max($max_11) : 0; // 最大值
-            $data['zhihu_h']['min'] = sizeof($min_11) ? min($min_11) : 0; // 最小值
+            $data['zhihu_h']['supporting_area'][] = array_sum($supporting_area_11); // 支护面积
+            $data['zhihu_h']['thickness_number'][] = array_sum($thickness_number_11); // 检测组数
+            $data['zhihu_h']['max'][] = sizeof($max_11) ? max($max_11) : 0; // 最大值
+            $data['zhihu_h']['min'][] = sizeof($min_11) ? min($min_11) : 0; // 最小值
             if($count_num_11 == 0){
-                $data['zhihu_h']['avg_val'] = 0; // 平均值
-                $data['zhihu_h']['pass'] = 0; // 合格率Ps
+                $data['zhihu_h']['avg_val'][] = 0; // 平均值
+                $data['zhihu_h']['pass'][] = 0; // 合格率Ps
             }else{
-                $data['zhihu_h']['avg_val'] = round(array_sum($avg_11) / $count_num_11,2); // 平均值
-                $data['zhihu_h']['pass'] = round(array_sum($percent_11) / $count_num_11,2); // 合格率Ps
+                $data['zhihu_h']['avg_val'][] = round(array_sum($avg_11) / $count_num_11,2); // 平均值
+                $data['zhihu_h']['pass'][] = round(array_sum($percent_11) / $count_num_11,2); // 合格率Ps
             }
         }
 
@@ -509,33 +509,33 @@ class DivideModel extends Model
         $data['zhihu_q'] = [];
         foreach($arr_2 as $arv){
             $data['zhihu_q']['ex_control_criterion'][] = $arv; // 相同的设计等级
-            $data['zhihu_q']['square_quantity'] = array_sum($square_quantity_11); // 方量
-            $data['zhihu_q']['intensity_number'] = array_sum($intensity_number_11); // 检测组数
-            $data['zhihu_q']['intensity_max'] = sizeof($intensity_max_11) ? max($intensity_max_11) : 0; // 最大值
-            $data['zhihu_q']['intensity_min'] = sizeof($intensity_min_11) ? min($intensity_min_11) : 0; // 最小值
+            $data['zhihu_q']['square_quantity'][] = array_sum($square_quantity_11); // 方量
+            $data['zhihu_q']['intensity_number'][] = array_sum($intensity_number_11); // 检测组数
+            $data['zhihu_q']['intensity_max'][] = sizeof($intensity_max_11) ? max($intensity_max_11) : 0; // 最大值
+            $data['zhihu_q']['intensity_min'][] = sizeof($intensity_min_11) ? min($intensity_min_11) : 0; // 最小值
             $intensity_avg_11 = array_filter($intensity_avg_11);
             if(sizeof($intensity_avg_11) == 0){
-                $data['zhihu_q']['intensity_avg'] = 0; // 平均值
+                $data['zhihu_q']['intensity_avg'][] = 0; // 平均值
             }else{
-                $data['zhihu_q']['intensity_avg'] = round(array_sum($intensity_avg_11) / sizeof($intensity_avg_11),2); // 平均值
+                $data['zhihu_q']['intensity_avg'][] = round(array_sum($intensity_avg_11) / sizeof($intensity_avg_11),2); // 平均值
             }
             $mortar_standard_deviation_11 = array_filter($mortar_standard_deviation_11);
             if(sizeof($mortar_standard_deviation_11) == 0){
-                $data['zhihu_q']['mortar_standard_deviation'] = 0; // 标准差
+                $data['zhihu_q']['mortar_standard_deviation'][] = 0; // 标准差
             }else{
-                $data['zhihu_q']['mortar_standard_deviation'] = round(array_sum($mortar_standard_deviation_11) / sizeof($mortar_standard_deviation_11),2); // 标准差
+                $data['zhihu_q']['mortar_standard_deviation'][] = round(array_sum($mortar_standard_deviation_11) / sizeof($mortar_standard_deviation_11),2); // 标准差
             }
             $guarantee_rate_11 = array_filter($guarantee_rate_11);
             if(sizeof($guarantee_rate_11) == 0){
-                $data['zhihu_q']['mortar_standard_deviation'] = 0; // 保证率
+                $data['zhihu_q']['mortar_standard_deviation'][] = 0; // 保证率
             }else{
-                $data['zhihu_q']['mortar_standard_deviation'] = round(array_sum($guarantee_rate_11) / sizeof($guarantee_rate_11),2); // 保证率
+                $data['zhihu_q']['mortar_standard_deviation'][] = round(array_sum($guarantee_rate_11) / sizeof($guarantee_rate_11),2); // 保证率
             }
             $intensity_percent_11 = array_filter($intensity_percent_11);
             if(sizeof($intensity_percent_11) == 0){
-                $data['zhihu_q']['intensity_percent'] = 0; // 合格率Ps
+                $data['zhihu_q']['intensity_percent'][] = 0; // 合格率Ps
             }else{
-                $data['zhihu_q']['intensity_percent'] = round(array_sum($intensity_percent_11) / sizeof($intensity_percent_11),2); // 合格率Ps
+                $data['zhihu_q']['intensity_percent'][] = round(array_sum($intensity_percent_11) / sizeof($intensity_percent_11),2); // 合格率Ps
             }
         }
 
@@ -559,33 +559,33 @@ class DivideModel extends Model
         $data['zhihu_q2'] = [];
         foreach($arr_3 as $arv){
             $data['zhihu_q2']['ex_control_criterion_2'][] = $arv; // 相同的设计等级
-            $data['zhihu_q2']['square_quantity_2'] = array_sum($square_quantity_22); // 方量
-            $data['zhihu_q2']['intensity_number_2'] = array_sum($intensity_number_22); // 检测组数
-            $data['zhihu_q2']['intensity_max_2'] = sizeof($intensity_max_22) ? max($intensity_max_22) : 0; // 最大值
-            $data['zhihu_q2']['intensity_min_2'] = sizeof($intensity_min_22) ? min($intensity_min_22) : 0; // 最小值
+            $data['zhihu_q2']['square_quantity_2'][] = array_sum($square_quantity_22); // 方量
+            $data['zhihu_q2']['intensity_number_2'][] = array_sum($intensity_number_22); // 检测组数
+            $data['zhihu_q2']['intensity_max_2'][] = sizeof($intensity_max_22) ? max($intensity_max_22) : 0; // 最大值
+            $data['zhihu_q2']['intensity_min_2'][] = sizeof($intensity_min_22) ? min($intensity_min_22) : 0; // 最小值
             $intensity_avg_22 = array_filter($intensity_avg_22);
             if(sizeof($intensity_avg_22) == 0){
-                $data['zhihu_q2']['intensity_avg_2'] = 0; // 平均值
+                $data['zhihu_q2']['intensity_avg_2'][] = 0; // 平均值
             }else{
-                $data['zhihu_q2']['intensity_avg_2'] = round(array_sum($intensity_avg_22) / sizeof($intensity_avg_22),2); // 平均值
+                $data['zhihu_q2']['intensity_avg_2'][] = round(array_sum($intensity_avg_22) / sizeof($intensity_avg_22),2); // 平均值
             }
             $mortar_standard_deviation_22 = array_filter($mortar_standard_deviation_22);
             if(sizeof($mortar_standard_deviation_22) == 0){
-                $data['zhihu_q2']['mortar_standard_deviation_2'] = 0; // 标准差
+                $data['zhihu_q2']['mortar_standard_deviation_2'][] = 0; // 标准差
             }else{
-                $data['zhihu_q2']['mortar_standard_deviation_2'] = round(array_sum($mortar_standard_deviation_22) / sizeof($mortar_standard_deviation_22),2); // 标准差
+                $data['zhihu_q2']['mortar_standard_deviation_2'][] = round(array_sum($mortar_standard_deviation_22) / sizeof($mortar_standard_deviation_22),2); // 标准差
             }
             $guarantee_rate_22 = array_filter($guarantee_rate_22);
             if(sizeof($guarantee_rate_22) == 0){
-                $data['zhihu_q2']['mortar_standard_deviation_2'] = 0; // 保证率
+                $data['zhihu_q2']['mortar_standard_deviation_2'][] = 0; // 保证率
             }else{
-                $data['zhihu_q2']['mortar_standard_deviation_2'] = round(array_sum($guarantee_rate_22) / sizeof($guarantee_rate_22),2); // 保证率
+                $data['zhihu_q2']['mortar_standard_deviation_2'][] = round(array_sum($guarantee_rate_22) / sizeof($guarantee_rate_22),2); // 保证率
             }
             $intensity_percent_22 = array_filter($intensity_percent_22);
             if(sizeof($intensity_percent_22) == 0){
-                $data['zhihu_q2']['intensity_percent_2'] = 0; // 合格率Ps
+                $data['zhihu_q2']['intensity_percent_2'][] = 0; // 合格率Ps
             }else{
-                $data['zhihu_q2']['intensity_percent_2'] = round(array_sum($intensity_percent_22) / sizeof($intensity_percent_22),2); // 合格率Ps
+                $data['zhihu_q2']['intensity_percent_2'][] = round(array_sum($intensity_percent_22) / sizeof($intensity_percent_22),2); // 合格率Ps
             }
         }
 
