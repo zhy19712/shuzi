@@ -1,0 +1,552 @@
+{include file="public/header"/}
+<link href="__JS__/plugins/layui/css/layui.css" rel="stylesheet">
+<link href="__JS__/plugins/easyui/easyui.css" rel="stylesheet">
+<style>
+    .layer-review{
+        float: left;
+        padding: 9px 10px;
+    }
+    .layer-review li{
+        display: inline-block;
+        font-size: 14px;
+    }
+    .layer-review span,.layer-review i{
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .layer-review i{
+        margin-right: 15px;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+    }
+    .layer-review i.blue{
+        background: #529df8;
+    }
+    .layer-review i.yellow{
+        background: #efb336;
+    }
+    .layer-review i.green{
+        background: #2aa515;
+    }
+    .layer-model-nav{
+        float: right;
+    }
+    .layer-model-nav li{
+        padding: 4px 10px;
+    }
+    .layer-model-nav i.fa:before{
+        color: #FFF;
+    }
+    .layer-model-nav i,.layer-model-nav span{
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .layer-model-nav .layui-btn{
+        padding: 6px 12px;
+        height: auto;
+        line-height: 1.02857;
+    }
+    .layer-center{
+        padding-top: 3px;
+    }
+    .layui-form-label{
+        text-align: left;
+    }
+    .layui-colla-title{
+        padding: 0 15px;
+        color: #337ab7;
+        font-weight: bold;
+        cursor:default;
+    }
+    .layui-colla-content{
+        padding: 0;
+    }
+    .layui-colla-content .layui-form-item{
+        margin: 0;
+        border-bottom: 1px solid #cecece;
+    }
+    .tabs-header,.tabs-panels{
+        border: none;
+    }
+    .tabs-header{
+        background: none;
+    }
+    .tabs,.tabs li a.tabs-inner{
+        border-color: #cecece;
+    }
+    .layui-timeline-axis{
+        left: -14px;
+        top: -6px;
+        width: 40px;
+        height: 36px;
+        line-height: 40px;
+        color: #BFBFBF;
+        font-size: 40px;
+        cursor: default;
+    }
+    .layui-timeline-axis:hover {
+        color: #BFBFBF
+    }
+    .layui-timeline-axis.current{
+        color: #00B050
+    }
+    .layui-timeline-content {
+        padding-left: 35px;
+        font-weight: bold;
+    }
+    .layui-timeline-item:before{
+        width: 3px;
+    }
+    .layui-timeline {
+        padding: 30px;
+    }
+    .layui-table{
+        margin: 0;
+    }
+    .layui-table i.fa{
+        margin: 0 2px;
+    }
+    .layui-info-title{
+        padding: 10px 0;
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        color: #56abe4;
+    }
+    .layui-table .bg{
+        background: #00B050;
+        filter:alpha(opacity=50);
+        -moz-opacity:0.5;
+        opacity:0.5;
+        color: #FFF;
+    }
+</style>
+<body class="easyui-layout gray-bg" id="easyuiLayout" style = "overflow-x: hidden; overflow-y: hidden;">
+<div data-options="region:'west',title:'管理试图',split:true,collapsed:true" style="width:260px;">
+    <ul id="ztree" class="ztree"></ul>
+</div>
+<div data-options="region:'center',title:''" style="border: 0">
+    <div class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'north'" class="north" style="height:39px">
+            <ul class="layer-review">
+                <li>
+                    <span>优良</span>
+                    <i class="green"></i>
+                </li>
+                <li>
+                    <span>合格</span>
+                    <i class="yellow"></i>
+                </li>
+                <li>
+                    <span>未验评</span>
+                    <i class="blue"></i>
+                </li>
+            </ul>
+            <ul class="layer-model-nav">
+                <li>
+                    <div class="layui-btn layui-btn-radius layui-btn-normal">
+                        <i class="fa fa-check-circle"></i>
+                        质量分布
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div data-options="region:'center'" class="layer-center">
+            <object id="RealBimOcx" classid="CLSID:2CD7E1BE-10B8-4A1C-B908-4FB7D4FD4ABD"  width="100%" height="100%"></object>
+            <!-- 初始化 -->
+            <script language="javascript"   for="RealBimOcx" EVENT="OnRealBimOcxInited()" type="text/javascript">
+                RealBimOcx.SwitchBIMSceneSimple("http://192.168.1.2:8008/default.aspx?dir=url_res02&path=","res_fengning_kw");
+                RealBimOcx.SetSceVersionInfoExt(100, -1, 0, 2000000000);
+                RealBimOcx.CreateAGolFont("CustomFont01","微软雅黑",true,true,14,14,32,1.0,0*64,"");
+                RealBimOcx.CreateAGolFont("CustomFont02","微软雅黑",true,true,12,12,8,1.0,0*64,"");
+            </script>
+            <!-- 初始化完成 -->
+            <script language="javascript"   for="RealBimOcx" EVENT="WorkCompleteNotification(CompleteEvent,retError)" type="text/javascript">
+                if(CompleteEvent == "LoadMainScene" && retError==0 ){
+                    RealBimOcx.SetAllHugeObjSubValidState(1);
+                    RealBimOcx.SetSceHugeObjVisible(true);
+                }
+                RealBimOcx.SetSuitableCam();
+
+                //模块验评情况
+                $.ajax({
+                    url: "./countUnit",
+                    type: "post",
+                    dataType: "json",
+                    success: function (res) {
+                        //未验评 model_picture（全部）
+                        for(var k = 0;k<res.model_picture.length;k++){
+                            var allUObjSubID = res.model_picture[k].picture_number;
+                            RealBimOcx.BatchAddSubClrInfoBegin();
+                            RealBimOcx.AddSubClrPercent(allUObjSubID,0.5,0xff529df8);    //第二个参数为透明度
+                            RealBimOcx.BatchAddSubClrInfoEnd();
+                        }
+                        //优良 excellent
+                        for(var i = 0;i<res.excellent.length;i++){
+                            var exUObjSubID = res.excellent[i].picture_number;
+                            RealBimOcx.BatchAddSubClrInfoBegin();
+                            RealBimOcx.AddSubClrPercent(exUObjSubID,1,0xff2aa515);    //第二个参数为透明度
+                            RealBimOcx.BatchAddSubClrInfoEnd();
+                        }
+                        //合格 qualified
+                        for(var j = 0;j<res.qualified.length;j++){
+                            var quUObjSubID = res.qualified[j].picture_number;
+                            console.log(res.qualified[j]);
+                            RealBimOcx.BatchAddSubClrInfoBegin();
+                            RealBimOcx.AddSubClrPercent(quUObjSubID,1,0xffefb336);    //第二个参数为透明度
+                            RealBimOcx.BatchAddSubClrInfoEnd();
+                        }
+                        //质量分布
+                        $('#excellent_number').text(res.data.excellent_number);
+                        $('#excellent_rate').text(res.data.excellent_rate+'%');
+                        $('#qualified_number').text(res.data.qualified_number);
+                        $('#qualified_rate').text(res.data.qualified_rate+'%');
+                        $('#unchecked_number').text(res.data.unchecked_number);
+                        $('#unchecked_rate').text(res.data.unchecked_rate+'%');
+                    }
+                });
+            </script>
+            <script language="javascript"  for="RealBimOcx" EVENT="OnCurSelModelChanged(strObjName, uObjSubID,   fObjSelX, fObjSelY, fObjSelZ,  fObjBVMinX,fObjBVMinY,fObjBVMinZ,  fObjBVMaxX,fObjBVMaxY,fObjBVMaxZ)" type="text/javascript">
+                //显示管理信息
+                //easyUiPanelToggle();
+                //显示单元信息
+                $('#tabs').show();
+                //隐藏质量分布
+                $('#qualityDistribute').hide();
+                //基本信息模板
+                /*function infoTemplateFun(res) {
+                    var infoTemplate = [];
+                    for(var i = 0;i<res.data.length;i++){
+                        infoTemplate.push('<div class="layui-colla-item">');
+                        infoTemplate.push('<h2 class="layui-colla-title infoTitle"></h2>');
+                        infoTemplate.push('<div class="layui-colla-content layui-show">');
+                        infoTemplate.push('<table class="layui-table" lay-skin="line" lay-size="sm">');
+                        infoTemplate.push('<tbody>');
+                        infoTemplate.push('<tr>');
+                        infoTemplate.push('<td>检验批名称</td>');
+                        infoTemplate.push('<td>'+ res.data[i].site +'</td>');
+                        infoTemplate.push('</tr>');
+                        infoTemplate.push('<tr>');
+                        infoTemplate.push('<td>检验批编码</td>');
+                        infoTemplate.push('<td id="serial_number">'+ res.data[i].serial_number +'</td>');
+                        infoTemplate.push('</tr>');
+                        infoTemplate.push('<tr>');
+                        infoTemplate.push('<td>关键部位</td>');
+                        infoTemplate.push('<td id="hinge">'+ res.data[i].hinge +'</td>');
+                        infoTemplate.push('</tr>');
+                        infoTemplate.push('<tr>');
+                        infoTemplate.push('<td>工程量</td>');
+                        infoTemplate.push('<td id="quantities">'+ res.data[i].quantities +'</td>');
+                        infoTemplate.push('</tr>');
+                        infoTemplate.push('<tr>');
+                        infoTemplate.push('<td>工程类型</td>');
+                        infoTemplate.push('<td id="en_type">'+ res.data[i].en_type +'</td>');
+                        infoTemplate.push('</tr>');
+                        infoTemplate.push('<tr>');
+                        infoTemplate.push('<td>施工依据</td>');
+                        infoTemplate.push('<td id="ma_bases">'+ res.data[i].ma_bases +'</td>');
+                        infoTemplate.push('</tr>');
+                        infoTemplate.push('<tr>');
+                        infoTemplate.push('<td>补充依据</td>');
+                        infoTemplate.push('<td id="su_basis">'+ res.data[i].su_basis +'</td>');
+                        infoTemplate.push('</tr>');
+                        infoTemplate.push('<tr>');
+                        infoTemplate.push('<td>高程（起）</td>');
+                        infoTemplate.push('<td id="el_start">'+ res.data[i].el_start +'</td>');
+                        infoTemplate.push('</tr>');
+                        infoTemplate.push('<tr>');
+                        infoTemplate.push('<td>高程（止）</td>');
+                        infoTemplate.push('<td id="el_cease">'+ res.data[i].el_cease +'</td>');
+                        infoTemplate.push('</tr>');
+                        infoTemplate.push('<tr>');
+                        infoTemplate.push('<td>桩号（起止）</td>');
+                        infoTemplate.push('<td id="pile_number">'+ res.data[i].pile_number +'</td>');
+                        infoTemplate.push('</tr>');
+                        infoTemplate.push('<tr>');
+                        infoTemplate.push('<td>开始日期</td>');
+                        infoTemplate.push('<td id="start_date">'+ res.data[i].start_date +'</td>');
+                        infoTemplate.push('</tr>');
+                        infoTemplate.push('<tr>');
+                        infoTemplate.push('<td>结束日期</td>');
+                        infoTemplate.push('<td id="completion_date">'+ res.data[i].completion_date +'</td>');
+                        infoTemplate.push('</tr>');
+                        infoTemplate.push('</tbody>');
+                        infoTemplate.push('</table>');
+                        infoTemplate.push('</div>');
+                        infoTemplate.push('</div>');
+                    }
+                    var infoTemplateHtml = infoTemplate.join(',');
+                    $('#layuiCollapse').append(infoTemplateHtml);
+                }*/
+                //工序信息模板
+                function workInfoTemplateFun(res) {
+                    $('#layuiTimeline').empty();
+                    var workInfoTemplate = [];
+                    for(var i = 0;i<res.processinfo.length;i++){
+                        var point_step = res.processinfo[i].point_step==1?'current':''; //执行到某个节点
+                        workInfoTemplate.push('<li class="layui-timeline-item">');
+                        workInfoTemplate.push('<i class="layui-icon layui-timeline-axis '+ point_step +'">&#xe617;</i>');
+                        workInfoTemplate.push('<div class="layui-timeline-content layui-text">');
+                        workInfoTemplate.push('<div class="layui-timeline-title">'+ res.processinfo[i].name +'</div>');
+                        workInfoTemplate.push('</div>');
+                        workInfoTemplate.push('</li>');
+                    }
+                    var workInfoTemplateHtml = workInfoTemplate.join('');
+                    $('#layuiTimeline').append(workInfoTemplateHtml);
+                }
+                //质量表格模板
+                function qualityTableTemplateFun(res) {
+                    $('#qualityTable tbody').empty();
+                    var qualityTableTemplate = [];
+                    for(var i = 0;i<res.processinfo.length;i++){
+                        if(res.processinfo[i].form_list.length>0){
+                            var form_list = res.processinfo[i].form_list;
+                        }
+                        if(!form_list){
+                            return false;
+                        }
+                        for(var j = 0;j<form_list.length;j++){
+                            qualityTableTemplate.push('<tr>');
+                            if(j == 0){
+                                qualityTableTemplate.push('<td rowspan='+ form_list.length +'>'+ res.processinfo[i].name +'</td>');
+                            }
+                            qualityTableTemplate.push('<td class="bg">'+ form_list[j].form_name +'</td>');
+                            qualityTableTemplate.push('<td>');
+                            qualityTableTemplate.push('<i class="fa fa-eye faEye" onclick="seeOnLine(this)" formId='+ form_list[j].form_id +' cprId='+ form_list[j].cpr_id +'></i>');
+                            qualityTableTemplate.push('<i class="fa fa-search" onclick="search(this)" pid='+ res.processinfo[i].pid +' uid='+ form_list[j].division_id +' ></i>');
+                            qualityTableTemplate.push('</td>');
+                            qualityTableTemplate.push('</tr>');
+                        }
+                    }
+                    var qualityTableTemplateHtml = qualityTableTemplate.join('');
+                    $('#qualityTable tbody').append(qualityTableTemplateHtml);
+                }
+
+                search = function (that) {
+                    var pid = $(that).attr('pid');
+                    var uid = $(that).attr('uid');
+                    document.cookie="unitEnginNoId="+pid;
+                    document.cookie="divisionId="+uid;
+                    window.open('./controll');
+                }
+
+                //获取模板信息
+                $.ajax({
+                    url: "./managementInfo",
+                    type: "post",
+                    data: {
+                        picture_number:uObjSubID
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        workInfoTemplateFun(res);
+                        qualityTableTemplateFun(res);
+                        $('.infoTitle').text(res.unit_info.site);
+                        $('#site').text(res.unit_info.site);
+                        $('#serial_number').text(res.unit_info.coding);
+                        $('#hinge').text(res.unit_info.hinge);
+                        $('#quantities').text(res.unit_info.quantities);
+                        $('#en_type').text(res.unit_info.en_type);
+                        $('#ma_bases').text(res.unit_info.ma_bases);
+                        $('#su_basis').text(res.unit_info.su_basis);
+                        $('#el_start').text(res.unit_info.el_start);
+                        $('#el_cease').text(res.unit_info.el_cease);
+                        $('#pile_number').text(res.unit_info.pile_number);
+                        $('#start_date').text(res.unit_info.start_date);
+                        $('#completion_date').text(res.unit_info.completion_date);
+                    }
+                });
+            </script>
+        </div>
+    </div>
+</div>
+<div data-options="region:'east',title:'管理信息',split:true" style="width:350px;">
+    <div id="tabs" class="easyui-tabs" style="width:100%;display: none">
+        <div title="基本信息" style="padding:10px;display:none;">
+            <div class="layui-collapse" id="layuiCollapse" lay-accordion>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title infoTitle"></h2>
+                    <div class="layui-colla-content layui-show">
+                        <table class="layui-table" lay-skin="line" lay-size="sm">
+                            <tbody>
+                                <tr>
+                                    <td>检验批名称</td>
+                                    <td id="site"></td>
+                                </tr>
+                                <tr>
+                                    <td>检验批编码</td>
+                                    <td id="serial_number"></td>
+                                </tr>
+                                <tr>
+                                    <td>关键部位</td>
+                                    <td id="hinge"></td>
+                                </tr>
+                                <tr>
+                                    <td>工程量</td>
+                                    <td id="quantities"></td>
+                                </tr>
+                                <tr>
+                                    <td>工程类型</td>
+                                    <td id="en_type"></td>
+                                </tr>
+                                <tr>
+                                    <td>施工依据</td>
+                                    <td id="ma_bases"></td>
+                                </tr>
+                                <tr>
+                                    <td>补充依据</td>
+                                    <td id="su_basis"></td>
+                                </tr>
+                                <tr>
+                                    <td>高程（起）</td>
+                                    <td id="el_start"></td>
+                                </tr>
+                                <tr>
+                                    <td>高程（止）</td>
+                                    <td id="el_cease"></td>
+                                </tr>
+                                <tr>
+                                    <td>桩号（起止）</td>
+                                    <td id="pile_number"></td>
+                                </tr>
+                                <tr>
+                                    <td>开始日期</td>
+                                    <td id="start_date"></td>
+                                </tr>
+                                <tr>
+                                    <td>结束日期</td>
+                                    <td id="completion_date"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div title="工序信息" style="overflow:auto;padding:10px;display:none;">
+            <div class="layui-collapse">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title infoTitle"></h2>
+                    <div class="layui-colla-content layui-show">
+                        <ul class="layui-timeline" id="layuiTimeline">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div title="质量表格" style="padding:10px;display:none;">
+            <div class="layui-collapse">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title infoTitle"></h2>
+                    <div class="layui-colla-content layui-show">
+                        <table class="layui-table" id="qualityTable" lay-size="sm">
+                            <colgroup>
+                                <col>
+                                <col>
+                                <col width="56">
+                            </colgroup>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="quality-distribute" id="qualityDistribute">
+        <h2 class="layui-info-title">质量分布</h2>
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th>类型</th>
+                    <th>数量</th>
+                    <th>占比</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>优良</td>
+                    <td id="excellent_number"></td>
+                    <td id="excellent_rate"></td>
+                </tr>
+                <tr>
+                    <td>合格</td>
+                    <td id="qualified_number"></td>
+                    <td id="qualified_rate"></td>
+                </tr>
+                <tr>
+                    <td>未验评</td>
+                    <td id="unchecked_number"></td>
+                    <td id="unchecked_rate"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- 计划任务信息 -->
+    <div class="planned-task-info" id="plannedTaskInfo" style="display: none">
+        <h2 class="layui-info-title">计划任务信息</h2>
+        <table class="layui-table" lay-skin="line" lay-size="sm">
+            <!--<thead>
+                <tr>
+                    <th>任务名称</th>
+                    <th>五层主体施工</th>
+                </tr>
+            </thead>-->
+            <tbody>
+                <tr>
+                    <td>任务名称</td>
+                    <td>五层主体施工</td>
+                </tr>
+                <tr>
+                    <td>责任人</td>
+                    <td>许闲心</td>
+                </tr>
+                <tr>
+                    <td>WBS编号</td>
+                    <td>1.1</td>
+                </tr>
+                <tr>
+                    <td>计划开工时间</td>
+                    <td>2016-11-01</td>
+                </tr>
+                <tr>
+                    <td>计划完工时间</td>
+                    <td>2016-11-15</td>
+                </tr>
+                <tr>
+                    <td>计划工期</td>
+                    <td>15</td>
+                </tr>
+                <tr>
+                    <td>实际开工时间</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>实际完工时间</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>实际工期</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>完成进度</td>
+                    <td>0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{include file="public/footer" /}
+<script src="__JS__/plugins/easyui/jquery.easyui.min.js"></script>
+<script>
+    function easyUiPanelToggle() {
+        var number = $("#easyuiLayout").layout("panel", "east")[0].clientWidth;
+        if(number<=0){
+            $('#easyuiLayout').layout('expand','east');
+        }
+    }
+</script>
+</body>
+</html>
