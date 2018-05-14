@@ -488,6 +488,24 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="form-group text-center" style="padding: 20px;">
+                                        <div class="input-group col-xs-6 pull-left">
+                                            <div class="input-group-btn">
+                                                <button type="button" style="background-color: #bae2f3;" class="btn" data-toggle="modal" data-target="#selects">试验资料
+                                                </button>
+                                            </div>
+                                            <input type="text" name="test_data_name" class="form-control" readonly id="vlad1">
+                                            <input type="hidden" name="test_data_id" class="form-control" readonly id="test_data_id">
+                                        </div>
+                                        <div class="input-group col-xs-6  pull-left" data-toggle="modal" data-target="#selects2">
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn" style="background-color: #bae2f3;">测量资料
+                                                </button>
+                                            </div>
+                                            <input type="text" name="survey_data_name" class="form-control" readonly id="vlad2">
+                                            <input type="hidden" name="survey_data_id" class="form-control" readonly id="survey_data_id">
+                                        </div>
+                                    </div>
                                 </form>
                                 <form class="form-horizontal" name="model2" id="model2">
                                     <input type="text" id="edit2" name="edit" style="display: none;">
@@ -972,19 +990,62 @@
                             </div>
                         </div>
                     </div>
+                    <!--相关材料-->
                     <div id="mytable1_wrapper" style="margin-top: 20px;">
-                        <table id="admin_table" width="100%" class="table table-striped table-bordered">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>文件名称</th>
-                                <th>上传人</th>
-                                <th>单位/部门</th>
-                                <th>上传时间</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-                        </table>
+                        <ul id="materials" class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#acceptance_data" data-toggle="tab">
+                                    验收资料
+                                </a>
+                            </li>
+                            <li><a href="#test_data" data-toggle="tab">试验资料</a></li>
+                            <li><a href="#measurement_data" data-toggle="tab">测量资料</a></li>
+                        </ul>
+                        <div id="materialsTabContent" class="tab-content" style="padding: 10px;">
+                            <div class="tab-pane fade in active" id="acceptance_data">
+                                <table id="admin_table" width="100%" class="table table-striped table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>文件名称</th>
+                                        <th>上传人</th>
+                                        <th>单位/部门</th>
+                                        <th>上传时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="test_data">
+                                <table class="table table-hover table-bordered" id="test_data_table" style="width: 100%">
+                                    <thead>
+                                    <tr>
+                                        <th>文件名</th>
+                                        <th>上传人</th>
+                                        <th>上传时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="measurement_data">
+                                <table class="table table-hover table-bordered" id="measurement_data_table" style="width: 100%">
+                                    <thead>
+                                    <tr>
+                                        <th>文件名</th>
+                                        <th>上传人</th>
+                                        <th>上传时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -1191,7 +1252,82 @@
         </div>
     </div>
 </div>
-
+<div id="selects" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins" style="height: 600px">
+                <div class="ibox-title">
+                    <h5></h5>
+                </div>
+                <div class="ibox-content">
+                    <!--新增用户信息开始-->
+                    <form class="form-horizontal" name="level2Add" method="post" action="#" onsubmit="return false">
+                        <table class="table table-hover table-bordered" id="experiment" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <label for="all_checked" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
+                                    <input type='checkbox' name='all_checked' id="experiment_all_checked" class='icheckbox_minimal' value=''>
+                                </th>
+                                <th>文件名</th>
+                                <th>上传人</th>
+                                <th>上传时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <div class="col-xs-12" style="text-align: center;">
+                                <button class="btn btn-primary get_res" data-dismiss="modal"><i class="fa fa-save"></i> 确定</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger get_res" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                    <!--新增用户信息结束-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="selects2" class="modal animated fadeInRight" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static" style="width: 60%;margin: 0 auto;margin-top: 40px;">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins" style="height: 600px">
+                <div class="ibox-title">
+                    <h5></h5>
+                </div>
+                <div class="ibox-content">
+                    <!--新增用户信息开始-->
+                    <form class="form-horizontal" name="level2Add" method="post" action="#" onsubmit="return false">
+                        <table class="table table-hover table-bordered" id="measure" style="width: 100%">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <label for="all_checked" onselectstart="return false;" style="-moz-user-select:none;">全选</label>
+                                    <input type='checkbox' name='all_checked' id="measure_all_checked" class='icheckbox_minimal' value=''>
+                                </th>
+                                <th>文件名</th>
+                                <th>上传人</th>
+                                <th>上传时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <div class="col-xs-12" style="text-align: center;">
+                                <button class="btn btn-primary get_res2" data-dismiss="modal"><i class="fa fa-save"></i> 确定</button>&nbsp;&nbsp;&nbsp;
+                                <a class="btn btn-danger get_res" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
+                            </div>
+                        </div>
+                    </form>
+                    <!--新增用户信息结束-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {include file="public/footer" /}
 <script type="text/javascript" src="/static/admin/webupload/webuploader.min.js"></script>
 
@@ -1402,8 +1538,239 @@
         $("#myModal h5").text("新增");
         $("#myModal").modal('show');
     })
+    //试验
+    var experiment = $('#experiment').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "/datatables/quality/materialfile.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        columns:[
+            {
+                name: "id",
+                "render": function(data, type, full, meta) {
+                    var ipt = "<input type='checkbox' name='experimentEheckList' idv='"+data+"' onclick='getSelectId(this)'>";
+                    return ipt;
+                },
+            },
+            {
+                name: "code"
+            },{
+                name: "name"
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
 
+    //测量
+    var measure = $('#measure').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "/datatables/quality/surveydata.php"
+        },
+        "dom": '<"mybtn btn btn-outline btn-primary"><"myl"l>frtip',
+        columns:[
+            {
+                name: "id",
+                "render": function(data, type, full, meta) {
+                    var ipt = "<input type='checkbox' name='measureCheckList' idv='"+data+"' onclick='getSelectId(this)'>";
+                    return ipt;
+                },
+            },
+            {
+                name: "code"
+            },{
+                name: "name"
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    });
+    var measurement_data_table = $('#measurement_data_table').DataTable( {
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "/datatables/quality/surveydata.php",
+            "async": false
+        },
+        columns:[
+            {
+                name: "code"
+            },{
+                name: "name"
+            },{
+                name: null
+            }
+        ],
+        "columnDefs": [
+            {
+                "searchable": false,
+                "orderable": false,
+                "targets": [3],
+                "render" :  function(data,type,row) {
+                    var html = "";
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
+                    html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
+                    html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
+                    return html;
+                }
+            }
+        ],
+        "language": {
+            "lengthMenu": "每页_MENU_ 条记录",
+            "zeroRecords": "没有找到记录",
+            "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+            "infoEmpty": "无记录",
+            "search": "搜索：",
+            "infoFiltered": "(从 _MAX_ 条记录过滤)",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页"
+            }
+        }
+    } );
+    //取消全选的事件绑定
+    $("thead tr th:first-child").unbind();
+    //删除数组中的指定元素
+    Array.prototype.remove = function(val){
+        for (var i = 0; i < this.length; i++) {
+            if(this[i] === val){
+                this.splice(i,1);
+                break;
+            }
+        }
+        return this;
+    }
 
+    //数组去重
+    Array.prototype.removalArray = function(){
+        var newArr = [];
+        for (var i = 0; i < this.length; i++) {
+            if(newArr.indexOf(this[i]) == -1){  //indexOf 不兼容IE8及以下
+                newArr.push(this[i]);
+            }
+        }
+        return newArr;
+    }
+
+    //获取选中行ID
+    function getId(that,idArr) {
+        var allChecked = $(that).parents('table.table').find('input[name="all_checked"]').attr('id');
+        var isChecked = $(that).prop('checked');
+        var id = $(that).attr('idv');
+        var name = $(that).attr('name');
+        var checkedLen = $('input[type="checkbox"][name='+ name +']:checked').length;
+        var checkboxLen = $('input[type="checkbox"][name='+ name +']').length;
+        if(checkedLen===checkboxLen){
+            $('#'+ allChecked).prop('checked',true);
+        }else{
+            $('#'+ allChecked).prop('checked',false);
+        }
+        if(isChecked){
+            idArr.push(id);
+            idArr.removalArray();
+        }else{
+            idArr.remove(id);
+            idArr.removalArray();
+            $('#'+ allChecked).prop('checked',false);
+        }
+    }
+
+    //单选
+    var experimentArr = [];
+    var measureArr = [];
+    function getSelectId(that) {
+        var name = $(that).attr('name');
+        if(name=='measureCheckList'){
+            getId(that,measureArr);
+        }else{
+            getId(that,experimentArr);
+        }
+        console.log(measureArr);
+        console.log(experimentArr);
+    }
+
+    //checkbox全选
+    function addChecked(that,idArr) {
+        idArr.length=0;
+        var that = $(that);
+        var name = that.parents('table.table').find('tbody input[type="checkbox"]').attr('name');
+        if (that.prop("checked") === true) {
+            $('input[name='+ name +']').prop("checked", that.prop("checked"));
+            $('input[name='+ name +']').each(function(){
+                getId(this,idArr);
+            });
+        } else {
+            $('input[name='+ name +']').prop("checked", false);
+            $('input[name='+ name +']').each(function(){
+                getId(this,idArr);
+            });
+        }
+        console.log(idArr);
+    }
+
+    //试验全选
+    $("#experiment_all_checked").on("click", function () {
+        addChecked(this,experimentArr);
+    });
+
+    //测量全选
+    $("#measure_all_checked").on("click", function () {
+        addChecked(this,measureArr);
+    });
+
+    //翻页事件
+    experiment.on('draw',function () {
+        $('input[type="checkbox"][name="checkList"]').prop("checked",false);
+        $('#all_checked').prop('checked',false);
+        experimentArr.length=0;
+    });
+    //翻页事件
+    measure.on('draw',function () {
+        $('input[type="checkbox"][name="checkList"]').prop("checked",false);
+        $('#all_checked').prop('checked',false);
+        measureArr.length=0;
+    });
+
+    //静态点击事件
+    $(".get_res").click(function () {
+        var text = $("#experiment tbody input:checked").parent().next('td').text();
+        $("#vlad1").val(text);
+        $("#test_data_id").val(experimentArr);
+    });
+    $(".get_res2").click(function () {
+        var text = $("#measure tbody input:checked").parent().next('td').text();
+        $("#vlad2").val(text);
+        $("#survey_data_id").val(measureArr);
+    });
+
+    $('#myModal').on('hide.bs.modal', function () {
+        $('#vlad1').val('');
+        $('#vlad2').val('');
+    });
     function del(that) {
         var id = $(that).parent("td").parent("tr").children("td:first-child").text();
         layer.confirm('确认删除此条记录吗?', {icon: 3, title:'提示'}, function(index){
@@ -1466,7 +1833,7 @@
                 "targets": [5],
                 "render" :  function(data,type,row) {
                     var html = "";
-                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载1'/>" ;
+                    html += "<input type='button' class='btn btn-primary btn-outline btn-xs' style='margin-left: 5px;' onclick='download(this)' value='下载'/>" ;
                     html += "<input type='button' class='btn btn-success btn-outline btn-xs' style='margin-left: 5px;' onclick='showpdf1(this)' value='预览'/>" ;
                     html += "<input type='button' class='btn btn-danger btn-outline btn-xs' style='margin-left: 5px;' onclick='del(this)' value='删除'/>" ;
                     return html;
