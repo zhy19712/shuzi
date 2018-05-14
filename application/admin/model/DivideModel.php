@@ -316,7 +316,7 @@ class DivideModel extends Model
 
         // 超挖
         if($unit_batch == 0){
-            return  $data;
+            $unit_batch = 1;
         }
         $data['average_val'][] = round(array_sum($ave_1) / $unit_batch,2); // 平均值
         $data['max_val'][] = sizeof($max_1) ? max($max_1) : 0; // 最大值
