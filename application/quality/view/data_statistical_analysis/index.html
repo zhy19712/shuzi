@@ -246,6 +246,19 @@
                                                             <div class="row">
                                                                 <table class="table table-bordered" id="hotcreteStrengthS">
                                                                     <caption>喷砼强度(施工单位)</caption>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>方量（m³）</th>
+                                                                            <th>监测组数（个）</th>
+                                                                            <th>设计等级</th>
+                                                                            <th>最大值（Mpa）</th>
+                                                                            <th>最小值（Mpa）</th>
+                                                                            <th>平均值（Mpa）</th>
+                                                                            <th>标准差（Mpa）</th>
+                                                                            <th>保证率（%）</th>
+                                                                            <th>合格率（%）</th>
+                                                                        </tr>
+                                                                    </thead>
                                                                     <tbody></tbody>
                                                                 </table>
                                                             </div>
@@ -277,29 +290,21 @@
                                                             <div class="row">
                                                                 <table class="table table-bordered" id="hotcreteStrengthM">
                                                                     <caption >喷砼强度(监理单位)</caption>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>方量（m³）</th>
+                                                                            <th>监测组数（个）</th>
+                                                                            <th>设计等级</th>
+                                                                            <th>最大值（Mpa）</th>
+                                                                            <th>最小值（Mpa）</th>
+                                                                            <th>平均值（Mpa）</th>
+                                                                            <th>标准差（Mpa）</th>
+                                                                            <th>保证率（%）</th>
+                                                                            <th>合格率（%）</th>
+                                                                        </tr>
+                                                                    </thead>
                                                                     <tbody>
-                                                                    <tr>
-                                                                        <td>方量（m³）</td>
-                                                                        <td>监测组数（个）</td>
-                                                                        <td>设计等级</td>
-                                                                        <td>最大值（Mpa）</td>
-                                                                        <td>最小值（Mpa）</td>
-                                                                        <td>平均值（Mpa）</td>
-                                                                        <td>标准差（Mpa）</td>
-                                                                        <td>保证率（%）</td>
-                                                                        <td>合格率（%）</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>9</td>
-                                                                        <td>23</td>
-                                                                        <td>65</td>
-                                                                        <td>43</td>
-                                                                        <td>55</td>
-                                                                        <td>68</td>
-                                                                        <td>55</td>
-                                                                        <td>68</td>
-                                                                        <td>65</td>
-                                                                    </tr>
+
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -1525,7 +1530,7 @@
                             //喷砼厚度模板
                             var strThickness = '';
                             for (var i = 0;i<design_val_h.length;i++){
-                                strThickness += '<tr><td>'+design_val_h[i]+'</td><td>'+supporting_area_h+'</td><td>'+thickness_number_h+'</td><td>'+max_h[i]+'</td><td>'+min_h[i]+'</td><td>'+avg_val_h+'</td><td>'+pass_h+'</td></tr>';
+                                strThickness += '<tr><td>'+design_val_h[i]+'</td><td>'+supporting_area_h[i]+'</td><td>'+thickness_number_h[i]+'</td><td>'+max_h[i]+'</td><td>'+min_h[i]+'</td><td>'+avg_val_h[i]+'</td><td>'+pass_h[i]+'</td></tr>';
                             }
                             $("#hotcreteThicknessF tbody").empty().append(strThickness);
                             var strThicknessT = '';
@@ -1779,21 +1784,21 @@
                             //喷砼强度(施工单位)模板
                             var hotcreteStrengthS = '';
                             for (var i = 0;i<design_val_h.length;i++){
-                                hotcreteStrengthS += '<tr><td>'+design_val_h[i]+'</td><td>'+supporting_area_h+'</td><td>'+thickness_number_h+'</td><td>'+max_h[i]+'</td><td>'+min_h[i]+'</td><td>'+avg_val_h+'</td><td>'+pass_h+'</td></tr>';
+                                hotcreteStrengthS += '<tr><td>'+data_q.design_val_h[i]+'</td><td>'+data_q.supporting_area_h[i]+'</td><td>'+data_q.thickness_number_h[i]+'</td><td>'+data_q.max_h[i]+'</td><td>'+data_q.min_h[i]+'</td><td>'+data_q.avg_val_h[i]+'</td><td>'+data_q.pass_h[i]+'</td></tr>';
                             }
                             $("#hotcreteStrengthS tbody").empty().append(hotcreteStrengthS);
 
                             //喷砼强度(施工单位)总体数据模板
                             var hotcreteStrengthST = '';
                             for (var i = 0;i<design_val_h.length;i++){
-                                hotcreteStrengthST += '<tr><td>'+design_val_h[i]+'</td><td>'+supporting_area_h+'</td><td>'+thickness_number_h+'</td><td>'+max_h[i]+'</td><td>'+min_h[i]+'</td><td>'+avg_val_h+'</td><td>'+pass_h+'</td></tr>';
+                                hotcreteStrengthST += '<tr><td>'+design_val_h[i]+'</td><td>'+supporting_area_h+'</td><td>'+thickness_number_h+'</td><td>'+max_h+'</td><td>'+min_h+'</td><td>'+avg_val_h+'</td><td>'+pass_h+'</td></tr>';
                             }
                             $("#hotcreteStrengthST tbody").empty().append(hotcreteStrengthST);
 
                             //喷砼强度(监理单位)模板
                             var hotcreteStrengthM = '';
                             for (var i = 0;i<design_val_h.length;i++){
-                                hotcreteStrengthM += '<tr><td>'+design_val_h[i]+'</td><td>'+supporting_area_h+'</td><td>'+thickness_number_h+'</td><td>'+max_h[i]+'</td><td>'+min_h[i]+'</td><td>'+avg_val_h+'</td><td>'+pass_h+'</td></tr>';
+                                hotcreteStrengthM += '<tr><td>'+data_q2.design_val_h[i]+'</td><td>'+data_q2.supporting_area_h[i]+'</td><td>'+data_q2.thickness_number_h[i]+'</td><td>'+data_q2.max_h[i]+'</td><td>'+data_q2.min_h[i]+'</td><td>'+data_q2.avg_val_h[i]+'</td><td>'+data_q2.pass_h[i]+'</td></tr>';
                             }
                             $("#hotcreteStrengthM tbody").empty().append(hotcreteStrengthM);
 

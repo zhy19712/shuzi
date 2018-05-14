@@ -1613,7 +1613,7 @@
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": "/datatables/quality/surveydata.php",
+            "url": "/datatables/quality/surveydata.php?type=2&id="+mytree_node.uid,
             "async": false
         },
         columns:[
@@ -2022,6 +2022,7 @@
         $("#level3").css("display","none");
         $("#level5").css("display","none");
         if(treeNode.level == 4){
+            the_data_uid = treeNode.uid;
             var groupid = treeNode.uid;
             $("#level5").css("display","block");
             $.ajax({
