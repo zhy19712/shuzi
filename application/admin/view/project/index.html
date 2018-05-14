@@ -185,13 +185,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">桩号(起)：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="zhuanghaoqi" type="text" class="form-control" name="zhuanghaoqi"  required="required">
+                                    <input id="zhuanghaoqi" type="text" class="form-control" name="zhuanghaoqi">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">桩号(止)：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input type="text" id="zhuanghaozhi" class="form-control datepicker" name="zhuanghaozhi" required="required"/>
+                                    <input type="text" id="zhuanghaozhi" class="form-control datepicker" name="zhuanghaozhi"/>
                                 </div>
                             </div>
                         </div>
@@ -200,13 +200,13 @@
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label col-sm-offset-2 col-xs-offset-0">高程(起)：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input id="gaochengqi" type="text" class="form-control" name="gaochengqi" required="required">
+                                    <input id="gaochengqi" type="text" class="form-control" name="gaochengqi">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xs-12">
                                 <label class="col-xs-6 col-sm-4 control-label">高程(止)：</label>
                                 <div class="myblock col-xs-6 input-group">
-                                    <input type="text" id="gaochengzhi" class="form-control datepicker" name="gaochengzhi" required="required"/>
+                                    <input type="text" id="gaochengzhi" class="form-control datepicker" name="gaochengzhi"/>
                                 </div>
                             </div>
                         </div>
@@ -231,7 +231,7 @@
                         <div class="hr-line-dashed"></div>
                         <div class="form-group">
                             <div class="col-xs-12" style="text-align: center;">
-                                <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-primary" type="submit" id="save_btn"><i class="fa fa-save"></i> 保存</button>&nbsp;&nbsp;&nbsp;
                                 <a class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> 返回</a>
                             </div>
                         </div>
@@ -964,10 +964,14 @@ function edit(that) {
 
 </script>
 <script type="text/javascript">
-
-
     //提交
-    $("#projectAdd .btn-primary").click(function () {
+    $("#save_btn").click(function () {
+        if(!(($("#zhuanghaoqi").val()&&$("#zhuanghaozhi").val())||$("#gaochengqi").val()&&$("#gaochengzhi").val())){
+            layer.msg('请填写桩号/高程',{icon:2,time:1500,shade: 0.1}, function(index){
+                layer.close(index);
+            });
+            return false;
+        }
         $('#projectAdd').ajaxForm({
             success: complete,
             dataType: 'json'
