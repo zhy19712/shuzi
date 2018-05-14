@@ -2158,7 +2158,10 @@
                              */
 
                             //锚杆砂浆强度数据
-
+                            var builder = res.excavate_data.maogan.builder;   //施工单位数据
+                            var builder_all = res.excavate_data.maogan.builder_all; //施工单位全部数据
+                            var supervision_unit = res.excavate_data.maogan.supervision_unit; //监理单位数据
+                            var supervision_unit_all = res.excavate_data.maogan.supervision_unit_all; //监理单位全部数据
 
                             //锚杆砂浆强度(施工单位)模板
                             var mortarStrengthS = '';
@@ -2228,22 +2231,22 @@
                                     {
                                         name: '标准差',
                                         type: 'bar', //柱状图
-                                        data: [66,68,99,56]
+                                        data: builder.mortar_standard_deviation_2
                                     },
                                     {
                                         name: '最大值',
                                         type: 'bar', //柱状图
-                                        data: [88,88,88,88]
+                                        data: builder.mortar_max
                                     },
                                     {
                                         name: '平均值',
                                         type: 'bar',
-                                        data: [77,77,77,77]
+                                        data: builder.mortar_avg
                                     },
                                     {
                                         name: '最小值',
                                         type: 'bar',
-                                        data: [66,66,66,66]
+                                        data: builder.mortar_min
                                     }
                                 ]
                             });
@@ -2294,7 +2297,7 @@
                                         type: 'bar',
                                         barWidth: 40,
                                         stack: '总量',
-                                        data: [30,50,60]
+                                        data: builder.mortar_percent
                                     }
                                 ]
                             });
@@ -2328,40 +2331,7 @@
                                         name: '检测点数',
                                         barWidth: 40,
                                         type: 'bar', //柱状图
-                                        data: [30,50,60]
-                                    }
-                                ]
-                            });
-                            //方量
-                            myChartPieMortarStrengthS.setOption({
-                                title: {
-                                    text: '方量（m³）'
-                                },
-                                tooltip: {
-                                    trigger: 'axis',
-                                    axisPointer: {
-                                        type: 'shadow'
-                                    }
-                                },
-                                grid: {
-
-                                    containLabel: true
-                                },
-                                xAxis: {
-                                    type: 'value',
-                                    boundaryGap: [0, 0.01]
-                                },
-                                yAxis: {
-                                    type: 'category',
-                                    data: ['超挖', '欠挖', '不平整度']
-                                },
-
-                                series: [
-                                    {
-                                        name: '检测点数',
-                                        barWidth: 40,
-                                        type: 'bar', //柱状图
-                                        data: [30,50,60]
+                                        data: builder.mortar_number
                                     }
                                 ]
                             });
@@ -2397,22 +2367,22 @@
                                     {
                                         name: '设计值',
                                         type: 'bar', //柱状图
-                                        data: [66,68,99,56]
+                                        data: supervision_unit.mortar_level
                                     },
                                     {
                                         name: '最大值',
                                         type: 'bar', //柱状图
-                                        data: [88,88,88,88]
+                                        data: supervision_unit.mortar_max
                                     },
                                     {
                                         name: '平均值',
                                         type: 'bar',
-                                        data: [77,77,77,77]
+                                        data: supervision_unit.mortar_avg
                                     },
                                     {
                                         name: '最小值',
                                         type: 'bar',
-                                        data: [66,66,66,66]
+                                        data: supervision_unit.mortar_min
                                     }
                                 ]
                             });
@@ -2463,7 +2433,7 @@
                                         type: 'bar',
                                         barWidth: 40,
                                         stack: '总量',
-                                        data: [30,50,60]
+                                        data: supervision_unit.mortar_percent
                                     }
                                 ]
                             });
@@ -2497,40 +2467,7 @@
                                         name: '检测点数',
                                         barWidth: 40,
                                         type: 'bar', //柱状图
-                                        data: [30,50,60]
-                                    }
-                                ]
-                            });
-                            //方量
-                            myChartPieMortarStrengthM.setOption({
-                                title: {
-                                    text: '方量（m³）'
-                                },
-                                tooltip: {
-                                    trigger: 'axis',
-                                    axisPointer: {
-                                        type: 'shadow'
-                                    }
-                                },
-                                grid: {
-
-                                    containLabel: true
-                                },
-                                xAxis: {
-                                    type: 'value',
-                                    boundaryGap: [0, 0.01]
-                                },
-                                yAxis: {
-                                    type: 'category',
-                                    data: ['超挖', '欠挖', '不平整度']
-                                },
-
-                                series: [
-                                    {
-                                        name: '检测点数',
-                                        barWidth: 40,
-                                        type: 'bar', //柱状图
-                                        data: [30,50,60]
+                                        data: supervision_unit.mortar_number
                                     }
                                 ]
                             });
@@ -3233,7 +3170,7 @@
 
                 })
             }else if(inText == '混凝土工程'){
-                $.ajax({
+                /*$.ajax({
                     type:'post',
                     url:'./excavate',
                     data:{
@@ -4530,9 +4467,9 @@
 
                     }
 
-                })
+                })*/
             }else if(inText == '排水孔'){
-                $.ajax({
+                /*$.ajax({
                     type:'post',
                     url:'./excavate',
                     data:{
@@ -4711,7 +4648,7 @@
 
                     }
 
-                })
+                })*/
             }
         }
 
